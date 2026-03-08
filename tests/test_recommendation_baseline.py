@@ -416,3 +416,248 @@ def test_glucose_context_missing_stays_collect_more_input_even_with_current_supp
     )
     assert response.missing_information[0].code == "missing_glucose_context"
     assert response.missing_information[0].importance.value == "high"
+
+
+def test_long_current_supplement_title_is_canonicalized_before_duplicate_filtering() -> None:
+    request = RecommendationRequest.model_validate(
+        {
+            "user_profile": {
+                "age": 57,
+                "biological_sex": "male",
+                "pregnant": False,
+            },
+            "goals": ["heart_health"],
+            "symptoms": ["low_activity"],
+            "conditions": [],
+            "medications": [],
+            "current_supplements": [
+                {
+                    "name": "Nordic Naturals Ultimate Omega Lemon Flavor Soft Gels",
+                    "ingredients": [],
+                }
+            ],
+            "lifestyle": {
+                "sleep_hours": 6.5,
+                "stress_level": 2,
+                "activity_level": "sedentary",
+                "smoker": False,
+                "alcohol_per_week": 1,
+            },
+            "input_availability": {
+                "survey": True,
+                "nhis": False,
+                "wearable": False,
+                "cgm": False,
+                "genetic": False,
+            },
+            "preferences": {
+                "budget_level": "medium",
+                "max_products": 2,
+                "avoid_ingredients": [],
+            },
+        }
+    )
+
+    response = recommend(request)
+
+    assert response.next_action.value == "collect_more_input"
+    assert (
+        response.next_action_rationale.reason_code
+        == "collect_more_input_high_priority_missing_info"
+    )
+    assert "omega3" in response.safety_summary.excluded_ingredients
+    assert "SAFETY-DUP-001" in [ref.rule_id for ref in response.safety_summary.rule_refs]
+    assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
+
+
+def test_long_avoid_title_is_canonicalized_before_candidate_filtering() -> None:
+    request = RecommendationRequest.model_validate(
+        {
+            "user_profile": {
+                "age": 35,
+                "biological_sex": "female",
+                "pregnant": False,
+            },
+            "goals": ["gut_health"],
+            "symptoms": ["bloating"],
+            "conditions": [],
+            "medications": [],
+            "current_supplements": [],
+            "lifestyle": {
+                "sleep_hours": 7.0,
+                "stress_level": 2,
+                "activity_level": "lightly_active",
+                "smoker": False,
+                "alcohol_per_week": 0,
+            },
+            "input_availability": {
+                "survey": True,
+                "nhis": False,
+                "wearable": False,
+                "cgm": False,
+                "genetic": False,
+            },
+            "preferences": {
+                "budget_level": "medium",
+                "max_products": 2,
+                "avoid_ingredients": [
+                    "Renew Life Extra Care Ultimate Flora Probiotic 50 Billion CFU Capsules"
+                ],
+            },
+        }
+    )
+
+    response = recommend(request)
+
+    assert response.status.value == "ok"
+    assert response.next_action.value == "start_plan"
+    assert response.safety_summary.excluded_ingredients == ["probiotics"]
+    assert [item.ingredient_key for item in response.recommendations] == ["soluble_fiber"]
+
+
+def test_genetic_micronutrient_context_changes_top_candidate_for_general_wellness() -> None:
+    baseline_request = RecommendationRequest.model_validate(
+        {
+            "user_profile": {
+                "age": 44,
+                "biological_sex": "female",
+                "pregnant": False,
+            },
+            "goals": ["general_wellness"],
+            "symptoms": ["frequent_fatigue"],
+            "conditions": [],
+            "medications": [],
+            "current_supplements": [],
+            "lifestyle": {
+                "sleep_hours": 6.8,
+                "stress_level": 2,
+                "activity_level": "sedentary",
+                "smoker": False,
+                "alcohol_per_week": 0,
+            },
+            "input_availability": {
+                "survey": True,
+                "nhis": False,
+                "wearable": False,
+                "cgm": False,
+                "genetic": False,
+            },
+            "preferences": {
+                "budget_level": "medium",
+                "max_products": 1,
+                "avoid_ingredients": [],
+            },
+        }
+    )
+    genetic_request = baseline_request.model_copy(
+        update={
+            "input_availability": baseline_request.input_availability.model_copy(
+                update={"genetic": True}
+            )
+        }
+    )
+
+    baseline_response = recommend(baseline_request)
+    genetic_response = recommend(genetic_request)
+
+    assert [item.ingredient_key for item in baseline_response.recommendations] == ["vitamin_c"]
+    assert [item.ingredient_key for item in genetic_response.recommendations] == ["vitamin_d3"]
+    assert baseline_response.next_action.value == "start_plan"
+    assert genetic_response.next_action.value == "start_plan"
+
+
+def test_genetic_cardiometabolic_context_changes_top_candidate_for_heart_health() -> None:
+    baseline_request = RecommendationRequest.model_validate(
+        {
+            "user_profile": {
+                "age": 52,
+                "biological_sex": "male",
+                "pregnant": False,
+            },
+            "goals": ["heart_health"],
+            "symptoms": ["fatigue"],
+            "conditions": [],
+            "medications": [{"name": "atorvastatin", "dose": "20mg"}],
+            "current_supplements": [],
+            "lifestyle": {
+                "sleep_hours": 6.7,
+                "stress_level": 2,
+                "activity_level": "sedentary",
+                "smoker": False,
+                "alcohol_per_week": 1,
+            },
+            "input_availability": {
+                "survey": True,
+                "nhis": False,
+                "wearable": False,
+                "cgm": False,
+                "genetic": False,
+            },
+            "preferences": {
+                "budget_level": "medium",
+                "max_products": 1,
+                "avoid_ingredients": [],
+            },
+        }
+    )
+    genetic_request = baseline_request.model_copy(
+        update={
+            "input_availability": baseline_request.input_availability.model_copy(
+                update={"genetic": True}
+            )
+        }
+    )
+
+    baseline_response = recommend(baseline_request)
+    genetic_response = recommend(genetic_request)
+
+    assert [item.ingredient_key for item in baseline_response.recommendations] == ["coq10"]
+    assert [item.ingredient_key for item in genetic_response.recommendations] == ["omega3"]
+    assert baseline_response.next_action.value == "start_plan"
+    assert genetic_response.next_action.value == "start_plan"
+
+
+def test_genetic_multi_goal_context_backfills_omega3_and_vitamin_d3() -> None:
+    request = RecommendationRequest.model_validate(
+        {
+            "user_profile": {
+                "age": 52,
+                "biological_sex": "male",
+                "pregnant": False,
+            },
+            "goals": ["heart_health", "immunity_support"],
+            "symptoms": ["low_activity", "frequent_fatigue"],
+            "conditions": [],
+            "medications": [{"name": "atorvastatin", "dose": "20mg"}],
+            "current_supplements": [{"name": "Vitamin C", "ingredients": []}],
+            "lifestyle": {
+                "sleep_hours": 7.0,
+                "stress_level": 2,
+                "activity_level": "sedentary",
+                "smoker": False,
+                "alcohol_per_week": 0,
+            },
+            "input_availability": {
+                "survey": True,
+                "nhis": True,
+                "wearable": True,
+                "cgm": False,
+                "genetic": True,
+            },
+            "preferences": {
+                "budget_level": "medium",
+                "max_products": 2,
+                "avoid_ingredients": [],
+            },
+        }
+    )
+
+    response = recommend(request)
+
+    assert response.status.value == "ok"
+    assert response.next_action.value == "start_plan"
+    assert "vitamin_c" in response.safety_summary.excluded_ingredients
+    assert [item.ingredient_key for item in response.recommendations] == [
+        "omega3",
+        "vitamin_d3",
+    ]

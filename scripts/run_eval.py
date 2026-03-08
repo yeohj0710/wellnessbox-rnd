@@ -8,7 +8,7 @@ def main() -> None:
     parser = ArgumentParser(description="Run frozen eval for wellnessbox-rnd")
     parser.add_argument(
         "--dataset",
-        default="data/frozen_eval/sample_cases.jsonl",
+        default="data/frozen_eval/frozen_eval_v1.jsonl",
         help="Path to JSONL eval dataset",
     )
     parser.add_argument(
@@ -30,4 +30,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

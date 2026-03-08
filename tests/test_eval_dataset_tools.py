@@ -29,7 +29,7 @@ def test_build_eval_case_skeleton_uses_deterministic_defaults() -> None:
 
 
 def test_validate_eval_cases_flags_duplicate_ids_unsorted_order_and_request_mismatch() -> None:
-    cases = load_eval_cases("data/frozen_eval/sample_cases.jsonl")
+    cases = load_eval_cases("data/frozen_eval/frozen_eval_v1.jsonl")
     broken_cases = [cases[1], cases[0]]
     broken_cases[0].request.request_id = "different-request-id"
     broken_cases.append(cases[0])
@@ -42,15 +42,20 @@ def test_validate_eval_cases_flags_duplicate_ids_unsorted_order_and_request_mism
 
 
 def test_summarize_eval_cases_reports_current_dataset_coverage() -> None:
-    cases = load_eval_cases("data/frozen_eval/sample_cases.jsonl")
+    cases = load_eval_cases("data/frozen_eval/frozen_eval_v1.jsonl")
 
     summary = summarize_eval_cases(cases)
 
-    assert summary["case_count"] == 16
-    assert summary["category_counts"]["catalog_alias"] == 2
-    assert summary["expected_next_action_counts"]["collect_more_input"] == 5
-    assert summary["integration_attempted_case_counts"]["wearable"] >= 4
-    assert summary["integration_totals"]["genetic"] == {"attempted": 2, "success": 1}
+    assert summary["case_count"] == len(cases)
+    assert summary["case_count"] >= 118
+    assert summary["category_counts"]["free_text_alias"] == 3
+    assert summary["category_counts"]["parser_limit"] >= 18
+    assert summary["category_counts"]["review_no_candidates"] >= 15
+    assert summary["category_counts"]["safety_blocked"] >= 14
+    assert summary["expected_next_action_counts"]["collect_more_input"] >= 34
+    assert summary["integration_attempted_case_counts"]["genetic"] >= 70
+    assert summary["integration_totals"]["genetic"]["attempted"] >= 70
+    assert summary["integration_totals"]["genetic"]["success"] >= 5
 
 
 def test_manage_eval_dataset_scaffold_append_writes_sorted_jsonl(tmp_path) -> None:

@@ -11,7 +11,7 @@
 
 ```mermaid
 flowchart LR
-    A[sample_cases.jsonl] --> B[runner.py]
+    A[frozen_eval_v1.jsonl] --> B[runner.py]
     B --> C[API contract request parse]
     C --> D[recommendation_service 호출]
     D --> E[metric calculators]
@@ -28,7 +28,7 @@ python scripts/run_eval.py
 ## 옵션 예시
 
 ```bash
-python scripts/run_eval.py --dataset data/frozen_eval/sample_cases.jsonl --output-dir artifacts/reports
+python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports
 ```
 
 ## 출력물

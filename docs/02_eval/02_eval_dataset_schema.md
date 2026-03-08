@@ -12,11 +12,11 @@ baseline. Each line is one JSON object in JSONL format.
 
 Primary dataset:
 
-- `C:/dev/wellnessbox-rnd/data/frozen_eval/sample_cases.jsonl`
+- `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
 
 Current size:
 
-- 16 synthetic cases
+- 118 synthetic cases
 
 ## Top-level fields
 
@@ -92,6 +92,10 @@ The dataset helper currently enforces the following invariants:
 - duplicate overlap safety signal
 - catalog alias normalization
 - modality integration mix
+- genetic-supported ranking regressions
+- long-title parser-limit failures
+- no-candidate review paths
+- stacked blocked vs review boundary cases
 
 ## Assumptions
 
@@ -100,4 +104,4 @@ The dataset helper currently enforces the following invariants:
 - The eval runner emits modality-level integration diagnostics in addition to
   the pooled KPI score so the bottleneck modality is visible in the report.
 - The current dataset is larger and more representative than the original
-  5-case seed, but still too small to be treated as a production KPI gate.
+  5-case seed, but still not a production KPI gate.

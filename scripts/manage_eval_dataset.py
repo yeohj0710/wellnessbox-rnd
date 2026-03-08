@@ -20,14 +20,14 @@ def build_parser() -> ArgumentParser:
     summary_parser = subparsers.add_parser("summary", help="Print dataset coverage summary as JSON")
     summary_parser.add_argument(
         "--dataset",
-        default="data/frozen_eval/sample_cases.jsonl",
+        default="data/frozen_eval/frozen_eval_v1.jsonl",
         help="Path to JSONL eval dataset",
     )
 
     validate_parser = subparsers.add_parser("validate", help="Validate dataset invariants")
     validate_parser.add_argument(
         "--dataset",
-        default="data/frozen_eval/sample_cases.jsonl",
+        default="data/frozen_eval/frozen_eval_v1.jsonl",
         help="Path to JSONL eval dataset",
     )
 
@@ -73,7 +73,7 @@ def build_parser() -> ArgumentParser:
     )
     scaffold_parser.add_argument(
         "--dataset",
-        default="data/frozen_eval/sample_cases.jsonl",
+        default="data/frozen_eval/frozen_eval_v1.jsonl",
         help="Target JSONL dataset path when --append is used",
     )
     scaffold_parser.add_argument(

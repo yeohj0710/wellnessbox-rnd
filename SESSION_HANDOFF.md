@@ -1,91 +1,104 @@
 # SESSION_HANDOFF
 
-## 세션 종료 시점 요약
+## Scope guardrails
 
-- `wellnessbox-rnd`는 pure R&D 저장소로만 유지 중이다.
-- source of truth는 `master_context.md`와 `original_plan.pdf`다.
-- 이번 루프에서는 `eval 데이터 생성 스크립트 개선`만 수행했다.
-- frozen eval authoring을 위해 deterministic helper를 추가했다.
-- 공식 KPI 점수는 바꾸지 않았고, eval workflow만 구조적으로 보강했다.
+- Work only inside `C:/dev/wellnessbox-rnd`
+- Do not read or reference:
+  - `wellnessbox/`
+  - `docs/03_integration/`
+  - `docs/00_discovery/`
+  - `docs/00_migration/`
+  - `docs/legacy_from_wellnessbox/`
 
-## 다음 세션에서 먼저 읽을 문서
+## Source of truth
 
-1. `C:/dev/wellnessbox-rnd/PROGRESS.md`
-2. `C:/dev/wellnessbox-rnd/NEXT_STEPS.md`
-3. `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
-4. `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
-5. `C:/dev/wellnessbox-rnd/docs/00_scope_reset/04_clean_rnd_execution_plan.md`
-6. `C:/dev/wellnessbox-rnd/docs/02_eval/02_eval_dataset_schema.md`
+- `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+- `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
 
-## 이번 루프에서 직접 건드린 주요 파일
+## What this loop did
 
-- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/evals/dataset_tools.py`
-- `C:/dev/wellnessbox-rnd/scripts/manage_eval_dataset.py`
-- `C:/dev/wellnessbox-rnd/tests/test_eval_dataset_tools.py`
-- `C:/dev/wellnessbox-rnd/data/frozen_eval/README.md`
-- `C:/dev/wellnessbox-rnd/docs/02_eval/02_eval_dataset_schema.md`
-- `C:/dev/wellnessbox-rnd/PROGRESS.md`
-- `C:/dev/wellnessbox-rnd/NEXT_STEPS.md`
-- `C:/dev/wellnessbox-rnd/SESSION_HANDOFF.md`
+- Chosen task: `genetic deterministic handling improvement`
+- Reason: primary frozen eval case count was `116`, the gap report already existed, and the chosen runtime bucket was `genetic`
+- Primary dataset:
+  - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
+  - `case_count = 118`
+- Net dataset change:
+  - `+2` validated cases
+  - `2` hard / negative / ambiguous cases
+  - `2` regression-style cases
 
-## 현재 구현 상태
+## Coverage added this loop
 
-- FastAPI inference API
-- recommend baseline
-- frozen eval runner
-- metric calculator
-- alias-aware catalog normalization
-- structured recommendation schema
-- data-driven safety rules
-- dataset authoring helper
-  - `summary`
-  - `validate`
-  - `scaffold`
+- genetic micronutrient ranking uplift for general wellness
+- genetic cardiometabolic ranking uplift for heart health
+- multi-goal heart/immunity genetic backfill regression
+- older genetic-context eval contracts aligned to new deterministic ranking behavior
 
-## 이번 루프에서 고정한 dataset invariant
+## Current metric snapshot
 
-- unique `case_id`
-- sorted `case_id` order
-- `request.request_id == case_id`
-- `minimum_explanation_term_coverage` range check
-- non-empty `required_explanation_terms` when coverage is above zero
-- `integration.success <= attempted`
+Before:
 
-## 현재 검증 상태
-
-- `python -m ruff check .`: 통과
-- `python -m pytest`: `26 passed`
-- `python scripts/run_eval.py`: 통과
-- `python scripts/manage_eval_dataset.py validate`: issue 0건
-
-## 현재 주요 metric
-
-- `case_count = 16`
 - `recommendation_coverage_pct = 100.0`
-- `efficacy_improvement_pp = 13.070858781952536`
+- `efficacy_improvement_pp = 9.94784689765133`
 - `next_action_accuracy_pct = 100.0`
 - `explanation_quality_accuracy_pct = 100.0`
 - `safety_reference_accuracy_pct = 100.0`
 - `adverse_event_count_yearly = 0.0`
-- `sensor_genetic_integration_rate_pct = 75.0`
+- `sensor_genetic_integration_rate_pct = 32.903225806451616`
 
-## 아직 남은 큰 약점
+After:
 
-- frozen eval이 아직 KPI gate로 쓰기에는 작다.
-- integration KPI는 여전히 `75.0`이다.
-- baseline failure 문서화가 아직 부족하다.
-- scaffold는 minimal skeleton 중심이다.
-- 자유 텍스트 product title parser는 아직 없다.
+- `recommendation_coverage_pct = 100.0`
+- `efficacy_improvement_pp = 9.94784689765133`
+- `next_action_accuracy_pct = 100.0`
+- `explanation_quality_accuracy_pct = 100.0`
+- `safety_reference_accuracy_pct = 100.0`
+- `adverse_event_count_yearly = 0.0`
+- `sensor_genetic_integration_rate_pct = 32.48407643312102`
 
-## 다음 루프 추천 작업
+Integration breakdown after expansion:
 
-1. `baseline failure 분석 문서화`
-2. `frozen eval 확대`
-3. `efficacy scoring 개선`
+- `wearable = 42 / 63 = 66.66666666666667%`
+- `cgm = 4 / 24 = 16.666666666666668%`
+- `genetic = 5 / 70 = 7.142857142857143%`
+- bottleneck modality: `genetic`
 
-## 주의사항
+Genetic bucket impact:
 
-- `wellnessbox/`는 읽거나 참조하지 않는다.
-- `docs/03_integration/`, `docs/00_discovery/`, `docs/00_migration/`, `docs/legacy_from_wellnessbox/`는 현재 범위 밖이다.
-- KPI 해석이 불확실한 항목은 문서에 가정으로 남긴다.
-- deterministic baseline 철학과 safety 우선 원칙을 유지한다.
+- `eval-117` and `eval-118` now pin deterministic genetic ranking behavior
+- `eval-034`, `eval-049`, and `eval-109` now reflect the intended genetic-aware ranking
+- official coverage / explanation / safety metrics remain `100.0`
+
+## Commands run
+
+- `python scripts/manage_eval_dataset.py validate`
+- `python scripts/manage_eval_dataset.py summary`
+- `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/loop7_check`
+- `python -m pytest tests/test_recommendation_baseline.py tests/test_eval_runner.py tests/test_eval_dataset_tools.py`
+- `python -m ruff check .`
+- `python -m pytest`
+- `python scripts/manage_eval_dataset.py validate`
+- `python scripts/manage_eval_dataset.py summary`
+- `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/final_loop7`
+
+## Files changed this loop
+
+- `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
+- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py`
+- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/efficacy/service.py`
+- `C:/dev/wellnessbox-rnd/docs/02_eval/05_baseline_gap_report.md`
+- `C:/dev/wellnessbox-rnd/tests/test_eval_runner.py`
+- `C:/dev/wellnessbox-rnd/tests/test_eval_dataset_tools.py`
+- `C:/dev/wellnessbox-rnd/tests/test_recommendation_baseline.py`
+- `C:/dev/wellnessbox-rnd/data/frozen_eval/README.md`
+- `C:/dev/wellnessbox-rnd/docs/02_eval/02_eval_dataset_schema.md`
+- `C:/dev/wellnessbox-rnd/docs/02_eval/04_frozen_eval_growth_log.md`
+- `C:/dev/wellnessbox-rnd/PROGRESS.md`
+- `C:/dev/wellnessbox-rnd/NEXT_STEPS.md`
+- `C:/dev/wellnessbox-rnd/SESSION_HANDOFF.md`
+
+## Recommended next loop
+
+1. Improve deterministic `cgm` handling in `src/wellnessbox_rnd/domain/intake.py` and `src/wellnessbox_rnd/efficacy/service.py`.
+2. Add regression cases where CGM availability should change ranking or follow-up readiness.
+3. After CGM handling, revisit `genetic` with richer normalization than the current goal-based flags.

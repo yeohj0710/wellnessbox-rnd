@@ -82,7 +82,34 @@ def _derive_signal_flags(request: RecommendationRequest) -> set[str]:
         flags.add("no_wearable_data")
     if not request.input_availability.cgm:
         flags.add("no_cgm_data")
-    if not request.input_availability.genetic:
+    if request.input_availability.genetic:
+        flags.add("genetic_data_available")
+        if any(
+            goal in request.goals
+            for goal in (
+                RecommendationGoal.IMMUNITY_SUPPORT,
+                RecommendationGoal.BONE_JOINT,
+                RecommendationGoal.GENERAL_WELLNESS,
+            )
+        ):
+            flags.add("genetic_micronutrient_context")
+        if any(
+            goal in request.goals
+            for goal in (
+                RecommendationGoal.HEART_HEALTH,
+                RecommendationGoal.BLOOD_GLUCOSE,
+            )
+        ):
+            flags.add("genetic_cardiometabolic_context")
+        if any(
+            goal in request.goals
+            for goal in (
+                RecommendationGoal.STRESS_SUPPORT,
+                RecommendationGoal.SLEEP_SUPPORT,
+            )
+        ):
+            flags.add("genetic_recovery_context")
+    else:
         flags.add("no_genetic_data")
     return flags
 

@@ -5,7 +5,8 @@ WellnessBox R&D baseline.
 
 ## Current dataset
 
-- `sample_cases.jsonl`: 16 synthetic cases
+- `frozen_eval_v1.jsonl`: 118 synthetic cases
+- `sample_cases.jsonl`: 16-case seed snapshot retained for reference
 
 ## Coverage
 
@@ -20,6 +21,10 @@ WellnessBox R&D baseline.
 - gut health baseline
 - energy support baseline
 - mixed wearable/CGM/genetic integration observations
+- genetic-supported ranking regressions
+- long-title parser-limit failures
+- review paths with no remaining safe candidates
+- stacked survey-missing safety blocks
 
 ## Authoring workflow
 

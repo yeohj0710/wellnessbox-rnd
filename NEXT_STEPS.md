@@ -1,94 +1,56 @@
 # NEXT_STEPS
 
-## 직전 루프 결과 반영
+## Last completed loop
 
-- 완료 작업: `eval 데이터 생성 스크립트 개선`
-- 핵심 산출물:
-  - `dataset_tools.py`
-  - `manage_eval_dataset.py`
-  - dataset summary / validate / scaffold workflow
-  - eval dataset invariant 고정
-- 검증 결과:
-  - `python -m ruff check .`: 통과
-  - `python -m pytest`: `26 passed`
-  - `python scripts/run_eval.py`: 통과
-  - `python scripts/manage_eval_dataset.py validate`: issue 0건
+- Selected task: `genetic deterministic handling improvement`
+- Reason: primary validated frozen eval size was `116 >= 100`, a formal gap report existed, and the chosen runtime bucket was `genetic`
+- Result:
+  - primary dataset stayed `data/frozen_eval/frozen_eval_v1.jsonl`
+  - case count increased `116 -> 118`
+  - added `2` cases total
+  - added `2` hard / negative / ambiguous cases
+  - added `2` regression-style cases
+  - added direct genetic ranking coverage for `general_wellness` and `heart_health`
+  - aligned older genetic-context cases to the new deterministic ranking behavior
 
-## 다음 루프 우선순위 후보
+## Current primary dataset
 
-1. `baseline failure 분석 문서화`
-2. `frozen eval 확대`
-3. `efficacy scoring 개선`
-4. `safety_rules 강화`
-5. `recommendation schema 정교화`
+- `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
+- `case_count = 118`
 
-## 우선순위 기준
+## Current official metrics
 
-- 원문 p.25~26 KPI에 직접 기여하는가
-- 현재 frozen eval 실패 또는 coverage gap과 직접 연결되는가
-- safety를 약화하지 않는가
-- deterministic baseline 철학을 유지하는가
-- 구현 복잡도 대비 측정 가능한 개선 폭이 큰가
+- `recommendation_coverage_pct = 100.0`
+- `efficacy_improvement_pp = 9.94784689765133`
+- `next_action_accuracy_pct = 100.0`
+- `explanation_quality_accuracy_pct = 100.0`
+- `safety_reference_accuracy_pct = 100.0`
+- `adverse_event_count_yearly = 0.0`
+- `sensor_genetic_integration_rate_pct = 32.48407643312102`
 
-## 추천 작업 상세
+## Current bottlenecks
 
-### 1. `baseline failure 분석 문서화`
+1. `genetic` is still the worst integration modality at `7.142857142857143%`.
+2. `cgm` remains weak at `16.666666666666668%`.
+3. `needs_review_due_to_safety` and `needs_review_no_candidates` still dominate conservative gating.
+4. Genetic ranking now moves in a few deterministic contexts, but modality success remains mostly unchanged at the dataset-proxy layer.
+5. The next code-facing bottleneck after this loop is `cgm`.
 
-- 목표:
-  - 지금까지 고정된 regression과 아직 풀지 못한 failure mode를 문서로 정리
-- 이유:
-  - eval이 커질수록 어떤 failure를 이미 커버했고 무엇이 비어 있는지 먼저 보여줄 필요가 있다.
-- 주요 대상:
-  - `C:/dev/wellnessbox-rnd/docs/02_eval/`
+## Forced next option at current stage
 
-### 2. `frozen eval 확대`
+1. P1 baseline improvement against the largest bucket from the gap report
 
-- 목표:
-  - 새 helper를 이용해 integration bottleneck, schema rationale, richer alias 케이스를 추가
-- 이유:
-  - 이번 루프에서 authoring helper를 만들었으므로, 다음에는 실제 regression set 확장이 자연스럽다.
-- 주요 대상:
-  - `C:/dev/wellnessbox-rnd/data/frozen_eval/`
-  - `C:/dev/wellnessbox-rnd/tests/`
+## Recommended next tasks
 
-### 3. `efficacy scoring 개선`
+1. Improve deterministic `cgm` handling in `src/wellnessbox_rnd/domain/intake.py` and `src/wellnessbox_rnd/efficacy/service.py`.
+2. Add regression cases where CGM availability should change ranking or follow-up readiness.
+3. After CGM work, revisit `genetic` with richer normalization beyond the current goal-based boolean flags.
 
-- 목표:
-  - goal/symptom/lifestyle signal 연결을 더 분명하게 보강
-- 이유:
-  - 현재 공식 metric 중 점수는 유지되고 있지만, efficacy breakdown은 아직 단순하다.
-- 주요 대상:
-  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/efficacy/`
-
-### 4. `safety_rules 강화`
-
-- 목표:
-  - exclusion coverage와 citation-ready rule metadata를 더 넓힘
-- 주요 대상:
-  - `C:/dev/wellnessbox-rnd/data/rules/`
-  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/safety/`
-
-### 5. `recommendation schema 정교화`
-
-- 목표:
-  - response contract 전용 문서와 downstream eval 연결을 보강
-- 주요 대상:
-  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/schemas/`
-  - `C:/dev/wellnessbox-rnd/docs/`
-
-## 현재 남은 핵심 리스크
-
-- frozen eval이 아직 작다.
-- `sensor_genetic_integration_rate_pct = 75.0`이다.
-- failure mode 문서가 부족하다.
-- scaffold는 minimal case 생성까지만 제공한다.
-- free-text parser는 없다.
-
-## 범위 밖
+## Out of scope
 
 - `wellnessbox/`
 - `docs/03_integration/`
 - `docs/00_discovery/`
 - `docs/00_migration/`
 - `docs/legacy_from_wellnessbox/`
-- LLM / agent layer / fine-tuning / 외부 API
+- LLM / agent layer / fine-tuning / external integrations

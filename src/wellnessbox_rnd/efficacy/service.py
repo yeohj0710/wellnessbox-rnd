@@ -74,6 +74,7 @@ def _evidence_readiness_score(item: IngredientCatalogItem, intake: NormalizedInt
         score += 4.0
     elif intake.request.input_availability.survey:
         score += 2.0
+    score += _genetic_evidence_bonus(item, intake)
     return score
 
 
@@ -115,3 +116,22 @@ def _conservative_adjustment(
         safety_adjustment = -1.0 if has_review_risk else 0.0
 
     return base_adjustment + safety_adjustment
+
+
+def _genetic_evidence_bonus(
+    item: IngredientCatalogItem,
+    intake: NormalizedIntake,
+) -> float:
+    if not intake.request.input_availability.genetic:
+        return 0.0
+
+    if item.key == "vitamin_d3" and "genetic_micronutrient_context" in intake.signal_flags:
+        return 8.0
+    if item.key == "omega3" and "genetic_cardiometabolic_context" in intake.signal_flags:
+        return 10.0
+    if (
+        item.key == "magnesium_glycinate"
+        and "genetic_recovery_context" in intake.signal_flags
+    ):
+        return 6.0
+    return 0.0
