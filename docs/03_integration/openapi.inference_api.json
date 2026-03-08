@@ -1,0 +1,774 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "wellnessbox-rnd",
+    "description": "WellnessBox R&D inference API scaffold",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Healthcheck",
+        "operationId": "healthcheck_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Healthcheck Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/recommend": {
+      "post": {
+        "tags": [
+          "recommend"
+        ],
+        "summary": "Recommend Endpoint",
+        "operationId": "recommend_endpoint_v1_recommend_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActivityLevel": {
+        "type": "string",
+        "enum": [
+          "sedentary",
+          "lightly_active",
+          "moderately_active",
+          "very_active"
+        ],
+        "title": "ActivityLevel"
+      },
+      "BiologicalSex": {
+        "type": "string",
+        "enum": [
+          "female",
+          "male",
+          "other",
+          "undisclosed"
+        ],
+        "title": "BiologicalSex"
+      },
+      "BudgetLevel": {
+        "type": "string",
+        "enum": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "title": "BudgetLevel"
+      },
+      "CandidateScoreBreakdown": {
+        "properties": {
+          "goal_alignment": {
+            "type": "number",
+            "title": "Goal Alignment"
+          },
+          "symptom_alignment": {
+            "type": "number",
+            "title": "Symptom Alignment"
+          },
+          "lifestyle_alignment": {
+            "type": "number",
+            "title": "Lifestyle Alignment"
+          },
+          "evidence_readiness": {
+            "type": "number",
+            "title": "Evidence Readiness"
+          },
+          "budget_adjustment": {
+            "type": "number",
+            "title": "Budget Adjustment"
+          },
+          "safety_adjustment": {
+            "type": "number",
+            "title": "Safety Adjustment"
+          },
+          "total": {
+            "type": "number",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "goal_alignment",
+          "symptom_alignment",
+          "lifestyle_alignment",
+          "evidence_readiness",
+          "budget_adjustment",
+          "safety_adjustment",
+          "total"
+        ],
+        "title": "CandidateScoreBreakdown"
+      },
+      "ConfidenceBand": {
+        "type": "string",
+        "enum": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "title": "ConfidenceBand"
+      },
+      "DecisionSummary": {
+        "properties": {
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "confidence_band": {
+            "$ref": "#/components/schemas/ConfidenceBand"
+          }
+        },
+        "type": "object",
+        "required": [
+          "headline",
+          "summary",
+          "confidence_band"
+        ],
+        "title": "DecisionSummary"
+      },
+      "EngineMetadata": {
+        "properties": {
+          "engine_version": {
+            "type": "string",
+            "title": "Engine Version",
+            "default": "0.1.0"
+          },
+          "mode": {
+            "type": "string",
+            "title": "Mode",
+            "default": "mock_deterministic_v0"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          }
+        },
+        "type": "object",
+        "title": "EngineMetadata"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InputAvailability": {
+        "properties": {
+          "survey": {
+            "type": "boolean",
+            "title": "Survey",
+            "default": true
+          },
+          "nhis": {
+            "type": "boolean",
+            "title": "Nhis",
+            "default": false
+          },
+          "wearable": {
+            "type": "boolean",
+            "title": "Wearable",
+            "default": false
+          },
+          "cgm": {
+            "type": "boolean",
+            "title": "Cgm",
+            "default": false
+          },
+          "genetic": {
+            "type": "boolean",
+            "title": "Genetic",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "InputAvailability"
+      },
+      "LifestyleInput": {
+        "properties": {
+          "sleep_hours": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 24.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sleep Hours"
+          },
+          "stress_level": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 5.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stress Level"
+          },
+          "activity_level": {
+            "$ref": "#/components/schemas/ActivityLevel",
+            "default": "sedentary"
+          },
+          "smoker": {
+            "type": "boolean",
+            "title": "Smoker",
+            "default": false
+          },
+          "alcohol_per_week": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 0.0,
+            "title": "Alcohol Per Week",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "LifestyleInput"
+      },
+      "MedicationInput": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name"
+          },
+          "dose": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dose"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "MedicationInput"
+      },
+      "MissingInfoImportance": {
+        "type": "string",
+        "enum": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "title": "MissingInfoImportance"
+      },
+      "MissingInformationItem": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "importance": {
+            "$ref": "#/components/schemas/MissingInfoImportance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "question",
+          "reason",
+          "importance"
+        ],
+        "title": "MissingInformationItem"
+      },
+      "NextAction": {
+        "type": "string",
+        "enum": [
+          "start_plan",
+          "collect_more_input",
+          "needs_human_review",
+          "do_not_recommend"
+        ],
+        "title": "NextAction"
+      },
+      "RecommendationCandidate": {
+        "properties": {
+          "ingredient_key": {
+            "type": "string",
+            "title": "Ingredient Key"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "rationale": {
+            "type": "string",
+            "title": "Rationale"
+          },
+          "expected_support_goals": {
+            "items": {
+              "$ref": "#/components/schemas/RecommendationGoal"
+            },
+            "type": "array",
+            "title": "Expected Support Goals"
+          },
+          "rule_refs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Rule Refs"
+          },
+          "score_breakdown": {
+            "$ref": "#/components/schemas/CandidateScoreBreakdown"
+          },
+          "follow_up_focus": {
+            "type": "string",
+            "title": "Follow Up Focus"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ingredient_key",
+          "display_name",
+          "rationale",
+          "expected_support_goals",
+          "score_breakdown",
+          "follow_up_focus"
+        ],
+        "title": "RecommendationCandidate"
+      },
+      "RecommendationGoal": {
+        "type": "string",
+        "enum": [
+          "stress_support",
+          "sleep_support",
+          "immunity_support",
+          "energy_support",
+          "gut_health",
+          "bone_joint",
+          "heart_health",
+          "blood_glucose",
+          "general_wellness"
+        ],
+        "title": "RecommendationGoal"
+      },
+      "RecommendationPreferences": {
+        "properties": {
+          "budget_level": {
+            "$ref": "#/components/schemas/BudgetLevel",
+            "default": "medium"
+          },
+          "max_products": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Max Products",
+            "default": 2
+          },
+          "avoid_ingredients": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Avoid Ingredients"
+          }
+        },
+        "type": "object",
+        "title": "RecommendationPreferences"
+      },
+      "RecommendationRequest": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "user_profile": {
+            "$ref": "#/components/schemas/UserProfile"
+          },
+          "goals": {
+            "items": {
+              "$ref": "#/components/schemas/RecommendationGoal"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Goals"
+          },
+          "symptoms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Symptoms"
+          },
+          "conditions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Conditions"
+          },
+          "medications": {
+            "items": {
+              "$ref": "#/components/schemas/MedicationInput"
+            },
+            "type": "array",
+            "title": "Medications"
+          },
+          "current_supplements": {
+            "items": {
+              "$ref": "#/components/schemas/SupplementInput"
+            },
+            "type": "array",
+            "title": "Current Supplements"
+          },
+          "lifestyle": {
+            "$ref": "#/components/schemas/LifestyleInput"
+          },
+          "input_availability": {
+            "$ref": "#/components/schemas/InputAvailability"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/RecommendationPreferences"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_profile",
+          "goals"
+        ],
+        "title": "RecommendationRequest"
+      },
+      "RecommendationResponse": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "decision_id": {
+            "type": "string",
+            "title": "Decision Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RecommendationStatus"
+          },
+          "decision_summary": {
+            "$ref": "#/components/schemas/DecisionSummary"
+          },
+          "normalized_focus_goals": {
+            "items": {
+              "$ref": "#/components/schemas/RecommendationGoal"
+            },
+            "type": "array",
+            "title": "Normalized Focus Goals"
+          },
+          "safety_summary": {
+            "$ref": "#/components/schemas/SafetySummary"
+          },
+          "safety_flags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Safety Flags"
+          },
+          "recommendations": {
+            "items": {
+              "$ref": "#/components/schemas/RecommendationCandidate"
+            },
+            "type": "array",
+            "title": "Recommendations"
+          },
+          "next_action": {
+            "$ref": "#/components/schemas/NextAction"
+          },
+          "follow_up_window_days": {
+            "type": "integer",
+            "maximum": 90.0,
+            "minimum": 1.0,
+            "title": "Follow Up Window Days"
+          },
+          "follow_up_questions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Follow Up Questions"
+          },
+          "missing_information": {
+            "items": {
+              "$ref": "#/components/schemas/MissingInformationItem"
+            },
+            "type": "array",
+            "title": "Missing Information"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/EngineMetadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "decision_id",
+          "status",
+          "decision_summary",
+          "normalized_focus_goals",
+          "safety_summary",
+          "recommendations",
+          "next_action",
+          "follow_up_window_days",
+          "metadata"
+        ],
+        "title": "RecommendationResponse"
+      },
+      "RecommendationStatus": {
+        "type": "string",
+        "enum": [
+          "ok",
+          "needs_review",
+          "blocked"
+        ],
+        "title": "RecommendationStatus"
+      },
+      "RuleReference": {
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "title": "Rule Id"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "severity": {
+            "$ref": "#/components/schemas/Severity"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "default": "master_context_v1"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rule_id",
+          "message",
+          "severity"
+        ],
+        "title": "RuleReference"
+      },
+      "SafetySummary": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/RecommendationStatus"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "blocked_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Blocked Reasons"
+          },
+          "excluded_ingredients": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Excluded Ingredients"
+          },
+          "rule_refs": {
+            "items": {
+              "$ref": "#/components/schemas/RuleReference"
+            },
+            "type": "array",
+            "title": "Rule Refs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "SafetySummary"
+      },
+      "Severity": {
+        "type": "string",
+        "enum": [
+          "info",
+          "warning",
+          "blocker"
+        ],
+        "title": "Severity"
+      },
+      "SupplementInput": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name"
+          },
+          "ingredients": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Ingredients"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "SupplementInput"
+      },
+      "UserProfile": {
+        "properties": {
+          "age": {
+            "type": "integer",
+            "maximum": 120.0,
+            "minimum": 18.0,
+            "title": "Age"
+          },
+          "biological_sex": {
+            "$ref": "#/components/schemas/BiologicalSex"
+          },
+          "pregnant": {
+            "type": "boolean",
+            "title": "Pregnant",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "age",
+          "biological_sex"
+        ],
+        "title": "UserProfile"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

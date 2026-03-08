@@ -1,0 +1,22 @@
+{
+  "minimum_required_inputs": ["survey"],
+  "medication_interactions": {
+    "warfarin": ["omega3"],
+    "coumadin": ["omega3"]
+  },
+  "pregnancy_exclusions": ["ashwagandha", "berberine"],
+  "condition_exclusions": {
+    "kidney disease": ["magnesium_glycinate"],
+    "chronic kidney disease": ["magnesium_glycinate"]
+  },
+  "condition_review_flags": {
+    "pregnancy": "임신 입력은 보수적으로 사람 검토를 우선한다.",
+    "kidney disease": "신장 질환 입력은 미네랄 성분 검토가 필요하다.",
+    "chronic kidney disease": "신장 질환 입력은 미네랄 성분 검토가 필요하다."
+  },
+  "goal_data_questions": {
+    "blood_glucose": "공복혈당, 당화혈색소 또는 CGM 데이터가 있으면 다음 추천 정밀도가 높아진다.",
+    "heart_health": "혈압, 지질 검사 결과 또는 관련 약물 정보가 있으면 더 보수적으로 검토할 수 있다."
+  },
+  "duplicate_policy": "exclude"
+}

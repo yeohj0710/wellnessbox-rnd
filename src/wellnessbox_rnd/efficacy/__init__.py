@@ -1,0 +1,2 @@
+"""Efficacy estimation stubs."""
+
