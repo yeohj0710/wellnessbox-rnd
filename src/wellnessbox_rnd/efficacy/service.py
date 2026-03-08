@@ -1,6 +1,9 @@
 from wellnessbox_rnd.domain.intake import NormalizedIntake
 from wellnessbox_rnd.domain.models import IngredientCatalogItem
-from wellnessbox_rnd.schemas.recommendation import CandidateScoreBreakdown
+from wellnessbox_rnd.schemas.recommendation import (
+    CandidateScoreBreakdown,
+    RecommendationGoal,
+)
 
 
 def score_candidate(
@@ -8,7 +11,11 @@ def score_candidate(
     intake: NormalizedIntake,
     safety_review: bool,
 ) -> CandidateScoreBreakdown:
-    goal_alignment = 35.0 * len(set(item.supported_goals) & intake.goal_set)
+    goal_alignment = sum(
+        _goal_alignment_weight(goal)
+        for goal in item.supported_goals
+        if goal in intake.goal_set
+    )
     symptom_alignment = 8.0 * len(set(item.supported_symptoms) & intake.symptom_set)
     lifestyle_alignment = 6.0 * len(set(item.preferred_signals) & intake.signal_flags)
     evidence_readiness = _evidence_readiness_score(item, intake)
@@ -17,6 +24,11 @@ def score_candidate(
         intake.request.preferences.budget_level.value,
     )
     safety_adjustment = -4.0 if safety_review else 0.0
+    conservative_adjustment = _conservative_adjustment(
+        conservative_profile=item.conservative_profile,
+        intake=intake,
+        safety_review=safety_review,
+    )
     total = (
         item.default_priority
         + goal_alignment
@@ -25,6 +37,7 @@ def score_candidate(
         + evidence_readiness
         + budget_adjustment
         + safety_adjustment
+        + conservative_adjustment
     )
 
     return CandidateScoreBreakdown(
@@ -34,6 +47,7 @@ def score_candidate(
         evidence_readiness=evidence_readiness,
         budget_adjustment=budget_adjustment,
         safety_adjustment=safety_adjustment,
+        conservative_adjustment=conservative_adjustment,
         total=total,
     )
 
@@ -69,3 +83,35 @@ def _budget_adjustment(item_budget: str, user_budget: str) -> float:
     if user_budget == "medium":
         return {"low": 1.0, "medium": 1.0, "high": -2.0}[item_budget]
     return {"low": 0.0, "medium": 1.0, "high": 1.0}[item_budget]
+
+
+def _goal_alignment_weight(goal: RecommendationGoal) -> float:
+    if goal == RecommendationGoal.GENERAL_WELLNESS:
+        return 18.0
+    return 35.0
+
+
+def _conservative_adjustment(
+    conservative_profile: str,
+    intake: NormalizedIntake,
+    safety_review: bool,
+) -> float:
+    if conservative_profile == "baseline":
+        base_adjustment = 1.0
+    elif conservative_profile == "interaction_sensitive":
+        base_adjustment = -1.0
+    else:
+        base_adjustment = 0.0
+
+    if not safety_review:
+        return base_adjustment
+
+    if conservative_profile == "baseline":
+        safety_adjustment = 3.0
+    elif conservative_profile == "interaction_sensitive":
+        safety_adjustment = -4.0
+    else:
+        has_review_risk = intake.request.user_profile.pregnant or bool(intake.condition_set)
+        safety_adjustment = -1.0 if has_review_risk else 0.0
+
+    return base_adjustment + safety_adjustment

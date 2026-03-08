@@ -1,4 +1,6 @@
+from wellnessbox_rnd.domain.catalog import get_catalog_index
 from wellnessbox_rnd.domain.intake import NormalizedIntake
+from wellnessbox_rnd.domain.models import SafetyRuleMetadata
 from wellnessbox_rnd.safety.rules import get_safety_rule_set
 from wellnessbox_rnd.schemas.recommendation import (
     RecommendationStatus,
@@ -15,81 +17,39 @@ def assess_safety(intake: NormalizedIntake) -> SafetySummary:
     excluded_ingredients: set[str] = set(intake.avoid_ingredient_set)
     rule_refs: list[RuleReference] = []
 
-    if "survey" in rules.minimum_required_inputs and not intake.request.input_availability.survey:
-        blocked_reasons.append("Baseline survey input is required before recommendation can run.")
-        rule_refs.append(
-            RuleReference(
-                rule_id="INTAKE-SURVEY-001",
-                message="Survey input is the minimum contract for recommendation.",
-                severity=Severity.BLOCKER,
-            )
-        )
+    for input_rule in rules.input_requirements:
+        if _required_input_missing(input_rule.input_key, intake):
+            blocked_reasons.append(input_rule.blocked_reason)
+            rule_refs.append(_build_rule_ref(input_rule.metadata))
 
-    for medication, ingredients in rules.medication_interactions.items():
-        if medication in intake.medication_set:
-            excluded_ingredients.update(ingredients)
-            warnings.append(
-                f"Potential interaction context was detected for {medication}, so related "
-                "candidates were excluded."
-            )
-            rule_refs.append(
-                RuleReference(
-                    rule_id="SAFETY-ANTICOAG-001",
-                    message="Potential medication interaction triggers conservative exclusion.",
-                    severity=Severity.WARNING,
-                )
-            )
+    for medication_rule in rules.medication_rules:
+        if set(medication_rule.medications).intersection(intake.medication_set):
+            excluded_ingredients.update(medication_rule.excluded_ingredients)
+            warnings.append(medication_rule.metadata.warning_text)
+            rule_refs.append(_build_rule_ref(medication_rule.metadata))
 
-    if intake.request.user_profile.pregnant:
-        excluded_ingredients.update(rules.pregnancy_exclusions)
-        warnings.append(
-            "Pregnancy input was detected, so restricted ingredients were excluded conservatively."
-        )
-        rule_refs.append(
-            RuleReference(
-                rule_id="SAFETY-PREG-001",
-                message="Pregnancy input requires conservative exclusion and human review.",
-                severity=Severity.WARNING,
-            )
-        )
+    if intake.request.user_profile.pregnant and rules.pregnancy_rule is not None:
+        excluded_ingredients.update(rules.pregnancy_rule.excluded_ingredients)
+        warnings.append(rules.pregnancy_rule.metadata.warning_text)
+        rule_refs.append(_build_rule_ref(rules.pregnancy_rule.metadata))
 
-    for condition, ingredients in rules.condition_exclusions.items():
-        if condition in intake.condition_set:
-            excluded_ingredients.update(ingredients)
-            warnings.append(
-                rules.condition_review_flags.get(
-                    condition,
-                    f"Condition context for {condition} requires a conservative review.",
-                )
-            )
-            rule_refs.append(
-                RuleReference(
-                    rule_id="SAFETY-RENAL-001",
-                    message="Condition-specific exclusion was applied conservatively.",
-                    severity=Severity.WARNING,
-                )
-            )
+    for condition_rule in rules.condition_rules:
+        if set(condition_rule.conditions).intersection(intake.condition_set):
+            excluded_ingredients.update(condition_rule.excluded_ingredients)
+            warnings.append(condition_rule.metadata.warning_text)
+            rule_refs.append(_build_rule_ref(condition_rule.metadata))
 
-    duplicate_hits = excluded_ingredients.intersection(intake.current_ingredient_set)
-    if duplicate_hits:
-        warnings.append(
-            "Current supplement overlap was detected, so duplicate ingredients were excluded."
-        )
-        rule_refs.append(
-            RuleReference(
-                rule_id="SAFETY-DUP-001",
-                message="Current supplement overlap is excluded by policy.",
-                severity=Severity.INFO,
-            )
-        )
-        excluded_ingredients.update(duplicate_hits)
+    duplicate_ingredients = _recognized_current_duplicates(intake)
+    if (
+        duplicate_ingredients
+        and rules.duplicate_policy == "exclude"
+        and rules.duplicate_overlap_rule is not None
+    ):
+        excluded_ingredients.update(duplicate_ingredients)
+        warnings.append(rules.duplicate_overlap_rule.metadata.warning_text)
+        rule_refs.append(_build_rule_ref(rules.duplicate_overlap_rule.metadata))
 
-    status = RecommendationStatus.OK
-    if blocked_reasons:
-        status = RecommendationStatus.BLOCKED
-    elif warnings:
-        status = RecommendationStatus.NEEDS_REVIEW
-
+    status = _derive_status(rule_refs, blocked_reasons)
     return SafetySummary(
         status=status,
         warnings=warnings,
@@ -97,3 +57,32 @@ def assess_safety(intake: NormalizedIntake) -> SafetySummary:
         excluded_ingredients=sorted(excluded_ingredients),
         rule_refs=rule_refs,
     )
+
+
+def _required_input_missing(input_key: str, intake: NormalizedIntake) -> bool:
+    value = getattr(intake.request.input_availability, input_key, None)
+    return value is False
+
+
+def _recognized_current_duplicates(intake: NormalizedIntake) -> set[str]:
+    catalog_keys = set(get_catalog_index())
+    return intake.current_ingredient_set.intersection(catalog_keys)
+
+
+def _build_rule_ref(metadata: SafetyRuleMetadata) -> RuleReference:
+    return RuleReference(
+        rule_id=metadata.rule_id,
+        message=metadata.message,
+        severity=metadata.severity,
+    )
+
+
+def _derive_status(
+    rule_refs: list[RuleReference],
+    blocked_reasons: list[str],
+) -> RecommendationStatus:
+    if blocked_reasons or any(rule.severity == Severity.BLOCKER for rule in rule_refs):
+        return RecommendationStatus.BLOCKED
+    if any(rule.severity == Severity.WARNING for rule in rule_refs):
+        return RecommendationStatus.NEEDS_REVIEW
+    return RecommendationStatus.OK

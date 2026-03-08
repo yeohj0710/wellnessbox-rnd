@@ -54,8 +54,11 @@ def test_recommend_endpoint_returns_structured_response() -> None:
     assert body["next_action"] == "start_plan"
     assert len(body["recommendations"]) >= 1
     assert body["decision_summary"]["headline"] == "deterministic baseline result"
+    assert body["next_action_rationale"]["reason_code"] == "start_plan_ready"
     assert "safety_summary" in body
+    assert "safety_evidence" in body
     assert "follow_up_questions" in body
+    assert "limitation_details" in body
     assert "metadata" in body
 
 
@@ -98,7 +101,9 @@ def test_recommend_endpoint_marks_review_when_warfarin_is_present() -> None:
     assert response.status_code == 200
     assert body["status"] == "needs_review"
     assert body["next_action"] == "needs_human_review"
+    assert body["next_action_rationale"]["reason_code"] == "needs_review_due_to_safety"
     assert "omega3" in body["safety_summary"]["excluded_ingredients"]
+    assert any(item["code"] == "SAFETY-ANTICOAG-001" for item in body["safety_evidence"])
     assert body["decision_summary"]["headline"] == "conservative review required"
 
 
@@ -141,5 +146,6 @@ def test_recommend_endpoint_blocks_when_survey_input_is_missing() -> None:
     assert response.status_code == 200
     assert body["status"] == "blocked"
     assert body["next_action"] == "collect_more_input"
+    assert body["next_action_rationale"]["reason_code"] == "blocked_minimum_input"
     assert body["recommendations"] == []
     assert any(item["code"] == "missing_survey" for item in body["missing_information"])

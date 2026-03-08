@@ -2,133 +2,157 @@
   {
     "key": "magnesium_glycinate",
     "display_name": "Magnesium Glycinate",
+    "aliases": ["magnesium glycinate", "magnesium bisglycinate"],
     "supported_goals": ["stress_support", "sleep_support", "general_wellness"],
     "supported_symptoms": ["difficulty_falling_asleep", "muscle_tension", "high_stress"],
     "preferred_signals": ["sleep_deficit", "high_stress"],
     "budget_tier": "medium",
     "default_priority": 7.0,
     "follow_up_focus": "sleep_quality",
-    "explanation_tags": ["sleep support", "stress support"]
+    "explanation_tags": ["sleep support", "stress support"],
+    "conservative_profile": "baseline"
   },
   {
     "key": "l_theanine",
     "display_name": "L-Theanine",
+    "aliases": ["l theanine", "theanine"],
     "supported_goals": ["stress_support", "sleep_support"],
     "supported_symptoms": ["difficulty_falling_asleep", "high_stress"],
     "preferred_signals": ["high_stress"],
     "budget_tier": "medium",
     "default_priority": 6.5,
     "follow_up_focus": "calmness_and_sleep_onset",
-    "explanation_tags": ["calmness support", "sleep onset support"]
+    "explanation_tags": ["calmness support", "sleep onset support"],
+    "conservative_profile": "baseline"
   },
   {
     "key": "vitamin_c",
     "display_name": "Vitamin C",
+    "aliases": ["vitamin c", "ascorbic acid"],
     "supported_goals": ["immunity_support", "general_wellness"],
     "supported_symptoms": ["frequent_fatigue"],
     "preferred_signals": [],
     "budget_tier": "low",
     "default_priority": 5.0,
     "follow_up_focus": "daily_routine",
-    "explanation_tags": ["immune support", "baseline support"]
+    "explanation_tags": ["immune support", "baseline support"],
+    "conservative_profile": "baseline"
   },
   {
     "key": "zinc",
     "display_name": "Zinc",
+    "aliases": ["zinc", "zinc picolinate"],
     "supported_goals": ["immunity_support", "general_wellness"],
     "supported_symptoms": ["frequent_fatigue"],
     "preferred_signals": [],
     "budget_tier": "low",
     "default_priority": 4.8,
     "follow_up_focus": "daily_routine",
-    "explanation_tags": ["immune support", "baseline support"]
+    "explanation_tags": ["immune support", "baseline support"],
+    "conservative_profile": "baseline"
   },
   {
     "key": "vitamin_b_complex",
     "display_name": "Vitamin B Complex",
+    "aliases": ["vitamin b complex", "b complex", "b-complex"],
     "supported_goals": ["energy_support", "general_wellness"],
     "supported_symptoms": ["fatigue", "frequent_fatigue"],
     "preferred_signals": ["sleep_deficit"],
     "budget_tier": "medium",
     "default_priority": 5.6,
     "follow_up_focus": "daytime_energy",
-    "explanation_tags": ["energy support", "daily recovery"]
+    "explanation_tags": ["energy support", "daily recovery"],
+    "conservative_profile": "standard"
   },
   {
     "key": "coq10",
     "display_name": "CoQ10",
+    "aliases": ["coq10", "co q10", "coenzyme q10", "ubiquinone"],
     "supported_goals": ["energy_support", "heart_health"],
     "supported_symptoms": ["fatigue"],
     "preferred_signals": ["low_activity"],
     "budget_tier": "high",
     "default_priority": 5.9,
     "follow_up_focus": "energy_and_activity",
-    "explanation_tags": ["heart support", "energy support"]
+    "explanation_tags": ["heart support", "energy support"],
+    "conservative_profile": "standard"
   },
   {
     "key": "probiotics",
     "display_name": "Probiotics",
+    "aliases": ["probiotic", "probiotics"],
     "supported_goals": ["gut_health", "general_wellness"],
     "supported_symptoms": ["bloating", "irregular_bowel_movement"],
     "preferred_signals": [],
     "budget_tier": "medium",
     "default_priority": 5.4,
     "follow_up_focus": "digestive_tolerance",
-    "explanation_tags": ["gut support", "digestive comfort"]
+    "explanation_tags": ["gut support", "digestive comfort"],
+    "conservative_profile": "baseline"
   },
   {
     "key": "soluble_fiber",
     "display_name": "Soluble Fiber",
+    "aliases": ["soluble fiber", "psyllium fiber", "psyllium"],
     "supported_goals": ["gut_health", "blood_glucose"],
     "supported_symptoms": ["bloating", "post_meal_spike_concern"],
     "preferred_signals": ["low_activity"],
     "budget_tier": "low",
     "default_priority": 6.1,
     "follow_up_focus": "digestive_pattern_and_satiety",
-    "explanation_tags": ["gut support", "post meal glucose support"]
+    "explanation_tags": ["gut support", "post meal glucose support"],
+    "conservative_profile": "baseline"
   },
   {
     "key": "vitamin_d3",
     "display_name": "Vitamin D3",
+    "aliases": ["vitamin d3", "vitamin d", "cholecalciferol"],
     "supported_goals": ["bone_joint", "general_wellness", "immunity_support"],
     "supported_symptoms": ["low_sun_exposure"],
     "preferred_signals": ["low_activity"],
     "budget_tier": "low",
     "default_priority": 5.7,
     "follow_up_focus": "daily_consistency",
-    "explanation_tags": ["general wellness support", "bone support"]
+    "explanation_tags": ["general wellness support", "bone support"],
+    "conservative_profile": "baseline"
   },
   {
     "key": "calcium_citrate",
     "display_name": "Calcium Citrate",
+    "aliases": ["calcium citrate"],
     "supported_goals": ["bone_joint"],
     "supported_symptoms": ["low_sun_exposure"],
     "preferred_signals": [],
     "budget_tier": "medium",
     "default_priority": 4.9,
     "follow_up_focus": "bone_joint_symptoms",
-    "explanation_tags": ["bone support", "baseline support"]
+    "explanation_tags": ["bone support", "baseline support"],
+    "conservative_profile": "standard"
   },
   {
     "key": "omega3",
     "display_name": "Omega-3",
+    "aliases": ["omega3", "omega 3", "omega-3", "fish oil", "epa dha"],
     "supported_goals": ["heart_health", "general_wellness"],
     "supported_symptoms": ["dry_eye", "low_activity"],
     "preferred_signals": ["low_activity"],
     "budget_tier": "medium",
     "default_priority": 6.3,
     "follow_up_focus": "activity_and_heart_metrics",
-    "explanation_tags": ["heart support", "general wellness support"]
+    "explanation_tags": ["heart support", "general wellness support"],
+    "conservative_profile": "interaction_sensitive"
   },
   {
     "key": "berberine",
     "display_name": "Berberine",
+    "aliases": ["berberine"],
     "supported_goals": ["blood_glucose"],
     "supported_symptoms": ["post_meal_spike_concern"],
     "preferred_signals": [],
     "budget_tier": "medium",
     "default_priority": 5.2,
     "follow_up_focus": "post_meal_response",
-    "explanation_tags": ["blood glucose support", "conservative review"]
+    "explanation_tags": ["blood glucose support", "conservative review"],
+    "conservative_profile": "interaction_sensitive"
   }
 ]

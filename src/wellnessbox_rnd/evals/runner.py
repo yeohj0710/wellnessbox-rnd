@@ -8,6 +8,7 @@ from wellnessbox_rnd.metrics.calculators import (
     average_metric,
     count_adverse_events,
     explanation_term_coverage_pct,
+    integration_modality_breakdown,
     metric_passed,
     percentile_improvement_pp,
     recommendation_coverage_pct,
@@ -93,9 +94,12 @@ def run_eval(dataset_path: str | Path) -> dict[str, object]:
         actual_excluded = response.safety_summary.excluded_ingredients
         explanation_text = " ".join(
             [response.decision_summary.headline, response.decision_summary.summary]
+            + [response.next_action_rationale.summary]
             + [item.rationale for item in response.recommendations]
+            + [item.summary for item in response.safety_evidence]
             + response.safety_summary.warnings
             + response.safety_summary.blocked_reasons
+            + [item.summary for item in response.limitation_details]
         )
 
         case_metrics: dict[str, float | None] = {}
@@ -164,6 +168,19 @@ def run_eval(dataset_path: str | Path) -> dict[str, object]:
         )
 
     summary: dict[str, object] = {}
+    integration_breakdown = integration_modality_breakdown(integration_records)
+    attempted_modalities = {
+        name: item for name, item in integration_breakdown.items() if item["score"] is not None
+    }
+    bottleneck_modality = None
+    bottleneck_rate = None
+    if attempted_modalities:
+        bottleneck_modality, bottleneck_item = min(
+            attempted_modalities.items(),
+            key=lambda item: item[1]["score"],
+        )
+        bottleneck_rate = bottleneck_item["score"]
+
     for metric_name, definition in METRIC_DEFINITIONS.items():
         if metric_name == "adverse_event_count_yearly":
             score = float(count_adverse_events(adverse_flags))
@@ -181,6 +198,13 @@ def run_eval(dataset_path: str | Path) -> dict[str, object]:
             "passed": metric_passed(score, definition.comparison, definition.target),
             "assumption": definition.assumption,
         }
+        if metric_name == "sensor_genetic_integration_rate_pct":
+            summary[metric_name]["details"] = {
+                "aggregation_method": "pooled_success_over_attempted",
+                "modality_breakdown": integration_breakdown,
+                "bottleneck_modality": bottleneck_modality,
+                "bottleneck_rate_pct": bottleneck_rate,
+            }
 
     return {
         "dataset_path": str(path),
@@ -231,6 +255,31 @@ def render_markdown_report(report: dict[str, object]) -> str:
             f"{metric_name} | {item['score']} | {item['target']} | "
             f"{item['comparison']} | {item['passed']} |"
         )
+
+    integration_metric = summary.get("sensor_genetic_integration_rate_pct")
+    integration_details = (
+        integration_metric.get("details") if isinstance(integration_metric, dict) else None
+    )
+    if integration_details:
+        lines.extend(["", "## integration diagnostics", ""])
+        lines.append(
+            f"- aggregation_method: {integration_details['aggregation_method']}"
+        )
+        lines.append(
+            f"- bottleneck_modality: {integration_details['bottleneck_modality']}"
+        )
+        lines.append(
+            f"- bottleneck_rate_pct: {integration_details['bottleneck_rate_pct']}"
+        )
+        lines.append("")
+        lines.append("| modality | attempted | success | score |")
+        lines.append("| --- | --- | --- | --- |")
+        for modality_name, item in integration_details["modality_breakdown"].items():
+            lines.append(
+                "| "
+                f"{modality_name} | {item['attempted']} | {item['success']} | "
+                f"{item['score']} |"
+            )
 
     lines.extend(["", "## case results", ""])
     for case in case_results:

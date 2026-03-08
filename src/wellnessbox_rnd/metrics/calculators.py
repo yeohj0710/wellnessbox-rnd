@@ -82,6 +82,41 @@ def sensor_genetic_integration_rate_pct(
     return 100.0 * success / attempted
 
 
+def integration_modality_rate_pct(
+    integration_records: list[dict[str, dict[str, int]]],
+    modality_name: str,
+) -> float | None:
+    attempted = 0
+    success = 0
+    for record in integration_records:
+        modality = record.get(modality_name, {})
+        attempted += modality.get("attempted", 0)
+        success += modality.get("success", 0)
+    if attempted == 0:
+        return None
+    return 100.0 * success / attempted
+
+
+def integration_modality_breakdown(
+    integration_records: list[dict[str, dict[str, int]]],
+) -> dict[str, dict[str, float | int | None]]:
+    breakdown: dict[str, dict[str, float | int | None]] = {}
+    for modality_name in ("wearable", "cgm", "genetic"):
+        attempted = 0
+        success = 0
+        for record in integration_records:
+            modality = record.get(modality_name, {})
+            attempted += modality.get("attempted", 0)
+            success += modality.get("success", 0)
+        score = None if attempted == 0 else 100.0 * success / attempted
+        breakdown[modality_name] = {
+            "attempted": attempted,
+            "success": success,
+            "score": score,
+        }
+    return breakdown
+
+
 def metric_passed(score: float | None, comparison: str, target: float) -> bool | None:
     if score is None:
         return None

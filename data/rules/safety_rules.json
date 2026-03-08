@@ -1,22 +1,68 @@
 {
-  "minimum_required_inputs": ["survey"],
-  "medication_interactions": {
-    "warfarin": ["omega3"],
-    "coumadin": ["omega3"]
+  "input_requirements": [
+    {
+      "input_key": "survey",
+      "metadata": {
+        "rule_id": "INTAKE-SURVEY-001",
+        "message": "Survey input is the minimum contract for recommendation.",
+        "severity": "blocker",
+        "warning_text": "Baseline survey input is required before recommendation can run."
+      },
+      "blocked_reason": "Baseline survey input is required before recommendation can run."
+    }
+  ],
+  "medication_rules": [
+    {
+      "medications": ["warfarin", "coumadin"],
+      "excluded_ingredients": ["omega3"],
+      "metadata": {
+        "rule_id": "SAFETY-ANTICOAG-001",
+        "message": "Potential medication interaction triggers conservative exclusion.",
+        "severity": "warning",
+        "warning_text": "Potential interaction context was detected for anticoagulant medication, so related candidates were excluded."
+      }
+    }
+  ],
+  "pregnancy_rule": {
+    "excluded_ingredients": ["ashwagandha", "berberine"],
+    "metadata": {
+      "rule_id": "SAFETY-PREG-001",
+      "message": "Pregnancy input requires conservative exclusion and human review.",
+      "severity": "warning",
+      "warning_text": "Pregnancy input was detected, so restricted ingredients were excluded conservatively."
+    }
   },
-  "pregnancy_exclusions": ["ashwagandha", "berberine"],
-  "condition_exclusions": {
-    "kidney disease": ["magnesium_glycinate"],
-    "chronic kidney disease": ["magnesium_glycinate"]
+  "condition_rules": [
+    {
+      "conditions": ["kidney disease", "chronic kidney disease"],
+      "excluded_ingredients": ["magnesium_glycinate"],
+      "metadata": {
+        "rule_id": "SAFETY-RENAL-001",
+        "message": "Condition-specific exclusion was applied conservatively.",
+        "severity": "warning",
+        "warning_text": "Kidney disease input requires a conservative mineral review."
+      }
+    }
+  ],
+  "duplicate_overlap_rule": {
+    "metadata": {
+      "rule_id": "SAFETY-DUP-001",
+      "message": "Current supplement overlap is excluded by policy.",
+      "severity": "info",
+      "warning_text": "Current supplement overlap was detected, so duplicate ingredients were excluded."
+    }
   },
-  "condition_review_flags": {
-    "pregnancy": "임신 입력은 보수적으로 사람 검토를 우선한다.",
-    "kidney disease": "신장 질환 입력은 미네랄 성분 검토가 필요하다.",
-    "chronic kidney disease": "신장 질환 입력은 미네랄 성분 검토가 필요하다."
-  },
-  "goal_data_questions": {
-    "blood_glucose": "공복혈당, 당화혈색소 또는 CGM 데이터가 있으면 다음 추천 정밀도가 높아진다.",
-    "heart_health": "혈압, 지질 검사 결과 또는 관련 약물 정보가 있으면 더 보수적으로 검토할 수 있다."
+  "goal_context_rules": {
+    "blood_glucose": {
+      "question": "Please share glucose context such as CGM, fasting glucose, or recent lab values before starting the plan.",
+      "reason": "Blood glucose goals need stronger baseline context so the deterministic baseline stays conservative.",
+      "importance": "high"
+    },
+    "heart_health": {
+      "question": "Please share heart-related medication or recent lipid and blood pressure context before starting the plan.",
+      "reason": "Heart-related goals need medication or lab context to avoid overconfident baseline recommendations.",
+      "importance": "high"
+    }
   },
   "duplicate_policy": "exclude"
 }

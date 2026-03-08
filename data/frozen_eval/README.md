@@ -1,27 +1,75 @@
 # frozen_eval
 
-이 디렉터리는 WellnessBox R&D 평가 하네스의 frozen eval seed dataset을 둔다.
+This directory stores the primary frozen eval dataset for the deterministic
+WellnessBox R&D baseline.
 
-## 현재 파일
+## Current dataset
 
-- `sample_cases.jsonl`: synthetic sample case 5건
+- `sample_cases.jsonl`: 16 synthetic cases
 
-## 원칙
+## Coverage
 
-- 현재 샘플은 전부 synthetic이다.
-- 목표는 실제 KPI 측정 인터페이스를 먼저 고정하는 것이다.
-- 구현 엔진이 바뀌어도 동일한 JSONL 스키마로 다시 평가할 수 있어야 한다.
+- normal recommendation
+- safety warning
+- blocked minimum-input case
+- missing-context follow-up cases
+- explanation quality proxy
+- conservative edge case
+- duplicate overlap safety case
+- catalog alias normalization cases
+- gut health baseline
+- energy support baseline
+- mixed wearable/CGM/genetic integration observations
 
-## 포함 범주
+## Authoring workflow
 
-- 정상 추천
-- 안전성 경고/차단
-- 입력 누락/모호성
-- 설명 품질 점검
-- edge case
+Use the dataset helper before editing JSONL by hand:
 
-## 주의
+```bash
+python scripts/manage_eval_dataset.py summary
+python scripts/manage_eval_dataset.py validate
+python scripts/manage_eval_dataset.py scaffold --case-id eval-100 --category normal_recommendation --description "new case" --goal sleep_support
+```
 
-- 이 데이터셋은 아직 공식 검증용 본세트가 아니다.
-- acceptance set은 향후 `data/frozen_eval/` 아래에 별도 버전으로 확장한다.
+To append a scaffolded case directly into a dataset:
 
+```bash
+python scripts/manage_eval_dataset.py scaffold ^
+  --case-id eval-100 ^
+  --category normal_recommendation ^
+  --description "new case" ^
+  --goal sleep_support ^
+  --append
+```
+
+## Validation invariants
+
+- `case_id` values must be unique.
+- JSONL rows are kept in lexicographic `case_id` order.
+- `request.request_id` must match `case_id` for deterministic tracing.
+- `minimum_explanation_term_coverage` must stay within `0..100`.
+- `required_explanation_terms` cannot be empty when coverage is above `0`.
+- `integration.<modality>.success` cannot exceed `attempted`.
+
+## Working assumptions
+
+- The dataset is still synthetic and is used as a deterministic regression set.
+- `sensor_genetic_integration_rate_pct` is still a proxy metric based on the
+  `integration.attempted` and `integration.success` observations embedded in the
+  dataset.
+- The eval report includes modality-level integration diagnostics for
+  `wearable`, `cgm`, and `genetic` so the bottleneck is visible without changing
+  the official KPI score.
+- The current dataset is broader than the original 5-case seed, but it is not a
+  production acceptance set yet.
+
+## Update rule
+
+When the baseline behavior changes intentionally, update the dataset and the
+expected outputs together, then rerun:
+
+```bash
+python -m ruff check .
+python -m pytest
+python scripts/run_eval.py
+```

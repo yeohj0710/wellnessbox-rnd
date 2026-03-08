@@ -1,50 +1,52 @@
-# Eval 데이터셋 스키마
+# Eval Dataset Schema
 
-기준 문서: `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+Source of truth:
 
-## 포맷
+- `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+- `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
 
-- 파일 형식: JSONL
-- 파일 위치: `data/frozen_eval/*.jsonl`
-- 각 줄은 하나의 eval case다.
-- 모든 sample case는 `synthetic: true`를 포함한다.
+## Purpose
 
-## 최상위 필드
+The frozen eval dataset is the deterministic regression contract for the current
+baseline. Each line is one JSON object in JSONL format.
 
-| 필드 | 타입 | 설명 |
+Primary dataset:
+
+- `C:/dev/wellnessbox-rnd/data/frozen_eval/sample_cases.jsonl`
+
+Current size:
+
+- 16 synthetic cases
+
+## Top-level fields
+
+| Field | Type | Notes |
 | --- | --- | --- |
-| `case_id` | string | 고유 case 식별자 |
-| `synthetic` | boolean | synthetic 여부 |
-| `category` | string | case 범주 |
-| `description` | string | 사람용 설명 |
-| `request` | object | `/v1/recommend` 요청 payload |
-| `expected` | object | 기대 결과 계약 |
-| `follow_up` | object or null | 효과 metric용 전후 점수 |
-| `integration` | object | modality별 연동 시도/성공 |
-| `adverse_event_reported` | boolean | annual adverse count proxy |
+| `case_id` | string | Stable case identifier |
+| `synthetic` | boolean | All current cases are synthetic |
+| `category` | string | Scenario bucket for coverage tracking |
+| `description` | string | Human-readable case summary |
+| `request` | object | `RecommendationRequest` payload |
+| `expected` | object | Expected deterministic outcome contract |
+| `follow_up` | object or null | Synthetic pre/post observation for efficacy proxy |
+| `integration` | object | Wearable, CGM, genetic attempt/success observations |
+| `adverse_event_reported` | boolean | Annual adverse-event proxy flag |
 
-## `expected` 구조
+## `expected` object
 
-| 필드 | 타입 | 설명 |
+| Field | Type | Notes |
 | --- | --- | --- |
-| `recommendation_reference.required_ingredients` | string[] | 추천 커버리지 기준 성분 |
+| `recommendation_reference.required_ingredients` | string[] | Required ingredient coverage set |
 | `expected_status` | string | `ok`, `needs_review`, `blocked` |
-| `expected_next_action` | string | 상태기계 기대 결과 |
-| `required_rule_ids` | string[] | safety rule ID 기준 |
-| `required_excluded_ingredients` | string[] | safety exclusion 기준 |
-| `required_explanation_terms` | string[] | 설명 품질 proxy 기준 |
-| `minimum_explanation_term_coverage` | float | 설명 term coverage 최소값 |
+| `expected_next_action` | string | Deterministic next action |
+| `required_rule_ids` | string[] | Safety rule IDs that must appear |
+| `required_excluded_ingredients` | string[] | Ingredients that must be excluded |
+| `required_explanation_terms` | string[] | Explanation proxy terms |
+| `minimum_explanation_term_coverage` | float | Minimum required proxy coverage |
 
-## `follow_up` 구조
+## `integration` object
 
-| 필드 | 타입 | 설명 |
-| --- | --- | --- |
-| `z_pre` | number | 복용 전 표준화 점수 |
-| `z_post` | number | 복용 후 표준화 점수 |
-
-## `integration` 구조
-
-예시:
+Example:
 
 ```json
 {
@@ -54,22 +56,48 @@
 }
 ```
 
-## 현재 sample case 범주
+## Deterministic authoring workflow
 
-- 정상 추천
-- 안전성 경고/차단
-- 입력 누락/모호성
-- 설명 품질 점검
-- edge case
+Use the helper script before manual JSONL edits:
 
-## 설계 이유
+```bash
+python scripts/manage_eval_dataset.py summary
+python scripts/manage_eval_dataset.py validate
+python scripts/manage_eval_dataset.py scaffold --case-id eval-100 --category normal_recommendation --description "new case" --goal sleep_support
+```
 
-1. request는 실제 API 입력과 동일해야 한다.
-2. expected는 구현이 바뀌어도 비교 가능한 최소 계약만 갖는다.
-3. follow_up, integration, adverse는 운영 데이터가 없기 때문에 synthetic observation으로 시작한다.
+`scaffold` prints a minimal valid case skeleton. Add `--append` to merge the new
+case into the dataset and rewrite the JSONL in sorted `case_id` order.
 
-## 주의
+## Validation invariants
 
-- 이 스키마는 현재 recommendation API 중심이다.
-- chat 모듈, full citation graph, 실제 센서 인입 파이프라인이 생기면 필드가 확장될 수 있다.
-- 하지만 기존 필드는 가급적 깨지지 않게 유지한다.
+The dataset helper currently enforces the following invariants:
+
+- `case_id` values are unique.
+- JSONL rows stay sorted by `case_id`.
+- `request.request_id` matches `case_id`.
+- `minimum_explanation_term_coverage` stays within `0..100`.
+- `required_explanation_terms` is non-empty when coverage is above `0`.
+- `integration.<modality>.success <= attempted`.
+- integration modalities are limited to `wearable`, `cgm`, and `genetic`.
+
+## Current coverage goals
+
+- normal recommendation
+- safety warning with medication interaction
+- blocked minimum-input contract
+- missing-context follow-up cases
+- explanation quality proxy
+- conservative edge case
+- duplicate overlap safety signal
+- catalog alias normalization
+- modality integration mix
+
+## Assumptions
+
+- `sensor_genetic_integration_rate_pct` is still a proxy derived from
+  case-level observations, not from real parser execution.
+- The eval runner emits modality-level integration diagnostics in addition to
+  the pooled KPI score so the bottleneck modality is visible in the report.
+- The current dataset is larger and more representative than the original
+  5-case seed, but still too small to be treated as a production KPI gate.

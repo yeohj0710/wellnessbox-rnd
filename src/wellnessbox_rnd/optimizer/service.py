@@ -3,6 +3,7 @@ from wellnessbox_rnd.domain.intake import NormalizedIntake
 from wellnessbox_rnd.efficacy.service import score_candidate
 from wellnessbox_rnd.schemas.recommendation import (
     RecommendationCandidate,
+    RecommendationGoal,
     RecommendationStatus,
     SafetySummary,
 )
@@ -49,14 +50,24 @@ def select_recommendations(
             )
         )
 
-    candidates.sort(
-        key=lambda item: (
-            -item.score_breakdown.total,
-            -item.score_breakdown.goal_alignment,
-            item.ingredient_key,
+    selected: list[RecommendationCandidate] = []
+    covered_goals: set[RecommendationGoal] = set()
+    remaining = candidates.copy()
+
+    while remaining and len(selected) < intake.request.preferences.max_products:
+        remaining.sort(
+            key=lambda item: (
+                -_marginal_selection_score(item, covered_goals),
+                -item.score_breakdown.total,
+                -item.score_breakdown.goal_alignment,
+                item.ingredient_key,
+            )
         )
-    )
-    return candidates[: intake.request.preferences.max_products]
+        chosen = remaining.pop(0)
+        selected.append(chosen)
+        covered_goals.update(chosen.expected_support_goals)
+
+    return selected
 
 
 def build_candidate_explanation(
@@ -81,3 +92,23 @@ def build_candidate_explanation(
         f"Follow-up focus: {follow_up_focus}."
         f"{caution_text}"
     )
+
+
+def _marginal_selection_score(
+    candidate: RecommendationCandidate,
+    covered_goals: set[RecommendationGoal],
+) -> float:
+    uncovered_goals = [
+        goal for goal in candidate.expected_support_goals if goal not in covered_goals
+    ]
+    coverage_bonus = sum(_goal_coverage_bonus(goal) for goal in uncovered_goals)
+    overlap_penalty = 4.0 * (
+        len(candidate.expected_support_goals) - len(uncovered_goals)
+    )
+    return candidate.score_breakdown.total + coverage_bonus - overlap_penalty
+
+
+def _goal_coverage_bonus(goal: RecommendationGoal) -> float:
+    if goal == RecommendationGoal.GENERAL_WELLNESS:
+        return 4.0
+    return 12.0

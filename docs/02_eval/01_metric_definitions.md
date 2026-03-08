@@ -1,74 +1,117 @@
 # Metric 정의
 
-기준 문서: `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+기준 문서:
 
-## 공통 원칙
+- `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+- `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
 
-- 모든 metric은 가능한 한 deterministic하게 계산한다.
-- case-level 계산식과 aggregate 계산식을 분리한다.
-- metric의 이름, 단위, threshold 비교 방향은 코드에 고정한다.
+## 원칙
 
-## Metric 표
+- 모든 metric은 deterministic하게 계산한다.
+- case-level 계산과 aggregate 계산을 분리한다.
+- 공식 KPI score와 diagnostic breakdown을 구분한다.
+- 불확실한 KPI 해석은 문서에 가정으로 남긴다.
 
-| metric | 단위 | 목표 | 비교 방향 | case-level 계산 |
+## 공식 metric 표
+
+| metric | 단위 | 목표 | 비교 방향 | aggregate 계산 |
 | --- | --- | --- | --- | --- |
-| `recommendation_coverage_pct` | % | 80 | 높을수록 좋음 | `100 * |required ∩ actual| / |required|` |
-| `efficacy_improvement_pp` | pp | 0 초과 | 양수여야 함 | `100 * [Φ(z_post) - Φ(z_pre)]` |
-| `next_action_accuracy_pct` | % | 80 | 높을수록 좋음 | exact match면 100, 아니면 0 |
-| `explanation_quality_accuracy_pct` | % | 91 | 높을수록 좋음 | required explanation term coverage |
-| `safety_reference_accuracy_pct` | % | 95 | 높을수록 좋음 | status/rule_id/exclusion 3항 평균 |
-| `adverse_event_count_yearly` | 건/year | 5 이하 | 낮을수록 좋음 | case의 adverse flag 총합 |
-| `sensor_genetic_integration_rate_pct` | % | 90 | 높을수록 좋음 | `100 * total_success / total_attempted` |
+| `recommendation_coverage_pct` | % | 80 | min | case 평균 |
+| `efficacy_improvement_pp` | pp | 0 초과 | positive | case 평균 |
+| `next_action_accuracy_pct` | % | 80 | min | case 평균 |
+| `explanation_quality_accuracy_pct` | % | 91 | min | case 평균 |
+| `safety_reference_accuracy_pct` | % | 95 | min | case 평균 |
+| `adverse_event_count_yearly` | 건/year | 5 이하 | max | dataset 합계 |
+| `sensor_genetic_integration_rate_pct` | % | 90 | min | pooled success / attempted |
 
-## Aggregate 규칙
+## case-level 계산
 
-### 평균형 metric
+### `recommendation_coverage_pct`
 
-아래 항목은 case score 평균을 사용한다.
+- 계산:
+  - `100 * |required ∩ actual| / |required|`
 
-- `recommendation_coverage_pct`
-- `efficacy_improvement_pp`
-- `next_action_accuracy_pct`
-- `explanation_quality_accuracy_pct`
-- `safety_reference_accuracy_pct`
+### `efficacy_improvement_pp`
 
-### 총합/비율형 metric
+- 계산:
+  - `100 * [Phi(z_post) - Phi(z_pre)]`
 
-- `adverse_event_count_yearly`: dataset 전체 합계
-- `sensor_genetic_integration_rate_pct`: dataset 전체 modality 합산 비율
+### `next_action_accuracy_pct`
 
-## Pass/Fail 규칙
+- 계산:
+  - exact match면 `100`
+  - 아니면 `0`
 
-| metric | pass 규칙 |
+### `explanation_quality_accuracy_pct`
+
+- 계산:
+  - `100 * (required explanation terms 중 실제 텍스트에 포함된 비율)`
+
+### `safety_reference_accuracy_pct`
+
+- 아래 3개 sub-score 평균:
+  - status exact match
+  - required rule id subset match
+  - required excluded ingredient subset match
+
+### `adverse_event_count_yearly`
+
+- 계산:
+  - dataset 내 `adverse_event_reported` 합계
+
+### `sensor_genetic_integration_rate_pct`
+
+- 공식 score 계산:
+  - `100 * total_success / total_attempted`
+- 현재 포함 modality:
+  - `wearable`
+  - `cgm`
+  - `genetic`
+
+## integration diagnostic breakdown
+
+이번 루프부터 `sensor_genetic_integration_rate_pct`는 공식 pooled score 외에 아래 diagnostic 정보를 같이 남긴다.
+
+- `aggregation_method`
+- `modality_breakdown`
+  - modality별 `attempted`
+  - modality별 `success`
+  - modality별 `score`
+- `bottleneck_modality`
+- `bottleneck_rate_pct`
+
+이 diagnostic은 공식 KPI score를 대체하지 않는다. 목적은 어느 modality가 병목인지 즉시 보이게 만드는 것이다.
+
+예시:
+
+```json
+{
+  "aggregation_method": "pooled_success_over_attempted",
+  "modality_breakdown": {
+    "wearable": { "attempted": 4, "success": 4, "score": 100.0 },
+    "cgm": { "attempted": 2, "success": 1, "score": 50.0 },
+    "genetic": { "attempted": 2, "success": 1, "score": 50.0 }
+  },
+  "bottleneck_modality": "cgm",
+  "bottleneck_rate_pct": 50.0
+}
+```
+
+## pass/fail 규칙
+
+| metric | pass 조건 |
 | --- | --- |
-| `recommendation_coverage_pct` | score >= 80 |
-| `efficacy_improvement_pp` | score > 0 |
-| `next_action_accuracy_pct` | score >= 80 |
-| `explanation_quality_accuracy_pct` | score >= 91 |
-| `safety_reference_accuracy_pct` | score >= 95 |
-| `adverse_event_count_yearly` | score <= 5 |
-| `sensor_genetic_integration_rate_pct` | score >= 90 |
+| `recommendation_coverage_pct` | `score >= 80` |
+| `efficacy_improvement_pp` | `score > 0` |
+| `next_action_accuracy_pct` | `score >= 80` |
+| `explanation_quality_accuracy_pct` | `score >= 91` |
+| `safety_reference_accuracy_pct` | `score >= 95` |
+| `adverse_event_count_yearly` | `score <= 5` |
+| `sensor_genetic_integration_rate_pct` | `score >= 90` |
 
-## safety metric 세부 해석
+## 가정
 
-`safety_reference_accuracy_pct`는 아래 3개 sub-score의 평균이다.
-
-1. `expected_status == actual_status`
-2. `required_rule_ids ⊆ actual_rule_ids`
-3. `required_excluded_ingredients ⊆ actual_excluded_ingredients`
-
-각 항목은 맞으면 100, 아니면 0으로 처리한다.
-
-## explanation metric 세부 해석
-
-- 현재는 chat 답변 정확도 원문 KPI를 그대로 구현하지 못한다.
-- 따라서 `required_explanation_terms` 포함률을 proxy로 둔다.
-- 비교 대상 텍스트는 `decision_summary + recommendation rationale + safety warning/block reason`을 합친 문자열이다.
-- 계산식:
-  `100 * (#present required terms / #required terms)`
-
-## 모호점
-
-1. 원문 상담 모듈 KPI는 실제 질문-정답 셋 기반인데, 현재 API에는 chat 모듈이 없다.
-2. 원문 안전 KPI는 rule logic과 reference를 함께 본다. 현재는 rule id와 exclusion만 본다.
-3. 원문 효과 KPI는 PRO 확보량까지 포함하지만, 현재 sample dataset은 소규모 synthetic pair만 갖는다.
+- `explanation_quality_accuracy_pct`는 아직 chat module accuracy의 proxy다.
+- `safety_reference_accuracy_pct`는 full citation graph가 아니라 status/rule/exclusion proxy다.
+- `sensor_genetic_integration_rate_pct`는 아직 parser 실행 성공률이 아니라 dataset observation proxy다.
+- integration diagnostic breakdown은 KPI를 좋게 보이게 만들기 위한 재정의가 아니라 병목 노출용 구조다.

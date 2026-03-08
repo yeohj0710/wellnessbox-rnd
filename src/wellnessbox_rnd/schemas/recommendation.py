@@ -1,5 +1,6 @@
 from datetime import UTC, datetime
 from enum import StrEnum
+from typing import Literal
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
@@ -141,6 +142,23 @@ class MissingInformationItem(BaseModel):
     importance: MissingInfoImportance
 
 
+class NextActionRationale(BaseModel):
+    reason_code: str
+    summary: str
+    supporting_codes: list[str] = Field(default_factory=list)
+
+
+class SafetyEvidenceItem(BaseModel):
+    evidence_type: Literal["rule", "excluded_ingredient", "user_preference"]
+    code: str
+    summary: str
+
+
+class LimitationItem(BaseModel):
+    code: str
+    summary: str
+
+
 class CandidateScoreBreakdown(BaseModel):
     goal_alignment: float
     symptom_alignment: float
@@ -148,6 +166,7 @@ class CandidateScoreBreakdown(BaseModel):
     evidence_readiness: float
     budget_adjustment: float
     safety_adjustment: float
+    conservative_adjustment: float
     total: float
 
 
@@ -181,10 +200,13 @@ class RecommendationResponse(BaseModel):
     normalized_focus_goals: list[RecommendationGoal]
     safety_summary: SafetySummary
     safety_flags: list[str] = Field(default_factory=list)
+    safety_evidence: list[SafetyEvidenceItem] = Field(default_factory=list)
     recommendations: list[RecommendationCandidate]
     next_action: NextAction
+    next_action_rationale: NextActionRationale
     follow_up_window_days: int = Field(ge=1, le=90)
     follow_up_questions: list[str] = Field(default_factory=list)
     missing_information: list[MissingInformationItem] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
+    limitation_details: list[LimitationItem] = Field(default_factory=list)
     metadata: EngineMetadata

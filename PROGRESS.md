@@ -2,80 +2,98 @@
 
 ## 현재 상태
 
-`wellnessbox-rnd` 는 독립 R&D 저장소로 재고정되었고, 현재 실행 기준은 `master_context.md` 와 `original_plan.pdf` 두 문서다.
-
-## source of truth
+`wellnessbox-rnd`는 pure R&D 저장소로만 유지 중이다. 현재 source of truth는 아래 두 문서다.
 
 - `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
 - `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
 
-보조 기준:
-
-- `C:/dev/wellnessbox-rnd/docs/01_architecture/`
-- `C:/dev/wellnessbox-rnd/docs/02_eval/`
-- `C:/dev/wellnessbox-rnd/docs/99_governance/`
-
-archive:
-
-- `C:/dev/wellnessbox-rnd/docs/03_integration/`
-- `C:/dev/wellnessbox-rnd/docs/00_discovery/`
-- `C:/dev/wellnessbox-rnd/docs/00_migration/`
-- `C:/dev/wellnessbox-rnd/docs/legacy_from_wellnessbox/`
-- `C:/dev/wellnessbox-rnd/docs/imported/wellnessbox/`
+이번 루프에서는 `eval 데이터 생성 스크립트 개선`만 수행했다. 목표는 frozen eval을 더 크게 만들기 전에, 케이스 생성과 검증을 deterministic helper로 고정하는 것이었다.
 
 ## 지금까지 구현된 것
 
-- Python 프로젝트 scaffold
 - FastAPI inference API
-- `/health`
-- `/v1/recommend`
-- deterministic baseline:
-  - intake normalization
-  - safety validation
-  - candidate filtering
-  - goal / efficacy scoring
-  - ranking
-  - templated explanation
+- deterministic baseline recommendation engine
+- intake normalization
+- safety validation
+- efficacy scoring
+- ranking / optimizer
+- structured recommendation schema
 - frozen eval runner
-- metric definitions / calculators
-- demo catalog / safety rules
-- scope reset 감사 문서와 governance 문서
+- metric calculators
+- alias-aware catalog normalization
+- data-driven safety rules
 
-## 아직 미구현인 것
+## 이번 루프 변경 사항
 
-- 대규모 frozen eval
-- deterministic baseline 고도화
-- richer safety citation structure
-- synthetic data generation pipeline
-- optional LLM/agent layer
-- production-scale artifact/version management
+- `src/wellnessbox_rnd/evals/dataset_tools.py` 추가
+  - eval case skeleton 생성
+  - dataset summary 계산
+  - dataset invariant validation
+  - sorted JSONL rewrite helper
+- `scripts/manage_eval_dataset.py` 추가
+  - `summary`
+  - `validate`
+  - `scaffold`
+- dataset invariant를 코드로 고정
+  - unique `case_id`
+  - lexicographic `case_id` order
+  - `request.request_id == case_id`
+  - explanation coverage 범위 체크
+  - `integration.success <= attempted`
+- eval authoring 관련 문서 갱신
 
-## KPI 달성 관점에서 가장 중요한 다음 10개 작업
+## 왜 이 작업을 우선했는가
 
-1. `master_context.md` 기준 KPI/요구사항 재정리
-2. recommend request/response 계약 정교화
-3. frozen eval case 100+ 확장
-4. deterministic baseline ranking 개선
-5. safety rule set 확장
-6. efficacy scoring 강화
-7. missing info / follow-up 질문 정교화
-8. synthetic data generation 설계
-9. evidence / citation 구조화
-10. optional LLM layer 평가 기준만 선행 정의
+- 현재 루프 원칙이 `eval first`인데, frozen eval authoring이 거의 수동 JSONL 편집에 의존하고 있었다.
+- 현재 frozen eval은 여전히 작아서, 다음 단계의 `frozen eval 확대`를 하기 전에 생성/검증 helper를 먼저 두는 편이 안전하다.
+- 이 작업은 공식 KPI를 인위적으로 바꾸지 않으면서도, future regression set expansion의 실패 비용을 낮춘다.
+- deterministic baseline 철학과 safety 우선 원칙을 그대로 유지할 수 있다.
 
-## 깨질 수 있는 부분 / 주의점
+## 최신 검증 결과
 
-- 현재 catalog 는 demo 데이터라 실제 제품 적합성을 보장하지 않는다.
-- eval dataset 이 작아 KPI gate 로 쓰기엔 아직 부족하다.
-- `sensor_genetic_integration_rate_pct` 는 목표치 미달 상태다.
-- 과거 `wellnessbox` 연동 문서를 실행 입력으로 다시 사용하면 scope drift 가 재발한다.
+- `python -m ruff check .`: 통과
+- `python -m pytest`: `26 passed`
+- `python scripts/run_eval.py`: 통과
+- `python scripts/manage_eval_dataset.py validate`: validation issue 0건
 
-## 범위 밖(out of scope)
+### frozen eval 주요 metric
 
-- `wellnessbox` 특정 페이지/route/설문/NHIS/chat 흐름
-- preview route / feature flag / rollout 계획
-- 제품 repo 기준 adapter 설계
+- `case_count`: `16 -> 16`
+- `recommendation_coverage_pct`: `100.0 -> 100.0`
+- `efficacy_improvement_pp`: `13.07 -> 13.07`
+- `next_action_accuracy_pct`: `100.0 -> 100.0`
+- `explanation_quality_accuracy_pct`: `100.0 -> 100.0`
+- `safety_reference_accuracy_pct`: `100.0 -> 100.0`
+- `adverse_event_count_yearly`: `0.0 -> 0.0`
+- `sensor_genetic_integration_rate_pct`: `75.0 -> 75.0`
 
-## 다음 세션 첫 작업
+### 새 dataset summary 기준점
 
-- `master_context.md` 와 `original_plan.pdf` 기준으로 KPI / 요구사항을 다시 쪼개고, 그 결과를 runtime schema 와 frozen eval 확장 항목으로 연결한다.
+- `expected_next_action_counts`
+  - `start_plan = 8`
+  - `collect_more_input = 5`
+  - `needs_human_review = 3`
+- `integration_attempted_case_counts`
+  - `wearable = 4`
+  - `cgm = 2`
+  - `genetic = 2`
+
+## 가정
+
+- 이번 루프의 개선은 공식 KPI 점수 상승이 아니라 eval authoring workflow의 구조 개선이다.
+- `sensor_genetic_integration_rate_pct`는 여전히 dataset observation proxy다.
+- frozen eval dataset은 여전히 synthetic regression set이다.
+
+## 아직 부족한 점
+
+- frozen eval은 아직 KPI gate로 쓰기에는 작다.
+- integration KPI는 여전히 `75.0`이다.
+- failure mode 문서화는 아직 얇다.
+- scaffold는 minimal skeleton 수준이고, richer template library는 아직 없다.
+- 자유 텍스트 product title parser는 아직 없다.
+
+## 다음 루프 추천 작업
+
+- `baseline failure 분석 문서화`
+- `frozen eval 확대`
+- `efficacy scoring 개선`

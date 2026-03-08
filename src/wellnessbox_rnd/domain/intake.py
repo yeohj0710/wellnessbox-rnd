@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
+from wellnessbox_rnd.domain.catalog import canonicalize_catalog_term
 from wellnessbox_rnd.domain.loaders import load_safety_rules
+from wellnessbox_rnd.domain.models import GoalContextRule
 from wellnessbox_rnd.schemas.recommendation import (
     MissingInfoImportance,
     MissingInformationItem,
@@ -32,12 +34,16 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
     medication_set = {_normalize_text(item.name) for item in request.medications}
     current_ingredient_set = set()
     for supplement in request.current_supplements:
-        current_ingredient_set.add(_normalize_text(supplement.name))
-        current_ingredient_set.update(_normalize_text(item) for item in supplement.ingredients)
+        current_ingredient_set.update(_normalize_catalog_inputs([supplement.name]))
+        current_ingredient_set.update(_normalize_catalog_inputs(supplement.ingredients))
 
-    avoid_ingredient_set = {_normalize_text(item) for item in request.preferences.avoid_ingredients}
+    avoid_ingredient_set = _normalize_catalog_inputs(request.preferences.avoid_ingredients)
     signal_flags = _derive_signal_flags(request)
-    missing_information = _collect_missing_information(request, goal_set, rules.goal_data_questions)
+    missing_information = _collect_missing_information(
+        request,
+        goal_set,
+        rules.goal_context_rules,
+    )
 
     normalization_notes = [
         "Input strings are normalized to lowercase tokens for deterministic matching.",
@@ -84,7 +90,7 @@ def _derive_signal_flags(request: RecommendationRequest) -> set[str]:
 def _collect_missing_information(
     request: RecommendationRequest,
     goals: set[RecommendationGoal],
-    goal_data_questions: dict[str, str],
+    goal_context_rules: dict[str, GoalContextRule],
 ) -> list[MissingInformationItem]:
     items: list[MissingInformationItem] = []
 
@@ -120,27 +126,31 @@ def _collect_missing_information(
 
     if RecommendationGoal.BLOOD_GLUCOSE in goals and not request.input_availability.cgm:
         items.append(
-            MissingInformationItem(
+            _build_goal_context_item(
                 code="missing_glucose_context",
-                question=goal_data_questions.get(
-                    RecommendationGoal.BLOOD_GLUCOSE.value,
-                    "Please share glucose context such as CGM or lab values if available.",
+                goal=RecommendationGoal.BLOOD_GLUCOSE,
+                goal_context_rules=goal_context_rules,
+                fallback_question=(
+                    "Please share glucose context such as CGM or lab values if available."
                 ),
-                reason="Blood glucose goals need more context for a safer baseline ranking.",
-                importance=MissingInfoImportance.MEDIUM,
+                fallback_reason=(
+                    "Blood glucose goals need more context for a safer baseline ranking."
+                ),
+                fallback_importance=MissingInfoImportance.HIGH,
             )
         )
 
     if RecommendationGoal.HEART_HEALTH in goals and not request.medications:
         items.append(
-            MissingInformationItem(
+            _build_goal_context_item(
                 code="missing_heart_context",
-                question=goal_data_questions.get(
-                    RecommendationGoal.HEART_HEALTH.value,
-                    "Please share heart-related labs or current medication information.",
+                goal=RecommendationGoal.HEART_HEALTH,
+                goal_context_rules=goal_context_rules,
+                fallback_question=(
+                    "Please share heart-related labs or current medication information."
                 ),
-                reason="Heart-related goals benefit from medication and lab context.",
-                importance=MissingInfoImportance.MEDIUM,
+                fallback_reason="Heart-related goals benefit from medication and lab context.",
+                fallback_importance=MissingInfoImportance.HIGH,
             )
         )
 
@@ -154,8 +164,51 @@ def _collect_missing_information(
             )
         )
 
-    return items
+    return sorted(items, key=_missing_info_sort_key)
+
+
+def _build_goal_context_item(
+    code: str,
+    goal: RecommendationGoal,
+    goal_context_rules: dict[str, GoalContextRule],
+    fallback_question: str,
+    fallback_reason: str,
+    fallback_importance: MissingInfoImportance,
+) -> MissingInformationItem:
+    rule = goal_context_rules.get(goal.value)
+    if rule is None:
+        return MissingInformationItem(
+            code=code,
+            question=fallback_question,
+            reason=fallback_reason,
+            importance=fallback_importance,
+        )
+    return MissingInformationItem(
+        code=code,
+        question=rule.question,
+        reason=rule.reason,
+        importance=rule.importance,
+    )
+
+
+def _missing_info_sort_key(item: MissingInformationItem) -> tuple[int, str]:
+    priority = {
+        MissingInfoImportance.HIGH: 0,
+        MissingInfoImportance.MEDIUM: 1,
+        MissingInfoImportance.LOW: 2,
+    }
+    return (priority[item.importance], item.code)
 
 
 def _normalize_text(value: str) -> str:
     return " ".join(value.strip().lower().split())
+
+
+def _normalize_catalog_inputs(values: list[str]) -> set[str]:
+    normalized_values: set[str] = set()
+    for value in values:
+        normalized = _normalize_text(value)
+        if not normalized:
+            continue
+        normalized_values.add(canonicalize_catalog_term(value) or normalized)
+    return normalized_values

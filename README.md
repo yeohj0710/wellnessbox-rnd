@@ -40,6 +40,7 @@
 - efficacy / goal scoring
 - optimization / ranking
 - templated explanation generation
+- structured next-action / safety evidence / limitation details in response schema
 - frozen eval runner + metric calculators
 
 ## 유지하는 런타임 자산
