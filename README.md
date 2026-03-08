@@ -1,39 +1,71 @@
 # wellnessbox-rnd
 
-`wellnessbox-rnd`는 WellnessBox 연구개발 전용 Python 리포다. 기준 문서는 [master_context.md](C:/dev/wellnessbox-rnd/docs/context/master_context.md)이며, 이 저장소는 추천 정확도, 안전 검증, 효과 정량화, closed-loop 정책, 평가 하네스, 추론 API를 담당한다.
+`wellnessbox-rnd` 는 TIPS 연구개발 전용 독립 저장소다.
 
-`wellnessbox`는 웹서비스/UI 레이어이고, 이 저장소는 그 웹이 호출하는 AI/R&D 서비스 레이어다.
+현재 이 저장소의 연구개발 source of truth 는 아래 두 문서뿐이다.
+
+- `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+- `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
+
+`wellnessbox` 구조, 특정 설문 흐름, NHIS 연동, chat route, preview route, feature flag, 운영 화면은 현재 R&D 실행 범위의 입력값이 아니다.
+
+## 현재 범위
+
+현재 범위에 포함되는 것:
+
+- KPI/요구사항 해석
+- R&D 전용 데이터 계약/스키마
+- frozen eval
+- deterministic baseline 추천 엔진
+- safety / efficacy / ranking 로직
+- synthetic data generation 계획
+- 독립 실행 가능한 inference API
+
+현재 범위 밖(out of scope):
+
+- 특정 제품 repo 와의 연동 설계/구현
+- 특정 웹 페이지, route, server action 전제
+- feature flag rollout
+- preview page/helper
+- NHIS/chat/survey 제품 흐름 연계
 
 ## 현재 구현 상태
 
-- FastAPI 기반 최소 추론 API
-- `/health` 엔드포인트
-- `/v1/recommend` deterministic baseline 추천 엔드포인트
+- FastAPI 기반 최소 inference API
+- `/health`
+- `/v1/recommend`
 - intake normalization
 - personal safety validation
 - candidate filtering
-- efficacy/goal scoring
+- efficacy / goal scoring
 - optimization / ranking
 - templated explanation generation
-- frozen eval runner와 metric calculator
+- frozen eval runner + metric calculators
 
-## 현재 baseline의 범위
+## 유지하는 런타임 자산
 
-- 핵심 의사결정은 룰 기반 + 점수화 기반으로 결정적으로 구현했다.
-- LLM은 핵심 추천 의사결정에 사용하지 않는다.
-- 추천 카탈로그는 `data/catalog/ingredients.json`의 demo/placeholder catalog를 사용한다.
-- 안전 규칙은 `data/rules/safety_rules.json`에 분리했다.
-- `wellnessbox`의 기존 survey/scoring 데이터는 읽기 전용으로 검토했지만, 현재 baseline은 그 파일들을 직접 runtime dependency로 사용하지 않는다.
+- API:
+  - `C:/dev/wellnessbox-rnd/apps/inference_api/main.py`
+  - `C:/dev/wellnessbox-rnd/apps/inference_api/routes/health.py`
+  - `C:/dev/wellnessbox-rnd/apps/inference_api/routes/recommend.py`
+- 엔진:
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/domain/`
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/safety/`
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/efficacy/`
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/optimizer/`
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/orchestration/`
+- 평가:
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/metrics/`
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/evals/runner.py`
+  - `C:/dev/wellnessbox-rnd/data/frozen_eval/`
 
-## 아직 구현하지 않은 범위
+## 미구현 범위
 
-- 실제 제품 SSOT 연동
-- 실제 데이터베이스
-- 학습 코드
-- 모델 가중치
-- 실제 센서/유전자 ingest 파이프라인
-- production-grade observability stack
-- chat/LLM 상담 엔진
+- 실제 제품 catalog SSOT
+- 대형 synthetic dataset 파이프라인
+- real-world evidence ingestion
+- optional LLM/agent layer
+- 운영 통합 레이어
 
 ## 빠른 시작
 
@@ -44,12 +76,12 @@ pip install -e ".[dev]"
 uvicorn apps.inference_api.main:app --reload
 ```
 
-확인 경로:
+확인:
 
 - `GET http://127.0.0.1:8000/health`
 - `POST http://127.0.0.1:8000/v1/recommend`
 
-## 테스트와 평가
+검증:
 
 ```bash
 python -m ruff check .
@@ -57,27 +89,36 @@ python -m pytest
 python scripts/run_eval.py
 ```
 
-리포트 출력:
+## 문서 읽기 순서
 
-- `artifacts/reports/eval_report.json`
-- `artifacts/reports/eval_report.md`
+1. `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+2. `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
+3. `C:/dev/wellnessbox-rnd/docs/00_scope_reset/00_scope_reset_summary.md`
+4. `C:/dev/wellnessbox-rnd/docs/01_architecture/00_target_architecture.md`
+5. `C:/dev/wellnessbox-rnd/docs/02_eval/01_metric_definitions.md`
+6. `C:/dev/wellnessbox-rnd/PROGRESS.md`
+7. `C:/dev/wellnessbox-rnd/NEXT_STEPS.md`
 
-## 디렉터리 구조
+## 디렉터리 개요
 
 ```text
-apps/inference_api/        FastAPI 앱과 라우트
-src/wellnessbox_rnd/       도메인, 스키마, safety/optimizer/orchestration 코드
+apps/inference_api/        FastAPI 추론 API
+src/wellnessbox_rnd/       도메인, 스키마, safety/efficacy/optimizer/orchestration
 data/catalog/              demo ingredient catalog
 data/rules/                safety rules
 data/frozen_eval/          frozen eval seed dataset
-tests/                     API 및 baseline 엔진 테스트
-docs/                      기준 문서, 아키텍처, eval 문서
-legacy_code/               wellnessbox에서 이관한 과거 자산
+artifacts/reports/         eval 산출물
+docs/context/              절대 기준 문서
+docs/01_architecture/      독립 R&D 아키텍처
+docs/02_eval/              평가 체계 문서
+docs/00_scope_reset/       범위 재고정 감사 문서
+docs/03_integration/       현재 out-of-scope archive
+docs/legacy_from_wellnessbox/  과거 참고용 archive
+docs/imported/wellnessbox/     과거 참고용 archive
 ```
 
-## 구현 메모
+## 주의점
 
-- 입력 스키마는 `master_context.md`의 핵심 입력 축인 설문, 약물, 증상, 생활습관, 웨어러블/CGM/유전자 가용성을 반영한다.
-- 출력에는 `decision_summary`, `safety_flags`, `recommendations`, `follow_up_questions`, `missing_information`이 포함된다.
-- 의료적 단정 표현은 피하고, 입력이 부족하면 보수적으로 `needs_review` 또는 `collect_more_input`으로 보낸다.
-- 현재 baseline은 KPI 달성을 위한 첫 단계이며, 이후 실제 rule set과 product/catalog contract로 교체될 수 있다.
+- 신규 연구개발 문서와 코드는 `wellnessbox-rnd` 안에서만 추가한다.
+- 과거 `wellnessbox` 기반 문서는 참고용 archive 일 뿐 현재 실행 기준이 아니다.
+- `docs/03_integration/` 은 현재 범위 밖으로 보류된 상태다.

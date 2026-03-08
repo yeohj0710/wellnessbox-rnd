@@ -1,34 +1,18 @@
-# ADR-003: deterministic baseline을 먼저 만든다
+# ADR-003: Deterministic Baseline First
 
-- 상태: Accepted
-- 날짜: 2026-03-08
-- 기준 문서: `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+상태: 채택
 
-## 문맥
+기준 문서:
 
-- KPI 5는 규칙 및 레퍼런스 정확도 95%를 요구한다.
-- KPI 3은 다음 행동 정확도 80%를 요구한다.
-- 1인 개발, 1대 컴퓨터 조건에서 대규모 학습 기반 접근은 비용이 높고 디버깅이 어렵다.
+- `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+- `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
 
 ## 결정
 
-- 초기 추천, 안전, 정책 엔진은 규칙 기반 + 점수화 + 상태기계로 만든다.
-- 효과 정량화는 표준화 점수와 단순 통계 지표로 시작한다.
-- 이후 필요할 때만 고전 ML 또는 LLM 계층을 추가한다.
+핵심 의사결정은 먼저 규칙 기반 + 점수화 기반 deterministic baseline 으로 구현한다.
 
 ## 이유
 
-1. 안전 검증은 설명 가능한 규칙이 더 적합하다.
-2. 상태기계는 next action KPI를 직접 측정하기 쉽다.
-3. deterministic baseline은 failure analysis가 빠르다.
-
-## 결과
-
-- 장점: 디버깅 가능, 근거 추적 가능, 적은 자원으로 재현 가능
-- 비용: 초기 사용자 체감 "지능감"은 낮을 수 있다
-- 후속 조치: 규칙 레이크, 점수 함수, 상태 전이 테이블 설계
-
-## 기각한 대안
-
-- 처음부터 end-to-end 학습: 데이터와 인프라가 부족하다.
-- 처음부터 LLM agent 중심 설계: 비결정성과 비용이 크다.
+1. safety 와 ranking 은 먼저 검증 가능한 형태가 필요하다.
+2. KPI 추적과 디버깅이 쉽다.
+3. optional LLM layer 를 붙이더라도 baseline 이 기준점이 된다.

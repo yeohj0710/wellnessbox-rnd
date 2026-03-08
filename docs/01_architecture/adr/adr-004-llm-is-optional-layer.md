@@ -1,34 +1,18 @@
-# ADR-004: LLM은 선택적 계층으로 둔다
+# ADR-004: LLM 은 선택적 레이어다
 
-- 상태: Accepted
-- 날짜: 2026-03-08
-- 기준 문서: `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+상태: 채택
 
-## 문맥
+기준 문서:
 
-- 원문과 창업자 제약은 특정 에이전트 프레임워크나 모델에 고정되지 않는다.
-- KPI 중 다수는 LLM 없이도 달성 가능하거나, 오히려 LLM 없는 구조가 더 유리하다.
-- 상담 모듈은 중요하지만 코어 안전 판정과 추천 엔진의 소유권을 가져서는 안 된다.
+- `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
+- `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
 
 ## 결정
 
-- LLM은 상담/설명/문장화에 한정된 선택적 계층으로 둔다.
-- 안전 판정, 조합 점수화, 상태기계, KPI 측정은 LLM 비의존 구조로 구현한다.
-- LLM 출력은 항상 구조화 결과를 읽는 consumer로만 배치한다.
+LLM 은 core decision engine 이 아니라 선택적 설명/보조 레이어로만 취급한다.
 
 ## 이유
 
-1. 안전 KPI는 규칙과 citation의 정확성이 핵심이다.
-2. 자유형 생성은 운영 리스크와 변동성을 키운다.
-3. LLM 제공자나 프레임워크를 바꾸기 쉬운 구조가 필요하다.
-
-## 결과
-
-- 장점: 공급자 독립성, 비용 통제, 안정성 향상
-- 비용: 자연어 UX 개선 속도는 다소 느릴 수 있다
-- 후속 조치: prompt registry, response guard, fallback 정책 정의
-
-## 기각한 대안
-
-- LLM을 orchestration 중심에 둠: 모든 KPI가 모델 변동성에 흔들린다.
-- LLM 결과를 직접 추천/안전 판정으로 사용: 감사 가능성이 낮다.
+1. safety / ranking / policy 는 deterministic 검증이 우선이다.
+2. eval 과 재현성 확보가 먼저다.
+3. LLM 은 baseline 이 충분히 안정된 뒤에만 붙인다.
