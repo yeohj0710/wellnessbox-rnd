@@ -200,6 +200,12 @@ def _decide_next_action(
         recommendations=recommendations,
     ):
         return NextAction.START_PLAN
+    if _can_start_with_anticoagulant_heart_survey_fallback(
+        intake=intake,
+        safety_summary=safety_summary,
+        recommendations=recommendations,
+    ):
+        return NextAction.START_PLAN
     if _can_start_with_wearable_heart_fallback(
         intake=intake,
         safety_summary=safety_summary,
@@ -303,6 +309,12 @@ def _decide_next_action(
     ):
         return NextAction.START_PLAN
     if _can_start_with_cgm_glucose_missing_symptom_fallback(
+        intake=intake,
+        safety_summary=safety_summary,
+        recommendations=recommendations,
+    ):
+        return NextAction.START_PLAN
+    if _can_start_with_glucose_symptom_fallback(
         intake=intake,
         safety_summary=safety_summary,
         recommendations=recommendations,
@@ -1319,6 +1331,48 @@ def _can_start_with_heart_survey_fallback(
     return recommendation_keys in ({"omega3", "coq10"}, {"coq10"})
 
 
+def _can_start_with_anticoagulant_heart_survey_fallback(
+    intake: NormalizedIntake,
+    safety_summary: SafetySummary,
+    recommendations: list[RecommendationCandidate],
+) -> bool:
+    if safety_summary.status != RecommendationStatus.OK:
+        return False
+    if intake.request.user_profile.pregnant:
+        return False
+    if intake.condition_set or intake.avoid_ingredient_set:
+        return False
+    if intake.goal_set != {RecommendationGoal.HEART_HEALTH}:
+        return False
+    if not intake.medication_set:
+        return False
+    if not intake.medication_set.issubset({"warfarin", "coumadin"}):
+        return False
+    if "wearable_activity_context" not in intake.signal_flags:
+        return False
+    if "low_activity" not in intake.signal_flags:
+        return False
+
+    missing_codes = {item.code for item in intake.missing_information}
+    if not missing_codes.issubset({"missing_survey", "missing_current_supplements"}):
+        return False
+    if "missing_survey" not in missing_codes:
+        return False
+
+    rule_ids = {rule.rule_id for rule in safety_summary.rule_refs}
+    if not rule_ids:
+        return False
+    if not rule_ids.issubset(
+        {"INTAKE-SURVEY-001", "SAFETY-ANTICOAG-001", "SAFETY-DUP-001"}
+    ):
+        return False
+    if {"INTAKE-SURVEY-001", "SAFETY-ANTICOAG-001"} - rule_ids:
+        return False
+
+    recommendation_keys = {item.ingredient_key for item in recommendations}
+    return recommendation_keys == {"coq10"}
+
+
 def _can_start_with_energy_survey_fallback(
     intake: NormalizedIntake,
     safety_summary: SafetySummary,
@@ -2004,6 +2058,44 @@ def _can_start_with_cgm_glucose_missing_symptom_fallback(
     )
 
 
+def _can_start_with_glucose_symptom_fallback(
+    intake: NormalizedIntake,
+    safety_summary: SafetySummary,
+    recommendations: list[RecommendationCandidate],
+) -> bool:
+    if safety_summary.status != RecommendationStatus.OK:
+        return False
+    if intake.request.user_profile.pregnant:
+        return False
+    if intake.medication_set or intake.condition_set or intake.avoid_ingredient_set:
+        return False
+    if intake.goal_set != {RecommendationGoal.BLOOD_GLUCOSE}:
+        return False
+    if "post_meal_spike_concern" not in intake.symptom_set:
+        return False
+    if intake.request.input_availability.cgm:
+        return False
+    if intake.request.input_availability.genetic:
+        return False
+
+    missing_codes = {item.code for item in intake.missing_information}
+    if "missing_glucose_context" not in missing_codes:
+        return False
+    if not missing_codes.issubset({"missing_glucose_context", "missing_current_supplements"}):
+        return False
+
+    rule_ids = {rule.rule_id for rule in safety_summary.rule_refs}
+    if not rule_ids.issubset({"SAFETY-DUP-001"}):
+        return False
+
+    recommendation_keys = {item.ingredient_key for item in recommendations}
+    return recommendation_keys in (
+        {"soluble_fiber", "berberine"},
+        {"soluble_fiber"},
+        {"berberine"},
+    )
+
+
 def _build_decision_summary(
     intake: NormalizedIntake,
     status: RecommendationStatus,
@@ -2538,6 +2630,23 @@ def _build_next_action_rationale(
                     + [item.ingredient_key for item in recommendations]
                 ),
             )
+        if _can_start_with_glucose_symptom_fallback(
+            intake=intake,
+            safety_summary=safety_summary,
+            recommendations=recommendations,
+        ):
+            return NextActionRationale(
+                reason_code="start_plan_glucose_symptom_fallback",
+                summary=(
+                    "Explicit post-meal spike detail is strong enough to start a "
+                    "conservative blood-glucose baseline plan now, while deeper "
+                    "glucose context can still be collected later."
+                ),
+                supporting_codes=sorted(
+                    high_priority_codes
+                    + [item.ingredient_key for item in recommendations]
+                ),
+            )
         summary = (
             "High-priority missing context is still open, so more input is "
             "needed before plan start."
@@ -2620,6 +2729,22 @@ def _build_next_action_rationale(
             summary=(
                 "Available wearable activity context is strong enough to start a "
                 "conservative heart-health baseline plan now, while the missing "
+                "survey can still be collected later."
+            ),
+            supporting_codes=[item.ingredient_key for item in recommendations],
+        )
+
+    if _can_start_with_anticoagulant_heart_survey_fallback(
+        intake=intake,
+        safety_summary=safety_summary,
+        recommendations=recommendations,
+    ):
+        return NextActionRationale(
+            reason_code="start_plan_anticoagulant_heart_survey_fallback",
+            summary=(
+                "Available wearable activity context is strong enough to start a "
+                "conservative heart-health baseline plan now after anticoagulant "
+                "filtering left CoQ10 as the only survivor, while the missing "
                 "survey can still be collected later."
             ),
             supporting_codes=[item.ingredient_key for item in recommendations],
@@ -2874,6 +2999,21 @@ def _build_next_action_rationale(
                 "Available CGM glucose context is strong enough to start a conservative "
                 "blood-glucose baseline plan now, even though the primary symptom detail "
                 "is still missing."
+            ),
+            supporting_codes=[item.ingredient_key for item in recommendations],
+        )
+
+    if _can_start_with_glucose_symptom_fallback(
+        intake=intake,
+        safety_summary=safety_summary,
+        recommendations=recommendations,
+    ):
+        return NextActionRationale(
+            reason_code="start_plan_glucose_symptom_fallback",
+            summary=(
+                "Explicit post-meal spike detail is strong enough to start a "
+                "conservative blood-glucose baseline plan now, while deeper "
+                "glucose context can still be collected later."
             ),
             supporting_codes=[item.ingredient_key for item in recommendations],
         )

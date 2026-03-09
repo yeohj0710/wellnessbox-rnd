@@ -28,7 +28,7 @@ def test_run_eval_returns_expected_summary_keys() -> None:
         attempted_breakdown, key=attempted_breakdown.get
     )
     assert integration_details["modality_breakdown"]["wearable"]["score"] == pytest.approx(
-        92.91338582677166
+        93.02325581395348
     )
     assert integration_details["modality_breakdown"]["cgm"]["score"] == pytest.approx(
         70.83333333333333

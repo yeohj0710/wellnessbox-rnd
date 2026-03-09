@@ -728,7 +728,7 @@ def test_duplicate_only_heart_context_missing_can_start_when_wearable_signal_is_
     assert response.missing_information[0].importance.value == "high"
 
 
-def test_glucose_context_missing_stays_collect_more_input_even_with_current_supplements() -> None:
+def test_glucose_symptom_fallback_starts_even_with_current_supplements() -> None:
     request = RecommendationRequest.model_validate(
         {
             "user_profile": {
@@ -767,13 +767,118 @@ def test_glucose_context_missing_stays_collect_more_input_even_with_current_supp
 
     response = recommend(request)
 
-    assert response.next_action.value == "collect_more_input"
+    assert response.next_action.value == "start_plan"
     assert (
         response.next_action_rationale.reason_code
-        == "collect_more_input_high_priority_missing_info"
+        == "start_plan_glucose_symptom_fallback"
     )
     assert response.missing_information[0].code == "missing_glucose_context"
     assert response.missing_information[0].importance.value == "high"
+    assert [item.ingredient_key for item in response.recommendations] == ["berberine"]
+    assert "post-meal spike" in response.next_action_rationale.summary.lower()
+
+
+def test_glucose_symptom_fallback_can_start_without_cgm_when_two_safe_candidates_remain() -> None:
+    request = RecommendationRequest.model_validate(
+        {
+            "user_profile": {
+                "age": 40,
+                "biological_sex": "female",
+                "pregnant": False,
+            },
+            "goals": ["blood_glucose"],
+            "symptoms": ["post_meal_spike_concern"],
+            "conditions": [],
+            "medications": [],
+            "current_supplements": [],
+            "lifestyle": {
+                "sleep_hours": 6.8,
+                "stress_level": 3,
+                "activity_level": "sedentary",
+                "smoker": False,
+                "alcohol_per_week": 0,
+            },
+            "input_availability": {
+                "survey": True,
+                "nhis": False,
+                "wearable": False,
+                "cgm": False,
+                "genetic": False,
+            },
+            "preferences": {
+                "budget_level": "medium",
+                "max_products": 2,
+                "avoid_ingredients": [],
+            },
+        }
+    )
+
+    response = recommend(request)
+
+    assert response.status.value == "ok"
+    assert response.next_action.value == "start_plan"
+    assert (
+        response.next_action_rationale.reason_code
+        == "start_plan_glucose_symptom_fallback"
+    )
+    assert [item.ingredient_key for item in response.recommendations] == [
+        "soluble_fiber",
+        "berberine",
+    ]
+    assert response.missing_information[0].code == "missing_glucose_context"
+    assert "post-meal spike" in response.next_action_rationale.summary.lower()
+
+
+def test_glucose_symptom_fallback_can_start_when_duplicate_overlap_leaves_berberine() -> None:
+    request = RecommendationRequest.model_validate(
+        {
+            "user_profile": {
+                "age": 40,
+                "biological_sex": "female",
+                "pregnant": False,
+            },
+            "goals": ["blood_glucose"],
+            "symptoms": ["post_meal_spike_concern"],
+            "conditions": [],
+            "medications": [],
+            "current_supplements": [
+                {"name": "Fiber Powder", "ingredients": ["soluble_fiber"]}
+            ],
+            "lifestyle": {
+                "sleep_hours": 6.8,
+                "stress_level": 3,
+                "activity_level": "sedentary",
+                "smoker": False,
+                "alcohol_per_week": 0,
+            },
+            "input_availability": {
+                "survey": True,
+                "nhis": False,
+                "wearable": False,
+                "cgm": False,
+                "genetic": False,
+            },
+            "preferences": {
+                "budget_level": "medium",
+                "max_products": 2,
+                "avoid_ingredients": [],
+            },
+        }
+    )
+
+    response = recommend(request)
+
+    assert response.status.value == "ok"
+    assert response.next_action.value == "start_plan"
+    assert (
+        response.next_action_rationale.reason_code
+        == "start_plan_glucose_symptom_fallback"
+    )
+    assert [item.ingredient_key for item in response.recommendations] == ["berberine"]
+    assert [ref.rule_id for ref in response.safety_summary.rule_refs] == [
+        "SAFETY-DUP-001"
+    ]
+    assert "soluble_fiber" in response.safety_summary.excluded_ingredients
 
 
 def test_genetic_context_is_explicit_when_multimodal_fallback_allows_plan_start(
@@ -2037,7 +2142,11 @@ def test_cgm_post_meal_context_changes_top_candidate_for_pure_blood_glucose() ->
     assert [item.ingredient_key for item in cgm_response.recommendations] == [
         "berberine"
     ]
-    assert baseline_response.next_action.value == "collect_more_input"
+    assert baseline_response.next_action.value == "start_plan"
+    assert (
+        baseline_response.next_action_rationale.reason_code
+        == "start_plan_glucose_symptom_fallback"
+    )
     assert cgm_response.next_action.value == "start_plan"
 
 
@@ -3418,10 +3527,14 @@ def test_wearable_context_is_explicit_when_anticoagulant_heart_survey_clearance(
     response = recommend(request)
 
     assert response.status.value == "ok"
-    assert response.next_action.value == "collect_more_input"
+    assert response.next_action.value == "start_plan"
+    assert (
+        response.next_action_rationale.reason_code
+        == "start_plan_anticoagulant_heart_survey_fallback"
+    )
     assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
     assert "wearable context" in response.decision_summary.summary.lower()
-    assert "wearable context" in response.next_action_rationale.summary.lower()
+    assert "wearable activity context" in response.next_action_rationale.summary.lower()
 
 
 def test_renal_only_review_is_cleared_when_only_baseline_sleep_candidate_remains() -> None:
@@ -4404,10 +4517,10 @@ def test_anticoagulant_heart_survey_only_block_clears_to_collect_more_input_when
     response = recommend(request)
 
     assert response.status.value == "ok"
-    assert response.next_action.value == "collect_more_input"
+    assert response.next_action.value == "start_plan"
     assert (
         response.next_action_rationale.reason_code
-        == "collect_more_input_high_priority_missing_info"
+        == "start_plan_anticoagulant_heart_survey_fallback"
     )
     assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
     assert [ref.rule_id for ref in response.safety_summary.rule_refs] == [
@@ -4415,6 +4528,8 @@ def test_anticoagulant_heart_survey_only_block_clears_to_collect_more_input_when
         "SAFETY-ANTICOAG-001",
     ]
     assert "omega3" in response.safety_summary.excluded_ingredients
+    assert "wearable activity context" in response.next_action_rationale.summary.lower()
+    assert "coq10" in response.next_action_rationale.summary.lower()
 
 
 def test_anticoagulant_heart_survey_only_block_clears_with_coumadin_alias_and_duplicate_overlap(
@@ -4458,10 +4573,119 @@ def test_anticoagulant_heart_survey_only_block_clears_with_coumadin_alias_and_du
     response = recommend(request)
 
     assert response.status.value == "ok"
-    assert response.next_action.value == "collect_more_input"
+    assert response.next_action.value == "start_plan"
     assert (
         response.next_action_rationale.reason_code
-        == "collect_more_input_high_priority_missing_info"
+        == "start_plan_anticoagulant_heart_survey_fallback"
+    )
+    assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
+    assert [ref.rule_id for ref in response.safety_summary.rule_refs] == [
+        "INTAKE-SURVEY-001",
+        "SAFETY-ANTICOAG-001",
+        "SAFETY-DUP-001",
+    ]
+    assert "omega3" in response.safety_summary.excluded_ingredients
+    assert "wearable activity context" in response.next_action_rationale.summary.lower()
+    assert "coq10" in response.next_action_rationale.summary.lower()
+
+
+def test_anticoagulant_heart_survey_only_block_starts_plan_under_low_budget_single_survivor(
+) -> None:
+    request = RecommendationRequest.model_validate(
+        {
+            "user_profile": {
+                "age": 64,
+                "biological_sex": "male",
+                "pregnant": False,
+            },
+            "goals": ["heart_health"],
+            "symptoms": ["low_activity"],
+            "conditions": [],
+            "medications": [{"name": "warfarin", "dose": "5mg"}],
+            "current_supplements": [],
+            "lifestyle": {
+                "sleep_hours": 7.1,
+                "stress_level": 2,
+                "activity_level": "sedentary",
+                "smoker": False,
+                "alcohol_per_week": 0,
+            },
+            "input_availability": {
+                "survey": False,
+                "nhis": True,
+                "wearable": True,
+                "cgm": False,
+                "genetic": False,
+            },
+            "preferences": {
+                "budget_level": "low",
+                "max_products": 1,
+                "avoid_ingredients": [],
+            },
+        }
+    )
+
+    response = recommend(request)
+
+    assert response.status.value == "ok"
+    assert response.next_action.value == "start_plan"
+    assert (
+        response.next_action_rationale.reason_code
+        == "start_plan_anticoagulant_heart_survey_fallback"
+    )
+    assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
+    assert [ref.rule_id for ref in response.safety_summary.rule_refs] == [
+        "INTAKE-SURVEY-001",
+        "SAFETY-ANTICOAG-001",
+    ]
+    assert "omega3" in response.safety_summary.excluded_ingredients
+
+
+def test_anticoagulant_survey_block_starts_with_alias_duplicate_overlap_low_budget(
+) -> None:
+    request = RecommendationRequest.model_validate(
+        {
+            "user_profile": {
+                "age": 70,
+                "biological_sex": "male",
+                "pregnant": False,
+            },
+            "goals": ["heart_health"],
+            "symptoms": ["low_activity"],
+            "conditions": [],
+            "medications": [{"name": "Coumadin", "dose": "3mg"}],
+            "current_supplements": [
+                {"name": "Fish Oil Omega-3 Softgels", "ingredients": []}
+            ],
+            "lifestyle": {
+                "sleep_hours": 7.0,
+                "stress_level": 2,
+                "activity_level": "sedentary",
+                "smoker": False,
+                "alcohol_per_week": 0,
+            },
+            "input_availability": {
+                "survey": False,
+                "nhis": True,
+                "wearable": True,
+                "cgm": False,
+                "genetic": False,
+            },
+            "preferences": {
+                "budget_level": "low",
+                "max_products": 1,
+                "avoid_ingredients": [],
+            },
+        }
+    )
+
+    response = recommend(request)
+
+    assert response.status.value == "ok"
+    assert response.next_action.value == "start_plan"
+    assert (
+        response.next_action_rationale.reason_code
+        == "start_plan_anticoagulant_heart_survey_fallback"
     )
     assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
     assert [ref.rule_id for ref in response.safety_summary.rule_refs] == [

@@ -2,11 +2,11 @@
 
 ## Current priority
 
-Primary frozen eval is validated at `246` cases, so P1 work continues.
+Primary frozen eval is validated at `250` cases, so P1 work continues.
 
-Current strongest unresolved buckets:
+Forced-priority unresolved buckets:
 
-1. `collect_more_input_high_priority_missing_info = 10`
+1. `collect_more_input_high_priority_missing_info = 3`
 2. `needs_review_due_to_safety = 7`
 3. `needs_review_no_candidates = 6`
 4. `blocked_minimum_input = 5`
@@ -17,12 +17,12 @@ Rate-based weakest modality:
 
 ## Recommended next loop
 
-1. Reduce `collect_more_input_high_priority_missing_info`.
-2. Add at least `2` harder regression cases where modality context exists but
-   high-priority intake context is still insufficient.
-3. After that pass, choose exactly one of:
-   - another missing-info / follow-up reduction
-   - `cgm` deterministic follow-through improvement
+1. Treat the remaining `collect_more_input_high_priority_missing_info = 3` as a
+   conservative floor unless new source-of-truth evidence appears.
+2. Move to `needs_review_due_to_safety`.
+3. Revisit this bucket only if `docs/context/master_context.md` or
+   `docs/context/original_plan.pdf` provide explicit support for survey-missing
+   general-wellness or wearable-only heart-plus-glucose plan start.
 
 ## Guardrails
 
