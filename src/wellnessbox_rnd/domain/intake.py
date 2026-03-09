@@ -72,18 +72,59 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
 
 def _derive_signal_flags(request: RecommendationRequest) -> set[str]:
     flags: set[str] = set()
+    symptom_set = {_normalize_text(item) for item in request.symptoms}
     if request.lifestyle.sleep_hours is not None and request.lifestyle.sleep_hours < 6:
         flags.add("sleep_deficit")
     if request.lifestyle.stress_level is not None and request.lifestyle.stress_level >= 4:
         flags.add("high_stress")
     if request.lifestyle.activity_level.value == "sedentary":
         flags.add("low_activity")
-    if not request.input_availability.wearable:
+    if request.input_availability.wearable:
+        flags.add("wearable_data_available")
+        if any(
+            goal in request.goals
+            for goal in (
+                RecommendationGoal.SLEEP_SUPPORT,
+                RecommendationGoal.STRESS_SUPPORT,
+            )
+        ):
+            flags.add("wearable_sleep_context")
+        if any(
+            goal in request.goals
+            for goal in (
+                RecommendationGoal.HEART_HEALTH,
+                RecommendationGoal.ENERGY_SUPPORT,
+                RecommendationGoal.GENERAL_WELLNESS,
+            )
+        ):
+            flags.add("wearable_activity_context")
+    else:
         flags.add("no_wearable_data")
-    if not request.input_availability.cgm:
+    if request.input_availability.cgm:
+        flags.add("cgm_data_available")
+        if RecommendationGoal.BLOOD_GLUCOSE in request.goals:
+            flags.add("cgm_glucose_context")
+            if "post_meal_spike_concern" in symptom_set:
+                flags.add("cgm_post_meal_spike_context")
+    else:
         flags.add("no_cgm_data")
     if request.input_availability.genetic:
         flags.add("genetic_data_available")
+        if "low_sun_exposure" in symptom_set:
+            flags.add("genetic_low_sun_context")
+        if RecommendationGoal.BLOOD_GLUCOSE in request.goals:
+            flags.add("genetic_glycemic_context")
+        if RecommendationGoal.GUT_HEALTH in request.goals:
+            flags.add("genetic_gut_context")
+        if RecommendationGoal.IMMUNITY_SUPPORT in request.goals:
+            flags.add("genetic_immunity_context")
+        if RecommendationGoal.BONE_JOINT in request.goals:
+            flags.add("genetic_bone_context")
+        if (
+            RecommendationGoal.ENERGY_SUPPORT in request.goals
+            and symptom_set.intersection({"fatigue", "frequent_fatigue"})
+        ):
+            flags.add("genetic_energy_metabolism_context")
         if any(
             goal in request.goals
             for goal in (

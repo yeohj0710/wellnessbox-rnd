@@ -5,7 +5,7 @@ WellnessBox R&D baseline.
 
 ## Current dataset
 
-- `frozen_eval_v1.jsonl`: 118 synthetic cases
+- `frozen_eval_v1.jsonl`: 194 synthetic cases
 - `sample_cases.jsonl`: 16-case seed snapshot retained for reference
 
 ## Coverage
@@ -22,6 +22,41 @@ WellnessBox R&D baseline.
 - energy support baseline
 - mixed wearable/CGM/genetic integration observations
 - genetic-supported ranking regressions
+- explicit genetic-rationale regressions
+- explicit genetic-summary regressions
+- genetic glycemic-response regressions
+- genetic gut-resilience regressions
+- genetic immunity-fallback regressions
+- genetic heart/coq10 regressions
+- genetic energy-metabolism regressions
+- genetic sleep-fallback regressions
+- genetic bone-mineral regressions
+- cgm-supported ranking regressions
+- explicit cgm-observability regressions
+- explicit wearable-observability regressions
+- renal-only safety review reduction regressions
+- pregnancy-only safety review reduction regressions
+- survey-missing pregnancy blocked-input reduction regressions
+- survey-missing heart blocked-input reduction regressions
+- genetic glucose fallback start-plan regressions
+- duplicate-only current-regimen continuation regressions
+- wearable heart fallback start-plan regressions
+- multimodal heart-energy fallback start-plan regressions
+- duplicate-only heart-energy fallback start-plan regressions
+- multimodal heart-sleep fallback start-plan regressions
+- genetic missing-info observability regressions
+- pregnancy-plus-renal glucose safety-review reduction regressions
+- duplicate-only heart-health fallback regressions
+- general-wellness survey-only blocked-input reduction regressions
+- heart-only multimodal fallback start-plan regressions
+- heart-and-glucose multimodal fallback start-plan regressions
+- duplicate-only heart-symptom fallback start-plan regressions
+- pregnancy-only sleep review reduction regressions
+- survey-missing energy start-plan fallback regressions
+- survey-missing energy/bone blocked-input reduction regressions
+- survey-missing renal sleep/bone blocked-input reduction regressions
+- survey-missing bone-support start-plan regressions
+- survey-missing general-wellness start-plan regressions
 - long-title parser-limit failures
 - review paths with no remaining safe candidates
 - stacked survey-missing safety blocks
@@ -62,6 +97,8 @@ python scripts/manage_eval_dataset.py scaffold ^
 - `sensor_genetic_integration_rate_pct` is still a proxy metric based on the
   `integration.attempted` and `integration.success` observations embedded in the
   dataset.
+- Assumption: `integration.<modality>.success = 1` means the modality changed
+  ranking or is explicitly pinned in the frozen eval explanation contract.
 - The eval report includes modality-level integration diagnostics for
   `wearable`, `cgm`, and `genetic` so the bottleneck is visible without changing
   the official KPI score.

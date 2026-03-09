@@ -19,3 +19,10 @@ def test_canonicalize_catalog_term_matches_long_avoid_title() -> None:
 
 def test_canonicalize_catalog_term_keeps_ambiguous_generic_title_unmatched() -> None:
     assert canonicalize_catalog_term("Daily Wellness Capsules") is None
+
+
+def test_canonicalize_catalog_term_prefers_b_complex_over_vitamin_c_false_positive() -> None:
+    assert (
+        canonicalize_catalog_term("Garden of Life Vitamin Code Raw B-Complex")
+        == "vitamin_b_complex"
+    )

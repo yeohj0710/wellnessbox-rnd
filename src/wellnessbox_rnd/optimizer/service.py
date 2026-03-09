@@ -1,6 +1,12 @@
 from wellnessbox_rnd.domain.catalog import list_catalog_items
 from wellnessbox_rnd.domain.intake import NormalizedIntake
-from wellnessbox_rnd.efficacy.service import score_candidate
+from wellnessbox_rnd.domain.models import IngredientCatalogItem
+from wellnessbox_rnd.efficacy.service import (
+    cgm_context_note,
+    genetic_context_note,
+    score_candidate,
+    wearable_context_note,
+)
 from wellnessbox_rnd.schemas.recommendation import (
     RecommendationCandidate,
     RecommendationGoal,
@@ -30,6 +36,7 @@ def select_recommendations(
             continue
 
         explanation = build_candidate_explanation(
+            item=item,
             display_name=item.display_name,
             explanation_tags=item.explanation_tags,
             intake=intake,
@@ -71,6 +78,7 @@ def select_recommendations(
 
 
 def build_candidate_explanation(
+    item: IngredientCatalogItem,
     display_name: str,
     explanation_tags: list[str],
     intake: NormalizedIntake,
@@ -86,10 +94,16 @@ def build_candidate_explanation(
         if safety_review
         else ""
     )
+    wearable_text = wearable_context_note(item, intake) or ""
+    cgm_text = cgm_context_note(item, intake) or ""
+    genetic_text = genetic_context_note(item, intake) or ""
     return (
         f"{display_name} was selected for {goal_text} because the current baseline linked it to "
         f"{tag_text}. This is a deterministic baseline ranking, not a medical diagnosis. "
         f"Follow-up focus: {follow_up_focus}."
+        f"{wearable_text}"
+        f"{cgm_text}"
+        f"{genetic_text}"
         f"{caution_text}"
     )
 

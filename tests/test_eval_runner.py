@@ -28,13 +28,13 @@ def test_run_eval_returns_expected_summary_keys() -> None:
         attempted_breakdown, key=attempted_breakdown.get
     )
     assert integration_details["modality_breakdown"]["wearable"]["score"] == pytest.approx(
-        66.66666666666667
+        92.91338582677166
     )
     assert integration_details["modality_breakdown"]["cgm"]["score"] == pytest.approx(
-        16.666666666666668
+        70.83333333333333
     )
     assert integration_details["modality_breakdown"]["genetic"]["score"] == pytest.approx(
-        7.142857142857143
+        94.20289855072464
     )
     assert "case_results" in report
 
@@ -43,12 +43,13 @@ def test_primary_eval_dataset_has_broader_category_and_modality_coverage() -> No
     cases = load_eval_cases("data/frozen_eval/frozen_eval_v1.jsonl")
     category_counts = Counter(case.category for case in cases)
 
-    assert category_counts["safety_warning"] >= 9
-    assert category_counts["missing_context"] >= 14
+    assert category_counts["safety_warning"] >= 10
+    assert category_counts["missing_context"] >= 18
     assert category_counts["integration_mixed"] == 2
-    assert category_counts["review_no_candidates"] >= 15
-    assert category_counts["safety_blocked"] >= 14
-    assert category_counts["parser_limit"] >= 18
+    assert category_counts["genetic_supported"] >= 15
+    assert category_counts["review_no_candidates"] >= 20
+    assert category_counts["safety_blocked"] >= 13
+    assert category_counts["parser_limit"] >= 19
 
     attempted_case_counts = {"wearable": 0, "cgm": 0, "genetic": 0}
     for case in cases:
@@ -56,9 +57,9 @@ def test_primary_eval_dataset_has_broader_category_and_modality_coverage() -> No
             if observation.attempted:
                 attempted_case_counts[modality] += 1
 
-    assert attempted_case_counts["wearable"] >= 63
-    assert attempted_case_counts["cgm"] >= 24
-    assert attempted_case_counts["genetic"] >= 70
+    assert attempted_case_counts["wearable"] >= 127
+    assert attempted_case_counts["cgm"] >= 48
+    assert attempted_case_counts["genetic"] >= 138
 
 
 def test_write_report_files_creates_json_and_markdown() -> None:

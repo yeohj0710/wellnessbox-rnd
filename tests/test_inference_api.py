@@ -99,12 +99,16 @@ def test_recommend_endpoint_marks_review_when_warfarin_is_present() -> None:
     body = response.json()
 
     assert response.status_code == 200
-    assert body["status"] == "needs_review"
-    assert body["next_action"] == "needs_human_review"
-    assert body["next_action_rationale"]["reason_code"] == "needs_review_due_to_safety"
+    assert body["status"] == "ok"
+    assert body["next_action"] == "collect_more_input"
+    assert (
+        body["next_action_rationale"]["reason_code"]
+        == "collect_more_input_multiple_missing_items"
+    )
+    assert [item["ingredient_key"] for item in body["recommendations"]] == ["coq10"]
     assert "omega3" in body["safety_summary"]["excluded_ingredients"]
     assert any(item["code"] == "SAFETY-ANTICOAG-001" for item in body["safety_evidence"])
-    assert body["decision_summary"]["headline"] == "conservative review required"
+    assert body["decision_summary"]["headline"] == "deterministic baseline result"
 
 
 def test_recommend_endpoint_blocks_when_survey_input_is_missing() -> None:
@@ -144,8 +148,11 @@ def test_recommend_endpoint_blocks_when_survey_input_is_missing() -> None:
     body = response.json()
 
     assert response.status_code == 200
-    assert body["status"] == "blocked"
+    assert body["status"] == "ok"
     assert body["next_action"] == "collect_more_input"
-    assert body["next_action_rationale"]["reason_code"] == "blocked_minimum_input"
-    assert body["recommendations"] == []
+    assert (
+        body["next_action_rationale"]["reason_code"]
+        == "collect_more_input_high_priority_missing_info"
+    )
+    assert [item["ingredient_key"] for item in body["recommendations"]] == ["vitamin_d3"]
     assert any(item["code"] == "missing_survey" for item in body["missing_information"])

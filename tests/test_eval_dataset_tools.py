@@ -47,15 +47,27 @@ def test_summarize_eval_cases_reports_current_dataset_coverage() -> None:
     summary = summarize_eval_cases(cases)
 
     assert summary["case_count"] == len(cases)
-    assert summary["case_count"] >= 118
+    assert summary["case_count"] >= 246
+    assert summary["category_counts"]["cgm_supported"] >= 3
+    assert summary["category_counts"]["chronic_condition"] >= 7
+    assert summary["category_counts"]["collect_more_input"] >= 4
     assert summary["category_counts"]["free_text_alias"] == 3
-    assert summary["category_counts"]["parser_limit"] >= 18
-    assert summary["category_counts"]["review_no_candidates"] >= 15
-    assert summary["category_counts"]["safety_blocked"] >= 14
-    assert summary["expected_next_action_counts"]["collect_more_input"] >= 34
-    assert summary["integration_attempted_case_counts"]["genetic"] >= 70
-    assert summary["integration_totals"]["genetic"]["attempted"] >= 70
-    assert summary["integration_totals"]["genetic"]["success"] >= 5
+    assert summary["category_counts"]["genetic_supported"] >= 15
+    assert summary["category_counts"]["parser_limit"] >= 19
+    assert summary["category_counts"]["review_no_candidates"] >= 20
+    assert summary["category_counts"]["safety_blocked"] >= 13
+    assert summary["expected_next_action_counts"]["collect_more_input"] >= 19
+    assert summary["expected_next_action_counts"]["needs_human_review"] >= 13
+    assert summary["expected_next_action_counts"]["start_plan"] >= 211
+    assert summary["integration_attempted_case_counts"]["cgm"] >= 48
+    assert summary["integration_attempted_case_counts"]["wearable"] >= 127
+    assert summary["integration_attempted_case_counts"]["genetic"] >= 138
+    assert summary["integration_totals"]["cgm"]["attempted"] >= 48
+    assert summary["integration_totals"]["cgm"]["success"] >= 30
+    assert summary["integration_totals"]["wearable"]["attempted"] >= 127
+    assert summary["integration_totals"]["wearable"]["success"] >= 118
+    assert summary["integration_totals"]["genetic"]["attempted"] >= 138
+    assert summary["integration_totals"]["genetic"]["success"] >= 130
 
 
 def test_manage_eval_dataset_scaffold_append_writes_sorted_jsonl(tmp_path) -> None:

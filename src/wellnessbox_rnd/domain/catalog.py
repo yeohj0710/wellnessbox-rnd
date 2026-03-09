@@ -114,16 +114,50 @@ def _catalog_match_score(
     compact_term: str,
     term_tokens: frozenset[str],
 ) -> tuple[int, int, int] | None:
-    if normalized_term and normalized_term in normalized_value and len(normalized_term) >= 6:
+    if (
+        len(normalized_term) >= 6
+        and _contains_catalog_token_sequence(
+            _catalog_sequence_tokens(normalized_value),
+            _catalog_sequence_tokens(normalized_term),
+        )
+    ):
         return (3, len(term_tokens), len(compact_term))
 
-    if compact_term and compact_term in compact_value and len(compact_term) >= 6:
+    if (
+        compact_term
+        and compact_term in compact_value
+        and len(compact_term) >= 6
+        and (len(term_tokens) <= 1 or term_tokens.issubset(value_tokens))
+    ):
         return (2, len(term_tokens), len(compact_term))
 
     if term_tokens and term_tokens.issubset(value_tokens):
         return (1, len(term_tokens), len(compact_term))
 
     return None
+
+
+def _catalog_sequence_tokens(value: str) -> tuple[str, ...]:
+    tokens: list[str] = []
+    for raw_token in normalize_catalog_text(value).split():
+        cleaned = "".join(char for char in raw_token if char.isalnum())
+        if not cleaned or cleaned.isdigit():
+            continue
+        tokens.append(cleaned)
+    return tuple(tokens)
+
+
+def _contains_catalog_token_sequence(
+    value_tokens: tuple[str, ...], term_tokens: tuple[str, ...]
+) -> bool:
+    if not value_tokens or not term_tokens or len(term_tokens) > len(value_tokens):
+        return False
+
+    term_window = len(term_tokens)
+    for index in range(len(value_tokens) - term_window + 1):
+        if value_tokens[index : index + term_window] == term_tokens:
+            return True
+    return False
 
 
 def _meaningful_catalog_tokens(value: str) -> list[str]:

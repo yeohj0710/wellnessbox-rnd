@@ -16,7 +16,7 @@ Primary dataset:
 
 Current size:
 
-- 118 synthetic cases
+- 194 synthetic cases
 
 ## Top-level fields
 
@@ -93,6 +93,38 @@ The dataset helper currently enforces the following invariants:
 - catalog alias normalization
 - modality integration mix
 - genetic-supported ranking regressions
+- explicit genetic-summary regressions
+- genetic glycemic-response regressions
+- genetic gut-resilience regressions
+- genetic immunity-fallback regressions
+- genetic heart/coq10 regressions
+- genetic energy-metabolism regressions
+- genetic sleep-fallback regressions
+- genetic bone-mineral regressions
+- cgm-supported ranking regressions
+- explicit cgm-observability regressions
+- explicit wearable-observability regressions
+- renal-only safety review reduction regressions
+- pregnancy-only safety review reduction regressions
+- survey-missing pregnancy blocked-input reduction regressions
+- survey-missing heart blocked-input reduction regressions
+- genetic glucose fallback start-plan regressions
+- duplicate-only current-regimen continuation regressions
+- wearable heart fallback start-plan regressions
+- multimodal heart-energy fallback start-plan regressions
+- duplicate-only heart-energy fallback start-plan regressions
+- multimodal heart-sleep fallback start-plan regressions
+- genetic missing-info observability regressions
+- pregnancy-plus-renal glucose safety-review reduction regressions
+- duplicate-only heart-health fallback regressions
+- general-wellness survey-only blocked-input reduction regressions
+- heart-only multimodal fallback start-plan regressions
+- heart-and-glucose multimodal fallback start-plan regressions
+- duplicate-only heart-symptom fallback start-plan regressions
+- pregnancy-only sleep review reduction regressions
+- survey-missing energy/bone blocked-input reduction regressions
+- survey-missing renal sleep/bone blocked-input reduction regressions
+- survey-missing bone-support start-plan regressions
 - long-title parser-limit failures
 - no-candidate review paths
 - stacked blocked vs review boundary cases
@@ -101,6 +133,9 @@ The dataset helper currently enforces the following invariants:
 
 - `sensor_genetic_integration_rate_pct` is still a proxy derived from
   case-level observations, not from real parser execution.
+- Assumption: `integration.<modality>.success = 1` is used only when the
+  modality changes deterministic ranking or is explicitly pinned in the
+  explanation contract for that case.
 - The eval runner emits modality-level integration diagnostics in addition to
   the pooled KPI score so the bottleneck modality is visible in the report.
 - The current dataset is larger and more representative than the original

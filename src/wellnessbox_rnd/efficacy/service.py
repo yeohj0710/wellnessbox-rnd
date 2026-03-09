@@ -74,6 +74,7 @@ def _evidence_readiness_score(item: IngredientCatalogItem, intake: NormalizedInt
         score += 4.0
     elif intake.request.input_availability.survey:
         score += 2.0
+    score += _cgm_evidence_bonus(item, intake)
     score += _genetic_evidence_bonus(item, intake)
     return score
 
@@ -125,13 +126,148 @@ def _genetic_evidence_bonus(
     if not intake.request.input_availability.genetic:
         return 0.0
 
-    if item.key == "vitamin_d3" and "genetic_micronutrient_context" in intake.signal_flags:
-        return 8.0
+    if item.key == "vitamin_d3":
+        bonus = 0.0
+        if "genetic_micronutrient_context" in intake.signal_flags:
+            bonus += 8.0
+        if "genetic_low_sun_context" in intake.signal_flags:
+            bonus += 4.0
+        if "genetic_bone_context" in intake.signal_flags:
+            bonus += 2.0
+        return bonus
+    if item.key == "calcium_citrate" and "genetic_bone_context" in intake.signal_flags:
+        return 4.0
+    if item.key == "soluble_fiber" and "genetic_glycemic_context" in intake.signal_flags:
+        return 2.0
+    if item.key == "soluble_fiber" and "genetic_gut_context" in intake.signal_flags:
+        return 2.0
+    if item.key == "zinc" and "genetic_immunity_context" in intake.signal_flags:
+        return 1.0
+    if (
+        item.key == "vitamin_b_complex"
+        and "genetic_energy_metabolism_context" in intake.signal_flags
+    ):
+        return 4.0
+    if (
+        item.key == "coq10"
+        and "genetic_cardiometabolic_context" in intake.signal_flags
+        and RecommendationGoal.HEART_HEALTH in intake.goal_set
+    ):
+        return 2.0
     if item.key == "omega3" and "genetic_cardiometabolic_context" in intake.signal_flags:
         return 10.0
+    if item.key == "l_theanine" and "genetic_recovery_context" in intake.signal_flags:
+        return 4.0
     if (
         item.key == "magnesium_glycinate"
         and "genetic_recovery_context" in intake.signal_flags
     ):
         return 6.0
+    return 0.0
+
+
+def genetic_context_note(
+    item: IngredientCatalogItem,
+    intake: NormalizedIntake,
+) -> str | None:
+    if not intake.request.input_availability.genetic:
+        return None
+
+    if item.key == "vitamin_d3":
+        if (
+            "genetic_bone_context" in intake.signal_flags
+            and "genetic_low_sun_context" in intake.signal_flags
+        ):
+            return (
+                " Available genetic context reinforced bone-mineral support confidence "
+                "for low sun exposure."
+            )
+        if "genetic_bone_context" in intake.signal_flags:
+            return " Available genetic context reinforced bone-mineral support confidence."
+        if "genetic_low_sun_context" in intake.signal_flags:
+            return (
+                " Available genetic context reinforced micronutrient support confidence "
+                "for low sun exposure."
+            )
+        if "genetic_micronutrient_context" in intake.signal_flags:
+            return " Available genetic context reinforced micronutrient support confidence."
+    if item.key == "calcium_citrate" and "genetic_bone_context" in intake.signal_flags:
+        return " Available genetic context reinforced bone-mineral support confidence."
+    if item.key == "soluble_fiber" and "genetic_glycemic_context" in intake.signal_flags:
+        return " Available genetic context reinforced glycemic-response support confidence."
+    if item.key == "soluble_fiber" and "genetic_gut_context" in intake.signal_flags:
+        return " Available genetic context reinforced gut-resilience support confidence."
+    if item.key == "zinc" and "genetic_immunity_context" in intake.signal_flags:
+        return " Available genetic context reinforced immune-micronutrient support confidence."
+    if (
+        item.key == "vitamin_b_complex"
+        and "genetic_energy_metabolism_context" in intake.signal_flags
+    ):
+        return " Available genetic context reinforced energy-metabolism support confidence."
+    if (
+        item.key == "coq10"
+        and "genetic_cardiometabolic_context" in intake.signal_flags
+        and RecommendationGoal.HEART_HEALTH in intake.goal_set
+    ):
+        return " Available genetic context reinforced cardiometabolic energy support confidence."
+    if item.key == "omega3" and "genetic_cardiometabolic_context" in intake.signal_flags:
+        return " Available genetic context reinforced cardiometabolic support confidence."
+    if item.key == "l_theanine" and "genetic_recovery_context" in intake.signal_flags:
+        return " Available genetic context reinforced neuro-recovery support confidence."
+    if (
+        item.key == "magnesium_glycinate"
+        and "genetic_recovery_context" in intake.signal_flags
+    ):
+        return " Available genetic context reinforced recovery support confidence."
+    return None
+
+
+def wearable_context_note(
+    item: IngredientCatalogItem,
+    intake: NormalizedIntake,
+) -> str | None:
+    if not intake.request.input_availability.wearable:
+        return None
+
+    if (
+        item.follow_up_focus in {"sleep_quality", "calmness_and_sleep_onset"}
+        and "wearable_sleep_context" in intake.signal_flags
+    ):
+        return " Available wearable context reinforced sleep-pattern follow-up confidence."
+    if (
+        item.follow_up_focus
+        in {"daytime_energy", "energy_and_activity", "activity_and_heart_metrics"}
+        and "wearable_activity_context" in intake.signal_flags
+    ):
+        return " Available wearable context reinforced activity-pattern follow-up confidence."
+    return None
+
+
+def cgm_context_note(
+    item: IngredientCatalogItem,
+    intake: NormalizedIntake,
+) -> str | None:
+    if not intake.request.input_availability.cgm:
+        return None
+
+    if item.key == "berberine" and "cgm_post_meal_spike_context" in intake.signal_flags:
+        return " Available CGM context reinforced post-meal glucose support confidence."
+    if item.key == "soluble_fiber" and "cgm_glucose_context" in intake.signal_flags:
+        return " Available CGM context preserved blood-glucose follow-up visibility."
+    return None
+
+
+def _cgm_evidence_bonus(
+    item: IngredientCatalogItem,
+    intake: NormalizedIntake,
+) -> float:
+    if not intake.request.input_availability.cgm:
+        return 0.0
+
+    if (
+        item.key == "berberine"
+        and intake.goal_set == {RecommendationGoal.BLOOD_GLUCOSE}
+        and "cgm_post_meal_spike_context" in intake.signal_flags
+    ):
+        return 8.0
     return 0.0
