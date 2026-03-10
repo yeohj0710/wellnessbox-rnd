@@ -48,6 +48,7 @@ def score_candidate(
         budget_adjustment=budget_adjustment,
         safety_adjustment=safety_adjustment,
         conservative_adjustment=conservative_adjustment,
+        learned_effect_bonus=0.0,
         total=total,
     )
 

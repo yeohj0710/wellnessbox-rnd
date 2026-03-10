@@ -167,6 +167,7 @@ class CandidateScoreBreakdown(BaseModel):
     budget_adjustment: float
     safety_adjustment: float
     conservative_adjustment: float
+    learned_effect_bonus: float = 0.0
     total: float
 
 
