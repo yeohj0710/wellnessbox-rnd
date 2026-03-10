@@ -86,6 +86,6 @@
 
 ## Next recommended work
 
-1. wire validated knowledge artifacts into the safety rule loader without weakening existing deterministic guards
-2. train a `P3` policy model on synthetic system-owned action labels
-3. extend closed-loop simulation to batch replay with aggregated state-transition metrics
+1. expand structured reference coverage so more interaction, contraindication, and dose-limit rows enter the runtime knowledge DB
+2. train a `P3` policy model on richer synthetic system-owned action labels
+3. extend closed-loop simulation to cohort-sliced batch replay with learned-vs-deterministic comparison

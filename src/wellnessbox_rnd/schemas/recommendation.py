@@ -125,11 +125,24 @@ class RecommendationRequest(BaseModel):
     preferences: RecommendationPreferences = Field(default_factory=RecommendationPreferences)
 
 
+class CitationReference(BaseModel):
+    reference_id: str
+    claim_id: str | None = None
+    source_title: str
+    source_type: str
+    page_or_section: str
+    excerpt: str
+    reference_uri: str
+
+
 class RuleReference(BaseModel):
     rule_id: str
     message: str
     severity: Severity
     source: str = "master_context_v1"
+    reference_ids: list[str] = Field(default_factory=list)
+    claim_ids: list[str] = Field(default_factory=list)
+    citations: list[CitationReference] = Field(default_factory=list)
 
 
 class SafetySummary(BaseModel):
@@ -157,6 +170,7 @@ class SafetyEvidenceItem(BaseModel):
     evidence_type: Literal["rule", "excluded_ingredient", "user_preference"]
     code: str
     summary: str
+    reference_ids: list[str] = Field(default_factory=list)
 
 
 class LimitationItem(BaseModel):

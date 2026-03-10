@@ -2,67 +2,89 @@
 
 ## Current loop
 
-- Chosen stage: `P4`
-- Chosen task: `multi-user batch replay simulation with aggregate transition metrics and guarded learned-policy comparison`
+- Chosen stage: `P3`
+- Chosen task: `train effect_model_v1 on richer synthetic longitudinal trajectories`
 - Why:
-  - the no-human action space, ingestion pipeline, synthetic longitudinal dataset, learned efficacy artifact, and policy artifact now exist
-  - the next missing execution layer was batch replay over many users instead of single-scenario traces
-  - the narrowest next step was to compare deterministic-only replay against learned-policy-guarded replay without touching runtime recommendation logic
+  - runtime knowledge DB wiring exists
+  - rich synthetic longitudinal and policy datasets exist
+  - learned policy v1 now exists, but learned efficacy was still `v0` and too shallow for domain-level effect reasoning
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
   - `case_count = 256`
 
 ## What changed
 
-- Extended simulation harness:
-  - `src/wellnessbox_rnd/simulation/closed_loop_v0.py`
-  - `src/wellnessbox_rnd/simulation/__init__.py`
-- Single-scenario simulation now accepts:
-  - learned policy artifact path
-  - `--enable-learned-policy`
-- Added batch replay runner:
-  - `scripts/run_closed_loop_batch_simulation.py`
-- Added batch simulation regression coverage:
-  - `tests/test_closed_loop_simulation.py`
-- Generated batch comparison artifacts:
-  - `artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.json`
-  - `artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.md`
-- Updated simulation documentation:
-  - `docs/04_simulation/01_closed_loop_simulation_harness.md`
+- Added effect model v1 artifact schema:
+  - `src/wellnessbox_rnd/models/effect_model_v1.py`
+- Added effect model v1 training/eval module:
+  - `src/wellnessbox_rnd/training/effect_model_v1.py`
+- Extended exports:
+  - `src/wellnessbox_rnd/models/__init__.py`
+  - `src/wellnessbox_rnd/training/__init__.py`
+- Added v1 training script:
+  - `scripts/train_effect_model_v1.py`
+- Added regression coverage:
+  - `tests/test_effect_model_v1.py`
+- Generated new learned artifacts:
+  - `artifacts/models/effect_model_v1.json`
+  - `artifacts/reports/effect_model_v1_eval.json`
+  - `artifacts/reports/effect_model_v1_eval.md`
+  - `artifacts/reports/effect_model_v1_splits.json`
+  - `artifacts/reports/effect_model_v1_feature_schema.json`
+  - `artifacts/reports/effect_model_v1_feature_schema.md`
+- Added model documentation:
+  - `docs/03_models/07_effect_model_v1.md`
 
-## Batch replay snapshot
+## Effect model v1 snapshot
 
-- compared modes:
-  - `deterministic_only`
-  - `learned_policy_guarded`
-- replay scope:
-  - `48 users`
-  - `84 total trace steps per mode`
-  - `average_trace_length = 1.75`
-- aggregate final states:
-  - `baseline_questionnaire_due = 24`
-  - `intake_active = 12`
-  - `stop_or_escalate = 12`
-- aggregate final policy actions:
-  - `ask_targeted_followup = 24`
-  - `continue_plan = 12`
-  - `reduce_or_stop = 12`
-- adverse events:
-  - `12`
-- average predicted effect proxy:
-  - `0.154855`
-- comparison deltas:
-  - `differing_final_state_user_ids = 0`
-  - `differing_final_policy_user_ids = 0`
-  - `differing_policy_path_user_ids = 0`
+- `model_name = effect_model_v1`
+- `cohort_version = synthetic_longitudinal_v2`
+- `seed = 20260310`
+- `alpha = 0.01`
+- `output_count = 9`
+- `feature_count = 70`
+- split sizes:
+  - `train = 270`
+  - `val = 105`
+  - `test = 105`
+- output names:
+  - `blood_glucose`
+  - `bone_joint`
+  - `energy_support`
+  - `general_wellness`
+  - `gut_health`
+  - `heart_health`
+  - `immunity_support`
+  - `sleep_support`
+  - `stress_support`
+
+## Effect model v1 metrics
+
+- train:
+  - `mean_domain_mae = 0.019431`
+  - `aggregate_mae = 0.015845`
+  - `aggregate_rmse = 0.023304`
+  - `aggregate_r2 = 0.909172`
+- val:
+  - `mean_domain_mae = 0.018197`
+  - `aggregate_mae = 0.013834`
+  - `aggregate_rmse = 0.018891`
+  - `aggregate_r2 = 0.94572`
+- test:
+  - `mean_domain_mae = 0.025335`
+  - `mean_domain_rmse = 0.040893`
+  - `aggregate_mae = 0.021604`
+  - `aggregate_rmse = 0.03396`
+  - `aggregate_r2 = 0.812435`
+  - `zero_baseline_aggregate_mae = 0.0572`
 
 ## Deterministic boundary
 
 - GPT wrapper was not used in this loop.
-- Learned policy integration exists only inside simulation replay.
-- Runtime recommendation logic did not change.
-- Guarded policy replay still clamps any more-permissive learned action back to the deterministic policy action.
-- Current `policy_guard_applied_count = 0` because the synthetic policy labels are still generator-derived and the learned policy reproduces them exactly on this dataset version.
+- synthetic data uses no actual user data and no external APIs.
+- deterministic safety remains upstream of learned artifacts.
+- `effect_model_v1` is offline only in this loop and does not alter runtime policy selection.
+- frozen eval behavior did not change in this loop.
 
 ## Deterministic baseline status
 
@@ -78,27 +100,21 @@ Frozen eval remained unchanged:
 
 ## Current bottlenecks
 
-Runtime next-action reason buckets:
-
-1. `blocked_minimum_input = 5`
-2. `collect_more_input_multiple_missing_items = 4`
-3. `needs_review_no_candidates = 4`
-4. `needs_review_due_to_safety = 3`
-5. `collect_more_input_high_priority_missing_info = 3`
-
 Closed-loop roadmap status:
 
 - no-human runtime action space exists
 - citation-backed ingestion pipeline exists
-- synthetic longitudinal dataset exists
-- learned efficacy model exists
-- learned policy model exists
-- multi-user batch replay and aggregate state metrics now exist
-- next major missing execution layer is wiring structured knowledge into deterministic safety loading and broadening synthetic policy diversity
+- runtime structured knowledge DB wiring exists
+- rich synthetic longitudinal dataset exists
+- rich synthetic policy dataset exists
+- learned effect model v1 now exists
+- learned policy model v1 exists
+- multi-user batch replay exists
+- next major missing layers are cohort-sliced replay and learned-vs-deterministic batch comparison
 
 ## Validation
 
-- `python scripts/run_closed_loop_batch_simulation.py --dataset data/synthetic/synthetic_longitudinal_v1.jsonl --max-cycles 3 --max-users 48 --model-artifact artifacts/models/efficacy_model_v0.json --policy-model-artifact artifacts/models/policy_model_v0.json`
+- `python scripts/train_effect_model_v1.py`
 - `python -m ruff check .`
 - `python -m pytest`
 - `python scripts/manage_eval_dataset.py validate`

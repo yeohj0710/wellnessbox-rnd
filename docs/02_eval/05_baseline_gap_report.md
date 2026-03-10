@@ -44,13 +44,11 @@ Current runtime next-action reason buckets:
 
 ## Current loop impact
 
- - loop task: `P4 batch closed-loop replay`
+- loop task: `P3 effect_model_v1 training`
 - current-loop decision:
-  - added multi-user replay and aggregate transition metrics
-  - compared deterministic-only vs learned-policy-guarded replay
-  - kept runtime next-action semantics, frozen eval expectations, and conservative buckets unchanged
-  - preserved pregnancy, medication/condition, and avoid guards
-  - kept deterministic policy as the guard ceiling for learned outputs
+  - added a multi-target learned effect artifact on `synthetic_longitudinal_v2`
+  - trained domain-level `delta_z_by_domain` prediction with aggregate delta reporting
+  - preserved frozen eval expectations and deterministic baseline metrics unchanged
 
 ## False-positive / false-negative notes
 
@@ -72,8 +70,10 @@ Current runtime next-action reason buckets:
 
 ## Next recommended code target
 
-1. wire citation-backed knowledge artifacts into deterministic safety/rule loading
-2. broaden synthetic policy labels so learned-policy replay can diverge meaningfully from deterministic replay
-3. keep `needs_review_no_candidates = 4`,
+1. extend batch replay with learned `policy_model_v1` and `effect_model_v1`
+2. add modality and risk slices:
+   `cgm`, `genetic`, `low-risk/high-risk`, `single-goal/multi-goal`
+3. compare deterministic-only vs learned-on with guard count and disagreement count
+4. keep `needs_review_no_candidates = 4`,
    `needs_review_due_to_safety = 3`, and
    `collect_more_input_high_priority_missing_info = 3` as floors

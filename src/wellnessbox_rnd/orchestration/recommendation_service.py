@@ -19,6 +19,7 @@ from wellnessbox_rnd.schemas.recommendation import (
     RecommendationStatus,
     SafetyEvidenceItem,
     SafetySummary,
+    Severity,
 )
 
 
@@ -82,26 +83,50 @@ def recommend(
                 learned_efficacy_artifact_path=learned_efficacy_artifact_path,
             )
         else:
-            next_action = NextAction.COLLECT_MORE_INPUT
-            summary = (
-                "The minimum intake contract was not satisfied, so the deterministic baseline "
-                "did not generate recommendation candidates."
-            )
-            if wearable_context_considered:
-                summary += (
-                    " Available wearable context was considered, but the minimum intake "
-                    "contract still blocked deterministic planning."
+            if _has_structured_safety_blocker(safety_summary):
+                next_action = NextAction.TRIGGER_SAFETY_RECHECK
+                summary = (
+                    "A citation-backed structured safety blocker was detected, so the "
+                    "deterministic baseline escalated into a safety recheck path before "
+                    "planning."
                 )
-            if cgm_context_considered:
-                summary += (
-                    " Available CGM context was considered, but the minimum intake contract "
-                    "still blocked deterministic planning."
+                if wearable_context_considered:
+                    summary += (
+                        " Available wearable context was considered, but the structured "
+                        "safety blocker still prevented plan start."
+                    )
+                if cgm_context_considered:
+                    summary += (
+                        " Available CGM context was considered, but the structured safety "
+                        "blocker still prevented plan start."
+                    )
+                if genetic_context_considered:
+                    summary += (
+                        " Available genetic context was considered, but the structured "
+                        "safety blocker still prevented plan start."
+                    )
+            else:
+                next_action = NextAction.COLLECT_MORE_INPUT
+                summary = (
+                    "The minimum intake contract was not satisfied, so the deterministic baseline "
+                    "did not generate recommendation candidates."
                 )
-            if genetic_context_considered:
-                summary += (
-                    " Available genetic context was considered, but the minimum intake contract "
-                    "still blocked deterministic planning."
-                )
+                if wearable_context_considered:
+                    summary += (
+                        " Available wearable context was considered, but the minimum intake "
+                        "contract still blocked deterministic planning."
+                    )
+                if cgm_context_considered:
+                    summary += (
+                        " Available CGM context was considered, but the minimum intake contract "
+                        "still blocked deterministic planning."
+                    )
+                if genetic_context_considered:
+                    summary += (
+                        " Available genetic context was considered, but the minimum intake "
+                        "contract "
+                        "still blocked deterministic planning."
+                    )
             return RecommendationResponse(
                 request_id=request.request_id,
                 decision_id=str(uuid4()),
@@ -2652,6 +2677,7 @@ def _build_safety_evidence(
                 evidence_type="rule",
                 code=rule_ref.rule_id,
                 summary=rule_ref.message,
+                reference_ids=rule_ref.reference_ids,
             ),
         )
 
@@ -2711,6 +2737,32 @@ def _build_next_action_rationale(
     rule_ids = [rule.rule_id for rule in safety_summary.rule_refs]
 
     if safety_summary.status == RecommendationStatus.BLOCKED:
+        if _has_structured_safety_blocker(safety_summary):
+            summary = (
+                "A citation-backed structured safety blocker was detected, so the "
+                "deterministic baseline moved into a safety recheck path before "
+                "planning."
+            )
+            if _wearable_context_considered(intake):
+                summary += (
+                    " Wearable context was available, but the structured safety blocker "
+                    "still prevented deterministic planning."
+                )
+            if _cgm_context_considered(intake):
+                summary += (
+                    " CGM context was available, but the structured safety blocker still "
+                    "prevented deterministic planning."
+                )
+            if _genetic_context_considered(intake):
+                summary += (
+                    " Genetic context was available, but the structured safety blocker "
+                    "still prevented deterministic planning."
+                )
+            return NextActionRationale(
+                reason_code="structured_safety_blocker",
+                summary=summary,
+                supporting_codes=rule_ids,
+            )
         summary = (
             "The minimum intake contract is incomplete, so more input is "
             "required before planning."
@@ -3698,3 +3750,10 @@ def _wearable_context_considered(intake: NormalizedIntake) -> bool:
 
 def _cgm_context_considered(intake: NormalizedIntake) -> bool:
     return "cgm_glucose_context" in intake.signal_flags
+
+
+def _has_structured_safety_blocker(safety_summary: SafetySummary) -> bool:
+    return any(
+        rule.severity == Severity.BLOCKER and rule.source == "knowledge_artifact"
+        for rule in safety_summary.rule_refs
+    )

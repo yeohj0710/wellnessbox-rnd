@@ -1,0 +1,616 @@
+{
+  "artifact_version": "runtime_knowledge_db_v1",
+  "source_reference_artifact_version": "reference_knowledge_base_v1",
+  "ingredients": [
+    {
+      "ingredient_key": "ashwagandha",
+      "display_name": "Ashwagandha"
+    },
+    {
+      "ingredient_key": "berberine",
+      "display_name": "Berberine"
+    },
+    {
+      "ingredient_key": "calcium_citrate",
+      "display_name": "Calcium Citrate"
+    },
+    {
+      "ingredient_key": "chondroitin",
+      "display_name": "Chondroitin"
+    },
+    {
+      "ingredient_key": "coq10",
+      "display_name": "CoQ10"
+    },
+    {
+      "ingredient_key": "glucosamine",
+      "display_name": "Glucosamine"
+    },
+    {
+      "ingredient_key": "l_theanine",
+      "display_name": "L-Theanine"
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "display_name": "Magnesium Glycinate"
+    },
+    {
+      "ingredient_key": "omega3",
+      "display_name": "Omega-3"
+    },
+    {
+      "ingredient_key": "probiotics",
+      "display_name": "Probiotics"
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "display_name": "Soluble Fiber"
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "display_name": "Vitamin B Complex"
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "display_name": "Vitamin C"
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "display_name": "Vitamin D3"
+    },
+    {
+      "ingredient_key": "zinc",
+      "display_name": "Zinc"
+    }
+  ],
+  "ingredient_aliases": [
+    {
+      "ingredient_key": "ashwagandha",
+      "alias": "ashwagandha",
+      "source_kind": "deterministic_policy"
+    },
+    {
+      "ingredient_key": "berberine",
+      "alias": "berberine",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "berberine",
+      "alias": "berberine",
+      "source_kind": "deterministic_policy"
+    },
+    {
+      "ingredient_key": "calcium_citrate",
+      "alias": "calcium citrate",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "calcium_citrate",
+      "alias": "calcium_citrate",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "chondroitin",
+      "alias": "chondroitin",
+      "source_kind": "knowledge_artifact"
+    },
+    {
+      "ingredient_key": "coq10",
+      "alias": "co q10",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "coq10",
+      "alias": "coenzyme q10",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "coq10",
+      "alias": "coq10",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "coq10",
+      "alias": "ubiquinone",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "glucosamine",
+      "alias": "glucosamine",
+      "source_kind": "knowledge_artifact"
+    },
+    {
+      "ingredient_key": "l_theanine",
+      "alias": "l theanine",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "l_theanine",
+      "alias": "l_theanine",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "l_theanine",
+      "alias": "theanine",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "alias": "magnesium bisglycinate",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "alias": "magnesium glycinate",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "alias": "magnesium_glycinate",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "alias": "magnesium_glycinate",
+      "source_kind": "deterministic_policy"
+    },
+    {
+      "ingredient_key": "omega3",
+      "alias": "epa dha",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "omega3",
+      "alias": "fish oil",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "omega3",
+      "alias": "omega 3",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "omega3",
+      "alias": "omega-3",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "omega3",
+      "alias": "omega3",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "omega3",
+      "alias": "omega3",
+      "source_kind": "deterministic_policy"
+    },
+    {
+      "ingredient_key": "probiotics",
+      "alias": "probiotic",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "probiotics",
+      "alias": "probiotics",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "alias": "psyllium",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "alias": "psyllium fiber",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "alias": "soluble fiber",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "alias": "soluble_fiber",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "alias": "b complex",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "alias": "b-complex",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "alias": "vitamin b complex",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "alias": "vitamin_b_complex",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "alias": "ascorbic acid",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "alias": "vitamin c",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "alias": "vitamin_c",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "alias": "cholecalciferol",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "alias": "vitamin d",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "alias": "vitamin d3",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "alias": "vitamin_d3",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "zinc",
+      "alias": "zinc",
+      "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "zinc",
+      "alias": "zinc picolinate",
+      "source_kind": "catalog"
+    }
+  ],
+  "medications": [
+    {
+      "medication_key": "coumadin"
+    },
+    {
+      "medication_key": "warfarin"
+    }
+  ],
+  "conditions": [
+    {
+      "condition_key": "chronic kidney disease"
+    },
+    {
+      "condition_key": "kidney disease"
+    },
+    {
+      "condition_key": "pregnancy"
+    }
+  ],
+  "interaction_rules": [
+    {
+      "rule_id": "SAFETY-ANTICOAG-001",
+      "source_kind": "deterministic_policy",
+      "severity": "warning",
+      "medication_keys": [
+        "coumadin",
+        "warfarin"
+      ],
+      "ingredient_keys": [
+        "omega3"
+      ],
+      "message": "Potential medication interaction triggers conservative exclusion.",
+      "warning_text": "Potential interaction context was detected for anticoagulant medication, so related candidates were excluded.",
+      "reason_code": null,
+      "next_action": null,
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "KB-SAFETY-ANTICOAG-001",
+      "source_kind": "knowledge_artifact",
+      "severity": "blocker",
+      "medication_keys": [
+        "coumadin",
+        "warfarin"
+      ],
+      "ingredient_keys": [
+        "chondroitin",
+        "glucosamine"
+      ],
+      "message": "Glucosamine or chondroitin used with warfarin or Coumadin can increase anticoagulant effect and bleeding risk.",
+      "warning_text": "Glucosamine or chondroitin used with warfarin or Coumadin can increase anticoagulant effect and bleeding risk.",
+      "reason_code": "anticoagulant_interaction",
+      "next_action": "blocked",
+      "reference_ids": [
+        "REF-KNOWLEDGE-ANTICOAG-001"
+      ],
+      "claim_ids": [
+        "CLM-KNOWLEDGE-ANTICOAG-001"
+      ]
+    }
+  ],
+  "contraindication_rules": [
+    {
+      "rule_id": "SAFETY-PREG-001",
+      "source_kind": "deterministic_policy",
+      "severity": "warning",
+      "condition_keys": [
+        "pregnancy"
+      ],
+      "excluded_ingredients": [
+        "ashwagandha",
+        "berberine"
+      ],
+      "message": "Pregnancy input requires conservative exclusion and human review.",
+      "warning_text": "Pregnancy input was detected, so restricted ingredients were excluded conservatively.",
+      "applies_when_pregnant": true,
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "SAFETY-RENAL-001",
+      "source_kind": "deterministic_policy",
+      "severity": "warning",
+      "condition_keys": [
+        "chronic kidney disease",
+        "kidney disease"
+      ],
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "message": "Condition-specific exclusion was applied conservatively.",
+      "warning_text": "Kidney disease input requires a conservative mineral review.",
+      "applies_when_pregnant": false,
+      "reference_ids": [],
+      "claim_ids": []
+    }
+  ],
+  "dose_limits": [],
+  "ingredient_domain_scores": [
+    {
+      "ingredient_key": "chondroitin",
+      "domain_key": "bleeding_risk",
+      "support_score": 1.0,
+      "medication_keys": [
+        "coumadin",
+        "warfarin"
+      ],
+      "normalized_claim_types": [
+        "drug_interaction"
+      ],
+      "reference_ids": [
+        "REF-KNOWLEDGE-ANTICOAG-001"
+      ],
+      "claim_ids": [
+        "CLM-KNOWLEDGE-ANTICOAG-001"
+      ]
+    },
+    {
+      "ingredient_key": "chondroitin",
+      "domain_key": "drug_interaction",
+      "support_score": 1.0,
+      "medication_keys": [
+        "coumadin",
+        "warfarin"
+      ],
+      "normalized_claim_types": [
+        "drug_interaction"
+      ],
+      "reference_ids": [
+        "REF-KNOWLEDGE-ANTICOAG-001"
+      ],
+      "claim_ids": [
+        "CLM-KNOWLEDGE-ANTICOAG-001"
+      ]
+    },
+    {
+      "ingredient_key": "glucosamine",
+      "domain_key": "bleeding_risk",
+      "support_score": 1.0,
+      "medication_keys": [
+        "coumadin",
+        "warfarin"
+      ],
+      "normalized_claim_types": [
+        "drug_interaction"
+      ],
+      "reference_ids": [
+        "REF-KNOWLEDGE-ANTICOAG-001"
+      ],
+      "claim_ids": [
+        "CLM-KNOWLEDGE-ANTICOAG-001"
+      ]
+    },
+    {
+      "ingredient_key": "glucosamine",
+      "domain_key": "drug_interaction",
+      "support_score": 1.0,
+      "medication_keys": [
+        "coumadin",
+        "warfarin"
+      ],
+      "normalized_claim_types": [
+        "drug_interaction"
+      ],
+      "reference_ids": [
+        "REF-KNOWLEDGE-ANTICOAG-001"
+      ],
+      "claim_ids": [
+        "CLM-KNOWLEDGE-ANTICOAG-001"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "reference_id": "REF-MC-ACTION-001",
+      "source_title": "WellnessBox R&D Master Context",
+      "source_type": "master_context",
+      "page_or_section": "autonomous closed-loop action policy",
+      "reference_uri": "docs/context/master_context.md"
+    },
+    {
+      "reference_id": "REF-MC-CITATION-001",
+      "source_title": "WellnessBox R&D Master Context",
+      "source_type": "master_context",
+      "page_or_section": "17.4 citation structure",
+      "reference_uri": "docs/context/master_context.md"
+    },
+    {
+      "reference_id": "REF-KNOWLEDGE-ANTICOAG-001",
+      "source_title": "Supplement Interaction Notes",
+      "source_type": "interaction_reference",
+      "page_or_section": "glucosamine chondroitin and anticoagulants",
+      "reference_uri": "data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md"
+    }
+  ],
+  "reference_spans": [
+    {
+      "span_id": "SPAN-CLM-MC-ACTION-001",
+      "reference_id": "REF-MC-ACTION-001",
+      "claim_id": "CLM-MC-ACTION-001",
+      "line_start": 13,
+      "line_end": 39,
+      "excerpt": "This sample reference captures the no-human action space required for the autonomous closed-loop agent. Runtime actions must remain system-owned so the state machine can continue without manual review or handoff semantics.",
+      "claim_text": "Runtime next_action must stay inside the system-owned action space and must not expose manual review or handoff actions.",
+      "normalized_claim_type": "action_space_constraint"
+    },
+    {
+      "span_id": "SPAN-CLM-MC-ACTION-002",
+      "reference_id": "REF-MC-ACTION-001",
+      "claim_id": "CLM-MC-ACTION-002",
+      "line_start": 45,
+      "line_end": 61,
+      "excerpt": "When safety risk rises, the system still owns the control flow and should move into a safety recheck path rather than a human-review action.",
+      "claim_text": "High-risk safety paths should route to trigger_safety_recheck as a system action instead of a human-handoff action.",
+      "normalized_claim_type": "safety_recheck_policy"
+    },
+    {
+      "span_id": "SPAN-CLM-MC-CITATION-001",
+      "reference_id": "REF-MC-CITATION-001",
+      "claim_id": "CLM-MC-CITATION-001",
+      "line_start": 13,
+      "line_end": 29,
+      "excerpt": "This sample reference normalizes citation requirements from the master context into a deterministic raw document. Structured citations need stable identifiers and typed fields so downstream safety and explanation modules can validate them.",
+      "claim_text": "Safety engine outputs must always carry reference_ids so the closed-loop agent stays citation-backed.",
+      "normalized_claim_type": "citation_requirement"
+    },
+    {
+      "span_id": "SPAN-CLM-MC-CITATION-002",
+      "reference_id": "REF-MC-CITATION-001",
+      "claim_id": "CLM-MC-CITATION-002",
+      "line_start": 36,
+      "line_end": 59,
+      "excerpt": "The canonical citation payload also needs a stable structure instead of free-text retrieval output. That structure is what lets rule ids, claim ids, and references stay connected across ingestion and runtime explanation.",
+      "claim_text": "Structured citations should include ref_id, source_title, source_type, page_or_section, claim_text, and normalized_claim_type.",
+      "normalized_claim_type": "citation_schema"
+    },
+    {
+      "span_id": "SPAN-CLM-KNOWLEDGE-ANTICOAG-001",
+      "reference_id": "REF-KNOWLEDGE-ANTICOAG-001",
+      "claim_id": "CLM-KNOWLEDGE-ANTICOAG-001",
+      "line_start": 13,
+      "line_end": 33,
+      "excerpt": "This sample reference captures the anticoagulant interaction note already present in the local supplement knowledge files. Glucosamine and chondroitin should be treated as a bleeding-risk interaction when warfarin or Coumadin is present.",
+      "claim_text": "Glucosamine or chondroitin used with warfarin or Coumadin can increase anticoagulant effect and bleeding risk.",
+      "normalized_claim_type": "drug_interaction"
+    }
+  ],
+  "workflow_policies": [
+    {
+      "rule_id": "KB-ACTION-001",
+      "source_kind": "knowledge_artifact",
+      "severity": "warning",
+      "policy_type": "enforce_system_owned_actions",
+      "payload": {
+        "allowed_actions": [
+          "blocked",
+          "collect_more_input",
+          "start_plan",
+          "continue_plan",
+          "re_optimize",
+          "reduce_or_stop",
+          "monitor_only",
+          "ask_targeted_followup",
+          "trigger_safety_recheck"
+        ]
+      },
+      "message": "Runtime next_action must stay inside the system-owned action space and must not expose manual review or handoff actions.",
+      "reference_ids": [
+        "REF-MC-ACTION-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-ACTION-001"
+      ]
+    },
+    {
+      "rule_id": "KB-ACTION-002",
+      "source_kind": "knowledge_artifact",
+      "severity": "warning",
+      "policy_type": "map_high_risk_to_safety_recheck",
+      "payload": {
+        "next_action": "trigger_safety_recheck"
+      },
+      "message": "High-risk safety paths should route to trigger_safety_recheck as a system action instead of a human-handoff action.",
+      "reference_ids": [
+        "REF-MC-ACTION-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-ACTION-002"
+      ]
+    },
+    {
+      "rule_id": "KB-CITE-001",
+      "source_kind": "knowledge_artifact",
+      "severity": "warning",
+      "policy_type": "require_reference_ids",
+      "payload": {
+        "require_fields": [
+          "reference_ids"
+        ]
+      },
+      "message": "Safety engine outputs must always carry reference_ids so the closed-loop agent stays citation-backed.",
+      "reference_ids": [
+        "REF-MC-CITATION-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-CITATION-001"
+      ]
+    },
+    {
+      "rule_id": "KB-CITE-002",
+      "source_kind": "knowledge_artifact",
+      "severity": "warning",
+      "policy_type": "enforce_citation_schema",
+      "payload": {
+        "require_fields": [
+          "ref_id",
+          "source_title",
+          "source_type",
+          "page_or_section",
+          "claim_text",
+          "normalized_claim_type"
+        ]
+      },
+      "message": "Structured citations should include ref_id, source_title, source_type, page_or_section, claim_text, and normalized_claim_type.",
+      "reference_ids": [
+        "REF-MC-CITATION-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-CITATION-002"
+      ]
+    }
+  ]
+}

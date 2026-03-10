@@ -17,55 +17,65 @@
 
 ## What this loop did
 
-- Chosen stage: `P4`
-- Chosen task: `multi-user batch replay simulation plus guarded learned-policy comparison`
+- Chosen stage: `P3`
+- Chosen task: `train effect_model_v1 on synthetic_longitudinal_v2`
 - Why:
-  - single-scenario simulation already existed
-  - learned policy artifact already existed
-  - the next missing piece was batch replay with aggregate metrics, not another single-user trace
+  - runtime knowledge DB wiring and richer synthetic policy data already exist
+  - learned policy v1 already exists
+  - the narrowest missing closed-loop layer was a richer learned effect artifact on domain-level deltas
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
   - `case_count = 256`
 
-## Batch simulation result
+## Effect model v1 result
 
-- Extended simulation module:
-  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/simulation/closed_loop_v0.py`
-- Added batch runner:
-  - `C:/dev/wellnessbox-rnd/scripts/run_closed_loop_batch_simulation.py`
+- Added effect model v1 module:
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/models/effect_model_v1.py`
+- Added effect training v1 module:
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/training/effect_model_v1.py`
+- Added training script:
+  - `C:/dev/wellnessbox-rnd/scripts/train_effect_model_v1.py`
+- Added tests:
+  - `C:/dev/wellnessbox-rnd/tests/test_effect_model_v1.py`
 - Added artifacts:
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.md`
+  - `C:/dev/wellnessbox-rnd/artifacts/models/effect_model_v1.json`
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_eval.json`
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_eval.md`
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_splits.json`
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_feature_schema.json`
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_feature_schema.md`
 
-Batch snapshot:
+Effect snapshot:
 
-- users replayed: `48`
-- total trace steps per mode: `84`
-- final states:
-  - `baseline_questionnaire_due = 24`
-  - `intake_active = 12`
-  - `stop_or_escalate = 12`
-- final policy actions:
-  - `ask_targeted_followup = 24`
-  - `continue_plan = 12`
-  - `reduce_or_stop = 12`
-- policy comparison:
-  - `differing_final_state_user_ids = 0`
-  - `differing_final_policy_user_ids = 0`
-  - `differing_policy_path_user_ids = 0`
+- `output_names`:
+  - `blood_glucose`
+  - `bone_joint`
+  - `energy_support`
+  - `general_wellness`
+  - `gut_health`
+  - `heart_health`
+  - `immunity_support`
+  - `sleep_support`
+  - `stress_support`
+- `feature_count = 70`
+- `test_metrics`:
+  - `mean_domain_mae = 0.025335`
+  - `aggregate_mae = 0.021604`
+  - `aggregate_rmse = 0.03396`
+  - `aggregate_r2 = 0.812435`
+  - `zero_baseline_aggregate_mae = 0.0572`
 
 ## GPT / learned / deterministic boundary
 
 - GPT wrapper was not used in this loop.
-- Learned policy integration exists only in simulation replay.
-- Runtime recommendation logic did not change.
-- Safety hard rules remain upstream of learned efficacy and learned policy.
-- Deterministic policy remains the ceiling: more-permissive learned actions are clamped back.
-- Current batch replay shows `policy_guard_applied_count = 0` because the synthetic policy labels are still generator-derived and matched exactly by the current model.
+- Runtime recommendation still preserves deterministic baseline semantics on frozen eval.
+- Safety hard rules still remain upstream of learned artifacts.
+- `effect_model_v1` is offline only in this loop.
+- Learned policy and deterministic safety behavior did not change in this loop.
 
 ## Validation snapshot
 
-- `python scripts/run_closed_loop_batch_simulation.py --dataset data/synthetic/synthetic_longitudinal_v1.jsonl --max-cycles 3 --max-users 48 --model-artifact artifacts/models/efficacy_model_v0.json --policy-model-artifact artifacts/models/policy_model_v0.json`
+- `python scripts/train_effect_model_v1.py`
 - `python -m ruff check .`
 - `python -m pytest`
 - `python scripts/manage_eval_dataset.py validate`
@@ -74,12 +84,13 @@ Batch snapshot:
 
 ## Result snapshot
 
-- deterministic-only and learned-policy-guarded batch replay currently produce the same final states and final policy actions
-- this is expected on the current dataset because policy labels come from deterministic generation
-- batch replay and aggregate state metrics now exist, so future learned-policy differences can be measured when synthetic label diversity grows
+- frozen eval metrics remained unchanged
+- `effect_model_v1` now exists on domain-level delta targets
+- learned effect prediction materially beats zero-delta baseline on synthetic test split
+- next large missing step is cohort-sliced learned-vs-deterministic replay
 
 ## Recommended next loop
 
-1. Wire `reference_knowledge_base_v1.json` into deterministic safety/rule loading behind strict validation.
-2. Expand synthetic policy labels beyond the current 3-action distribution.
-3. Add batch replay slices by modality and risk cohort once richer policy labels exist.
+1. Extend batch replay with guarded `policy_model_v1` and `effect_model_v1`.
+2. Add cohort slices for `cgm`, `genetic`, `low-risk/high-risk`, and `single-goal/multi-goal`.
+3. Expand structured safety coverage before widening learned replay scope.
