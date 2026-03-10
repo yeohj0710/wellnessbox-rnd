@@ -45,10 +45,15 @@ class RecommendationStatus(StrEnum):
 
 
 class NextAction(StrEnum):
+    BLOCKED = "blocked"
+    ASK_TARGETED_FOLLOWUP = "ask_targeted_followup"
+    TRIGGER_SAFETY_RECHECK = "trigger_safety_recheck"
     START_PLAN = "start_plan"
+    CONTINUE_PLAN = "continue_plan"
+    RE_OPTIMIZE = "re_optimize"
+    REDUCE_OR_STOP = "reduce_or_stop"
+    MONITOR_ONLY = "monitor_only"
     COLLECT_MORE_INPUT = "collect_more_input"
-    NEEDS_HUMAN_REVIEW = "needs_human_review"
-    DO_NOT_RECOMMEND = "do_not_recommend"
 
 
 class Severity(StrEnum):

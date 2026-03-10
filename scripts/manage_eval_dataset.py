@@ -11,6 +11,7 @@ from wellnessbox_rnd.evals.dataset_tools import (
     write_eval_cases_jsonl,
 )
 from wellnessbox_rnd.evals.runner import load_eval_cases
+from wellnessbox_rnd.schemas.recommendation import NextAction
 
 
 def build_parser() -> ArgumentParser:
@@ -63,12 +64,7 @@ def build_parser() -> ArgumentParser:
     scaffold_parser.add_argument(
         "--expected-next-action",
         default="start_plan",
-        choices=[
-            "start_plan",
-            "collect_more_input",
-            "needs_human_review",
-            "do_not_recommend",
-        ],
+        choices=[action.value for action in NextAction],
         help="Expected deterministic next action",
     )
     scaffold_parser.add_argument(

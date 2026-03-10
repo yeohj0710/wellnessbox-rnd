@@ -368,9 +368,9 @@ def _decide_next_action(
     ):
         return NextAction.START_PLAN
     if not recommendations:
-        return NextAction.NEEDS_HUMAN_REVIEW
+        return NextAction.TRIGGER_SAFETY_RECHECK
     if safety_summary.status == RecommendationStatus.NEEDS_REVIEW:
-        return NextAction.NEEDS_HUMAN_REVIEW
+        return NextAction.TRIGGER_SAFETY_RECHECK
     if _can_start_with_genetic_glucose_fallback(
         intake=intake,
         safety_summary=safety_summary,
@@ -2590,7 +2590,7 @@ def _build_decision_summary(
         headline = "conservative review required"
         summary = (
             f"For goals [{goal_text}], the baseline prioritized {candidate_text}, but safety "
-            "review, human review, or additional intake clarification should come first."
+            "review, a system safety recheck, or additional intake clarification should come first."
         )
         confidence = "medium"
     else:
@@ -2761,7 +2761,7 @@ def _build_next_action_rationale(
             summary = (
                 "Explicit avoid preferences removed all deterministic "
                 f"{goal_name} candidates in the current baseline catalog, so "
-                "human review is required instead of overriding the avoid "
+                "a system safety recheck is required instead of overriding the avoid "
                 "guard. No safe deterministic candidates remain once the full "
                 "single-goal set is explicitly avoided."
             )
@@ -2788,7 +2788,10 @@ def _build_next_action_rationale(
                 summary=summary,
                 supporting_codes=sorted(safety_summary.excluded_ingredients),
             )
-        summary = "No safe deterministic candidates were available, so human review is required."
+        summary = (
+            "No safe deterministic candidates were available, so a system safety "
+            "recheck is required."
+        )
         if _wearable_context_considered(intake):
             summary += (
                 " Available wearable context was considered, but no additional safe "
@@ -2810,7 +2813,7 @@ def _build_next_action_rationale(
             supporting_codes=rule_ids or missing_codes,
         )
 
-    if next_action == NextAction.NEEDS_HUMAN_REVIEW:
+    if next_action == NextAction.TRIGGER_SAFETY_RECHECK:
         stacked_floor = _is_stacked_pregnancy_renal_anticoagulant_review_floor(
             intake=intake,
             safety_summary=safety_summary,
@@ -2831,7 +2834,7 @@ def _build_next_action_rationale(
         if stacked_floor:
             summary = (
                 "Stacked pregnancy, renal, and anticoagulant safety signals are "
-                "present, so human review remains required before plan start "
+                "present, so a system safety recheck remains required before plan start "
                 "even though soluble fiber and CoQ10 survived the current "
                 "filtering."
             )
@@ -2840,19 +2843,19 @@ def _build_next_action_rationale(
                 "Anticoagulant filtering removed omega3, soluble fiber was "
                 "removed by avoid filtering, and duplicate overlap removed "
                 "berberine, leaving CoQ10 only despite available heart and CGM "
-                "glucose context, so human review remains required before plan "
+                "glucose context, so a system safety recheck remains required before plan "
                 "start."
             )
         elif survivor_collapse_floor:
             summary = (
                 "Anticoagulant filtering removed omega3 and the remaining multi-goal "
                 "survivor set collapsed to CoQ10 only after avoid or duplicate "
-                "filtering, so human review remains required before plan start."
+                "filtering, so a system safety recheck remains required before plan start."
             )
         else:
             summary = (
                 "Safety review signals are present, so the baseline requires "
-                "human review before plan start."
+                "a system safety recheck before plan start."
             )
         if _wearable_context_considered(intake):
             summary += (

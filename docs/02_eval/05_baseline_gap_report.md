@@ -23,7 +23,7 @@ Updated against:
 - expected next action:
   - `start_plan = 235`
   - `collect_more_input = 14`
-  - `needs_human_review = 7`
+  - `trigger_safety_recheck = 7`
 - modality attempted/success:
   - `wearable = 135 / 126 = 93.33333333333333%`
   - `cgm = 50 / 36 = 72.0%`
@@ -44,34 +44,26 @@ Current runtime next-action reason buckets:
 
 ## Current loop impact
 
- - loop task: `collect_more_input_multiple_missing_items reduction`
+ - loop task: `P4 batch closed-loop replay`
 - current-loop decision:
-  - no new runtime release was introduced
-  - added an explicit floor helper for the remaining sleep-related multi-goal
-    multiple-missing-items cases
+  - added multi-user replay and aggregate transition metrics
+  - compared deterministic-only vs learned-policy-guarded replay
+  - kept runtime next-action semantics, frozen eval expectations, and conservative buckets unchanged
   - preserved pregnancy, medication/condition, and avoid guards
-- remaining multiple-missing-items subset:
-  - `eval-002`
-  - `eval-005`
-  - `eval-107`
-  - `eval-156`
+  - kept deterministic policy as the guard ceiling for learned outputs
 
 ## False-positive / false-negative notes
 
 - current major unresolved gaps remain conservative gating, not
   over-recommendation
-- `collect_more_input_multiple_missing_items` stayed at `4`
-- `eval-002` is now an explicit negative boundary because a single `coq10`
-  survivor under `SAFETY-ANTICOAG-001` does not replace explicit heart symptom
-  detail or survey-backed activity context
-- `eval-107` and `eval-156` are now explicit negative boundaries because
-  wearable or genetic recovery context does not replace explicit sleep symptom
-  detail plus sleep-hours detail for a conservative multi-goal sleep plan
-- the only released subset in this bucket remains the multimodal,
-  single-goal, low-risk general-wellness case `eval-023`
-- the remaining four cases still require conservative intake gating because
-  they depend on medication, pregnancy/condition, or multi-goal context that is
-  not safely recoverable from the current signals alone
+- `trigger_safety_recheck = 7` is now the autonomous replacement for the old
+  review action bucket
+- the underlying conservative reasons did not change:
+  - `needs_review_no_candidates = 4`
+  - `needs_review_due_to_safety = 3`
+- review-floor examples remain:
+  - `eval-027`, `eval-059`, `eval-060`, `eval-061`
+  - `eval-063`, `eval-110`, `eval-254`
 - `collect_more_input_high_priority_missing_info = 3` remains a conservative
   floor and is no longer the active loop target
 - `needs_review_due_to_safety = 3` also remains a conservative floor
@@ -80,10 +72,8 @@ Current runtime next-action reason buckets:
 
 ## Next recommended code target
 
-1. move to `blocked_minimum_input`
-2. treat `eval-002`, `eval-005`, `eval-107`, and `eval-156` as the remaining
-   `collect_more_input_multiple_missing_items` set unless source-of-truth
-   exposes a narrower safe subset
+1. wire citation-backed knowledge artifacts into deterministic safety/rule loading
+2. broaden synthetic policy labels so learned-policy replay can diverge meaningfully from deterministic replay
 3. keep `needs_review_no_candidates = 4`,
    `needs_review_due_to_safety = 3`, and
    `collect_more_input_high_priority_missing_info = 3` as floors

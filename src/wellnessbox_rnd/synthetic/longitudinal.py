@@ -682,7 +682,7 @@ def _closed_loop_state(
 
     if adverse_event:
         return "stop_or_escalate"
-    if response.next_action == NextAction.NEEDS_HUMAN_REVIEW:
+    if response.next_action == NextAction.TRIGGER_SAFETY_RECHECK:
         return "safety_review"
     if response.next_action == NextAction.COLLECT_MORE_INPUT:
         return "re_evaluation"

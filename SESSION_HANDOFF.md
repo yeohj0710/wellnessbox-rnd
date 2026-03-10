@@ -17,103 +17,69 @@
 
 ## What this loop did
 
-- Chosen stage: `P2`
-- Chosen task: `learned efficacy gated integration into optimizer`
+- Chosen stage: `P4`
+- Chosen task: `multi-user batch replay simulation plus guarded learned-policy comparison`
 - Why:
-  - source-of-truth requires quantified effect and optimization to work together
-  - the repo already had a learned efficacy artifact
-  - the safest next increment was a narrow opt-in reranker behind deterministic
-    safety and filtering
+  - single-scenario simulation already existed
+  - learned policy artifact already existed
+  - the next missing piece was batch replay with aggregate metrics, not another single-user trace
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
   - `case_count = 256`
 
-## Integration pipeline added
+## Batch simulation result
 
-- New runtime feature builder for learned scoring:
-  - `build_runtime_efficacy_feature_dict(...)`
-- New feature-row prediction helper:
-  - `predict_effect_proxy_from_feature_dict(...)`
-- New optimizer gate:
-  - `enable_learned_reranking=True`
-  - `learned_efficacy_artifact_path=...`
-- The gate only applies when:
-  - safety status is `ok`
-  - no pregnancy / condition / medication risk is present
-  - goal set is exactly `general_wellness`
-  - deterministic candidate totals are within a `1.0` point margin
-- New tests:
-  - `C:/dev/wellnessbox-rnd/tests/test_learned_optimizer_integration.py`
-  - `C:/dev/wellnessbox-rnd/tests/test_closed_loop_simulation.py`
-- New artifacts:
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_simulation_v0_syn_user_009_learned_rerank.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_simulation_v0_syn_user_009_learned_rerank.md`
+- Extended simulation module:
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/simulation/closed_loop_v0.py`
+- Added batch runner:
+  - `C:/dev/wellnessbox-rnd/scripts/run_closed_loop_batch_simulation.py`
+- Added artifacts:
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.json`
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.md`
 
-## Integration result snapshot
+Batch snapshot:
 
-- scenario: `syn-user-009`
-- deterministic baseline top recommendation:
-  - `vitamin_d3`
-- learned gated rerank top recommendation:
-  - `vitamin_c`
-- selected candidate learned bonus:
-  - `3.619935`
-- simulation trace still ends on a conservative continuation path:
-  - `recommendation_ready -> intake_active -> intake_active`
-- regression also covers:
-  - missing-artifact fallback
-  - high-risk anticoagulant no-op path
-  - rerank-enabled closed-loop trace
+- users replayed: `48`
+- total trace steps per mode: `84`
+- final states:
+  - `baseline_questionnaire_due = 24`
+  - `intake_active = 12`
+  - `stop_or_escalate = 12`
+- final policy actions:
+  - `ask_targeted_followup = 24`
+  - `continue_plan = 12`
+  - `reduce_or_stop = 12`
+- policy comparison:
+  - `differing_final_state_user_ids = 0`
+  - `differing_final_policy_user_ids = 0`
+  - `differing_policy_path_user_ids = 0`
 
-## Safety and baseline status
+## GPT / learned / deterministic boundary
 
-- Training data comes only from repo-generated synthetic data.
-- Safety rules remain outside and ahead of the learned model.
-- The learned model is now wired into runtime ranking only through an explicit
-  opt-in gate.
-- Missing artifact or ineligible risk profile falls back to deterministic ranking.
-- Frozen eval metrics stayed unchanged:
-  - `recommendation_coverage_pct = 100.0`
-  - `efficacy_improvement_pp = 9.90291632090153`
-  - `next_action_accuracy_pct = 99.21875`
-  - `explanation_quality_accuracy_pct = 99.47916666666667`
-  - `safety_reference_accuracy_pct = 99.86979166666667`
-  - `adverse_event_count_yearly = 0.0`
-  - `sensor_genetic_integration_rate_pct = 90.40247678018576`
+- GPT wrapper was not used in this loop.
+- Learned policy integration exists only in simulation replay.
+- Runtime recommendation logic did not change.
+- Safety hard rules remain upstream of learned efficacy and learned policy.
+- Deterministic policy remains the ceiling: more-permissive learned actions are clamped back.
+- Current batch replay shows `policy_guard_applied_count = 0` because the synthetic policy labels are still generator-derived and matched exactly by the current model.
 
-## Commands run
+## Validation snapshot
 
-- `python scripts/manage_eval_dataset.py validate`
-- `python scripts/manage_eval_dataset.py summary`
-- `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop`
-- `python scripts/run_closed_loop_simulation.py --user-id syn-user-009 --enable-learned-reranking --report-json artifacts/reports/closed_loop_simulation_v0_syn_user_009_learned_rerank.json --report-md artifacts/reports/closed_loop_simulation_v0_syn_user_009_learned_rerank.md`
+- `python scripts/run_closed_loop_batch_simulation.py --dataset data/synthetic/synthetic_longitudinal_v1.jsonl --max-cycles 3 --max-users 48 --model-artifact artifacts/models/efficacy_model_v0.json --policy-model-artifact artifacts/models/policy_model_v0.json`
 - `python -m ruff check .`
 - `python -m pytest`
+- `python scripts/manage_eval_dataset.py validate`
+- `python scripts/manage_eval_dataset.py summary`
 - `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop_final`
 
-## Files changed this loop
+## Result snapshot
 
-- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/models/__init__.py`
-- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/models/efficacy_model_v0.py`
-- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/optimizer/service.py`
-- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py`
-- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py`
-- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/efficacy/service.py`
-- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/simulation/closed_loop_v0.py`
-- `C:/dev/wellnessbox-rnd/scripts/run_closed_loop_simulation.py`
-- `C:/dev/wellnessbox-rnd/tests/test_learned_optimizer_integration.py`
-- `C:/dev/wellnessbox-rnd/tests/test_closed_loop_simulation.py`
-- `C:/dev/wellnessbox-rnd/docs/03_models/03_learned_efficacy_gated_integration.md`
-- `C:/dev/wellnessbox-rnd/docs/04_simulation/01_closed_loop_simulation_harness.md`
-- `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_simulation_v0_syn_user_009_learned_rerank.json`
-- `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_simulation_v0_syn_user_009_learned_rerank.md`
-- `C:/dev/wellnessbox-rnd/PROGRESS.md`
-- `C:/dev/wellnessbox-rnd/NEXT_STEPS.md`
-- `C:/dev/wellnessbox-rnd/SESSION_HANDOFF.md`
+- deterministic-only and learned-policy-guarded batch replay currently produce the same final states and final policy actions
+- this is expected on the current dataset because policy labels come from deterministic generation
+- batch replay and aggregate state metrics now exist, so future learned-policy differences can be measured when synthetic label diversity grows
 
 ## Recommended next loop
 
-1. Train a next-action / policy model v0 from synthetic closed-loop traces.
-2. Extend learned reranking to the next safe low-risk subset with new regression
-   coverage.
-3. Add batch simulation metrics over multiple synthetic users.
+1. Wire `reference_knowledge_base_v1.json` into deterministic safety/rule loading behind strict validation.
+2. Expand synthetic policy labels beyond the current 3-action distribution.
+3. Add batch replay slices by modality and risk cohort once richer policy labels exist.

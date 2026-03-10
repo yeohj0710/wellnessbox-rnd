@@ -57,7 +57,7 @@ def test_summarize_eval_cases_reports_current_dataset_coverage() -> None:
     assert summary["category_counts"]["review_no_candidates"] >= 20
     assert summary["category_counts"]["safety_blocked"] >= 13
     assert summary["expected_next_action_counts"]["collect_more_input"] >= 14
-    assert summary["expected_next_action_counts"]["needs_human_review"] >= 7
+    assert summary["expected_next_action_counts"]["trigger_safety_recheck"] >= 7
     assert summary["expected_next_action_counts"]["start_plan"] >= 230
     assert summary["integration_attempted_case_counts"]["cgm"] >= 48
     assert summary["integration_attempted_case_counts"]["wearable"] >= 129

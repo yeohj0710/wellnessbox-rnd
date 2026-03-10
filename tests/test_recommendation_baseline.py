@@ -2998,7 +2998,7 @@ def test_genetic_context_is_explicit_when_no_safe_candidates_remain() -> None:
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.recommendations == []
     assert "genetic context" in response.decision_summary.summary.lower()
     assert "genetic context" in response.next_action_rationale.summary.lower()
@@ -4590,7 +4590,7 @@ def test_anticoagulant_heart_glucose_review_stays_in_review_when_avoid_reduces_t
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.next_action_rationale.reason_code == "needs_review_due_to_safety"
     assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
     assert [ref.rule_id for ref in response.safety_summary.rule_refs] == [
@@ -4640,7 +4640,7 @@ def test_stacked_pregnancy_renal_anticoagulant_review_floor_is_explicit() -> Non
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.next_action_rationale.reason_code == "needs_review_due_to_safety"
     assert "pregnancy" in response.next_action_rationale.summary.lower()
     assert "renal" in response.next_action_rationale.summary.lower()
@@ -4688,7 +4688,7 @@ def test_stacked_pregnancy_renal_anticoagulant_review_floor_holds_for_aliases() 
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.next_action_rationale.reason_code == "needs_review_due_to_safety"
     assert [item.ingredient_key for item in response.recommendations] == [
         "soluble_fiber",
@@ -4743,7 +4743,7 @@ def test_stacked_pregnancy_renal_anticoagulant_review_floor_mentions_surviving_c
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert "soluble fiber" in response.next_action_rationale.summary.lower()
     assert "coq10" in response.next_action_rationale.summary.lower()
     assert "cgm context" in response.next_action_rationale.summary.lower()
@@ -4788,7 +4788,7 @@ def test_stacked_pregnancy_renal_anticoagulant_review_floor_holds_without_geneti
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert [item.ingredient_key for item in response.recommendations] == [
         "soluble_fiber",
         "coq10",
@@ -4836,7 +4836,7 @@ def test_anticoagulant_heart_energy_review_stays_in_review_with_renal_condition(
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.next_action_rationale.reason_code == "needs_review_due_to_safety"
     assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
     assert [ref.rule_id for ref in response.safety_summary.rule_refs] == [
@@ -4885,7 +4885,7 @@ def test_anticoagulant_survivor_collapse_review_floor_is_explicit_for_heart_gluc
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.next_action_rationale.reason_code == "needs_review_due_to_safety"
     assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
     assert "soluble fiber" in response.next_action_rationale.summary.lower()
@@ -4933,7 +4933,7 @@ def test_anticoagulant_glucose_survivor_collapse_floor_holds_for_aliases() -> No
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.next_action_rationale.reason_code == "needs_review_due_to_safety"
     assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
     assert [ref.rule_id for ref in response.safety_summary.rule_refs] == [
@@ -4983,7 +4983,7 @@ def test_anticoagulant_glucose_survivor_collapse_floor_still_reviews_with_geneti
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.next_action_rationale.reason_code == "needs_review_due_to_safety"
     assert [item.ingredient_key for item in response.recommendations] == ["coq10"]
     assert "soluble fiber" in response.next_action_rationale.summary.lower()
@@ -8066,7 +8066,7 @@ def test_duplicate_glucose_regimen_coverage_stays_in_review_without_cgm_or_genet
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.recommendations == []
     assert response.next_action_rationale.reason_code == "needs_review_no_candidates"
     assert [ref.rule_id for ref in response.safety_summary.rule_refs] == [
@@ -8164,7 +8164,7 @@ def test_explicit_avoid_floor_is_named_when_heart_candidates_are_fully_removed()
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.recommendations == []
     assert response.next_action_rationale.reason_code == "needs_review_no_candidates"
     assert "explicit avoid preferences removed all deterministic heart health candidates" in (
@@ -8212,7 +8212,7 @@ def test_explicit_avoid_floor_is_named_when_immunity_candidates_are_fully_remove
     response = recommend(request)
 
     assert response.status.value == "needs_review"
-    assert response.next_action.value == "needs_human_review"
+    assert response.next_action.value == "trigger_safety_recheck"
     assert response.recommendations == []
     assert response.next_action_rationale.reason_code == "needs_review_no_candidates"
     assert "explicit avoid preferences removed all deterministic immunity support candidates" in (

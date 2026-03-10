@@ -1,19 +1,33 @@
 from wellnessbox_rnd.simulation.closed_loop_v0 import (
+    ClosedLoopBatchComparisonReport,
+    ClosedLoopBatchModeReport,
     ClosedLoopSimulationReport,
     EffectSource,
+    PolicyActionSource,
     SimulationPolicyAction,
     SimulationTraceStep,
+    compare_batch_simulation_modes,
+    render_batch_simulation_markdown,
     render_simulation_markdown,
+    simulate_closed_loop_batch,
     simulate_closed_loop_scenario,
+    write_batch_simulation_outputs,
     write_simulation_outputs,
 )
 
 __all__ = [
+    "ClosedLoopBatchComparisonReport",
+    "ClosedLoopBatchModeReport",
     "ClosedLoopSimulationReport",
     "EffectSource",
+    "PolicyActionSource",
     "SimulationPolicyAction",
     "SimulationTraceStep",
+    "compare_batch_simulation_modes",
+    "render_batch_simulation_markdown",
     "render_simulation_markdown",
+    "simulate_closed_loop_batch",
     "simulate_closed_loop_scenario",
+    "write_batch_simulation_outputs",
     "write_simulation_outputs",
 ]

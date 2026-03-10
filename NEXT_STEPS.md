@@ -2,27 +2,34 @@
 
 ## Current priority
 
-Stage is now `P2`.
+Priority is now split between `P1` deterministic knowledge wiring and `P4` simulation richness.
 
-Available trainable artifact:
+What now exists:
 
-- model artifact: `C:/dev/wellnessbox-rnd/artifacts/models/efficacy_model_v0.json`
-- eval report:
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/efficacy_model_v0_eval.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/efficacy_model_v0_eval.md`
-- split artifact:
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/efficacy_model_v0_splits.json`
-- simulation harness:
-  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/simulation/closed_loop_v0.py`
-- gated optimizer integration:
-  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/optimizer/service.py`
-- sample trace artifacts:
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_simulation_v0_syn_user_001.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_simulation_v0_syn_user_001.md`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_simulation_v0_syn_user_009_learned_rerank.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_simulation_v0_syn_user_009_learned_rerank.md`
+- no-human runtime action space:
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py`
+- citation-backed ingestion pipeline:
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/ingestion/reference_ingestion.py`
+  - `C:/dev/wellnessbox-rnd/data/knowledge/reference_knowledge_base_v1.json`
+- synthetic longitudinal dataset:
+  - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v1.jsonl`
+- policy training dataset:
+  - `C:/dev/wellnessbox-rnd/data/synthetic/policy_training_v0.jsonl`
+- learned efficacy artifact:
+  - `C:/dev/wellnessbox-rnd/artifacts/models/efficacy_model_v0.json`
+- learned policy artifact:
+  - `C:/dev/wellnessbox-rnd/artifacts/models/policy_model_v0.json`
+- batch closed-loop replay:
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.json`
 
-Conservative floor already accepted:
+Still missing for the no-human closed-loop target:
+
+- runtime wiring from ingested knowledge artifact into deterministic rule loading
+- broader synthetic policy labels beyond the current 3-action distribution
+- simulation slices by modality and risk cohort
+- a batch replay path that shows non-trivial learned-policy differences after richer synthetic labels exist
+
+Conservative floors already accepted:
 
 - `collect_more_input_high_priority_missing_info = 3`
 - `needs_review_due_to_safety = 3`
@@ -41,12 +48,9 @@ Rate-based weakest modality:
 
 ## Recommended next loop
 
-1. Train a `P1` next-action / policy model v0 on synthetic longitudinal traces and
-   explicit simulation actions.
-2. Extend the current learned reranking from narrow `general_wellness` gating to a
-   broader but still low-risk subset with explicit regression coverage.
-3. Extend the simulation harness with multi-scenario batch replay and aggregate
-   transition metrics.
+1. Wire `reference_knowledge_base_v1.json` into deterministic safety/rule loading behind strict validation only.
+2. Broaden synthetic policy trajectories so `continue_plan`, `re_optimize`, `reduce_or_stop`, and `monitor_only` become learnable next-action labels, not just simulation outputs.
+3. Extend batch replay with modality/risk cohort slices and compare learned-policy-on vs deterministic-only once richer labels exist.
 
 ## Guardrails
 
@@ -65,4 +69,5 @@ Rate-based weakest modality:
   - frozen eval
   - safety rule precedence
   - deterministic fallback when learned output is missing or suspicious
-  - explicit state machine semantics for closed-loop steps
+  - system-owned action space only at runtime
+  - structured citation validation before knowledge artifacts are used

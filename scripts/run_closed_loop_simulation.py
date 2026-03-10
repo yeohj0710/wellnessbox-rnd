@@ -30,6 +30,11 @@ def build_parser() -> ArgumentParser:
         help="Optional learned efficacy model artifact path",
     )
     parser.add_argument(
+        "--policy-model-artifact",
+        default="artifacts/models/policy_model_v0.json",
+        help="Optional learned policy model artifact path",
+    )
+    parser.add_argument(
         "--report-json",
         default="artifacts/reports/closed_loop_simulation_v0_syn_user_001.json",
         help="Simulation report JSON path",
@@ -44,6 +49,11 @@ def build_parser() -> ArgumentParser:
         action="store_true",
         help="Apply gated learned efficacy reranking inside the deterministic optimizer",
     )
+    parser.add_argument(
+        "--enable-learned-policy",
+        action="store_true",
+        help="Apply guarded learned policy selection inside simulation only",
+    )
     return parser
 
 
@@ -54,6 +64,8 @@ def main() -> int:
         user_id=args.user_id,
         max_cycles=args.max_cycles,
         model_artifact_path=args.model_artifact,
+        policy_model_artifact_path=args.policy_model_artifact,
+        enable_learned_policy=args.enable_learned_policy,
         enable_learned_reranking=args.enable_learned_reranking,
     )
     write_simulation_outputs(
@@ -71,6 +83,8 @@ def main() -> int:
                 "final_state": report.final_state,
                 "final_policy_action": report.final_policy_action.value,
                 "model_loaded": report.model_loaded,
+                "policy_model_loaded": report.policy_model_loaded,
+                "learned_policy_enabled": report.learned_policy_enabled,
                 "learned_reranking_enabled": report.learned_reranking_enabled,
                 "trace_length": len(report.trace),
             },
