@@ -105,3 +105,22 @@ Feature families include:
 1. add guarded `policy_model_v1` plus `effect_model_v1` into batch replay for learned-vs-deterministic comparison
 2. slice replay by `cgm`, `genetic`, `low-risk/high-risk`, and `single-goal/multi-goal`
 3. improve synthetic richness for underrepresented response patterns, especially stronger `re_optimize` and adverse-tolerability trajectories
+
+## Current replay integration status
+
+- `effect_model_v1` is now wired into guarded batch replay only:
+  - `artifacts/reports/closed_loop_batch_simulation_v1_compare.json`
+- Guard boundary remained narrow by design:
+  - only after deterministic candidate filtering
+  - only on `low_risk`
+  - never for pregnancy / medications / conditions / explicit avoid
+  - only inside a near-tied deterministic candidate window
+- Full replay snapshot:
+  - `raw_ranking_disagreement_count = 32`
+  - `effect_guard_applied_count = 32`
+  - `differing_final_policy_user_ids = 0`
+  - `differing_final_state_user_ids = 0`
+- Interpretation:
+  - the model can disagree with deterministic ranking on guarded low-risk steps
+  - current synthetic signal plus clamp policy is still too conservative to create final replay divergence
+  - the next improvement target is richer synthetic effect separation, not weaker guards

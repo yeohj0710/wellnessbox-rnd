@@ -15,33 +15,33 @@ def build_parser() -> ArgumentParser:
     )
     parser.add_argument(
         "--dataset",
-        default="data/synthetic/synthetic_longitudinal_v1.jsonl",
+        default="data/synthetic/synthetic_longitudinal_v2.jsonl",
         help="Synthetic longitudinal dataset path",
     )
     parser.add_argument(
         "--user-id",
-        default="syn-user-001",
+        default="syn-v2-user-000",
         help="Synthetic user id to simulate from step-0 request",
     )
-    parser.add_argument("--max-cycles", type=int, default=3)
+    parser.add_argument("--max-cycles", type=int, default=5)
     parser.add_argument(
         "--model-artifact",
-        default="artifacts/models/efficacy_model_v0.json",
+        default="artifacts/models/effect_model_v1.json",
         help="Optional learned efficacy model artifact path",
     )
     parser.add_argument(
         "--policy-model-artifact",
-        default="artifacts/models/policy_model_v0.json",
+        default="artifacts/models/policy_model_v1.json",
         help="Optional learned policy model artifact path",
     )
     parser.add_argument(
         "--report-json",
-        default="artifacts/reports/closed_loop_simulation_v0_syn_user_001.json",
+        default="artifacts/reports/closed_loop_simulation_v1_syn_v2_user_000.json",
         help="Simulation report JSON path",
     )
     parser.add_argument(
         "--report-md",
-        default="artifacts/reports/closed_loop_simulation_v0_syn_user_001.md",
+        default="artifacts/reports/closed_loop_simulation_v1_syn_v2_user_000.md",
         help="Simulation report Markdown path",
     )
     parser.add_argument(

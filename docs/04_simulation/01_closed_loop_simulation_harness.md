@@ -1,119 +1,135 @@
-# Closed-Loop Simulation Harness v0
+# Closed-Loop Simulation Harness v1
 
 ## Stage and purpose
 
 - Stage: `P4`
-- Task: `closed-loop batch replay + guarded learned-policy comparison`
-- Why this work fits the source-of-truth:
-  - `master_context` prioritizes a testable state machine over a large agent graph.
-  - The plan requires end-to-end traces such as intake -> recommendation -> follow-up
-    -> state update -> next action.
-  - The learned efficacy model must stay behind deterministic safety and fallback
-    behavior.
+- Current focus: `guarded replay using synthetic_longitudinal_v4 + effect_model_v3 + policy_model_v1`
+- Goal:
+  - compare deterministic and guarded learned modes without weakening deterministic safety
 
-## What this harness does
+## Current modes
 
-- Replays a synthetic user or a batch of synthetic users from the step-0
-  requests stored in `data/synthetic/synthetic_longitudinal_v1.jsonl`.
-- Calls the deterministic recommendation engine at each cycle.
-- Uses the learned efficacy artifact when available to estimate follow-up
-  effect.
-- Falls back to deterministic synthetic effect proxy if the efficacy artifact
-  is missing or unusable.
-- Can apply a guarded learned policy artifact inside simulation only.
-- Applies an explicit system-owned policy transition layer:
-  - baseline intake -> `start_plan` / `ask_targeted_followup` /
-    `trigger_safety_recheck`
-  - follow-up received + positive learned effect -> `continue_plan`
-  - follow-up received + weak effect -> `re_optimize`
-  - adverse event path -> `reduce_or_stop`
+- `deterministic_only`
+- `learned_effect_guarded`
+- `learned_policy_guarded`
+- `learned_effect_and_policy_guarded`
 
-## Main files
+## Trace fields
 
-- `src/wellnessbox_rnd/simulation/closed_loop_v0.py`
-- `scripts/run_closed_loop_simulation.py`
-- `scripts/run_closed_loop_batch_simulation.py`
-- `tests/test_closed_loop_simulation.py`
+Each step records:
 
-## Example command
+- `deterministic_action`
+- `raw_learned_policy_action`
+- `selected_policy_action`
+- `policy_guard_applied`
+- `deterministic_top_candidate`
+- `raw_learned_top_candidate`
+- `selected_candidate`
+- `effect_guard_applied`
+- `action_source`
+- `ranking_source`
+
+## Guard boundary
+
+### Deterministic floor
+
+- frozen eval remains deterministic
+- runtime safety remains deterministic
+- final action space stays system-owned only
+
+### Learned effect boundary
+
+- `effect_model_v3` is replay-only
+- reranking happens only after deterministic candidate filtering
+- reranking scores only the deterministic near-tie survivor subset
+- reranking is allowed only when:
+  - safety status is `ok`
+  - risk tier is `low`
+  - no pregnancy
+  - no medications
+  - no conditions
+  - no explicit avoid ingredients
+  - at least two deterministic candidates remain inside the near-tie window
+- replay uses a calibrated policy-facing proxy:
+  - `policy_proxy = intercept + slope * predicted_aggregate_delta`
+  - current calibration:
+    - `slope = 3.11735613`
+    - `intercept = 0.09283873`
+
+### Learned policy boundary
+
+- `policy_model_v1` is replay-only
+- learned policy cannot override deterministic behavior when:
+  - baseline intake step is active
+  - safety status is not `ok`
+  - pregnancy is present
+  - medications are present
+  - conditions are present
+  - explicit avoid ingredients are present
+- more-permissive learned policy outputs are clamped by deterministic guard
+
+## Current commands
 
 ```bash
-python scripts/run_closed_loop_simulation.py --user-id syn-user-001
-python scripts/run_closed_loop_simulation.py --user-id syn-user-009 --enable-learned-reranking
-python scripts/run_closed_loop_simulation.py --user-id syn-user-001 --enable-learned-policy
-python scripts/run_closed_loop_batch_simulation.py --max-users 48
+python scripts/run_closed_loop_batch_simulation.py
+python scripts/run_closed_loop_batch_simulation.py --dataset data/synthetic/synthetic_longitudinal_v4.jsonl --model-artifact artifacts/models/effect_model_v3.json --policy-model-artifact artifacts/models/policy_model_v1.json
 ```
+
+## Current artifacts
+
+- JSON full report:
+  - `artifacts/reports/closed_loop_batch_simulation_v3_compare.json`
+- Markdown summary:
+  - `artifacts/reports/closed_loop_batch_simulation_v3_compare.md`
+- trace samples:
+  - `artifacts/reports/closed_loop_batch_simulation_v3_trace_samples.json`
 
 ## Current run snapshot
 
-- output JSON:
-  - `artifacts/reports/closed_loop_simulation_v0_syn_user_002_system_actions.json`
-- output Markdown:
-  - `artifacts/reports/closed_loop_simulation_v0_syn_user_002_system_actions.md`
-- scenario result:
-  - cycle `0`: `baseline_intake -> start_plan -> recommendation_ready`
-    with learned effect `0.263242`
-  - cycle `1`: engine `trigger_safety_recheck`,
-    policy `reduce_or_stop -> stop_or_escalate`
-    with learned effect `-0.019236`
-- final state:
-  - `stop_or_escalate`
-- final policy action:
-  - `reduce_or_stop`
-- positive regression path:
-  - `syn-user-001` continues with `continue_plan`
+Replay scale:
 
-## Batch replay snapshot
+- `96 users`
+- deterministic mode total trace steps: `356`
 
-- output JSON:
-  - `artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.json`
-- output Markdown:
-  - `artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.md`
-- compared modes:
-  - `deterministic_only`
-  - `learned_policy_guarded`
-- replay scale:
-  - `48 users`
-  - `84 total trace steps per mode`
-- aggregate final states:
-  - `baseline_questionnaire_due = 24`
-  - `intake_active = 12`
-  - `stop_or_escalate = 12`
-- aggregate final policy actions:
-  - `ask_targeted_followup = 24`
-  - `continue_plan = 12`
-  - `reduce_or_stop = 12`
-- comparison result:
-  - no user-level final-state or final-policy divergence yet
-  - current learned policy reproduces deterministic replay on this dataset version
+Mode comparison:
 
-## Learned policy and reranking integration
+| mode | final state diff users | final policy diff users | ranking diff users | trace diff users |
+| --- | ---: | ---: | ---: | ---: |
+| `learned_effect_guarded` | `24` | `25` | `22` | `65` |
+| `learned_policy_guarded` | `19` | `34` | `0` | `34` |
+| `learned_effect_and_policy_guarded` | `19` | `34` | `22` | `65` |
 
-- The single-user simulation runner can exercise the gated optimizer reranker
-  with `--enable-learned-reranking`.
-- The simulation runners can exercise the guarded learned policy path with
-  `--enable-learned-policy` or via the batch comparison runner.
-- Current narrow gate:
-  - learned efficacy reranking:
-    - safety status `ok`
-    - no pregnancy / condition / medication risk
-    - goal set exactly `general_wellness`
-    - near-tied deterministic candidates only
-  - learned policy:
-    - simulation-only
-    - deterministic action ceiling via guard
-    - no runtime action-space changes
-- Example integrated runs:
-  - reranking artifact:
-    - `artifacts/reports/closed_loop_simulation_v0_syn_user_009_learned_rerank.md`
-  - batch comparison artifact:
-    - `artifacts/reports/closed_loop_batch_simulation_v0_policy_compare.md`
+Key aggregate counters:
 
-## Current scope limits
+- `learned_effect_guarded`
+  - `raw_ranking_disagreement_count = 71`
+  - `effect_guard_applied_count = 0`
+- `learned_policy_guarded`
+  - `raw_policy_disagreement_count = 171`
+  - `policy_guard_applied_count = 102`
+- `learned_effect_and_policy_guarded`
+  - `raw_ranking_disagreement_count = 66`
+  - `raw_policy_disagreement_count = 218`
 
-- This is a simulation harness, not runtime integration into recommendation ranking or runtime next-action selection.
-- State transitions are explicit and deterministic.
-- Safety still comes entirely from the deterministic baseline and hard rules.
-- The learned efficacy model only informs simulated follow-up effect estimation.
-- The learned policy model only informs simulation replay and is still guarded by deterministic policy.
-- Human handoff semantics were removed from runtime and simulation action vocabularies.
+## Cohort slice snapshot
+
+| slice | user_count | deterministic disagreement | policy_guard | effect_guard |
+| --- | ---: | ---: | ---: | ---: |
+| `cgm_users` | `20` | `0` | `18` | `0` |
+| `genetic_users` | `53` | `68` | `57` | `0` |
+| `low_risk_users` | `65` | `171` | `73` | `0` |
+| `high_risk_users` | `31` | `0` | `29` | `0` |
+| `single_goal_users` | `76` | `171` | `84` | `0` |
+| `multi_goal_users` | `20` | `0` | `18` | `0` |
+
+Interpretation:
+
+- low-risk / single-goal cohorts still show real learned-effect divergence after calibration
+- high-risk and `cgm` cohorts remain deterministic at the safety edge
+- combined mode is still policy-dominated, so the next replay step is not more wiring but better learned-effect to learned-policy coupling
+
+## Known limits
+
+- replay still follows fixed synthetic trajectories rather than online regenerated state
+- learned artifacts are still simulation-only
+- structured safety `dose_limits` remain shallow

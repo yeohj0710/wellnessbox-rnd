@@ -26,6 +26,20 @@ from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import (
     validate_rich_policy_training_rows,
     validate_rich_synthetic_cohort,
 )
+from wellnessbox_rnd.synthetic.rich_longitudinal_v3 import (
+    build_rich_policy_training_rows_v3,
+    generate_rich_synthetic_cohort_v3,
+    summarize_rich_policy_training_rows_v3,
+    summarize_rich_synthetic_cohort_v3,
+    write_rich_synthetic_jsonl_v3,
+)
+from wellnessbox_rnd.synthetic.rich_longitudinal_v4 import (
+    build_rich_policy_training_rows_v4,
+    generate_rich_synthetic_cohort_v4,
+    summarize_rich_policy_training_rows_v4,
+    summarize_rich_synthetic_cohort_v4,
+    write_rich_synthetic_jsonl_v4,
+)
 
 __all__ = [
     "RichPolicyTrainingRow",
@@ -39,17 +53,27 @@ __all__ = [
     "SyntheticStepSignals",
     "advance_synthetic_request_for_step",
     "build_rich_policy_training_rows",
+    "build_rich_policy_training_rows_v3",
+    "build_rich_policy_training_rows_v4",
     "build_synthetic_step_signals",
     "compute_synthetic_adherence_proxy",
     "compute_synthetic_adverse_event",
     "compute_synthetic_effect_proxy",
     "compute_synthetic_risk_tier",
     "generate_rich_synthetic_cohort",
+    "generate_rich_synthetic_cohort_v3",
+    "generate_rich_synthetic_cohort_v4",
     "generate_synthetic_longitudinal_cohort",
     "summarize_rich_policy_training_rows",
+    "summarize_rich_policy_training_rows_v3",
+    "summarize_rich_policy_training_rows_v4",
     "summarize_rich_synthetic_cohort",
+    "summarize_rich_synthetic_cohort_v3",
+    "summarize_rich_synthetic_cohort_v4",
     "summarize_synthetic_cohort",
     "validate_rich_policy_training_rows",
     "validate_rich_synthetic_cohort",
     "validate_synthetic_cohort",
+    "write_rich_synthetic_jsonl_v3",
+    "write_rich_synthetic_jsonl_v4",
 ]

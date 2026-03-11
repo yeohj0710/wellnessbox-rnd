@@ -21,6 +21,10 @@ class EffectModelV1Artifact(BaseModel):
     intercepts: list[float] = Field(default_factory=list)
     weights: list[list[float]] = Field(default_factory=list)
     target_name: str = "delta_z_by_domain"
+    policy_proxy_slope: float = 1.0
+    policy_proxy_intercept: float = 0.0
+    policy_proxy_clip_min: float = -1.0
+    policy_proxy_clip_max: float = 1.0
 
 
 class EffectFeatureVectorizerV1:
@@ -60,6 +64,8 @@ def build_effect_feature_dict_v1(
     features: dict[str, float] = {
         "age": float(profile.age),
         "pregnant": float(profile.pregnant),
+        "trajectory_step": float(record.trajectory_step),
+        "day_index": float(record.day_index),
         "goal_count": float(len(request.goals)),
         "symptom_count": float(len(request.symptoms)),
         "condition_count": float(len(request.conditions)),
@@ -73,6 +79,8 @@ def build_effect_feature_dict_v1(
         "genetic_available": float(availability.genetic),
         "nhis_available": float(availability.nhis),
         "baseline_aggregate_z": float(record.baseline_pro.aggregate_z),
+        "adherence_proxy": float(record.adherence_proxy),
+        "side_effect_proxy": float(record.side_effect_proxy),
         "regimen_count": float(len(record.regimen)),
         "active_regimen_count": float(
             sum(1 for item in record.regimen if item.regimen_status == "active")
@@ -89,6 +97,9 @@ def build_effect_feature_dict_v1(
         "total_daily_dose": float(
             round(sum(item.daily_dose for item in record.regimen), 3)
         ),
+        "risk_tier_low": float(record.labels.risk_tier == "low"),
+        "risk_tier_moderate": float(record.labels.risk_tier == "moderate"),
+        "risk_tier_high": float(record.labels.risk_tier == "high"),
     }
 
     for goal in RecommendationGoal:
@@ -145,6 +156,27 @@ def predict_aggregate_delta_v1(
     if not predictions:
         return 0.0
     return round(sum(predictions.values()) / len(predictions), 6)
+
+
+def calibrate_policy_effect_proxy_from_aggregate_v1(
+    artifact: EffectModelV1Artifact,
+    aggregate_delta: float,
+) -> float:
+    value = artifact.policy_proxy_intercept + (
+        artifact.policy_proxy_slope * aggregate_delta
+    )
+    value = max(artifact.policy_proxy_clip_min, min(artifact.policy_proxy_clip_max, value))
+    return round(float(value), 6)
+
+
+def predict_policy_effect_proxy_v1(
+    artifact: EffectModelV1Artifact,
+    record: RichSyntheticCohortRecord,
+) -> float:
+    return calibrate_policy_effect_proxy_from_aggregate_v1(
+        artifact,
+        predict_aggregate_delta_v1(artifact, record),
+    )
 
 
 def load_effect_model_v1_artifact(path: str | Path) -> EffectModelV1Artifact:

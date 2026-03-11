@@ -16,6 +16,7 @@ from wellnessbox_rnd.models.effect_model_v1 import (
     build_effect_feature_dict_v1,
     predict_aggregate_delta_v1,
     predict_domain_deltas_v1,
+    predict_policy_effect_proxy_v1,
 )
 
 if TYPE_CHECKING:
@@ -28,8 +29,11 @@ class EffectEvaluationMetricsV1(BaseModel):
     aggregate_mae: float
     aggregate_rmse: float
     aggregate_r2: float
+    policy_proxy_mae: float
+    policy_proxy_rmse: float
     zero_baseline_mean_domain_mae: float
     zero_baseline_aggregate_mae: float
+    zero_baseline_policy_proxy_mae: float
     domain_mae: dict[str, float]
 
 
@@ -124,7 +128,14 @@ def fit_effect_model_v1(
     assert best_artifact is not None
     assert best_val_metrics is not None
     assert best_train_metrics is not None
-    return best_artifact, {"train": best_train_metrics, "val": best_val_metrics}
+    calibrated_artifact = _fit_policy_proxy_calibration(
+        best_artifact,
+        train_records=train_records,
+        val_records=val_records,
+    )
+    best_train_metrics = evaluate_effect_model_v1(calibrated_artifact, train_records)
+    best_val_metrics = evaluate_effect_model_v1(calibrated_artifact, val_records)
+    return calibrated_artifact, {"train": best_train_metrics, "val": best_val_metrics}
 
 
 def evaluate_effect_model_v1(
@@ -164,7 +175,16 @@ def evaluate_effect_model_v1(
         [predict_aggregate_delta_v1(artifact, record) for record in records],
         dtype=float,
     )
+    actual_policy_proxy = np.asarray(
+        [record.expected_effect_proxy for record in records],
+        dtype=float,
+    )
+    predicted_policy_proxy = np.asarray(
+        [predict_policy_effect_proxy_v1(artifact, record) for record in records],
+        dtype=float,
+    )
     zero_aggregate = np.zeros_like(actual_aggregate)
+    zero_policy_proxy = np.zeros_like(actual_policy_proxy)
 
     return EffectEvaluationMetricsV1(
         mean_domain_mae=round(
@@ -180,12 +200,18 @@ def evaluate_effect_model_v1(
         aggregate_mae=round(_mae(actual_aggregate, predicted_aggregate), 6),
         aggregate_rmse=round(_rmse(actual_aggregate, predicted_aggregate), 6),
         aggregate_r2=round(_r2(actual_aggregate, predicted_aggregate), 6),
+        policy_proxy_mae=round(_mae(actual_policy_proxy, predicted_policy_proxy), 6),
+        policy_proxy_rmse=round(_rmse(actual_policy_proxy, predicted_policy_proxy), 6),
         zero_baseline_mean_domain_mae=round(
             float(np.mean(np.abs(actual_matrix - zero_matrix))) if len(actual_matrix) else 0.0,
             6,
         ),
         zero_baseline_aggregate_mae=round(
             _mae(actual_aggregate, zero_aggregate),
+            6,
+        ),
+        zero_baseline_policy_proxy_mae=round(
+            _mae(actual_policy_proxy, zero_policy_proxy),
             6,
         ),
         domain_mae=domain_mae,
@@ -205,6 +231,12 @@ def build_effect_feature_schema_v1(
         "cohort_version": artifact.cohort_version,
         "feature_count": len(artifact.feature_names),
         "output_names": artifact.output_names,
+        "policy_proxy_calibration": {
+            "slope": artifact.policy_proxy_slope,
+            "intercept": artifact.policy_proxy_intercept,
+            "clip_min": artifact.policy_proxy_clip_min,
+            "clip_max": artifact.policy_proxy_clip_max,
+        },
         "feature_prefix_counts": dict(sorted(prefix_counts.items())),
         "feature_names": artifact.feature_names,
     }
@@ -224,6 +256,12 @@ def render_effect_training_report_v1(
         "cohort_version": artifact.cohort_version,
         "seed": artifact.seed,
         "alpha": artifact.alpha,
+        "policy_proxy_calibration": {
+            "slope": artifact.policy_proxy_slope,
+            "intercept": artifact.policy_proxy_intercept,
+            "clip_min": artifact.policy_proxy_clip_min,
+            "clip_max": artifact.policy_proxy_clip_max,
+        },
         "feature_count": len(artifact.feature_names),
         "output_names": artifact.output_names,
         "split_record_counts": {
@@ -250,6 +288,11 @@ def render_effect_training_report_v1(
                     6,
                 ),
                 "predicted_aggregate_delta": predict_aggregate_delta_v1(artifact, record),
+                "actual_policy_effect_proxy": record.expected_effect_proxy,
+                "predicted_policy_effect_proxy": predict_policy_effect_proxy_v1(
+                    artifact,
+                    record,
+                ),
             }
             for record in test_records[:5]
         ],
@@ -264,6 +307,11 @@ def render_effect_training_markdown_v1(report: dict[str, object]) -> str:
         f"- cohort_version: `{report['cohort_version']}`",
         f"- seed: `{report['seed']}`",
         f"- alpha: `{report['alpha']}`",
+        (
+            "- policy_proxy_calibration: "
+            f"slope=`{report['policy_proxy_calibration']['slope']}`, "
+            f"intercept=`{report['policy_proxy_calibration']['intercept']}`"
+        ),
         f"- feature_count: `{report['feature_count']}`",
         f"- output_names: `{', '.join(report['output_names'])}`",
         "",
@@ -279,6 +327,7 @@ def render_effect_training_markdown_v1(report: dict[str, object]) -> str:
             f"aggregate_mae=`{metrics['aggregate_mae']}`, "
             f"aggregate_rmse=`{metrics['aggregate_rmse']}`, "
             f"aggregate_r2=`{metrics['aggregate_r2']}`, "
+            f"policy_proxy_mae=`{metrics['policy_proxy_mae']}`, "
             f"zero_baseline_aggregate_mae=`{metrics['zero_baseline_aggregate_mae']}`"
         )
     return "\n".join(lines) + "\n"
@@ -293,6 +342,11 @@ def render_effect_feature_schema_markdown_v1(schema: dict[str, object]) -> str:
         f"- target_name: `{schema['target_name']}`",
         f"- feature_count: `{schema['feature_count']}`",
         f"- output_names: `{', '.join(schema['output_names'])}`",
+        (
+            "- policy_proxy_calibration: "
+            f"slope=`{schema['policy_proxy_calibration']['slope']}`, "
+            f"intercept=`{schema['policy_proxy_calibration']['intercept']}`"
+        ),
         "",
         "## Feature Prefix Counts",
     ]
@@ -390,6 +444,38 @@ def _fit_multitarget_ridge(
     intercepts = solution[0]
     weights = solution[1:].T
     return weights, intercepts
+
+
+def _fit_policy_proxy_calibration(
+    artifact: EffectModelV1Artifact,
+    *,
+    train_records: list[RichSyntheticCohortRecord],
+    val_records: list[RichSyntheticCohortRecord],
+) -> EffectModelV1Artifact:
+    calibration_records = train_records + val_records
+    if not calibration_records:
+        return artifact
+
+    predicted = np.asarray(
+        [predict_aggregate_delta_v1(artifact, record) for record in calibration_records],
+        dtype=float,
+    )
+    actual = np.asarray(
+        [record.expected_effect_proxy for record in calibration_records],
+        dtype=float,
+    )
+    if len(predicted) == 0:
+        return artifact
+    design = np.column_stack([predicted, np.ones(len(predicted))])
+    slope, intercept = np.linalg.lstsq(design, actual, rcond=None)[0]
+    slope = float(max(0.0, slope))
+    intercept = float(intercept)
+    return artifact.model_copy(
+        update={
+            "policy_proxy_slope": round(slope, 8),
+            "policy_proxy_intercept": round(intercept, 8),
+        }
+    )
 
 
 def _mae(actual: np.ndarray, predicted: np.ndarray) -> float:

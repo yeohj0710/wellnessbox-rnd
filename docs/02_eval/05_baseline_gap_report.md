@@ -3,7 +3,16 @@
 Updated against:
 
 - dataset: `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
-- report: `C:/dev/wellnessbox-rnd/artifacts/reports/current_loop_final/eval_report.json`
+- report: `C:/dev/wellnessbox-rnd/artifacts/reports/current_loop_final_eval/eval_report.json`
+
+## Latest loop note
+
+- `2026-03-11` calibrated effect-divergence loop kept all frozen official metrics unchanged.
+- the meaningful movement in this loop happened in simulation, not frozen eval:
+  - `synthetic_longitudinal_v4`
+  - `effect_model_v3`
+  - `closed_loop_batch_simulation_v3_compare`
+- official bottleneck is still `cgm = 72.0%`.
 
 ## Official metrics
 
@@ -44,36 +53,22 @@ Current runtime next-action reason buckets:
 
 ## Current loop impact
 
-- loop task: `P3 effect_model_v1 training`
+- loop task: `P2/P3 calibrated effect richness + retrain`
 - current-loop decision:
-  - added a multi-target learned effect artifact on `synthetic_longitudinal_v2`
-  - trained domain-level `delta_z_by_domain` prediction with aggregate delta reporting
+  - added `synthetic_longitudinal_v4`
+  - retrained `effect_model_v3` with policy-proxy calibration
+  - reran the same 4-mode replay under guarded near-tie survivor reranking
   - preserved frozen eval expectations and deterministic baseline metrics unchanged
 
 ## False-positive / false-negative notes
 
-- current major unresolved gaps remain conservative gating, not
-  over-recommendation
-- `trigger_safety_recheck = 7` is now the autonomous replacement for the old
-  review action bucket
-- the underlying conservative reasons did not change:
-  - `needs_review_no_candidates = 4`
-  - `needs_review_due_to_safety = 3`
-- review-floor examples remain:
-  - `eval-027`, `eval-059`, `eval-060`, `eval-061`
-  - `eval-063`, `eval-110`, `eval-254`
-- `collect_more_input_high_priority_missing_info = 3` remains a conservative
-  floor and is no longer the active loop target
-- `needs_review_due_to_safety = 3` also remains a conservative floor
-- `needs_review_no_candidates = 4` remains the explicit-avoid floor
+- current major unresolved gaps remain conservative gating, not over-recommendation
+- `trigger_safety_recheck = 7` remains the autonomous replacement for the old review action bucket
 - bottleneck modality remains `cgm`
+- learned replay is improving, but that signal is still synthetic and simulation-only
 
 ## Next recommended code target
 
-1. extend batch replay with learned `policy_model_v1` and `effect_model_v1`
-2. add modality and risk slices:
-   `cgm`, `genetic`, `low-risk/high-risk`, `single-goal/multi-goal`
-3. compare deterministic-only vs learned-on with guard count and disagreement count
-4. keep `needs_review_no_candidates = 4`,
-   `needs_review_due_to_safety = 3`, and
-   `collect_more_input_high_priority_missing_info = 3` as floors
+1. couple calibrated learned effect more directly into combined replay so `learned_effect_and_policy_guarded` is not almost identical to guarded policy alone
+2. expand structured safety coverage, especially `dose_limits`, before widening learned runtime scope
+3. enrich low-risk threshold-edge synthetic trajectories again so calibrated learned effect yields more than `1` terminal `monitor_only` case

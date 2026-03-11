@@ -3,6 +3,7 @@ from wellnessbox_rnd.models.effect_model_v1 import (
     build_effect_feature_dict_v1,
     predict_aggregate_delta_v1,
     predict_domain_deltas_v1,
+    predict_policy_effect_proxy_v1,
 )
 from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import generate_rich_synthetic_cohort
 from wellnessbox_rnd.training.effect_model_v1 import (
@@ -52,3 +53,21 @@ def test_effect_model_v1_beats_zero_baseline_on_rich_synthetic_test_split() -> N
     assert metrics.aggregate_mae < metrics.zero_baseline_aggregate_mae
     assert metrics.mean_domain_mae < metrics.zero_baseline_mean_domain_mae
     assert feature_schema["feature_count"] == len(artifact.feature_names)
+
+
+def test_effect_model_v1_calibrates_policy_proxy_better_than_raw_aggregate() -> None:
+    records = generate_rich_synthetic_cohort(seed=3104, user_count=96)
+    split = split_effect_records_by_user_v1(records, seed=3104)
+
+    artifact, _ = fit_effect_model_v1(split.train, split.val, seed=3104)
+    calibrated_errors = [
+        abs(predict_policy_effect_proxy_v1(artifact, record) - record.expected_effect_proxy)
+        for record in split.test
+    ]
+    raw_errors = [
+        abs(predict_aggregate_delta_v1(artifact, record) - record.expected_effect_proxy)
+        for record in split.test
+    ]
+
+    assert artifact.policy_proxy_slope >= 0.0
+    assert sum(calibrated_errors) / len(calibrated_errors) < sum(raw_errors) / len(raw_errors)

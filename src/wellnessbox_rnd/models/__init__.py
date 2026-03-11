@@ -2,10 +2,12 @@ from wellnessbox_rnd.models.effect_model_v1 import (
     EffectFeatureVectorizerV1,
     EffectModelV1Artifact,
     build_effect_feature_dict_v1,
+    calibrate_policy_effect_proxy_from_aggregate_v1,
     load_effect_model_v1_artifact,
     predict_aggregate_delta_v1,
     predict_domain_deltas_from_feature_dict_v1,
     predict_domain_deltas_v1,
+    predict_policy_effect_proxy_v1,
 )
 from wellnessbox_rnd.models.efficacy_model_v0 import (
     EfficacyFeatureVectorizer,
@@ -46,6 +48,7 @@ __all__ = [
     "PolicyModelArtifact",
     "PolicyModelV1Artifact",
     "build_effect_feature_dict_v1",
+    "calibrate_policy_effect_proxy_from_aggregate_v1",
     "build_efficacy_feature_dict",
     "build_policy_feature_dict",
     "build_policy_feature_dict_v1",
@@ -58,6 +61,7 @@ __all__ = [
     "predict_aggregate_delta_v1",
     "predict_domain_deltas_from_feature_dict_v1",
     "predict_domain_deltas_v1",
+    "predict_policy_effect_proxy_v1",
     "predict_effect_proxy",
     "predict_effect_proxy_from_feature_dict",
     "predict_policy_action",

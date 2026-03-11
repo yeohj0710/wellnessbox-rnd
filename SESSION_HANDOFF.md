@@ -17,80 +17,86 @@
 
 ## What this loop did
 
-- Chosen stage: `P3`
-- Chosen task: `train effect_model_v1 on synthetic_longitudinal_v2`
-- Why:
-  - runtime knowledge DB wiring and richer synthetic policy data already exist
-  - learned policy v1 already exists
-  - the narrowest missing closed-loop layer was a richer learned effect artifact on domain-level deltas
+- Chosen stage: `P2/P3`
+- Chosen task: `calibrated synthetic effect richness + effect_model_v3 retrain + guarded replay rerun`
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
   - `case_count = 256`
 
-## Effect model v1 result
+## New artifacts
 
-- Added effect model v1 module:
-  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/models/effect_model_v1.py`
-- Added effect training v1 module:
-  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/training/effect_model_v1.py`
-- Added training script:
-  - `C:/dev/wellnessbox-rnd/scripts/train_effect_model_v1.py`
-- Added tests:
-  - `C:/dev/wellnessbox-rnd/tests/test_effect_model_v1.py`
-- Added artifacts:
-  - `C:/dev/wellnessbox-rnd/artifacts/models/effect_model_v1.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_eval.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_eval.md`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_splits.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_feature_schema.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/effect_model_v1_feature_schema.md`
+- synthetic cohort:
+  - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
+- retrained effect artifact:
+  - `C:/dev/wellnessbox-rnd/artifacts/models/effect_model_v3.json`
+- replay compare:
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.json`
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.md`
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_trace_samples.json`
 
-Effect snapshot:
+## What changed technically
 
-- `output_names`:
-  - `blood_glucose`
-  - `bone_joint`
-  - `energy_support`
-  - `general_wellness`
-  - `gut_health`
-  - `heart_health`
-  - `immunity_support`
-  - `sleep_support`
-  - `stress_support`
-- `feature_count = 70`
-- `test_metrics`:
-  - `mean_domain_mae = 0.025335`
-  - `aggregate_mae = 0.021604`
-  - `aggregate_rmse = 0.03396`
-  - `aggregate_r2 = 0.812435`
-  - `zero_baseline_aggregate_mae = 0.0572`
+- added `synthetic_longitudinal_v4` with more modality-available low-risk users and threshold-edge near-tie trajectories
+- effect artifact now stores a calibrated policy proxy on top of domain-delta predictions
+- replay now reranks only inside the guarded near-tie survivor set instead of scoring the full candidate list then clamping
+- `learned_effect_guarded` regained non-zero final divergence after calibration
+- deterministic safety boundary and frozen eval stayed unchanged
 
-## GPT / learned / deterministic boundary
+## Guard boundary
 
-- GPT wrapper was not used in this loop.
-- Runtime recommendation still preserves deterministic baseline semantics on frozen eval.
-- Safety hard rules still remain upstream of learned artifacts.
-- `effect_model_v1` is offline only in this loop.
-- Learned policy and deterministic safety behavior did not change in this loop.
+- runtime recommendation and frozen eval remain deterministic
+- learned effect remains replay-only
+- learned effect stays behind deterministic candidate filtering and low-risk gating
+- learned effect now scores only the near-tie survivor subset
+- learned policy remains replay-only and bounded by the deterministic ceiling
+- no human-review or handoff action was introduced
+
+## 4-mode compare snapshot
+
+- `deterministic_only`
+  - `total_trace_steps = 356`
+  - `final_actions = ask_targeted_followup:21, continue_plan:65, trigger_safety_recheck:10`
+- `learned_effect_guarded`
+  - `raw_ranking_disagreement_count = 71`
+  - `effect_guard_applied_count = 0`
+  - `differing_ranking_user_ids = 22`
+  - `differing_final_policy_user_ids = 25`
+  - `differing_final_state_user_ids = 24`
+- `learned_policy_guarded`
+  - `raw_policy_disagreement_count = 171`
+  - `policy_guard_applied_count = 102`
+  - `differing_final_policy_user_ids = 34`
+  - `differing_final_state_user_ids = 19`
+- `learned_effect_and_policy_guarded`
+  - combined mode still mostly follows guarded policy output
+
+## Cohort slice snapshot
+
+- `low_risk_users = 65`
+  - deterministic final action stayed `continue_plan`
+  - learned-effect final actions shifted to `continue_plan:40, monitor_only:1, re_optimize:24`
+  - `deterministic_vs_learned_disagreement_count = 171`
+- `single_goal_users = 76`
+  - learned-effect final divergence is also non-zero here
+- `high_risk_users = 31`
+  - deterministic safety ceiling stayed intact
+- `cgm_users = 20`
+  - learned-effect final divergence stayed `0`
 
 ## Validation snapshot
 
-- `python scripts/train_effect_model_v1.py`
 - `python -m ruff check .`
 - `python -m pytest`
 - `python scripts/manage_eval_dataset.py validate`
 - `python scripts/manage_eval_dataset.py summary`
-- `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop_final`
-
-## Result snapshot
-
-- frozen eval metrics remained unchanged
-- `effect_model_v1` now exists on domain-level delta targets
-- learned effect prediction materially beats zero-delta baseline on synthetic test split
-- next large missing step is cohort-sliced learned-vs-deterministic replay
+- `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop_eval`
+- `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop_final_eval`
+- `python scripts/generate_synthetic_longitudinal_v4.py`
+- `python scripts/train_effect_model_v3.py`
+- `python scripts/run_closed_loop_batch_simulation.py`
 
 ## Recommended next loop
 
-1. Extend batch replay with guarded `policy_model_v1` and `effect_model_v1`.
-2. Add cohort slices for `cgm`, `genetic`, `low-risk/high-risk`, and `single-goal/multi-goal`.
-3. Expand structured safety coverage before widening learned replay scope.
+1. analyze why combined mode is still policy-dominated after effect calibration
+2. expand `dose_limits` and structured safety coverage
+3. increase terminal threshold-edge `monitor_only` density in low-risk trajectories

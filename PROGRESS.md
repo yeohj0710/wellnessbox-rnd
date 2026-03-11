@@ -2,89 +2,136 @@
 
 ## Current loop
 
-- Chosen stage: `P3`
-- Chosen task: `train effect_model_v1 on richer synthetic longitudinal trajectories`
-- Why:
-  - runtime knowledge DB wiring exists
-  - rich synthetic longitudinal and policy datasets exist
-  - learned policy v1 now exists, but learned efficacy was still `v0` and too shallow for domain-level effect reasoning
+- Chosen stage: `P2/P3`
+- Chosen task: `calibrated synthetic effect richness + effect_model_v3 retrain + guarded replay rerun`
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
   - `case_count = 256`
 
 ## What changed
 
-- Added effect model v1 artifact schema:
+- Added calibrated low-risk effect cohort generation:
+  - `src/wellnessbox_rnd/synthetic/rich_longitudinal_v4.py`
+  - `scripts/generate_synthetic_longitudinal_v4.py`
+  - `data/synthetic/synthetic_longitudinal_v4.jsonl`
+- Added retrained effect artifact with policy-facing calibration:
+  - `scripts/train_effect_model_v3.py`
+  - `artifacts/models/effect_model_v3.json`
+  - `artifacts/reports/effect_model_v3_eval.json`
+  - `artifacts/reports/effect_model_v3_feature_schema.json`
+- Added calibrated effect proxy path to the model artifact:
   - `src/wellnessbox_rnd/models/effect_model_v1.py`
-- Added effect model v1 training/eval module:
   - `src/wellnessbox_rnd/training/effect_model_v1.py`
-- Extended exports:
-  - `src/wellnessbox_rnd/models/__init__.py`
-  - `src/wellnessbox_rnd/training/__init__.py`
-- Added v1 training script:
-  - `scripts/train_effect_model_v1.py`
-- Added regression coverage:
+- Changed replay rerank to score only the guarded near-tie survivor set:
+  - `src/wellnessbox_rnd/simulation/closed_loop_v0.py`
+  - `scripts/run_closed_loop_batch_simulation.py`
+- Added v4 regression coverage:
   - `tests/test_effect_model_v1.py`
-- Generated new learned artifacts:
-  - `artifacts/models/effect_model_v1.json`
-  - `artifacts/reports/effect_model_v1_eval.json`
-  - `artifacts/reports/effect_model_v1_eval.md`
-  - `artifacts/reports/effect_model_v1_splits.json`
-  - `artifacts/reports/effect_model_v1_feature_schema.json`
-  - `artifacts/reports/effect_model_v1_feature_schema.md`
-- Added model documentation:
-  - `docs/03_models/07_effect_model_v1.md`
+  - `tests/test_rich_synthetic_longitudinal_v3.py`
+  - `tests/test_rich_synthetic_longitudinal_v4.py`
 
-## Effect model v1 snapshot
+## Synthetic v4 snapshot
 
-- `model_name = effect_model_v1`
-- `cohort_version = synthetic_longitudinal_v2`
-- `seed = 20260310`
-- `alpha = 0.01`
-- `output_count = 9`
-- `feature_count = 70`
+- `synthetic_longitudinal_v4`
+  - `96 users`
+  - `480 records`
+  - `5 steps per user`
+- risk counts:
+  - `low = 325`
+  - `high = 155`
+- next-action counts:
+  - `continue_plan = 250`
+  - `monitor_only = 94`
+  - `trigger_safety_recheck = 75`
+  - `reduce_or_stop = 48`
+  - `ask_targeted_followup = 10`
+  - `re_optimize = 3`
+- modality counts:
+  - `wearable = 420`
+  - `genetic = 265`
+  - `cgm = 100`
+
+## Learned effect / policy / deterministic boundary
+
+- frozen eval remains deterministic
+- runtime safety remains deterministic
+- learned effect is still replay-only
+- learned effect still runs only after deterministic candidate filtering
+- learned effect now scores only the guarded near-tie survivor set
+- learned effect rerank is allowed only when:
+  - safety status is `ok`
+  - risk tier is `low`
+  - no pregnancy
+  - no medications
+  - no conditions
+  - no explicit avoid ingredients
+- learned policy remains replay-only and bounded by the deterministic ceiling
+
+## Effect model v3 result
+
+- training dataset:
+  - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
+- artifact:
+  - `C:/dev/wellnessbox-rnd/artifacts/models/effect_model_v3.json`
 - split sizes:
-  - `train = 270`
-  - `val = 105`
-  - `test = 105`
-- output names:
-  - `blood_glucose`
-  - `bone_joint`
-  - `energy_support`
-  - `general_wellness`
-  - `gut_health`
-  - `heart_health`
-  - `immunity_support`
-  - `sleep_support`
-  - `stress_support`
+  - `train = 275`
+  - `val = 125`
+  - `test = 80`
+- calibration:
+  - `policy_proxy_slope = 3.11735613`
+  - `policy_proxy_intercept = 0.09283873`
+- test metrics:
+  - `mean_domain_mae = 0.005517`
+  - `aggregate_mae = 0.003698`
+  - `aggregate_r2 = 0.986755`
+  - `policy_proxy_mae = 0.040029`
+  - `zero_baseline_policy_proxy_mae = 0.1903`
 
-## Effect model v1 metrics
+## 4-mode replay snapshot
 
-- train:
-  - `mean_domain_mae = 0.019431`
-  - `aggregate_mae = 0.015845`
-  - `aggregate_rmse = 0.023304`
-  - `aggregate_r2 = 0.909172`
-- val:
-  - `mean_domain_mae = 0.018197`
-  - `aggregate_mae = 0.013834`
-  - `aggregate_rmse = 0.018891`
-  - `aggregate_r2 = 0.94572`
-- test:
-  - `mean_domain_mae = 0.025335`
-  - `mean_domain_rmse = 0.040893`
-  - `aggregate_mae = 0.021604`
-  - `aggregate_rmse = 0.03396`
-  - `aggregate_r2 = 0.812435`
-  - `zero_baseline_aggregate_mae = 0.0572`
+- replay artifact:
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.json`
+- markdown summary:
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.md`
+- trace samples:
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_trace_samples.json`
 
-## Deterministic boundary
+Full-run aggregate on `96` synthetic users:
 
-- GPT wrapper was not used in this loop.
-- synthetic data uses no actual user data and no external APIs.
-- deterministic safety remains upstream of learned artifacts.
-- `effect_model_v1` is offline only in this loop and does not alter runtime policy selection.
-- frozen eval behavior did not change in this loop.
+- `deterministic_only`
+  - `total_trace_steps = 356`
+  - `final_actions = ask_targeted_followup:21, continue_plan:65, trigger_safety_recheck:10`
+- `learned_effect_guarded`
+  - `raw_ranking_disagreement_count = 71`
+  - `effect_guard_applied_count = 0`
+  - `differing_ranking_user_ids = 22`
+  - `differing_final_policy_user_ids = 25`
+  - `differing_final_state_user_ids = 24`
+- `learned_policy_guarded`
+  - `raw_policy_disagreement_count = 171`
+  - `policy_guard_applied_count = 102`
+  - `differing_final_policy_user_ids = 34`
+  - `differing_final_state_user_ids = 19`
+- `learned_effect_and_policy_guarded`
+  - `raw_ranking_disagreement_count = 66`
+  - `raw_policy_disagreement_count = 218`
+  - final actions still follow guarded policy more than learned effect
+
+## Cohort slice snapshot
+
+- `low_risk_users = 65`
+  - deterministic final action: `continue_plan:65`
+  - learned-effect final actions: `continue_plan:40, monitor_only:1, re_optimize:24`
+  - `deterministic_vs_learned_disagreement_count = 171`
+- `single_goal_users = 76`
+  - learned-effect final actions: `ask_targeted_followup:11, continue_plan:40, monitor_only:1, re_optimize:24`
+  - `deterministic_vs_learned_disagreement_count = 171`
+- `high_risk_users = 31`
+  - learned-effect final divergence stayed `0`
+- `cgm_users = 20`
+  - learned-effect final divergence stayed `0`
+- `genetic_users = 53`
+  - learned-effect final actions: `continue_plan:16, monitor_only:1, re_optimize:16`
 
 ## Deterministic baseline status
 
@@ -100,23 +147,20 @@ Frozen eval remained unchanged:
 
 ## Current bottlenecks
 
-Closed-loop roadmap status:
-
-- no-human runtime action space exists
-- citation-backed ingestion pipeline exists
-- runtime structured knowledge DB wiring exists
-- rich synthetic longitudinal dataset exists
-- rich synthetic policy dataset exists
-- learned effect model v1 now exists
-- learned policy model v1 exists
-- multi-user batch replay exists
-- next major missing layers are cohort-sliced replay and learned-vs-deterministic batch comparison
+- combined mode is still policy-dominated even after effect calibration
+- low-risk final action mix still has only `1` `monitor_only` case at terminal step
+- structured safety coverage, especially `dose_limits`, is still shallow
+- official eval bottleneck modality is still `cgm = 72.0%`
+- learned artifacts are still simulation-only
 
 ## Validation
 
-- `python scripts/train_effect_model_v1.py`
+- `python scripts/generate_synthetic_longitudinal_v4.py`
+- `python scripts/train_effect_model_v3.py`
+- `python scripts/run_closed_loop_batch_simulation.py`
 - `python -m ruff check .`
 - `python -m pytest`
 - `python scripts/manage_eval_dataset.py validate`
 - `python scripts/manage_eval_dataset.py summary`
-- `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop_final`
+- `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop_eval`
+- `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop_final_eval`

@@ -76,3 +76,21 @@
 1. train `effect_model_v1` on the same `synthetic_longitudinal_v2` dataset so closed-loop replay can compare learned policy and learned efficacy together
 2. wire `policy_model_v1` into batch replay only behind the same deterministic safety guard
 3. add cohort-sliced replay for `cgm`, `genetic`, `low-risk/high-risk`, and `single-goal/multi-goal`
+
+## Current replay integration status
+
+- `policy_model_v1` is now wired into guarded batch replay only:
+  - `artifacts/reports/closed_loop_batch_simulation_v1_compare.json`
+- Guard boundary remained unchanged:
+  - baseline intake stays deterministic
+  - non-`ok` safety status stays deterministic
+  - pregnancy / medications / conditions / explicit avoid stay deterministic
+  - more-permissive learned actions are clamped
+- Full replay snapshot:
+  - `raw_policy_disagreement_count = 173`
+  - `policy_guard_applied_count = 114`
+  - `differing_final_policy_user_ids = 18`
+  - `differing_final_state_user_ids = 5`
+- Interpretation:
+  - the model now produces meaningful replay divergence
+  - the divergence remains bounded by deterministic safety ceilings
