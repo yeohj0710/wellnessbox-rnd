@@ -11,10 +11,12 @@ from pydantic import BaseModel, Field
 from wellnessbox_rnd.models import (
     EffectModelV1Artifact,
     PolicyModelV1Artifact,
+    build_policy_feature_dict_v1,
     load_effect_model_v1_artifact,
     load_policy_model_v1_artifact,
     predict_policy_action_v1,
     predict_policy_effect_proxy_v1,
+    predict_policy_scores_from_feature_dict_v1,
 )
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.policy import apply_policy_guard
@@ -95,6 +97,8 @@ class SimulationTraceStep(BaseModel):
     follow_up_window_days: int = Field(ge=1, le=90)
     predicted_effect_proxy: float
     predicted_effect_source: EffectSource
+    policy_effect_proxy_used: float
+    policy_effect_proxy_override_applied: bool = False
     adherence_proxy: float = Field(ge=0.0, le=1.0)
     side_effect_proxy: float = Field(ge=0.0, le=1.0)
     risk_tier: str
@@ -160,6 +164,7 @@ class ClosedLoopBatchModeReport(BaseModel):
     state_transition_counts: dict[str, int] = Field(default_factory=dict)
     policy_guard_applied_count: int = Field(ge=0)
     effect_guard_applied_count: int = Field(ge=0)
+    policy_effect_override_applied_count: int = Field(ge=0)
     raw_policy_disagreement_count: int = Field(ge=0)
     raw_ranking_disagreement_count: int = Field(ge=0)
     deterministic_vs_learned_disagreement_count: int = Field(default=0, ge=0)
@@ -200,6 +205,8 @@ class _PolicyResolution(BaseModel):
     raw_learned_policy_action: SimulationPolicyAction | None = None
     selected_policy_action: SimulationPolicyAction
     action_source: PolicyActionSource
+    policy_effect_proxy_used: float
+    policy_effect_proxy_override_applied: bool = False
     policy_guard_applied: bool = False
     policy_guard_reason: str | None = None
 
@@ -241,6 +248,7 @@ def simulate_closed_loop_scenario(
             record=record,
             response=response,
             predicted_effect_proxy=candidate_resolution.predicted_effect_proxy,
+            predicted_effect_source=candidate_resolution.predicted_effect_source,
             artifact=policy_artifact,
             enable_learned_policy=enable_learned_policy,
         )
@@ -277,6 +285,8 @@ def simulate_closed_loop_scenario(
                 follow_up_window_days=response.follow_up_window_days,
                 predicted_effect_proxy=candidate_resolution.predicted_effect_proxy,
                 predicted_effect_source=candidate_resolution.predicted_effect_source,
+                policy_effect_proxy_used=policy_resolution.policy_effect_proxy_used,
+                policy_effect_proxy_override_applied=policy_resolution.policy_effect_proxy_override_applied,
                 adherence_proxy=record.adherence_proxy,
                 side_effect_proxy=record.side_effect_proxy,
                 risk_tier=record.labels.risk_tier,
@@ -443,6 +453,12 @@ def simulate_closed_loop_batch(
             for report in scenario_reports
             for step in report.trace
             if step.effect_guard_applied
+        ),
+        policy_effect_override_applied_count=sum(
+            1
+            for report in scenario_reports
+            for step in report.trace
+            if step.policy_effect_proxy_override_applied
         ),
         raw_policy_disagreement_count=sum(
             1
@@ -624,11 +640,11 @@ def render_simulation_markdown(report: ClosedLoopSimulationReport) -> str:
         (
             "| cycle | before | deterministic_action | raw_policy | selected_action | "
             "det_candidate | raw_candidate | selected_candidate | action_source | "
-            "ranking_source | policy_guard | effect_guard | effect | state_after |"
+            "ranking_source | policy_guard | effect_guard | effect | policy_effect | state_after |"
         ),
         (
             "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | "
-            "--- | --- | --- |"
+            "--- | --- | --- | --- |"
         ),
     ]
     for step in report.trace:
@@ -647,6 +663,7 @@ def render_simulation_markdown(report: ClosedLoopSimulationReport) -> str:
             f"{'yes' if step.policy_guard_applied else 'no'} | "
             f"{'yes' if step.effect_guard_applied else 'no'} | "
             f"{step.predicted_effect_proxy} | "
+            f"{step.policy_effect_proxy_used} | "
             f"{step.state_after} |"
         )
     return "\n".join(lines) + "\n"
@@ -693,6 +710,10 @@ def render_batch_simulation_markdown(report: ClosedLoopBatchComparisonReport) ->
                 f"- adverse_event_count: `{mode.adverse_event_count}`",
                 f"- policy_guard_applied_count: `{mode.policy_guard_applied_count}`",
                 f"- effect_guard_applied_count: `{mode.effect_guard_applied_count}`",
+                (
+                    "- policy_effect_override_applied_count: "
+                    f"`{mode.policy_effect_override_applied_count}`"
+                ),
                 f"- raw_policy_disagreement_count: `{mode.raw_policy_disagreement_count}`",
                 f"- raw_ranking_disagreement_count: `{mode.raw_ranking_disagreement_count}`",
                 (
@@ -899,6 +920,7 @@ def _resolve_policy_selection(
     record: RichSyntheticCohortRecord,
     response,
     predicted_effect_proxy: float,
+    predicted_effect_source: EffectSource,
     artifact: PolicyModelV1Artifact | None,
     enable_learned_policy: bool,
 ) -> _PolicyResolution:
@@ -911,19 +933,35 @@ def _resolve_policy_selection(
         deterministic_action=deterministic_action,
         selected_policy_action=deterministic_action,
         action_source=PolicyActionSource.DETERMINISTIC_POLICY,
+        policy_effect_proxy_used=record.expected_effect_proxy,
     )
     if artifact is None or not enable_learned_policy:
         return default_resolution
 
-    raw_learned_policy_action = _simulation_action_from_next_action(
-        predict_policy_action_v1(artifact, record)
-    )
+    policy_effect_proxy_used = record.expected_effect_proxy
+    policy_effect_proxy_override_applied = False
+    if predicted_effect_source == EffectSource.LEARNED_MODEL_V1:
+        policy_effect_proxy_used = predicted_effect_proxy
+        policy_effect_proxy_override_applied = round(
+            predicted_effect_proxy, 6
+        ) != round(record.expected_effect_proxy, 6)
+        raw_learned_policy_action = _predict_policy_action_with_effect_proxy_override(
+            artifact=artifact,
+            record=record,
+            expected_effect_proxy=policy_effect_proxy_used,
+        )
+    else:
+        raw_learned_policy_action = _simulation_action_from_next_action(
+            predict_policy_action_v1(artifact, record)
+        )
     policy_guard_reason = _policy_guard_reason(record=record, response=response)
     if policy_guard_reason is not None:
         return default_resolution.model_copy(
             update={
                 "raw_learned_policy_action": raw_learned_policy_action,
                 "action_source": PolicyActionSource.LEARNED_POLICY_GUARDED,
+                "policy_effect_proxy_used": policy_effect_proxy_used,
+                "policy_effect_proxy_override_applied": policy_effect_proxy_override_applied,
                 "policy_guard_applied": raw_learned_policy_action != deterministic_action,
                 "policy_guard_reason": policy_guard_reason,
             }
@@ -940,11 +978,29 @@ def _resolve_policy_selection(
         raw_learned_policy_action=raw_learned_policy_action,
         selected_policy_action=guarded_action,
         action_source=PolicyActionSource.LEARNED_POLICY_GUARDED,
+        policy_effect_proxy_used=policy_effect_proxy_used,
+        policy_effect_proxy_override_applied=policy_effect_proxy_override_applied,
         policy_guard_applied=guarded_action != raw_learned_policy_action,
         policy_guard_reason=(
             "permissiveness_clamp" if guarded_action != raw_learned_policy_action else None
         ),
     )
+
+
+def _predict_policy_action_with_effect_proxy_override(
+    *,
+    artifact: PolicyModelV1Artifact,
+    record: RichSyntheticCohortRecord,
+    expected_effect_proxy: float,
+) -> SimulationPolicyAction:
+    feature_row = build_policy_feature_dict_v1(record)
+    feature_row["expected_effect_proxy"] = float(expected_effect_proxy)
+    scores = predict_policy_scores_from_feature_dict_v1(artifact, feature_row)
+    selected_label = max(
+        sorted(scores.items()),
+        key=lambda item: item[1],
+    )[0]
+    return _simulation_action_from_next_action(NextAction(selected_label))
 
 
 def _predict_candidate_effect_scores(

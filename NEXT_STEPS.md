@@ -2,36 +2,36 @@
 
 ## Current priority
 
-Priority is now `P4 calibration follow-through + P1 support`.
+Priority is now `P4 follow-through on effect-conditioned combined replay + P1 support`.
 
 What now exists:
 
 - calibrated effect-focused synthetic cohort:
   - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
-- derived policy rows from the same v4 state space:
-  - `C:/dev/wellnessbox-rnd/data/synthetic/policy_training_v1_from_v4.jsonl`
-- retrained learned effect artifact:
+- replay effect artifact with calibrated policy proxy:
   - `C:/dev/wellnessbox-rnd/artifacts/models/effect_model_v3.json`
 - guarded 4-mode replay compare on v4:
   - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.json`
+- combined replay policy now reads the guarded learned effect proxy through policy feature override:
+  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/simulation/closed_loop_v0.py`
 
-What the latest loop proved:
+## What the latest loop proved
 
-- `learned_effect_guarded` now produces final divergence again after calibration:
-  - `71` raw ranking disagreements
-  - `22` ranking-diff users
-  - `25` final-policy-diff users
-  - `24` final-state-diff users
-- low-risk and single-goal slices still show non-zero learned-effect divergence:
-  - `low_risk deterministic_vs_learned_disagreement_count = 171`
+- combined mode had been policy-dominated because raw learned policy inference ignored the learned effect proxy and kept using the original `expected_effect_proxy`
+- the new replay-only wiring measurably reduced that collapse:
+  - combined vs policy-only final action match: `96 / 96 -> 83 / 96`
+  - combined vs policy-only trace action match: `299 / 299 -> 262 / 299`
+  - effect-ranking-diff subset combined vs policy-only trace action match: `95 / 95 -> 87 / 95`
+- the new path is active on a meaningful portion of replay:
+  - `policy_effect_override_applied_count = 257`
 - frozen eval stayed unchanged
 - deterministic safety guard remained intact
 
 ## Recommended next loop
 
-1. `P4`: analyze why combined mode is still policy-dominated, then route learned effect into guarded policy features or weighting instead of keeping the two paths largely independent.
-2. `P1`: expand structured safety coverage, especially `dose_limits`, before any wider learned runtime use.
-3. `P2/P4`: enrich threshold-edge low-risk trajectories again so final `monitor_only` cases are not compressed to a single terminal user.
+1. `P4`: tune effect-conditioned policy weighting only inside the already-guarded low-risk replay subset so combined mode moves further away from policy-only without turning too many low-risk users into `trigger_safety_recheck`.
+2. `P1`: expand structured safety coverage, especially `dose_limits`, before any wider learned usage is considered.
+3. `P2/P4`: enrich CGM and threshold-edge low-risk trajectories so `monitor_only` vs `continue_plan` vs `re_optimize` boundaries are better represented.
 
 ## Guardrails
 
@@ -49,5 +49,5 @@ What the latest loop proved:
   - deterministic baseline
   - frozen eval
   - safety hard-rule precedence
-  - deterministic fallback when learned output is missing or suspicious
+  - deterministic fallback when learned output is missing, suspicious, or out of scope
   - system-owned action space only

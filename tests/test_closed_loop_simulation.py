@@ -3,6 +3,8 @@ from wellnessbox_rnd import simulation
 DATASET_PATH = "data/synthetic/synthetic_longitudinal_v2.jsonl"
 MODEL_ARTIFACT_PATH = "artifacts/models/effect_model_v1.json"
 POLICY_MODEL_ARTIFACT_PATH = "artifacts/models/policy_model_v1.json"
+V4_DATASET_PATH = "data/synthetic/synthetic_longitudinal_v4.jsonl"
+V4_MODEL_ARTIFACT_PATH = "artifacts/models/effect_model_v3.json"
 
 
 def test_closed_loop_simulation_exposes_guarded_trace_fields() -> None:
@@ -30,6 +32,8 @@ def test_closed_loop_simulation_exposes_guarded_trace_fields() -> None:
         simulation.RankingSource.DETERMINISTIC_RANKING,
         simulation.RankingSource.LEARNED_EFFECT_GUARDED,
     }
+    assert first_step.policy_effect_proxy_used >= 0.0
+    assert first_step.policy_effect_proxy_override_applied is False
 
 
 def test_closed_loop_simulation_falls_back_without_models() -> None:
@@ -92,3 +96,34 @@ def test_closed_loop_batch_simulation_reports_all_four_modes_and_slices() -> Non
         "learned_effect_and_policy_guarded",
     }
     assert len(report.trace_samples) >= 1
+
+
+def test_combined_mode_routes_learned_effect_proxy_into_policy_features() -> None:
+    report = simulation.compare_batch_simulation_modes(
+        dataset_path=V4_DATASET_PATH,
+        max_cycles=5,
+        max_users=8,
+        model_artifact_path=V4_MODEL_ARTIFACT_PATH,
+        policy_model_artifact_path=POLICY_MODEL_ARTIFACT_PATH,
+    )
+
+    modes = {mode.mode_name: mode for mode in report.compared_modes}
+    combined = modes["learned_effect_and_policy_guarded"]
+    policy_only = modes["learned_policy_guarded"]
+
+    assert combined.policy_effect_override_applied_count > 0
+
+    combined_by_user = {scenario.user_id: scenario for scenario in combined.scenario_reports}
+    policy_by_user = {scenario.user_id: scenario for scenario in policy_only.scenario_reports}
+
+    assert any(
+        combined_step.policy_effect_proxy_override_applied
+        and combined_step.raw_learned_policy_action
+        != policy_step.raw_learned_policy_action
+        for user_id, combined_report in combined_by_user.items()
+        for combined_step, policy_step in zip(
+            combined_report.trace,
+            policy_by_user[user_id].trace,
+            strict=False,
+        )
+    )

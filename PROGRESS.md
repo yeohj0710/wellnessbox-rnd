@@ -2,136 +2,66 @@
 
 ## Current loop
 
-- Chosen stage: `P2/P3`
-- Chosen task: `calibrated synthetic effect richness + effect_model_v3 retrain + guarded replay rerun`
+- Chosen stage: `P4`
+- Chosen task: `effect-proxy conditioned combined replay policy`
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
   - `case_count = 256`
 
 ## What changed
 
-- Added calibrated low-risk effect cohort generation:
-  - `src/wellnessbox_rnd/synthetic/rich_longitudinal_v4.py`
-  - `scripts/generate_synthetic_longitudinal_v4.py`
-  - `data/synthetic/synthetic_longitudinal_v4.jsonl`
-- Added retrained effect artifact with policy-facing calibration:
-  - `scripts/train_effect_model_v3.py`
-  - `artifacts/models/effect_model_v3.json`
-  - `artifacts/reports/effect_model_v3_eval.json`
-  - `artifacts/reports/effect_model_v3_feature_schema.json`
-- Added calibrated effect proxy path to the model artifact:
-  - `src/wellnessbox_rnd/models/effect_model_v1.py`
-  - `src/wellnessbox_rnd/training/effect_model_v1.py`
-- Changed replay rerank to score only the guarded near-tie survivor set:
+- Routed learned effect into combined replay policy features:
   - `src/wellnessbox_rnd/simulation/closed_loop_v0.py`
-  - `scripts/run_closed_loop_batch_simulation.py`
-- Added v4 regression coverage:
-  - `tests/test_effect_model_v1.py`
-  - `tests/test_rich_synthetic_longitudinal_v3.py`
-  - `tests/test_rich_synthetic_longitudinal_v4.py`
+  - combined mode now overrides the policy feature `expected_effect_proxy` with the guarded learned effect proxy when rerank is actually applied
+- Added replay diagnostics for effect-conditioned policy usage:
+  - per-step fields `policy_effect_proxy_used`
+  - per-step flag `policy_effect_proxy_override_applied`
+  - per-mode aggregate `policy_effect_override_applied_count`
+- Added regression coverage for the new replay-only wiring:
+  - `tests/test_closed_loop_simulation.py`
 
-## Synthetic v4 snapshot
+## Why combined mode was policy-dominated
 
-- `synthetic_longitudinal_v4`
-  - `96 users`
-  - `480 records`
-  - `5 steps per user`
-- risk counts:
-  - `low = 325`
-  - `high = 155`
-- next-action counts:
-  - `continue_plan = 250`
-  - `monitor_only = 94`
-  - `trigger_safety_recheck = 75`
-  - `reduce_or_stop = 48`
-  - `ask_targeted_followup = 10`
-  - `re_optimize = 3`
-- modality counts:
-  - `wearable = 420`
-  - `genetic = 265`
-  - `cgm = 100`
+- Before this loop, combined replay used the learned-effect-selected candidate to compute the deterministic threshold action, but raw learned policy inference still read the original record feature `expected_effect_proxy`.
+- That meant combined mode was action-identical to `learned_policy_guarded` even when learned effect changed candidate choice:
+  - combined vs policy-only final action match: `96 / 96 = 1.0000`
+  - combined vs policy-only trace action match: `299 / 299 = 1.0000`
+  - effect-ranking-diff subset combined vs policy-only trace action match: `95 / 95 = 1.0000`
 
-## Learned effect / policy / deterministic boundary
-
-- frozen eval remains deterministic
-- runtime safety remains deterministic
-- learned effect is still replay-only
-- learned effect still runs only after deterministic candidate filtering
-- learned effect now scores only the guarded near-tie survivor set
-- learned effect rerank is allowed only when:
-  - safety status is `ok`
-  - risk tier is `low`
-  - no pregnancy
-  - no medications
-  - no conditions
-  - no explicit avoid ingredients
-- learned policy remains replay-only and bounded by the deterministic ceiling
-
-## Effect model v3 result
-
-- training dataset:
-  - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
-- artifact:
-  - `C:/dev/wellnessbox-rnd/artifacts/models/effect_model_v3.json`
-- split sizes:
-  - `train = 275`
-  - `val = 125`
-  - `test = 80`
-- calibration:
-  - `policy_proxy_slope = 3.11735613`
-  - `policy_proxy_intercept = 0.09283873`
-- test metrics:
-  - `mean_domain_mae = 0.005517`
-  - `aggregate_mae = 0.003698`
-  - `aggregate_r2 = 0.986755`
-  - `policy_proxy_mae = 0.040029`
-  - `zero_baseline_policy_proxy_mae = 0.1903`
-
-## 4-mode replay snapshot
+## Replay result after the wiring change
 
 - replay artifact:
   - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.json`
-- markdown summary:
   - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.md`
-- trace samples:
   - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_trace_samples.json`
-
-Full-run aggregate on `96` synthetic users:
-
-- `deterministic_only`
-  - `total_trace_steps = 356`
-  - `final_actions = ask_targeted_followup:21, continue_plan:65, trigger_safety_recheck:10`
-- `learned_effect_guarded`
-  - `raw_ranking_disagreement_count = 71`
-  - `effect_guard_applied_count = 0`
-  - `differing_ranking_user_ids = 22`
-  - `differing_final_policy_user_ids = 25`
-  - `differing_final_state_user_ids = 24`
-- `learned_policy_guarded`
-  - `raw_policy_disagreement_count = 171`
-  - `policy_guard_applied_count = 102`
-  - `differing_final_policy_user_ids = 34`
-  - `differing_final_state_user_ids = 19`
 - `learned_effect_and_policy_guarded`
-  - `raw_ranking_disagreement_count = 66`
-  - `raw_policy_disagreement_count = 218`
-  - final actions still follow guarded policy more than learned effect
+  - `policy_effect_override_applied_count = 257`
+  - `raw_policy_disagreement_count = 220`
+  - `raw_ranking_disagreement_count = 63`
+  - `differing_final_policy_user_ids = 45`
+  - `differing_final_state_user_ids = 23`
+- policy-dominance reduction vs pre-loop report:
+  - combined vs policy-only final action match: `96 / 96 -> 83 / 96`
+  - combined vs policy-only trace action match: `299 / 299 -> 262 / 299`
+  - effect-ranking-diff subset combined vs policy-only trace action match: `95 / 95 -> 87 / 95`
+- combined is still closer to policy-only than effect-only, but no longer collapsed onto it:
+  - combined vs effect-only final action match: `54 / 96 -> 50 / 96`
+  - combined vs effect-only trace action match: `183 / 356 -> 169 / 356`
 
 ## Cohort slice snapshot
 
 - `low_risk_users = 65`
   - deterministic final action: `continue_plan:65`
-  - learned-effect final actions: `continue_plan:40, monitor_only:1, re_optimize:24`
-  - `deterministic_vs_learned_disagreement_count = 171`
+  - policy-only final actions: `continue_plan:31, monitor_only:15, trigger_safety_recheck:19`
+  - combined final actions: `continue_plan:20, monitor_only:22, trigger_safety_recheck:23`
+  - combined `deterministic_vs_learned_disagreement_count = 209`
 - `single_goal_users = 76`
-  - learned-effect final actions: `ask_targeted_followup:11, continue_plan:40, monitor_only:1, re_optimize:24`
-  - `deterministic_vs_learned_disagreement_count = 171`
+  - combined divergence stayed non-zero and increased with the effect-conditioned policy path
 - `high_risk_users = 31`
-  - learned-effect final divergence stayed `0`
+  - deterministic safety ceiling stayed intact
 - `cgm_users = 20`
-  - learned-effect final divergence stayed `0`
-- `genetic_users = 53`
-  - learned-effect final actions: `continue_plan:16, monitor_only:1, re_optimize:16`
+  - combined final actions stayed `ask_targeted_followup:10, trigger_safety_recheck:10`
+  - CGM is still the weakest replay slice
 
 ## Deterministic baseline status
 
@@ -147,20 +77,20 @@ Frozen eval remained unchanged:
 
 ## Current bottlenecks
 
-- combined mode is still policy-dominated even after effect calibration
-- low-risk final action mix still has only `1` `monitor_only` case at terminal step
+- combined mode still remains closer to policy-only than effect-only after feature wiring
+- low-risk combined terminal mix now over-shifts into `trigger_safety_recheck`
 - structured safety coverage, especially `dose_limits`, is still shallow
 - official eval bottleneck modality is still `cgm = 72.0%`
-- learned artifacts are still simulation-only
+- learned artifacts are still replay-only and not runtime-eligible
 
 ## Validation
 
-- `python scripts/generate_synthetic_longitudinal_v4.py`
-- `python scripts/train_effect_model_v3.py`
+- `python -m ruff check src/wellnessbox_rnd/simulation/closed_loop_v0.py tests/test_closed_loop_simulation.py`
+- `python -m pytest tests/test_closed_loop_simulation.py -q`
 - `python scripts/run_closed_loop_batch_simulation.py`
-- `python -m ruff check .`
-- `python -m pytest`
 - `python scripts/manage_eval_dataset.py validate`
 - `python scripts/manage_eval_dataset.py summary`
+- `python -m ruff check .`
+- `python -m pytest`
 - `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop_eval`
 - `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/current_loop_final_eval`
