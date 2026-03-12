@@ -2,66 +2,47 @@
 
 ## Current loop
 
-- Chosen stage: `P4`
-- Chosen task: `effect-proxy conditioned combined replay policy`
+- Chosen stage: `P1`
+- Chosen task: `adopt structured current-supplement dose in the maintained synthetic_longitudinal_v3 source`
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
   - `case_count = 256`
 
 ## What changed
 
-- Routed learned effect into combined replay policy features:
-  - `src/wellnessbox_rnd/simulation/closed_loop_v0.py`
-  - combined mode now overrides the policy feature `expected_effect_proxy` with the guarded learned effect proxy when rerank is actually applied
-- Added replay diagnostics for effect-conditioned policy usage:
-  - per-step fields `policy_effect_proxy_used`
-  - per-step flag `policy_effect_proxy_override_applied`
-  - per-mode aggregate `policy_effect_override_applied_count`
-- Added regression coverage for the new replay-only wiring:
-  - `tests/test_closed_loop_simulation.py`
+- Adopted structured supplement dose in one more maintained synthetic-generation path:
+  - `src/wellnessbox_rnd/synthetic/rich_longitudinal_v3.py`
+  - `data/synthetic/synthetic_longitudinal_v3.jsonl`
+- Added deterministic normalization for emitted `current_supplements` in v3:
+  - fills `dose` from `DOSE_TEMPLATES` when ingredient mapping is unambiguous
+  - uses ingredient list first, then low-ambiguity name canonicalization
+  - leaves fallback untouched when mapping is ambiguous or no template exists
+- Added measurable reporting:
+  - `scripts/generate_synthetic_longitudinal_v3.py`
+  - `artifacts/reports/synthetic_longitudinal_v3_summary.json`
+  - `artifacts/reports/synthetic_longitudinal_v3_summary.md`
+  - v3 cohort summary now includes `structured_current_supplement_dose_record_count`
+- Expanded focused regression coverage:
+  - `tests/test_rich_synthetic_longitudinal_v3.py`
+  - summary count now must match the generated record count with populated structured doses
 
-## Why combined mode was policy-dominated
+## Why this loop was chosen
 
-- Before this loop, combined replay used the learned-effect-selected candidate to compute the deterministic threshold action, but raw learned policy inference still read the original record feature `expected_effect_proxy`.
-- That meant combined mode was action-identical to `learned_policy_guarded` even when learned effect changed candidate choice:
-  - combined vs policy-only final action match: `96 / 96 = 1.0000`
-  - combined vs policy-only trace action match: `299 / 299 = 1.0000`
-  - effect-ranking-diff subset combined vs policy-only trace action match: `95 / 95 = 1.0000`
+- The highest-priority unfinished item after the mineral `dose_limits` loop was one more bounded maintained input/source-path adoption.
+- `synthetic_longitudinal_v3` is a maintained upstream source for training and replay artifacts, so it has better leverage than another API-only tweak.
+- The existing v4 helper pattern could be reused with a small local change set and produce a measurable artifact delta without touching frozen eval.
 
-## Replay result after the wiring change
+## Safety coverage delta
 
-- replay artifact:
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.json`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.md`
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_trace_samples.json`
-- `learned_effect_and_policy_guarded`
-  - `policy_effect_override_applied_count = 257`
-  - `raw_policy_disagreement_count = 220`
-  - `raw_ranking_disagreement_count = 63`
-  - `differing_final_policy_user_ids = 45`
-  - `differing_final_state_user_ids = 23`
-- policy-dominance reduction vs pre-loop report:
-  - combined vs policy-only final action match: `96 / 96 -> 83 / 96`
-  - combined vs policy-only trace action match: `299 / 299 -> 262 / 299`
-  - effect-ranking-diff subset combined vs policy-only trace action match: `95 / 95 -> 87 / 95`
-- combined is still closer to policy-only than effect-only, but no longer collapsed onto it:
-  - combined vs effect-only final action match: `54 / 96 -> 50 / 96`
-  - combined vs effect-only trace action match: `183 / 356 -> 169 / 356`
-
-## Cohort slice snapshot
-
-- `low_risk_users = 65`
-  - deterministic final action: `continue_plan:65`
-  - policy-only final actions: `continue_plan:31, monitor_only:15, trigger_safety_recheck:19`
-  - combined final actions: `continue_plan:20, monitor_only:22, trigger_safety_recheck:23`
-  - combined `deterministic_vs_learned_disagreement_count = 209`
-- `single_goal_users = 76`
-  - combined divergence stayed non-zero and increased with the effect-conditioned policy path
-- `high_risk_users = 31`
-  - deterministic safety ceiling stayed intact
-- `cgm_users = 20`
-  - combined final actions stayed `ask_targeted_followup:10, trigger_safety_recheck:10`
-  - CGM is still the weakest replay slice
+- rule count stayed flat:
+  - `dose_limits = 5`
+- dataset/input adoption delta:
+  - before: maintained v3 synthetic source did not emit structured supplement doses
+  - after: `synthetic_longitudinal_v3` emits structured supplement doses on `270 / 480` records
+- measurable artifact:
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/synthetic_longitudinal_v3_summary.json`
+  - `structured_current_supplement_dose_record_count = 270`
+  - `record_count = 480`
 
 ## Deterministic baseline status
 
@@ -77,17 +58,17 @@ Frozen eval remained unchanged:
 
 ## Current bottlenecks
 
-- combined mode still remains closer to policy-only than effect-only after feature wiring
-- low-risk combined terminal mix now over-shifts into `trigger_safety_recheck`
-- structured safety coverage, especially `dose_limits`, is still shallow
-- official eval bottleneck modality is still `cgm = 72.0%`
-- learned artifacts are still replay-only and not runtime-eligible
+- `dose_limits` still cover only five ingredients
+- structured supplement dose now exists in the API and both maintained `synthetic_longitudinal_v3` / `v4`, but not yet broadly across other maintained input paths
+- `cgm` remains the weakest official eval modality at `72.0%`
+- low-risk `re_optimize` richness in replay remains thin
+- learned artifacts remain replay-only and not runtime-eligible
 
 ## Validation
 
-- `python -m ruff check src/wellnessbox_rnd/simulation/closed_loop_v0.py tests/test_closed_loop_simulation.py`
-- `python -m pytest tests/test_closed_loop_simulation.py -q`
-- `python scripts/run_closed_loop_batch_simulation.py`
+- `python -m ruff check src/wellnessbox_rnd/synthetic/rich_longitudinal_v3.py scripts/generate_synthetic_longitudinal_v3.py tests/test_rich_synthetic_longitudinal_v3.py`
+- `python -m pytest tests/test_rich_synthetic_longitudinal_v3.py -q`
+- `python scripts/generate_synthetic_longitudinal_v3.py`
 - `python scripts/manage_eval_dataset.py validate`
 - `python scripts/manage_eval_dataset.py summary`
 - `python -m ruff check .`

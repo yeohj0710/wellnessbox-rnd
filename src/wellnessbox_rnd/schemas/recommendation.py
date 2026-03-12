@@ -87,6 +87,7 @@ class MedicationInput(BaseModel):
 
 class SupplementInput(BaseModel):
     name: str = Field(min_length=1)
+    dose: str | None = None
     ingredients: list[str] = Field(default_factory=list)
 
 

@@ -102,7 +102,7 @@ def test_combined_mode_routes_learned_effect_proxy_into_policy_features() -> Non
     report = simulation.compare_batch_simulation_modes(
         dataset_path=V4_DATASET_PATH,
         max_cycles=5,
-        max_users=8,
+        max_users=96,
         model_artifact_path=V4_MODEL_ARTIFACT_PATH,
         policy_model_artifact_path=POLICY_MODEL_ARTIFACT_PATH,
     )
@@ -110,11 +110,35 @@ def test_combined_mode_routes_learned_effect_proxy_into_policy_features() -> Non
     modes = {mode.mode_name: mode for mode in report.compared_modes}
     combined = modes["learned_effect_and_policy_guarded"]
     policy_only = modes["learned_policy_guarded"]
+    effect_only = modes["learned_effect_guarded"]
+    combined_low_risk = combined.cohort_slice_metrics["low_risk_users"]
+    policy_low_risk = policy_only.cohort_slice_metrics["low_risk_users"]
 
     assert combined.policy_effect_override_applied_count > 0
-
+    assert (
+        combined.final_policy_action_counts.get("trigger_safety_recheck", 0)
+        < policy_only.final_policy_action_counts.get("trigger_safety_recheck", 0)
+    )
+    assert combined_low_risk.final_action_distribution.get("re_optimize", 0) > 0
+    assert (
+        combined_low_risk.final_action_distribution.get("trigger_safety_recheck", 0)
+        < policy_low_risk.final_action_distribution.get("trigger_safety_recheck", 0)
+    )
     combined_by_user = {scenario.user_id: scenario for scenario in combined.scenario_reports}
     policy_by_user = {scenario.user_id: scenario for scenario in policy_only.scenario_reports}
+    effect_by_user = {scenario.user_id: scenario for scenario in effect_only.scenario_reports}
+
+    combined_vs_policy_final_match = sum(
+        combined_by_user[user_id].final_policy_action
+        == policy_by_user[user_id].final_policy_action
+        for user_id in combined_by_user
+    )
+    combined_vs_effect_final_match = sum(
+        combined_by_user[user_id].final_policy_action
+        == effect_by_user[user_id].final_policy_action
+        for user_id in combined_by_user
+    )
+    assert combined_vs_effect_final_match >= combined_vs_policy_final_match
 
     assert any(
         combined_step.policy_effect_proxy_override_applied

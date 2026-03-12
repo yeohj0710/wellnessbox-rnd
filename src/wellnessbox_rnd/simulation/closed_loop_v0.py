@@ -30,6 +30,12 @@ from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import (
 SIMULATION_VERSION = "closed_loop_batch_simulation_v3_compare"
 TRACE_SAMPLE_LIMIT = 4
 LEARNED_EFFECT_NEAR_TIE_GAP = 1.0
+CONTINUE_PLAN_EFFECT_PRIOR_BONUS = 0.8
+MONITOR_ONLY_EFFECT_PRIOR_BONUS = 0.65
+RE_OPTIMIZE_EFFECT_PRIOR_BONUS = 1.1
+CONTINUE_PLAN_TRIGGER_PENALTY = 0.15
+MONITOR_ONLY_TRIGGER_PENALTY = 0.3
+RE_OPTIMIZE_TRIGGER_PENALTY = 0.4
 TERMINAL_STATES = {
     "baseline_questionnaire_due",
     "blocked",
@@ -948,6 +954,7 @@ def _resolve_policy_selection(
         raw_learned_policy_action = _predict_policy_action_with_effect_proxy_override(
             artifact=artifact,
             record=record,
+            response=response,
             expected_effect_proxy=policy_effect_proxy_used,
         )
     else:
@@ -991,16 +998,68 @@ def _predict_policy_action_with_effect_proxy_override(
     *,
     artifact: PolicyModelV1Artifact,
     record: RichSyntheticCohortRecord,
+    response,
     expected_effect_proxy: float,
 ) -> SimulationPolicyAction:
     feature_row = build_policy_feature_dict_v1(record)
     feature_row["expected_effect_proxy"] = float(expected_effect_proxy)
     scores = predict_policy_scores_from_feature_dict_v1(artifact, feature_row)
+    if _should_apply_effect_conditioned_policy_priors(record=record, response=response):
+        _apply_effect_conditioned_policy_priors(
+            scores=scores,
+            predicted_effect_proxy=expected_effect_proxy,
+        )
     selected_label = max(
         sorted(scores.items()),
         key=lambda item: item[1],
     )[0]
     return _simulation_action_from_next_action(NextAction(selected_label))
+
+
+def _should_apply_effect_conditioned_policy_priors(
+    *,
+    record: RichSyntheticCohortRecord,
+    response,
+) -> bool:
+    return (
+        record.labels.risk_tier == "low"
+        and response.status == RecommendationStatus.OK
+    )
+
+
+def _apply_effect_conditioned_policy_priors(
+    *,
+    scores: dict[str, float],
+    predicted_effect_proxy: float,
+) -> None:
+    if predicted_effect_proxy < 0.14:
+        scores[NextAction.RE_OPTIMIZE.value] = (
+            scores.get(NextAction.RE_OPTIMIZE.value, 0.0)
+            + RE_OPTIMIZE_EFFECT_PRIOR_BONUS
+        )
+        scores[NextAction.TRIGGER_SAFETY_RECHECK.value] = (
+            scores.get(NextAction.TRIGGER_SAFETY_RECHECK.value, 0.0)
+            - RE_OPTIMIZE_TRIGGER_PENALTY
+        )
+        return
+    if predicted_effect_proxy < 0.24:
+        scores[NextAction.MONITOR_ONLY.value] = (
+            scores.get(NextAction.MONITOR_ONLY.value, 0.0)
+            + MONITOR_ONLY_EFFECT_PRIOR_BONUS
+        )
+        scores[NextAction.TRIGGER_SAFETY_RECHECK.value] = (
+            scores.get(NextAction.TRIGGER_SAFETY_RECHECK.value, 0.0)
+            - MONITOR_ONLY_TRIGGER_PENALTY
+        )
+        return
+    scores[NextAction.CONTINUE_PLAN.value] = (
+        scores.get(NextAction.CONTINUE_PLAN.value, 0.0)
+        + CONTINUE_PLAN_EFFECT_PRIOR_BONUS
+    )
+    scores[NextAction.TRIGGER_SAFETY_RECHECK.value] = (
+        scores.get(NextAction.TRIGGER_SAFETY_RECHECK.value, 0.0)
+        - CONTINUE_PLAN_TRIGGER_PENALTY
+    )
 
 
 def _predict_candidate_effect_scores(

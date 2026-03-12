@@ -136,6 +136,7 @@ class RichSyntheticCohortSummary(BaseModel):
     seed: int
     user_count: int
     record_count: int
+    structured_current_supplement_dose_record_count: int = 0
     total_trajectory_steps: int
     step_counts: dict[int, int]
     next_action_counts: dict[str, int]

@@ -42,11 +42,21 @@ def test_generate_rich_synthetic_cohort_v4_has_modality_enabled_low_risk_edges()
         if record.labels.risk_tier == "low"
     }
     assert {"continue_plan", "monitor_only", "re_optimize"} <= low_risk_actions
+    structured_dose_record_count = sum(
+        1
+        for record in records
+        if any(supplement.dose for supplement in record.request.current_supplements)
+    )
+    assert structured_dose_record_count > 0
 
     cohort_summary = summarize_rich_synthetic_cohort_v4(records, seed=601)
     policy_summary = summarize_rich_policy_training_rows_v4(rows)
 
     assert cohort_summary.record_count == 360
+    assert (
+        cohort_summary.structured_current_supplement_dose_record_count
+        == structured_dose_record_count
+    )
     assert cohort_summary.modality_counts["genetic"] > 0
     assert policy_summary.record_count == 360
 

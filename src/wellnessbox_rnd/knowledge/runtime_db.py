@@ -63,10 +63,16 @@ class ContraindicationRuleRecord(BaseModel):
 
 class DoseLimitRecord(BaseModel):
     rule_id: str
+    source_kind: str
+    severity: Severity
     ingredient_key: str
     max_daily_amount: float | None = None
     unit: str | None = None
+    allowed_evidence_sources: list[str] = Field(
+        default_factory=lambda: ["structured_dose", "ingredient_line", "title"]
+    )
     message: str
+    warning_text: str
     reference_ids: list[str] = Field(default_factory=list)
     claim_ids: list[str] = Field(default_factory=list)
 
@@ -166,6 +172,7 @@ def build_runtime_knowledge_db(
     condition_keys: set[str] = set()
     interaction_rules: list[InteractionRuleRecord] = []
     contraindication_rules: list[ContraindicationRuleRecord] = []
+    dose_limits: list[DoseLimitRecord] = []
 
     for raw_rule in rules_payload.get("medication_rules", []):
         medications = sorted(set(raw_rule.get("medications", [])))
@@ -236,6 +243,32 @@ def build_runtime_knowledge_db(
             ingredient_aliases,
             alias_keys,
             excluded_ingredients,
+            source_kind="deterministic_policy",
+        )
+
+    for raw_rule in rules_payload.get("dose_limits", []):
+        metadata = raw_rule["metadata"]
+        ingredient_key = raw_rule["ingredient_key"]
+        dose_limits.append(
+            DoseLimitRecord(
+                rule_id=metadata["rule_id"],
+                source_kind="deterministic_policy",
+                severity=Severity(metadata["severity"]),
+                ingredient_key=ingredient_key,
+                max_daily_amount=raw_rule.get("max_daily_amount"),
+                unit=_optional_string(raw_rule.get("unit")),
+                allowed_evidence_sources=_validated_dose_evidence_sources(
+                    raw_rule.get("allowed_evidence_sources")
+                ),
+                message=metadata["message"],
+                warning_text=metadata["warning_text"],
+            )
+        )
+        _register_ingredients(
+            ingredient_map,
+            ingredient_aliases,
+            alias_keys,
+            [ingredient_key],
             source_kind="deterministic_policy",
         )
 
@@ -348,7 +381,7 @@ def build_runtime_knowledge_db(
         ],
         interaction_rules=interaction_rules,
         contraindication_rules=contraindication_rules,
-        dose_limits=[],
+        dose_limits=dose_limits,
         ingredient_domain_scores=ingredient_domain_scores,
         references=references,
         reference_spans=reference_spans,
@@ -388,6 +421,7 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
     issues.extend(
         _validate_unique_keys("contraindication_rule", runtime_db.contraindication_rules, "rule_id")
     )
+    issues.extend(_validate_unique_keys("dose_limit", runtime_db.dose_limits, "rule_id"))
     issues.extend(_validate_unique_keys("reference", runtime_db.references, "reference_id"))
     issues.extend(_validate_unique_keys("reference_span", runtime_db.reference_spans, "span_id"))
     issues.extend(_validate_unique_keys("workflow_policy", runtime_db.workflow_policies, "rule_id"))
@@ -411,12 +445,28 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
 
     reference_ids = {reference.reference_id for reference in runtime_db.references}
     claim_ids = {span.claim_id for span in runtime_db.reference_spans}
+    ingredient_keys = {record.ingredient_key for record in runtime_db.ingredients}
     for rule in runtime_db.interaction_rules:
         issues.extend(_validate_referenced_ids(rule, reference_ids, claim_ids))
     for rule in runtime_db.contraindication_rules:
         issues.extend(_validate_referenced_ids(rule, reference_ids, claim_ids))
     for record in runtime_db.dose_limits:
         issues.extend(_validate_referenced_ids(record, reference_ids, claim_ids))
+        if record.ingredient_key not in ingredient_keys:
+            issues.append(f"missing_ingredient:dose_limit:{record.ingredient_key}")
+        if record.max_daily_amount is None or record.max_daily_amount <= 0:
+            issues.append(f"invalid_dose_limit_amount:{record.rule_id}")
+        if not record.unit:
+            issues.append(f"missing_dose_limit_unit:{record.rule_id}")
+        if not record.allowed_evidence_sources:
+            issues.append(f"missing_dose_limit_evidence_sources:{record.rule_id}")
+        invalid_sources = {
+            source
+            for source in record.allowed_evidence_sources
+            if source not in {"structured_dose", "ingredient_line", "title"}
+        }
+        for source in sorted(invalid_sources):
+            issues.append(f"invalid_dose_limit_evidence_source:{record.rule_id}:{source}")
     for record in runtime_db.ingredient_domain_scores:
         issues.extend(_validate_referenced_ids(record, reference_ids, claim_ids))
     for policy in runtime_db.workflow_policies:
@@ -607,6 +657,20 @@ def _sorted_string_list(values: Any) -> list[str]:
     if not isinstance(values, list):
         return []
     return sorted({value for value in values if isinstance(value, str) and value})
+
+
+def _validated_dose_evidence_sources(values: Any) -> list[str]:
+    default_sources = ["structured_dose", "ingredient_line", "title"]
+    if not isinstance(values, list):
+        return default_sources
+
+    allowed_values = {"structured_dose", "ingredient_line", "title"}
+    normalized_sources = [
+        value for value in values if isinstance(value, str) and value in allowed_values
+    ]
+    if not normalized_sources:
+        return default_sources
+    return list(dict.fromkeys(normalized_sources))
 
 
 def _humanize_key(value: str) -> str:

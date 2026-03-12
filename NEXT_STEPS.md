@@ -2,36 +2,46 @@
 
 ## Current priority
 
-Priority is now `P4 follow-through on effect-conditioned combined replay + P1 support`.
+Priority is now `P2/P4 cohort support + retraining gate`, not another routine input-adoption loop.
 
 What now exists:
 
-- calibrated effect-focused synthetic cohort:
-  - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
-- replay effect artifact with calibrated policy proxy:
-  - `C:/dev/wellnessbox-rnd/artifacts/models/effect_model_v3.json`
-- guarded 4-mode replay compare on v4:
-  - `C:/dev/wellnessbox-rnd/artifacts/reports/closed_loop_batch_simulation_v3_compare.json`
-- combined replay policy now reads the guarded learned effect proxy through policy feature override:
-  - `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/simulation/closed_loop_v0.py`
+- replay parity milestone is complete:
+  - combined replay remains slightly closer to effect-only than policy-only on final action
+- structured runtime `dose_limits` still exist:
+  - `C:/dev/wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json`
+  - `dose_limits = 5`
+- structured supplement dose is now adopted in:
+  - the inference API path
+  - the maintained `synthetic_longitudinal_v3` source
+  - the maintained `synthetic_longitudinal_v4` source
+- learned effect/policy artifacts already exist:
+  - they remain guarded and replay-only
+  - they are not yet runtime-eligible
 
-## What the latest loop proved
+## What the latest loops proved
 
-- combined mode had been policy-dominated because raw learned policy inference ignored the learned effect proxy and kept using the original `expected_effect_proxy`
-- the new replay-only wiring measurably reduced that collapse:
-  - combined vs policy-only final action match: `96 / 96 -> 83 / 96`
-  - combined vs policy-only trace action match: `299 / 299 -> 262 / 299`
-  - effect-ranking-diff subset combined vs policy-only trace action match: `95 / 95 -> 87 / 95`
-- the new path is active on a meaningful portion of replay:
-  - `policy_effect_override_applied_count = 257`
-- frozen eval stayed unchanged
-- deterministic safety guard remained intact
+- the maintained `synthetic_longitudinal_v3` source can emit structured current-supplement doses without disturbing frozen eval
+- the maintained `synthetic_longitudinal_v4` source can also emit structured current-supplement doses with measurable artifact coverage
+- upstream structured-dose adoption is now present in the API and both maintained synthetic sources
+- frozen eval stayed unchanged across these adoption loops
+- deterministic runtime safety and learned-runtime boundaries stayed unchanged
+- additional routine input-adoption loops now have lower marginal value than bounded cohort enrichment
 
 ## Recommended next loop
 
-1. `P4`: tune effect-conditioned policy weighting only inside the already-guarded low-risk replay subset so combined mode moves further away from policy-only without turning too many low-risk users into `trigger_safety_recheck`.
-2. `P1`: expand structured safety coverage, especially `dose_limits`, before any wider learned usage is considered.
-3. `P2/P4`: enrich CGM and threshold-edge low-risk trajectories so `monitor_only` vs `continue_plan` vs `re_optimize` boundaries are better represented.
+1. `P2/P4`: enrich `cgm` and threshold-edge low-risk trajectories so `continue_plan` vs `monitor_only` vs `re_optimize` boundaries are better represented.
+   - Prefer one bounded enrichment loop with measurable deltas in:
+     - `cgm` user/record coverage
+     - low-risk threshold-edge record counts
+     - terminal action richness
+     - low-risk `re_optimize` representation
+     - replay usefulness on `cgm` and low-risk slices
+2. If that enrichment materially changes maintained synthetic cohorts or action richness, retrain the smallest relevant learned artifact(s) and rerun replay in the same loop if feasible, otherwise make that the immediate next loop.
+3. `P1`: only if one very tight safety-depth increment clearly has higher leverage than another enrichment loop.
+   - Prefer one narrow new `dose_limits` rule family or one equally narrow deterministic safety increment.
+   - Do not return to broad input-adoption work by default.
+4. `P4`: only after enrichment/retraining, make one final narrow replay-only calibration pass if the effect-only parity margin still needs widening.
 
 ## Guardrails
 
@@ -42,12 +52,13 @@ What now exists:
   - `docs/00_discovery/`
   - `docs/00_migration/`
   - `docs/legacy_from_wellnessbox/`
-- Use:
-  - `C:/dev/wellnessbox-rnd/docs/context/master_context.md`
-  - `C:/dev/wellnessbox-rnd/docs/context/original_plan.pdf`
+- Use source hierarchy from `AGENTS.md`
+- Do NOT routinely parse or summarize `docs/context/original_plan.pdf`
+- Consult `original_plan.pdf` only for KPI ambiguity, measurement audits, or explicit page-level checks
 - Preserve:
   - deterministic baseline
   - frozen eval
   - safety hard-rule precedence
   - deterministic fallback when learned output is missing, suspicious, or out of scope
   - system-owned action space only
+  - replay-only boundaries for learned artifacts unless explicitly widened by a later documented decision

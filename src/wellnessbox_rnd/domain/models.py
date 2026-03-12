@@ -56,6 +56,16 @@ class ConditionExclusionRule(BaseModel):
     metadata: SafetyRuleMetadata
 
 
+class DoseLimitRule(BaseModel):
+    ingredient_key: str
+    max_daily_amount: float | None = None
+    unit: str | None = None
+    allowed_evidence_sources: list[
+        Literal["structured_dose", "ingredient_line", "title"]
+    ] = Field(default_factory=lambda: ["structured_dose", "ingredient_line", "title"])
+    metadata: SafetyRuleMetadata
+
+
 class DuplicateOverlapRule(BaseModel):
     metadata: SafetyRuleMetadata
 
@@ -71,6 +81,7 @@ class SafetyRuleSet(BaseModel):
     medication_rules: list[MedicationInteractionRule] = Field(default_factory=list)
     pregnancy_rule: PregnancyRule | None = None
     condition_rules: list[ConditionExclusionRule] = Field(default_factory=list)
+    dose_limits: list[DoseLimitRule] = Field(default_factory=list)
     duplicate_overlap_rule: DuplicateOverlapRule | None = None
     goal_context_rules: dict[str, GoalContextRule] = Field(default_factory=dict)
     duplicate_policy: str = "exclude"

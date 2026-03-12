@@ -156,3 +156,71 @@ def test_recommend_endpoint_blocks_when_survey_input_is_missing() -> None:
     )
     assert [item["ingredient_key"] for item in body["recommendations"]] == ["vitamin_d3"]
     assert any(item["code"] == "missing_survey" for item in body["missing_information"])
+
+
+def test_openapi_schema_exposes_structured_current_supplement_dose_example() -> None:
+    response = client.get("/openapi.json")
+    body = response.json()
+
+    assert response.status_code == 200
+    supplement_schema = body["components"]["schemas"]["SupplementInput"]
+    assert "dose" in supplement_schema["properties"]
+    request_body = body["paths"]["/v1/recommend"]["post"]["requestBody"]["content"][
+        "application/json"
+    ]
+    assert "structured_current_supplement_dose" in request_body["examples"]
+
+
+def test_recommend_endpoint_accepts_structured_current_supplement_dose() -> None:
+    payload = {
+        "user_profile": {
+            "age": 45,
+            "biological_sex": "female",
+            "pregnant": False,
+        },
+        "goals": ["bone_joint"],
+        "symptoms": ["low_sun_exposure"],
+        "conditions": [],
+        "medications": [],
+        "current_supplements": [
+            {
+                "name": "Daily Bone Softgel",
+                "dose": "125 mcg",
+                "ingredients": ["Vitamin D3"],
+            }
+        ],
+        "lifestyle": {
+            "sleep_hours": 7.0,
+            "stress_level": 2,
+            "activity_level": "lightly_active",
+            "smoker": False,
+            "alcohol_per_week": 0,
+        },
+        "input_availability": {
+            "survey": True,
+            "nhis": False,
+            "wearable": False,
+            "cgm": False,
+            "genetic": False,
+        },
+        "preferences": {
+            "budget_level": "medium",
+            "max_products": 2,
+            "avoid_ingredients": [],
+        },
+    }
+
+    response = client.post("/v1/recommend", json=payload)
+    body = response.json()
+
+    assert response.status_code == 200
+    assert body["status"] == "blocked"
+    assert body["next_action"] == "trigger_safety_recheck"
+    assert (
+        body["next_action_rationale"]["reason_code"] == "structured_safety_blocker"
+    )
+    assert "vitamin_d3" in body["safety_summary"]["excluded_ingredients"]
+    assert any(
+        item["rule_id"] == "SAFETY-DOSE-VITD3-001"
+        for item in body["safety_summary"]["rule_refs"]
+    )

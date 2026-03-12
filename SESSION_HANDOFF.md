@@ -17,80 +17,53 @@
 
 ## What this loop did
 
-- Chosen stage: `P4`
-- Chosen task: `effect-proxy conditioned combined replay policy`
+- Chosen stage: `P1`
+- Chosen task: `adopt structured current-supplement dose in the maintained synthetic_longitudinal_v3 source`
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
   - `case_count = 256`
 
 ## Files changed
 
-- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/simulation/closed_loop_v0.py`
-- `C:/dev/wellnessbox-rnd/tests/test_closed_loop_simulation.py`
+- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/synthetic/rich_longitudinal_v3.py`
+- `C:/dev/wellnessbox-rnd/scripts/generate_synthetic_longitudinal_v3.py`
+- `C:/dev/wellnessbox-rnd/tests/test_rich_synthetic_longitudinal_v3.py`
+- `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v3.jsonl`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/synthetic_longitudinal_v3_summary.json`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/synthetic_longitudinal_v3_summary.md`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/current_loop_eval/eval_report.json`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/current_loop_final_eval/eval_report.json`
 - `C:/dev/wellnessbox-rnd/PROGRESS.md`
 - `C:/dev/wellnessbox-rnd/NEXT_STEPS.md`
 - `C:/dev/wellnessbox-rnd/SESSION_HANDOFF.md`
 
 ## What changed technically
 
-- combined replay now injects the guarded learned effect proxy into the learned policy feature `expected_effect_proxy`
-- this wiring is replay/simulation-only and does not widen runtime learned usage
-- added per-step diagnostics:
-  - `policy_effect_proxy_used`
-  - `policy_effect_proxy_override_applied`
-- added per-mode aggregate:
-  - `policy_effect_override_applied_count`
-- added regression coverage proving combined replay can diverge from policy-only once effect proxy override is active
+- v3 synthetic generation now normalizes `current_supplements` with structured `dose` when ingredient mapping is unambiguous and a template exists
+- normalization uses ingredient list first, then low-ambiguity name canonicalization
+- ambiguous or unsupported cases still fall back deterministically with no invented dose
+- v3 cohort summary now reports `structured_current_supplement_dose_record_count`
+- maintained dataset artifact `data/synthetic/synthetic_longitudinal_v3.jsonl` was regenerated on the updated code path
 
 ## Guard boundary
 
-- runtime recommendation and frozen eval remain deterministic
-- learned effect remains replay-only
-- learned effect stays behind deterministic candidate filtering and low-risk gating
-- learned policy remains replay-only and bounded by the deterministic ceiling
+- runtime recommendation remains deterministic
+- frozen eval remains comparable
+- learned effect and learned policy remain replay-only
+- safety hard-rule precedence stayed intact
+- deterministic fallback behavior stayed unchanged for ambiguous or unsupported supplements
 - no human-review or handoff action was introduced
 
-## Replay snapshot
+## Safety coverage snapshot
 
-- `deterministic_only`
-  - `total_trace_steps = 356`
-  - `final_actions = ask_targeted_followup:21, continue_plan:65, trigger_safety_recheck:10`
-- `learned_effect_guarded`
-  - `raw_ranking_disagreement_count = 71`
-  - `differing_final_policy_user_ids = 25`
-  - `differing_final_state_user_ids = 24`
-- `learned_policy_guarded`
-  - `raw_policy_disagreement_count = 171`
-  - `policy_guard_applied_count = 102`
-  - `final_actions = ask_targeted_followup:21, continue_plan:31, monitor_only:15, trigger_safety_recheck:29`
-- `learned_effect_and_policy_guarded`
-  - `policy_effect_override_applied_count = 257`
-  - `raw_policy_disagreement_count = 220`
-  - `raw_ranking_disagreement_count = 63`
-  - `final_actions = ask_targeted_followup:21, continue_plan:20, monitor_only:22, trigger_safety_recheck:33`
-
-## Policy-dominance evidence
-
-- before this loop:
-  - combined vs policy-only final action match: `96 / 96`
-  - combined vs policy-only trace action match: `299 / 299`
-  - effect-ranking-diff subset combined vs policy-only trace action match: `95 / 95`
-- after this loop:
-  - combined vs policy-only final action match: `83 / 96`
-  - combined vs policy-only trace action match: `262 / 299`
-  - effect-ranking-diff subset combined vs policy-only trace action match: `87 / 95`
-- interpretation:
-  - the effect proxy now measurably reaches the policy path
-  - combined is still closer to policy-only than effect-only, so P4 is improved but not finished
-
-## Cohort slice snapshot
-
-- `low_risk_users = 65`
-  - deterministic final action: `continue_plan:65`
-  - policy-only final actions: `continue_plan:31, monitor_only:15, trigger_safety_recheck:19`
-  - combined final actions: `continue_plan:20, monitor_only:22, trigger_safety_recheck:23`
-- `cgm_users = 20`
-  - combined final actions stayed `ask_targeted_followup:10, trigger_safety_recheck:10`
+- rule count stayed flat:
+  - `dose_limits = 5 -> 5`
+- maintained dataset/source adoption delta:
+  - before: `synthetic_longitudinal_v3` did not emit structured current-supplement doses
+  - after: `synthetic_longitudinal_v3` emits structured current-supplement doses on `270 / 480` records
+- measurable artifact:
+  - `C:/dev/wellnessbox-rnd/artifacts/reports/synthetic_longitudinal_v3_summary.json`
+  - `structured_current_supplement_dose_record_count = 270`
 
 ## Deterministic baseline status
 
@@ -104,9 +77,9 @@
 
 ## Validation snapshot
 
-- `python -m ruff check src/wellnessbox_rnd/simulation/closed_loop_v0.py tests/test_closed_loop_simulation.py`
-- `python -m pytest tests/test_closed_loop_simulation.py -q`
-- `python scripts/run_closed_loop_batch_simulation.py`
+- `python -m ruff check src/wellnessbox_rnd/synthetic/rich_longitudinal_v3.py scripts/generate_synthetic_longitudinal_v3.py tests/test_rich_synthetic_longitudinal_v3.py`
+- `python -m pytest tests/test_rich_synthetic_longitudinal_v3.py -q`
+- `python scripts/generate_synthetic_longitudinal_v3.py`
 - `python scripts/manage_eval_dataset.py validate`
 - `python scripts/manage_eval_dataset.py summary`
 - `python -m ruff check .`
@@ -116,6 +89,6 @@
 
 ## Recommended next loop
 
-1. tune effect-conditioned policy weighting within the guarded low-risk replay subset
-2. expand `dose_limits` and structured safety coverage
-3. enrich CGM and threshold-edge low-risk trajectories
+1. enrich `cgm` and threshold-edge low-risk trajectories
+2. if one more `P1` loop is needed first, adopt structured supplement dose in one more bounded maintained source or add one equally narrow low-ambiguity dose-limit increment
+3. only then consider one more narrow `P4` replay calibration if the effect-only parity margin needs widening

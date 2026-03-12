@@ -68,6 +68,10 @@ def _render_cohort_markdown(summary: dict[str, object]) -> str:
         f"- seed: `{summary['seed']}`",
         f"- user_count: `{summary['user_count']}`",
         f"- record_count: `{summary['record_count']}`",
+        (
+            "- structured_current_supplement_dose_record_count: "
+            f"`{summary['structured_current_supplement_dose_record_count']}`"
+        ),
         f"- adverse_event_count: `{summary['adverse_event_count']}`",
         f"- average_effect_proxy: `{summary['average_effect_proxy']}`",
         f"- average_adherence_proxy: `{summary['average_adherence_proxy']}`",

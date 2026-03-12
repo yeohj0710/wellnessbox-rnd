@@ -3754,6 +3754,9 @@ def _cgm_context_considered(intake: NormalizedIntake) -> bool:
 
 def _has_structured_safety_blocker(safety_summary: SafetySummary) -> bool:
     return any(
-        rule.severity == Severity.BLOCKER and rule.source == "knowledge_artifact"
+        rule.severity == Severity.BLOCKER
+        and (
+            rule.source == "knowledge_artifact" or rule.rule_id.startswith("SAFETY-DOSE-")
+        )
         for rule in safety_summary.rule_refs
     )

@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from random import Random
 
+from wellnessbox_rnd.domain.catalog import canonicalize_catalog_term
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.schemas.recommendation import (
     NextAction,
@@ -14,6 +15,7 @@ from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import (
     DEFAULT_RICH_SYNTHETIC_SEED,
     DEFAULT_RICH_USER_COUNT,
     DOMAIN_KEYS,
+    DOSE_TEMPLATES,
     TRAJECTORY_STEPS,
     PROSnapshot,
     RichPolicyTrainingRow,
@@ -85,7 +87,18 @@ def summarize_rich_synthetic_cohort_v4(
     seed: int,
 ) -> RichSyntheticCohortSummary:
     summary = summarize_rich_synthetic_cohort_v3(records, seed=seed)
-    return summary.model_copy(update={"cohort_version": COHORT_VERSION, "seed": seed})
+    structured_dose_record_count = sum(
+        1
+        for record in records
+        if any(supplement.dose for supplement in record.request.current_supplements)
+    )
+    return summary.model_copy(
+        update={
+            "cohort_version": COHORT_VERSION,
+            "seed": seed,
+            "structured_current_supplement_dose_record_count": structured_dose_record_count,
+        }
+    )
 
 
 def build_rich_policy_training_rows_v4(
@@ -239,6 +252,9 @@ def _clone_base_user_records_v4(
     for base_record in base_user_records:
         payload = base_record.request.model_dump(mode="json")
         payload["request_id"] = f"syn-v4-req-{user_index:03d}-step-{base_record.trajectory_step}"
+        payload["current_supplements"] = _with_structured_current_supplement_doses_v4(
+            payload["current_supplements"]
+        )
         cloned.append(
             base_record.model_copy(
                 update={
@@ -272,6 +288,9 @@ def _build_effect_rich_request_v4(
             "ingredients": ["vitamin_b_complex"],
         }
     ]
+    payload["current_supplements"] = _with_structured_current_supplement_doses_v4(
+        payload["current_supplements"]
+    )
     payload["user_profile"]["pregnant"] = False
     payload["input_availability"]["cgm"] = False
     payload["input_availability"]["genetic"] = user_index % 2 == 0
@@ -427,6 +446,58 @@ def _schedule_for_candidate_v4(
     if candidate_key == "vitamin_c":
         return "midday_split" if active else "morning"
     return "morning"
+
+
+def _format_structured_current_supplement_dose_v4(ingredient_key: str) -> str | None:
+    dose_template = DOSE_TEMPLATES.get(ingredient_key)
+    if dose_template is None:
+        return None
+    amount, unit, _ = dose_template
+    amount_text = f"{int(amount)}" if float(amount).is_integer() else f"{amount:g}"
+    return f"{amount_text} {unit}"
+
+
+def _with_structured_current_supplement_doses_v4(
+    current_supplements: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    normalized_supplements: list[dict[str, object]] = []
+    for supplement in current_supplements:
+        normalized_supplement = dict(supplement)
+        if normalized_supplement.get("dose"):
+            normalized_supplements.append(normalized_supplement)
+            continue
+        ingredient_key = _resolve_structured_current_supplement_ingredient_v4(normalized_supplement)
+        dose_value = (
+            _format_structured_current_supplement_dose_v4(ingredient_key)
+            if ingredient_key is not None
+            else None
+        )
+        if dose_value is not None:
+            normalized_supplement["dose"] = dose_value
+        normalized_supplements.append(normalized_supplement)
+    return normalized_supplements
+
+
+def _resolve_structured_current_supplement_ingredient_v4(
+    supplement: dict[str, object],
+) -> str | None:
+    ingredient_values = supplement.get("ingredients")
+    candidate_keys = set()
+    if isinstance(ingredient_values, list):
+        for ingredient_value in ingredient_values:
+            if isinstance(ingredient_value, str):
+                canonical_key = canonicalize_catalog_term(ingredient_value)
+                if canonical_key:
+                    candidate_keys.add(canonical_key)
+    if not candidate_keys:
+        name_value = supplement.get("name")
+        if isinstance(name_value, str):
+            canonical_key = canonicalize_catalog_term(name_value)
+            if canonical_key:
+                candidate_keys.add(canonical_key)
+    if len(candidate_keys) != 1:
+        return None
+    return next(iter(candidate_keys))
 
 
 def _compute_effect_rich_adherence_v4(

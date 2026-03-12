@@ -90,6 +90,11 @@
       "source_kind": "catalog"
     },
     {
+      "ingredient_key": "calcium_citrate",
+      "alias": "calcium_citrate",
+      "source_kind": "deterministic_policy"
+    },
+    {
       "ingredient_key": "chondroitin",
       "alias": "chondroitin",
       "source_kind": "knowledge_artifact"
@@ -250,6 +255,11 @@
       "source_kind": "catalog"
     },
     {
+      "ingredient_key": "vitamin_c",
+      "alias": "vitamin_c",
+      "source_kind": "deterministic_policy"
+    },
+    {
       "ingredient_key": "vitamin_d3",
       "alias": "cholecalciferol",
       "source_kind": "catalog"
@@ -270,9 +280,19 @@
       "source_kind": "catalog"
     },
     {
+      "ingredient_key": "vitamin_d3",
+      "alias": "vitamin_d3",
+      "source_kind": "deterministic_policy"
+    },
+    {
       "ingredient_key": "zinc",
       "alias": "zinc",
       "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "zinc",
+      "alias": "zinc",
+      "source_kind": "deterministic_policy"
     },
     {
       "ingredient_key": "zinc",
@@ -378,7 +398,91 @@
       "claim_ids": []
     }
   ],
-  "dose_limits": [],
+  "dose_limits": [
+    {
+      "rule_id": "SAFETY-DOSE-VITD3-001",
+      "source_kind": "deterministic_policy",
+      "severity": "blocker",
+      "ingredient_key": "vitamin_d3",
+      "max_daily_amount": 4000.0,
+      "unit": "iu",
+      "allowed_evidence_sources": [
+        "structured_dose",
+        "ingredient_line",
+        "title"
+      ],
+      "message": "Vitamin D3 current intake stays below the structured adult upper limit.",
+      "warning_text": "Current vitamin D3 regimen appears above the structured adult upper limit, so vitamin D3 was excluded conservatively.",
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "SAFETY-DOSE-VITC-001",
+      "source_kind": "deterministic_policy",
+      "severity": "blocker",
+      "ingredient_key": "vitamin_c",
+      "max_daily_amount": 2000.0,
+      "unit": "mg",
+      "allowed_evidence_sources": [
+        "structured_dose",
+        "ingredient_line",
+        "title"
+      ],
+      "message": "Vitamin C current intake stays below the structured adult upper limit.",
+      "warning_text": "Current vitamin C regimen appears above the structured adult upper limit, so vitamin C was excluded conservatively.",
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "SAFETY-DOSE-ZINC-001",
+      "source_kind": "deterministic_policy",
+      "severity": "blocker",
+      "ingredient_key": "zinc",
+      "max_daily_amount": 40.0,
+      "unit": "mg",
+      "allowed_evidence_sources": [
+        "structured_dose",
+        "ingredient_line",
+        "title"
+      ],
+      "message": "Zinc current intake stays below the structured adult upper limit.",
+      "warning_text": "Current zinc regimen appears above the structured adult upper limit, so zinc was excluded conservatively.",
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "SAFETY-DOSE-MAG-001",
+      "source_kind": "deterministic_policy",
+      "severity": "blocker",
+      "ingredient_key": "magnesium_glycinate",
+      "max_daily_amount": 350.0,
+      "unit": "mg",
+      "allowed_evidence_sources": [
+        "structured_dose",
+        "ingredient_line"
+      ],
+      "message": "Magnesium Glycinate current intake stays below the structured adult supplemental upper limit.",
+      "warning_text": "Current magnesium glycinate regimen appears above the structured adult supplemental upper limit, so magnesium glycinate was excluded conservatively.",
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "SAFETY-DOSE-CAL-001",
+      "source_kind": "deterministic_policy",
+      "severity": "blocker",
+      "ingredient_key": "calcium_citrate",
+      "max_daily_amount": 2000.0,
+      "unit": "mg",
+      "allowed_evidence_sources": [
+        "structured_dose",
+        "ingredient_line"
+      ],
+      "message": "Calcium Citrate current intake stays below the structured adult upper limit.",
+      "warning_text": "Current calcium citrate regimen appears above the structured adult upper limit, so calcium citrate was excluded conservatively.",
+      "reference_ids": [],
+      "claim_ids": []
+    }
+  ],
   "ingredient_domain_scores": [
     {
       "ingredient_key": "chondroitin",

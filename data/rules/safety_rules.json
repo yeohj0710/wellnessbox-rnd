@@ -44,6 +44,65 @@
       }
     }
   ],
+  "dose_limits": [
+    {
+      "ingredient_key": "vitamin_d3",
+      "max_daily_amount": 4000,
+      "unit": "iu",
+      "metadata": {
+        "rule_id": "SAFETY-DOSE-VITD3-001",
+        "message": "Vitamin D3 current intake stays below the structured adult upper limit.",
+        "severity": "blocker",
+        "warning_text": "Current vitamin D3 regimen appears above the structured adult upper limit, so vitamin D3 was excluded conservatively."
+      }
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "max_daily_amount": 2000,
+      "unit": "mg",
+      "metadata": {
+        "rule_id": "SAFETY-DOSE-VITC-001",
+        "message": "Vitamin C current intake stays below the structured adult upper limit.",
+        "severity": "blocker",
+        "warning_text": "Current vitamin C regimen appears above the structured adult upper limit, so vitamin C was excluded conservatively."
+      }
+    },
+    {
+      "ingredient_key": "zinc",
+      "max_daily_amount": 40,
+      "unit": "mg",
+      "metadata": {
+        "rule_id": "SAFETY-DOSE-ZINC-001",
+        "message": "Zinc current intake stays below the structured adult upper limit.",
+        "severity": "blocker",
+        "warning_text": "Current zinc regimen appears above the structured adult upper limit, so zinc was excluded conservatively."
+      }
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "max_daily_amount": 350,
+      "unit": "mg",
+      "allowed_evidence_sources": ["structured_dose", "ingredient_line"],
+      "metadata": {
+        "rule_id": "SAFETY-DOSE-MAG-001",
+        "message": "Magnesium Glycinate current intake stays below the structured adult supplemental upper limit.",
+        "severity": "blocker",
+        "warning_text": "Current magnesium glycinate regimen appears above the structured adult supplemental upper limit, so magnesium glycinate was excluded conservatively."
+      }
+    },
+    {
+      "ingredient_key": "calcium_citrate",
+      "max_daily_amount": 2000,
+      "unit": "mg",
+      "allowed_evidence_sources": ["structured_dose", "ingredient_line"],
+      "metadata": {
+        "rule_id": "SAFETY-DOSE-CAL-001",
+        "message": "Calcium Citrate current intake stays below the structured adult upper limit.",
+        "severity": "blocker",
+        "warning_text": "Current calcium citrate regimen appears above the structured adult upper limit, so calcium citrate was excluded conservatively."
+      }
+    }
+  ],
   "duplicate_overlap_rule": {
     "metadata": {
       "rule_id": "SAFETY-DUP-001",
