@@ -39,13 +39,29 @@ from wellnessbox_rnd.synthetic.rich_longitudinal_v3 import (
 COHORT_VERSION = "synthetic_longitudinal_v4"
 POLICY_DATASET_VERSION = "policy_training_v1_from_v4"
 
-LOW_RISK_EFFECT_MODES: tuple[str, ...] = (
+BASE_LOW_RISK_EFFECT_MODES: tuple[str, ...] = (
     "threshold_continue_primary",
     "threshold_monitor_secondary",
     "threshold_reopt_edge",
     "threshold_delayed_flip",
     "threshold_duration_sensitive",
     "threshold_adherence_recovery",
+)
+CGM_LOW_RISK_EFFECT_MODES: tuple[str, ...] = (
+    "threshold_monitor_secondary",
+    "threshold_cgm_balance",
+    "threshold_cgm_balance",
+    "threshold_reopt_edge",
+)
+THRESHOLD_EDGE_EFFECT_PROXY_RANGE = (0.14, 0.28)
+CGM_THRESHOLD_EDGE_EFFECT_PROXY_RANGE = (0.14, 0.24)
+V4_FAMILY_CONFIGS: tuple[EffectRichFamily, ...] = FAMILY_CONFIGS + (
+    EffectRichFamily(
+        goal=RecommendationGoal.BLOOD_GLUCOSE,
+        preferred_sleep_hours=7.0,
+        preferred_stress=2,
+        wearer_share=True,
+    ),
 )
 
 
@@ -92,11 +108,59 @@ def summarize_rich_synthetic_cohort_v4(
         for record in records
         if any(supplement.dose for supplement in record.request.current_supplements)
     )
+    low_risk_cgm_record_count = sum(
+        1
+        for record in records
+        if record.labels.risk_tier == "low" and record.request.input_availability.cgm
+    )
+    threshold_edge_low_risk_record_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and THRESHOLD_EDGE_EFFECT_PROXY_RANGE[0]
+            <= record.expected_effect_proxy
+            <= THRESHOLD_EDGE_EFFECT_PROXY_RANGE[1]
+        )
+    )
+    threshold_edge_low_risk_cgm_record_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and record.request.input_availability.cgm
+            and CGM_THRESHOLD_EDGE_EFFECT_PROXY_RANGE[0]
+            <= record.expected_effect_proxy
+            <= CGM_THRESHOLD_EDGE_EFFECT_PROXY_RANGE[1]
+        )
+    )
+    low_risk_reoptimize_record_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and record.labels.next_action == NextAction.RE_OPTIMIZE
+        )
+    )
+    low_risk_cgm_reoptimize_record_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and record.request.input_availability.cgm
+            and record.labels.next_action == NextAction.RE_OPTIMIZE
+        )
+    )
     return summary.model_copy(
         update={
             "cohort_version": COHORT_VERSION,
             "seed": seed,
             "structured_current_supplement_dose_record_count": structured_dose_record_count,
+            "low_risk_cgm_record_count": low_risk_cgm_record_count,
+            "threshold_edge_low_risk_record_count": threshold_edge_low_risk_record_count,
+            "threshold_edge_low_risk_cgm_record_count": threshold_edge_low_risk_cgm_record_count,
+            "low_risk_reoptimize_record_count": low_risk_reoptimize_record_count,
+            "low_risk_cgm_reoptimize_record_count": low_risk_cgm_reoptimize_record_count,
         }
     )
 
@@ -148,8 +212,8 @@ def _build_effect_rich_user_records_v4(
 ) -> list[RichSyntheticCohortRecord]:
     baseline_record = base_user_records[0]
     rng = Random(user_seed)
-    family = FAMILY_CONFIGS[user_index % len(FAMILY_CONFIGS)]
-    mode = LOW_RISK_EFFECT_MODES[user_index % len(LOW_RISK_EFFECT_MODES)]
+    family = V4_FAMILY_CONFIGS[user_index % len(V4_FAMILY_CONFIGS)]
+    mode = _select_effect_rich_mode_v4(user_index=user_index, family=family)
     user_id = f"syn-v4-user-{user_index:03d}"
     baseline_pro = _build_effect_rich_baseline(goal=family.goal, rng=rng)
     records: list[RichSyntheticCohortRecord] = []
@@ -279,7 +343,11 @@ def _build_effect_rich_request_v4(
     payload = baseline_record.request.model_dump(mode="json")
     payload["request_id"] = f"syn-v4-req-{user_index:03d}-step-{step}"
     payload["goals"] = [family.goal.value]
-    payload["symptoms"] = []
+    payload["symptoms"] = (
+        ["post_meal_spike_concern"]
+        if family.goal == RecommendationGoal.BLOOD_GLUCOSE
+        else []
+    )
     payload["conditions"] = []
     payload["medications"] = []
     payload["current_supplements"] = [
@@ -292,9 +360,15 @@ def _build_effect_rich_request_v4(
         payload["current_supplements"]
     )
     payload["user_profile"]["pregnant"] = False
-    payload["input_availability"]["cgm"] = False
-    payload["input_availability"]["genetic"] = user_index % 2 == 0
-    payload["input_availability"]["wearable"] = family.wearer_share or user_index % 3 != 0
+    payload["input_availability"]["cgm"] = family.goal == RecommendationGoal.BLOOD_GLUCOSE
+    payload["input_availability"]["genetic"] = (
+        True if family.goal == RecommendationGoal.BLOOD_GLUCOSE else user_index % 2 == 0
+    )
+    payload["input_availability"]["wearable"] = (
+        family.wearer_share
+        or user_index % 3 != 0
+        or family.goal == RecommendationGoal.BLOOD_GLUCOSE
+    )
     payload["preferences"]["max_products"] = 2
     payload["preferences"]["budget_level"] = (
         "low"
@@ -305,6 +379,7 @@ def _build_effect_rich_request_v4(
         "threshold_continue_primary": 0.1,
         "threshold_monitor_secondary": -0.2,
         "threshold_reopt_edge": -0.6,
+        "threshold_cgm_balance": -0.4 if step < 2 else -0.1,
         "threshold_delayed_flip": -0.4 if step < 2 else -0.1,
         "threshold_duration_sensitive": -0.3,
         "threshold_adherence_recovery": -0.5 if step < 2 else 0.0,
@@ -313,6 +388,7 @@ def _build_effect_rich_request_v4(
         "threshold_continue_primary": 0,
         "threshold_monitor_secondary": 1,
         "threshold_reopt_edge": 2,
+        "threshold_cgm_balance": 2 if step < 2 else 1,
         "threshold_delayed_flip": 2 if step < 2 else 1,
         "threshold_duration_sensitive": 1,
         "threshold_adherence_recovery": 2 if step < 3 else 1,
@@ -363,6 +439,8 @@ def _choose_active_candidate_v4(
         return second_key
     if mode == "threshold_reopt_edge":
         return second_key if step <= 2 else top_key
+    if mode == "threshold_cgm_balance":
+        return second_key if step <= 1 else top_key
     if mode == "threshold_delayed_flip":
         return second_key if step <= 1 else top_key
     if mode == "threshold_duration_sensitive":
@@ -389,6 +467,7 @@ def _build_effect_rich_regimen_v4(
             "magnesium_glycinate": (220.0, "mg", "night"),
             "l_theanine": (180.0, "mg", "split_evening"),
             "soluble_fiber": (4.5, "g", "split_premeal"),
+            "berberine": (500.0, "mg", "before_dinner"),
             "probiotics": (9.0, "billion_cfu", "morning"),
             "vitamin_d3": (1800.0, "IU", "weekly_split"),
             "vitamin_c": (450.0, "mg", "midday_split"),
@@ -399,6 +478,7 @@ def _build_effect_rich_regimen_v4(
                 "threshold_continue_primary": (0.95, 1.0, 1.04, 1.08, 1.1),
                 "threshold_monitor_secondary": (0.86, 0.88, 0.9, 0.93, 0.95),
                 "threshold_reopt_edge": (0.76, 0.78, 0.8, 0.86, 0.9),
+                "threshold_cgm_balance": (0.7, 0.73, 0.82, 0.9, 0.95),
                 "threshold_delayed_flip": (0.78, 0.8, 0.92, 1.0, 1.04),
                 "threshold_duration_sensitive": (0.82, 0.84, 0.86, 0.98, 1.02),
                 "threshold_adherence_recovery": (0.72, 0.74, 0.82, 0.92, 0.98),
@@ -439,6 +519,8 @@ def _schedule_for_candidate_v4(
         return "split_evening" if active else "midday"
     if candidate_key == "soluble_fiber":
         return "split_premeal" if active else "before_dinner"
+    if candidate_key == "berberine":
+        return "before_dinner" if active else "midday"
     if candidate_key == "probiotics":
         return "morning" if active else "morning_alt_day"
     if candidate_key == "vitamin_d3":
@@ -510,6 +592,7 @@ def _compute_effect_rich_adherence_v4(
         "threshold_continue_primary": (0.79, 0.82, 0.84, 0.86, 0.88),
         "threshold_monitor_secondary": (0.71, 0.74, 0.76, 0.78, 0.8),
         "threshold_reopt_edge": (0.63, 0.61, 0.64, 0.66, 0.69),
+        "threshold_cgm_balance": (0.63, 0.58, 0.67, 0.73, 0.77),
         "threshold_delayed_flip": (0.68, 0.7, 0.76, 0.81, 0.84),
         "threshold_duration_sensitive": (0.72, 0.73, 0.75, 0.79, 0.82),
         "threshold_adherence_recovery": (0.56, 0.53, 0.6, 0.71, 0.78),
@@ -529,6 +612,7 @@ def _compute_effect_rich_side_effect_v4(
         "threshold_continue_primary": (0.07, 0.08, 0.09, 0.09, 0.08),
         "threshold_monitor_secondary": (0.09, 0.11, 0.12, 0.11, 0.1),
         "threshold_reopt_edge": (0.13, 0.16, 0.18, 0.17, 0.15),
+        "threshold_cgm_balance": (0.18, 0.21, 0.16, 0.12, 0.11),
         "threshold_delayed_flip": (0.1, 0.12, 0.14, 0.12, 0.11),
         "threshold_duration_sensitive": (0.09, 0.1, 0.11, 0.12, 0.11),
         "threshold_adherence_recovery": (0.11, 0.15, 0.17, 0.14, 0.12),
@@ -609,6 +693,7 @@ def _candidate_goal_delta_v4(
         "threshold_continue_primary": (0.12, 0.16, 0.19, 0.22, 0.24),
         "threshold_monitor_secondary": (0.09, 0.12, 0.14, 0.16, 0.18),
         "threshold_reopt_edge": (0.07, 0.09, 0.11, 0.12, 0.14),
+        "threshold_cgm_balance": (0.043, 0.048, 0.1, 0.118, 0.145),
         "threshold_delayed_flip": (0.08, 0.1, 0.15, 0.19, 0.22),
         "threshold_duration_sensitive": (0.09, 0.11, 0.13, 0.18, 0.21),
         "threshold_adherence_recovery": (0.06, 0.07, 0.1, 0.15, 0.18),
@@ -629,6 +714,10 @@ def _candidate_goal_delta_v4(
     elif goal == RecommendationGoal.GUT_HEALTH:
         ingredient_bias = 0.042 if candidate_key == "soluble_fiber" else 0.036
         ingredient_bias += 0.014 if "split" in schedule else 0.0
+    elif goal == RecommendationGoal.BLOOD_GLUCOSE:
+        ingredient_bias = 0.045 if candidate_key == "soluble_fiber" else 0.04
+        ingredient_bias += 0.012 if request.input_availability.cgm else 0.0
+        ingredient_bias += 0.008 if candidate_key == "berberine" else 0.0
     else:
         ingredient_bias = 0.041 if candidate_key == "vitamin_d3" else 0.034
         ingredient_bias += (
@@ -644,6 +733,7 @@ def _candidate_goal_delta_v4(
     dose_bonus = min(0.045, max(0.0, daily_dose) / 7000.0)
     duration_bonus = 0.02 if mode == "threshold_duration_sensitive" and step >= 3 else 0.0
     delayed_bonus = 0.015 if mode == "threshold_delayed_flip" and step >= 2 else 0.0
+    cgm_balance_bonus = 0.012 if mode == "threshold_cgm_balance" and step >= 2 else 0.0
     recovery_bonus = 0.012 if mode == "threshold_adherence_recovery" and step >= 3 else 0.0
     delta = (
         step_curve
@@ -652,11 +742,24 @@ def _candidate_goal_delta_v4(
         + dose_bonus
         + duration_bonus
         + delayed_bonus
+        + cgm_balance_bonus
         + recovery_bonus
         + (adherence_proxy * 0.06)
         - (side_effect_proxy * 0.05)
     )
     return round(max(0.035, min(0.34, delta)), 3)
+
+
+def _select_effect_rich_mode_v4(
+    *,
+    user_index: int,
+    family: EffectRichFamily,
+) -> str:
+    if family.goal != RecommendationGoal.BLOOD_GLUCOSE:
+        return BASE_LOW_RISK_EFFECT_MODES[user_index % len(BASE_LOW_RISK_EFFECT_MODES)]
+    return CGM_LOW_RISK_EFFECT_MODES[
+        (user_index // len(V4_FAMILY_CONFIGS)) % len(CGM_LOW_RISK_EFFECT_MODES)
+    ]
 
 
 def _label_effect_rich_action_v4(

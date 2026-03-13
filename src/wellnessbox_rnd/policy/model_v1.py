@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -22,6 +23,9 @@ from wellnessbox_rnd.schemas.recommendation import NextAction
 
 if TYPE_CHECKING:
     from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import RichSyntheticCohortRecord
+
+DEFAULT_SAMPLE_WEIGHT_PROFILE_V1 = "cgm_threshold_edge_balance_v1"
+CGM_THRESHOLD_EDGE_EFFECT_PROXY_RANGE = (0.14, 0.24)
 
 
 class PolicyTrainingRowV1(BaseModel):
@@ -119,6 +123,7 @@ def fit_policy_model_v1(
     val_records: list[RichSyntheticCohortRecord],
     *,
     seed: int,
+    sample_weight_profile: str = DEFAULT_SAMPLE_WEIGHT_PROFILE_V1,
     alpha_grid: tuple[float, ...] = (0.01, 0.1, 1.0, 5.0, 10.0),
 ) -> tuple[PolicyModelV1Artifact, dict[str, PolicyEvaluationMetricsV1]]:
     train_rows = [build_policy_feature_dict_v1(record) for record in train_records]
@@ -127,13 +132,25 @@ def fit_policy_model_v1(
 
     x_train = np.asarray(vectorizer.transform(train_rows), dtype=float)
     y_train = _build_label_matrix(train_records, class_labels)
+    sample_weights = np.asarray(
+        build_policy_sample_weights_v1(
+            train_records,
+            profile=sample_weight_profile,
+        ),
+        dtype=float,
+    )
 
     best_artifact: PolicyModelV1Artifact | None = None
     best_val_metrics: PolicyEvaluationMetricsV1 | None = None
     best_train_metrics: PolicyEvaluationMetricsV1 | None = None
 
     for alpha in alpha_grid:
-        weights, intercepts = _fit_multiclass_ridge(x_train, y_train, alpha=alpha)
+        weights, intercepts = _fit_multiclass_ridge(
+            x_train,
+            y_train,
+            alpha=alpha,
+            sample_weights=sample_weights,
+        )
         artifact = PolicyModelV1Artifact(
             cohort_version=train_records[0].cohort_version if train_records else "unknown",
             seed=seed,
@@ -205,12 +222,17 @@ def render_policy_training_report_v1(
     val_metrics: PolicyEvaluationMetricsV1,
     test_metrics: PolicyEvaluationMetricsV1,
     test_records: list[RichSyntheticCohortRecord],
+    sample_weight_profile: str = DEFAULT_SAMPLE_WEIGHT_PROFILE_V1,
+    sample_weight_summary: dict[str, object] | None = None,
+    slice_prediction_summaries: dict[str, object] | None = None,
 ) -> dict[str, object]:
     return {
         "model_name": artifact.model_name,
         "cohort_version": artifact.cohort_version,
         "seed": artifact.seed,
         "alpha": artifact.alpha,
+        "sample_weight_profile": sample_weight_profile,
+        "sample_weight_summary": sample_weight_summary or {},
         "feature_count": len(artifact.feature_names),
         "class_labels": artifact.class_labels,
         "split_record_counts": {
@@ -223,6 +245,7 @@ def render_policy_training_report_v1(
             "val": val_metrics.model_dump(mode="json"),
             "test": test_metrics.model_dump(mode="json"),
         },
+        "slice_prediction_summaries": slice_prediction_summaries or {},
         "top_class_features": {
             label: _top_weight_features(artifact, label) for label in artifact.class_labels
         },
@@ -251,6 +274,7 @@ def render_policy_training_markdown_v1(report: dict[str, object]) -> str:
         f"- cohort_version: `{report['cohort_version']}`",
         f"- seed: `{report['seed']}`",
         f"- alpha: `{report['alpha']}`",
+        f"- sample_weight_profile: `{report['sample_weight_profile']}`",
         f"- feature_count: `{report['feature_count']}`",
         f"- class_labels: `{', '.join(report['class_labels'])}`",
         "",
@@ -266,6 +290,31 @@ def render_policy_training_markdown_v1(report: dict[str, object]) -> str:
             f"deterministic_accuracy=`{metrics['deterministic_accuracy']}`, "
             f"majority_baseline_accuracy=`{metrics['majority_baseline_accuracy']}`"
         )
+    sample_weight_summary = report["sample_weight_summary"]
+    if sample_weight_summary:
+        lines.extend(["", "## Sample Weight Summary"])
+        lines.append(f"- `record_count`: `{sample_weight_summary['record_count']}`")
+        lines.append(f"- `min_weight`: `{sample_weight_summary['min_weight']}`")
+        lines.append(f"- `max_weight`: `{sample_weight_summary['max_weight']}`")
+        lines.append(f"- `mean_weight`: `{sample_weight_summary['mean_weight']}`")
+        lines.append(
+            f"- `boosted_record_count`: `{sample_weight_summary['boosted_record_count']}`"
+        )
+        lines.append(
+            f"- `downweighted_record_count`: `{sample_weight_summary['downweighted_record_count']}`"
+        )
+    slice_prediction_summaries = report["slice_prediction_summaries"]
+    if slice_prediction_summaries:
+        lines.extend(["", "## Slice Prediction Summaries"])
+        for split_name, slices in slice_prediction_summaries.items():
+            for slice_name, slice_summary in slices.items():
+                lines.append(
+                    f"- `{split_name}:{slice_name}`: "
+                    f"record_count=`{slice_summary['record_count']}`, "
+                    f"actual=`{slice_summary['actual_action_counts']}`, "
+                    f"raw=`{slice_summary['raw_predicted_action_counts']}`, "
+                    f"guarded=`{slice_summary['guarded_predicted_action_counts']}`"
+                )
     lines.extend(["", "## Top Class Features"])
     for label, items in report["top_class_features"].items():
         lines.append(f"`{label}`:")
@@ -398,7 +447,12 @@ def _fit_multiclass_ridge(
     y: np.ndarray,
     *,
     alpha: float,
+    sample_weights: np.ndarray | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
+    if sample_weights is not None:
+        sqrt_weights = np.sqrt(sample_weights).reshape(-1, 1)
+        x = x * sqrt_weights
+        y = y * sqrt_weights
     x_bias = np.concatenate([np.ones((x.shape[0], 1)), x], axis=1)
     regularizer = np.eye(x_bias.shape[1]) * alpha
     regularizer[0, 0] = 0.0
@@ -406,6 +460,119 @@ def _fit_multiclass_ridge(
     intercepts = solution[0]
     weights = solution[1:].T
     return weights, intercepts
+
+
+def build_policy_sample_weights_v1(
+    records: list[RichSyntheticCohortRecord],
+    *,
+    profile: str = DEFAULT_SAMPLE_WEIGHT_PROFILE_V1,
+) -> list[float]:
+    if profile == "uniform":
+        return [1.0] * len(records)
+    if profile != DEFAULT_SAMPLE_WEIGHT_PROFILE_V1:
+        raise ValueError(f"Unsupported policy sample-weight profile: {profile}")
+
+    weights: list[float] = []
+    for record in records:
+        weight = 1.0
+        if record.labels.next_action == NextAction.MONITOR_ONLY:
+            weight *= 1.15
+        if _is_low_risk_cgm_record(record):
+            if record.labels.next_action == NextAction.RE_OPTIMIZE:
+                weight *= 1.2
+            elif record.labels.next_action == NextAction.CONTINUE_PLAN:
+                weight *= 0.94
+        if _is_low_risk_cgm_threshold_edge_record(record) and record.labels.next_action in {
+            NextAction.MONITOR_ONLY,
+            NextAction.RE_OPTIMIZE,
+        }:
+            weight *= 1.35
+        weights.append(round(weight, 6))
+    return weights
+
+
+def summarize_policy_sample_weights_v1(
+    records: list[RichSyntheticCohortRecord],
+    *,
+    profile: str = DEFAULT_SAMPLE_WEIGHT_PROFILE_V1,
+) -> dict[str, object]:
+    weights = build_policy_sample_weights_v1(records, profile=profile)
+    label_weight_totals: dict[str, float] = {}
+    low_risk_cgm_weight_totals: dict[str, float] = {}
+    low_risk_cgm_threshold_edge_weight_totals: dict[str, float] = {}
+    for record, weight in zip(records, weights, strict=True):
+        label = record.labels.next_action.value
+        label_weight_totals[label] = label_weight_totals.get(label, 0.0) + weight
+        if _is_low_risk_cgm_record(record):
+            low_risk_cgm_weight_totals[label] = low_risk_cgm_weight_totals.get(label, 0.0) + weight
+        if _is_low_risk_cgm_threshold_edge_record(record):
+            low_risk_cgm_threshold_edge_weight_totals[label] = (
+                low_risk_cgm_threshold_edge_weight_totals.get(label, 0.0) + weight
+            )
+
+    weight_array = np.asarray(weights, dtype=float)
+    return {
+        "record_count": len(records),
+        "min_weight": round(float(weight_array.min()), 6) if weights else 0.0,
+        "max_weight": round(float(weight_array.max()), 6) if weights else 0.0,
+        "mean_weight": round(float(weight_array.mean()), 6) if weights else 0.0,
+        "boosted_record_count": sum(1 for weight in weights if weight > 1.0),
+        "downweighted_record_count": sum(1 for weight in weights if weight < 1.0),
+        "label_weight_totals": {
+            label: round(total, 6) for label, total in sorted(label_weight_totals.items())
+        },
+        "low_risk_cgm_weight_totals": {
+            label: round(total, 6) for label, total in sorted(low_risk_cgm_weight_totals.items())
+        },
+        "low_risk_cgm_threshold_edge_weight_totals": {
+            label: round(total, 6)
+            for label, total in sorted(low_risk_cgm_threshold_edge_weight_totals.items())
+        },
+    }
+
+
+def build_policy_prediction_slice_summaries_v1(
+    artifact: PolicyModelV1Artifact,
+    *,
+    train_records: list[RichSyntheticCohortRecord],
+    val_records: list[RichSyntheticCohortRecord],
+    test_records: list[RichSyntheticCohortRecord],
+) -> dict[str, object]:
+    split_records = {
+        "train": train_records,
+        "val": val_records,
+        "test": test_records,
+    }
+    slice_filters = {
+        "low_risk_cgm": _is_low_risk_cgm_record,
+        "low_risk_cgm_threshold_edge": _is_low_risk_cgm_threshold_edge_record,
+    }
+    summaries: dict[str, object] = {}
+    for split_name, records in split_records.items():
+        slice_summaries: dict[str, object] = {}
+        for slice_name, matcher in slice_filters.items():
+            slice_records = [record for record in records if matcher(record)]
+            slice_summaries[slice_name] = {
+                "record_count": len(slice_records),
+                "actual_action_counts": _count_actions(
+                    record.labels.next_action.value for record in slice_records
+                ),
+                "raw_predicted_action_counts": _count_actions(
+                    predict_policy_action_v1(artifact, record).value for record in slice_records
+                ),
+                "guarded_predicted_action_counts": _count_actions(
+                    apply_policy_guard(
+                        predicted_action=predict_policy_action_v1(artifact, record),
+                        deterministic_action=recommend(record.request).next_action,
+                    ).value
+                    for record in slice_records
+                ),
+                "deterministic_action_counts": _count_actions(
+                    recommend(record.request).next_action.value for record in slice_records
+                ),
+            }
+        summaries[split_name] = slice_summaries
+    return summaries
 
 
 def _accuracy(actual: list[str], predicted: list[str]) -> float:
@@ -425,3 +592,23 @@ def _top_weight_features(
     pairs = list(zip(artifact.feature_names, artifact.weights[class_index], strict=True))
     pairs.sort(key=lambda item: abs(item[1]), reverse=True)
     return [{"feature": name, "weight": round(weight, 6)} for name, weight in pairs[:limit]]
+
+
+def _is_low_risk_cgm_record(record: RichSyntheticCohortRecord) -> bool:
+    return record.labels.risk_tier == "low" and record.request.input_availability.cgm
+
+
+def _is_low_risk_cgm_threshold_edge_record(record: RichSyntheticCohortRecord) -> bool:
+    return (
+        _is_low_risk_cgm_record(record)
+        and CGM_THRESHOLD_EDGE_EFFECT_PROXY_RANGE[0]
+        <= record.expected_effect_proxy
+        <= CGM_THRESHOLD_EDGE_EFFECT_PROXY_RANGE[1]
+    )
+
+
+def _count_actions(labels: Iterable[str]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for label in labels:
+        counts[label] = counts.get(label, 0) + 1
+    return dict(sorted(counts.items()))

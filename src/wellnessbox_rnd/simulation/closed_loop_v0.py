@@ -33,6 +33,12 @@ LEARNED_EFFECT_NEAR_TIE_GAP = 1.0
 CONTINUE_PLAN_EFFECT_PRIOR_BONUS = 0.8
 MONITOR_ONLY_EFFECT_PRIOR_BONUS = 0.65
 RE_OPTIMIZE_EFFECT_PRIOR_BONUS = 1.1
+RE_OPTIMIZE_REVIVAL_PROXY_MIN = 0.18
+RE_OPTIMIZE_REVIVAL_PROXY_MAX = 0.205
+RE_OPTIMIZE_CGM_REVIVAL_PROXY_MAX = 0.222
+RE_OPTIMIZE_REVIVAL_BONUS = 0.95
+RE_OPTIMIZE_REVIVAL_MONITOR_PENALTY = 0.2
+RE_OPTIMIZE_REVIVAL_CONTINUE_PENALTY = 0.25
 CONTINUE_PLAN_TRIGGER_PENALTY = 0.15
 MONITOR_ONLY_TRIGGER_PENALTY = 0.3
 RE_OPTIMIZE_TRIGGER_PENALTY = 0.4
@@ -226,6 +232,7 @@ def simulate_closed_loop_scenario(
     policy_model_artifact_path: str | Path | None = None,
     enable_learned_policy: bool = False,
     enable_learned_reranking: bool = False,
+    enable_policy_effect_proxy_override: bool = True,
     mode_name: str | None = None,
 ) -> ClosedLoopSimulationReport:
     records_by_user = _load_records_by_user(dataset_path)
@@ -257,6 +264,7 @@ def simulate_closed_loop_scenario(
             predicted_effect_source=candidate_resolution.predicted_effect_source,
             artifact=policy_artifact,
             enable_learned_policy=enable_learned_policy,
+            enable_policy_effect_proxy_override=enable_policy_effect_proxy_override,
         )
         state_before = "baseline_intake" if cycle_index == 0 else trace[-1].state_after
         state_after = _state_after_action(
@@ -340,6 +348,7 @@ def simulate_closed_loop_batch(
     policy_model_artifact_path: str | Path | None = None,
     enable_learned_policy: bool = False,
     enable_learned_reranking: bool = False,
+    enable_policy_effect_proxy_override: bool = True,
     mode_name: str,
 ) -> ClosedLoopBatchModeReport:
     records_by_user = _load_records_by_user(dataset_path)
@@ -356,6 +365,7 @@ def simulate_closed_loop_batch(
             policy_model_artifact_path=policy_model_artifact_path,
             enable_learned_policy=enable_learned_policy,
             enable_learned_reranking=enable_learned_reranking,
+            enable_policy_effect_proxy_override=enable_policy_effect_proxy_override,
             mode_name=mode_name,
         )
         for user_id in user_ids
@@ -490,6 +500,7 @@ def compare_batch_simulation_modes(
     max_users: int | None = None,
     model_artifact_path: str | Path | None = None,
     policy_model_artifact_path: str | Path | None = None,
+    enable_policy_effect_proxy_override: bool = True,
 ) -> ClosedLoopBatchComparisonReport:
     mode_reports = [
         simulate_closed_loop_batch(
@@ -500,6 +511,7 @@ def compare_batch_simulation_modes(
             policy_model_artifact_path=policy_model_artifact_path,
             enable_learned_policy=False,
             enable_learned_reranking=False,
+            enable_policy_effect_proxy_override=enable_policy_effect_proxy_override,
             mode_name="deterministic_only",
         ),
         simulate_closed_loop_batch(
@@ -510,6 +522,7 @@ def compare_batch_simulation_modes(
             policy_model_artifact_path=policy_model_artifact_path,
             enable_learned_policy=False,
             enable_learned_reranking=True,
+            enable_policy_effect_proxy_override=enable_policy_effect_proxy_override,
             mode_name="learned_effect_guarded",
         ),
         simulate_closed_loop_batch(
@@ -520,6 +533,7 @@ def compare_batch_simulation_modes(
             policy_model_artifact_path=policy_model_artifact_path,
             enable_learned_policy=True,
             enable_learned_reranking=False,
+            enable_policy_effect_proxy_override=enable_policy_effect_proxy_override,
             mode_name="learned_policy_guarded",
         ),
         simulate_closed_loop_batch(
@@ -530,6 +544,7 @@ def compare_batch_simulation_modes(
             policy_model_artifact_path=policy_model_artifact_path,
             enable_learned_policy=True,
             enable_learned_reranking=True,
+            enable_policy_effect_proxy_override=enable_policy_effect_proxy_override,
             mode_name="learned_effect_and_policy_guarded",
         ),
     ]
@@ -929,6 +944,7 @@ def _resolve_policy_selection(
     predicted_effect_source: EffectSource,
     artifact: PolicyModelV1Artifact | None,
     enable_learned_policy: bool,
+    enable_policy_effect_proxy_override: bool,
 ) -> _PolicyResolution:
     deterministic_action = _deterministic_policy_action(
         record=record,
@@ -946,7 +962,10 @@ def _resolve_policy_selection(
 
     policy_effect_proxy_used = record.expected_effect_proxy
     policy_effect_proxy_override_applied = False
-    if predicted_effect_source == EffectSource.LEARNED_MODEL_V1:
+    if (
+        predicted_effect_source == EffectSource.LEARNED_MODEL_V1
+        and enable_policy_effect_proxy_override
+    ):
         policy_effect_proxy_used = predicted_effect_proxy
         policy_effect_proxy_override_applied = round(
             predicted_effect_proxy, 6
@@ -1007,6 +1026,7 @@ def _predict_policy_action_with_effect_proxy_override(
     if _should_apply_effect_conditioned_policy_priors(record=record, response=response):
         _apply_effect_conditioned_policy_priors(
             scores=scores,
+            record=record,
             predicted_effect_proxy=expected_effect_proxy,
         )
     selected_label = max(
@@ -1030,6 +1050,7 @@ def _should_apply_effect_conditioned_policy_priors(
 def _apply_effect_conditioned_policy_priors(
     *,
     scores: dict[str, float],
+    record: RichSyntheticCohortRecord,
     predicted_effect_proxy: float,
 ) -> None:
     if predicted_effect_proxy < 0.14:
@@ -1047,6 +1068,22 @@ def _apply_effect_conditioned_policy_priors(
             scores.get(NextAction.MONITOR_ONLY.value, 0.0)
             + MONITOR_ONLY_EFFECT_PRIOR_BONUS
         )
+        if _should_apply_reoptimize_revival_prior(
+            record=record,
+            predicted_effect_proxy=predicted_effect_proxy,
+        ):
+            scores[NextAction.RE_OPTIMIZE.value] = (
+                scores.get(NextAction.RE_OPTIMIZE.value, 0.0)
+                + RE_OPTIMIZE_REVIVAL_BONUS
+            )
+            scores[NextAction.MONITOR_ONLY.value] = (
+                scores.get(NextAction.MONITOR_ONLY.value, 0.0)
+                - RE_OPTIMIZE_REVIVAL_MONITOR_PENALTY
+            )
+            scores[NextAction.CONTINUE_PLAN.value] = (
+                scores.get(NextAction.CONTINUE_PLAN.value, 0.0)
+                - RE_OPTIMIZE_REVIVAL_CONTINUE_PENALTY
+            )
         scores[NextAction.TRIGGER_SAFETY_RECHECK.value] = (
             scores.get(NextAction.TRIGGER_SAFETY_RECHECK.value, 0.0)
             - MONITOR_ONLY_TRIGGER_PENALTY
@@ -1060,6 +1097,25 @@ def _apply_effect_conditioned_policy_priors(
         scores.get(NextAction.TRIGGER_SAFETY_RECHECK.value, 0.0)
         - CONTINUE_PLAN_TRIGGER_PENALTY
     )
+
+
+def _should_apply_reoptimize_revival_prior(
+    *,
+    record: RichSyntheticCohortRecord,
+    predicted_effect_proxy: float,
+) -> bool:
+    if record.trajectory_step <= 0:
+        return False
+    if predicted_effect_proxy < RE_OPTIMIZE_REVIVAL_PROXY_MIN:
+        return False
+    proxy_max = (
+        RE_OPTIMIZE_CGM_REVIVAL_PROXY_MAX
+        if record.request.input_availability.cgm
+        else RE_OPTIMIZE_REVIVAL_PROXY_MAX
+    )
+    if predicted_effect_proxy > proxy_max:
+        return False
+    return record.request.input_availability.cgm or record.side_effect_proxy >= 0.12
 
 
 def _predict_candidate_effect_scores(

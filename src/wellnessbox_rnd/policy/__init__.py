@@ -11,10 +11,13 @@ from wellnessbox_rnd.policy.model_v0 import (
     write_policy_training_outputs,
 )
 from wellnessbox_rnd.policy.model_v1 import (
+    DEFAULT_SAMPLE_WEIGHT_PROFILE_V1,
     PolicyEvaluationMetricsV1,
     PolicySplitResultV1,
     PolicyTrainingRowV1,
     build_policy_feature_schema_v1,
+    build_policy_prediction_slice_summaries_v1,
+    build_policy_sample_weights_v1,
     build_policy_training_rows_v1,
     evaluate_policy_model_v1,
     fit_policy_model_v1,
@@ -23,10 +26,12 @@ from wellnessbox_rnd.policy.model_v1 import (
     render_policy_training_markdown_v1,
     render_policy_training_report_v1,
     split_policy_records_by_user_v1,
+    summarize_policy_sample_weights_v1,
     write_policy_training_outputs_v1,
 )
 
 __all__ = [
+    "DEFAULT_SAMPLE_WEIGHT_PROFILE_V1",
     "PolicyEvaluationMetrics",
     "PolicyEvaluationMetricsV1",
     "PolicySplitResult",
@@ -35,6 +40,8 @@ __all__ = [
     "apply_policy_guard",
     "build_policy_training_rows",
     "build_policy_feature_schema_v1",
+    "build_policy_prediction_slice_summaries_v1",
+    "build_policy_sample_weights_v1",
     "build_policy_training_rows_v1",
     "evaluate_policy_model",
     "evaluate_policy_model_v1",
@@ -48,6 +55,7 @@ __all__ = [
     "render_policy_training_report_v1",
     "split_policy_records_by_user",
     "split_policy_records_by_user_v1",
+    "summarize_policy_sample_weights_v1",
     "write_policy_training_outputs",
     "write_policy_training_outputs_v1",
 ]

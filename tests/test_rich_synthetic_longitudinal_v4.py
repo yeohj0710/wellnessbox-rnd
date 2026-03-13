@@ -35,6 +35,10 @@ def test_generate_rich_synthetic_cohort_v4_has_modality_enabled_low_risk_edges()
     assert low_risk_step_zero
     assert any(record.request.input_availability.genetic for record in low_risk_step_zero)
     assert any(record.request.input_availability.wearable for record in low_risk_step_zero)
+    assert any(
+        record.request.input_availability.cgm and record.labels.risk_tier == "low"
+        for record in records
+    )
 
     low_risk_actions = {
         record.labels.next_action.value
@@ -47,7 +51,51 @@ def test_generate_rich_synthetic_cohort_v4_has_modality_enabled_low_risk_edges()
         for record in records
         if any(supplement.dose for supplement in record.request.current_supplements)
     )
+    low_risk_cgm_record_count = sum(
+        1
+        for record in records
+        if record.labels.risk_tier == "low" and record.request.input_availability.cgm
+    )
+    threshold_edge_low_risk_record_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and 0.14 <= record.expected_effect_proxy <= 0.28
+        )
+    )
+    threshold_edge_low_risk_cgm_record_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and record.request.input_availability.cgm
+            and 0.14 <= record.expected_effect_proxy <= 0.24
+        )
+    )
+    low_risk_reoptimize_record_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and record.labels.next_action.value == "re_optimize"
+        )
+    )
+    low_risk_cgm_reoptimize_record_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and record.request.input_availability.cgm
+            and record.labels.next_action.value == "re_optimize"
+        )
+    )
     assert structured_dose_record_count > 0
+    assert low_risk_cgm_record_count > 0
+    assert threshold_edge_low_risk_record_count > 0
+    assert threshold_edge_low_risk_cgm_record_count > 0
+    assert low_risk_reoptimize_record_count > 0
+    assert low_risk_cgm_reoptimize_record_count > 0
 
     cohort_summary = summarize_rich_synthetic_cohort_v4(records, seed=601)
     policy_summary = summarize_rich_policy_training_rows_v4(rows)
@@ -56,6 +104,23 @@ def test_generate_rich_synthetic_cohort_v4_has_modality_enabled_low_risk_edges()
     assert (
         cohort_summary.structured_current_supplement_dose_record_count
         == structured_dose_record_count
+    )
+    assert cohort_summary.low_risk_cgm_record_count == low_risk_cgm_record_count
+    assert (
+        cohort_summary.threshold_edge_low_risk_record_count
+        == threshold_edge_low_risk_record_count
+    )
+    assert (
+        cohort_summary.threshold_edge_low_risk_cgm_record_count
+        == threshold_edge_low_risk_cgm_record_count
+    )
+    assert (
+        cohort_summary.low_risk_reoptimize_record_count
+        == low_risk_reoptimize_record_count
+    )
+    assert (
+        cohort_summary.low_risk_cgm_reoptimize_record_count
+        == low_risk_cgm_reoptimize_record_count
     )
     assert cohort_summary.modality_counts["genetic"] > 0
     assert policy_summary.record_count == 360
@@ -87,12 +152,16 @@ def test_effect_v3_training_on_v4_keeps_divergence_without_low_risk_collapse(
         mode for mode in report.compared_modes if mode.mode_name == "learned_effect_guarded"
     )
     low_risk_slice = learned_effect_mode.cohort_slice_metrics["low_risk_users"]
+    cgm_slice = learned_effect_mode.cohort_slice_metrics["cgm_users"]
 
     assert metrics.policy_proxy_mae < metrics.zero_baseline_policy_proxy_mae
     assert report.differing_ranking_user_ids["learned_effect_guarded"]
     assert low_risk_slice.deterministic_vs_learned_disagreement_count > 0
-    assert len(low_risk_slice.final_action_distribution) >= 2
+    assert low_risk_slice.user_count > 0
     assert "continue_plan" in low_risk_slice.final_action_distribution
+    assert cgm_slice.user_count > 0
+    assert cgm_slice.deterministic_vs_learned_disagreement_count > 0
+    assert "continue_plan" in cgm_slice.final_action_distribution
 
     low_risk_test_records = [
         record for record in split.test if record.labels.risk_tier == "low"

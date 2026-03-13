@@ -4,25 +4,35 @@ from pathlib import Path
 from sys import exit as sys_exit
 
 from wellnessbox_rnd.policy import (
+    DEFAULT_SAMPLE_WEIGHT_PROFILE_V1,
     build_policy_feature_schema_v1,
+    build_policy_prediction_slice_summaries_v1,
     build_policy_training_rows_v1,
     evaluate_policy_model_v1,
     fit_policy_model_v1,
     load_rich_synthetic_records,
     render_policy_training_report_v1,
     split_policy_records_by_user_v1,
+    summarize_policy_sample_weights_v1,
     write_policy_training_outputs_v1,
 )
 
 
 def build_parser() -> ArgumentParser:
-    parser = ArgumentParser(description="Train the synthetic next-action policy model v1")
+    parser = ArgumentParser(
+        description="Train the synthetic next-action policy model v1 on rich synthetic cohort v4"
+    )
     parser.add_argument(
         "--dataset",
-        default="data/synthetic/synthetic_longitudinal_v2.jsonl",
+        default="data/synthetic/synthetic_longitudinal_v4.jsonl",
         help="Rich synthetic longitudinal dataset path",
     )
     parser.add_argument("--seed", type=int, default=20260310)
+    parser.add_argument(
+        "--sample-weight-profile",
+        default=DEFAULT_SAMPLE_WEIGHT_PROFILE_V1,
+        help="Deterministic policy sample-weight profile",
+    )
     parser.add_argument(
         "--artifact-path",
         default="artifacts/models/policy_model_v1.json",
@@ -45,7 +55,7 @@ def build_parser() -> ArgumentParser:
     )
     parser.add_argument(
         "--policy-dataset-output",
-        default="data/synthetic/policy_training_v1.jsonl",
+        default="data/synthetic/policy_training_v1_from_v4.jsonl",
         help="Flattened policy training dataset JSONL output path",
     )
     parser.add_argument(
@@ -72,8 +82,19 @@ def main() -> int:
         split.train,
         split.val,
         seed=args.seed,
+        sample_weight_profile=args.sample_weight_profile,
     )
     test_metrics = evaluate_policy_model_v1(artifact, split.test)
+    sample_weight_summary = summarize_policy_sample_weights_v1(
+        split.train,
+        profile=args.sample_weight_profile,
+    )
+    slice_prediction_summaries = build_policy_prediction_slice_summaries_v1(
+        artifact,
+        train_records=split.train,
+        val_records=split.val,
+        test_records=split.test,
+    )
     report = render_policy_training_report_v1(
         artifact=artifact,
         split=split,
@@ -81,6 +102,9 @@ def main() -> int:
         val_metrics=metrics_by_split["val"],
         test_metrics=test_metrics,
         test_records=split.test,
+        sample_weight_profile=args.sample_weight_profile,
+        sample_weight_summary=sample_weight_summary,
+        slice_prediction_summaries=slice_prediction_summaries,
     )
     feature_schema = build_policy_feature_schema_v1(artifact)
     write_policy_training_outputs_v1(
@@ -102,6 +126,7 @@ def main() -> int:
             {
                 "dataset": str(Path(args.dataset)),
                 "artifact_path": args.artifact_path,
+                "sample_weight_profile": args.sample_weight_profile,
                 "report_json": args.report_json,
                 "report_md": args.report_md,
                 "split_json": args.split_json,
@@ -110,6 +135,8 @@ def main() -> int:
                 "feature_schema_md": args.feature_schema_md,
                 "class_labels": artifact.class_labels,
                 "feature_count": len(artifact.feature_names),
+                "sample_weight_summary": sample_weight_summary,
+                "slice_prediction_summaries": slice_prediction_summaries,
                 "train_metrics": metrics_by_split["train"].model_dump(mode="json"),
                 "val_metrics": metrics_by_split["val"].model_dump(mode="json"),
                 "test_metrics": test_metrics.model_dump(mode="json"),

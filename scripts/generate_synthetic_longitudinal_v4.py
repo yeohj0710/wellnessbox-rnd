@@ -72,6 +72,20 @@ def _render_cohort_markdown(summary: dict[str, object]) -> str:
             "- structured_current_supplement_dose_record_count: "
             f"`{summary['structured_current_supplement_dose_record_count']}`"
         ),
+        f"- low_risk_cgm_record_count: `{summary['low_risk_cgm_record_count']}`",
+        (
+            "- threshold_edge_low_risk_record_count: "
+            f"`{summary['threshold_edge_low_risk_record_count']}`"
+        ),
+        (
+            "- threshold_edge_low_risk_cgm_record_count: "
+            f"`{summary['threshold_edge_low_risk_cgm_record_count']}`"
+        ),
+        f"- low_risk_reoptimize_record_count: `{summary['low_risk_reoptimize_record_count']}`",
+        (
+            "- low_risk_cgm_reoptimize_record_count: "
+            f"`{summary['low_risk_cgm_reoptimize_record_count']}`"
+        ),
         f"- adverse_event_count: `{summary['adverse_event_count']}`",
         f"- average_effect_proxy: `{summary['average_effect_proxy']}`",
         f"- average_adherence_proxy: `{summary['average_adherence_proxy']}`",

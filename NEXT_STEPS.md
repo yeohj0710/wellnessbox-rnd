@@ -2,46 +2,26 @@
 
 ## Current priority
 
-Priority is now `P2/P4 cohort support + retraining gate`, not another routine input-adoption loop.
+The bounded combined-replay override diagnostic loop is now complete.
 
-What now exists:
+What the latest loop proved:
 
-- replay parity milestone is complete:
-  - combined replay remains slightly closer to effect-only than policy-only on final action
-- structured runtime `dose_limits` still exist:
-  - `C:/dev/wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json`
-  - `dose_limits = 5`
-- structured supplement dose is now adopted in:
-  - the inference API path
-  - the maintained `synthetic_longitudinal_v3` source
-  - the maintained `synthetic_longitudinal_v4` source
-- learned effect/policy artifacts already exist:
-  - they remain guarded and replay-only
-  - they are not yet runtime-eligible
-
-## What the latest loops proved
-
-- the maintained `synthetic_longitudinal_v3` source can emit structured current-supplement doses without disturbing frozen eval
-- the maintained `synthetic_longitudinal_v4` source can also emit structured current-supplement doses with measurable artifact coverage
-- upstream structured-dose adoption is now present in the API and both maintained synthetic sources
-- frozen eval stayed unchanged across these adoption loops
-- deterministic runtime safety and learned-runtime boundaries stayed unchanged
-- additional routine input-adoption loops now have lower marginal value than bounded cohort enrichment
+- disabling effect-conditioned override in combined replay removes all override applications:
+  - `policy_effect_override_applied_count: 325 -> 0`
+- that restores a small amount of low-risk richness:
+  - combined low-risk final actions: `continue_plan: 65 -> 63`, `monitor_only: 0 -> 2`
+- disagreement counts also improve:
+  - low-risk disagreement count: `65 -> 60`
+  - `cgm` disagreement count: `3 -> 0`
+- but the real target still does not move:
+  - combined `cgm` final actions stay `ask_targeted_followup: 10`, `continue_plan: 13`, `trigger_safety_recheck: 10`
+  - no combined `cgm monitor_only` or `cgm re_optimize` final actions appear
 
 ## Recommended next loop
 
-1. `P2/P4`: enrich `cgm` and threshold-edge low-risk trajectories so `continue_plan` vs `monitor_only` vs `re_optimize` boundaries are better represented.
-   - Prefer one bounded enrichment loop with measurable deltas in:
-     - `cgm` user/record coverage
-     - low-risk threshold-edge record counts
-     - terminal action richness
-     - low-risk `re_optimize` representation
-     - replay usefulness on `cgm` and low-risk slices
-2. If that enrichment materially changes maintained synthetic cohorts or action richness, retrain the smallest relevant learned artifact(s) and rerun replay in the same loop if feasible, otherwise make that the immediate next loop.
-3. `P1`: only if one very tight safety-depth increment clearly has higher leverage than another enrichment loop.
-   - Prefer one narrow new `dose_limits` rule family or one equally narrow deterministic safety increment.
-   - Do not return to broad input-adoption work by default.
-4. `P4`: only after enrichment/retraining, make one final narrow replay-only calibration pass if the effect-only parity margin still needs widening.
+1. `P2/P4`: keep the fixed v4 cohort, current effect artifact, and restored uniform policy artifact, and make one minimal replay-only change to the combined override gate or effect-conditioned policy priors for the `cgm` threshold-edge region, then rerun combined replay only.
+2. `P2/P4`: if that still does not move the `cgm` terminal-action slice, add one more bounded diagnostic that reports the exact records/users where override-off still falls back to `continue_plan`.
+3. `P1`: only if replay/training work is blocked, take one very tight deterministic safety increment.
 
 ## Guardrails
 

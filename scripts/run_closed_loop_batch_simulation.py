@@ -45,6 +45,11 @@ def build_parser() -> ArgumentParser:
         default="artifacts/reports/closed_loop_batch_simulation_v3_trace_samples.json",
         help="Trace sample JSON path",
     )
+    parser.add_argument(
+        "--disable-policy-effect-override",
+        action="store_true",
+        help="Disable routing learned effect proxy into learned policy features during replay",
+    )
     return parser
 
 
@@ -56,6 +61,7 @@ def main() -> int:
         max_users=args.max_users,
         model_artifact_path=args.model_artifact,
         policy_model_artifact_path=args.policy_model_artifact,
+        enable_policy_effect_proxy_override=not args.disable_policy_effect_override,
     )
     write_batch_simulation_outputs(
         report=report,

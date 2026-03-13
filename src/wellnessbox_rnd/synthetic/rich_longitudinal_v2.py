@@ -137,6 +137,11 @@ class RichSyntheticCohortSummary(BaseModel):
     user_count: int
     record_count: int
     structured_current_supplement_dose_record_count: int = 0
+    low_risk_cgm_record_count: int = 0
+    threshold_edge_low_risk_record_count: int = 0
+    threshold_edge_low_risk_cgm_record_count: int = 0
+    low_risk_reoptimize_record_count: int = 0
+    low_risk_cgm_reoptimize_record_count: int = 0
     total_trajectory_steps: int
     step_counts: dict[int, int]
     next_action_counts: dict[str, int]
