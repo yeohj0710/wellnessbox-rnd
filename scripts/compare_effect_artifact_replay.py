@@ -92,6 +92,10 @@ def main() -> int:
             reference=reference_report,
             candidate=candidate_report,
         ),
+        "slice_deltas": _build_slice_deltas(
+            reference=reference_report,
+            candidate=candidate_report,
+        ),
     }
 
     report_json_target = Path(args.report_json)
@@ -249,6 +253,70 @@ def _build_deltas(
                 "low_risk_disagreement_count"
             ]
         ),
+        "effect_only_cgm_disagreement_delta": (
+            candidate["replay_summary"]["learned_effect_guarded"]["cgm_disagreement_count"]
+            - reference["replay_summary"]["learned_effect_guarded"]["cgm_disagreement_count"]
+        ),
+        "combined_cgm_disagreement_delta": (
+            candidate["replay_summary"]["learned_effect_and_policy_guarded"][
+                "cgm_disagreement_count"
+            ]
+            - reference["replay_summary"]["learned_effect_and_policy_guarded"][
+                "cgm_disagreement_count"
+            ]
+        ),
+        "effect_only_policy_effect_override_applied_count_delta": (
+            candidate["replay_summary"]["learned_effect_guarded"][
+                "policy_effect_override_applied_count"
+            ]
+            - reference["replay_summary"]["learned_effect_guarded"][
+                "policy_effect_override_applied_count"
+            ]
+        ),
+        "combined_policy_effect_override_applied_count_delta": (
+            candidate["replay_summary"]["learned_effect_and_policy_guarded"][
+                "policy_effect_override_applied_count"
+            ]
+            - reference["replay_summary"]["learned_effect_and_policy_guarded"][
+                "policy_effect_override_applied_count"
+            ]
+        ),
+    }
+
+
+def _build_slice_deltas(
+    *,
+    reference: dict[str, object],
+    candidate: dict[str, object],
+) -> dict[str, object]:
+    return {
+        mode_name: {
+            "overall_final_action_delta": _distribution_delta(
+                reference["replay_summary"][mode_name]["final_policy_action_counts"],
+                candidate["replay_summary"][mode_name]["final_policy_action_counts"],
+            ),
+            "low_risk_final_action_delta": _distribution_delta(
+                reference["replay_summary"][mode_name]["low_risk_final_action_distribution"],
+                candidate["replay_summary"][mode_name]["low_risk_final_action_distribution"],
+            ),
+            "cgm_final_action_delta": _distribution_delta(
+                reference["replay_summary"][mode_name]["cgm_final_action_distribution"],
+                candidate["replay_summary"][mode_name]["cgm_final_action_distribution"],
+            ),
+            "low_risk_disagreement_delta": (
+                candidate["replay_summary"][mode_name]["low_risk_disagreement_count"]
+                - reference["replay_summary"][mode_name]["low_risk_disagreement_count"]
+            ),
+            "cgm_disagreement_delta": (
+                candidate["replay_summary"][mode_name]["cgm_disagreement_count"]
+                - reference["replay_summary"][mode_name]["cgm_disagreement_count"]
+            ),
+            "policy_effect_override_applied_count_delta": (
+                candidate["replay_summary"][mode_name]["policy_effect_override_applied_count"]
+                - reference["replay_summary"][mode_name]["policy_effect_override_applied_count"]
+            ),
+        }
+        for mode_name in ("learned_effect_guarded", "learned_effect_and_policy_guarded")
     }
 
 
@@ -258,6 +326,17 @@ def _action_count_delta(
     action: str,
 ) -> int:
     return candidate_counts.get(action, 0) - reference_counts.get(action, 0)
+
+
+def _distribution_delta(
+    reference_counts: dict[str, int],
+    candidate_counts: dict[str, int],
+) -> dict[str, int]:
+    keys = sorted(set(reference_counts) | set(candidate_counts))
+    return {
+        key: candidate_counts.get(key, 0) - reference_counts.get(key, 0)
+        for key in keys
+    }
 
 
 def render_markdown(report: dict[str, object]) -> str:
@@ -273,6 +352,38 @@ def render_markdown(report: dict[str, object]) -> str:
     ]
     for key, value in report["deltas"].items():
         lines.append(f"- `{key}`: `{value}`")
+    lines.extend(["", "## Slice Deltas"])
+    for mode_name, mode_delta in report["slice_deltas"].items():
+        lines.append(
+            "- "
+            f"`{mode_name}::overall_final_action_delta`: "
+            f"`{mode_delta['overall_final_action_delta']}`"
+        )
+        lines.append(
+            "- "
+            f"`{mode_name}::low_risk_final_action_delta`: "
+            f"`{mode_delta['low_risk_final_action_delta']}`"
+        )
+        lines.append(
+            "- "
+            f"`{mode_name}::cgm_final_action_delta`: "
+            f"`{mode_delta['cgm_final_action_delta']}`"
+        )
+        lines.append(
+            "- "
+            f"`{mode_name}::low_risk_disagreement_delta`: "
+            f"`{mode_delta['low_risk_disagreement_delta']}`"
+        )
+        lines.append(
+            "- "
+            f"`{mode_name}::cgm_disagreement_delta`: "
+            f"`{mode_delta['cgm_disagreement_delta']}`"
+        )
+        lines.append(
+            "- "
+            f"`{mode_name}::policy_effect_override_applied_count_delta`: "
+            f"`{mode_delta['policy_effect_override_applied_count_delta']}`"
+        )
     for artifact_key in ("reference", "candidate"):
         artifact_report = report[artifact_key]
         lines.extend(

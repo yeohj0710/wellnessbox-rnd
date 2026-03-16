@@ -98,6 +98,11 @@ def main() -> int:
         },
         "answer": adapter_response.answer.model_dump(),
         "verification": adapter_response.verification.model_dump(),
+        "live_failure": (
+            adapter_response.live_failure.model_dump()
+            if adapter_response.live_failure is not None
+            else None
+        ),
     }
     report_json_path = Path(args.report_json)
     report_md_path = Path(args.report_md)
@@ -114,6 +119,7 @@ def _render_markdown(report: dict[str, object]) -> str:
     runtime_boundary = preflight["runtime_boundary"]
     config = report["config"]
     verification = report["verification"]
+    live_failure = report["live_failure"]
     lines = [
         "# chat openai adapter smoke v1",
         "",
@@ -149,6 +155,18 @@ def _render_markdown(report: dict[str, object]) -> str:
         f"- passed: `{verification['passed']}`",
         f"- issues: `{verification['issues']}`",
     ]
+    if live_failure is not None:
+        lines.extend(
+            [
+                "",
+                "## Live Failure",
+                f"- failure_stage: `{live_failure['failure_stage']}`",
+                f"- exception_class: `{live_failure['exception_class']}`",
+                f"- exception_message: `{live_failure['exception_message']}`",
+                f"- status_code: `{live_failure['status_code']}`",
+                f"- response_body_excerpt: `{live_failure['response_body_excerpt']}`",
+            ]
+        )
     return "\n".join(lines) + "\n"
 
 

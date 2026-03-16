@@ -1,0 +1,36 @@
+{
+  "user_profile": {
+    "age": 34,
+    "biological_sex": "female",
+    "pregnant": false
+  },
+  "goals": [
+    "stress_support",
+    "sleep_support"
+  ],
+  "symptoms": [
+    "difficulty_falling_asleep"
+  ],
+  "conditions": [],
+  "medications": [],
+  "current_supplements": [],
+  "lifestyle": {
+    "sleep_hours": 5.5,
+    "stress_level": 4,
+    "activity_level": "lightly_active",
+    "smoker": false,
+    "alcohol_per_week": 1
+  },
+  "input_availability": {
+    "survey": true,
+    "nhis": false,
+    "wearable": true,
+    "cgm": false,
+    "genetic": false
+  },
+  "preferences": {
+    "budget_level": "medium",
+    "max_products": 2,
+    "avoid_ingredients": []
+  }
+}

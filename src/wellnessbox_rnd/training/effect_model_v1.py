@@ -64,6 +64,20 @@ class EffectDatasetPeriodV1(BaseModel):
     days_from_baseline: int = Field(ge=0)
 
 
+class EffectDatasetInputFlagsV1(BaseModel):
+    survey: bool
+    nhis: bool
+    wearable: bool
+    cgm: bool
+    genetic: bool
+
+
+class EffectDatasetProvenanceV1(BaseModel):
+    source_request_id: str
+    rng_seed: int
+    trajectory_mode: str
+
+
 class EffectDatasetPairRowV1(BaseModel):
     pair_id: str
     source_record_id: str
@@ -80,6 +94,8 @@ class EffectDatasetPairRowV1(BaseModel):
     side_effect_proxy: float = Field(ge=0.0, le=1.0)
     next_action: str
     risk_tier: str
+    input_flags: EffectDatasetInputFlagsV1
+    provenance: EffectDatasetProvenanceV1
 
 
 def load_rich_effect_records(
@@ -132,6 +148,14 @@ def build_effect_dataset_pair_row_v1(
         side_effect_proxy=record.side_effect_proxy,
         next_action=record.labels.next_action.value,
         risk_tier=record.labels.risk_tier,
+        input_flags=EffectDatasetInputFlagsV1.model_validate(
+            record.request.input_availability.model_dump(mode="json")
+        ),
+        provenance=EffectDatasetProvenanceV1(
+            source_request_id=record.request.request_id,
+            rng_seed=record.rng_seed,
+            trajectory_mode=record.trajectory_mode,
+        ),
     )
 
 
@@ -172,6 +196,14 @@ def validate_effect_dataset_pairs_v1(
         expected_days = row.period.end_day_index - row.period.start_day_index
         if row.period.days_from_baseline != expected_days:
             issues.append(f"period days_from_baseline mismatch: {row.pair_id}")
+        if not row.provenance.source_request_id:
+            issues.append(f"provenance source_request_id missing: {row.pair_id}")
+        if row.provenance.rng_seed < 0:
+            issues.append(f"provenance rng_seed invalid: {row.pair_id}")
+        if not row.provenance.trajectory_mode:
+            issues.append(f"provenance trajectory_mode missing: {row.pair_id}")
+        if not row.input_flags.survey:
+            issues.append(f"survey input flag must remain true: {row.pair_id}")
     return issues
 
 
@@ -720,6 +752,7 @@ def summarize_effect_dataset_pairs_v1(
     rows: list[EffectDatasetPairRowV1],
     *,
     dataset_path: str | Path,
+    source_dataset_path: str | Path,
     split_manifest_path: str | Path,
     seed: int,
 ) -> dict[str, object]:
@@ -742,6 +775,8 @@ def summarize_effect_dataset_pairs_v1(
         "side_effect_proxy",
         "next_action",
         "risk_tier",
+        "input_flags",
+        "provenance",
     ]
     top_level_coverage = {
         key: round(
@@ -857,10 +892,77 @@ def summarize_effect_dataset_pairs_v1(
             if total_rows
             else 0.0,
         },
+        "input_flags": {
+            "survey": round(
+                sum(1 for row in rows if isinstance(row.input_flags.survey, bool))
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "nhis": round(
+                sum(1 for row in rows if isinstance(row.input_flags.nhis, bool))
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "wearable": round(
+                sum(1 for row in rows if isinstance(row.input_flags.wearable, bool))
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "cgm": round(
+                sum(1 for row in rows if isinstance(row.input_flags.cgm, bool))
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "genetic": round(
+                sum(1 for row in rows if isinstance(row.input_flags.genetic, bool))
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+        },
+        "provenance": {
+            "source_request_id": round(
+                sum(1 for row in rows if row.provenance.source_request_id)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "rng_seed": round(
+                sum(1 for row in rows if row.provenance.rng_seed >= 0) / total_rows * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "trajectory_mode": round(
+                sum(1 for row in rows if row.provenance.trajectory_mode)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+        },
     }
     return {
         "dataset_id": "dataset_f_effect_prepost_pairs_v1",
         "dataset_path": str(Path(dataset_path)),
+        "source_dataset_path": str(Path(source_dataset_path)),
         "case_count": total_rows,
         "user_count": len({row.user_id for row in rows}),
         "recommended_item_count": recommended_item_count,
@@ -868,6 +970,13 @@ def summarize_effect_dataset_pairs_v1(
         "next_action_counts": _count_string_values(row.next_action for row in rows),
         "risk_tier_counts": _count_string_values(row.risk_tier for row in rows),
         "adverse_event_count": sum(1 for row in rows if row.adverse_event),
+        "input_flag_counts": {
+            "survey": sum(1 for row in rows if row.input_flags.survey),
+            "nhis": sum(1 for row in rows if row.input_flags.nhis),
+            "wearable": sum(1 for row in rows if row.input_flags.wearable),
+            "cgm": sum(1 for row in rows if row.input_flags.cgm),
+            "genetic": sum(1 for row in rows if row.input_flags.genetic),
+        },
         "period_summary": {
             "trajectory_step_counts": _count_string_values(
                 str(row.period.trajectory_step) for row in rows
@@ -882,6 +991,23 @@ def summarize_effect_dataset_pairs_v1(
             "nested": nested_coverage,
         },
         "split_manifest_path": str(Path(split_manifest_path)),
+        "dataset_provenance": {
+            "source_dataset_path": str(Path(source_dataset_path)),
+            "source_cohort_version": rows[0].cohort_version if rows else "unknown",
+            "generator_source": (
+                "wellnessbox_rnd.synthetic.rich_longitudinal_v4."
+                "generate_rich_synthetic_cohort_v4"
+            ),
+            "validator_source": (
+                "wellnessbox_rnd.synthetic.rich_longitudinal_v4."
+                "validate_rich_synthetic_cohort"
+            ),
+            "split_seed": seed,
+            "split_manifest_path": str(Path(split_manifest_path)),
+            "frozen_eval_dataset_path": "data/frozen_eval/frozen_eval_v1.jsonl",
+            "shares_path_with_frozen_eval": str(Path(source_dataset_path))
+            == "data\\frozen_eval\\frozen_eval_v1.jsonl",
+        },
         "split_summary": {
             split_name: {
                 "pair_count": split_manifest["splits"][split_name]["pair_count"],
@@ -907,6 +1033,7 @@ def render_effect_dataset_pairs_markdown_v1(summary: dict[str, object]) -> str:
         "",
         f"- dataset_id: `{summary['dataset_id']}`",
         f"- dataset_path: `{summary['dataset_path']}`",
+        f"- source_dataset_path: `{summary['source_dataset_path']}`",
         f"- case_count: `{summary['case_count']}`",
         f"- user_count: `{summary['user_count']}`",
         f"- adverse_event_count: `{summary['adverse_event_count']}`",
@@ -919,6 +1046,23 @@ def render_effect_dataset_pairs_markdown_v1(summary: dict[str, object]) -> str:
             f"- `{split_name}`: pair_count=`{values['pair_count']}`, "
             f"user_count=`{values['user_count']}`"
         )
+    lines.extend(["", "## Input Flag Counts"])
+    for key, value in summary["input_flag_counts"].items():
+        lines.append(f"- `{key}`: `{value}`")
+    lines.extend(["", "## Provenance"])
+    lines.append(
+        f"- generator_source: `{summary['dataset_provenance']['generator_source']}`"
+    )
+    lines.append(
+        f"- validator_source: `{summary['dataset_provenance']['validator_source']}`"
+    )
+    lines.append(
+        f"- split_seed: `{summary['dataset_provenance']['split_seed']}`"
+    )
+    lines.append(
+        "- shares_path_with_frozen_eval: "
+        f"`{summary['dataset_provenance']['shares_path_with_frozen_eval']}`"
+    )
     lines.extend(["", "## Schema Key Coverage"])
     for key, value in summary["schema_key_coverage_pct"]["top_level"].items():
         lines.append(f"- `top_level::{key}`: `{value}`")

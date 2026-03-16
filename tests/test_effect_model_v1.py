@@ -123,6 +123,7 @@ def test_build_effect_dataset_pairs_v1_exports_required_prepost_fields() -> None
     summary = summarize_effect_dataset_pairs_v1(
         rows,
         dataset_path="artifacts/datasets/dataset_f_effect_prepost_pairs_v1.jsonl",
+        source_dataset_path="data/synthetic/synthetic_longitudinal_v4.jsonl",
         split_manifest_path="artifacts/reports/dataset_f_effect_prepost_pairs_split_manifest_v1.json",
         seed=20260311,
     )
@@ -135,10 +136,19 @@ def test_build_effect_dataset_pairs_v1_exports_required_prepost_fields() -> None
     assert rows[0].recommended_set
     assert rows[0].period.days_from_baseline >= 0
     assert isinstance(rows[0].adverse_event, bool)
+    assert rows[0].input_flags.survey is True
+    assert isinstance(rows[0].input_flags.cgm, bool)
+    assert rows[0].provenance.source_request_id
+    assert rows[0].provenance.trajectory_mode
     assert summary["case_count"] == len(records)
     assert summary["adverse_event_count"] > 0
     assert summary["schema_key_coverage_pct"]["top_level"]["recommended_set"] == 100.0
+    assert summary["schema_key_coverage_pct"]["top_level"]["input_flags"] == 100.0
+    assert summary["schema_key_coverage_pct"]["top_level"]["provenance"] == 100.0
     assert summary["schema_key_coverage_pct"]["nested"]["period"]["days_from_baseline"] == 100.0
+    assert summary["schema_key_coverage_pct"]["nested"]["input_flags"]["survey"] == 100.0
+    assert summary["schema_key_coverage_pct"]["nested"]["provenance"]["trajectory_mode"] == 100.0
+    assert summary["dataset_provenance"]["shares_path_with_frozen_eval"] is False
     assert split_manifest["splits"]["train"]["pair_count"] + split_manifest["splits"]["val"][
         "pair_count"
     ] + split_manifest["splits"]["test"]["pair_count"] == len(rows)

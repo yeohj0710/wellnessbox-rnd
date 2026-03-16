@@ -64,6 +64,7 @@ def main() -> int:
     summary = summarize_effect_dataset_pairs_v1(
         rows,
         dataset_path=args.pairs_jsonl,
+        source_dataset_path=args.dataset,
         split_manifest_path=args.split_json,
         seed=args.seed,
     )

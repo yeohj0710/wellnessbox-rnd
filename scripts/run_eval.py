@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
-from wellnessbox_rnd.evals.runner import run_eval, write_report_files
+from wellnessbox_rnd.evals.runner import run_eval, write_eval_outputs
 
 
 def main() -> None:
@@ -16,16 +16,38 @@ def main() -> None:
         default="artifacts/reports",
         help="Directory for JSON and Markdown reports",
     )
+    parser.add_argument(
+        "--compare-to-report",
+        default=None,
+        help="Optional baseline eval_report.json path for same-command comparison output",
+    )
+    parser.add_argument(
+        "--comparison-output-json",
+        default=None,
+        help="Optional output path for comparison JSON; defaults under output-dir",
+    )
+    parser.add_argument(
+        "--comparison-output-md",
+        default=None,
+        help="Optional output path for comparison markdown; defaults under output-dir",
+    )
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
     report = run_eval(args.dataset)
-    json_path = output_dir / "eval_report.json"
-    md_path = output_dir / "eval_report.md"
-    write_report_files(report, json_path, md_path)
+    outputs = write_eval_outputs(
+        report=report,
+        output_dir=output_dir,
+        compare_to_report=args.compare_to_report,
+        comparison_output_json=args.comparison_output_json,
+        comparison_output_md=args.comparison_output_md,
+    )
 
-    print(f"JSON report: {json_path}")
-    print(f"Markdown report: {md_path}")
+    print(f"JSON report: {outputs['eval_report_json']}")
+    print(f"Markdown report: {outputs['eval_report_md']}")
+    if "eval_report_comparison_json" in outputs:
+        print(f"JSON comparison: {outputs['eval_report_comparison_json']}")
+        print(f"Markdown comparison: {outputs['eval_report_comparison_md']}")
 
 
 if __name__ == "__main__":

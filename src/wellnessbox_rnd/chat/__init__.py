@@ -6,6 +6,7 @@ from wellnessbox_rnd.chat.answering import (
     verify_bounded_template_answer,
 )
 from wellnessbox_rnd.chat.openai_adapter import (
+    ChatAdapterLiveFailure,
     ChatAdapterRequest,
     ChatAdapterResponse,
     OpenAIChatAdapterConfig,
@@ -24,6 +25,7 @@ from wellnessbox_rnd.chat.retrieval import (
 
 __all__ = [
     "ChatQaEvalCase",
+    "ChatAdapterLiveFailure",
     "ChatAdapterRequest",
     "ChatAdapterResponse",
     "AnswerCitation",

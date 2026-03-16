@@ -7,6 +7,7 @@ from wellnessbox_rnd.evals.runner import (
     load_eval_cases,
     render_markdown_report,
     run_eval,
+    write_eval_outputs,
     write_report_files,
 )
 
@@ -82,3 +83,21 @@ def test_write_report_files_creates_json_and_markdown() -> None:
     assert "metric summary" in render_markdown_report(report)
     assert "integration diagnostics" in render_markdown_report(report)
     assert "weakest slice summary" in render_markdown_report(report)
+
+
+def test_write_eval_outputs_can_emit_report_and_comparison(tmp_path: Path) -> None:
+    report = run_eval("data/frozen_eval/frozen_eval_v1.jsonl")
+    baseline_json = tmp_path / "baseline_eval_report.json"
+    baseline_md = tmp_path / "baseline_eval_report.md"
+    write_report_files(report, baseline_json, baseline_md)
+
+    outputs = write_eval_outputs(
+        report=report,
+        output_dir=tmp_path / "candidate",
+        compare_to_report=baseline_json,
+    )
+
+    assert Path(outputs["eval_report_json"]).exists()
+    assert Path(outputs["eval_report_md"]).exists()
+    assert Path(outputs["eval_report_comparison_json"]).exists()
+    assert Path(outputs["eval_report_comparison_md"]).exists()

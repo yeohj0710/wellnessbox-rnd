@@ -3,87 +3,72 @@
 ## Current loop
 
 - Chosen stage: `P1/P4`
-- Chosen task: `reprioritize the next three bounded loops based on current KPI bottlenecks and implementation gaps`
+- Chosen task: `run a final architecture-alignment audit across the normalized data hub, deterministic safety, lightweight recommendation, PRO scoring, parser, replay, training, chat, API, and full-eval layers`
 - Primary dataset:
-  - `C:/dev/wellnessbox-rnd/artifacts/datasets/chat_qa_dataset_d_v1.jsonl`
-  - `case_count = 5`
+  - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
+  - `case_count = 256`
 
 ## What changed
 
-- Added one prioritization artifact:
-  - `artifacts/reports/reprioritized_next_loops_v1.json`
-  - `artifacts/reports/reprioritized_next_loops_v1.md`
-- Rewrote the near-term execution order in:
-  - `NEXT_STEPS.md`
-- Updated handoff and loop summary:
+- Added an architecture alignment audit artifact:
+  - `artifacts/reports/architecture_alignment_audit_v1.json`
+  - `artifacts/reports/architecture_alignment_audit_v1.md`
+- Reclassified current repo areas into:
+  - `done`
+  - `partial`
+  - `blocked`
+- Rewrote:
   - `PROGRESS.md`
+  - `NEXT_STEPS.md`
   - `SESSION_HANDOFF.md`
+- Clarified manual backlog status:
+  - `PENDING_USER_ACTIONS.md`
+  - `scripts/manual_backlog.ps1`
 
 ## Why this loop was chosen
 
-- The repo now has multiple partially prepared tracks:
-  - `cgm` replay diagnostics
-  - `Dataset F` / effect training prep
-  - chat retrieval / verifier / OpenAI smoke prep
-  - sensor/genetic parser normalization
-  - full eval weakest-slice reporting
-- The highest-ROI next action was no longer obvious from the previous OpenAI-focused backlog alone.
-- A bounded prioritization loop could produce measurable output without widening runtime or replay behavior.
-
-## What the prioritization artifact records
-
-- `done / partial / blocked` style state for:
-  - `cgm replay`
-  - `synthetic/eval generator`
-  - `effect training/replay`
-  - `PRO scoring`
-  - `sensor/genetic parser`
-  - `chat retrieval/verifier`
-  - `openai adapter`
-  - `full evaluation harness`
-  - `inference API contract`
-- the remaining bottlenecks ranked by current ROI
-- the next three bounded loops in explicit order
-- the effect of the remaining manual backlog item on local prioritization
+- The user asked for a final audit of how closely the repo now matches the intended direction:
+  - normalized structured hub
+  - deterministic safety rules
+  - lightweight recommendation/optimization
+  - PRO scoring
+  - sensor/genetic parsing
+  - explicit state-machine/replay discipline
+  - bounded RAG
+  - synthetic/frozen-eval driven iteration
+- The smallest bounded way to do that was to consolidate current status into one explicit audit artifact and realign the next loops around KPI ROI.
 
 ## Result in this loop
 
-- `PRO scoring` was promoted to the highest-priority unblocked gap.
-- `full evaluation harness` comparison support moved ahead of more OpenAI adapter work.
-- `sensor/genetic parser` was elevated because the eval harness now points to sensor/genetic integration as a current weak slice.
-- The remaining OpenAI live smoke command stays in backlog, but it no longer blocks the next three local loops.
-
-## Current area classification
-
-- `cgm replay = partial`
-- `synthetic/eval generator = partial`
-- `effect training/replay = partial`
-- `PRO scoring = blocked`
-- `sensor/genetic parser = partial`
-- `chat retrieval/verifier = partial`
-- `openai adapter = blocked`
-- `full evaluation harness = partial`
-- `inference API contract = partial`
-
-## Newly fixed execution order
-
-1. `P2/P4`: smallest deterministic `PRO scoring` contract
-2. `P2/P4`: version-to-version eval comparison helper
-3. `P2/P4`: sensor/genetic parser to frozen-eval slice linkage audit
+- Area status summary:
+  - normalized data contracts / data hub = `partial`
+  - safety rules / reference linkage = `done`
+  - recommendation + optimization = `partial`
+  - PRO scoring = `partial`
+  - sensor/genetic parser = `partial`
+  - `cgm` weakest slice / replay = `partial`
+  - synthetic pre/post dataset = `partial`
+  - lightweight training / replay eval = `partial`
+  - chat retrieval / verifier / OpenAI adapter = `partial`
+  - inference API = `partial`
+  - full evaluation harness = `partial`
+- Current must-do manual backlog remains:
+  - none
+- Current optional manual backlog remains:
+  - rerun enriched OpenAI live smoke from the shell that actually has `OPENAI_API_KEY`
 
 ## Behavior boundary
 
-- No recommendation runtime logic changed.
-- No safety or optimizer runtime changed.
+- No runtime recommendation logic changed.
+- No safety logic changed.
 - No replay logic changed.
-- No chat answer generation or verification logic changed.
-- The loop only changed prioritization artifacts and handoff documents.
+- No eval scoring logic changed.
+- No learned artifact was promoted into runtime.
+- This loop only added an audit artifact and refreshed prioritization/backlog docs.
 
 ## Deterministic baseline status
 
-Official frozen eval was not rerun in this prioritization loop because runtime and replay boundaries did not change.
-
-The current reference baseline remains:
+Official frozen eval baseline remains unchanged:
 
 - `recommendation_coverage_pct = 100.0`
 - `efficacy_improvement_pp = 9.90291632090153`
@@ -95,5 +80,5 @@ The current reference baseline remains:
 
 ## Validation
 
-- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/reprioritized_next_loops_v1.json').read_text(encoding='utf-8')); print('reprioritized_next_loops_v1_json_ok')"`
-- `Get-Content artifacts/reports/reprioritized_next_loops_v1.md`
+- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/architecture_alignment_audit_v1.json').read_text(encoding='utf-8')); print('architecture_alignment_audit_v1_json_ok')"`
+- `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manual_backlog.ps1` was intentionally not rerun because it still requires `OPENAI_API_KEY` in the current shell; backlog status was audited from file contents instead.

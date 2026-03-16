@@ -5,6 +5,11 @@ from pathlib import Path
 
 from pydantic import BaseModel, Field
 
+from wellnessbox_rnd.evals.report_compare import (
+    compare_eval_reports,
+    load_eval_report,
+    write_eval_report_comparison_files,
+)
 from wellnessbox_rnd.metrics.calculators import (
     average_metric,
     count_adverse_events,
@@ -251,6 +256,54 @@ def write_report_files(
         encoding="utf-8",
     )
     md_path.write_text(render_markdown_report(report), encoding="utf-8")
+
+
+def write_eval_outputs(
+    *,
+    report: dict[str, object],
+    output_dir: str | Path,
+    compare_to_report: str | Path | None = None,
+    comparison_output_json: str | Path | None = None,
+    comparison_output_md: str | Path | None = None,
+) -> dict[str, str]:
+    output_dir_path = Path(output_dir)
+    json_path = output_dir_path / "eval_report.json"
+    md_path = output_dir_path / "eval_report.md"
+    write_report_files(report, json_path, md_path)
+
+    outputs = {
+        "eval_report_json": str(json_path),
+        "eval_report_md": str(md_path),
+    }
+
+    if compare_to_report is None:
+        return outputs
+
+    comparison_json_path = (
+        Path(comparison_output_json)
+        if comparison_output_json is not None
+        else output_dir_path / "eval_report_comparison.json"
+    )
+    comparison_md_path = (
+        Path(comparison_output_md)
+        if comparison_output_md is not None
+        else output_dir_path / "eval_report_comparison.md"
+    )
+    baseline_report = load_eval_report(compare_to_report)
+    comparison = compare_eval_reports(
+        baseline_report,
+        report,
+        baseline_report_path=compare_to_report,
+        candidate_report_path=json_path,
+    )
+    write_eval_report_comparison_files(
+        comparison,
+        output_json_path=comparison_json_path,
+        output_md_path=comparison_md_path,
+    )
+    outputs["eval_report_comparison_json"] = str(comparison_json_path)
+    outputs["eval_report_comparison_md"] = str(comparison_md_path)
+    return outputs
 
 
 def render_markdown_report(report: dict[str, object]) -> str:

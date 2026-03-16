@@ -18,44 +18,70 @@
 ## What this loop did
 
 - Chosen stage: `P1/P4`
-- Chosen task: `reprioritize the next three bounded loops from current repo state`
+- Chosen task: `run a final architecture-alignment audit across the normalized data hub, deterministic safety, lightweight recommendation, PRO scoring, parser, replay, training, chat, API, and full-eval layers`
 - Primary dataset:
-  - `C:/dev/wellnessbox-rnd/artifacts/datasets/chat_qa_dataset_d_v1.jsonl`
-  - `case_count = 5`
+  - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
+  - `case_count = 256`
 
 ## Files changed
 
-- `C:/dev/wellnessbox-rnd/artifacts/reports/reprioritized_next_loops_v1.json`
-- `C:/dev/wellnessbox-rnd/artifacts/reports/reprioritized_next_loops_v1.md`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/architecture_alignment_audit_v1.json`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/architecture_alignment_audit_v1.md`
+- `C:/dev/wellnessbox-rnd/PENDING_USER_ACTIONS.md`
+- `C:/dev/wellnessbox-rnd/scripts/manual_backlog.ps1`
 - `C:/dev/wellnessbox-rnd/PROGRESS.md`
 - `C:/dev/wellnessbox-rnd/NEXT_STEPS.md`
 - `C:/dev/wellnessbox-rnd/SESSION_HANDOFF.md`
 
 ## What changed technically
 
-- Added one repo-state prioritization artifact that records:
-  - area-by-area `partial / blocked` status
-  - the top remaining bottlenecks
-  - the next three bounded loops in explicit order
-  - the effect of the remaining manual backlog item on local priorities
-- Rewrote `NEXT_STEPS.md` to move the next execution order away from OpenAI-only prep and toward unblocked KPI-facing work.
+- No runtime code changed.
+- Added an audit artifact that classifies the current architecture alignment across:
+  - normalized data contracts / data hub
+  - safety rules / reference linkage
+  - recommendation + optimization
+  - PRO scoring
+  - sensor/genetic parser
+  - `cgm` weakest slice / replay
+  - synthetic pre/post dataset
+  - lightweight training / replay eval
+  - chat retrieval / verifier / OpenAI adapter
+  - inference API
+  - full evaluation harness
+- Refreshed backlog wording so `must do` and `optional` are explicit and non-contradictory.
 
 ## Outcome this loop
 
-- `PRO scoring` is now the highest-priority unblocked gap.
-- eval comparison support is now second because it improves every later loop's decision quality.
-- sensor/genetic parser linkage into frozen-eval evidence is now third because the eval harness already highlights that slice as weak.
-- the OpenAI live smoke rerun remains in backlog, but it no longer blocks the next three local loops.
+- Area status summary:
+  - normalized data contracts / data hub = `partial`
+  - safety rules / reference linkage = `done`
+  - recommendation + optimization = `partial`
+  - PRO scoring = `partial`
+  - sensor/genetic parser = `partial`
+  - `cgm` weakest slice / replay = `partial`
+  - synthetic pre/post dataset = `partial`
+  - lightweight training / replay eval = `partial`
+  - chat retrieval / verifier / OpenAI adapter = `partial`
+  - inference API = `partial`
+  - full evaluation harness = `partial`
+- The strongest remaining KPI bottlenecks are now explicitly ranked as:
+  1. missing deterministic `PRO z-score transform`
+  2. missing weakest-slice audit linkage from parser outputs and `CGMNormalizedEventV1`
+  3. unresolved `cgm` final-step score geometry
+  4. baseline-identical Dataset F training signal
+  5. normalized contracts still distributed rather than clearly reused as one structured hub layer
+- Manual backlog split is now explicit:
+  - must-do items: `0`
+  - optional items: `1`
 
 ## Interface contract for next loop
 
-- the next loop should inspect:
-  - `artifacts/reports/reprioritized_next_loops_v1.json`
-  - `artifacts/reports/reprioritized_next_loops_v1.md`
-- those artifacts are enough to decide whether to:
-  - start the smallest `PRO scoring` loop immediately
-  - add the eval comparison helper next
-  - connect parser outputs to frozen-eval slice evidence after that
+- Highest-ROI next loop:
+  - implement the smallest deterministic `PRO z-score transform` on top of the shared baseline/follow-up PRO event contract
+- Second:
+  - link sensor/genetic parser outputs, file schema validation, and `CGMNormalizedEventV1` to a frozen-eval-compatible weakest-slice audit
+- Third:
+  - revisit `cgm` only with a final-step `continue_plan` versus `re_optimize` score-geometry loop
 
 ## Guard boundary
 
@@ -66,11 +92,10 @@
 - safety hard-rule precedence stayed intact
 - no human-review or handoff action was introduced
 - no runtime widening was introduced
-- this loop changed prioritization artifacts and handoff documents only
+- this loop only changed audit/backlog/prioritization artifacts
 
 ## Deterministic baseline status
 
-- official frozen eval was not rerun because runtime and replay boundaries did not change
 - current reference baseline remains:
   - `recommendation_coverage_pct = 100.0`
   - `efficacy_improvement_pp = 9.90291632090153`
@@ -82,11 +107,12 @@
 
 ## Validation snapshot
 
-- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/reprioritized_next_loops_v1.json').read_text(encoding='utf-8')); print('reprioritized_next_loops_v1_json_ok')"`
-- `Get-Content artifacts/reports/reprioritized_next_loops_v1.md`
+- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/architecture_alignment_audit_v1.json').read_text(encoding='utf-8')); print('architecture_alignment_audit_v1_json_ok')"`
 
-## Recommended next loop
+## Recommended next five loops
 
-1. implement the smallest deterministic `PRO scoring` contract: baseline/follow-up form schema plus improvement metric summary artifact for a tiny sample set
-2. add a version-to-version eval comparison helper that reads two eval report JSON files and emits metric deltas plus weakest-slice movement
-3. link normalized sensor/genetic parser outputs to a frozen-eval-compatible slice audit focused on the current weakest integration category
+1. implement the smallest deterministic `PRO z-score transform` on top of the shared baseline/follow-up PRO event contract
+2. link sensor/genetic parser outputs, file schema validation, and `CGMNormalizedEventV1` to a frozen-eval-compatible weakest-slice audit
+3. revisit `cgm` only with a final-step `continue_plan` versus `re_optimize` score-geometry loop
+4. run a bounded Dataset F effect-improvement audit or deliberately changed candidate training loop only if it introduces a non-baseline learned signal
+5. tighten the distributed normalized contracts into a clearer reusable structured hub layer only if loops 1-3 expose repeated schema friction

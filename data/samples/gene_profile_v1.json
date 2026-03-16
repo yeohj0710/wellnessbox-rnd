@@ -1,0 +1,10 @@
+{
+  "phenotypes": [
+    " Low Sun Exposure ",
+    "glycemic-risk"
+  ],
+  "markers": [
+    "MTHFR C677T",
+    "APOE-e4"
+  ]
+}

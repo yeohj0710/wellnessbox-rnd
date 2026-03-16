@@ -2,47 +2,47 @@
 
 ## Current priority
 
-The latest prioritization loop re-ranked the next work by ROI against current KPI bottlenecks and implementation gaps.
+The repo is directionally aligned with the intended architecture, but the strongest remaining KPI gaps are still in score semantics and weakest-slice measurement, not in chat or API polish.
 
-What the current repo state now suggests:
+Current state in one line:
 
-- `cgm` replay is still partially blocked by final-step score geometry, so more threshold-edge tweaking is lower ROI right now
-- `OpenAI` live smoke is still env-blocked, so more local adapter prep is also lower ROI until a real key exists
-- the most KPI-aligned unblocked gap is now `PRO scoring`
-- the most leverage-heavy infra gap after that is eval report comparison
-- the clearest weakest-slice follow-up after that is sensor/genetic parser linkage into frozen-eval evidence
+- deterministic safety is strong
+- deterministic recommendation and eval harness exist
+- synthetic Dataset F and parser contracts exist
+- but PRO scoring semantics and weakest-slice linkage are still the highest-ROI missing pieces
 
-## Recommended next loop
+## Recommended next five loops
 
-1. `P2/P4`: implement the smallest deterministic `PRO scoring` contract: baseline/follow-up form schema plus improvement metric summary artifact for a tiny sample set.
-2. `P2/P4`: add a version-to-version eval comparison helper that reads two eval report JSON files and emits metric deltas plus weakest-slice movement.
-3. `P2/P4`: link normalized sensor/genetic parser outputs to a frozen-eval-compatible slice audit focused on the current weakest integration category.
+1. `P2/P4`: implement the smallest deterministic `PRO z-score transform` on top of the shared baseline/follow-up PRO event contract.
+2. `P2/P4`: link sensor/genetic parser outputs, file schema validation, and `CGMNormalizedEventV1` to a frozen-eval-compatible weakest-slice audit.
+3. `P2/P4`: revisit `cgm` only with a final-step `continue_plan` versus `re_optimize` score-geometry loop, not another threshold-edge widening loop.
+4. `P3/P4`: run a bounded Dataset F effect-improvement audit or deliberately changed candidate training loop only if it introduces a non-baseline learned signal.
+5. `P2/P4`: tighten the distributed normalized contracts into a clearer reusable structured hub layer only if loops 1-3 expose repeated schema friction.
 
-## Deferred until higher ROI or user env is ready
+## Area status snapshot
 
-- `P3/P4`: rerun the live OpenAI smoke after `OPENAI_API_KEY` injection and confirm whether `provider = openai_responses_api` or a verifier fallback still occurs.
-- `P3/P4`: if live smoke succeeds later, expand `QA dataset D` so the live path is tested beyond the current seed case.
-- `P2/P4`: revisit `cgm` only if the loop explicitly targets final-step `continue_plan` vs `re_optimize` score geometry rather than more threshold-edge widening.
+- normalized data contracts / data hub: `partial`
+- safety rules / reference linkage: `done`
+- recommendation + optimization: `partial`
+- PRO scoring: `partial`
+- sensor/genetic parser: `partial`
+- `cgm` weakest slice / replay: `partial`
+- synthetic pre/post dataset: `partial`
+- lightweight training / replay eval: `partial`
+- chat retrieval / verifier / OpenAI adapter: `partial`
+- inference API: `partial`
+- full evaluation harness: `partial`
+
+## Manual backlog priority
+
+- must-do: none
+- optional:
+  - rerun enriched OpenAI live smoke from the shell/session that actually has `OPENAI_API_KEY`
+- keep the OpenAI rerun below the core KPI path
 
 ## Guardrails
 
 - Keep work inside `C:/dev/wellnessbox-rnd`
-- Do not read or reference:
-  - `wellnessbox/`
-  - `docs/03_integration/`
-  - `docs/00_discovery/`
-  - `docs/00_migration/`
-  - `docs/legacy_from_wellnessbox/`
-- Use source hierarchy from `AGENTS.md`
-- Do NOT routinely parse or summarize `docs/context/original_plan.pdf`
-- Consult `original_plan.pdf` only for KPI ambiguity, measurement audits, or explicit page-level checks
-- Preserve:
-  - deterministic baseline
-  - frozen eval comparability
-  - safety hard-rule precedence
-  - deterministic fallback when learned output is missing, suspicious, or out of scope
-  - system-owned action space only
-  - bounded evidence-grounded chat path with verifier
-  - no recommendation/safety/optimizer runtime coupling to the OpenAI adapter
-  - replay-only boundaries for learned artifacts unless explicitly widened by a later documented decision
-  - repo-local backlog discipline through `PENDING_USER_ACTIONS.md` and `scripts/manual_backlog.ps1`
+- Preserve deterministic baseline, frozen-eval comparability, safety precedence, bounded chat, and replay-only learned artifacts
+- Do not use `original_plan.pdf` beyond KPI ambiguity or page-level audit needs
+- Prefer the smallest measurable subtask over broader rewrites

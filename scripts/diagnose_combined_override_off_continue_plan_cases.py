@@ -103,6 +103,16 @@ def main() -> int:
         "policy_model_artifact_path": args.policy_model_artifact,
         "continue_plan_case_count": len(cases),
         "continue_plan_user_ids": [case["user_id"] for case in cases],
+        "threshold_edge_continue_plan_user_ids": [
+            case["user_id"]
+            for case in cases
+            if case["final_threshold_edge_status"] == "monitor_band_still_continue"
+        ],
+        "non_threshold_edge_continue_plan_user_ids": [
+            case["user_id"]
+            for case in cases
+            if case["final_threshold_edge_status"] != "monitor_band_still_continue"
+        ],
         "override_off_cgm_final_action_distribution": override_off.cohort_slice_metrics[
             "cgm_users"
         ].final_action_distribution,
@@ -121,6 +131,7 @@ def main() -> int:
             for case in cases
             if case["override_on_reference"]["final_policy_action"] == "monitor_only"
         ],
+        "blocker_summary": _build_blocker_summary(cases),
         "cases": cases,
     }
 
@@ -143,6 +154,7 @@ def main() -> int:
                 "flipped_to_monitor_only_user_ids": report[
                     "flipped_to_monitor_only_user_ids"
                 ],
+                "blocker_summary": report["blocker_summary"],
             },
             ensure_ascii=False,
             indent=2,
@@ -191,6 +203,18 @@ def _build_case_diagnostic(
             "final_policy_action": override_on_scenario.final_policy_action.value,
             "final_state": override_on_scenario.final_state,
         },
+        "final_threshold_edge_status": _threshold_edge_status(
+            step_diagnostic=step_diagnostics[-1],
+        ),
+        "final_continue_minus_monitor_margin": step_diagnostics[-1]["margin_snapshot"][
+            "continue_minus_monitor"
+        ],
+        "final_distance_to_monitor_flip": step_diagnostics[-1]["margin_snapshot"][
+            "distance_to_monitor_flip"
+        ],
+        "final_reoptimize_minus_continue_margin": step_diagnostics[-1]["margin_snapshot"][
+            "reoptimize_minus_continue"
+        ],
         "step_diagnostics": step_diagnostics,
     }
 
@@ -312,6 +336,26 @@ def _build_step_diagnostic(
             ),
             "override_on_counterfactual_top_action_after_prior": counterfactual_raw_after_prior,
         },
+        "margin_snapshot": {
+            "continue_minus_monitor": round(
+                actual_scores.get(NextAction.CONTINUE_PLAN.value, 0.0)
+                - actual_scores.get(NextAction.MONITOR_ONLY.value, 0.0),
+                6,
+            ),
+            "distance_to_monitor_flip": round(
+                max(
+                    0.0,
+                    actual_scores.get(NextAction.CONTINUE_PLAN.value, 0.0)
+                    - actual_scores.get(NextAction.MONITOR_ONLY.value, 0.0),
+                ),
+                6,
+            ),
+            "reoptimize_minus_continue": round(
+                actual_scores.get(NextAction.RE_OPTIMIZE.value, 0.0)
+                - actual_scores.get(NextAction.CONTINUE_PLAN.value, 0.0),
+                6,
+            ),
+        },
         "safety_ceiling": {
             "override_off_active": override_off_step.policy_guard_reason is not None,
             "override_off_applied": override_off_step.policy_guard_applied,
@@ -407,6 +451,42 @@ def _count_transitions(cases: list[dict[str, object]]) -> dict[str, int]:
     return dict(sorted(counts.items()))
 
 
+def _threshold_edge_status(*, step_diagnostic: dict[str, object]) -> str:
+    prior_band = step_diagnostic["gating_reason"]["counterfactual_prior_band"]
+    if prior_band == "monitor_only_band":
+        return "monitor_band_still_continue"
+    return "outside_monitor_band"
+
+
+def _build_blocker_summary(cases: list[dict[str, object]]) -> dict[str, int]:
+    return {
+        "monitor_band_still_continue_count": sum(
+            1
+            for case in cases
+            if case["final_threshold_edge_status"] == "monitor_band_still_continue"
+        ),
+        "outside_monitor_band_count": sum(
+            1
+            for case in cases
+            if case["final_threshold_edge_status"] == "outside_monitor_band"
+        ),
+        "final_safety_ceiling_active_count": sum(
+            1
+            for case in cases
+            if case["step_diagnostics"][-1]["safety_ceiling"]["override_off_active"]
+        ),
+        "final_distance_to_monitor_flip_le_0_05_count": sum(
+            1 for case in cases if case["final_distance_to_monitor_flip"] <= 0.05
+        ),
+        "final_distance_to_monitor_flip_gt_0_30_count": sum(
+            1 for case in cases if case["final_distance_to_monitor_flip"] > 0.30
+        ),
+        "final_reoptimize_minus_continue_ge_0_count": sum(
+            1 for case in cases if case["final_reoptimize_minus_continue_margin"] >= 0.0
+        ),
+    }
+
+
 def render_markdown(report: dict[str, object]) -> str:
     lines = [
         "# combined override-off continue_plan diagnostic v1",
@@ -428,9 +508,18 @@ def render_markdown(report: dict[str, object]) -> str:
             f"`{report['final_action_transition_counts']}`"
         ),
         (
+            "- threshold_edge_continue_plan_user_ids: "
+            f"`{report['threshold_edge_continue_plan_user_ids']}`"
+        ),
+        (
+            "- non_threshold_edge_continue_plan_user_ids: "
+            f"`{report['non_threshold_edge_continue_plan_user_ids']}`"
+        ),
+        (
             "- flipped_to_monitor_only_user_ids: "
             f"`{report['flipped_to_monitor_only_user_ids']}`"
         ),
+        f"- blocker_summary: `{report['blocker_summary']}`",
     ]
     for case in report["cases"]:
         lines.extend(
@@ -445,6 +534,19 @@ def render_markdown(report: dict[str, object]) -> str:
                 (
                     "- override_on_reference_final_action: "
                     f"`{case['override_on_reference']['final_policy_action']}`"
+                ),
+                f"- final_threshold_edge_status: `{case['final_threshold_edge_status']}`",
+                (
+                    "- final_continue_minus_monitor_margin: "
+                    f"`{case['final_continue_minus_monitor_margin']}`"
+                ),
+                (
+                    "- final_distance_to_monitor_flip: "
+                    f"`{case['final_distance_to_monitor_flip']}`"
+                ),
+                (
+                    "- final_reoptimize_minus_continue_margin: "
+                    f"`{case['final_reoptimize_minus_continue_margin']}`"
                 ),
             ]
         )
@@ -463,6 +565,7 @@ def render_markdown(report: dict[str, object]) -> str:
                         f"off=`{off_action}`, "
                         f"on=`{on_action}`, "
                         f"prior_band=`{prior_band}`, "
+                        f"margin=`{step['margin_snapshot']}`, "
                         f"prior_delta=`{prior_delta}`, "
                         f"safety_ceiling=`{safety_reason}`"
                     )

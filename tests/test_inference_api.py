@@ -173,6 +173,7 @@ def test_openapi_schema_exposes_structured_current_supplement_dose_example() -> 
         "application/json"
     ]
     assert "structured_current_supplement_dose" in request_body["examples"]
+    assert "structured_start_plan_path" in request_body["examples"]
 
 
 def test_recommend_endpoint_accepts_structured_current_supplement_dose() -> None:
@@ -218,6 +219,35 @@ def test_recommend_endpoint_contract_fixture_keeps_structured_response_shape() -
         "SAFETY-DUP-001",
         "vitamin_d3",
     ]
+    assert [item.code for item in validated.limitation_details] == [
+        "demo_catalog_only",
+        "deterministic_baseline_only",
+        "no_llm_core_decision",
+    ]
+    assert validated.metadata.mode == "deterministic_baseline_v1"
+
+
+def test_recommend_endpoint_start_plan_fixture_keeps_structured_response_shape() -> None:
+    payload = _load_sample_request("api_recommend_start_plan_request_v1.json")
+
+    response = client.post("/v1/recommend", json=payload)
+    body = response.json()
+    validated = RecommendationResponse.model_validate(body)
+
+    assert response.status_code == 200
+    assert validated.status.value == "ok"
+    assert validated.next_action.value == "start_plan"
+    assert validated.next_action_rationale.reason_code == "start_plan_ready"
+    assert validated.next_action_rationale.supporting_codes == [
+        "magnesium_glycinate",
+        "l_theanine",
+    ]
+    assert [item.ingredient_key for item in validated.recommendations] == [
+        "magnesium_glycinate",
+        "l_theanine",
+    ]
+    assert validated.safety_summary.status.value == "ok"
+    assert validated.safety_evidence == []
     assert [item.code for item in validated.limitation_details] == [
         "demo_catalog_only",
         "deterministic_baseline_only",

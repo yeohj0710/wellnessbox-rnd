@@ -50,6 +50,14 @@ class OpenAIChatAdapterConfig(BaseModel):
     timeout_seconds: float = DEFAULT_CHAT_OPENAI_TIMEOUT_SECONDS
 
 
+class ChatAdapterLiveFailure(BaseModel):
+    failure_stage: Literal["http_request", "response_parse"]
+    exception_class: str
+    exception_message: str
+    status_code: int | None = None
+    response_body_excerpt: str | None = None
+
+
 class ChatAdapterResponse(BaseModel):
     provider: Literal["openai_responses_api", "deterministic_template_fallback"]
     fallback_reason: str | None = None
@@ -59,6 +67,7 @@ class ChatAdapterResponse(BaseModel):
     verification: ChatAnswerVerification
     evidence_chunk_ids: list[str] = Field(default_factory=list)
     evidence_reference_ids: list[str] = Field(default_factory=list)
+    live_failure: ChatAdapterLiveFailure | None = None
 
 
 def load_openai_chat_adapter_config_from_env() -> OpenAIChatAdapterConfig:
@@ -131,6 +140,31 @@ def generate_chat_answer_with_openai_fallback(
             adapter_request=adapter_request,
             evidence_chunks=evidence_chunks,
         )
+    except error.HTTPError as exc:
+        return ChatAdapterResponse(
+            provider="deterministic_template_fallback",
+            fallback_reason="openai_call_failed",
+            attempted_live_call=True,
+            model=config.model,
+            answer=fallback.answer,
+            verification=fallback.verification,
+            evidence_chunk_ids=evidence_chunk_ids,
+            evidence_reference_ids=evidence_reference_ids,
+            live_failure=_build_live_failure_details("http_request", exc),
+        )
+    except (error.URLError, TimeoutError) as exc:
+        return ChatAdapterResponse(
+            provider="deterministic_template_fallback",
+            fallback_reason="openai_call_failed",
+            attempted_live_call=True,
+            model=config.model,
+            answer=fallback.answer,
+            verification=fallback.verification,
+            evidence_chunk_ids=evidence_chunk_ids,
+            evidence_reference_ids=evidence_reference_ids,
+            live_failure=_build_live_failure_details("http_request", exc),
+        )
+    try:
         answer = _parse_openai_answer(
             response_json=response_json,
             evidence_chunks=evidence_chunks,
@@ -162,7 +196,7 @@ def generate_chat_answer_with_openai_fallback(
             evidence_chunk_ids=evidence_chunk_ids,
             evidence_reference_ids=evidence_reference_ids,
         )
-    except (error.URLError, TimeoutError, json.JSONDecodeError, KeyError, ValueError):
+    except (json.JSONDecodeError, KeyError, ValueError) as exc:
         return ChatAdapterResponse(
             provider="deterministic_template_fallback",
             fallback_reason="openai_call_failed",
@@ -172,6 +206,7 @@ def generate_chat_answer_with_openai_fallback(
             verification=fallback.verification,
             evidence_chunk_ids=evidence_chunk_ids,
             evidence_reference_ids=evidence_reference_ids,
+            live_failure=_build_live_failure_details("response_parse", exc),
         )
 
 
@@ -312,6 +347,26 @@ def _parse_openai_answer(
     )
 
 
+def _build_live_failure_details(
+    failure_stage: Literal["http_request", "response_parse"],
+    exc: Exception,
+) -> ChatAdapterLiveFailure:
+    status_code = getattr(exc, "code", None)
+    response_body_excerpt = None
+    if isinstance(exc, error.HTTPError):
+        try:
+            response_body_excerpt = exc.read().decode("utf-8", errors="replace")[:300]
+        except Exception:
+            response_body_excerpt = None
+    return ChatAdapterLiveFailure(
+        failure_stage=failure_stage,
+        exception_class=exc.__class__.__name__,
+        exception_message=str(exc)[:300],
+        status_code=status_code if isinstance(status_code, int) else None,
+        response_body_excerpt=response_body_excerpt,
+    )
+
+
 __all__ = [
     "CHAT_OPENAI_BASE_URL_ENV_VAR",
     "CHAT_OPENAI_MODEL_ENV_VAR",
@@ -322,6 +377,7 @@ __all__ = [
     "OPENAI_API_KEY_ENV_VAR",
     "ChatAdapterRequest",
     "ChatAdapterResponse",
+    "ChatAdapterLiveFailure",
     "OpenAIChatAdapterConfig",
     "generate_chat_answer_with_openai_fallback",
     "load_openai_chat_adapter_config_from_env",
