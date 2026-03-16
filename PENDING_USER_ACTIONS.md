@@ -15,12 +15,13 @@ Working rules:
 
 ## Optional
 
-### Optional item 1: Rerun enriched OpenAI live smoke from the shell that actually has `OPENAI_API_KEY`
+### Optional item 1: If chat-path diagnosis is still needed, rerun the latest OpenAI live smoke and confirm `live_failure` is populated
 
 - Type: `chat adapter smoke test`
 - Why run it:
-  - regenerate the live smoke artifact after failure-detail capture
-  - reveal the exact failure family behind `openai_call_failed`
+  - the latest live rerun already confirmed `api_key_present = true` and `attempted_live_call = true`
+  - however, the resulting artifact still has `provider = deterministic_template_fallback`, `fallback_reason = openai_call_failed`, and `live_failure = null`
+  - run it again only if you want the exact failure family captured in-artifact
 - Command:
   - `python scripts/run_chat_openai_adapter_smoke.py --allow-live-api --report-json artifacts/reports/chat_openai_adapter_smoke_live_v1.json --report-md artifacts/reports/chat_openai_adapter_smoke_live_v1.md`
 - Expected artifacts:
@@ -32,9 +33,10 @@ Working rules:
   - if live succeeds, `provider = openai_responses_api`
 - Failure hint:
   - if the rerun again shows `missing_api_key`, make sure the command is run from the shell/session that actually inherited the key
+  - if `attempted_live_call = true` but `live_failure` is still null, confirm the rerun used the latest repo code path
 - Priority note:
   - this remains optional and lower priority than the core KPI path
-  - do not let this chat-only item outrank `PRO scoring`, weakest-slice audit, or `cgm` score-geometry work
+  - do not let this chat-only item outrank synthetic pre/post quality, `PRO scoring`, weakest-slice audit, or `cgm` score-geometry work
 
 ## Required env vars
 
@@ -46,7 +48,7 @@ Working rules:
 
 ## Execution order
 
-1. Run the enriched OpenAI live smoke from the shell/session that actually has the key.
+1. Only if chat-path diagnosis is still needed, run the enriched OpenAI live smoke from the shell/session that actually has the key.
 2. Confirm the smoke artifact now includes either `live_failure` details or `provider = openai_responses_api`.
 3. Feed the resulting artifact back into the next Codex loop.
 
@@ -81,4 +83,4 @@ Working rules:
 
 - `2026-03-16`: previous local replay, dataset, retrieval, verifier, parser, eval-helper, and API contract loops completed without deferred user commands.
 - `2026-03-16`: prompt 13 catch-up loop materialized `chat_openai_adapter_smoke_live_v1` artifacts with `fallback_reason = missing_api_key`, so the remaining manual item became a rerun with a real key, not a first-time build.
-- `2026-03-16`: live OpenAI smoke rerun completed with `attempted_live_call = true`, `verification_passed = true`, `provider = deterministic_template_fallback`, and `fallback_reason = openai_call_failed`; the optional rerun remains for richer failure capture only.
+- `2026-03-16`: live OpenAI smoke rerun completed with `attempted_live_call = true`, `verification_passed = true`, `provider = deterministic_template_fallback`, `fallback_reason = openai_call_failed`, and `live_failure = null`; the remaining item is now only a richer diagnostic rerun, not a missing first rerun.

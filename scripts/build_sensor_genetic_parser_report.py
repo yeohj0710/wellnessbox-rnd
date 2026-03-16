@@ -61,6 +61,14 @@ def main() -> int:
             for case in normalized_cases
             if case["normalized_snapshot"]["genetic_available"]
         ),
+        "supported_failure_types": sorted(
+            {
+                note
+                for case in normalized_cases
+                for note in case["normalized_snapshot"]["normalization_notes"]
+                if note.endswith("_invalid_numeric_ignored")
+            }
+        ),
         "normalized_cases": normalized_cases,
     }
 
@@ -83,6 +91,7 @@ def _render_markdown(report: dict[str, object]) -> str:
         f"- wearable_case_count: `{report['wearable_case_count']}`",
         f"- cgm_case_count: `{report['cgm_case_count']}`",
         f"- genetic_case_count: `{report['genetic_case_count']}`",
+        f"- supported_failure_types: `{report['supported_failure_types']}`",
         "",
         "## Cases",
     ]

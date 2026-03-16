@@ -78,6 +78,15 @@ class EffectDatasetProvenanceV1(BaseModel):
     trajectory_mode: str
 
 
+class EffectDatasetResponseProfileV1(BaseModel):
+    trajectory_mode: str
+    response_family: str
+    response_strength_band: Literal["weak", "moderate", "strong"]
+    adherence_band: Literal["low", "moderate", "high"]
+    tolerability_band: Literal["low", "moderate", "elevated"]
+    modality_signature: str
+
+
 class EffectDatasetPairRowV1(BaseModel):
     pair_id: str
     source_record_id: str
@@ -96,6 +105,71 @@ class EffectDatasetPairRowV1(BaseModel):
     risk_tier: str
     input_flags: EffectDatasetInputFlagsV1
     provenance: EffectDatasetProvenanceV1
+    response_profile: EffectDatasetResponseProfileV1
+
+
+EFFECT_DATASET_PAIR_TOP_LEVEL_FIELDS: tuple[str, ...] = (
+    "pair_id",
+    "source_record_id",
+    "user_id",
+    "cohort_version",
+    "goal",
+    "baseline",
+    "follow_up",
+    "recommended_set",
+    "period",
+    "adverse_event",
+    "expected_effect_proxy",
+    "adherence_proxy",
+    "side_effect_proxy",
+    "next_action",
+    "risk_tier",
+    "input_flags",
+    "provenance",
+    "response_profile",
+)
+
+
+def build_effect_dataset_training_view_contract_v1() -> dict[str, object]:
+    metadata_fields = [
+        "pair_id",
+        "source_record_id",
+        "user_id",
+        "cohort_version",
+        "provenance",
+    ]
+    baseline_fact_fields = [
+        "goal",
+        "baseline",
+        "input_flags",
+    ]
+    intervention_assignment_fields = [
+        "recommended_set",
+        "period",
+    ]
+    follow_up_outcome_fields = [
+        "follow_up",
+        "adverse_event",
+        "expected_effect_proxy",
+        "adherence_proxy",
+        "side_effect_proxy",
+        "next_action",
+        "risk_tier",
+        "response_profile",
+    ]
+    training_input_allowed_fields = (
+        baseline_fact_fields + intervention_assignment_fields
+    )
+    training_input_forbidden_fields = follow_up_outcome_fields.copy()
+    return {
+        "contract_version": "dataset_f_effect_training_view_v1",
+        "metadata_fields": metadata_fields,
+        "baseline_fact_fields": baseline_fact_fields,
+        "intervention_assignment_fields": intervention_assignment_fields,
+        "follow_up_outcome_fields": follow_up_outcome_fields,
+        "training_input_allowed_fields": training_input_allowed_fields,
+        "training_input_forbidden_fields": training_input_forbidden_fields,
+    }
 
 
 def load_rich_effect_records(
@@ -156,6 +230,7 @@ def build_effect_dataset_pair_row_v1(
             rng_seed=record.rng_seed,
             trajectory_mode=record.trajectory_mode,
         ),
+        response_profile=build_effect_dataset_response_profile_v1(record),
     )
 
 
@@ -202,9 +277,127 @@ def validate_effect_dataset_pairs_v1(
             issues.append(f"provenance rng_seed invalid: {row.pair_id}")
         if not row.provenance.trajectory_mode:
             issues.append(f"provenance trajectory_mode missing: {row.pair_id}")
+        if row.response_profile.trajectory_mode != row.provenance.trajectory_mode:
+            issues.append(f"response_profile trajectory_mode mismatch: {row.pair_id}")
+        if not row.response_profile.response_family:
+            issues.append(f"response_profile response_family missing: {row.pair_id}")
+        if (
+            row.response_profile.modality_signature
+            != _build_effect_dataset_modality_signature_v1(row.input_flags)
+        ):
+            issues.append(f"response_profile modality_signature mismatch: {row.pair_id}")
         if not row.input_flags.survey:
             issues.append(f"survey input flag must remain true: {row.pair_id}")
     return issues
+
+
+def validate_effect_dataset_training_view_contract_v1(
+    rows: list[EffectDatasetPairRowV1],
+) -> list[str]:
+    contract = build_effect_dataset_training_view_contract_v1()
+    issues: list[str] = []
+    grouped_fields = (
+        contract["metadata_fields"]
+        + contract["baseline_fact_fields"]
+        + contract["intervention_assignment_fields"]
+        + contract["follow_up_outcome_fields"]
+    )
+    grouped_field_set = set(grouped_fields)
+    expected_field_set = set(EFFECT_DATASET_PAIR_TOP_LEVEL_FIELDS)
+    if grouped_field_set != expected_field_set:
+        issues.append("training-view contract does not cover the full pair-row field set")
+    if len(grouped_fields) != len(grouped_field_set):
+        issues.append("training-view contract assigns some fields to multiple stages")
+
+    allowed_fields = set(contract["training_input_allowed_fields"])
+    forbidden_fields = set(contract["training_input_forbidden_fields"])
+    overlap = sorted(allowed_fields & forbidden_fields)
+    if overlap:
+        issues.append(
+            "training-view contract overlaps allowed and forbidden fields: "
+            + ", ".join(overlap)
+        )
+
+    for field_name in sorted(grouped_field_set):
+        if not rows:
+            break
+        if field_name not in rows[0].model_dump(mode="json"):
+            issues.append(f"training-view contract field missing from pair row: {field_name}")
+    return issues
+
+
+def build_effect_dataset_response_profile_v1(
+    record: RichSyntheticCohortRecord,
+) -> EffectDatasetResponseProfileV1:
+    return EffectDatasetResponseProfileV1(
+        trajectory_mode=record.trajectory_mode,
+        response_family=_effect_dataset_response_family_v1(record.trajectory_mode),
+        response_strength_band=_effect_dataset_response_strength_band_v1(
+            record.expected_effect_proxy
+        ),
+        adherence_band=_effect_dataset_adherence_band_v1(record.adherence_proxy),
+        tolerability_band=_effect_dataset_tolerability_band_v1(record.side_effect_proxy),
+        modality_signature=_build_effect_dataset_modality_signature_v1(
+            EffectDatasetInputFlagsV1.model_validate(
+                record.request.input_availability.model_dump(mode="json")
+            )
+        ),
+    )
+
+
+def _effect_dataset_response_family_v1(trajectory_mode: str) -> str:
+    return {
+        "reduce_side_effect": "tolerability_limited",
+        "safety_recheck_high_risk": "safety_blocked",
+        "threshold_continue_primary": "stable_responder",
+        "threshold_monitor_secondary": "monitor_plateau",
+        "threshold_reopt_edge": "low_response_edge",
+        "threshold_cgm_balance": "cgm_threshold_sensitive",
+        "threshold_delayed_flip": "delayed_response",
+        "threshold_duration_sensitive": "duration_sensitive",
+        "threshold_adherence_recovery": "adherence_limited_recovery",
+    }.get(trajectory_mode, "other")
+
+
+def _effect_dataset_response_strength_band_v1(
+    expected_effect_proxy: float,
+) -> Literal["weak", "moderate", "strong"]:
+    if expected_effect_proxy >= 0.33:
+        return "strong"
+    if expected_effect_proxy >= 0.18:
+        return "moderate"
+    return "weak"
+
+
+def _effect_dataset_adherence_band_v1(
+    adherence_proxy: float,
+) -> Literal["low", "moderate", "high"]:
+    if adherence_proxy >= 0.75:
+        return "high"
+    if adherence_proxy >= 0.6:
+        return "moderate"
+    return "low"
+
+
+def _effect_dataset_tolerability_band_v1(
+    side_effect_proxy: float,
+) -> Literal["low", "moderate", "elevated"]:
+    if side_effect_proxy >= 0.45:
+        return "elevated"
+    if side_effect_proxy >= 0.2:
+        return "moderate"
+    return "low"
+
+
+def _build_effect_dataset_modality_signature_v1(
+    input_flags: EffectDatasetInputFlagsV1,
+) -> str:
+    enabled_modalities = [
+        name
+        for name in ("survey", "nhis", "wearable", "cgm", "genetic")
+        if getattr(input_flags, name)
+    ]
+    return "+".join(enabled_modalities)
 
 
 def split_effect_records_by_user_v1(
@@ -748,6 +941,91 @@ def build_effect_dataset_pair_split_manifest_v1(
     }
 
 
+def validate_effect_dataset_pair_split_manifest_v1(
+    rows: list[EffectDatasetPairRowV1],
+    split_manifest: dict[str, object],
+    *,
+    source_dataset_path: str | Path,
+    frozen_eval_dataset_path: str | Path = "data/frozen_eval/frozen_eval_v1.jsonl",
+) -> dict[str, object]:
+    issues: list[str] = []
+    splits = split_manifest["splits"]
+    all_pair_ids = {row.pair_id for row in rows}
+    all_user_ids = {row.user_id for row in rows}
+    split_pair_sets = {
+        split_name: set(split_data["pair_ids"])
+        for split_name, split_data in splits.items()
+    }
+    split_user_sets = {
+        split_name: set(split_data["user_ids"])
+        for split_name, split_data in splits.items()
+    }
+    combined_split_pair_ids = set().union(*split_pair_sets.values()) if split_pair_sets else set()
+    combined_split_user_ids = set().union(*split_user_sets.values()) if split_user_sets else set()
+    split_names = tuple(sorted(splits))
+    pair_overlap_counts: dict[str, int] = {}
+    user_overlap_counts: dict[str, int] = {}
+
+    for index, left_name in enumerate(split_names):
+        for right_name in split_names[index + 1 :]:
+            pair_overlap_key = f"{left_name}__{right_name}"
+            user_overlap_key = f"{left_name}__{right_name}"
+            pair_overlap = split_pair_sets[left_name] & split_pair_sets[right_name]
+            user_overlap = split_user_sets[left_name] & split_user_sets[right_name]
+            pair_overlap_counts[pair_overlap_key] = len(pair_overlap)
+            user_overlap_counts[user_overlap_key] = len(user_overlap)
+            if pair_overlap:
+                issues.append(f"pair overlap detected across splits: {pair_overlap_key}")
+            if user_overlap:
+                issues.append(f"user overlap detected across splits: {user_overlap_key}")
+
+    missing_pair_ids = sorted(all_pair_ids - combined_split_pair_ids)
+    extra_pair_ids = sorted(combined_split_pair_ids - all_pair_ids)
+    missing_user_ids = sorted(all_user_ids - combined_split_user_ids)
+    extra_user_ids = sorted(combined_split_user_ids - all_user_ids)
+    if missing_pair_ids:
+        issues.append("split manifest missing pair_ids from dataset rows")
+    if extra_pair_ids:
+        issues.append("split manifest contains pair_ids not present in dataset rows")
+    if missing_user_ids:
+        issues.append("split manifest missing user_ids from dataset rows")
+    if extra_user_ids:
+        issues.append("split manifest contains user_ids not present in dataset rows")
+
+    normalized_source_dataset_path = Path(source_dataset_path).as_posix()
+    normalized_frozen_eval_dataset_path = Path(frozen_eval_dataset_path).as_posix()
+    shares_path_with_frozen_eval = (
+        normalized_source_dataset_path == normalized_frozen_eval_dataset_path
+    )
+    if shares_path_with_frozen_eval:
+        issues.append("dataset f source path must not match frozen eval dataset path")
+
+    return {
+        "issues": issues,
+        "pair_coverage": {
+            "dataset_pair_count": len(all_pair_ids),
+            "manifest_pair_count": len(combined_split_pair_ids),
+            "missing_pair_id_count": len(missing_pair_ids),
+            "extra_pair_id_count": len(extra_pair_ids),
+        },
+        "user_coverage": {
+            "dataset_user_count": len(all_user_ids),
+            "manifest_user_count": len(combined_split_user_ids),
+            "missing_user_id_count": len(missing_user_ids),
+            "extra_user_id_count": len(extra_user_ids),
+        },
+        "split_disjointness": {
+            "pair_overlap_counts": pair_overlap_counts,
+            "user_overlap_counts": user_overlap_counts,
+        },
+        "contamination_safeguards": {
+            "source_dataset_path": normalized_source_dataset_path,
+            "frozen_eval_dataset_path": normalized_frozen_eval_dataset_path,
+            "shares_path_with_frozen_eval": shares_path_with_frozen_eval,
+        },
+    }
+
+
 def summarize_effect_dataset_pairs_v1(
     rows: list[EffectDatasetPairRowV1],
     *,
@@ -759,25 +1037,14 @@ def summarize_effect_dataset_pairs_v1(
     total_rows = len(rows)
     recommended_item_count = sum(len(row.recommended_set) for row in rows)
     split_manifest = build_effect_dataset_pair_split_manifest_v1(rows, seed=seed)
-    top_level_keys = [
-        "pair_id",
-        "source_record_id",
-        "user_id",
-        "cohort_version",
-        "goal",
-        "baseline",
-        "follow_up",
-        "recommended_set",
-        "period",
-        "adverse_event",
-        "expected_effect_proxy",
-        "adherence_proxy",
-        "side_effect_proxy",
-        "next_action",
-        "risk_tier",
-        "input_flags",
-        "provenance",
-    ]
+    split_validation = validate_effect_dataset_pair_split_manifest_v1(
+        rows,
+        split_manifest,
+        source_dataset_path=source_dataset_path,
+    )
+    top_level_keys = list(EFFECT_DATASET_PAIR_TOP_LEVEL_FIELDS)
+    training_view_contract = build_effect_dataset_training_view_contract_v1()
+    training_view_contract_issues = validate_effect_dataset_training_view_contract_v1(rows)
     top_level_coverage = {
         key: round(
             sum(1 for row in rows if key in row.model_dump(mode="json")) / total_rows * 100.0,
@@ -934,6 +1201,56 @@ def summarize_effect_dataset_pairs_v1(
             if total_rows
             else 0.0,
         },
+        "response_profile": {
+            "trajectory_mode": round(
+                sum(1 for row in rows if row.response_profile.trajectory_mode)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "response_family": round(
+                sum(1 for row in rows if row.response_profile.response_family)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "response_strength_band": round(
+                sum(1 for row in rows if row.response_profile.response_strength_band)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "adherence_band": round(
+                sum(1 for row in rows if row.response_profile.adherence_band)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "tolerability_band": round(
+                sum(1 for row in rows if row.response_profile.tolerability_band)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "modality_signature": round(
+                sum(1 for row in rows if row.response_profile.modality_signature)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+        },
         "provenance": {
             "source_request_id": round(
                 sum(1 for row in rows if row.provenance.source_request_id)
@@ -986,6 +1303,26 @@ def summarize_effect_dataset_pairs_v1(
                 default=0,
             ),
         },
+        "response_profile_summary": {
+            "trajectory_mode_counts": _count_string_values(
+                row.response_profile.trajectory_mode for row in rows
+            ),
+            "response_family_counts": _count_string_values(
+                row.response_profile.response_family for row in rows
+            ),
+            "response_strength_band_counts": _count_string_values(
+                row.response_profile.response_strength_band for row in rows
+            ),
+            "adherence_band_counts": _count_string_values(
+                row.response_profile.adherence_band for row in rows
+            ),
+            "tolerability_band_counts": _count_string_values(
+                row.response_profile.tolerability_band for row in rows
+            ),
+            "modality_signature_counts": _count_string_values(
+                row.response_profile.modality_signature for row in rows
+            ),
+        },
         "schema_key_coverage_pct": {
             "top_level": top_level_coverage,
             "nested": nested_coverage,
@@ -1008,6 +1345,10 @@ def summarize_effect_dataset_pairs_v1(
             "shares_path_with_frozen_eval": str(Path(source_dataset_path))
             == "data\\frozen_eval\\frozen_eval_v1.jsonl",
         },
+        "training_view_contract": {
+            **training_view_contract,
+            "issues": training_view_contract_issues,
+        },
         "split_summary": {
             split_name: {
                 "pair_count": split_manifest["splits"][split_name]["pair_count"],
@@ -1015,6 +1356,7 @@ def summarize_effect_dataset_pairs_v1(
             }
             for split_name in ("train", "val", "test")
         },
+        "split_validation": split_validation,
         "recommended_training_source": {
             "dataset_path": "data/synthetic/synthetic_longitudinal_v4.jsonl",
             "split_manifest_path": (
@@ -1049,6 +1391,17 @@ def render_effect_dataset_pairs_markdown_v1(summary: dict[str, object]) -> str:
     lines.extend(["", "## Input Flag Counts"])
     for key, value in summary["input_flag_counts"].items():
         lines.append(f"- `{key}`: `{value}`")
+    lines.extend(["", "## Response Profile Summary"])
+    for key, value in summary["response_profile_summary"]["response_family_counts"].items():
+        lines.append(f"- `response_family::{key}`: `{value}`")
+    for key, value in summary["response_profile_summary"]["response_strength_band_counts"].items():
+        lines.append(f"- `response_strength_band::{key}`: `{value}`")
+    for key, value in summary["response_profile_summary"]["adherence_band_counts"].items():
+        lines.append(f"- `adherence_band::{key}`: `{value}`")
+    for key, value in summary["response_profile_summary"]["tolerability_band_counts"].items():
+        lines.append(f"- `tolerability_band::{key}`: `{value}`")
+    for key, value in summary["response_profile_summary"]["modality_signature_counts"].items():
+        lines.append(f"- `modality_signature::{key}`: `{value}`")
     lines.extend(["", "## Provenance"])
     lines.append(
         f"- generator_source: `{summary['dataset_provenance']['generator_source']}`"
@@ -1062,6 +1415,54 @@ def render_effect_dataset_pairs_markdown_v1(summary: dict[str, object]) -> str:
     lines.append(
         "- shares_path_with_frozen_eval: "
         f"`{summary['dataset_provenance']['shares_path_with_frozen_eval']}`"
+    )
+    lines.extend(["", "## Split Validation"])
+    lines.append(
+        f"- issues: `{summary['split_validation']['issues']}`"
+    )
+    lines.append(
+        "- pair_coverage: "
+        f"`{summary['split_validation']['pair_coverage']}`"
+    )
+    lines.append(
+        "- user_coverage: "
+        f"`{summary['split_validation']['user_coverage']}`"
+    )
+    lines.append(
+        "- split_disjointness: "
+        f"`{summary['split_validation']['split_disjointness']}`"
+    )
+    lines.append(
+        "- contamination_safeguards: "
+        f"`{summary['split_validation']['contamination_safeguards']}`"
+    )
+    lines.extend(["", "## Training View Contract"])
+    lines.append(
+        "- contract_version: "
+        f"`{summary['training_view_contract']['contract_version']}`"
+    )
+    lines.append(
+        "- baseline_fact_fields: "
+        f"`{summary['training_view_contract']['baseline_fact_fields']}`"
+    )
+    lines.append(
+        "- intervention_assignment_fields: "
+        f"`{summary['training_view_contract']['intervention_assignment_fields']}`"
+    )
+    lines.append(
+        "- follow_up_outcome_fields: "
+        f"`{summary['training_view_contract']['follow_up_outcome_fields']}`"
+    )
+    lines.append(
+        "- training_input_allowed_fields: "
+        f"`{summary['training_view_contract']['training_input_allowed_fields']}`"
+    )
+    lines.append(
+        "- training_input_forbidden_fields: "
+        f"`{summary['training_view_contract']['training_input_forbidden_fields']}`"
+    )
+    lines.append(
+        f"- issues: `{summary['training_view_contract']['issues']}`"
     )
     lines.extend(["", "## Schema Key Coverage"])
     for key, value in summary["schema_key_coverage_pct"]["top_level"].items():

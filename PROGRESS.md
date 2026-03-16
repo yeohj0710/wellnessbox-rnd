@@ -3,68 +3,68 @@
 ## Current loop
 
 - Chosen stage: `P1/P4`
-- Chosen task: `run a final architecture-alignment audit across the normalized data hub, deterministic safety, lightweight recommendation, PRO scoring, parser, replay, training, chat, API, and full-eval layers`
+- Chosen task: `catch up after the latest OpenAI live rerun and reclassify it without letting optional chat work displace KPI priorities`
 - Primary dataset:
-  - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
-  - `case_count = 256`
+  - `C:/dev/wellnessbox-rnd/artifacts/datasets/chat_qa_dataset_d_v1.jsonl`
+  - `case_count = 5`
 
 ## What changed
 
-- Added an architecture alignment audit artifact:
-  - `artifacts/reports/architecture_alignment_audit_v1.json`
-  - `artifacts/reports/architecture_alignment_audit_v1.md`
-- Reclassified current repo areas into:
-  - `done`
-  - `partial`
-  - `blocked`
-- Rewrote:
+- Added a catch-up artifact for the latest live rerun:
+  - `artifacts/reports/post_openai_live_rerun_catchup_v1.json`
+  - `artifacts/reports/post_openai_live_rerun_catchup_v1.md`
+- Reclassified the latest OpenAI live rerun as:
+  - `partial_success_fallback_without_failure_family`
+- Updated backlog wording in:
+  - `PENDING_USER_ACTIONS.md`
+  - `scripts/manual_backlog.ps1`
+- Updated execution summary in:
   - `PROGRESS.md`
   - `NEXT_STEPS.md`
   - `SESSION_HANDOFF.md`
-- Clarified manual backlog status:
-  - `PENDING_USER_ACTIONS.md`
-  - `scripts/manual_backlog.ps1`
 
 ## Why this loop was chosen
 
-- The user asked for a final audit of how closely the repo now matches the intended direction:
-  - normalized structured hub
-  - deterministic safety rules
-  - lightweight recommendation/optimization
-  - PRO scoring
-  - sensor/genetic parsing
-  - explicit state-machine/replay discipline
-  - bounded RAG
-  - synthetic/frozen-eval driven iteration
-- The smallest bounded way to do that was to consolidate current status into one explicit audit artifact and realign the next loops around KPI ROI.
+- The user explicitly requested a catch-up loop after the latest OpenAI live rerun.
+- The repo now contains a fresh live smoke artifact where:
+  - `api_key_present = true`
+  - `attempted_live_call = true`
+  - `provider = deterministic_template_fallback`
+  - `fallback_reason = openai_call_failed`
+- The smallest useful step was to classify that state precisely and narrow the optional backlog.
 
 ## Result in this loop
 
-- Area status summary:
-  - normalized data contracts / data hub = `partial`
-  - safety rules / reference linkage = `done`
-  - recommendation + optimization = `partial`
-  - PRO scoring = `partial`
-  - sensor/genetic parser = `partial`
-  - `cgm` weakest slice / replay = `partial`
-  - synthetic pre/post dataset = `partial`
-  - lightweight training / replay eval = `partial`
-  - chat retrieval / verifier / OpenAI adapter = `partial`
-  - inference API = `partial`
-  - full evaluation harness = `partial`
-- Current must-do manual backlog remains:
-  - none
-- Current optional manual backlog remains:
-  - rerun enriched OpenAI live smoke from the shell that actually has `OPENAI_API_KEY`
+- Latest live smoke classification:
+  - `attempted_live_call = true`
+  - `verification_passed = true`
+  - `provider = deterministic_template_fallback`
+  - `fallback_reason = openai_call_failed`
+  - `live_failure = null`
+  - final status = `partial_success_fallback_without_failure_family`
+- Manual backlog remains:
+  - must-do = `0`
+  - optional = `1`
+- The remaining optional item is now narrower:
+  - rerun the latest OpenAI live smoke only if chat-path diagnosis is still needed, and confirm either `provider = openai_responses_api` or `live_failure` is populated
+
+## Interpretation
+
+- The latest rerun is not a success, but it is also no longer a pure env-blocked state.
+- We now know the adapter can see the key and attempts the live call, while still falling back safely through the verifier-preserving path.
+- Because the failure family is still not exposed in the artifact, any further rerun remains optional chat-only diagnostic work and should not displace KPI-facing work.
 
 ## Behavior boundary
 
 - No runtime recommendation logic changed.
-- No safety logic changed.
-- No replay logic changed.
-- No eval scoring logic changed.
-- No learned artifact was promoted into runtime.
-- This loop only added an audit artifact and refreshed prioritization/backlog docs.
+- No runtime safety logic changed.
+- No workflow or optimizer behavior changed.
+- No learned artifact behavior changed.
+- Chat-only boundary remains intact:
+  - `recommendation_runtime_affected = false`
+  - `safety_runtime_affected = false`
+  - `optimizer_runtime_affected = false`
+- This loop only added catch-up/reporting and backlog wording changes.
 
 ## Deterministic baseline status
 
@@ -80,5 +80,5 @@ Official frozen eval baseline remains unchanged:
 
 ## Validation
 
-- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/architecture_alignment_audit_v1.json').read_text(encoding='utf-8')); print('architecture_alignment_audit_v1_json_ok')"`
-- `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manual_backlog.ps1` was intentionally not rerun because it still requires `OPENAI_API_KEY` in the current shell; backlog status was audited from file contents instead.
+- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/post_openai_live_rerun_catchup_v1.json').read_text(encoding='utf-8')); print('post_openai_live_rerun_catchup_v1_json_ok')"`
+- `Get-Content artifacts/reports/post_openai_live_rerun_catchup_v1.md`

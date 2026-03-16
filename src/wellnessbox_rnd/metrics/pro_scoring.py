@@ -4,13 +4,20 @@ import json
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 
 from wellnessbox_rnd.schemas.recommendation import RecommendationGoal
 from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import RichSyntheticCohortRecord
 
 PRO_FORM_SCHEMA_VERSION_V1 = "pro_form_schema_v1"
 PRO_SCORE_ORIENTATION_V1 = "lower_is_better_for_problem_score"
+PRO_Z_SCORE_TRANSFORM_VERSION_V1 = "pro_zscore_transform_v1"
+PRO_Z_SCORE_NORM_VERSION_V1 = "pro_zscore_norm_v1"
+PRO_IMPROVEMENT_SUMMARY_VERSION_V1 = "pro_improvement_summary_v1"
+PRO_DEFAULT_PROBLEM_SCORE_MEAN_V1 = 2.0
+PRO_DEFAULT_PROBLEM_SCORE_STD_V1 = 1.0
+PRO_Z_SCORE_STD_FLOOR = 1e-6
+PRO_IMPROVEMENT_DELTA_TOLERANCE = 1e-6
 
 
 class PROItemSchemaV1(BaseModel):
@@ -41,6 +48,37 @@ class PROFormResponseV1(BaseModel):
     schema_version: str = PRO_FORM_SCHEMA_VERSION_V1
     timepoint: Literal["baseline", "follow_up"]
     domain_item_scores: dict[str, dict[str, int]] = Field(default_factory=dict)
+
+
+class PRODomainNormV1(BaseModel):
+    domain_key: RecommendationGoal
+    norm_version: str = PRO_Z_SCORE_NORM_VERSION_V1
+    problem_score_mean: float = PRO_DEFAULT_PROBLEM_SCORE_MEAN_V1
+    problem_score_std: float = Field(default=PRO_DEFAULT_PROBLEM_SCORE_STD_V1, gt=0.0)
+    score_orientation: Literal["lower_is_better_for_problem_score"] = (
+        PRO_SCORE_ORIENTATION_V1
+    )
+
+
+class PROZScoreSnapshotV1(BaseModel):
+    transform_version: str = PRO_Z_SCORE_TRANSFORM_VERSION_V1
+    norm_version: str = PRO_Z_SCORE_NORM_VERSION_V1
+    timepoint: Literal["baseline", "follow_up"]
+    domain_problem_scores: dict[str, float] = Field(default_factory=dict)
+    domain_z: dict[str, float] = Field(default_factory=dict)
+    aggregate_z: float
+
+
+class PROImprovementSummaryV1(BaseModel):
+    summary_version: str = PRO_IMPROVEMENT_SUMMARY_VERSION_V1
+    baseline_timepoint: Literal["baseline"]
+    follow_up_timepoint: Literal["follow_up"]
+    aggregate_delta_z: float
+    domain_delta_z: dict[str, float] = Field(default_factory=dict)
+    improved_domain_count: int = Field(ge=0)
+    worsened_domain_count: int = Field(ge=0)
+    unchanged_domain_count: int = Field(ge=0)
+    net_status: Literal["net_improvement", "net_worsening", "no_material_change"]
 
 
 def build_default_pro_form_schema_v1() -> PROFormSchemaV1:
@@ -181,12 +219,159 @@ def validate_pro_form_response_v1(
     return issues
 
 
+def build_default_pro_domain_norms_v1(
+    schema: PROFormSchemaV1 | None = None,
+) -> dict[str, PRODomainNormV1]:
+    schema_model = schema or build_default_pro_form_schema_v1()
+    return {
+        domain.domain_key.value: PRODomainNormV1(domain_key=domain.domain_key)
+        for domain in schema_model.domains
+    }
+
+
+def validate_pro_domain_norms_v1(
+    norms: dict[str, PRODomainNormV1] | dict[str, dict[str, object]],
+    schema: PROFormSchemaV1,
+) -> list[str]:
+    issues: list[str] = []
+    norm_models: dict[str, PRODomainNormV1] = {}
+    for domain_key, norm in norms.items():
+        try:
+            norm_models[domain_key] = (
+                norm if isinstance(norm, PRODomainNormV1) else PRODomainNormV1.model_validate(norm)
+            )
+        except ValidationError as exc:
+            for error in exc.errors():
+                if error["loc"] == ("problem_score_std",):
+                    issues.append(f"invalid_norm_std::{domain_key}::{norm.get('problem_score_std')}")
+                else:
+                    issues.append(f"invalid_norm::{domain_key}::{error['loc'][0]}")
+    schema_domains = {domain.domain_key.value for domain in schema.domains}
+    norm_domains = set(norm_models)
+
+    for domain_key in sorted(schema_domains - norm_domains):
+        issues.append(f"missing_norm::{domain_key}")
+    for domain_key in sorted(norm_domains - schema_domains):
+        issues.append(f"unknown_norm::{domain_key}")
+
+    for domain_key in sorted(schema_domains & norm_domains):
+        norm = norm_models[domain_key]
+        if norm.problem_score_std <= PRO_Z_SCORE_STD_FLOOR:
+            issues.append(f"invalid_norm_std::{domain_key}::{norm.problem_score_std}")
+        if norm.score_orientation != PRO_SCORE_ORIENTATION_V1:
+            issues.append(f"unsupported_orientation::{domain_key}::{norm.score_orientation}")
+
+    return issues
+
+
+def transform_pro_response_to_zscores_v1(
+    response: PROFormResponseV1 | dict[str, object],
+    *,
+    schema: PROFormSchemaV1 | None = None,
+    norms: dict[str, PRODomainNormV1] | dict[str, dict[str, object]] | None = None,
+) -> PROZScoreSnapshotV1:
+    schema_model = schema or build_default_pro_form_schema_v1()
+    response_model = (
+        response
+        if isinstance(response, PROFormResponseV1)
+        else PROFormResponseV1.model_validate(response)
+    )
+    response_issues = validate_pro_form_response_v1(response_model, schema_model)
+    if response_issues:
+        raise ValueError("invalid_pro_form_response::" + "|".join(response_issues))
+
+    norm_models = {
+        domain_key: (
+            norm if isinstance(norm, PRODomainNormV1) else PRODomainNormV1.model_validate(norm)
+        )
+        for domain_key, norm in (norms or build_default_pro_domain_norms_v1(schema_model)).items()
+    }
+    norm_issues = validate_pro_domain_norms_v1(norm_models, schema_model)
+    if norm_issues:
+        raise ValueError("invalid_pro_domain_norms::" + "|".join(norm_issues))
+
+    domain_problem_scores: dict[str, float] = {}
+    domain_z: dict[str, float] = {}
+    for domain in schema_model.domains:
+        domain_key = domain.domain_key.value
+        item_scores = response_model.domain_item_scores[domain_key]
+        problem_score = round(sum(item_scores.values()) / len(item_scores), 6)
+        norm = norm_models[domain_key]
+        z_value = round((norm.problem_score_mean - problem_score) / norm.problem_score_std, 6)
+        domain_problem_scores[domain_key] = problem_score
+        domain_z[domain_key] = z_value
+
+    aggregate_z = round(sum(domain_z.values()) / len(domain_z), 6)
+    return PROZScoreSnapshotV1(
+        timepoint=response_model.timepoint,
+        domain_problem_scores=domain_problem_scores,
+        domain_z=domain_z,
+        aggregate_z=aggregate_z,
+    )
+
+
+def summarize_pro_improvement_v1(
+    *,
+    baseline_snapshot: PROZScoreSnapshotV1 | dict[str, object] | object,
+    follow_up_snapshot: PROZScoreSnapshotV1 | dict[str, object] | object,
+) -> PROImprovementSummaryV1:
+    baseline_timepoint = _read_snapshot_value(baseline_snapshot, "timepoint")
+    follow_up_timepoint = _read_snapshot_value(follow_up_snapshot, "timepoint")
+    if baseline_timepoint != "baseline":
+        raise ValueError(f"invalid_baseline_timepoint::{baseline_timepoint}")
+    if follow_up_timepoint != "follow_up":
+        raise ValueError(f"invalid_follow_up_timepoint::{follow_up_timepoint}")
+
+    baseline_domain_z = dict(_read_snapshot_value(baseline_snapshot, "domain_z"))
+    follow_up_domain_z = dict(_read_snapshot_value(follow_up_snapshot, "domain_z"))
+    if set(baseline_domain_z) != set(follow_up_domain_z):
+        raise ValueError("domain_mismatch::baseline_vs_follow_up")
+
+    domain_delta_z: dict[str, float] = {}
+    improved_domain_count = 0
+    worsened_domain_count = 0
+    unchanged_domain_count = 0
+    for domain_key in sorted(baseline_domain_z):
+        delta = round(follow_up_domain_z[domain_key] - baseline_domain_z[domain_key], 6)
+        domain_delta_z[domain_key] = delta
+        if delta > PRO_IMPROVEMENT_DELTA_TOLERANCE:
+            improved_domain_count += 1
+        elif delta < -PRO_IMPROVEMENT_DELTA_TOLERANCE:
+            worsened_domain_count += 1
+        else:
+            unchanged_domain_count += 1
+
+    aggregate_delta_z = round(
+        _read_snapshot_value(follow_up_snapshot, "aggregate_z")
+        - _read_snapshot_value(baseline_snapshot, "aggregate_z"),
+        6,
+    )
+    if aggregate_delta_z > PRO_IMPROVEMENT_DELTA_TOLERANCE:
+        net_status = "net_improvement"
+    elif aggregate_delta_z < -PRO_IMPROVEMENT_DELTA_TOLERANCE:
+        net_status = "net_worsening"
+    else:
+        net_status = "no_material_change"
+
+    return PROImprovementSummaryV1(
+        baseline_timepoint="baseline",
+        follow_up_timepoint="follow_up",
+        aggregate_delta_z=aggregate_delta_z,
+        domain_delta_z=domain_delta_z,
+        improved_domain_count=improved_domain_count,
+        worsened_domain_count=worsened_domain_count,
+        unchanged_domain_count=unchanged_domain_count,
+        net_status=net_status,
+    )
+
+
 def summarize_pro_form_contract_v1(
     records: list[RichSyntheticCohortRecord],
     *,
     dataset_path: str | Path,
 ) -> dict[str, object]:
     schema = build_default_pro_form_schema_v1()
+    norms = build_default_pro_domain_norms_v1(schema)
     domain_keys = [domain.domain_key.value for domain in schema.domains]
     baseline_domain_coverage_pct = {
         domain_key: _domain_coverage_pct(records, domain_key, timepoint="baseline")
@@ -206,6 +391,65 @@ def summarize_pro_form_contract_v1(
         for record in records
         if all(domain_key in record.follow_up_pro.domain_z for domain_key in domain_keys)
     )
+    sample_mid_response = PROFormResponseV1(
+        timepoint="baseline",
+        domain_item_scores={
+            domain.domain_key.value: {item.item_key: 2 for item in domain.items}
+            for domain in schema.domains
+        },
+    )
+    sample_improved_response = PROFormResponseV1(
+        timepoint="follow_up",
+        domain_item_scores={
+            domain.domain_key.value: {
+                item.item_key: (1 if domain.domain_key == RecommendationGoal.SLEEP_SUPPORT else 2)
+                for item in domain.items
+            }
+            for domain in schema.domains
+        },
+    )
+    sample_mid_z = transform_pro_response_to_zscores_v1(
+        sample_mid_response,
+        schema=schema,
+        norms=norms,
+    )
+    sample_improved_z = transform_pro_response_to_zscores_v1(
+        sample_improved_response,
+        schema=schema,
+        norms=norms,
+    )
+    sample_improvement_summary = summarize_pro_improvement_v1(
+        baseline_snapshot=sample_mid_z,
+        follow_up_snapshot=sample_improved_z,
+    )
+    improved_case_count = sum(
+        1
+        for record in records
+        if record.follow_up_pro.aggregate_z > record.baseline_pro.aggregate_z
+    )
+    worsened_case_count = sum(
+        1
+        for record in records
+        if record.follow_up_pro.aggregate_z < record.baseline_pro.aggregate_z
+    )
+    unchanged_case_count = len(records) - improved_case_count - worsened_case_count
+    mean_aggregate_delta_z = round(
+        sum(
+            record.follow_up_pro.aggregate_z - record.baseline_pro.aggregate_z
+            for record in records
+        )
+        / len(records),
+        6,
+    ) if records else 0.0
+    mean_domain_delta_z_by_domain = {
+        domain_key: round(
+            sum(record.delta_z_by_domain[domain_key] for record in records) / len(records),
+            6,
+        )
+        if records
+        else 0.0
+        for domain_key in domain_keys
+    }
     return {
         "contract_id": "pro_scoring_contract_v1",
         "schema_version": schema.schema_version,
@@ -218,6 +462,40 @@ def summarize_pro_form_contract_v1(
             domain.domain_key.value: len(domain.items) for domain in schema.domains
         },
         "score_orientation": PRO_SCORE_ORIENTATION_V1,
+        "zscore_transform": {
+            "transform_version": PRO_Z_SCORE_TRANSFORM_VERSION_V1,
+            "norm_version": PRO_Z_SCORE_NORM_VERSION_V1,
+            "formula": "(problem_score_mean - domain_problem_score) / problem_score_std",
+            "problem_score_definition": "mean of raw item scores within a domain",
+            "aggregate_definition": "mean of domain z scores across all schema domains",
+            "default_norms": {
+                domain_key: norm.model_dump(mode="json") for domain_key, norm in norms.items()
+            },
+            "sample_transforms": {
+                "mid_problem_score_zero_z": sample_mid_z.model_dump(mode="json"),
+                "sleep_improvement_plus_one_z": sample_improved_z.model_dump(mode="json"),
+            },
+        },
+        "improvement_metric": {
+            "summary_version": PRO_IMPROVEMENT_SUMMARY_VERSION_V1,
+            "formula": "follow_up_z - baseline_z",
+            "aggregate_definition": "follow_up.aggregate_z - baseline.aggregate_z",
+            "net_status_rule": {
+                "improvement": f"aggregate_delta_z > {PRO_IMPROVEMENT_DELTA_TOLERANCE}",
+                "worsening": f"aggregate_delta_z < -{PRO_IMPROVEMENT_DELTA_TOLERANCE}",
+                "no_material_change": (
+                    f"abs(aggregate_delta_z) <= {PRO_IMPROVEMENT_DELTA_TOLERANCE}"
+                ),
+            },
+            "sample_summary": sample_improvement_summary.model_dump(mode="json"),
+            "synthetic_dataset_summary": {
+                "improved_case_count": improved_case_count,
+                "worsened_case_count": worsened_case_count,
+                "unchanged_case_count": unchanged_case_count,
+                "mean_aggregate_delta_z": mean_aggregate_delta_z,
+                "mean_domain_delta_z_by_domain": mean_domain_delta_z_by_domain,
+            },
+        },
         "synthetic_alignment": {
             "baseline_domain_coverage_pct": baseline_domain_coverage_pct,
             "follow_up_domain_coverage_pct": follow_up_domain_coverage_pct,
@@ -257,11 +535,58 @@ def render_pro_form_contract_markdown_v1(report: dict[str, object]) -> str:
         f"- timepoints: {report['timepoints']}",
         f"- score_orientation: {report['score_orientation']}",
         "",
-        "## domain item counts",
+        "## z-score transform",
         "",
-        "| domain | item_count |",
-        "| --- | --- |",
+        f"- transform_version: {report['zscore_transform']['transform_version']}",
+        f"- norm_version: {report['zscore_transform']['norm_version']}",
+        f"- formula: `{report['zscore_transform']['formula']}`",
+        f"- problem_score_definition: {report['zscore_transform']['problem_score_definition']}",
+        f"- aggregate_definition: {report['zscore_transform']['aggregate_definition']}",
+        "",
+        "| domain | norm_mean | norm_std |",
+        "| --- | --- | --- |",
     ]
+    for domain_key, norm in report["zscore_transform"]["default_norms"].items():
+        lines.append(
+            f"| {domain_key} | {norm['problem_score_mean']} | {norm['problem_score_std']} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## z-score examples",
+            "",
+            "- mid_problem_score_zero_z.aggregate_z: "
+            f"{report['zscore_transform']['sample_transforms']['mid_problem_score_zero_z']['aggregate_z']}",
+            "- sleep_improvement_plus_one_z.aggregate_z: "
+            f"{report['zscore_transform']['sample_transforms']['sleep_improvement_plus_one_z']['aggregate_z']}",
+            "- sleep_improvement_plus_one_z.sleep_support: "
+            f"{report['zscore_transform']['sample_transforms']['sleep_improvement_plus_one_z']['domain_z']['sleep_support']}",
+            "",
+            "## improvement metric",
+            "",
+            f"- summary_version: {report['improvement_metric']['summary_version']}",
+            f"- formula: `{report['improvement_metric']['formula']}`",
+            f"- aggregate_definition: {report['improvement_metric']['aggregate_definition']}",
+            f"- sample_summary.aggregate_delta_z: "
+            f"{report['improvement_metric']['sample_summary']['aggregate_delta_z']}",
+            f"- sample_summary.net_status: "
+            f"{report['improvement_metric']['sample_summary']['net_status']}",
+            f"- synthetic improved_case_count: "
+            f"{report['improvement_metric']['synthetic_dataset_summary']['improved_case_count']}",
+            f"- synthetic worsened_case_count: "
+            f"{report['improvement_metric']['synthetic_dataset_summary']['worsened_case_count']}",
+            f"- synthetic unchanged_case_count: "
+            f"{report['improvement_metric']['synthetic_dataset_summary']['unchanged_case_count']}",
+            f"- synthetic mean_aggregate_delta_z: "
+            f"{report['improvement_metric']['synthetic_dataset_summary']['mean_aggregate_delta_z']}",
+            "",
+            "## domain item counts",
+            "",
+            "| domain | item_count |",
+            "| --- | --- |",
+        ]
+    )
     for domain_key, item_count in report["domain_item_counts"].items():
         lines.append(f"| {domain_key} | {item_count} |")
 
@@ -349,16 +674,32 @@ def _domain_coverage_pct(
     return round(100.0 * present_count / len(records), 3)
 
 
+def _read_snapshot_value(snapshot: PROZScoreSnapshotV1 | dict[str, object] | object, key: str):
+    if isinstance(snapshot, dict):
+        return snapshot[key]
+    return getattr(snapshot, key)
+
+
 __all__ = [
+    "PRO_IMPROVEMENT_SUMMARY_VERSION_V1",
+    "PRODomainNormV1",
     "PRODomainFormSchemaV1",
     "PROFormResponseV1",
     "PROFormSchemaV1",
+    "PROImprovementSummaryV1",
     "PROItemSchemaV1",
+    "PROZScoreSnapshotV1",
     "PRO_FORM_SCHEMA_VERSION_V1",
     "PRO_SCORE_ORIENTATION_V1",
+    "PRO_Z_SCORE_NORM_VERSION_V1",
+    "PRO_Z_SCORE_TRANSFORM_VERSION_V1",
+    "build_default_pro_domain_norms_v1",
     "build_default_pro_form_schema_v1",
     "render_pro_form_contract_markdown_v1",
     "summarize_pro_form_contract_v1",
+    "summarize_pro_improvement_v1",
+    "transform_pro_response_to_zscores_v1",
+    "validate_pro_domain_norms_v1",
     "validate_pro_form_response_v1",
     "write_pro_form_contract_report_v1",
 ]

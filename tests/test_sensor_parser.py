@@ -50,6 +50,34 @@ def test_normalize_sensor_genetic_payloads_normalizes_genetic_tags() -> None:
     assert "genetic_tags_normalized_to_snake_case" in snapshot.normalization_notes
 
 
+def test_normalize_sensor_genetic_payloads_ignores_malformed_numeric_values() -> None:
+    snapshot = normalize_sensor_genetic_payloads(
+        wearable_payload={
+            "sleepHours": "unknown",
+            "daily_steps": "n/a",
+            "restingHR": "fifty-eight",
+        },
+        cgm_payload={
+            "avg_glucose": "bad",
+            "avg_glucose_unit": "mg/dL",
+            "timeInRangePct": "?",
+            "postMealSpike": "not-sure",
+        },
+    )
+
+    assert snapshot.sleep_hours is None
+    assert snapshot.steps is None
+    assert snapshot.resting_heart_rate is None
+    assert snapshot.mean_glucose_mg_dl is None
+    assert snapshot.time_in_range_pct is None
+    assert snapshot.post_meal_spike_concern is False
+    assert "wearable_sleep_invalid_numeric_ignored" in snapshot.normalization_notes
+    assert "wearable_steps_invalid_numeric_ignored" in snapshot.normalization_notes
+    assert "wearable_resting_hr_invalid_numeric_ignored" in snapshot.normalization_notes
+    assert "cgm_mean_glucose_invalid_numeric_ignored" in snapshot.normalization_notes
+    assert "cgm_time_in_range_invalid_numeric_ignored" in snapshot.normalization_notes
+
+
 def test_build_sensor_genetic_parser_report_writes_expected_summary(tmp_path) -> None:
     report_json = tmp_path / "parser_smoke.json"
     report_md = tmp_path / "parser_smoke.md"
@@ -71,7 +99,14 @@ def test_build_sensor_genetic_parser_report_writes_expected_summary(tmp_path) ->
 
     assert result.returncode == 0, result.stderr
     payload = json.loads(report_json.read_text(encoding="utf-8"))
-    assert payload["case_count"] == 3
-    assert payload["wearable_case_count"] == 1
-    assert payload["cgm_case_count"] == 1
+    assert payload["case_count"] == 4
+    assert payload["wearable_case_count"] == 2
+    assert payload["cgm_case_count"] == 2
     assert payload["genetic_case_count"] == 1
+    assert payload["supported_failure_types"] == [
+        "cgm_mean_glucose_invalid_numeric_ignored",
+        "cgm_time_in_range_invalid_numeric_ignored",
+        "wearable_resting_hr_invalid_numeric_ignored",
+        "wearable_sleep_invalid_numeric_ignored",
+        "wearable_steps_invalid_numeric_ignored",
+    ]

@@ -28,5 +28,19 @@
         "APOE-e4"
       ]
     }
+  },
+  {
+    "case_id": "malformed_numeric_fallback",
+    "wearable_payload": {
+      "sleepHours": "unknown",
+      "daily_steps": "n/a",
+      "restingHR": "fifty-eight"
+    },
+    "cgm_payload": {
+      "avg_glucose": "bad",
+      "avg_glucose_unit": "mg/dL",
+      "timeInRangePct": "?",
+      "postMealSpike": "not-sure"
+    }
   }
 ]

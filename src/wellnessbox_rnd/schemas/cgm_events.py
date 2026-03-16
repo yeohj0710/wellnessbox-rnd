@@ -142,6 +142,87 @@ def summarize_cgm_normalized_event_bridge_v1(
     }
 
 
+def summarize_cgm_slice_bridge_v1(
+    events: list[CGMNormalizedEventV1 | dict[str, Any]],
+    *,
+    source_cases_path: str | Path,
+    case_ids: list[str] | None = None,
+) -> dict[str, Any]:
+    normalized_events = [
+        (
+            item
+            if isinstance(item, CGMNormalizedEventV1)
+            else CGMNormalizedEventV1.model_validate(item)
+        )
+        for item in events
+    ]
+    resolved_case_ids = case_ids or [f"cgm_case_{index}" for index in range(len(normalized_events))]
+    threshold_tag_counts: dict[str, int] = {}
+    parser_failure_type_counts: dict[str, int] = {}
+    threshold_edge_case_ids: list[str] = []
+    valid_case_count = 0
+
+    for case_id, event in zip(resolved_case_ids, normalized_events, strict=True):
+        issues = validate_cgm_normalized_event_v1(event)
+        if not issues:
+            valid_case_count += 1
+        for tag in event.threshold_tags:
+            threshold_tag_counts[tag] = threshold_tag_counts.get(tag, 0) + 1
+        for note in event.normalization_notes:
+            if note.endswith("_invalid_numeric_ignored"):
+                parser_failure_type_counts[note] = parser_failure_type_counts.get(note, 0) + 1
+        if any(
+            tag in event.threshold_tags
+            for tag in ("mean_glucose_near_126_mg_dl_pm_10", "time_in_range_near_70_pct_pm_5")
+        ):
+            threshold_edge_case_ids.append(case_id)
+
+    return {
+        "contract_id": "cgm_slice_bridge_summary_v1",
+        "source_cases_path": str(source_cases_path),
+        "case_count": len(normalized_events),
+        "valid_case_count": valid_case_count,
+        "invalid_case_count": len(normalized_events) - valid_case_count,
+        "eval_attempted_count": sum(
+            event.eval_integration_projection["cgm"].attempted for event in normalized_events
+        ),
+        "eval_success_count": sum(
+            event.eval_integration_projection["cgm"].success for event in normalized_events
+        ),
+        "threshold_tag_counts": threshold_tag_counts,
+        "parser_failure_type_counts": parser_failure_type_counts,
+        "threshold_edge_case_ids": threshold_edge_case_ids,
+        "connected_flows": {
+            "parser_to_cgm_event": [
+                "normalization_notes",
+                "mean_glucose_mg_dl",
+                "time_in_range_pct",
+            ],
+            "cgm_weakest_slice_audit": [
+                "threshold_tag_counts",
+                "parser_failure_type_counts",
+                "threshold_edge_case_ids",
+                "eval_success_count",
+            ],
+            "replay_readiness": [
+                "replay_bridge_projection.parser_mean_glucose_mg_dl",
+                "replay_bridge_projection.parser_time_in_range_pct",
+                "replay_bridge_projection.parser_post_meal_spike_concern",
+            ],
+        },
+        "cases": [
+            {
+                "case_id": case_id,
+                "threshold_tags": event.threshold_tags,
+                "normalization_notes": event.normalization_notes,
+                "eval_success": event.eval_integration_projection["cgm"].success,
+                "replay_bridge_projection": event.replay_bridge_projection.model_dump(mode="json"),
+            }
+            for case_id, event in zip(resolved_case_ids, normalized_events, strict=True)
+        ],
+    }
+
+
 def write_cgm_normalized_event_bridge_report_v1(
     report: dict[str, Any],
     *,
@@ -182,6 +263,48 @@ def render_cgm_normalized_event_bridge_markdown_v1(report: dict[str, Any]) -> st
     return "\n".join(lines) + "\n"
 
 
+def write_cgm_slice_bridge_report_v1(
+    report: dict[str, Any],
+    *,
+    output_json_path: str | Path,
+    output_md_path: str | Path,
+) -> None:
+    json_path = Path(output_json_path)
+    md_path = Path(output_md_path)
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    md_path.write_text(render_cgm_slice_bridge_markdown_v1(report), encoding="utf-8")
+
+
+def render_cgm_slice_bridge_markdown_v1(report: dict[str, Any]) -> str:
+    lines = [
+        "# cgm slice bridge summary v1",
+        "",
+        f"- source_cases_path: {report['source_cases_path']}",
+        f"- case_count: {report['case_count']}",
+        f"- valid_case_count: {report['valid_case_count']}",
+        f"- invalid_case_count: {report['invalid_case_count']}",
+        f"- eval_attempted_count: {report['eval_attempted_count']}",
+        f"- eval_success_count: {report['eval_success_count']}",
+        f"- threshold_tag_counts: {report['threshold_tag_counts']}",
+        f"- parser_failure_type_counts: {report['parser_failure_type_counts']}",
+        f"- threshold_edge_case_ids: {report['threshold_edge_case_ids']}",
+        "",
+        "## connected flows",
+        "",
+    ]
+    for flow_name, fields in report["connected_flows"].items():
+        lines.append(f"- {flow_name}: {', '.join(fields)}")
+    lines.extend(["", "## cases", ""])
+    for case in report["cases"]:
+        lines.append(
+            f"- `{case['case_id']}`: tags=`{case['threshold_tags']}`, "
+            f"notes=`{case['normalization_notes']}`, eval_success=`{case['eval_success']}`"
+        )
+    return "\n".join(lines) + "\n"
+
+
 def _build_threshold_tags(snapshot: NormalizedSensorGeneticSnapshot) -> list[str]:
     tags: list[str] = []
     if not snapshot.cgm_available:
@@ -206,7 +329,10 @@ __all__ = [
     "CGMReplayBridgeProjectionV1",
     "build_cgm_normalized_event_v1",
     "render_cgm_normalized_event_bridge_markdown_v1",
+    "render_cgm_slice_bridge_markdown_v1",
     "summarize_cgm_normalized_event_bridge_v1",
+    "summarize_cgm_slice_bridge_v1",
     "validate_cgm_normalized_event_v1",
     "write_cgm_normalized_event_bridge_report_v1",
+    "write_cgm_slice_bridge_report_v1",
 ]

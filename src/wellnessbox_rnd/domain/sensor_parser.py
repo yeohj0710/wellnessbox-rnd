@@ -203,26 +203,36 @@ def _normalize_wearable_payload(
     payload: dict[str, Any],
 ) -> tuple[float | None, int | None, int | None, list[str]]:
     notes: list[str] = []
-    sleep_hours = _coerce_float(_first_present(payload, "sleep_hours", "sleepHours"))
+    raw_sleep_hours = _first_present(payload, "sleep_hours", "sleepHours")
+    sleep_hours = _coerce_float(raw_sleep_hours)
+    if raw_sleep_hours is not None and sleep_hours is None:
+        notes.append("wearable_sleep_invalid_numeric_ignored")
     if sleep_hours is None:
-        sleep_minutes = _coerce_float(
-            _first_present(payload, "sleep_minutes", "sleepMinutes", "sleep_duration_minutes")
+        raw_sleep_minutes = _first_present(
+            payload,
+            "sleep_minutes",
+            "sleepMinutes",
+            "sleep_duration_minutes",
         )
+        sleep_minutes = _coerce_float(raw_sleep_minutes)
+        if raw_sleep_minutes is not None and sleep_minutes is None:
+            notes.append("wearable_sleep_invalid_numeric_ignored")
         if sleep_minutes is not None:
             sleep_hours = round(sleep_minutes / 60.0, 2)
             notes.append("wearable_sleep_minutes_converted_to_hours")
 
     raw_steps = _first_present(payload, "steps", "step_count", "daily_steps")
     steps = _coerce_int(raw_steps)
-    if steps is not None and isinstance(raw_steps, str):
+    if raw_steps is not None and steps is None:
+        notes.append("wearable_steps_invalid_numeric_ignored")
+    elif steps is not None and isinstance(raw_steps, str):
         notes.append("wearable_steps_string_coerced_to_int")
 
-    resting_hr = _coerce_int(
-        _first_present(payload, "resting_heart_rate", "restingHR", "resting_hr")
-    )
-    if resting_hr is not None and isinstance(
-        _first_present(payload, "resting_heart_rate", "restingHR", "resting_hr"), str
-    ):
+    raw_resting_hr = _first_present(payload, "resting_heart_rate", "restingHR", "resting_hr")
+    resting_hr = _coerce_int(raw_resting_hr)
+    if raw_resting_hr is not None and resting_hr is None:
+        notes.append("wearable_resting_hr_invalid_numeric_ignored")
+    elif resting_hr is not None and isinstance(raw_resting_hr, str):
         notes.append("wearable_resting_hr_string_coerced_to_int")
 
     return sleep_hours, steps, resting_hr, notes
@@ -235,13 +245,22 @@ def _normalize_cgm_payload(
     mean_glucose_mg_dl = _coerce_float(
         _first_present(payload, "mean_glucose_mg_dl", "avg_glucose_mg_dl")
     )
+    if (
+        _first_present(payload, "mean_glucose_mg_dl", "avg_glucose_mg_dl") is not None
+        and mean_glucose_mg_dl is None
+    ):
+        notes.append("cgm_mean_glucose_invalid_numeric_ignored")
     if mean_glucose_mg_dl is None:
-        mmol_value = _coerce_float(
-            _first_present(payload, "mean_glucose_mmol_l", "avg_glucose_mmol_l")
-        )
+        raw_mmol_value = _first_present(payload, "mean_glucose_mmol_l", "avg_glucose_mmol_l")
+        mmol_value = _coerce_float(raw_mmol_value)
+        if raw_mmol_value is not None and mmol_value is None:
+            notes.append("cgm_mean_glucose_invalid_numeric_ignored")
         if mmol_value is None:
-            avg_glucose = _coerce_float(_first_present(payload, "avg_glucose"))
+            raw_avg_glucose = _first_present(payload, "avg_glucose")
+            avg_glucose = _coerce_float(raw_avg_glucose)
             avg_unit = _normalize_unit(_first_present(payload, "avg_glucose_unit", "glucose_unit"))
+            if raw_avg_glucose is not None and avg_glucose is None:
+                notes.append("cgm_mean_glucose_invalid_numeric_ignored")
             if avg_glucose is not None and avg_unit == "mmol/l":
                 mmol_value = avg_glucose
             elif avg_glucose is not None and avg_unit == "mg/dl":
@@ -253,9 +272,10 @@ def _normalize_cgm_payload(
     time_in_range_pct = _coerce_float(
         _first_present(payload, "time_in_range_pct", "timeInRangePct")
     )
-    if time_in_range_pct is not None and isinstance(
-        _first_present(payload, "time_in_range_pct", "timeInRangePct"), str
-    ):
+    raw_time_in_range_pct = _first_present(payload, "time_in_range_pct", "timeInRangePct")
+    if raw_time_in_range_pct is not None and time_in_range_pct is None:
+        notes.append("cgm_time_in_range_invalid_numeric_ignored")
+    elif time_in_range_pct is not None and isinstance(raw_time_in_range_pct, str):
         notes.append("cgm_time_in_range_string_coerced_to_float")
 
     post_meal_spike_concern = _coerce_bool(
@@ -296,7 +316,10 @@ def _coerce_float(value: Any) -> float | None:
         normalized = value.strip().replace(",", "")
         if not normalized:
             return None
-        return float(normalized)
+        try:
+            return float(normalized)
+        except ValueError:
+            return None
     return None
 
 

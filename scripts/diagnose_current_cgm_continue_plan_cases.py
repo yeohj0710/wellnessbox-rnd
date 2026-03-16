@@ -128,6 +128,7 @@ def main() -> int:
             if case["final_threshold_edge_status"] != "monitor_band_still_continue"
         ],
         "blocker_summary": _build_blocker_summary(cases),
+        "blocker_family_summary": _build_blocker_family_summary(cases),
         "cases": cases,
     }
 
@@ -195,6 +196,9 @@ def _build_case_diagnostic(*, scenario, user_records, policy_artifact) -> dict[s
         ]["reoptimize_minus_continue_after_priors"],
         "deterministic_fallback_summary": final_step_diagnostic["deterministic_fallback"],
         "safety_ceiling_summary": final_step_diagnostic["safety_ceiling"],
+        "final_blocker_family": _classify_final_blocker_family(
+            step_diagnostic=final_step_diagnostic,
+        ),
         "step_diagnostics": step_diagnostics,
     }
 
@@ -496,6 +500,35 @@ def _build_blocker_summary(cases: list[dict[str, object]]) -> dict[str, int]:
     }
 
 
+def _build_blocker_family_summary(cases: list[dict[str, object]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for case in cases:
+        family = str(case["final_blocker_family"])
+        counts[family] = counts.get(family, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def _classify_final_blocker_family(*, step_diagnostic: dict[str, object]) -> str:
+    deterministic_fallback = step_diagnostic["deterministic_fallback"]
+    safety_ceiling = step_diagnostic["safety_ceiling"]
+    margin_snapshot = step_diagnostic["margin_snapshot"]
+    threshold_edge_status = _threshold_edge_status(step_diagnostic=step_diagnostic)
+
+    if safety_ceiling["active"]:
+        return "safety_ceiling_active"
+    if deterministic_fallback["effect_fallback_active"]:
+        return "effect_fallback_active"
+    if deterministic_fallback["policy_fallback_active"]:
+        return "policy_fallback_active"
+    if threshold_edge_status == "monitor_band_still_continue":
+        return "threshold_edge_monitor_band_continue"
+    if margin_snapshot["reoptimize_minus_continue_after_priors"] >= 0.0:
+        return "reoptimize_competitive_but_not_selected"
+    if margin_snapshot["distance_to_monitor_flip"] > 0.30:
+        return "outside_monitor_band_large_monitor_gap"
+    return "outside_monitor_band_near_monitor_flip"
+
+
 def _effect_conditioned_prior_gate_reason(*, record, response_status: RecommendationStatus) -> str:
     if record.labels.risk_tier != "low":
         return "non_low_risk_user"
@@ -544,6 +577,7 @@ def render_markdown(report: dict[str, object]) -> str:
             f"`{report['non_threshold_edge_continue_plan_user_ids']}`"
         ),
         f"- blocker_summary: `{report['blocker_summary']}`",
+        f"- blocker_family_summary: `{report['blocker_family_summary']}`",
     ]
     for case in report["cases"]:
         lines.extend(
@@ -554,6 +588,7 @@ def render_markdown(report: dict[str, object]) -> str:
                 f"- final_policy_action: `{case['final_policy_action']}`",
                 f"- final_prior_band: `{case['final_prior_band']}`",
                 f"- final_threshold_edge_status: `{case['final_threshold_edge_status']}`",
+                f"- final_blocker_family: `{case['final_blocker_family']}`",
                 (
                     "- final_continue_minus_monitor_margin_after_priors: "
                     f"`{case['final_continue_minus_monitor_margin_after_priors']}`"

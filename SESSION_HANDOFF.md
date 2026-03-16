@@ -18,15 +18,15 @@
 ## What this loop did
 
 - Chosen stage: `P1/P4`
-- Chosen task: `run a final architecture-alignment audit across the normalized data hub, deterministic safety, lightweight recommendation, PRO scoring, parser, replay, training, chat, API, and full-eval layers`
+- Chosen task: `catch up after the latest OpenAI live rerun and narrow the optional backlog without changing KPI priorities`
 - Primary dataset:
-  - `C:/dev/wellnessbox-rnd/data/frozen_eval/frozen_eval_v1.jsonl`
-  - `case_count = 256`
+  - `C:/dev/wellnessbox-rnd/artifacts/datasets/chat_qa_dataset_d_v1.jsonl`
+  - `case_count = 5`
 
 ## Files changed
 
-- `C:/dev/wellnessbox-rnd/artifacts/reports/architecture_alignment_audit_v1.json`
-- `C:/dev/wellnessbox-rnd/artifacts/reports/architecture_alignment_audit_v1.md`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/post_openai_live_rerun_catchup_v1.json`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/post_openai_live_rerun_catchup_v1.md`
 - `C:/dev/wellnessbox-rnd/PENDING_USER_ACTIONS.md`
 - `C:/dev/wellnessbox-rnd/scripts/manual_backlog.ps1`
 - `C:/dev/wellnessbox-rnd/PROGRESS.md`
@@ -35,53 +35,54 @@
 
 ## What changed technically
 
-- No runtime code changed.
-- Added an audit artifact that classifies the current architecture alignment across:
-  - normalized data contracts / data hub
-  - safety rules / reference linkage
-  - recommendation + optimization
-  - PRO scoring
-  - sensor/genetic parser
-  - `cgm` weakest slice / replay
-  - synthetic pre/post dataset
-  - lightweight training / replay eval
-  - chat retrieval / verifier / OpenAI adapter
-  - inference API
-  - full evaluation harness
-- Refreshed backlog wording so `must do` and `optional` are explicit and non-contradictory.
+- Read the latest live smoke artifact and classified it as:
+  - `partial_success_fallback_without_failure_family`
+- Source-of-truth status now is:
+  - `attempted_live_call = true`
+  - `verification_passed = true`
+  - `provider = deterministic_template_fallback`
+  - `fallback_reason = openai_call_failed`
+  - `live_failure = null`
+- Narrowed the manual backlog so the remaining OpenAI item is explicitly optional diagnostic work only.
 
 ## Outcome this loop
 
-- Area status summary:
-  - normalized data contracts / data hub = `partial`
-  - safety rules / reference linkage = `done`
-  - recommendation + optimization = `partial`
-  - PRO scoring = `partial`
-  - sensor/genetic parser = `partial`
-  - `cgm` weakest slice / replay = `partial`
-  - synthetic pre/post dataset = `partial`
-  - lightweight training / replay eval = `partial`
-  - chat retrieval / verifier / OpenAI adapter = `partial`
-  - inference API = `partial`
-  - full evaluation harness = `partial`
-- The strongest remaining KPI bottlenecks are now explicitly ranked as:
-  1. missing deterministic `PRO z-score transform`
-  2. missing weakest-slice audit linkage from parser outputs and `CGMNormalizedEventV1`
-  3. unresolved `cgm` final-step score geometry
-  4. baseline-identical Dataset F training signal
-  5. normalized contracts still distributed rather than clearly reused as one structured hub layer
-- Manual backlog split is now explicit:
-  - must-do items: `0`
-  - optional items: `1`
+- The latest OpenAI live rerun is no longer env-blocked, but it is still not a success state.
+- The remaining optional manual item is now:
+  - rerun the latest OpenAI live smoke only if chat-path diagnosis is still needed, and confirm either `provider = openai_responses_api` or `live_failure` is populated
+- Manual backlog remains:
+  - must-do = `0`
+  - optional = `1`
+
+## Why it matters
+
+- We now have a sharper distinction between:
+  - chat-only optional adapter work
+  - core KPI-path work
+- The latest artifact confirms the adapter preserves bounded fallback and verifier behavior even when live OpenAI does not win.
+- Because the failure family is still not exposed, any further OpenAI rerun stays optional and below the KPI path.
+
+## Runtime boundary
+
+- Recommendation runtime unchanged
+- Safety runtime unchanged
+- Workflow runtime unchanged
+- Learned artifacts remain replay-only
+- OpenAI remains optional and chat-only
+- `chat_only_boundary = true`
+- `recommendation_runtime_affected = false`
+- `safety_runtime_affected = false`
+- `optimizer_runtime_affected = false`
+- This loop added catch-up/reporting only
 
 ## Interface contract for next loop
 
 - Highest-ROI next loop:
-  - implement the smallest deterministic `PRO z-score transform` on top of the shared baseline/follow-up PRO event contract
+  - add the smallest effect-training input guard that consumes `dataset_f_effect_training_view_v1` and excludes outcome-side fields from the actual training view
 - Second:
-  - link sensor/genetic parser outputs, file schema validation, and `CGMNormalizedEventV1` to a frozen-eval-compatible weakest-slice audit
+  - add the smallest adapter or validator that computes `PROImprovementSummaryV1` directly from the shared baseline/follow-up PRO event contract
 - Third:
-  - revisit `cgm` only with a final-step `continue_plan` versus `re_optimize` score-geometry loop
+  - link parser outputs, supported parser failure types, `CGMNormalizedEventV1`, `cgm_slice_bridge_summary_v1`, `FollowUpTransitionEventV1`, `NextActionWorkflowEventV1`, and structured safety evidence linkage into a weakest-slice frozen-eval audit
 
 ## Guard boundary
 
@@ -89,10 +90,8 @@
 - frozen eval remains comparable
 - recommendation/safety core still has no LLM dependency
 - learned artifacts remain replay-only
-- safety hard-rule precedence stayed intact
-- no human-review or handoff action was introduced
 - no runtime widening was introduced
-- this loop only changed audit/backlog/prioritization artifacts
+- this loop only added OpenAI live rerun catch-up reporting
 
 ## Deterministic baseline status
 
@@ -107,12 +106,13 @@
 
 ## Validation snapshot
 
-- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/architecture_alignment_audit_v1.json').read_text(encoding='utf-8')); print('architecture_alignment_audit_v1_json_ok')"`
+- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/post_openai_live_rerun_catchup_v1.json').read_text(encoding='utf-8')); print('post_openai_live_rerun_catchup_v1_json_ok')"`
+- `Get-Content artifacts/reports/post_openai_live_rerun_catchup_v1.md`
 
 ## Recommended next five loops
 
-1. implement the smallest deterministic `PRO z-score transform` on top of the shared baseline/follow-up PRO event contract
-2. link sensor/genetic parser outputs, file schema validation, and `CGMNormalizedEventV1` to a frozen-eval-compatible weakest-slice audit
-3. revisit `cgm` only with a final-step `continue_plan` versus `re_optimize` score-geometry loop
-4. run a bounded Dataset F effect-improvement audit or deliberately changed candidate training loop only if it introduces a non-baseline learned signal
-5. tighten the distributed normalized contracts into a clearer reusable structured hub layer only if loops 1-3 expose repeated schema friction
+1. add the smallest effect-training input guard that consumes `dataset_f_effect_training_view_v1` and excludes outcome-side fields from the actual training view
+2. add the smallest adapter or validator that computes `PROImprovementSummaryV1` directly from the shared baseline/follow-up PRO event contract
+3. link sensor/genetic parser outputs, file schema validation, supported parser failure types, `CGMNormalizedEventV1`, `cgm_slice_bridge_summary_v1`, `FollowUpTransitionEventV1`, `NextActionWorkflowEventV1`, and structured safety evidence linkage to a frozen-eval-compatible weakest-slice audit
+4. revisit `cgm` only with a final-step `continue_plan` versus `re_optimize` score-geometry loop
+5. if chat-path diagnosis is explicitly needed later, rerun the OpenAI live smoke and confirm either `provider = openai_responses_api` or `live_failure` is populated
