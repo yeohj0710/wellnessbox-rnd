@@ -1,0 +1,394 @@
+from __future__ import annotations
+
+import re
+from typing import Literal
+
+from pydantic import BaseModel, Field
+
+from wellnessbox_rnd.chat.retrieval import (
+    RetrievalChunk,
+    RetrievalCorpusManifest,
+    RetrievalResult,
+    retrieve_relevant_chunks,
+)
+
+
+class AnswerCitation(BaseModel):
+    chunk_id: str
+    reference_id: str
+    claim_id: str
+    source_title: str
+    source_type: str
+    page_or_section: str
+    reference_uri: str
+
+
+class ChatTemplateAnswer(BaseModel):
+    query: str
+    status: Literal["supported", "unsupported", "out_of_scope"]
+    answer_template_key: str
+    answer_text: str
+    citations: list[AnswerCitation] = Field(default_factory=list)
+    used_chunk_ids: list[str] = Field(default_factory=list)
+    evidence_only: bool = True
+    top_result_score: float = 0.0
+    rationale: str
+
+
+class ChatAnswerVerification(BaseModel):
+    status_ok: bool
+    citation_linkage_ok: bool
+    expected_reference_ids_ok: bool
+    expected_claim_ids_ok: bool
+    expected_terms_ok: bool
+    out_of_scope_handled_ok: bool
+    unsupported_claim_suppressed_ok: bool
+    safety_boundary_ok: bool
+    passed: bool
+    issues: list[str] = Field(default_factory=list)
+
+
+def generate_bounded_template_answer(
+    manifest: RetrievalCorpusManifest,
+    *,
+    query: str,
+    answer_template_key: str | None = None,
+    top_k: int = 5,
+    min_score: float = 2.0,
+) -> ChatTemplateAnswer:
+    results = retrieve_relevant_chunks(manifest, query=query, top_k=top_k)
+    query_tokens = _tokenize(query)
+    if not results:
+        return ChatTemplateAnswer(
+            query=query,
+            status="out_of_scope",
+            answer_template_key=answer_template_key or "out_of_scope",
+            answer_text=(
+                "I do not have in-scope evidence for that counseling question. "
+                "I can only answer bounded supplement counseling questions "
+                "grounded in local references."
+            ),
+            rationale="no_retrieval_hit",
+        )
+
+    chunk_by_id = {chunk.chunk_id: chunk for chunk in manifest.chunks}
+    selected_result, selected_chunk = _select_supported_candidate(
+        results=results,
+        chunk_by_id=chunk_by_id,
+        query_tokens=query_tokens,
+        answer_template_key=answer_template_key,
+        min_score=min_score,
+    )
+
+    if selected_result is None or selected_chunk is None:
+        status = "unsupported" if _looks_in_scope(query_tokens, manifest) else "out_of_scope"
+        rationale = (
+            "in_scope_but_not_supported"
+            if status == "unsupported"
+            else "out_of_scope_query"
+        )
+        return ChatTemplateAnswer(
+            query=query,
+            status=status,
+            answer_template_key=answer_template_key or "unsupported",
+            answer_text=(
+                "I do not have citation-backed evidence in the local "
+                "counseling corpus to support that claim, "
+                "so I cannot state it as true."
+                if status == "unsupported"
+                else "I do not have in-scope evidence for that counseling question. "
+                "I can only answer bounded supplement counseling questions "
+                "grounded in local references."
+            ),
+            top_result_score=results[0].score,
+            rationale=rationale,
+        )
+
+    template_key = answer_template_key or _template_key_for_chunk(selected_chunk)
+    citations = [_build_citation(selected_chunk)]
+    return ChatTemplateAnswer(
+        query=query,
+        status="supported",
+        answer_template_key=template_key,
+        answer_text=_render_template_answer(template_key, selected_chunk),
+        citations=citations,
+        used_chunk_ids=[selected_chunk.chunk_id],
+        top_result_score=selected_result.score,
+        rationale=f"supported_by::{selected_chunk.claim_id}",
+    )
+
+
+def verify_bounded_template_answer(
+    answer: ChatTemplateAnswer,
+    *,
+    expected_reference_ids: list[str] | None = None,
+    expected_claim_ids: list[str] | None = None,
+    expected_terms: list[str] | None = None,
+    expected_status: str | None = None,
+) -> ChatAnswerVerification:
+    issues: list[str] = []
+    normalized_text = answer.answer_text.lower()
+    expected_reference_ids = expected_reference_ids or []
+    expected_claim_ids = expected_claim_ids or []
+    expected_terms = expected_terms or []
+
+    status_ok = expected_status is None or answer.status == expected_status
+    if not status_ok:
+        issues.append(f"unexpected_status::{answer.status}")
+
+    citation_linkage_ok = all(
+        citation.chunk_id in answer.used_chunk_ids and citation.reference_id and citation.claim_id
+        for citation in answer.citations
+    )
+    if answer.status == "supported" and not answer.citations:
+        citation_linkage_ok = False
+    if not citation_linkage_ok:
+        issues.append("citation_linkage_failed")
+
+    found_reference_ids = {citation.reference_id for citation in answer.citations}
+    expected_reference_ids_ok = set(expected_reference_ids).issubset(found_reference_ids)
+    if expected_reference_ids and not expected_reference_ids_ok:
+        issues.append("missing_expected_reference_ids")
+
+    found_claim_ids = {citation.claim_id for citation in answer.citations}
+    expected_claim_ids_ok = set(expected_claim_ids).issubset(found_claim_ids)
+    if expected_claim_ids and not expected_claim_ids_ok:
+        issues.append("missing_expected_claim_ids")
+
+    expected_terms_ok = all(term.lower() in normalized_text for term in expected_terms)
+    if expected_terms and not expected_terms_ok:
+        issues.append("missing_expected_terms")
+
+    out_of_scope_handled_ok = True
+    if answer.status == "out_of_scope":
+        out_of_scope_handled_ok = not answer.citations and "in-scope evidence" in normalized_text
+    if not out_of_scope_handled_ok:
+        issues.append("out_of_scope_handling_failed")
+
+    unsupported_claim_suppressed_ok = True
+    if answer.status == "unsupported":
+        unsupported_claim_suppressed_ok = (
+            not answer.citations and "cannot state it as true" in normalized_text
+        )
+    if not unsupported_claim_suppressed_ok:
+        issues.append("unsupported_claim_not_suppressed")
+
+    safety_boundary_ok = "manual review" not in normalized_text and "handoff" not in normalized_text
+    if not safety_boundary_ok:
+        issues.append("safety_boundary_violated")
+
+    passed = all(
+        [
+            status_ok,
+            citation_linkage_ok,
+            expected_reference_ids_ok,
+            expected_claim_ids_ok,
+            expected_terms_ok,
+            out_of_scope_handled_ok,
+            unsupported_claim_suppressed_ok,
+            safety_boundary_ok,
+        ]
+    )
+
+    return ChatAnswerVerification(
+        status_ok=status_ok,
+        citation_linkage_ok=citation_linkage_ok,
+        expected_reference_ids_ok=expected_reference_ids_ok,
+        expected_claim_ids_ok=expected_claim_ids_ok,
+        expected_terms_ok=expected_terms_ok,
+        out_of_scope_handled_ok=out_of_scope_handled_ok,
+        unsupported_claim_suppressed_ok=unsupported_claim_suppressed_ok,
+        safety_boundary_ok=safety_boundary_ok,
+        passed=passed,
+        issues=issues,
+    )
+
+
+def _select_supported_candidate(
+    *,
+    results: list[RetrievalResult],
+    chunk_by_id: dict[str, RetrievalChunk],
+    query_tokens: set[str],
+    answer_template_key: str | None,
+    min_score: float,
+) -> tuple[RetrievalResult | None, RetrievalChunk | None]:
+    preferred_claim_types = _preferred_claim_types_for_template(answer_template_key)
+    ranked_candidates: list[tuple[int, float, RetrievalResult, RetrievalChunk]] = []
+    for result in results:
+        chunk = chunk_by_id[result.chunk_id]
+        if not _candidate_is_supported(
+            chunk=chunk,
+            query_tokens=query_tokens,
+            answer_template_key=answer_template_key,
+            score=result.score,
+            min_score=min_score,
+        ):
+            continue
+        preference = 1 if chunk.normalized_claim_type in preferred_claim_types else 0
+        ranked_candidates.append((preference, result.score, result, chunk))
+
+    if not ranked_candidates:
+        return None, None
+    ranked_candidates.sort(
+        key=lambda item: (
+            -item[0],
+            -item[1],
+            item[2].chunk_id,
+        )
+    )
+    _, _, result, chunk = ranked_candidates[0]
+    return result, chunk
+
+
+def _candidate_is_supported(
+    *,
+    chunk: RetrievalChunk,
+    query_tokens: set[str],
+    answer_template_key: str | None,
+    score: float,
+    min_score: float,
+) -> bool:
+    if score < min_score:
+        return False
+    template_key = answer_template_key or _template_key_for_chunk(chunk)
+    if template_key == "interaction_warning":
+        has_ingredient = any(token in chunk.ingredient_keys for token in query_tokens)
+        has_medication = any(token in chunk.medication_keys for token in query_tokens)
+        return has_ingredient and has_medication
+    if template_key == "citation_requirement_summary":
+        return "citation" in query_tokens or "reference" in query_tokens or "ids" in query_tokens
+    if template_key == "citation_schema_summary":
+        return "citation" in query_tokens or "ref" in query_tokens or "source" in query_tokens
+    if template_key == "safety_recheck_summary":
+        return "safety" in query_tokens or "risk" in query_tokens or "high" in query_tokens
+    if template_key == "action_space_summary":
+        return "action" in query_tokens or "space" in query_tokens or "autonomous" in query_tokens
+    return True
+
+
+def _preferred_claim_types_for_template(answer_template_key: str | None) -> set[str]:
+    mapping = {
+        "interaction_warning": {"drug_interaction"},
+        "citation_requirement_summary": {"citation_requirement"},
+        "citation_schema_summary": {"citation_schema"},
+        "safety_recheck_summary": {"safety_recheck_policy"},
+        "action_space_summary": {"action_space_constraint"},
+    }
+    return mapping.get(answer_template_key or "", set())
+
+
+def _template_key_for_chunk(chunk: RetrievalChunk) -> str:
+    mapping = {
+        "drug_interaction": "interaction_warning",
+        "citation_requirement": "citation_requirement_summary",
+        "citation_schema": "citation_schema_summary",
+        "safety_recheck_policy": "safety_recheck_summary",
+        "action_space_constraint": "action_space_summary",
+    }
+    return mapping.get(chunk.normalized_claim_type, "evidence_summary")
+
+
+def _build_citation(chunk: RetrievalChunk) -> AnswerCitation:
+    return AnswerCitation(
+        chunk_id=chunk.chunk_id,
+        reference_id=chunk.reference_id,
+        claim_id=chunk.claim_id,
+        source_title=chunk.source_title,
+        source_type=chunk.source_type,
+        page_or_section=chunk.page_or_section,
+        reference_uri=chunk.reference_uri,
+    )
+
+
+def _render_template_answer(template_key: str, chunk: RetrievalChunk) -> str:
+    if template_key == "interaction_warning":
+        ingredient_text = " or ".join(chunk.ingredient_keys)
+        medication_text = " or ".join(chunk.medication_keys)
+        return (
+            f"{ingredient_text.title()} with {medication_text.title()} should be "
+            "treated as a drug interaction. The bounded counseling answer "
+            "should say this combination can increase anticoagulant effect "
+            "and bleeding risk."
+        )
+    if template_key == "citation_requirement_summary":
+        return (
+            "The counseling answer should keep reference_ids and citation "
+            "linkage so the response stays evidence-backed and verifier-ready."
+        )
+    if template_key == "citation_schema_summary":
+        return (
+            "The citation payload should preserve ref_id, source_title, "
+            "source_type, page_or_section, claim_text, and "
+            "normalized_claim_type."
+        )
+    if template_key == "safety_recheck_summary":
+        return (
+            "When safety risk rises, the bounded counseling path should route "
+            "to trigger_safety_recheck as a system action."
+        )
+    if template_key == "action_space_summary":
+        return (
+            "The counseling module should stay inside the system-owned action "
+            "space and avoid non-system actions."
+        )
+    return chunk.text
+
+
+def _looks_in_scope(query_tokens: set[str], manifest: RetrievalCorpusManifest) -> bool:
+    corpus_tokens: set[str] = set()
+    for chunk in manifest.chunks:
+        corpus_tokens |= _tokenize(
+            " ".join(
+                [
+                    chunk.normalized_claim_type,
+                    chunk.text,
+                    " ".join(chunk.keywords),
+                    " ".join(chunk.ingredient_keys),
+                    " ".join(chunk.medication_keys),
+                    " ".join(chunk.domain_keys),
+                ]
+            )
+        )
+    return bool(query_tokens & corpus_tokens)
+
+
+def _tokenize(text: str) -> set[str]:
+    normalized = re.sub(r"[^a-z0-9]+", " ", text.lower())
+    stopwords = {
+        "and",
+        "are",
+        "can",
+        "does",
+        "for",
+        "have",
+        "how",
+        "in",
+        "is",
+        "it",
+        "its",
+        "of",
+        "or",
+        "should",
+        "say",
+        "the",
+        "to",
+        "today",
+        "what",
+        "when",
+        "why",
+        "with",
+    }
+    return {
+        token
+        for token in normalized.split()
+        if len(token) >= 2 and token not in stopwords
+    }
+
+
+__all__ = [
+    "AnswerCitation",
+    "ChatAnswerVerification",
+    "ChatTemplateAnswer",
+    "generate_bounded_template_answer",
+    "verify_bounded_template_answer",
+]

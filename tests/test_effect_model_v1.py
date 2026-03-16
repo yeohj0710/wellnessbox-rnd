@@ -6,11 +6,18 @@ from wellnessbox_rnd.models.effect_model_v1 import (
     predict_policy_effect_proxy_v1,
 )
 from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import generate_rich_synthetic_cohort
+from wellnessbox_rnd.synthetic.rich_longitudinal_v4 import generate_rich_synthetic_cohort_v4
 from wellnessbox_rnd.training.effect_model_v1 import (
+    build_effect_dataset_manifest_v1,
+    build_effect_dataset_pair_split_manifest_v1,
+    build_effect_dataset_pairs_v1,
+    build_effect_dataset_split_manifest_v1,
     build_effect_feature_schema_v1,
     evaluate_effect_model_v1,
     fit_effect_model_v1,
     split_effect_records_by_user_v1,
+    summarize_effect_dataset_pairs_v1,
+    validate_effect_dataset_pairs_v1,
 )
 
 
@@ -71,3 +78,67 @@ def test_effect_model_v1_calibrates_policy_proxy_better_than_raw_aggregate() -> 
 
     assert artifact.policy_proxy_slope >= 0.0
     assert sum(calibrated_errors) / len(calibrated_errors) < sum(raw_errors) / len(raw_errors)
+
+
+def test_build_effect_dataset_manifest_v1_reports_split_ready_dataset_f() -> None:
+    records = generate_rich_synthetic_cohort_v4(seed=602, user_count=72)
+
+    split = split_effect_records_by_user_v1(records, seed=20260311)
+    split_manifest = build_effect_dataset_split_manifest_v1(split, seed=20260311)
+    manifest = build_effect_dataset_manifest_v1(
+        records,
+        dataset_path="data/synthetic/synthetic_longitudinal_v4.jsonl",
+        seed=20260311,
+        split_manifest_path="artifacts/reports/dataset_f_effect_prepost_split_manifest_v1.json",
+    )
+
+    assert manifest["dataset_id"] == "dataset_f_effect_prepost_v1"
+    assert manifest["case_count"] == len(records)
+    assert manifest["user_count"] == len({record.user_id for record in records})
+    assert manifest["generator_audit"]["present"] is True
+    assert manifest["generator_audit"]["validation_issues"] == []
+    assert manifest["split_summary"]["train"]["record_count"] == len(split.train)
+    assert manifest["split_summary"]["val"]["record_count"] == len(split.val)
+    assert manifest["split_summary"]["test"]["record_count"] == len(split.test)
+    assert (
+        manifest["distribution_summary"]["threshold_edge_counts"][
+            "low_risk_cgm_effect_proxy_0_14_to_0_24"
+        ]
+        > 0
+    )
+    assert (
+        manifest["distribution_summary"]["threshold_edge_counts"]["low_risk_reoptimize"]
+        > 0
+    )
+    assert split_manifest["splits"]["train"]["record_count"] + split_manifest["splits"]["val"][
+        "record_count"
+    ] + split_manifest["splits"]["test"]["record_count"] == len(records)
+
+
+def test_build_effect_dataset_pairs_v1_exports_required_prepost_fields() -> None:
+    records = generate_rich_synthetic_cohort_v4(seed=602, user_count=72)
+
+    rows = build_effect_dataset_pairs_v1(records)
+    issues = validate_effect_dataset_pairs_v1(rows)
+    summary = summarize_effect_dataset_pairs_v1(
+        rows,
+        dataset_path="artifacts/datasets/dataset_f_effect_prepost_pairs_v1.jsonl",
+        split_manifest_path="artifacts/reports/dataset_f_effect_prepost_pairs_split_manifest_v1.json",
+        seed=20260311,
+    )
+    split_manifest = build_effect_dataset_pair_split_manifest_v1(rows, seed=20260311)
+
+    assert len(rows) == len(records)
+    assert issues == []
+    assert rows[0].baseline.domain_z
+    assert rows[0].follow_up.domain_z
+    assert rows[0].recommended_set
+    assert rows[0].period.days_from_baseline >= 0
+    assert isinstance(rows[0].adverse_event, bool)
+    assert summary["case_count"] == len(records)
+    assert summary["adverse_event_count"] > 0
+    assert summary["schema_key_coverage_pct"]["top_level"]["recommended_set"] == 100.0
+    assert summary["schema_key_coverage_pct"]["nested"]["period"]["days_from_baseline"] == 100.0
+    assert split_manifest["splits"]["train"]["pair_count"] + split_manifest["splits"]["val"][
+        "pair_count"
+    ] + split_manifest["splits"]["test"]["pair_count"] == len(rows)

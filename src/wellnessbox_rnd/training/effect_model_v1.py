@@ -5,10 +5,10 @@ import json
 from dataclasses import dataclass
 from math import sqrt
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from wellnessbox_rnd.models.effect_model_v1 import (
     EffectFeatureVectorizerV1,
@@ -44,6 +44,44 @@ class EffectSplitResultV1:
     test: list[RichSyntheticCohortRecord]
 
 
+class EffectDatasetSnapshotV1(BaseModel):
+    domain_z: dict[str, float] = Field(default_factory=dict)
+    aggregate_z: float
+
+
+class EffectDatasetRecommendedItemV1(BaseModel):
+    ingredient_key: str
+    daily_dose: float = Field(ge=0.0)
+    dose_unit: str
+    schedule: str
+    regimen_status: Literal["planned", "active", "reduced", "stopped"]
+
+
+class EffectDatasetPeriodV1(BaseModel):
+    trajectory_step: int = Field(ge=0)
+    start_day_index: int = Field(ge=0)
+    end_day_index: int = Field(ge=0)
+    days_from_baseline: int = Field(ge=0)
+
+
+class EffectDatasetPairRowV1(BaseModel):
+    pair_id: str
+    source_record_id: str
+    user_id: str
+    cohort_version: str
+    goal: str
+    baseline: EffectDatasetSnapshotV1
+    follow_up: EffectDatasetSnapshotV1
+    recommended_set: list[EffectDatasetRecommendedItemV1] = Field(default_factory=list)
+    period: EffectDatasetPeriodV1
+    adverse_event: bool
+    expected_effect_proxy: float = Field(ge=-1.0, le=1.0)
+    adherence_proxy: float = Field(ge=0.0, le=1.0)
+    side_effect_proxy: float = Field(ge=0.0, le=1.0)
+    next_action: str
+    risk_tier: str
+
+
 def load_rich_effect_records(
     path: str | Path,
 ) -> list[RichSyntheticCohortRecord]:
@@ -54,6 +92,87 @@ def load_rich_effect_records(
         if line.strip():
             rows.append(RichSyntheticCohortRecord.model_validate_json(line))
     return rows
+
+
+def build_effect_dataset_pair_row_v1(
+    record: RichSyntheticCohortRecord,
+) -> EffectDatasetPairRowV1:
+    goal = record.request.goals[0].value if record.request.goals else "unknown"
+    return EffectDatasetPairRowV1(
+        pair_id=record.record_id,
+        source_record_id=record.record_id,
+        user_id=record.user_id,
+        cohort_version=record.cohort_version,
+        goal=goal,
+        baseline=EffectDatasetSnapshotV1.model_validate(
+            record.baseline_pro.model_dump(mode="json")
+        ),
+        follow_up=EffectDatasetSnapshotV1.model_validate(
+            record.follow_up_pro.model_dump(mode="json")
+        ),
+        recommended_set=[
+            EffectDatasetRecommendedItemV1(
+                ingredient_key=item.ingredient_key,
+                daily_dose=item.daily_dose,
+                dose_unit=item.dose_unit,
+                schedule=item.schedule,
+                regimen_status=item.regimen_status,
+            )
+            for item in record.regimen
+        ],
+        period=EffectDatasetPeriodV1(
+            trajectory_step=record.trajectory_step,
+            start_day_index=0,
+            end_day_index=record.day_index,
+            days_from_baseline=record.day_index,
+        ),
+        adverse_event=record.labels.adverse_event,
+        expected_effect_proxy=record.expected_effect_proxy,
+        adherence_proxy=record.adherence_proxy,
+        side_effect_proxy=record.side_effect_proxy,
+        next_action=record.labels.next_action.value,
+        risk_tier=record.labels.risk_tier,
+    )
+
+
+def build_effect_dataset_pairs_v1(
+    records: list[RichSyntheticCohortRecord],
+) -> list[EffectDatasetPairRowV1]:
+    return [build_effect_dataset_pair_row_v1(record) for record in records]
+
+
+def load_effect_dataset_pairs_v1(
+    path: str | Path,
+) -> list[EffectDatasetPairRowV1]:
+    rows = []
+    for line in Path(path).read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            rows.append(EffectDatasetPairRowV1.model_validate_json(line))
+    return rows
+
+
+def validate_effect_dataset_pairs_v1(
+    rows: list[EffectDatasetPairRowV1],
+) -> list[str]:
+    issues: list[str] = []
+    pair_ids = [row.pair_id for row in rows]
+    if pair_ids != sorted(pair_ids):
+        issues.append("pair ordering is not sorted by pair_id")
+    if len(pair_ids) != len(set(pair_ids)):
+        issues.append("duplicate pair_id values detected")
+    for row in rows:
+        if not row.baseline.domain_z:
+            issues.append(f"baseline domain_z missing: {row.pair_id}")
+        if not row.follow_up.domain_z:
+            issues.append(f"follow_up domain_z missing: {row.pair_id}")
+        if not row.recommended_set:
+            issues.append(f"recommended_set missing: {row.pair_id}")
+        if row.period.end_day_index < row.period.start_day_index:
+            issues.append(f"period day indices invalid: {row.pair_id}")
+        expected_days = row.period.end_day_index - row.period.start_day_index
+        if row.period.days_from_baseline != expected_days:
+            issues.append(f"period days_from_baseline mismatch: {row.pair_id}")
+    return issues
 
 
 def split_effect_records_by_user_v1(
@@ -358,6 +477,482 @@ def render_effect_feature_schema_markdown_v1(schema: dict[str, object]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def build_effect_dataset_split_manifest_v1(
+    split: EffectSplitResultV1,
+    *,
+    seed: int,
+) -> dict[str, object]:
+    split_payload: dict[str, object] = {
+        "seed": seed,
+        "strategy": "sha256(seed:user_id)[0] ratio -> train<0.6, val<0.8, else test",
+        "splits": {},
+    }
+    for split_name, records in (
+        ("train", split.train),
+        ("val", split.val),
+        ("test", split.test),
+    ):
+        user_ids = sorted({record.user_id for record in records})
+        split_payload["splits"][split_name] = {
+            "record_count": len(records),
+            "user_count": len(user_ids),
+            "record_ids": [record.record_id for record in records],
+            "user_ids": user_ids,
+        }
+    return split_payload
+
+
+def build_effect_dataset_manifest_v1(
+    records: list[RichSyntheticCohortRecord],
+    *,
+    dataset_path: str | Path,
+    seed: int,
+    split_manifest_path: str | Path,
+) -> dict[str, object]:
+    from wellnessbox_rnd.synthetic.rich_longitudinal_v4 import (
+        CGM_THRESHOLD_EDGE_EFFECT_PROXY_RANGE,
+        THRESHOLD_EDGE_EFFECT_PROXY_RANGE,
+        validate_rich_synthetic_cohort,
+    )
+
+    split = split_effect_records_by_user_v1(records, seed=seed)
+    split_manifest = build_effect_dataset_split_manifest_v1(split, seed=seed)
+    cohort_version = records[0].cohort_version if records else "unknown"
+    goals = sorted({record.request.goals[0].value for record in records if record.request.goals})
+    risk_tier_counts: dict[str, int] = {}
+    next_action_counts: dict[str, int] = {}
+    goal_counts: dict[str, int] = {}
+    modality_counts = {"cgm": 0, "wearable": 0, "genetic": 0}
+    for record in records:
+        risk_tier_counts[record.labels.risk_tier] = (
+            risk_tier_counts.get(record.labels.risk_tier, 0) + 1
+        )
+        next_action = record.labels.next_action.value
+        next_action_counts[next_action] = next_action_counts.get(next_action, 0) + 1
+        if record.request.goals:
+            goal_key = record.request.goals[0].value
+            goal_counts[goal_key] = goal_counts.get(goal_key, 0) + 1
+        modality_counts["cgm"] += int(record.request.input_availability.cgm)
+        modality_counts["wearable"] += int(record.request.input_availability.wearable)
+        modality_counts["genetic"] += int(record.request.input_availability.genetic)
+
+    threshold_edge_low_risk_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and THRESHOLD_EDGE_EFFECT_PROXY_RANGE[0]
+            <= record.expected_effect_proxy
+            <= THRESHOLD_EDGE_EFFECT_PROXY_RANGE[1]
+        )
+    )
+    threshold_edge_low_risk_cgm_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and record.request.input_availability.cgm
+            and CGM_THRESHOLD_EDGE_EFFECT_PROXY_RANGE[0]
+            <= record.expected_effect_proxy
+            <= CGM_THRESHOLD_EDGE_EFFECT_PROXY_RANGE[1]
+        )
+    )
+    low_risk_reoptimize_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and record.labels.next_action.value == "re_optimize"
+        )
+    )
+    low_risk_monitor_only_count = sum(
+        1
+        for record in records
+        if (
+            record.labels.risk_tier == "low"
+            and record.labels.next_action.value == "monitor_only"
+        )
+    )
+
+    return {
+        "dataset_id": "dataset_f_effect_prepost_v1",
+        "dataset_label": "Dataset F effect pre/post synthetic longitudinal cohort",
+        "dataset_path": str(Path(dataset_path)),
+        "cohort_version": cohort_version,
+        "seed": seed,
+        "case_count": len(records),
+        "user_count": len({record.user_id for record in records}),
+        "trajectory_steps_per_user": sorted({record.trajectory_step for record in records}),
+        "goal_set": goals,
+        "generator_audit": {
+            "present": True,
+            "source": (
+                "wellnessbox_rnd.synthetic.rich_longitudinal_v4."
+                "generate_rich_synthetic_cohort_v4"
+            ),
+            "validator_source": (
+                "wellnessbox_rnd.synthetic.rich_longitudinal_v4."
+                "validate_rich_synthetic_cohort"
+            ),
+            "validation_issues": validate_rich_synthetic_cohort(records),
+            "dedicated_dataset_manifest_present_before_loop": False,
+            "gap_addressed_this_loop": (
+                "missing dataset-focused manifest and split artifact for Dataset F"
+            ),
+        },
+        "distribution_summary": {
+            "goal_counts": dict(sorted(goal_counts.items())),
+            "risk_tier_counts": dict(sorted(risk_tier_counts.items())),
+            "next_action_counts": dict(sorted(next_action_counts.items())),
+            "modality_record_counts": modality_counts,
+            "threshold_edge_counts": {
+                "low_risk_effect_proxy_0_14_to_0_28": threshold_edge_low_risk_count,
+                "low_risk_cgm_effect_proxy_0_14_to_0_24": threshold_edge_low_risk_cgm_count,
+                "low_risk_monitor_only": low_risk_monitor_only_count,
+                "low_risk_reoptimize": low_risk_reoptimize_count,
+            },
+        },
+        "training_ready": {
+            "training_script": "scripts/train_effect_model_v3.py",
+            "dataset_path": str(Path(dataset_path)),
+            "split_manifest_path": str(Path(split_manifest_path)),
+            "recommended_seed": seed,
+            "recommended_artifact_path": "artifacts/models/effect_model_v3.json",
+            "recommended_eval_report_path": "artifacts/reports/effect_model_v3_eval.json",
+        },
+        "split_summary": {
+            split_name: {
+                "record_count": split_manifest["splits"][split_name]["record_count"],
+                "user_count": split_manifest["splits"][split_name]["user_count"],
+            }
+            for split_name in ("train", "val", "test")
+        },
+        "sample_record_ids": [record.record_id for record in records[:5]],
+    }
+
+
+def render_effect_dataset_manifest_markdown_v1(manifest: dict[str, object]) -> str:
+    lines = [
+        "# dataset f effect pre/post manifest",
+        "",
+        f"- dataset_id: `{manifest['dataset_id']}`",
+        f"- dataset_path: `{manifest['dataset_path']}`",
+        f"- cohort_version: `{manifest['cohort_version']}`",
+        f"- seed: `{manifest['seed']}`",
+        f"- case_count: `{manifest['case_count']}`",
+        f"- user_count: `{manifest['user_count']}`",
+        f"- goal_set: `{', '.join(manifest['goal_set'])}`",
+        "",
+        "## Audit",
+        f"- generator_present: `{manifest['generator_audit']['present']}`",
+        f"- generator_source: `{manifest['generator_audit']['source']}`",
+        f"- validator_source: `{manifest['generator_audit']['validator_source']}`",
+        (
+            "- dedicated_dataset_manifest_present_before_loop: "
+            f"`{manifest['generator_audit']['dedicated_dataset_manifest_present_before_loop']}`"
+        ),
+        f"- gap_addressed_this_loop: `{manifest['generator_audit']['gap_addressed_this_loop']}`",
+        f"- validation_issues: `{len(manifest['generator_audit']['validation_issues'])}`",
+        "",
+        "## Split Summary",
+    ]
+    for split_name, summary in manifest["split_summary"].items():
+        lines.append(
+            f"- `{split_name}`: record_count=`{summary['record_count']}`, "
+            f"user_count=`{summary['user_count']}`"
+        )
+    lines.extend(["", "## Threshold Edge Counts"])
+    for key, value in manifest["distribution_summary"]["threshold_edge_counts"].items():
+        lines.append(f"- `{key}`: `{value}`")
+    lines.extend(["", "## Next Loop Handoff"])
+    lines.append(
+        f"- training_script: `{manifest['training_ready']['training_script']}`"
+    )
+    lines.append(f"- dataset_path: `{manifest['training_ready']['dataset_path']}`")
+    lines.append(
+        f"- split_manifest_path: `{manifest['training_ready']['split_manifest_path']}`"
+    )
+    lines.append(
+        f"- recommended_seed: `{manifest['training_ready']['recommended_seed']}`"
+    )
+    return "\n".join(lines) + "\n"
+
+
+def build_effect_dataset_pair_split_manifest_v1(
+    rows: list[EffectDatasetPairRowV1],
+    *,
+    seed: int,
+) -> dict[str, object]:
+    grouped: dict[str, list[EffectDatasetPairRowV1]] = {}
+    for row in rows:
+        grouped.setdefault(row.user_id, []).append(row)
+
+    buckets: dict[str, list[EffectDatasetPairRowV1]] = {
+        "train": [],
+        "val": [],
+        "test": [],
+    }
+    for user_id in sorted(grouped):
+        digest = hashlib.sha256(f"{seed}:{user_id}".encode()).digest()[0]
+        ratio = digest / 255.0
+        split_name = "train" if ratio < 0.6 else "val" if ratio < 0.8 else "test"
+        buckets[split_name].extend(grouped[user_id])
+
+    return {
+        "seed": seed,
+        "strategy": "sha256(seed:user_id)[0] ratio -> train<0.6, val<0.8, else test",
+        "splits": {
+            split_name: {
+                "pair_count": len(sorted_rows),
+                "user_count": len({row.user_id for row in sorted_rows}),
+                "pair_ids": [row.pair_id for row in sorted_rows],
+                "user_ids": sorted({row.user_id for row in sorted_rows}),
+            }
+            for split_name, sorted_rows in (
+                (name, sorted(values, key=lambda item: item.pair_id))
+                for name, values in buckets.items()
+            )
+        },
+    }
+
+
+def summarize_effect_dataset_pairs_v1(
+    rows: list[EffectDatasetPairRowV1],
+    *,
+    dataset_path: str | Path,
+    split_manifest_path: str | Path,
+    seed: int,
+) -> dict[str, object]:
+    total_rows = len(rows)
+    recommended_item_count = sum(len(row.recommended_set) for row in rows)
+    split_manifest = build_effect_dataset_pair_split_manifest_v1(rows, seed=seed)
+    top_level_keys = [
+        "pair_id",
+        "source_record_id",
+        "user_id",
+        "cohort_version",
+        "goal",
+        "baseline",
+        "follow_up",
+        "recommended_set",
+        "period",
+        "adverse_event",
+        "expected_effect_proxy",
+        "adherence_proxy",
+        "side_effect_proxy",
+        "next_action",
+        "risk_tier",
+    ]
+    top_level_coverage = {
+        key: round(
+            sum(1 for row in rows if key in row.model_dump(mode="json")) / total_rows * 100.0,
+            2,
+        )
+        if total_rows
+        else 0.0
+        for key in top_level_keys
+    }
+    nested_coverage = {
+        "baseline": {
+            "aggregate_z": round(
+                sum(1 for row in rows if row.baseline.aggregate_z is not None)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "domain_z": round(
+                sum(1 for row in rows if row.baseline.domain_z) / total_rows * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+        },
+        "follow_up": {
+            "aggregate_z": round(
+                sum(1 for row in rows if row.follow_up.aggregate_z is not None)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "domain_z": round(
+                sum(1 for row in rows if row.follow_up.domain_z) / total_rows * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+        },
+        "recommended_set_item": {
+            "ingredient_key": round(
+                sum(1 for row in rows for item in row.recommended_set if item.ingredient_key)
+                / recommended_item_count
+                * 100.0,
+                2,
+            )
+            if recommended_item_count
+            else 0.0,
+            "daily_dose": round(
+                sum(1 for row in rows for item in row.recommended_set if item.daily_dose >= 0.0)
+                / recommended_item_count
+                * 100.0,
+                2,
+            )
+            if recommended_item_count
+            else 0.0,
+            "dose_unit": round(
+                sum(1 for row in rows for item in row.recommended_set if item.dose_unit)
+                / recommended_item_count
+                * 100.0,
+                2,
+            )
+            if recommended_item_count
+            else 0.0,
+            "schedule": round(
+                sum(1 for row in rows for item in row.recommended_set if item.schedule)
+                / recommended_item_count
+                * 100.0,
+                2,
+            )
+            if recommended_item_count
+            else 0.0,
+            "regimen_status": round(
+                sum(
+                    1 for row in rows for item in row.recommended_set if item.regimen_status
+                )
+                / recommended_item_count
+                * 100.0,
+                2,
+            )
+            if recommended_item_count
+            else 0.0,
+        },
+        "period": {
+            "trajectory_step": round(
+                sum(1 for row in rows if row.period.trajectory_step >= 0) / total_rows * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "start_day_index": round(
+                sum(1 for row in rows if row.period.start_day_index >= 0) / total_rows * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "end_day_index": round(
+                sum(1 for row in rows if row.period.end_day_index >= 0) / total_rows * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+            "days_from_baseline": round(
+                sum(1 for row in rows if row.period.days_from_baseline >= 0)
+                / total_rows
+                * 100.0,
+                2,
+            )
+            if total_rows
+            else 0.0,
+        },
+    }
+    return {
+        "dataset_id": "dataset_f_effect_prepost_pairs_v1",
+        "dataset_path": str(Path(dataset_path)),
+        "case_count": total_rows,
+        "user_count": len({row.user_id for row in rows}),
+        "recommended_item_count": recommended_item_count,
+        "goal_counts": _count_string_values(row.goal for row in rows),
+        "next_action_counts": _count_string_values(row.next_action for row in rows),
+        "risk_tier_counts": _count_string_values(row.risk_tier for row in rows),
+        "adverse_event_count": sum(1 for row in rows if row.adverse_event),
+        "period_summary": {
+            "trajectory_step_counts": _count_string_values(
+                str(row.period.trajectory_step) for row in rows
+            ),
+            "max_days_from_baseline": max(
+                (row.period.days_from_baseline for row in rows),
+                default=0,
+            ),
+        },
+        "schema_key_coverage_pct": {
+            "top_level": top_level_coverage,
+            "nested": nested_coverage,
+        },
+        "split_manifest_path": str(Path(split_manifest_path)),
+        "split_summary": {
+            split_name: {
+                "pair_count": split_manifest["splits"][split_name]["pair_count"],
+                "user_count": split_manifest["splits"][split_name]["user_count"],
+            }
+            for split_name in ("train", "val", "test")
+        },
+        "recommended_training_source": {
+            "dataset_path": "data/synthetic/synthetic_longitudinal_v4.jsonl",
+            "split_manifest_path": (
+                "artifacts/reports/dataset_f_effect_prepost_split_manifest_v1.json"
+            ),
+            "seed": seed,
+            "training_script": "scripts/train_effect_model_v3.py",
+        },
+        "sample_pair_ids": [row.pair_id for row in rows[:5]],
+    }
+
+
+def render_effect_dataset_pairs_markdown_v1(summary: dict[str, object]) -> str:
+    lines = [
+        "# dataset f effect pre/post pairs",
+        "",
+        f"- dataset_id: `{summary['dataset_id']}`",
+        f"- dataset_path: `{summary['dataset_path']}`",
+        f"- case_count: `{summary['case_count']}`",
+        f"- user_count: `{summary['user_count']}`",
+        f"- adverse_event_count: `{summary['adverse_event_count']}`",
+        f"- recommended_item_count: `{summary['recommended_item_count']}`",
+        "",
+        "## Split Summary",
+    ]
+    for split_name, values in summary["split_summary"].items():
+        lines.append(
+            f"- `{split_name}`: pair_count=`{values['pair_count']}`, "
+            f"user_count=`{values['user_count']}`"
+        )
+    lines.extend(["", "## Schema Key Coverage"])
+    for key, value in summary["schema_key_coverage_pct"]["top_level"].items():
+        lines.append(f"- `top_level::{key}`: `{value}`")
+    for section_name, section_values in summary["schema_key_coverage_pct"]["nested"].items():
+        for key, value in section_values.items():
+            lines.append(f"- `{section_name}::{key}`: `{value}`")
+    lines.extend(["", "## Training Handoff"])
+    lines.append(
+        f"- training_script: `{summary['recommended_training_source']['training_script']}`"
+    )
+    lines.append(
+        f"- source_dataset_path: `{summary['recommended_training_source']['dataset_path']}`"
+    )
+    lines.append(
+        "- source_split_manifest_path: "
+        f"`{summary['recommended_training_source']['split_manifest_path']}`"
+    )
+    lines.append(f"- seed: `{summary['recommended_training_source']['seed']}`")
+    return "\n".join(lines) + "\n"
+
+
+def write_effect_dataset_pairs_jsonl_v1(
+    path: str | Path,
+    rows: list[EffectDatasetPairRowV1],
+) -> None:
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    sorted_rows = sorted(rows, key=lambda item: item.pair_id)
+    target.write_text(
+        "\n".join(row.model_dump_json() for row in sorted_rows) + "\n",
+        encoding="utf-8",
+    )
+
+
 def write_effect_training_outputs_v1(
     *,
     artifact: EffectModelV1Artifact,
@@ -514,3 +1109,10 @@ def _top_weight_features(
         {"feature": name, "weight": round(weight, 6)}
         for name, weight in pairs[:limit]
     ]
+
+
+def _count_string_values(values) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for value in values:
+        counts[value] = counts.get(value, 0) + 1
+    return dict(sorted(counts.items()))

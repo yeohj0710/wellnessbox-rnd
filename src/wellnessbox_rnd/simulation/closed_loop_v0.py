@@ -32,6 +32,7 @@ TRACE_SAMPLE_LIMIT = 4
 LEARNED_EFFECT_NEAR_TIE_GAP = 1.0
 CONTINUE_PLAN_EFFECT_PRIOR_BONUS = 0.8
 MONITOR_ONLY_EFFECT_PRIOR_BONUS = 0.65
+CGM_THRESHOLD_EDGE_MONITOR_REFINEMENT_BONUS = 0.30
 RE_OPTIMIZE_EFFECT_PRIOR_BONUS = 1.1
 RE_OPTIMIZE_REVIVAL_PROXY_MIN = 0.18
 RE_OPTIMIZE_REVIVAL_PROXY_MAX = 0.205
@@ -1063,11 +1064,19 @@ def _apply_effect_conditioned_policy_priors(
             - RE_OPTIMIZE_TRIGGER_PENALTY
         )
         return
-    if predicted_effect_proxy < 0.24:
+    if predicted_effect_proxy < (0.37 if record.request.input_availability.cgm else 0.24):
         scores[NextAction.MONITOR_ONLY.value] = (
             scores.get(NextAction.MONITOR_ONLY.value, 0.0)
             + MONITOR_ONLY_EFFECT_PRIOR_BONUS
         )
+        if _should_apply_cgm_threshold_edge_monitor_refinement(
+            scores=scores,
+            record=record,
+        ):
+            scores[NextAction.MONITOR_ONLY.value] = (
+                scores.get(NextAction.MONITOR_ONLY.value, 0.0)
+                + CGM_THRESHOLD_EDGE_MONITOR_REFINEMENT_BONUS
+            )
         if _should_apply_reoptimize_revival_prior(
             record=record,
             predicted_effect_proxy=predicted_effect_proxy,
@@ -1116,6 +1125,21 @@ def _should_apply_reoptimize_revival_prior(
     if predicted_effect_proxy > proxy_max:
         return False
     return record.request.input_availability.cgm or record.side_effect_proxy >= 0.12
+
+
+def _should_apply_cgm_threshold_edge_monitor_refinement(
+    *,
+    scores: dict[str, float],
+    record: RichSyntheticCohortRecord,
+) -> bool:
+    if not record.request.input_availability.cgm:
+        return False
+    if record.trajectory_step < 3:
+        return False
+    continue_score = scores.get(NextAction.CONTINUE_PLAN.value, 0.0)
+    monitor_score = scores.get(NextAction.MONITOR_ONLY.value, 0.0)
+    margin = continue_score - monitor_score
+    return 0.0 < margin <= CGM_THRESHOLD_EDGE_MONITOR_REFINEMENT_BONUS
 
 
 def _predict_candidate_effect_scores(

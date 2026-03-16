@@ -1,0 +1,328 @@
+from __future__ import annotations
+
+import json
+import os
+from typing import Literal
+from urllib import error, request
+
+from pydantic import BaseModel, Field
+
+from wellnessbox_rnd.chat.answering import (
+    ChatAnswerVerification,
+    ChatTemplateAnswer,
+    generate_bounded_template_answer,
+    verify_bounded_template_answer,
+)
+from wellnessbox_rnd.chat.retrieval import (
+    RetrievalChunk,
+    RetrievalCorpusManifest,
+    retrieve_relevant_chunks,
+)
+
+OPENAI_API_KEY_ENV_VAR = "OPENAI_API_KEY"
+CHAT_OPENAI_MODEL_ENV_VAR = "WELLNESSBOX_CHAT_OPENAI_MODEL"
+CHAT_OPENAI_BASE_URL_ENV_VAR = "WELLNESSBOX_CHAT_OPENAI_BASE_URL"
+CHAT_OPENAI_TIMEOUT_ENV_VAR = "WELLNESSBOX_CHAT_OPENAI_TIMEOUT_SECONDS"
+
+DEFAULT_CHAT_OPENAI_MODEL = "gpt-5-mini"
+DEFAULT_CHAT_OPENAI_BASE_URL = "https://api.openai.com/v1"
+DEFAULT_CHAT_OPENAI_TIMEOUT_SECONDS = 20.0
+
+
+class ChatAdapterRequest(BaseModel):
+    query: str
+    answer_template_key: str | None = None
+    expected_reference_ids: list[str] = Field(default_factory=list)
+    expected_claim_ids: list[str] = Field(default_factory=list)
+    expected_terms: list[str] = Field(default_factory=list)
+    top_k: int = 3
+    min_score: float = 2.0
+
+
+class OpenAIChatAdapterConfig(BaseModel):
+    api_key_env_var: str = OPENAI_API_KEY_ENV_VAR
+    model_env_var: str = CHAT_OPENAI_MODEL_ENV_VAR
+    base_url_env_var: str = CHAT_OPENAI_BASE_URL_ENV_VAR
+    timeout_env_var: str = CHAT_OPENAI_TIMEOUT_ENV_VAR
+    api_key_present: bool
+    model: str = DEFAULT_CHAT_OPENAI_MODEL
+    base_url: str = DEFAULT_CHAT_OPENAI_BASE_URL
+    timeout_seconds: float = DEFAULT_CHAT_OPENAI_TIMEOUT_SECONDS
+
+
+class ChatAdapterResponse(BaseModel):
+    provider: Literal["openai_responses_api", "deterministic_template_fallback"]
+    fallback_reason: str | None = None
+    attempted_live_call: bool = False
+    model: str | None = None
+    answer: ChatTemplateAnswer
+    verification: ChatAnswerVerification
+    evidence_chunk_ids: list[str] = Field(default_factory=list)
+    evidence_reference_ids: list[str] = Field(default_factory=list)
+
+
+def load_openai_chat_adapter_config_from_env() -> OpenAIChatAdapterConfig:
+    api_key = os.getenv(OPENAI_API_KEY_ENV_VAR, "").strip()
+    model = os.getenv(CHAT_OPENAI_MODEL_ENV_VAR, DEFAULT_CHAT_OPENAI_MODEL).strip()
+    base_url = os.getenv(CHAT_OPENAI_BASE_URL_ENV_VAR, DEFAULT_CHAT_OPENAI_BASE_URL).strip()
+    timeout_raw = os.getenv(
+        CHAT_OPENAI_TIMEOUT_ENV_VAR,
+        str(DEFAULT_CHAT_OPENAI_TIMEOUT_SECONDS),
+    ).strip()
+    try:
+        timeout_seconds = float(timeout_raw)
+    except ValueError:
+        timeout_seconds = DEFAULT_CHAT_OPENAI_TIMEOUT_SECONDS
+    return OpenAIChatAdapterConfig(
+        api_key_present=bool(api_key),
+        model=model or DEFAULT_CHAT_OPENAI_MODEL,
+        base_url=base_url or DEFAULT_CHAT_OPENAI_BASE_URL,
+        timeout_seconds=timeout_seconds,
+    )
+
+
+def generate_chat_answer_with_openai_fallback(
+    manifest: RetrievalCorpusManifest,
+    adapter_request: ChatAdapterRequest,
+    *,
+    allow_live_api: bool = False,
+) -> ChatAdapterResponse:
+    config = load_openai_chat_adapter_config_from_env()
+    fallback = _build_deterministic_fallback(manifest, adapter_request)
+    evidence_results = retrieve_relevant_chunks(
+        manifest,
+        query=adapter_request.query,
+        top_k=adapter_request.top_k,
+    )
+    evidence_chunks = [
+        next(chunk for chunk in manifest.chunks if chunk.chunk_id == result.chunk_id)
+        for result in evidence_results
+    ]
+    evidence_chunk_ids = [chunk.chunk_id for chunk in evidence_chunks]
+    evidence_reference_ids = [chunk.reference_id for chunk in evidence_chunks]
+
+    if not allow_live_api:
+        return ChatAdapterResponse(
+            provider="deterministic_template_fallback",
+            fallback_reason="live_api_disabled",
+            attempted_live_call=False,
+            model=config.model,
+            answer=fallback.answer,
+            verification=fallback.verification,
+            evidence_chunk_ids=evidence_chunk_ids,
+            evidence_reference_ids=evidence_reference_ids,
+        )
+
+    if not config.api_key_present:
+        return ChatAdapterResponse(
+            provider="deterministic_template_fallback",
+            fallback_reason="missing_api_key",
+            attempted_live_call=False,
+            model=config.model,
+            answer=fallback.answer,
+            verification=fallback.verification,
+            evidence_chunk_ids=evidence_chunk_ids,
+            evidence_reference_ids=evidence_reference_ids,
+        )
+
+    try:
+        response_json = _call_openai_responses_api(
+            config=config,
+            adapter_request=adapter_request,
+            evidence_chunks=evidence_chunks,
+        )
+        answer = _parse_openai_answer(
+            response_json=response_json,
+            evidence_chunks=evidence_chunks,
+            adapter_request=adapter_request,
+        )
+        verification = verify_bounded_template_answer(
+            answer,
+            expected_reference_ids=adapter_request.expected_reference_ids,
+            expected_claim_ids=adapter_request.expected_claim_ids,
+            expected_terms=adapter_request.expected_terms,
+        )
+        if not verification.passed:
+            return ChatAdapterResponse(
+                provider="deterministic_template_fallback",
+                fallback_reason="verification_failed",
+                attempted_live_call=True,
+                model=config.model,
+                answer=fallback.answer,
+                verification=fallback.verification,
+                evidence_chunk_ids=evidence_chunk_ids,
+                evidence_reference_ids=evidence_reference_ids,
+            )
+        return ChatAdapterResponse(
+            provider="openai_responses_api",
+            attempted_live_call=True,
+            model=config.model,
+            answer=answer,
+            verification=verification,
+            evidence_chunk_ids=evidence_chunk_ids,
+            evidence_reference_ids=evidence_reference_ids,
+        )
+    except (error.URLError, TimeoutError, json.JSONDecodeError, KeyError, ValueError):
+        return ChatAdapterResponse(
+            provider="deterministic_template_fallback",
+            fallback_reason="openai_call_failed",
+            attempted_live_call=True,
+            model=config.model,
+            answer=fallback.answer,
+            verification=fallback.verification,
+            evidence_chunk_ids=evidence_chunk_ids,
+            evidence_reference_ids=evidence_reference_ids,
+        )
+
+
+def _build_deterministic_fallback(
+    manifest: RetrievalCorpusManifest,
+    adapter_request: ChatAdapterRequest,
+) -> ChatAdapterResponse:
+    answer = generate_bounded_template_answer(
+        manifest,
+        query=adapter_request.query,
+        answer_template_key=adapter_request.answer_template_key,
+        top_k=adapter_request.top_k,
+        min_score=adapter_request.min_score,
+    )
+    verification = verify_bounded_template_answer(
+        answer,
+        expected_reference_ids=adapter_request.expected_reference_ids,
+        expected_claim_ids=adapter_request.expected_claim_ids,
+        expected_terms=adapter_request.expected_terms,
+    )
+    return ChatAdapterResponse(
+        provider="deterministic_template_fallback",
+        answer=answer,
+        verification=verification,
+    )
+
+
+def _call_openai_responses_api(
+    *,
+    config: OpenAIChatAdapterConfig,
+    adapter_request: ChatAdapterRequest,
+    evidence_chunks: list[RetrievalChunk],
+) -> dict[str, object]:
+    api_key = os.getenv(OPENAI_API_KEY_ENV_VAR, "").strip()
+    evidence_block = "\n\n".join(
+        [
+            (
+                f"chunk_id: {chunk.chunk_id}\n"
+                f"reference_id: {chunk.reference_id}\n"
+                f"claim_id: {chunk.claim_id}\n"
+                f"text: {chunk.text}\n"
+                f"excerpt: {chunk.excerpt}"
+            )
+            for chunk in evidence_chunks
+        ]
+    )
+    payload = {
+        "model": config.model,
+        "input": (
+            "You are a bounded counseling answer generator. Use only the provided evidence chunks. "
+            "Never invent unsupported claims. If the query is out of scope, return out_of_scope. "
+            "If the query is in scope but unsupported by the provided evidence, "
+            "return unsupported. "
+            "If supported, return supported and only cite chunk_ids from the evidence list.\n\n"
+            f"answer_template_key: {adapter_request.answer_template_key or 'auto'}\n"
+            f"query: {adapter_request.query}\n\n"
+            f"evidence:\n{evidence_block}"
+        ),
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "bounded_chat_answer",
+                "strict": True,
+                "schema": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "properties": {
+                        "status": {
+                            "type": "string",
+                            "enum": ["supported", "unsupported", "out_of_scope"],
+                        },
+                        "answer_text": {"type": "string"},
+                        "used_chunk_ids": {
+                            "type": "array",
+                            "items": {"type": "string"},
+                        },
+                    },
+                    "required": ["status", "answer_text", "used_chunk_ids"],
+                },
+            }
+        },
+    }
+    http_request = request.Request(
+        f"{config.base_url.rstrip('/')}/responses",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    with request.urlopen(http_request, timeout=config.timeout_seconds) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def _parse_openai_answer(
+    *,
+    response_json: dict[str, object],
+    evidence_chunks: list[RetrievalChunk],
+    adapter_request: ChatAdapterRequest,
+) -> ChatTemplateAnswer:
+    output_text = response_json.get("output_text")
+    if not isinstance(output_text, str):
+        raise ValueError("missing_output_text")
+    payload = json.loads(output_text)
+    status = payload["status"]
+    answer_text = payload["answer_text"]
+    used_chunk_ids = payload["used_chunk_ids"]
+    if status not in {"supported", "unsupported", "out_of_scope"}:
+        raise ValueError("invalid_status")
+    allowed_chunks = {chunk.chunk_id: chunk for chunk in evidence_chunks}
+    valid_chunk_ids = [chunk_id for chunk_id in used_chunk_ids if chunk_id in allowed_chunks]
+    citations = []
+    if status == "supported":
+        if not valid_chunk_ids:
+            raise ValueError("supported_without_evidence")
+        citations = [
+            {
+                "chunk_id": allowed_chunks[chunk_id].chunk_id,
+                "reference_id": allowed_chunks[chunk_id].reference_id,
+                "claim_id": allowed_chunks[chunk_id].claim_id,
+                "source_title": allowed_chunks[chunk_id].source_title,
+                "source_type": allowed_chunks[chunk_id].source_type,
+                "page_or_section": allowed_chunks[chunk_id].page_or_section,
+                "reference_uri": allowed_chunks[chunk_id].reference_uri,
+            }
+            for chunk_id in valid_chunk_ids
+        ]
+    return ChatTemplateAnswer(
+        query=adapter_request.query,
+        status=status,
+        answer_template_key=adapter_request.answer_template_key or "openai_adapter",
+        answer_text=answer_text,
+        citations=citations,
+        used_chunk_ids=valid_chunk_ids,
+        evidence_only=True,
+        rationale="openai_responses_api",
+    )
+
+
+__all__ = [
+    "CHAT_OPENAI_BASE_URL_ENV_VAR",
+    "CHAT_OPENAI_MODEL_ENV_VAR",
+    "CHAT_OPENAI_TIMEOUT_ENV_VAR",
+    "DEFAULT_CHAT_OPENAI_BASE_URL",
+    "DEFAULT_CHAT_OPENAI_MODEL",
+    "DEFAULT_CHAT_OPENAI_TIMEOUT_SECONDS",
+    "OPENAI_API_KEY_ENV_VAR",
+    "ChatAdapterRequest",
+    "ChatAdapterResponse",
+    "OpenAIChatAdapterConfig",
+    "generate_chat_answer_with_openai_fallback",
+    "load_openai_chat_adapter_config_from_env",
+]

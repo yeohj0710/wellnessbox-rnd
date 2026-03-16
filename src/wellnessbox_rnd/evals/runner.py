@@ -1,4 +1,5 @@
 import json
+from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -83,6 +84,17 @@ def run_eval(dataset_path: str | Path) -> dict[str, object]:
         "explanation_quality_accuracy_pct": [],
         "safety_reference_accuracy_pct": [],
     }
+    category_aggregates: dict[str, dict[str, list[float]]] = defaultdict(
+        lambda: {
+            "recommendation_coverage_pct": [],
+            "efficacy_improvement_pp": [],
+            "next_action_accuracy_pct": [],
+            "explanation_quality_accuracy_pct": [],
+            "safety_reference_accuracy_pct": [],
+        }
+    )
+    category_adverse_flags: dict[str, list[bool]] = defaultdict(list)
+    category_integration_records: dict[str, list[dict[str, dict[str, int]]]] = defaultdict(list)
     adverse_flags: list[bool] = []
     integration_records: list[dict[str, dict[str, int]]] = []
     case_results: list[dict[str, object]] = []
@@ -140,14 +152,16 @@ def run_eval(dataset_path: str | Path) -> dict[str, object]:
         for metric_name, value in case_metrics.items():
             if value is not None and metric_name in aggregates:
                 aggregates[metric_name].append(value)
+                category_aggregates[case.category][metric_name].append(value)
 
         adverse_flags.append(case.adverse_event_reported)
-        integration_records.append(
-            {
-                key: {"attempted": value.attempted, "success": value.success}
-                for key, value in case.integration.items()
-            }
-        )
+        category_adverse_flags[case.category].append(case.adverse_event_reported)
+        integration_record = {
+            key: {"attempted": value.attempted, "success": value.success}
+            for key, value in case.integration.items()
+        }
+        integration_records.append(integration_record)
+        category_integration_records[case.category].append(integration_record)
 
         case_results.append(
             {
@@ -206,11 +220,18 @@ def run_eval(dataset_path: str | Path) -> dict[str, object]:
                 "bottleneck_rate_pct": bottleneck_rate,
             }
 
+    weakest_slice_summary = _build_weakest_slice_summary(
+        category_aggregates=category_aggregates,
+        category_adverse_flags=category_adverse_flags,
+        category_integration_records=category_integration_records,
+    )
+
     return {
         "dataset_path": str(path),
         "generated_at": datetime.now(UTC).isoformat(),
         "case_count": len(cases),
         "summary": summary,
+        "weakest_slice_summary": weakest_slice_summary,
         "case_results": case_results,
     }
 
@@ -234,6 +255,7 @@ def write_report_files(
 
 def render_markdown_report(report: dict[str, object]) -> str:
     summary = report["summary"]
+    weakest_slice_summary = report.get("weakest_slice_summary")
     case_results = report["case_results"]
 
     lines = [
@@ -281,6 +303,25 @@ def render_markdown_report(report: dict[str, object]) -> str:
                 f"{item['score']} |"
             )
 
+    if isinstance(weakest_slice_summary, dict):
+        weakest_by_metric = weakest_slice_summary.get("weakest_category_by_metric", {})
+        weakest_overall = weakest_slice_summary.get("weakest_category_overall")
+        lines.extend(["", "## weakest slice summary", ""])
+        if weakest_overall:
+            lines.append(f"- weakest_category_overall: `{weakest_overall['category']}`")
+            lines.append(f"- weakest_metric_count: `{weakest_overall['weakest_metric_count']}`")
+            lines.append(f"- metrics: `{weakest_overall['metrics']}`")
+            lines.append(f"- case_count: `{weakest_overall['case_count']}`")
+            lines.append("")
+        lines.append("| metric | category | score | target | comparison | passed |")
+        lines.append("| --- | --- | --- | --- | --- | --- |")
+        for metric_name, item in weakest_by_metric.items():
+            lines.append(
+                "| "
+                f"{metric_name} | {item['category']} | {item['score']} | "
+                f"{item['target']} | {item['comparison']} | {item['passed']} |"
+            )
+
     lines.extend(["", "## case results", ""])
     for case in case_results:
         lines.append(f"### {case['case_id']} ({case['category']})")
@@ -293,3 +334,74 @@ def render_markdown_report(report: dict[str, object]) -> str:
         lines.append("")
 
     return "\n".join(lines)
+
+
+def _build_weakest_slice_summary(
+    *,
+    category_aggregates: dict[str, dict[str, list[float]]],
+    category_adverse_flags: dict[str, list[bool]],
+    category_integration_records: dict[str, list[dict[str, dict[str, int]]]],
+) -> dict[str, object]:
+    by_category: dict[str, dict[str, object]] = {}
+    weakest_category_by_metric: dict[str, dict[str, object]] = {}
+    weakest_counts: Counter[str] = Counter()
+
+    for category in sorted(category_adverse_flags):
+        category_metrics: dict[str, dict[str, object]] = {}
+        for metric_name, definition in METRIC_DEFINITIONS.items():
+            if metric_name == "adverse_event_count_yearly":
+                score = float(count_adverse_events(category_adverse_flags[category]))
+            elif metric_name == "sensor_genetic_integration_rate_pct":
+                score = sensor_genetic_integration_rate_pct(category_integration_records[category])
+            else:
+                score = average_metric(category_aggregates[category][metric_name])
+            category_metrics[metric_name] = {
+                "score": score,
+                "passed": metric_passed(score, definition.comparison, definition.target),
+            }
+        by_category[category] = {
+            "case_count": len(category_adverse_flags[category]),
+            "metrics": category_metrics,
+        }
+
+    for metric_name, definition in METRIC_DEFINITIONS.items():
+        candidates: list[tuple[str, float]] = []
+        for category, item in by_category.items():
+            score = item["metrics"][metric_name]["score"]
+            if score is not None:
+                candidates.append((category, float(score)))
+        if not candidates:
+            continue
+        weakest_category, weakest_score = (
+            max(candidates, key=lambda item: item[1])
+            if definition.comparison == "max"
+            else min(candidates, key=lambda item: item[1])
+        )
+        weakest_counts[weakest_category] += 1
+        weakest_category_by_metric[metric_name] = {
+            "category": weakest_category,
+            "score": weakest_score,
+            "target": definition.target,
+            "comparison": definition.comparison,
+            "passed": by_category[weakest_category]["metrics"][metric_name]["passed"],
+        }
+
+    weakest_category_overall: dict[str, object] | None = None
+    if weakest_counts:
+        overall_category, weakest_metric_count = weakest_counts.most_common(1)[0]
+        weakest_category_overall = {
+            "category": overall_category,
+            "weakest_metric_count": weakest_metric_count,
+            "metrics": sorted(
+                metric_name
+                for metric_name, item in weakest_category_by_metric.items()
+                if item["category"] == overall_category
+            ),
+            "case_count": by_category[overall_category]["case_count"],
+        }
+
+    return {
+        "by_category": by_category,
+        "weakest_category_by_metric": weakest_category_by_metric,
+        "weakest_category_overall": weakest_category_overall,
+    }

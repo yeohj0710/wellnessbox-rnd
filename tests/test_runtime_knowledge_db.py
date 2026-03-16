@@ -1,5 +1,6 @@
 from wellnessbox_rnd.domain.intake import normalize_request
 from wellnessbox_rnd.knowledge.runtime_db import (
+    build_citations_for_rule,
     build_runtime_knowledge_db,
     find_triggered_interaction_rules,
     validate_runtime_knowledge_db,
@@ -85,6 +86,41 @@ def test_runtime_knowledge_query_matches_anticoagulant_interaction() -> None:
     assert [rule.rule_id for rule in matches] == ["KB-SAFETY-ANTICOAG-001"]
 
 
+def test_runtime_knowledge_rule_citations_match_reference_spans_exactly() -> None:
+    runtime_db = build_runtime_knowledge_db()
+    knowledge_rule = next(
+        rule for rule in runtime_db.interaction_rules if rule.rule_id == "KB-SAFETY-ANTICOAG-001"
+    )
+
+    citations = build_citations_for_rule(
+        runtime_db,
+        reference_ids=knowledge_rule.reference_ids,
+        claim_ids=knowledge_rule.claim_ids,
+    )
+    reference = next(
+        item
+        for item in runtime_db.references
+        if item.reference_id == knowledge_rule.reference_ids[0]
+    )
+    span = next(
+        item
+        for item in runtime_db.reference_spans
+        if item.claim_id == knowledge_rule.claim_ids[0]
+    )
+
+    assert [citation.model_dump() for citation in citations] == [
+        {
+            "reference_id": reference.reference_id,
+            "claim_id": span.claim_id,
+            "source_title": reference.source_title,
+            "source_type": reference.source_type,
+            "page_or_section": reference.page_or_section,
+            "excerpt": span.excerpt,
+            "reference_uri": reference.reference_uri,
+        }
+    ]
+
+
 def test_assess_safety_returns_citation_backed_structured_knowledge_rule() -> None:
     request = RecommendationRequest(
         user_profile=UserProfile(
@@ -167,6 +203,47 @@ def test_assess_safety_blocks_current_regimen_when_structured_dose_limit_is_exce
 
     assert response.next_action == NextAction.TRIGGER_SAFETY_RECHECK
     assert response.next_action_rationale.reason_code == "structured_safety_blocker"
+
+
+def test_assess_safety_returns_deterministic_dose_limit_rule_ref_without_citations() -> None:
+    request = RecommendationRequest(
+        user_profile=UserProfile(
+            age=41,
+            biological_sex=BiologicalSex.FEMALE,
+            pregnant=False,
+        ),
+        goals=[RecommendationGoal.BONE_JOINT],
+        symptoms=["low_sun_exposure"],
+        medications=[],
+        current_supplements=[SupplementInput(name="Vitamin D3 5000 IU")],
+        lifestyle=LifestyleInput(
+            sleep_hours=7.0,
+            stress_level=2,
+            activity_level=ActivityLevel.LIGHTLY_ACTIVE,
+        ),
+        input_availability=InputAvailability(
+            survey=True,
+            nhis=False,
+            wearable=False,
+            cgm=False,
+            genetic=False,
+        ),
+        preferences=RecommendationPreferences(),
+    )
+
+    summary = assess_safety(normalize_request(request))
+
+    dose_rule = next(item for item in summary.rule_refs if item.rule_id == "SAFETY-DOSE-VITD3-001")
+
+    assert dose_rule.model_dump() == {
+        "rule_id": "SAFETY-DOSE-VITD3-001",
+        "message": "Vitamin D3 current intake stays below the structured adult upper limit.",
+        "severity": "blocker",
+        "source": "deterministic_policy",
+        "reference_ids": [],
+        "claim_ids": [],
+        "citations": [],
+    }
 
 
 def test_assess_safety_blocks_vitamin_d3_when_ingredient_line_uses_mcg() -> None:

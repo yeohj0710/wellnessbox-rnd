@@ -1,6 +1,10 @@
+import json
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
+from wellnessbox_rnd.schemas.recommendation import RecommendationResponse
 
 client = TestClient(app)
 
@@ -172,43 +176,7 @@ def test_openapi_schema_exposes_structured_current_supplement_dose_example() -> 
 
 
 def test_recommend_endpoint_accepts_structured_current_supplement_dose() -> None:
-    payload = {
-        "user_profile": {
-            "age": 45,
-            "biological_sex": "female",
-            "pregnant": False,
-        },
-        "goals": ["bone_joint"],
-        "symptoms": ["low_sun_exposure"],
-        "conditions": [],
-        "medications": [],
-        "current_supplements": [
-            {
-                "name": "Daily Bone Softgel",
-                "dose": "125 mcg",
-                "ingredients": ["Vitamin D3"],
-            }
-        ],
-        "lifestyle": {
-            "sleep_hours": 7.0,
-            "stress_level": 2,
-            "activity_level": "lightly_active",
-            "smoker": False,
-            "alcohol_per_week": 0,
-        },
-        "input_availability": {
-            "survey": True,
-            "nhis": False,
-            "wearable": False,
-            "cgm": False,
-            "genetic": False,
-        },
-        "preferences": {
-            "budget_level": "medium",
-            "max_products": 2,
-            "avoid_ingredients": [],
-        },
-    }
+    payload = _load_sample_request("api_recommend_structured_safety_block_request_v1.json")
 
     response = client.post("/v1/recommend", json=payload)
     body = response.json()
@@ -224,3 +192,40 @@ def test_recommend_endpoint_accepts_structured_current_supplement_dose() -> None
         item["rule_id"] == "SAFETY-DOSE-VITD3-001"
         for item in body["safety_summary"]["rule_refs"]
     )
+
+
+def test_recommend_endpoint_contract_fixture_keeps_structured_response_shape() -> None:
+    payload = _load_sample_request("api_recommend_structured_safety_block_request_v1.json")
+
+    response = client.post("/v1/recommend", json=payload)
+    body = response.json()
+    validated = RecommendationResponse.model_validate(body)
+
+    assert response.status_code == 200
+    assert validated.status.value == "blocked"
+    assert validated.next_action.value == "trigger_safety_recheck"
+    assert validated.next_action_rationale.reason_code == "structured_safety_blocker"
+    assert validated.next_action_rationale.supporting_codes == [
+        "SAFETY-DOSE-VITD3-001",
+        "SAFETY-DUP-001",
+    ]
+    assert [item.rule_id for item in validated.safety_summary.rule_refs] == [
+        "SAFETY-DOSE-VITD3-001",
+        "SAFETY-DUP-001",
+    ]
+    assert [item.code for item in validated.safety_evidence] == [
+        "SAFETY-DOSE-VITD3-001",
+        "SAFETY-DUP-001",
+        "vitamin_d3",
+    ]
+    assert [item.code for item in validated.limitation_details] == [
+        "demo_catalog_only",
+        "deterministic_baseline_only",
+        "no_llm_core_decision",
+    ]
+    assert validated.metadata.mode == "deterministic_baseline_v1"
+
+
+def _load_sample_request(filename: str) -> dict[str, object]:
+    path = Path("data/samples") / filename
+    return json.loads(path.read_text(encoding="utf-8"))

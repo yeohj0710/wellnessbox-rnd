@@ -14,6 +14,7 @@ from wellnessbox_rnd.evals.runner import (
 def test_run_eval_returns_expected_summary_keys() -> None:
     report = run_eval("data/frozen_eval/frozen_eval_v1.jsonl")
     integration_details = report["summary"]["sensor_genetic_integration_rate_pct"]["details"]
+    weakest_slice_summary = report["weakest_slice_summary"]
     cases = load_eval_cases("data/frozen_eval/frozen_eval_v1.jsonl")
     attempted_breakdown = {
         key: value["score"]
@@ -36,6 +37,13 @@ def test_run_eval_returns_expected_summary_keys() -> None:
     assert integration_details["modality_breakdown"]["genetic"]["score"] == pytest.approx(
         94.20289855072464
     )
+    assert "recommendation_coverage_pct" in weakest_slice_summary["weakest_category_by_metric"]
+    assert "sensor_genetic_integration_rate_pct" in weakest_slice_summary[
+        "weakest_category_by_metric"
+    ]
+    assert weakest_slice_summary["weakest_category_overall"]["category"] in {
+        case.category for case in cases
+    }
     assert "case_results" in report
 
 
@@ -73,3 +81,4 @@ def test_write_report_files_creates_json_and_markdown() -> None:
     assert md_path.exists()
     assert "metric summary" in render_markdown_report(report)
     assert "integration diagnostics" in render_markdown_report(report)
+    assert "weakest slice summary" in render_markdown_report(report)

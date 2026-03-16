@@ -1,0 +1,32 @@
+[
+  {
+    "case_id": "wearable_minutes_alias",
+    "wearable_payload": {
+      "sleepMinutes": 390,
+      "step_count": "8450",
+      "restingHR": "58"
+    }
+  },
+  {
+    "case_id": "cgm_mmol_conversion",
+    "cgm_payload": {
+      "avg_glucose": 6.8,
+      "avg_glucose_unit": "mmol/L",
+      "timeInRangePct": "78",
+      "postMealSpike": true
+    }
+  },
+  {
+    "case_id": "genetic_marker_aliases",
+    "genetic_payload": {
+      "phenotypes": [
+        " Low Sun Exposure ",
+        "glycemic-risk"
+      ],
+      "markers": [
+        "MTHFR C677T",
+        "APOE-e4"
+      ]
+    }
+  }
+]

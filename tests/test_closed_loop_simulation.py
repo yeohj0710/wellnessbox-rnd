@@ -5,6 +5,7 @@ MODEL_ARTIFACT_PATH = "artifacts/models/effect_model_v1.json"
 POLICY_MODEL_ARTIFACT_PATH = "artifacts/models/policy_model_v1.json"
 V4_DATASET_PATH = "data/synthetic/synthetic_longitudinal_v4.jsonl"
 V4_MODEL_ARTIFACT_PATH = "artifacts/models/effect_model_v3.json"
+V4_UNIFORM_POLICY_MODEL_ARTIFACT_PATH = "artifacts/models/policy_model_v1_uniform.json"
 
 
 def test_closed_loop_simulation_exposes_guarded_trace_fields() -> None:
@@ -185,3 +186,130 @@ def test_combined_mode_can_disable_policy_effect_proxy_override() -> None:
         for report in override_off.scenario_reports
         for step in report.trace
     )
+
+
+def test_cgm_threshold_edge_regression_refines_continue_plan_into_monitor_only() -> None:
+    report = simulation.simulate_closed_loop_scenario(
+        dataset_path=V4_DATASET_PATH,
+        user_id="syn-v4-user-004",
+        max_cycles=5,
+        model_artifact_path=V4_MODEL_ARTIFACT_PATH,
+        policy_model_artifact_path=V4_UNIFORM_POLICY_MODEL_ARTIFACT_PATH,
+        enable_learned_policy=True,
+        enable_learned_reranking=True,
+        enable_policy_effect_proxy_override=True,
+    )
+
+    reoptimize_step = report.trace[1]
+    final_step = report.trace[-1]
+
+    assert reoptimize_step.selected_policy_action == simulation.SimulationPolicyAction.RE_OPTIMIZE
+    assert (
+        reoptimize_step.raw_learned_policy_action
+        == simulation.SimulationPolicyAction.RE_OPTIMIZE
+    )
+    assert reoptimize_step.deterministic_action == simulation.SimulationPolicyAction.MONITOR_ONLY
+    assert reoptimize_step.policy_guard_reason is None
+    assert reoptimize_step.policy_guard_applied is False
+
+    assert final_step.selected_policy_action == simulation.SimulationPolicyAction.MONITOR_ONLY
+    assert final_step.raw_learned_policy_action == simulation.SimulationPolicyAction.MONITOR_ONLY
+    assert final_step.deterministic_action == simulation.SimulationPolicyAction.CONTINUE_PLAN
+    assert final_step.policy_guard_reason is None
+    assert final_step.policy_guard_applied is False
+
+
+def test_cgm_threshold_edge_regression_keeps_followup_clamp_then_monitor_only_path() -> None:
+    report = simulation.simulate_closed_loop_scenario(
+        dataset_path=V4_DATASET_PATH,
+        user_id="syn-v4-user-019",
+        max_cycles=5,
+        model_artifact_path=V4_MODEL_ARTIFACT_PATH,
+        policy_model_artifact_path=V4_UNIFORM_POLICY_MODEL_ARTIFACT_PATH,
+        enable_learned_policy=True,
+        enable_learned_reranking=True,
+        enable_policy_effect_proxy_override=True,
+    )
+
+    followup_step = report.trace[1]
+    clamped_reoptimize_step = report.trace[2]
+    final_step = report.trace[-1]
+
+    assert (
+        followup_step.selected_policy_action
+        == simulation.SimulationPolicyAction.ASK_TARGETED_FOLLOWUP
+    )
+    assert followup_step.raw_learned_policy_action == simulation.SimulationPolicyAction.MONITOR_ONLY
+    assert (
+        followup_step.deterministic_action
+        == simulation.SimulationPolicyAction.ASK_TARGETED_FOLLOWUP
+    )
+    assert followup_step.policy_guard_reason == "permissiveness_clamp"
+    assert followup_step.policy_guard_applied is True
+
+    assert (
+        clamped_reoptimize_step.selected_policy_action
+        == simulation.SimulationPolicyAction.ASK_TARGETED_FOLLOWUP
+    )
+    assert (
+        clamped_reoptimize_step.raw_learned_policy_action
+        == simulation.SimulationPolicyAction.RE_OPTIMIZE
+    )
+    assert clamped_reoptimize_step.policy_guard_reason == "permissiveness_clamp"
+    assert clamped_reoptimize_step.policy_guard_applied is True
+
+    assert final_step.selected_policy_action == simulation.SimulationPolicyAction.MONITOR_ONLY
+    assert final_step.raw_learned_policy_action == simulation.SimulationPolicyAction.MONITOR_ONLY
+    assert final_step.deterministic_action == simulation.SimulationPolicyAction.CONTINUE_PLAN
+    assert final_step.policy_guard_reason is None
+    assert final_step.policy_guard_applied is False
+
+
+def test_cgm_safety_ceiling_and_deterministic_fallback_remain_stable() -> None:
+    guarded_report = simulation.simulate_closed_loop_scenario(
+        dataset_path=V4_DATASET_PATH,
+        user_id="syn-v4-user-008",
+        max_cycles=5,
+        model_artifact_path=V4_MODEL_ARTIFACT_PATH,
+        policy_model_artifact_path=V4_UNIFORM_POLICY_MODEL_ARTIFACT_PATH,
+        enable_learned_policy=True,
+        enable_learned_reranking=True,
+        enable_policy_effect_proxy_override=True,
+    )
+    fallback_report = simulation.simulate_closed_loop_scenario(
+        dataset_path=V4_DATASET_PATH,
+        user_id="syn-v4-user-008",
+        max_cycles=5,
+        model_artifact_path="artifacts/models/does_not_exist.json",
+        policy_model_artifact_path="artifacts/models/does_not_exist.json",
+    )
+
+    guarded_step = guarded_report.trace[0]
+    fallback_step = fallback_report.trace[0]
+
+    assert guarded_step.raw_learned_policy_action == simulation.SimulationPolicyAction.CONTINUE_PLAN
+    assert (
+        guarded_step.selected_policy_action
+        == simulation.SimulationPolicyAction.TRIGGER_SAFETY_RECHECK
+    )
+    assert (
+        guarded_step.deterministic_action
+        == simulation.SimulationPolicyAction.TRIGGER_SAFETY_RECHECK
+    )
+    assert guarded_step.policy_guard_reason == "baseline_intake_kept_deterministic"
+    assert guarded_step.policy_guard_applied is True
+
+    assert (
+        guarded_report.final_policy_action
+        == simulation.SimulationPolicyAction.TRIGGER_SAFETY_RECHECK
+    )
+    assert fallback_report.model_loaded is False
+    assert fallback_report.policy_model_loaded is False
+    assert (
+        fallback_report.final_policy_action
+        == simulation.SimulationPolicyAction.TRIGGER_SAFETY_RECHECK
+    )
+    assert fallback_step.raw_learned_policy_action is None
+    assert fallback_step.action_source == simulation.PolicyActionSource.DETERMINISTIC_POLICY
+    assert fallback_step.predicted_effect_source == simulation.EffectSource.DETERMINISTIC_FALLBACK
+    assert fallback_step.policy_effect_proxy_override_applied is False

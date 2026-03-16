@@ -1,0 +1,43 @@
+{
+  "user_profile": {
+    "age": 45,
+    "biological_sex": "female",
+    "pregnant": false
+  },
+  "goals": [
+    "bone_joint"
+  ],
+  "symptoms": [
+    "low_sun_exposure"
+  ],
+  "conditions": [],
+  "medications": [],
+  "current_supplements": [
+    {
+      "name": "Daily Bone Softgel",
+      "dose": "125 mcg",
+      "ingredients": [
+        "Vitamin D3"
+      ]
+    }
+  ],
+  "lifestyle": {
+    "sleep_hours": 7.0,
+    "stress_level": 2,
+    "activity_level": "lightly_active",
+    "smoker": false,
+    "alcohol_per_week": 0
+  },
+  "input_availability": {
+    "survey": true,
+    "nhis": false,
+    "wearable": false,
+    "cgm": false,
+    "genetic": false
+  },
+  "preferences": {
+    "budget_level": "medium",
+    "max_products": 2,
+    "avoid_ingredients": []
+  }
+}

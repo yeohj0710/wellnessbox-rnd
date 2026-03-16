@@ -2,26 +2,27 @@
 
 ## Current priority
 
-The bounded combined-replay override diagnostic loop is now complete.
+The latest prioritization loop re-ranked the next work by ROI against current KPI bottlenecks and implementation gaps.
 
-What the latest loop proved:
+What the current repo state now suggests:
 
-- disabling effect-conditioned override in combined replay removes all override applications:
-  - `policy_effect_override_applied_count: 325 -> 0`
-- that restores a small amount of low-risk richness:
-  - combined low-risk final actions: `continue_plan: 65 -> 63`, `monitor_only: 0 -> 2`
-- disagreement counts also improve:
-  - low-risk disagreement count: `65 -> 60`
-  - `cgm` disagreement count: `3 -> 0`
-- but the real target still does not move:
-  - combined `cgm` final actions stay `ask_targeted_followup: 10`, `continue_plan: 13`, `trigger_safety_recheck: 10`
-  - no combined `cgm monitor_only` or `cgm re_optimize` final actions appear
+- `cgm` replay is still partially blocked by final-step score geometry, so more threshold-edge tweaking is lower ROI right now
+- `OpenAI` live smoke is still env-blocked, so more local adapter prep is also lower ROI until a real key exists
+- the most KPI-aligned unblocked gap is now `PRO scoring`
+- the most leverage-heavy infra gap after that is eval report comparison
+- the clearest weakest-slice follow-up after that is sensor/genetic parser linkage into frozen-eval evidence
 
 ## Recommended next loop
 
-1. `P2/P4`: keep the fixed v4 cohort, current effect artifact, and restored uniform policy artifact, and make one minimal replay-only change to the combined override gate or effect-conditioned policy priors for the `cgm` threshold-edge region, then rerun combined replay only.
-2. `P2/P4`: if that still does not move the `cgm` terminal-action slice, add one more bounded diagnostic that reports the exact records/users where override-off still falls back to `continue_plan`.
-3. `P1`: only if replay/training work is blocked, take one very tight deterministic safety increment.
+1. `P2/P4`: implement the smallest deterministic `PRO scoring` contract: baseline/follow-up form schema plus improvement metric summary artifact for a tiny sample set.
+2. `P2/P4`: add a version-to-version eval comparison helper that reads two eval report JSON files and emits metric deltas plus weakest-slice movement.
+3. `P2/P4`: link normalized sensor/genetic parser outputs to a frozen-eval-compatible slice audit focused on the current weakest integration category.
+
+## Deferred until higher ROI or user env is ready
+
+- `P3/P4`: rerun the live OpenAI smoke after `OPENAI_API_KEY` injection and confirm whether `provider = openai_responses_api` or a verifier fallback still occurs.
+- `P3/P4`: if live smoke succeeds later, expand `QA dataset D` so the live path is tested beyond the current seed case.
+- `P2/P4`: revisit `cgm` only if the loop explicitly targets final-step `continue_plan` vs `re_optimize` score geometry rather than more threshold-edge widening.
 
 ## Guardrails
 
@@ -37,8 +38,11 @@ What the latest loop proved:
 - Consult `original_plan.pdf` only for KPI ambiguity, measurement audits, or explicit page-level checks
 - Preserve:
   - deterministic baseline
-  - frozen eval
+  - frozen eval comparability
   - safety hard-rule precedence
   - deterministic fallback when learned output is missing, suspicious, or out of scope
   - system-owned action space only
+  - bounded evidence-grounded chat path with verifier
+  - no recommendation/safety/optimizer runtime coupling to the OpenAI adapter
   - replay-only boundaries for learned artifacts unless explicitly widened by a later documented decision
+  - repo-local backlog discipline through `PENDING_USER_ACTIONS.md` and `scripts/manual_backlog.ps1`
