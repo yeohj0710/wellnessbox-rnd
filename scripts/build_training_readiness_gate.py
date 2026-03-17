@@ -15,8 +15,8 @@ from wellnessbox_rnd.evals.training_readiness_gate import (
 def build_parser() -> ArgumentParser:
     parser = ArgumentParser(
         description=(
-            "Build a strict GO/NO-GO training-readiness gate after replay attribution, "
-            "synthetic-validity audit, and weakest-slice lineage evidence."
+            "Build a strict GO/NO-GO memo for the next narrow effect-model "
+            "training rerun."
         )
     )
     parser.add_argument(
@@ -30,37 +30,36 @@ def build_parser() -> ArgumentParser:
     )
     parser.add_argument(
         "--replay-attribution",
-        default="artifacts/reports/non_cgm_continue_to_monitor_threshold_cross_attribution_v1.json",
+        default="artifacts/reports/non_cgm_residual_threshold_cross_attribution_v2.json",
     )
     parser.add_argument(
-        "--synthetic-validity-audit",
-        default="artifacts/reports/synthetic_validity_audit_v1.json",
+        "--synthetic-validity-followup",
+        default="artifacts/reports/synthetic_validity_followup_single_item_v1.json",
     )
     parser.add_argument(
-        "--requested-weakest-slice-lineage-proof",
-        default="artifacts/reports/weakest_slice_lineage_proof_v1.json",
+        "--cgm-core-summary",
+        default="artifacts/reports/core_kpi_path_summary_v1.json",
     )
     parser.add_argument(
-        "--weakest-slice-summary",
-        default="artifacts/reports/weakest_slice_frozen_eval_summary_v1.json",
-    )
-    parser.add_argument(
-        "--parser-case-id-mismatch-decision",
-        default="artifacts/reports/parser_case_id_mismatch_decision_v1.json",
-    )
-    parser.add_argument(
-        "--structured-safety-rule-overlap-decision",
-        default="artifacts/reports/structured_safety_rule_overlap_decision_v1.json",
+        "--requested-cgm-geometry-audit",
+        default="artifacts/reports/cgm_outside_band_final_step_geometry_v2.json",
     )
     parser.add_argument(
         "--report-json",
-        default="artifacts/reports/training_readiness_gate_v1.json",
+        default="artifacts/reports/training_readiness_gate_v2.json",
     )
     parser.add_argument(
         "--report-md",
-        default="artifacts/reports/training_readiness_gate_v1.md",
+        default="artifacts/reports/training_readiness_gate_v2.md",
     )
     return parser
+
+
+def _load_optional_json(path: str) -> dict[str, object] | None:
+    file_path = Path(path)
+    if not file_path.exists():
+        return None
+    return load_json(file_path)
 
 
 def main() -> int:
@@ -70,17 +69,12 @@ def main() -> int:
         case_count=args.case_count,
         replay_attribution=load_json(args.replay_attribution),
         replay_attribution_path=args.replay_attribution,
-        synthetic_validity_audit=load_json(args.synthetic_validity_audit),
-        synthetic_validity_audit_path=args.synthetic_validity_audit,
-        weakest_slice_summary=load_json(args.weakest_slice_summary),
-        weakest_slice_summary_path=args.weakest_slice_summary,
-        parser_case_id_mismatch_decision=load_json(args.parser_case_id_mismatch_decision),
-        parser_case_id_mismatch_decision_path=args.parser_case_id_mismatch_decision,
-        structured_safety_rule_overlap_decision=load_json(
-            args.structured_safety_rule_overlap_decision
-        ),
-        structured_safety_rule_overlap_decision_path=args.structured_safety_rule_overlap_decision,
-        requested_weakest_slice_lineage_proof_path=args.requested_weakest_slice_lineage_proof,
+        synthetic_validity_followup=load_json(args.synthetic_validity_followup),
+        synthetic_validity_followup_path=args.synthetic_validity_followup,
+        cgm_core_summary=load_json(args.cgm_core_summary),
+        cgm_core_summary_path=args.cgm_core_summary,
+        cgm_geometry_audit=_load_optional_json(args.requested_cgm_geometry_audit),
+        cgm_geometry_audit_path=args.requested_cgm_geometry_audit,
     )
     write_training_readiness_gate_files(
         report=report,

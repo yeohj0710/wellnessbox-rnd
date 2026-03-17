@@ -2,64 +2,53 @@
 
 ## Current loop
 
-- Chosen stage: `P2/P4`
-- Chosen task: `implement PROImprovementSummaryV1 directly from the shared baseline/follow-up PRO event contract`
+- Chosen stage: `P3/P4`
+- Chosen task: `one deliberately narrow effect-model training rerun targeting the authorized residual family only`
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
   - `case_count = 480`
 
 ## What changed
 
-- Added one bounded shared-contract implementation/report pair:
-  - `artifacts/reports/pro_improvement_summary_contract_v1.json`
-  - `artifacts/reports/pro_improvement_summary_contract_v1.md`
-- Added minimal implementation only on the PRO normalized path:
-  - `src/wellnessbox_rnd/schemas/pro_events.py`
-  - `src/wellnessbox_rnd/metrics/pro_scoring.py`
-  - `scripts/build_pro_improvement_summary_contract.py`
-  - `tests/test_pro_improvement_summary_contract.py`
-  - updated `tests/test_pro_events.py`
-- Updated:
+- No new training artifact was created in this loop.
+- Updated only the handoff docs to record why the requested effect-training loop must not proceed:
   - `PROGRESS.md`
   - `NEXT_STEPS.md`
   - `SESSION_HANDOFF.md`
 
 ## Why this loop was chosen
 
-- The repo already had a shared baseline/follow-up PRO event path, but the strongest remaining gap was:
-  - making `PROImprovementSummaryV1` read directly from that normalized event contract
-  - proving `z-score`, `percentile`, and `delta_pp` stay on one testable path
-- This loop was the smallest implementation step that tightened KPI-path semantics without reopening training or runtime scope.
+- The user explicitly requested one bounded effect-training loop.
+- But the loop included a hard precondition:
+  - run only if `training_readiness_gate_v2` is `GO`
+- The latest gate remains:
+  - `authorized_now = false`
+  - `decision = no_go_keep_training_blocked`
+  - `first_blocking_criterion = dominant_replay_residual_explained_tightly_enough`
+- So the correct bounded action was to stop and document the block rather than run unauthorized training.
 
 ## Result in this loop
 
-- The shared baseline/follow-up PRO event now carries one normalized snapshot shape for both timepoints:
-  - `timepoint`
-  - `aggregate_z`
-  - `aggregate_percentile`
-  - `domain_z`
-  - `domain_percentile`
-- `PROImprovementSummaryV1` is now computed directly from that shared contract and exposes:
-  - `baseline_aggregate_z`
-  - `follow_up_aggregate_z`
-  - `baseline_aggregate_percentile`
-  - `follow_up_aggregate_percentile`
-  - `aggregate_delta_z`
-  - `aggregate_delta_pp`
-- The new contract artifact fixes the end-to-end read as:
-  - `derived_directly_from_shared_event_contract = true`
-  - `baseline_follow_up_same_normalized_structure_case_count = 480`
-  - `event_to_summary_valid_case_count = 480`
-  - `event_to_summary_invalid_case_count = 0`
-  - `delta_pp_matches_percentile_diff_all_valid_cases = true`
-  - `frozen_eval_compatible = true`
+- Training did not run.
+- The following requested artifacts were intentionally not created because the gate is `NO-GO`:
+  - `artifacts/models/effect_model_v4_authorized_candidate.json`
+  - `artifacts/reports/effect_model_v4_authorized_candidate_compare_v1.json`
+  - `artifacts/reports/effect_model_v4_authorized_candidate_compare_v1.md`
+- The blocking chain remains:
+  - replay residual is still not gate-ready
+  - chosen synthetic-validity item is still risky
+  - reopened `cgm` blocker is not closed or proven non-blocking
+  - no safe narrow rerun target is available now
+- The single next non-training loop remains:
+  - `replay_only_attribution_for_threshold_duration_sensitive_mid_margin_large_drop`
 
 ## Interpretation
 
-- PRO outcome meaning now sits on one normalized baseline/follow-up event path in real code, not just in docs.
-- The shared PRO contract is stronger than before, but this does not reopen training:
-  - the training-readiness gate remains `NO-GO`
-  - replay and synthetic-validity blockers still dominate overall priority
+- Running training here would violate the current strict gate.
+- The correct next step is still:
+  - do not train
+  - do not create a new candidate artifact
+  - take the `large_drop` replay-only loop first
 
 ## Behavior boundary
 
@@ -67,9 +56,10 @@
 - No safety logic change
 - No optimizer change
 - No inference API change
-- No effect-model training
+- No training run
+- No learned-artifact promotion into runtime
 - No chat/OpenAI change
-- Learned artifacts remain replay-only
+- Frozen-eval comparability preserved
 
 ## Deterministic baseline status
 
@@ -85,7 +75,4 @@ Official frozen eval baseline remains unchanged:
 
 ## Validation
 
-- `python scripts/build_pro_improvement_summary_contract.py --report-json artifacts/reports/pro_improvement_summary_contract_v1.json --report-md artifacts/reports/pro_improvement_summary_contract_v1.md`
-- `python -m pytest tests/test_pro_events.py tests/test_pro_scoring.py tests/test_pro_improvement_summary_contract.py -q`
-- `python -m ruff check src/wellnessbox_rnd/schemas/pro_events.py src/wellnessbox_rnd/metrics/pro_scoring.py scripts/build_pro_improvement_summary_contract.py tests/test_pro_events.py tests/test_pro_scoring.py tests/test_pro_improvement_summary_contract.py`
-- `git diff --check -- src/wellnessbox_rnd/schemas/pro_events.py src/wellnessbox_rnd/metrics/pro_scoring.py scripts/build_pro_improvement_summary_contract.py tests/test_pro_events.py tests/test_pro_improvement_summary_contract.py artifacts/reports/pro_improvement_summary_contract_v1.json artifacts/reports/pro_improvement_summary_contract_v1.md PROGRESS.md NEXT_STEPS.md SESSION_HANDOFF.md`
+- `git diff --check -- PROGRESS.md NEXT_STEPS.md SESSION_HANDOFF.md`

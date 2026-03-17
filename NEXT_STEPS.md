@@ -13,11 +13,18 @@ The current repo state is:
 - the strict training-readiness gate still fixes:
   - `authorized_now = false`
   - `decision = no_go_keep_training_blocked`
-- the shared PRO baseline/follow-up path is now directly wired:
-  - `PROImprovementSummaryV1` is derived from `baseline_followup_pro_event_v1`
-  - `baseline_follow_up_same_normalized_structure_case_count = 480`
-  - `delta_pp_matches_percentile_diff_all_valid_cases = true`
-- learned artifacts remain replay-only and optional to runtime
+  - `first_blocking_criterion = dominant_replay_residual_explained_tightly_enough`
+- one synthetic-validity minimum-change item is now bounded explicitly:
+  - `chosen_item = calibration_target_coupling`
+  - `resolution_state = still_risky`
+  - `actionable_for_future_gate_work = true`
+- the replay-only residual family is now narrowed further:
+  - `threshold_duration_sensitive = 10`
+  - `mid_margin = 9`
+  - prior explained `small_drop = 5`
+  - current residual `large_drop + medium_drop = 4`
+- requested effect-training rerun is blocked by gate precondition:
+  - no `effect_model_v4_authorized_candidate` artifact should be created yet
 
 So the next session should stay in replay-only / audit mode, not reopen training.
 
@@ -45,7 +52,7 @@ These are closed enough for the current KPI path and should stay closed unless n
 
 4. replay-only explanation of the current smallest `non_cgm` drift surface
    - status: `current_smallest_surface_explained`
-   - current bounded surface:
+   - bounded surface:
      - `threshold_duration_sensitive`
      - `mid_margin`
      - `small_drop`
@@ -54,34 +61,57 @@ These are closed enough for the current KPI path and should stay closed unless n
      - `0.5` half-offset
      - local contract `uniform_score_gap_offset`
 
-5. narrow synthetic-validity go/no-go memo
-   - status: `current_no_go_memo_written`
-   - implication:
-     - no training rerun on current synthetic evidence
+5. replay-only residual attribution for the remaining `mid_margin` residual surface
+   - status: `residual_surface_narrowed_but_not_closed`
+   - bounded residual surface:
+     - `threshold_duration_sensitive`
+     - `mid_margin`
+     - `large_drop = 3`
+     - `medium_drop = 1`
+   - current finding:
+     - `primary_residual_family = mixed_residual_overlap`
+     - `score_geometry_share_pct = 74.52`
+     - `trajectory_step_behavior_share_pct = 25.48`
+     - `threshold_duration_interaction_direct_share_pct = 0.0`
+     - `explained_well_enough_for_future_gate_work = false`
 
-6. strict training-readiness gate
-   - status: `current_no_go_gate_written`
+6. narrow synthetic-validity single-item calibration follow-up
+   - status: `bounded_single_item_written`
+   - proof:
+     - `chosen_item = calibration_target_coupling`
+     - `resolution_state = still_risky`
+     - `candidate_supported_share_of_net_gain_pct = 106.75`
+     - `baseline_supported_share_of_net_gain_pct = 111.17`
+
+7. strict training-readiness gate
+   - status: `current_no_go_gate_written_v2`
    - proof:
      - `authorized_now = false`
      - `decision = no_go_keep_training_blocked`
+     - `first_blocking_criterion = dominant_replay_residual_explained_tightly_enough`
+     - next required non-training loop is `large_drop` only
 
-7. optional chat/OpenAI triage
-   - status: `defer_live_rerun_optional_only`
-   - keep below replay, synthetic validity, weakest-slice residual proof, `cgm`, and training-boundary work
+8. requested effect-training rerun
+   - status: `blocked_by_gate_precondition`
+   - proof:
+     - `training_readiness_gate_v2 = NO-GO`
+     - no new candidate artifact should be created yet
 
 ## Open bottlenecks 5
 
 Order these by current evidence:
 
-1. the dominant replay regression family is still unresolved above the already-explained `5/26` slice
+1. the dominant replay regression family is still unresolved above the already-explained `small_drop` slice
    - family: `non_cgm_continue_to_monitor_threshold_cross`
-   - this is still the single required pre-rerun loop
+   - residual surface is now only `4` cases, but still lacks one bucket-agnostic local contract
 
 2. synthetic validity remains the principal project blocker
    - supported effect-enriched rows still remain:
      - `exact_reconstruction_rate_pct = 100.0`
      - `assignment_top2_match_rate_pct = 100.0`
      - materially calibration-coupled to `expected_effect_proxy`
+   - one item is now better bounded, but not closed:
+     - `calibration_target_coupling = still_risky`
 
 3. weakest-slice lineage is still bridge-connected rather than fully closed
    - requested `weakest_slice_lineage_proof_v1.json` is absent
@@ -93,30 +123,35 @@ Order these by current evidence:
 4. `cgm` final-step geometry still has unresolved structural overlap
    - status: `structural_continue_plan_overlap_persists`
    - outside-band unresolved cases still dominate over the single threshold-edge win
+   - but this is still not the next blocker right now
 
 5. further training reruns remain blocked by evidence quality, not infrastructure
    - current gate is strict `NO-GO`
-   - PRO contract wiring is no longer the blocker
+   - first blocker remains replay `large_drop`
+   - reopened `cgm` blocker is not yet closed or proven non-blocking
 
 ## Next 3 bounded loops
 
-1. `P3/P4`: replay-only residual attribution for `non_cgm_continue_to_monitor_threshold_cross`
-   - this is still the single loop the current gate says must happen first
-   - do not repeat the already-explained `small_drop` slice
-   - start with residual `threshold_duration_sensitive / mid_margin`:
-     - `large_drop`
-     - `medium_drop`
+1. `P3/P4`: replay-only attribution for `threshold_duration_sensitive / mid_margin / large_drop` only
+   - this is now the densest remaining residual bucket
    - success output:
-     - one replay artifact that says whether `trajectory_step` still dominates or whether a new local opposing surface explains the residual bucket
+     - one artifact showing whether `large_drop` reduces to one reusable local contract or still needs a mixed two-feature explanation
 
-2. `P3/P4`: one narrow synthetic-validity follow-up tied to the existing no-go memo
-   - only if loop 1 completes or stalls cleanly
-   - stay on exactly one item:
-     - pre-policy-proxy vs post-policy-proxy rerun gating
-     - or supported-vs-unsupported validity split proof
+2. `P3/P4`: replay-only attribution for the single `threshold_duration_sensitive / mid_margin / medium_drop` case only
+   - only after loop 1 completes or stalls cleanly
+   - success output:
+     - one artifact proving whether the lone medium case is already fully explained by the current mixed story or needs a separate local contract
 
-3. `P2/P4`: `cgm` outside-band final-step geometry only
-   - only after the replay-first requirement is satisfied or intentionally deferred
+3. `P3/P4`: one narrow synthetic-validity follow-up on `generator_contamination` only
+   - stay single-item and minimum-change
+   - success output:
+     - one artifact separating acceptable shared assignment assumptions from unacceptable generator-coupled supported-slice efficacy evidence
+
+Do not run training or a new `cgm` loop yet.
+- Why:
+  - latest gate `v2` is strict `NO-GO`
+  - first blocker remains replay `large_drop`
+  - `cgm` still fails the gate's non-blocking check because `cgm_outside_band_final_step_geometry_v2` is absent
 
 ## Priority rule
 
@@ -124,7 +159,7 @@ Order these by current evidence:
 - replay-only evidence still outranks every other training-adjacent task because the current gate names it as the required precondition
 - synthetic-validity follow-up stays above weakest-slice cleanup, `cgm`, and any training churn
 - training rerun stays blocked until the current gate materially changes from `no_go_keep_training_blocked`
-- optional chat/OpenAI stays below replay, PRO, weakest-slice, `cgm`, synthetic-validity, and training-boundary work
+- optional chat/OpenAI stays below replay, synthetic validity, weakest-slice cleanup, `cgm`, and training-boundary work
 
 ## Manual backlog priority
 

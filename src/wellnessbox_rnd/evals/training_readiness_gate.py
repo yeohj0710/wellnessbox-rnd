@@ -14,149 +14,147 @@ def build_training_readiness_gate(
     case_count: int,
     replay_attribution: dict[str, object],
     replay_attribution_path: str | Path,
-    synthetic_validity_audit: dict[str, object],
-    synthetic_validity_audit_path: str | Path,
-    weakest_slice_summary: dict[str, object],
-    weakest_slice_summary_path: str | Path,
-    parser_case_id_mismatch_decision: dict[str, object],
-    parser_case_id_mismatch_decision_path: str | Path,
-    structured_safety_rule_overlap_decision: dict[str, object],
-    structured_safety_rule_overlap_decision_path: str | Path,
-    requested_weakest_slice_lineage_proof_path: str | Path,
+    synthetic_validity_followup: dict[str, object],
+    synthetic_validity_followup_path: str | Path,
+    cgm_core_summary: dict[str, object],
+    cgm_core_summary_path: str | Path,
+    cgm_geometry_audit: dict[str, object] | None,
+    cgm_geometry_audit_path: str | Path,
 ) -> dict[str, object]:
-    attribution_verdict = _as_dict(replay_attribution.get("attribution_verdict"))
-    replay_summary = _as_dict(replay_attribution.get("readable_summary"))
-    replay_smallest_surface = _as_dict(replay_summary.get("smallest_surface_digest"))
-    replay_surface = _as_dict(replay_summary.get("surface_digest"))
+    replay_target = _as_dict(replay_attribution.get("target_residual_slice"))
+    replay_chain = _as_dict(replay_attribution.get("reproduction_chain"))
+    replay_verdict = _as_dict(replay_attribution.get("verdict"))
 
-    synthetic_gate = _as_dict(synthetic_validity_audit.get("go_no_go_memo"))
-    synthetic_status = _as_dict(synthetic_validity_audit.get("status_answers"))
-    synthetic_supported = _as_dict(
-        _as_dict(synthetic_validity_audit.get("readable_summary")).get(
-            "supported_slice_digest"
-        )
+    synthetic_scope = _as_dict(synthetic_validity_followup.get("scope"))
+    synthetic_selection = _as_dict(synthetic_validity_followup.get("selection"))
+    synthetic_disposition = _as_dict(
+        synthetic_validity_followup.get("final_disposition")
+    )
+    synthetic_measured = _as_dict(
+        synthetic_validity_followup.get("measured_concentration")
     )
 
-    weakest_anchor = _as_dict(weakest_slice_summary.get("frozen_eval_anchor"))
-    parser_gate = _as_dict(parser_case_id_mismatch_decision.get("decision_gate"))
-    safety_gate = _as_dict(structured_safety_rule_overlap_decision.get("decision_gate"))
+    cgm_status = _as_dict(cgm_core_summary.get("cgm_final_step_geometry_status"))
+    cgm_geometry_present = bool(cgm_geometry_audit)
+    cgm_geometry_verdict = _as_dict(_as_dict(cgm_geometry_audit).get("verdict"))
+    cgm_reopened = (
+        cgm_status.get("status") == "structural_continue_plan_overlap_persists"
+    )
 
     criterion_1 = {
-        "criterion": "dominant_replay_family_explained_well_enough",
-        "passed": bool(
-            attribution_verdict.get("current_smallest_surface_sufficient_for_explanation")
-        )
-        and bool(attribution_verdict.get("family_wide_explanation_complete")),
+        "criterion": "dominant_replay_residual_explained_tightly_enough",
+        "passed": bool(replay_verdict.get("explained_well_enough_for_future_gate_work")),
         "status": (
-            "failed_residual_family_unexplained"
-            if not bool(attribution_verdict.get("family_wide_explanation_complete"))
-            else "passed"
+            "passed"
+            if bool(replay_verdict.get("explained_well_enough_for_future_gate_work"))
+            else "failed_residual_surface_still_not_gate_ready"
         ),
         "evidence": {
-            "decision_family": _as_dict(replay_summary.get("family_digest")).get(
-                "decision_family"
+            "decision_family": replay_target.get("decision_family"),
+            "observed_case_count": replay_target.get("observed_case_count"),
+            "current_residual_case_count": replay_chain.get("current_residual_case_count"),
+            "primary_residual_family": replay_verdict.get("primary_residual_family"),
+            "current_smallest_credible_surface": replay_verdict.get(
+                "current_smallest_credible_surface"
             ),
-            "observed_case_count": _as_dict(replay_summary.get("family_digest")).get(
-                "observed_case_count"
+            "explained_well_enough_for_future_gate_work": replay_verdict.get(
+                "explained_well_enough_for_future_gate_work"
             ),
-            "current_smallest_surface_sufficient_for_explanation": attribution_verdict.get(
-                "current_smallest_surface_sufficient_for_explanation"
-            ),
-            "family_wide_explanation_complete": attribution_verdict.get(
-                "family_wide_explanation_complete"
-            ),
-            "sufficiency_scope": attribution_verdict.get("sufficiency_scope"),
         },
     }
 
-    synthetic_present = any(
-        _as_dict(synthetic_status.get(key)).get("status") == "present"
-        for key in (
-            "circularity",
-            "generator_contamination",
-            "calibration_target_coupling",
-        )
-    )
+    synthetic_state = str(synthetic_disposition.get("resolution_state") or "")
     criterion_2 = {
-        "criterion": "synthetic_validity_bounded_tightly_enough",
-        "passed": not synthetic_present
-        and synthetic_gate.get("training_rerun_justified_now") is True,
+        "criterion": "chosen_synthetic_validity_item_resolved_or_bounded_tightly_enough",
+        "passed": synthetic_state in {"resolved", "still_unproven"},
         "status": (
-            "failed_material_validity_risk_still_present"
-            if synthetic_present
-            else "passed"
+            "passed"
+            if synthetic_state in {"resolved", "still_unproven"}
+            else "failed_chosen_synthetic_item_still_risky"
         ),
         "evidence": {
-            "circularity": _as_dict(synthetic_status.get("circularity")).get("status"),
-            "generator_contamination": _as_dict(
-                synthetic_status.get("generator_contamination")
-            ).get("status"),
-            "calibration_target_coupling": _as_dict(
-                synthetic_status.get("calibration_target_coupling")
-            ).get("status"),
-            "training_rerun_justified_now": synthetic_gate.get(
-                "training_rerun_justified_now"
+            "chosen_item": synthetic_scope.get("chosen_item"),
+            "why_this_item": synthetic_selection.get("why_this_minimum_change_item"),
+            "resolution_state": synthetic_disposition.get("resolution_state"),
+            "actionable_for_future_gate_work": synthetic_disposition.get(
+                "actionable_for_future_gate_work"
             ),
-            "supported_exact_reconstruction_rate_pct": synthetic_supported.get(
-                "supported_exact_reconstruction_rate_pct"
+            "candidate_supported_share_of_net_gain_pct": _nested(
+                synthetic_measured, "candidate_test", "supported_share_of_net_gain_pct"
             ),
-            "supported_assignment_top2_match_rate_pct": synthetic_supported.get(
-                "supported_assignment_top2_match_rate_pct"
+            "baseline_supported_share_of_net_gain_pct": _nested(
+                synthetic_measured, "baseline_test", "supported_share_of_net_gain_pct"
             ),
         },
     }
 
-    audit_layer_gap_count = _to_int(weakest_slice_summary.get("audit_layer_gap_count"))
+    cgm_closed_or_non_blocking = False
+    if not cgm_reopened:
+        cgm_closed_or_non_blocking = True
+    elif cgm_geometry_present:
+        cgm_closed_or_non_blocking = _as_dict(cgm_geometry_verdict).get(
+            "reopened_cgm_blocker_status"
+        ) in {"closed", "non_blocking"}
+
     criterion_3 = {
-        "criterion": "weakest_slice_lineage_closed_enough_for_relevant_slice",
-        "passed": audit_layer_gap_count == 0
-        and parser_gate.get("blocks_kpi_interpretation") is False
-        and safety_gate.get("blocks_kpi_interpretation") is False,
+        "criterion": "reopened_cgm_blocker_closed_or_proven_non_blocking",
+        "passed": cgm_closed_or_non_blocking,
         "status": (
-            "failed_lineage_still_bridge_connected_with_direct_gap"
-            if audit_layer_gap_count > 0
-            else "passed"
+            "passed"
+            if cgm_closed_or_non_blocking
+            else "failed_reopened_cgm_blocker_not_closed_or_non_blocking"
         ),
         "evidence": {
-            "requested_lineage_proof_present": False,
-            "substitute_lineage_anchor": weakest_slice_summary.get("summary_name"),
-            "audit_layer_gap_count": audit_layer_gap_count,
-            "still_empty_weakest_families": weakest_slice_summary.get(
-                "still_empty_weakest_families"
+            "cgm_geometry_artifact_present": cgm_geometry_present,
+            "cgm_geometry_artifact_path": str(cgm_geometry_audit_path),
+            "current_cgm_status": cgm_status.get("status"),
+            "selected_continue_case_count": cgm_status.get("selected_continue_case_count"),
+            "continue_to_reoptimize_top_action_flip_count": cgm_status.get(
+                "continue_to_reoptimize_top_action_flip_count"
             ),
-            "parser_case_id_mismatch_blocks_kpi_interpretation": parser_gate.get(
-                "blocks_kpi_interpretation"
-            ),
-            "structured_safety_overlap_blocks_kpi_interpretation": safety_gate.get(
-                "blocks_kpi_interpretation"
-            ),
+            "outside_monitor_band_count": cgm_status.get("outside_monitor_band_count"),
+            "blocker_family_summary": cgm_status.get("blocker_family_summary"),
+            "why_not_non_blocking_yet": (
+                "The requested v2 cgm artifact was not produced, and the latest core summary "
+                "still marks cgm as structural outside-band overlap rather than closed or "
+                "proven non-blocking."
+            )
+            if not cgm_closed_or_non_blocking
+            else None,
         },
     }
 
     criterion_4 = {
-        "criterion": "future_rerun_objective_can_be_stated_narrowly",
+        "criterion": "next_rerun_target_can_be_stated_narrowly",
         "passed": False,
-        "status": "failed_current_objective_still_broad_or_risky",
+        "status": "failed_safe_rerun_target_not_yet_narrow_enough",
         "evidence": {
-            "current_smallest_surface": {
-                "trajectory_mode": replay_smallest_surface.get("trajectory_mode"),
-                "margin_bucket": replay_smallest_surface.get("margin_bucket"),
-                "proxy_drop_bucket": replay_smallest_surface.get("proxy_drop_bucket"),
-                "opposing_feature": replay_surface.get("opposing_feature"),
-                "local_contract": replay_surface.get("local_contract"),
-            },
-            "why_not_narrow_enough_yet": (
-                "The current replay explanation is slice-local only and the remaining family "
-                "plus synthetic-validity blocker would make a rerun objective broader than one "
-                "safe local contract."
+            "safe_rerun_target_available_now": False,
+            "why_not_narrow_enough": (
+                "The dominant replay residual still needs another bounded replay loop first, "
+                "the chosen synthetic-validity item is still risky, and cgm remains reopened "
+                "without a v2 closure proof."
             ),
+            "blocking_pre_rerun_loop": {
+                "task": (
+                    "replay_only_attribution_for_threshold_duration_sensitive_mid_margin_"
+                    "large_drop"
+                ),
+                "decision_family": replay_target.get("decision_family"),
+                "trajectory_mode": replay_target.get("trajectory_mode"),
+                "margin_bucket": replay_target.get("margin_bucket"),
+                "proxy_drop_bucket": "large_drop",
+                "observed_case_count": _nested(
+                    replay_target, "bucket_case_counts", "large_drop"
+                ),
+            },
         },
     }
 
     criterion_5 = {
-        "criterion": "future_rerun_success_condition_measurable_without_kpi_semantics_change",
+        "criterion": "success_failure_measurable_without_kpi_semantics_change",
         "passed": True,
-        "status": "passed_but_gate_still_closed",
+        "status": "passed",
         "evidence": {
             "measurable_existing_metrics": [
                 "aggregate_mae",
@@ -167,14 +165,26 @@ def build_training_readiness_gate(
             ],
             "semantic_change_required": False,
             "note": (
-                "Success could be measured with current metrics, but the earlier criteria are "
-                "not met, so measurability alone does not authorize a rerun."
+                "Current gate success/failure can still be read with existing fit metrics "
+                "and replay-family case counts."
             ),
         },
     }
 
-    criteria = [criterion_1, criterion_2, criterion_3, criterion_4, criterion_5]
+    criteria = [
+        criterion_1,
+        criterion_2,
+        criterion_3,
+        criterion_4,
+        criterion_5,
+    ]
     all_pass = all(bool(_as_dict(item).get("passed")) for item in criteria)
+    failed_criteria = [
+        str(_as_dict(item).get("criterion"))
+        for item in criteria
+        if not bool(_as_dict(item).get("passed"))
+    ]
+    first_blocker = failed_criteria[0] if failed_criteria else None
 
     gate_decision = {
         "authorized_now": all_pass,
@@ -183,94 +193,75 @@ def build_training_readiness_gate(
             if all_pass
             else "no_go_keep_training_blocked"
         ),
-        "decision_standard": "strict_all_criteria_required",
-        "failed_criteria": [
-            _as_dict(item).get("criterion")
-            for item in criteria
-            if not bool(_as_dict(item).get("passed"))
-        ],
+        "decision_standard": "strict_all_criteria_required_default_no_go",
+        "failed_criteria": failed_criteria,
+        "first_blocking_criterion": first_blocker,
     }
 
     next_non_training_loop = {
         "required_before_any_future_rerun": (
-            "replay_only_residual_attribution_for_non_cgm_continue_to_monitor_threshold_cross"
+            "replay_only_attribution_for_threshold_duration_sensitive_mid_margin_large_drop"
         ),
         "why": (
-            "The dominant replay family is not yet explained beyond the current 5-case smallest "
-            "surface, so replay evidence must tighten before any rerun objective is safe."
+            "Criterion 1 fails first: the dominant replay residual is still not explained "
+            "tightly enough, and the `large_drop` bucket is the densest remaining slice."
         ),
         "bounded_target": {
-            "trajectory_mode": "threshold_duration_sensitive",
-            "margin_bucket": "mid_margin",
-            "residual_proxy_drop_buckets": ["large_drop", "medium_drop"],
+            "decision_family": replay_target.get("decision_family"),
+            "trajectory_mode": replay_target.get("trajectory_mode"),
+            "margin_bucket": replay_target.get("margin_bucket"),
+            "proxy_drop_bucket": "large_drop",
+            "observed_case_count": _nested(
+                replay_target, "bucket_case_counts", "large_drop"
+            ),
         },
     }
 
     readable_summary = {
         "bottom_line": (
-            "NO-GO: a narrow future training rerun is still not authorized because the dominant "
-            "replay family is only partially explained, synthetic validity risks remain present, "
-            "and weakest-slice lineage is still bridge-connected rather than fully closed."
+            "NO-GO: the next narrow effect-model rerun is still not authorized because the "
+            "dominant replay residual is not gate-ready, the chosen synthetic-validity item "
+            "is still risky, cgm is still reopened without a closure/non-blocking proof, "
+            "and no safe rerun target can yet be stated narrowly."
         ),
         "gate_digest": gate_decision,
         "replay_digest": {
-            "decision_family": _as_dict(replay_summary.get("family_digest")).get(
-                "decision_family"
-            ),
-            "current_smallest_surface_sufficient_for_explanation": attribution_verdict.get(
-                "current_smallest_surface_sufficient_for_explanation"
-            ),
-            "family_wide_explanation_complete": attribution_verdict.get(
-                "family_wide_explanation_complete"
+            "decision_family": replay_target.get("decision_family"),
+            "current_residual_case_count": replay_chain.get("current_residual_case_count"),
+            "primary_residual_family": replay_verdict.get("primary_residual_family"),
+            "explained_well_enough_for_future_gate_work": replay_verdict.get(
+                "explained_well_enough_for_future_gate_work"
             ),
         },
         "synthetic_digest": {
-            "circularity": _as_dict(synthetic_status.get("circularity")).get("status"),
-            "generator_contamination": _as_dict(
-                synthetic_status.get("generator_contamination")
-            ).get("status"),
-            "calibration_target_coupling": _as_dict(
-                synthetic_status.get("calibration_target_coupling")
-            ).get("status"),
-            "training_rerun_justified_now": synthetic_gate.get(
-                "training_rerun_justified_now"
+            "chosen_item": synthetic_scope.get("chosen_item"),
+            "resolution_state": synthetic_disposition.get("resolution_state"),
+            "actionable_for_future_gate_work": synthetic_disposition.get(
+                "actionable_for_future_gate_work"
             ),
         },
-        "weakest_slice_digest": {
-            "overall_weakest_category": _as_dict(
-                weakest_anchor.get("weakest_category_overall")
-            ).get("category"),
-            "audit_layer_gap_count": audit_layer_gap_count,
-            "parser_case_id_mismatch_non_blocking": parser_gate.get(
-                "blocks_kpi_interpretation"
-            )
-            is False,
-            "structured_safety_overlap_non_blocking": safety_gate.get(
-                "blocks_kpi_interpretation"
-            )
-            is False,
+        "cgm_digest": {
+            "artifact_present": cgm_geometry_present,
+            "status": cgm_status.get("status"),
+            "outside_monitor_band_count": cgm_status.get("outside_monitor_band_count"),
+            "threshold_edge_case_count": _nested(
+                cgm_status, "blocker_family_summary", "threshold_edge_monitor_band_continue"
+            ),
         },
     }
 
     report = {
-        "audit_name": "training_readiness_gate_v1",
+        "audit_name": "training_readiness_gate_v2",
         "scope": {
             "dataset_path": str(Path(dataset_path)),
             "case_count": case_count,
         },
         "source_artifacts": {
             "replay_attribution_path": str(replay_attribution_path),
-            "synthetic_validity_audit_path": str(synthetic_validity_audit_path),
-            "requested_weakest_slice_lineage_proof_path": str(
-                requested_weakest_slice_lineage_proof_path
-            ),
-            "resolved_weakest_slice_summary_path": str(weakest_slice_summary_path),
-            "parser_case_id_mismatch_decision_path": str(
-                parser_case_id_mismatch_decision_path
-            ),
-            "structured_safety_rule_overlap_decision_path": str(
-                structured_safety_rule_overlap_decision_path
-            ),
+            "synthetic_validity_followup_path": str(synthetic_validity_followup_path),
+            "cgm_core_summary_path": str(cgm_core_summary_path),
+            "requested_cgm_geometry_audit_path": str(cgm_geometry_audit_path),
+            "requested_cgm_geometry_audit_present": cgm_geometry_present,
         },
         "criteria_assessment": criteria,
         "gate_decision": gate_decision,
@@ -278,21 +269,22 @@ def build_training_readiness_gate(
         "readable_summary": readable_summary,
         "summary_findings": [
             (
-                "The requested weakest-slice lineage proof artifact path is not present in the "
-                "repo, so this gate used the latest weakest-slice frozen-eval summary plus the "
-                "current parser/safety residual decisions as the closest lineage evidence."
+                "This gate stays NO-GO because criterion 1 fails first: the dominant replay "
+                "residual still has a 4-case mixed-overlap surface and is not yet explained "
+                "well enough for future gate work."
             ),
             (
-                "This still returns NO-GO because the dominant replay family is only explained "
-                "for the current 5-case smallest surface, not for the full family."
+                "The chosen synthetic-validity item is better bounded than before, but it is "
+                "still explicitly `still_risky`, so criterion 2 also fails."
             ),
             (
-                "Synthetic validity also remains explicitly NO-GO: circularity, generator "
-                "contamination, and calibration-target coupling are all still present."
+                "The requested cgm v2 artifact is absent because that loop did not proceed; "
+                "the latest core summary still marks cgm as "
+                "`structural_continue_plan_overlap_persists`, so criterion 3 fails."
             ),
             (
-                "Weakest-slice lineage is readable enough for current KPI interpretation, but "
-                "not fully closed enough to upgrade the training gate by itself."
+                "Criterion 5 still passes because any future rerun can be judged with the "
+                "current KPI semantics and existing fit/replay metrics."
             ),
         ],
     }
@@ -309,14 +301,18 @@ def validate_training_readiness_gate(report: dict[str, object]) -> list[str]:
     if gate.get("authorized_now") is not False:
         issues.append("training gate must remain closed")
     if gate.get("decision") != "no_go_keep_training_blocked":
-        issues.append("gate decision drifted")
+        issues.append("gate decision drifted from strict no-go")
     if len(criteria) != 5:
         issues.append("gate must assess exactly five criteria")
     failed = gate.get("failed_criteria")
     if not isinstance(failed, list) or len(failed) < 1:
         issues.append("no-go gate must name failed criteria")
+    if gate.get("first_blocking_criterion") != (
+        "dominant_replay_residual_explained_tightly_enough"
+    ):
+        issues.append("unexpected first blocking criterion")
     if next_loop.get("required_before_any_future_rerun") != (
-        "replay_only_residual_attribution_for_non_cgm_continue_to_monitor_threshold_cross"
+        "replay_only_attribution_for_threshold_duration_sensitive_mid_margin_large_drop"
     ):
         issues.append("unexpected next non-training loop")
     return issues
@@ -324,7 +320,7 @@ def validate_training_readiness_gate(report: dict[str, object]) -> list[str]:
 
 def render_training_readiness_gate_markdown(report: dict[str, object]) -> str:
     lines = [
-        "# training readiness gate v1",
+        "# training readiness gate v2",
         "",
         f"- gate_decision: `{report.get('gate_decision')}`",
         f"- readable_summary: `{report.get('readable_summary')}`",
@@ -365,7 +361,8 @@ def write_training_readiness_gate_files(
     json_path.parent.mkdir(parents=True, exist_ok=True)
     md_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
     )
     md_path.write_text(render_training_readiness_gate_markdown(report), encoding="utf-8")
 
@@ -378,14 +375,13 @@ def _as_list(value: object) -> list[object]:
     return value if isinstance(value, list) else []
 
 
-def _to_int(value: object) -> int:
-    if isinstance(value, bool):
-        return int(value)
-    if isinstance(value, int):
-        return value
-    if isinstance(value, float):
-        return int(value)
-    return 0
+def _nested(payload: dict[str, object], *path: str) -> object | None:
+    current: object = payload
+    for key in path:
+        if not isinstance(current, dict):
+            return None
+        current = current.get(key)
+    return current
 
 
 __all__ = [

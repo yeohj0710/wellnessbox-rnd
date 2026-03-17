@@ -132,3 +132,18 @@ python -m venv .venv
 pip install -e ".[dev]"
 uvicorn apps.inference_api.main:app --reload
 ```
+
+## Always-On CPU Staging
+
+현재 deterministic inference API 는 provider-agnostic 컨테이너/서버 배포 기준으로 정리되어 있다.
+
+- production startup command:
+  - `python scripts/start_inference_api.py`
+- container build:
+  - `docker build -t wellnessbox-rnd-staging .`
+- container run:
+  - `docker run --rm -p 8000:8000 -e WB_RND_APP_ENV=staging wellnessbox-rnd-staging`
+- deployment smoke:
+  - `python scripts/run_staging_api_smoke.py --base-url http://127.0.0.1:8000`
+
+상세 배포 계약은 `docs/deployment/staging_api.md` 를 따른다.

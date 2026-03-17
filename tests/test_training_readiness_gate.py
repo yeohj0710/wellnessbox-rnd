@@ -8,41 +8,26 @@ from wellnessbox_rnd.evals.training_readiness_gate import (
 )
 
 
-def test_build_training_readiness_gate_returns_strict_no_go() -> None:
+def test_build_training_readiness_gate_returns_strict_no_go_v2() -> None:
     report = build_training_readiness_gate(
         dataset_path="data/synthetic/synthetic_longitudinal_v4.jsonl",
         case_count=480,
         replay_attribution=load_json(
-            "artifacts/reports/non_cgm_continue_to_monitor_threshold_cross_attribution_v1.json"
+            "artifacts/reports/non_cgm_residual_threshold_cross_attribution_v2.json"
         ),
         replay_attribution_path=(
-            "artifacts/reports/non_cgm_continue_to_monitor_threshold_cross_attribution_v1.json"
+            "artifacts/reports/non_cgm_residual_threshold_cross_attribution_v2.json"
         ),
-        synthetic_validity_audit=load_json(
-            "artifacts/reports/synthetic_validity_audit_v1.json"
+        synthetic_validity_followup=load_json(
+            "artifacts/reports/synthetic_validity_followup_single_item_v1.json"
         ),
-        synthetic_validity_audit_path="artifacts/reports/synthetic_validity_audit_v1.json",
-        weakest_slice_summary=load_json(
-            "artifacts/reports/weakest_slice_frozen_eval_summary_v1.json"
+        synthetic_validity_followup_path=(
+            "artifacts/reports/synthetic_validity_followup_single_item_v1.json"
         ),
-        weakest_slice_summary_path=(
-            "artifacts/reports/weakest_slice_frozen_eval_summary_v1.json"
-        ),
-        parser_case_id_mismatch_decision=load_json(
-            "artifacts/reports/parser_case_id_mismatch_decision_v1.json"
-        ),
-        parser_case_id_mismatch_decision_path=(
-            "artifacts/reports/parser_case_id_mismatch_decision_v1.json"
-        ),
-        structured_safety_rule_overlap_decision=load_json(
-            "artifacts/reports/structured_safety_rule_overlap_decision_v1.json"
-        ),
-        structured_safety_rule_overlap_decision_path=(
-            "artifacts/reports/structured_safety_rule_overlap_decision_v1.json"
-        ),
-        requested_weakest_slice_lineage_proof_path=(
-            "artifacts/reports/weakest_slice_lineage_proof_v1.json"
-        ),
+        cgm_core_summary=load_json("artifacts/reports/core_kpi_path_summary_v1.json"),
+        cgm_core_summary_path="artifacts/reports/core_kpi_path_summary_v1.json",
+        cgm_geometry_audit=None,
+        cgm_geometry_audit_path="artifacts/reports/cgm_outside_band_final_step_geometry_v2.json",
     )
 
     gate = report["gate_decision"]
@@ -53,56 +38,71 @@ def test_build_training_readiness_gate_returns_strict_no_go() -> None:
     assert gate == {
         "authorized_now": False,
         "decision": "no_go_keep_training_blocked",
-        "decision_standard": "strict_all_criteria_required",
+        "decision_standard": "strict_all_criteria_required_default_no_go",
         "failed_criteria": [
-            "dominant_replay_family_explained_well_enough",
-            "synthetic_validity_bounded_tightly_enough",
-            "weakest_slice_lineage_closed_enough_for_relevant_slice",
-            "future_rerun_objective_can_be_stated_narrowly",
+            "dominant_replay_residual_explained_tightly_enough",
+            "chosen_synthetic_validity_item_resolved_or_bounded_tightly_enough",
+            "reopened_cgm_blocker_closed_or_proven_non_blocking",
+            "next_rerun_target_can_be_stated_narrowly",
         ],
+        "first_blocking_criterion": "dominant_replay_residual_explained_tightly_enough",
     }
     assert len(criteria) == 5
     assert criteria[0]["passed"] is False
-    assert criteria[0]["evidence"]["family_wide_explanation_complete"] is False
+    assert criteria[0]["evidence"]["current_residual_case_count"] == 4
     assert criteria[1]["passed"] is False
-    assert criteria[1]["evidence"]["circularity"] == "present"
+    assert criteria[1]["evidence"]["chosen_item"] == "calibration_target_coupling"
+    assert criteria[1]["evidence"]["resolution_state"] == "still_risky"
     assert criteria[2]["passed"] is False
-    assert criteria[2]["evidence"]["requested_lineage_proof_present"] is False
-    assert criteria[2]["evidence"]["audit_layer_gap_count"] == 4
+    assert criteria[2]["evidence"]["cgm_geometry_artifact_present"] is False
+    assert criteria[2]["evidence"]["outside_monitor_band_count"] == 8
     assert criteria[3]["passed"] is False
+    assert criteria[3]["evidence"]["blocking_pre_rerun_loop"] == {
+        "task": (
+            "replay_only_attribution_for_threshold_duration_sensitive_mid_margin_"
+            "large_drop"
+        ),
+        "decision_family": "non_cgm_continue_to_monitor_threshold_cross",
+        "trajectory_mode": "threshold_duration_sensitive",
+        "margin_bucket": "mid_margin",
+        "proxy_drop_bucket": "large_drop",
+        "observed_case_count": 3,
+    }
     assert criteria[4]["passed"] is True
 
     assert next_loop == {
         "required_before_any_future_rerun": (
-            "replay_only_residual_attribution_for_non_cgm_continue_to_monitor_threshold_cross"
+            "replay_only_attribution_for_threshold_duration_sensitive_mid_margin_large_drop"
         ),
         "why": (
-            "The dominant replay family is not yet explained beyond the current 5-case smallest "
-            "surface, so replay evidence must tighten before any rerun objective is safe."
+            "Criterion 1 fails first: the dominant replay residual is still not explained "
+            "tightly enough, and the `large_drop` bucket is the densest remaining slice."
         ),
         "bounded_target": {
+            "decision_family": "non_cgm_continue_to_monitor_threshold_cross",
             "trajectory_mode": "threshold_duration_sensitive",
             "margin_bucket": "mid_margin",
-            "residual_proxy_drop_buckets": ["large_drop", "medium_drop"],
+            "proxy_drop_bucket": "large_drop",
+            "observed_case_count": 3,
         },
     }
     assert readable["gate_digest"]["decision"] == "no_go_keep_training_blocked"
     assert readable["replay_digest"] == {
         "decision_family": "non_cgm_continue_to_monitor_threshold_cross",
-        "current_smallest_surface_sufficient_for_explanation": True,
-        "family_wide_explanation_complete": False,
+        "current_residual_case_count": 4,
+        "primary_residual_family": "mixed_residual_overlap",
+        "explained_well_enough_for_future_gate_work": False,
     }
     assert readable["synthetic_digest"] == {
-        "circularity": "present",
-        "generator_contamination": "present",
-        "calibration_target_coupling": "present",
-        "training_rerun_justified_now": False,
+        "chosen_item": "calibration_target_coupling",
+        "resolution_state": "still_risky",
+        "actionable_for_future_gate_work": True,
     }
-    assert readable["weakest_slice_digest"] == {
-        "overall_weakest_category": "safety_blocked",
-        "audit_layer_gap_count": 4,
-        "parser_case_id_mismatch_non_blocking": True,
-        "structured_safety_overlap_non_blocking": True,
+    assert readable["cgm_digest"] == {
+        "artifact_present": False,
+        "status": "structural_continue_plan_overlap_persists",
+        "outside_monitor_band_count": 8,
+        "threshold_edge_case_count": 1,
     }
     assert report["validation_issues"] == []
 
@@ -112,40 +112,25 @@ def test_write_training_readiness_gate_files_creates_outputs(tmp_path: Path) -> 
         dataset_path="data/synthetic/synthetic_longitudinal_v4.jsonl",
         case_count=480,
         replay_attribution=load_json(
-            "artifacts/reports/non_cgm_continue_to_monitor_threshold_cross_attribution_v1.json"
+            "artifacts/reports/non_cgm_residual_threshold_cross_attribution_v2.json"
         ),
         replay_attribution_path=(
-            "artifacts/reports/non_cgm_continue_to_monitor_threshold_cross_attribution_v1.json"
+            "artifacts/reports/non_cgm_residual_threshold_cross_attribution_v2.json"
         ),
-        synthetic_validity_audit=load_json(
-            "artifacts/reports/synthetic_validity_audit_v1.json"
+        synthetic_validity_followup=load_json(
+            "artifacts/reports/synthetic_validity_followup_single_item_v1.json"
         ),
-        synthetic_validity_audit_path="artifacts/reports/synthetic_validity_audit_v1.json",
-        weakest_slice_summary=load_json(
-            "artifacts/reports/weakest_slice_frozen_eval_summary_v1.json"
+        synthetic_validity_followup_path=(
+            "artifacts/reports/synthetic_validity_followup_single_item_v1.json"
         ),
-        weakest_slice_summary_path=(
-            "artifacts/reports/weakest_slice_frozen_eval_summary_v1.json"
-        ),
-        parser_case_id_mismatch_decision=load_json(
-            "artifacts/reports/parser_case_id_mismatch_decision_v1.json"
-        ),
-        parser_case_id_mismatch_decision_path=(
-            "artifacts/reports/parser_case_id_mismatch_decision_v1.json"
-        ),
-        structured_safety_rule_overlap_decision=load_json(
-            "artifacts/reports/structured_safety_rule_overlap_decision_v1.json"
-        ),
-        structured_safety_rule_overlap_decision_path=(
-            "artifacts/reports/structured_safety_rule_overlap_decision_v1.json"
-        ),
-        requested_weakest_slice_lineage_proof_path=(
-            "artifacts/reports/weakest_slice_lineage_proof_v1.json"
-        ),
+        cgm_core_summary=load_json("artifacts/reports/core_kpi_path_summary_v1.json"),
+        cgm_core_summary_path="artifacts/reports/core_kpi_path_summary_v1.json",
+        cgm_geometry_audit=None,
+        cgm_geometry_audit_path="artifacts/reports/cgm_outside_band_final_step_geometry_v2.json",
     )
 
-    json_path = tmp_path / "training_readiness_gate_v1.json"
-    md_path = tmp_path / "training_readiness_gate_v1.md"
+    json_path = tmp_path / "training_readiness_gate_v2.json"
+    md_path = tmp_path / "training_readiness_gate_v2.md"
     write_training_readiness_gate_files(
         report=report,
         report_json_path=json_path,
@@ -155,7 +140,7 @@ def test_write_training_readiness_gate_files_creates_outputs(tmp_path: Path) -> 
 
     assert json_path.exists()
     assert md_path.exists()
-    assert "# training readiness gate v1" in markdown
+    assert "# training readiness gate v2" in markdown
     assert "Criteria Assessment" in markdown
     assert "Next Non-Training Loop" in markdown
     assert "Summary Findings" in markdown

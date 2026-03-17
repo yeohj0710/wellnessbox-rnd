@@ -15,6 +15,11 @@ def test_health_endpoint_returns_ok() -> None:
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
     assert response.json()["service"] == "wellnessbox-rnd"
+    assert response.json()["runtime_status"] == "ready"
+    assert response.json()["checks"]["knowledge_source"] in {
+        "prebuilt_runtime_knowledge_db",
+        "rebuilt_from_reference_knowledge_artifact",
+    }
 
 
 def test_recommend_endpoint_returns_structured_response() -> None:
