@@ -46,6 +46,7 @@ Working rules:
 ## Blocked-by-user items
 
 - The optional enriched live smoke rerun still requires the shell/session where `OPENAI_API_KEY` is visible.
+- `2026-03-17`: this bounded optional smoke loop checked the current Codex shell and `OPENAI_API_KEY` was not visible, so the rerun stayed blocked and the command was not executed.
 
 ## Done / obsolete items
 

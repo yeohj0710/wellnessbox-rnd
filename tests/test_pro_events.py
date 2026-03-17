@@ -31,6 +31,10 @@ def test_build_baseline_followup_pro_event_v1_preserves_core_fields() -> None:
     assert event.trajectory_step == record["trajectory_step"]
     assert event.baseline.timepoint == "baseline"
     assert event.follow_up.timepoint == "follow_up"
+    assert event.baseline.aggregate_percentile is not None
+    assert event.follow_up.aggregate_percentile is not None
+    assert set(event.baseline.domain_percentile) == set(event.baseline.domain_z)
+    assert set(event.follow_up.domain_percentile) == set(event.follow_up.domain_z)
     assert event.follow_up_next_action == record["labels"]["next_action"]
     assert set(event.delta_z_by_domain) == set(record["delta_z_by_domain"])
 
@@ -60,6 +64,8 @@ def test_summarize_baseline_followup_pro_event_contract_v1_matches_v4_records() 
     assert summary["domain_count"] == 9
     assert summary["connected_flows"]["pro_scoring"] == [
         "baseline.aggregate_z",
+        "baseline.aggregate_percentile",
         "follow_up.aggregate_z",
+        "follow_up.aggregate_percentile",
         "delta_z_by_domain",
     ]

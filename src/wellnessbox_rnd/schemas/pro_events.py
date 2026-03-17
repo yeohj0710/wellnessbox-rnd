@@ -1,22 +1,35 @@
 from __future__ import annotations
 
 import json
+from math import erf, sqrt
 from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from wellnessbox_rnd.schemas.recommendation import NextAction, RecommendationGoal
 
 BASELINE_FOLLOWUP_PRO_EVENT_SCHEMA_VERSION_V1 = "baseline_followup_pro_event_v1"
 PRO_EVENT_TIMEPOINTS_V1 = ("baseline", "follow_up")
 PRO_EVENT_DELTA_TOLERANCE = 1e-6
+PRO_EVENT_PERCENTILE_TOLERANCE = 1e-6
 
 
 class PROTimepointSnapshotV1(BaseModel):
     timepoint: str
     aggregate_z: float
     domain_z: dict[str, float] = Field(default_factory=dict)
+    aggregate_percentile: float | None = None
+    domain_percentile: dict[str, float] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def populate_percentiles(self) -> PROTimepointSnapshotV1:
+        self.aggregate_percentile = _z_to_percentile(self.aggregate_z)
+        self.domain_percentile = {
+            domain_key: _z_to_percentile(z_value)
+            for domain_key, z_value in self.domain_z.items()
+        }
+        return self
 
 
 class BaselineFollowUpPROEventV1(BaseModel):
@@ -77,6 +90,8 @@ def validate_baseline_followup_pro_event_v1(
     baseline_domains = set(model.baseline.domain_z)
     follow_up_domains = set(model.follow_up.domain_z)
     delta_domains = set(model.delta_z_by_domain)
+    baseline_percentile_domains = set(model.baseline.domain_percentile)
+    follow_up_percentile_domains = set(model.follow_up.domain_percentile)
 
     if model.baseline.timepoint != "baseline":
         issues.append(f"unexpected_timepoint::{model.baseline.timepoint}")
@@ -94,6 +109,29 @@ def validate_baseline_followup_pro_event_v1(
         issues.append("domain_mismatch::baseline_vs_follow_up")
     if baseline_domains != delta_domains:
         issues.append("domain_mismatch::baseline_vs_delta")
+    if baseline_domains != baseline_percentile_domains:
+        issues.append("domain_mismatch::baseline_vs_baseline_percentile")
+    if follow_up_domains != follow_up_percentile_domains:
+        issues.append("domain_mismatch::follow_up_vs_follow_up_percentile")
+
+    expected_baseline_percentile = _z_to_percentile(model.baseline.aggregate_z)
+    if (
+        abs(model.baseline.aggregate_percentile - expected_baseline_percentile)
+        > PRO_EVENT_PERCENTILE_TOLERANCE
+    ):
+        issues.append(
+            "aggregate_percentile_mismatch::baseline::"
+            f"{expected_baseline_percentile}::{round(model.baseline.aggregate_percentile, 6)}"
+        )
+    expected_follow_up_percentile = _z_to_percentile(model.follow_up.aggregate_z)
+    if (
+        abs(model.follow_up.aggregate_percentile - expected_follow_up_percentile)
+        > PRO_EVENT_PERCENTILE_TOLERANCE
+    ):
+        issues.append(
+            "aggregate_percentile_mismatch::follow_up::"
+            f"{expected_follow_up_percentile}::{round(model.follow_up.aggregate_percentile, 6)}"
+        )
 
     for domain_key in sorted(baseline_domains & follow_up_domains & delta_domains):
         expected_delta = model.follow_up.domain_z[domain_key] - model.baseline.domain_z[domain_key]
@@ -102,6 +140,34 @@ def validate_baseline_followup_pro_event_v1(
             issues.append(
                 "delta_mismatch::"
                 f"{domain_key}::{round(expected_delta, 6)}::{round(actual_delta, 6)}"
+            )
+        expected_baseline_domain_percentile = _z_to_percentile(model.baseline.domain_z[domain_key])
+        if (
+            abs(
+                model.baseline.domain_percentile[domain_key]
+                - expected_baseline_domain_percentile
+            )
+            > PRO_EVENT_PERCENTILE_TOLERANCE
+        ):
+            issues.append(
+                "domain_percentile_mismatch::baseline::"
+                f"{domain_key}::{expected_baseline_domain_percentile}::"
+                f"{round(model.baseline.domain_percentile[domain_key], 6)}"
+            )
+        expected_follow_up_domain_percentile = _z_to_percentile(
+            model.follow_up.domain_z[domain_key]
+        )
+        if (
+            abs(
+                model.follow_up.domain_percentile[domain_key]
+                - expected_follow_up_domain_percentile
+            )
+            > PRO_EVENT_PERCENTILE_TOLERANCE
+        ):
+            issues.append(
+                "domain_percentile_mismatch::follow_up::"
+                f"{domain_key}::{expected_follow_up_domain_percentile}::"
+                f"{round(model.follow_up.domain_percentile[domain_key], 6)}"
             )
 
     return issues
@@ -138,7 +204,9 @@ def summarize_baseline_followup_pro_event_contract_v1(
             ],
             "pro_scoring": [
                 "baseline.aggregate_z",
+                "baseline.aggregate_percentile",
                 "follow_up.aggregate_z",
+                "follow_up.aggregate_percentile",
                 "delta_z_by_domain",
             ],
             "effect_training_and_eval": [
@@ -232,6 +300,10 @@ def _read_value(payload: Any, key: str) -> Any:
     if isinstance(payload, dict):
         return payload[key]
     return getattr(payload, key)
+
+
+def _z_to_percentile(z_value: float) -> float:
+    return round(100.0 * (0.5 * (1.0 + erf(z_value / sqrt(2.0)))), 6)
 
 
 __all__ = [

@@ -17,65 +17,78 @@
 
 ## What this loop did
 
-- Chosen stage: `P3/P4`
-- Chosen task: `final harmonization of PROGRESS.md, NEXT_STEPS.md, SESSION_HANDOFF.md, and PENDING_USER_ACTIONS.md for next-session handoff quality`
+- Chosen stage: `P2/P4`
+- Chosen task: `implement PROImprovementSummaryV1 directly from the shared baseline/follow-up PRO event contract`
 - Primary dataset:
   - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
   - `case_count = 480`
 
 ## Files changed
 
+- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/schemas/pro_events.py`
+- `C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_scoring.py`
+- `C:/dev/wellnessbox-rnd/scripts/build_pro_improvement_summary_contract.py`
+- `C:/dev/wellnessbox-rnd/tests/test_pro_events.py`
+- `C:/dev/wellnessbox-rnd/tests/test_pro_improvement_summary_contract.py`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/pro_improvement_summary_contract_v1.json`
+- `C:/dev/wellnessbox-rnd/artifacts/reports/pro_improvement_summary_contract_v1.md`
 - `C:/dev/wellnessbox-rnd/PROGRESS.md`
 - `C:/dev/wellnessbox-rnd/NEXT_STEPS.md`
 - `C:/dev/wellnessbox-rnd/SESSION_HANDOFF.md`
-- `C:/dev/wellnessbox-rnd/PENDING_USER_ACTIONS.md`
 
 ## What changed technically
 
-- This was a docs-only close-out loop.
-- The operating docs now use one aligned state model for:
-  - closed-enough loops
-  - open bottlenecks
-  - next 3 bounded loops
-  - must-do vs optional backlog
-  - runtime/core path vs optional chat priority
-- Repeated or stale backlog phrasing was reduced.
+- The shared baseline/follow-up PRO event now exposes one normalized snapshot shape for both timepoints:
+  - `timepoint`
+  - `aggregate_z`
+  - `aggregate_percentile`
+  - `domain_z`
+  - `domain_percentile`
+- `PROImprovementSummaryV1` is now derived directly from that shared normalized event path and carries:
+  - `baseline_aggregate_z`
+  - `follow_up_aggregate_z`
+  - `baseline_aggregate_percentile`
+  - `follow_up_aggregate_percentile`
+  - `aggregate_delta_z`
+  - `aggregate_delta_pp`
+- Added one bounded artifact pair that proves the path end-to-end:
+  - `derived_directly_from_shared_event_contract = true`
+  - `event_to_summary_valid_case_count = 480`
+  - `event_to_summary_invalid_case_count = 0`
+  - `delta_pp_matches_percentile_diff_all_valid_cases = true`
+  - `frozen_eval_compatible = true`
 
 ## Outcome this loop
 
-- The docs now agree on:
-  - deterministic baseline stays the runtime reference
-  - replay compare is complete enough to keep the latest candidate held
-  - PRO baseline/follow-up contract wiring is closed enough
-  - weakest-slice core path is closed enough for headline KPI reading
-  - learned artifacts remain replay-only
-  - optional chat/OpenAI is optional-only and lower priority than every core KPI-path item
-  - `must-do = none`, `optional backlog = one chat/OpenAI rerun item`
+- The current partial PRO wiring is now a real shared contract implementation.
+- Official outcome meaning on the PRO path now sits on one normalized baseline/follow-up event contract.
+- This strengthens KPI-path semantics, but does not change overall project priority:
+  - replay residual attribution still comes first
+  - training remains blocked by replay + synthetic-validity + lineage evidence
 
 ## Why it matters
 
-- The next session can start from one consistent handoff state instead of re-resolving document differences.
-- Current forward order is now stable:
-  - replay first
-  - synthetic-validity audit second
-  - `cgm` outside-band geometry third
-  - weakest-slice residual proof only if needed
-  - training rerun only after new replay/data evidence
-  - optional chat last
+- PRO outcome semantics are now less ambiguous:
+  - one normalized event path
+  - one direct summary path
+  - one explicit `delta_pp` read compatible with frozen eval
+- This removes one integration gap from the training-readiness story without widening runtime or training scope.
 
 ## Key evidence snapshot
 
-- held state remains:
+- shared PRO contract:
+  - `shared_event_schema_version = baseline_followup_pro_event_v1`
+  - `baseline_follow_up_same_normalized_structure_case_count = 480`
+  - `delta_pp_matches_percentile_diff_case_count = 480`
+- dataset-level summary:
+  - `improved_case_count = 356`
+  - `worsened_case_count = 93`
+  - `unchanged_case_count = 31`
+  - `mean_aggregate_delta_z = 0.034421`
+  - `mean_aggregate_delta_pp = 1.358856`
+- overall planning state remains:
   - `decision = hold_baseline_candidate_not_ready`
-  - `principal_blocker = synthetic_data_circularity_and_generator_contamination`
-  - `dominant_replay_regression_family = non_cgm_continue_to_monitor_threshold_cross`
-- closed-enough core path remains:
-  - `shared_event_path_connected`
-  - `bridge_connected_with_direct_gap`
-  - `replay_only_boundary_preserved`
-- optional backlog remains:
-  - one chat/OpenAI live smoke rerun item only
-  - no must-do user action currently exists
+  - `training gate = no_go_keep_training_blocked`
 
 ## Runtime boundary
 
@@ -90,18 +103,13 @@
 ## Interface contract for next loop
 
 - Highest-ROI next loop:
-  - replay-only `non_cgm_continue_to_monitor_threshold_cross`
-  - stay on the already-selected smallest bounded replay surface:
-    - `threshold_duration_sensitive`
-    - `mid_margin`
-    - `small_drop`
-    - `regimen_count`
-    - `trajectory_step`
-    - `fixed_uniform_offset`
-    - `0.5` half-offset
-    - local contract `uniform_score_gap_offset`
+  - replay-only residual attribution for `non_cgm_continue_to_monitor_threshold_cross`
+  - do not repeat the already-explained `5/26` `small_drop` slice
+  - start with residual `threshold_duration_sensitive / mid_margin`:
+    - `large_drop`
+    - `medium_drop`
 - Second:
-  - if replay stalls cleanly, run one narrow synthetic-validity audit on circularity / generator contamination / calibration-target coupling
+  - if replay residual attribution completes or stalls cleanly, take one narrow synthetic-validity follow-up on one minimum-change item
 - Third:
   - if `cgm` is reopened, stay strictly on outside-band final-step geometry
 
@@ -128,6 +136,12 @@
 
 ## Validation snapshot
 
-- `rg -n "## Closed-enough loops|## Open bottlenecks 5|## Next 3 bounded loops|## Priority rule|## Manual backlog priority" NEXT_STEPS.md`
-- `rg -n "## Must do|## Optional|## Blocked-by-user items" PENDING_USER_ACTIONS.md`
-- `git diff --check -- PROGRESS.md NEXT_STEPS.md SESSION_HANDOFF.md PENDING_USER_ACTIONS.md`
+- `python scripts/build_pro_improvement_summary_contract.py --report-json artifacts/reports/pro_improvement_summary_contract_v1.json --report-md artifacts/reports/pro_improvement_summary_contract_v1.md`
+- `python -m pytest tests/test_pro_events.py tests/test_pro_scoring.py tests/test_pro_improvement_summary_contract.py -q`
+- `python -m ruff check src/wellnessbox_rnd/schemas/pro_events.py src/wellnessbox_rnd/metrics/pro_scoring.py scripts/build_pro_improvement_summary_contract.py tests/test_pro_events.py tests/test_pro_scoring.py tests/test_pro_improvement_summary_contract.py`
+- `git diff --check -- src/wellnessbox_rnd/schemas/pro_events.py src/wellnessbox_rnd/metrics/pro_scoring.py scripts/build_pro_improvement_summary_contract.py tests/test_pro_events.py tests/test_pro_improvement_summary_contract.py artifacts/reports/pro_improvement_summary_contract_v1.json artifacts/reports/pro_improvement_summary_contract_v1.md PROGRESS.md NEXT_STEPS.md SESSION_HANDOFF.md`
+
+## Optional chat-path note
+
+- Optional chat/OpenAI live smoke remains lower priority than runtime/core KPI-path work.
+- No optional chat work was touched in this loop.

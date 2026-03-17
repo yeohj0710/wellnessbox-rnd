@@ -4,8 +4,9 @@ import json
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, model_validator
 
+from wellnessbox_rnd.metrics.calculators import percentile_improvement_pp
 from wellnessbox_rnd.schemas.pro_events import (
     BASELINE_FOLLOWUP_PRO_EVENT_SCHEMA_VERSION_V1,
     BaselineFollowUpPROEventV1,
@@ -73,13 +74,29 @@ class PROZScoreSnapshotV1(BaseModel):
     domain_problem_scores: dict[str, float] = Field(default_factory=dict)
     domain_z: dict[str, float] = Field(default_factory=dict)
     aggregate_z: float
+    domain_percentile: dict[str, float] = Field(default_factory=dict)
+    aggregate_percentile: float | None = None
+
+    @model_validator(mode="after")
+    def populate_percentiles(self) -> PROZScoreSnapshotV1:
+        self.domain_percentile = {
+            domain_key: _z_to_percentile(z_value)
+            for domain_key, z_value in self.domain_z.items()
+        }
+        self.aggregate_percentile = _z_to_percentile(self.aggregate_z)
+        return self
 
 
 class PROImprovementSummaryV1(BaseModel):
     summary_version: str = PRO_IMPROVEMENT_SUMMARY_VERSION_V1
     baseline_timepoint: Literal["baseline"]
     follow_up_timepoint: Literal["follow_up"]
+    baseline_aggregate_z: float = 0.0
+    follow_up_aggregate_z: float = 0.0
+    baseline_aggregate_percentile: float = 50.0
+    follow_up_aggregate_percentile: float = 50.0
     aggregate_delta_z: float
+    aggregate_delta_pp: float = 0.0
     domain_delta_z: dict[str, float] = Field(default_factory=dict)
     improved_domain_count: int = Field(ge=0)
     worsened_domain_count: int = Field(ge=0)
@@ -347,9 +364,24 @@ def _summarize_pro_improvement_from_snapshots_v1(
         else:
             unchanged_domain_count += 1
 
+    baseline_aggregate_z = _read_snapshot_value(baseline_snapshot, "aggregate_z")
+    follow_up_aggregate_z = _read_snapshot_value(follow_up_snapshot, "aggregate_z")
+    baseline_aggregate_percentile = _read_snapshot_percentile(
+        baseline_snapshot,
+        "aggregate_percentile",
+        z_value=baseline_aggregate_z,
+    )
+    follow_up_aggregate_percentile = _read_snapshot_percentile(
+        follow_up_snapshot,
+        "aggregate_percentile",
+        z_value=follow_up_aggregate_z,
+    )
     aggregate_delta_z = round(
-        _read_snapshot_value(follow_up_snapshot, "aggregate_z")
-        - _read_snapshot_value(baseline_snapshot, "aggregate_z"),
+        follow_up_aggregate_z - baseline_aggregate_z,
+        6,
+    )
+    aggregate_delta_pp = round(
+        follow_up_aggregate_percentile - baseline_aggregate_percentile,
         6,
     )
     if aggregate_delta_z > PRO_IMPROVEMENT_DELTA_TOLERANCE:
@@ -362,7 +394,12 @@ def _summarize_pro_improvement_from_snapshots_v1(
     return PROImprovementSummaryV1(
         baseline_timepoint="baseline",
         follow_up_timepoint="follow_up",
+        baseline_aggregate_z=baseline_aggregate_z,
+        follow_up_aggregate_z=follow_up_aggregate_z,
+        baseline_aggregate_percentile=baseline_aggregate_percentile,
+        follow_up_aggregate_percentile=follow_up_aggregate_percentile,
         aggregate_delta_z=aggregate_delta_z,
+        aggregate_delta_pp=aggregate_delta_pp,
         domain_delta_z=domain_delta_z,
         improved_domain_count=improved_domain_count,
         worsened_domain_count=worsened_domain_count,
@@ -435,6 +472,54 @@ def validate_pro_improvement_summary_from_normalized_event_v1(
         issues.append(
             "aggregate_delta_mismatch::"
             f"{expected.aggregate_delta_z}::{summary_model.aggregate_delta_z}"
+        )
+    if (
+        abs(summary_model.aggregate_delta_pp - expected.aggregate_delta_pp)
+        > PRO_IMPROVEMENT_DELTA_TOLERANCE
+    ):
+        issues.append(
+            "aggregate_delta_pp_mismatch::"
+            f"{expected.aggregate_delta_pp}::{summary_model.aggregate_delta_pp}"
+        )
+    if (
+        abs(summary_model.baseline_aggregate_z - expected.baseline_aggregate_z)
+        > PRO_IMPROVEMENT_DELTA_TOLERANCE
+    ):
+        issues.append(
+            "baseline_aggregate_z_mismatch::"
+            f"{expected.baseline_aggregate_z}::{summary_model.baseline_aggregate_z}"
+        )
+    if (
+        abs(summary_model.follow_up_aggregate_z - expected.follow_up_aggregate_z)
+        > PRO_IMPROVEMENT_DELTA_TOLERANCE
+    ):
+        issues.append(
+            "follow_up_aggregate_z_mismatch::"
+            f"{expected.follow_up_aggregate_z}::{summary_model.follow_up_aggregate_z}"
+        )
+    if (
+        abs(
+            summary_model.baseline_aggregate_percentile
+            - expected.baseline_aggregate_percentile
+        )
+        > PRO_IMPROVEMENT_DELTA_TOLERANCE
+    ):
+        issues.append(
+            "baseline_aggregate_percentile_mismatch::"
+            f"{expected.baseline_aggregate_percentile}::"
+            f"{summary_model.baseline_aggregate_percentile}"
+        )
+    if (
+        abs(
+            summary_model.follow_up_aggregate_percentile
+            - expected.follow_up_aggregate_percentile
+        )
+        > PRO_IMPROVEMENT_DELTA_TOLERANCE
+    ):
+        issues.append(
+            "follow_up_aggregate_percentile_mismatch::"
+            f"{expected.follow_up_aggregate_percentile}::"
+            f"{summary_model.follow_up_aggregate_percentile}"
         )
     if summary_model.domain_delta_z != expected.domain_delta_z:
         issues.append("domain_delta_mismatch")
@@ -576,6 +661,10 @@ def summarize_pro_form_contract_v1(
         sum(summary.aggregate_delta_z for summary in event_summaries) / len(event_summaries),
         6,
     ) if event_summaries else 0.0
+    mean_aggregate_delta_pp = round(
+        sum(summary.aggregate_delta_pp for summary in event_summaries) / len(event_summaries),
+        6,
+    ) if event_summaries else 0.0
     mean_domain_delta_z_by_domain = {
         domain_key: round(
             sum(summary.domain_delta_z[domain_key] for summary in event_summaries)
@@ -652,6 +741,7 @@ def summarize_pro_form_contract_v1(
                 "worsened_case_count": worsened_case_count,
                 "unchanged_case_count": unchanged_case_count,
                 "mean_aggregate_delta_z": mean_aggregate_delta_z,
+                "mean_aggregate_delta_pp": mean_aggregate_delta_pp,
                 "mean_domain_delta_z_by_domain": mean_domain_delta_z_by_domain,
             },
             "shared_event_path_proof": {
@@ -678,6 +768,103 @@ def summarize_pro_form_contract_v1(
     }
 
 
+def summarize_pro_improvement_summary_contract_v1(
+    records: list[RichSyntheticCohortRecord],
+    *,
+    dataset_path: str | Path,
+) -> dict[str, object]:
+    events = [coerce_baseline_followup_pro_event_v1(record) for record in records]
+    summaries: list[PROImprovementSummaryV1] = []
+    invalid_record_ids: list[str] = []
+    same_structure_case_count = 0
+    delta_pp_consistent_case_count = 0
+
+    for event in events:
+        try:
+            summary = summarize_pro_improvement_from_event_v1(event)
+            summaries.append(summary)
+        except ValueError:
+            invalid_record_ids.append(event.record_id)
+            continue
+
+        baseline_keys = set(event.baseline.model_dump(mode="json"))
+        follow_up_keys = set(event.follow_up.model_dump(mode="json"))
+        if baseline_keys == follow_up_keys:
+            same_structure_case_count += 1
+
+        expected_delta_pp = round(
+            event.follow_up.aggregate_percentile - event.baseline.aggregate_percentile,
+            6,
+        )
+        if abs(summary.aggregate_delta_pp - expected_delta_pp) <= PRO_IMPROVEMENT_DELTA_TOLERANCE:
+            delta_pp_consistent_case_count += 1
+
+    improved_case_count = sum(
+        1 for summary in summaries if summary.net_status == "net_improvement"
+    )
+    worsened_case_count = sum(
+        1 for summary in summaries if summary.net_status == "net_worsening"
+    )
+    unchanged_case_count = sum(
+        1 for summary in summaries if summary.net_status == "no_material_change"
+    )
+    mean_aggregate_delta_z = round(
+        sum(summary.aggregate_delta_z for summary in summaries) / len(summaries),
+        6,
+    ) if summaries else 0.0
+    mean_aggregate_delta_pp = round(
+        sum(summary.aggregate_delta_pp for summary in summaries) / len(summaries),
+        6,
+    ) if summaries else 0.0
+    example_event = events[0].model_dump(mode="json") if events else None
+    example_summary = summaries[0].model_dump(mode="json") if summaries else None
+
+    return {
+        "contract_id": "pro_improvement_summary_contract_v1",
+        "dataset_path": str(dataset_path),
+        "case_count": len(records),
+        "user_count": len({record.user_id for record in records}),
+        "shared_event_schema_version": BASELINE_FOLLOWUP_PRO_EVENT_SCHEMA_VERSION_V1,
+        "summary_version": PRO_IMPROVEMENT_SUMMARY_VERSION_V1,
+        "normalized_snapshot_fields": [
+            "timepoint",
+            "aggregate_z",
+            "aggregate_percentile",
+            "domain_z",
+            "domain_percentile",
+        ],
+        "path_status": {
+            "derived_directly_from_shared_event_contract": True,
+            "baseline_follow_up_same_normalized_structure_case_count": same_structure_case_count,
+            "event_to_summary_valid_case_count": len(summaries),
+            "event_to_summary_invalid_case_count": len(invalid_record_ids),
+            "frozen_eval_compatible": True,
+            "frozen_eval_metric": "efficacy_improvement_pp",
+        },
+        "consistency_checks": {
+            "zscore_to_percentile_formula": "percentile = 100 * NormalCDF(z)",
+            "aggregate_delta_z_formula": "follow_up.aggregate_z - baseline.aggregate_z",
+            "aggregate_delta_pp_formula": (
+                "follow_up.aggregate_percentile - baseline.aggregate_percentile"
+            ),
+            "delta_pp_matches_percentile_diff_case_count": delta_pp_consistent_case_count,
+            "delta_pp_matches_percentile_diff_all_valid_cases": (
+                delta_pp_consistent_case_count == len(summaries)
+            ),
+        },
+        "synthetic_dataset_summary": {
+            "improved_case_count": improved_case_count,
+            "worsened_case_count": worsened_case_count,
+            "unchanged_case_count": unchanged_case_count,
+            "mean_aggregate_delta_z": mean_aggregate_delta_z,
+            "mean_aggregate_delta_pp": mean_aggregate_delta_pp,
+            "invalid_record_ids": sorted(invalid_record_ids),
+        },
+        "example_event": example_event,
+        "example_summary": example_summary,
+    }
+
+
 def write_pro_form_contract_report_v1(
     report: dict[str, object],
     *,
@@ -690,6 +877,23 @@ def write_pro_form_contract_report_v1(
     md_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     md_path.write_text(render_pro_form_contract_markdown_v1(report), encoding="utf-8")
+
+
+def write_pro_improvement_summary_contract_report_v1(
+    report: dict[str, object],
+    *,
+    output_json_path: str | Path,
+    output_md_path: str | Path,
+) -> None:
+    json_path = Path(output_json_path)
+    md_path = Path(output_md_path)
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    md_path.write_text(
+        render_pro_improvement_summary_contract_markdown_v1(report),
+        encoding="utf-8",
+    )
 
 
 def render_pro_form_contract_markdown_v1(report: dict[str, object]) -> str:
@@ -806,6 +1010,70 @@ def render_pro_form_contract_markdown_v1(report: dict[str, object]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def render_pro_improvement_summary_contract_markdown_v1(report: dict[str, object]) -> str:
+    path_status = report["path_status"]
+    consistency_checks = report["consistency_checks"]
+    dataset_summary = report["synthetic_dataset_summary"]
+    example_summary = report["example_summary"]
+    lines = [
+        "# pro improvement summary contract v1",
+        "",
+        f"- dataset_path: {report['dataset_path']}",
+        f"- case_count: {report['case_count']}",
+        f"- user_count: {report['user_count']}",
+        f"- shared_event_schema_version: {report['shared_event_schema_version']}",
+        f"- summary_version: {report['summary_version']}",
+        "",
+        "## path status",
+        "",
+        "- derived_directly_from_shared_event_contract: "
+        f"{path_status['derived_directly_from_shared_event_contract']}",
+        "- baseline_follow_up_same_normalized_structure_case_count: "
+        f"{path_status['baseline_follow_up_same_normalized_structure_case_count']}",
+        f"- event_to_summary_valid_case_count: {path_status['event_to_summary_valid_case_count']}",
+        "- event_to_summary_invalid_case_count: "
+        f"{path_status['event_to_summary_invalid_case_count']}",
+        f"- frozen_eval_compatible: {path_status['frozen_eval_compatible']}",
+        f"- frozen_eval_metric: {path_status['frozen_eval_metric']}",
+        "",
+        "## consistency checks",
+        "",
+        f"- zscore_to_percentile_formula: `{consistency_checks['zscore_to_percentile_formula']}`",
+        f"- aggregate_delta_z_formula: `{consistency_checks['aggregate_delta_z_formula']}`",
+        f"- aggregate_delta_pp_formula: `{consistency_checks['aggregate_delta_pp_formula']}`",
+        "- delta_pp_matches_percentile_diff_case_count: "
+        f"{consistency_checks['delta_pp_matches_percentile_diff_case_count']}",
+        "- delta_pp_matches_percentile_diff_all_valid_cases: "
+        f"{consistency_checks['delta_pp_matches_percentile_diff_all_valid_cases']}",
+        "",
+        "## dataset summary",
+        "",
+        f"- improved_case_count: {dataset_summary['improved_case_count']}",
+        f"- worsened_case_count: {dataset_summary['worsened_case_count']}",
+        f"- unchanged_case_count: {dataset_summary['unchanged_case_count']}",
+        f"- mean_aggregate_delta_z: {dataset_summary['mean_aggregate_delta_z']}",
+        f"- mean_aggregate_delta_pp: {dataset_summary['mean_aggregate_delta_pp']}",
+        f"- invalid_record_ids: {dataset_summary['invalid_record_ids']}",
+        "",
+        "## normalized snapshot fields",
+        "",
+        f"- {report['normalized_snapshot_fields']}",
+        "",
+        "## example summary",
+        "",
+        f"- baseline_aggregate_z: {example_summary['baseline_aggregate_z']}",
+        f"- follow_up_aggregate_z: {example_summary['follow_up_aggregate_z']}",
+        "- baseline_aggregate_percentile: "
+        f"{example_summary['baseline_aggregate_percentile']}",
+        "- follow_up_aggregate_percentile: "
+        f"{example_summary['follow_up_aggregate_percentile']}",
+        f"- aggregate_delta_z: {example_summary['aggregate_delta_z']}",
+        f"- aggregate_delta_pp: {example_summary['aggregate_delta_pp']}",
+        f"- net_status: {example_summary['net_status']}",
+    ]
+    return "\n".join(lines) + "\n"
+
+
 def _domain_schema(
     domain_key: RecommendationGoal,
     display_name: str,
@@ -864,6 +1132,25 @@ def _read_snapshot_value(snapshot: PROZScoreSnapshotV1 | dict[str, object] | obj
     return getattr(snapshot, key)
 
 
+def _read_snapshot_percentile(
+    snapshot: PROZScoreSnapshotV1 | dict[str, object] | object,
+    key: str,
+    *,
+    z_value: float,
+) -> float:
+    if isinstance(snapshot, dict):
+        percentile = snapshot.get(key)
+    else:
+        percentile = getattr(snapshot, key, None)
+    if percentile is None:
+        return _z_to_percentile(z_value)
+    return round(float(percentile), 6)
+
+
+def _z_to_percentile(z_value: float) -> float:
+    return round(percentile_improvement_pp(z_pre=0.0, z_post=z_value) + 50.0, 6)
+
+
 def _looks_like_record_payload(payload: object) -> bool:
     if isinstance(payload, dict):
         required_keys = {
@@ -902,8 +1189,10 @@ __all__ = [
     "build_default_pro_domain_norms_v1",
     "build_default_pro_form_schema_v1",
     "coerce_baseline_followup_pro_event_v1",
+    "render_pro_improvement_summary_contract_markdown_v1",
     "render_pro_form_contract_markdown_v1",
     "summarize_pro_form_contract_v1",
+    "summarize_pro_improvement_summary_contract_v1",
     "summarize_pro_improvement_from_event_v1",
     "summarize_pro_improvement_from_normalized_event_v1",
     "transform_pro_response_to_zscores_v1",
@@ -911,5 +1200,6 @@ __all__ = [
     "validate_pro_improvement_summary_from_normalized_event_v1",
     "validate_pro_domain_norms_v1",
     "validate_pro_form_response_v1",
+    "write_pro_improvement_summary_contract_report_v1",
     "write_pro_form_contract_report_v1",
 ]
