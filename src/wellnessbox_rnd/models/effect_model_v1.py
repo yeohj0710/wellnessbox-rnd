@@ -25,6 +25,10 @@ class EffectModelV1Artifact(BaseModel):
     policy_proxy_intercept: float = 0.0
     policy_proxy_clip_min: float = -1.0
     policy_proxy_clip_max: float = 1.0
+    validation_selection_profile: str = "aggregate_mae_v1"
+    validation_selection_score: float = 0.0
+    validation_selection_tolerance: float = 0.0
+    validation_selection_summary: dict[str, object] = Field(default_factory=dict)
 
 
 class EffectFeatureVectorizerV1:

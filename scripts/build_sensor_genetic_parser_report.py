@@ -46,6 +46,7 @@ def main() -> int:
         )
 
     report = {
+        "failure_contract_version": "sensor_genetic_parser_failure_contract_v1",
         "case_count": len(normalized_cases),
         "cases_json_path": args.cases_json,
         "wearable_case_count": sum(
@@ -69,6 +70,16 @@ def main() -> int:
                 if note.endswith("_invalid_numeric_ignored")
             }
         ),
+        "supported_failure_taxonomy": _build_failure_taxonomy(
+            sorted(
+                {
+                    note
+                    for case in normalized_cases
+                    for note in case["normalized_snapshot"]["normalization_notes"]
+                    if note.endswith("_invalid_numeric_ignored")
+                }
+            )
+        ),
         "normalized_cases": normalized_cases,
     }
 
@@ -91,7 +102,9 @@ def _render_markdown(report: dict[str, object]) -> str:
         f"- wearable_case_count: `{report['wearable_case_count']}`",
         f"- cgm_case_count: `{report['cgm_case_count']}`",
         f"- genetic_case_count: `{report['genetic_case_count']}`",
+        f"- failure_contract_version: `{report['failure_contract_version']}`",
         f"- supported_failure_types: `{report['supported_failure_types']}`",
+        f"- supported_failure_taxonomy: `{report['supported_failure_taxonomy']}`",
         "",
         "## Cases",
     ]
@@ -100,6 +113,28 @@ def _render_markdown(report: dict[str, object]) -> str:
             f"- `{case['case_id']}`: `{case['normalized_snapshot']}`"
         )
     return "\n".join(lines) + "\n"
+
+
+def _build_failure_taxonomy(failure_types: list[str]) -> list[dict[str, str]]:
+    taxonomy: list[dict[str, str]] = []
+    for failure_type in failure_types:
+        modality = failure_type.split("_", 1)[0]
+        field_name = failure_type[: -len("_invalid_numeric_ignored")].split("_", 1)[1]
+        taxonomy.append(
+            {
+                "failure_type": failure_type,
+                "stage": "parser_normalization_fallback",
+                "modality": modality,
+                "family": "invalid_numeric_ignored",
+                "field": field_name,
+            }
+        )
+    return taxonomy
+
+
+__all__ = [
+    "_build_failure_taxonomy",
+]
 
 
 if __name__ == "__main__":

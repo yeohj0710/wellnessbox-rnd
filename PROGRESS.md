@@ -2,69 +2,85 @@
 
 ## Current loop
 
-- Chosen stage: `P1/P4`
-- Chosen task: `catch up after the latest OpenAI live rerun and reclassify it without letting optional chat work displace KPI priorities`
+- Chosen stage: `P3/P4`
+- Chosen task: `final harmonization of PROGRESS.md, NEXT_STEPS.md, SESSION_HANDOFF.md, and PENDING_USER_ACTIONS.md for next-session handoff quality`
 - Primary dataset:
-  - `C:/dev/wellnessbox-rnd/artifacts/datasets/chat_qa_dataset_d_v1.jsonl`
-  - `case_count = 5`
+  - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
+  - `case_count = 480`
 
 ## What changed
 
-- Added a catch-up artifact for the latest live rerun:
-  - `artifacts/reports/post_openai_live_rerun_catchup_v1.json`
-  - `artifacts/reports/post_openai_live_rerun_catchup_v1.md`
-- Reclassified the latest OpenAI live rerun as:
-  - `partial_success_fallback_without_failure_family`
-- Updated backlog wording in:
-  - `PENDING_USER_ACTIONS.md`
-  - `scripts/manual_backlog.ps1`
-- Updated execution summary in:
+- Reconciled handoff docs so they now describe the same repo state with the same priority order.
+- Clarified:
+  - what is closed enough
+  - what is still open
+  - what is must-do vs optional
+  - what the next 3 bounded loops are
+- Reduced repeated backlog phrasing and kept optional chat/OpenAI clearly below runtime/core KPI-path work.
+- Updated:
   - `PROGRESS.md`
   - `NEXT_STEPS.md`
   - `SESSION_HANDOFF.md`
+  - `PENDING_USER_ACTIONS.md`
 
 ## Why this loop was chosen
 
-- The user explicitly requested a catch-up loop after the latest OpenAI live rerun.
-- The repo now contains a fresh live smoke artifact where:
-  - `api_key_present = true`
-  - `attempted_live_call = true`
-  - `provider = deterministic_template_fallback`
-  - `fallback_reason = openai_call_failed`
-- The smallest useful step was to classify that state precisely and narrow the optional backlog.
+- The user asked for close-out and handoff quality only.
+- The repo already has the needed compare/sanity artifacts, so the highest-value bounded loop was to make the operating docs agree on:
+  - current held state
+  - remaining bottlenecks
+  - next-loop order
+  - optional chat backlog priority
 
 ## Result in this loop
 
-- Latest live smoke classification:
-  - `attempted_live_call = true`
-  - `verification_passed = true`
-  - `provider = deterministic_template_fallback`
-  - `fallback_reason = openai_call_failed`
-  - `live_failure = null`
-  - final status = `partial_success_fallback_without_failure_family`
-- Manual backlog remains:
-  - must-do = `0`
-  - optional = `1`
-- The remaining optional item is now narrower:
-  - rerun the latest OpenAI live smoke only if chat-path diagnosis is still needed, and confirm either `provider = openai_responses_api` or `live_failure` is populated
+- The four operating docs now align on these points:
+  - deterministic baseline remains the runtime reference
+  - replay compare is complete enough to keep the latest candidate held
+  - PRO baseline/follow-up contract wiring is closed enough
+  - weakest-slice core wiring is closed enough for headline KPI reading, with narrower residual gaps still open
+  - learned artifacts remain replay-only
+  - optional chat/OpenAI stays optional-only and lower than every core KPI-path item
+- The next 3 bounded loops are now stated consistently across the docs:
+  - replay-only `non_cgm_continue_to_monitor_threshold_cross` on the current `trajectory_step` / `0.5` half-offset local contract surface
+  - narrow synthetic-validity audit on circularity / generator contamination / calibration-target coupling only if replay stalls cleanly
+  - `cgm` outside-band final-step geometry only
 
 ## Interpretation
 
-- The latest rerun is not a success, but it is also no longer a pure env-blocked state.
-- We now know the adapter can see the key and attempts the live call, while still falling back safely through the verifier-preserving path.
-- Because the failure family is still not exposed in the artifact, any further rerun remains optional chat-only diagnostic work and should not displace KPI-facing work.
+- The repo no longer has conflicting handoff signals about what is done, what is open, and what should happen next.
+- The current state is:
+  - runtime/core path first
+  - replay evidence before training churn
+  - synthetic validity before another broad modeling move
+  - optional chat last
+  - `must-do = none`, `optional backlog = one chat rerun item`
+
+## Key evidence used
+
+- held state remains:
+  - `decision = hold_baseline_candidate_not_ready`
+  - `principal_blocker = synthetic_data_circularity_and_generator_contamination`
+  - `dominant_replay_regression_family = non_cgm_continue_to_monitor_threshold_cross`
+- closed-enough contract/runtime path remains:
+  - `shared_event_path_connected`
+  - `replay_only_boundary_preserved`
+  - `bridge_connected_with_direct_gap`
+- still-open narrow blocker areas remain:
+  - synthetic circularity / generator contamination / calibration coupling
+  - replay family `non_cgm_continue_to_monitor_threshold_cross`
+  - `cgm` outside-band overlap
+  - weakest-slice lineage gaps
 
 ## Behavior boundary
 
-- No runtime recommendation logic changed.
-- No runtime safety logic changed.
-- No workflow or optimizer behavior changed.
-- No learned artifact behavior changed.
-- Chat-only boundary remains intact:
-  - `recommendation_runtime_affected = false`
-  - `safety_runtime_affected = false`
-  - `optimizer_runtime_affected = false`
-- This loop only added catch-up/reporting and backlog wording changes.
+- No replay behavior changed
+- No runtime recommendation change
+- No safety logic change
+- No optimizer change
+- No inference API change
+- No training rerun
+- No chat/OpenAI change
 
 ## Deterministic baseline status
 
@@ -80,5 +96,6 @@ Official frozen eval baseline remains unchanged:
 
 ## Validation
 
-- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/post_openai_live_rerun_catchup_v1.json').read_text(encoding='utf-8')); print('post_openai_live_rerun_catchup_v1_json_ok')"`
-- `Get-Content artifacts/reports/post_openai_live_rerun_catchup_v1.md`
+- `rg -n "## Closed-enough loops|## Open bottlenecks 5|## Next 3 bounded loops|## Priority rule|## Manual backlog priority" NEXT_STEPS.md`
+- `rg -n "## Must do|## Optional|## Blocked-by-user items" PENDING_USER_ACTIONS.md`
+- `git diff --check -- PROGRESS.md NEXT_STEPS.md SESSION_HANDOFF.md PENDING_USER_ACTIONS.md`

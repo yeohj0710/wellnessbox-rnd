@@ -23,6 +23,22 @@ def build_parser() -> ArgumentParser:
     )
     parser.add_argument("--seed", type=int, default=20260311)
     parser.add_argument(
+        "--alpha-grid",
+        default="0.01,0.1,1.0,5.0,10.0",
+        help="Comma-separated ridge alpha grid",
+    )
+    parser.add_argument(
+        "--validation-selection-profile",
+        default="aggregate_mae_v1",
+        help="Validation selection profile for choosing the trained artifact",
+    )
+    parser.add_argument(
+        "--selection-tolerance",
+        type=float,
+        default=0.0,
+        help="Near-tie tolerance; if scores are within tolerance, higher alpha wins",
+    )
+    parser.add_argument(
         "--artifact",
         default="artifacts/models/effect_model_v3.json",
         help="Model artifact JSON path",
@@ -59,7 +75,17 @@ def main() -> int:
     args = build_parser().parse_args()
     records = load_rich_effect_records(args.dataset)
     split = split_effect_records_by_user_v1(records, seed=args.seed)
-    artifact, metrics = fit_effect_model_v1(split.train, split.val, seed=args.seed)
+    alpha_grid = tuple(
+        float(item.strip()) for item in args.alpha_grid.split(",") if item.strip()
+    )
+    artifact, metrics = fit_effect_model_v1(
+        split.train,
+        split.val,
+        seed=args.seed,
+        alpha_grid=alpha_grid,
+        validation_selection_profile=args.validation_selection_profile,
+        validation_selection_tolerance=args.selection_tolerance,
+    )
     artifact = artifact.model_copy(
         update={
             "model_name": "effect_model_v3",
@@ -97,6 +123,8 @@ def main() -> int:
                 "split_json": str(Path(args.split_json)),
                 "feature_schema_json": str(Path(args.feature_schema_json)),
                 "feature_schema_md": str(Path(args.feature_schema_md)),
+                "validation_selection_profile": artifact.validation_selection_profile,
+                "validation_selection_score": artifact.validation_selection_score,
                 "test_metrics": report["metrics"]["test"],
             },
             ensure_ascii=False,

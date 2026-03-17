@@ -6,6 +6,10 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from wellnessbox_rnd.schemas.next_action_state_machine import (
+    phase_sensitive_followup_actions,
+    project_runtime_workflow_state,
+)
 from wellnessbox_rnd.schemas.recommendation import (
     NextAction,
     RecommendationResponse,
@@ -50,7 +54,7 @@ def build_next_action_workflow_event_v1(
         missing_information_codes=[item.code for item in response.missing_information],
         safety_rule_ids=[item.rule_id for item in response.safety_summary.rule_refs],
         recommendation_keys=[item.ingredient_key for item in response.recommendations],
-        projected_workflow_state=_projected_workflow_state(response.next_action),
+        projected_workflow_state=project_runtime_workflow_state(action=response.next_action),
     )
 
 
@@ -63,7 +67,7 @@ def validate_next_action_workflow_event_v1(
         else NextActionWorkflowEventV1.model_validate(event)
     )
     issues: list[str] = []
-    expected_state = _projected_workflow_state(model.next_action)
+    expected_state = project_runtime_workflow_state(action=model.next_action)
     if model.projected_workflow_state != expected_state:
         issues.append(
             "projected_workflow_state_mismatch::"
@@ -104,6 +108,8 @@ def summarize_next_action_workflow_contract_v1(
         "next_action": event.next_action.value,
         "projected_workflow_state": event.projected_workflow_state,
         "reason_code": event.reason_code,
+        "state_machine_scope": "runtime_request_decision",
+        "phase_sensitive_followup_actions": phase_sensitive_followup_actions(),
         "issue_count": len(issues),
         "issues": issues,
         "connection_map": {
@@ -153,6 +159,8 @@ def render_next_action_workflow_contract_markdown_v1(report: dict[str, object]) 
         f"- next_action: `{report['next_action']}`",
         f"- projected_workflow_state: `{report['projected_workflow_state']}`",
         f"- reason_code: `{report['reason_code']}`",
+        f"- state_machine_scope: `{report['state_machine_scope']}`",
+        f"- phase_sensitive_followup_actions: `{report['phase_sensitive_followup_actions']}`",
         f"- issue_count: `{report['issue_count']}`",
         "",
         "## connection map",
@@ -171,22 +179,6 @@ def render_next_action_workflow_contract_markdown_v1(report: dict[str, object]) 
         lines.extend(["", "## issues"])
         lines.extend(f"- `{issue}`" for issue in report["issues"])
     return "\n".join(lines) + "\n"
-
-
-def _projected_workflow_state(action: NextAction) -> str:
-    mapping = {
-        NextAction.BLOCKED: "blocked",
-        NextAction.ASK_TARGETED_FOLLOWUP: "baseline_questionnaire_due",
-        NextAction.COLLECT_MORE_INPUT: "baseline_questionnaire_due",
-        NextAction.TRIGGER_SAFETY_RECHECK: "safety_review",
-        NextAction.START_PLAN: "recommendation_ready",
-        NextAction.CONTINUE_PLAN: "followup_due",
-        NextAction.MONITOR_ONLY: "followup_due",
-        NextAction.RE_OPTIMIZE: "adjust_plan",
-        NextAction.REDUCE_OR_STOP: "stop_or_escalate",
-    }
-    return mapping[action]
-
 
 __all__ = [
     "NEXT_ACTION_WORKFLOW_CONTRACT_SCHEMA_VERSION_V1",

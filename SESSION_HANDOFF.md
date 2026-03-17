@@ -17,81 +17,103 @@
 
 ## What this loop did
 
-- Chosen stage: `P1/P4`
-- Chosen task: `catch up after the latest OpenAI live rerun and narrow the optional backlog without changing KPI priorities`
+- Chosen stage: `P3/P4`
+- Chosen task: `final harmonization of PROGRESS.md, NEXT_STEPS.md, SESSION_HANDOFF.md, and PENDING_USER_ACTIONS.md for next-session handoff quality`
 - Primary dataset:
-  - `C:/dev/wellnessbox-rnd/artifacts/datasets/chat_qa_dataset_d_v1.jsonl`
-  - `case_count = 5`
+  - `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
+  - `case_count = 480`
 
 ## Files changed
 
-- `C:/dev/wellnessbox-rnd/artifacts/reports/post_openai_live_rerun_catchup_v1.json`
-- `C:/dev/wellnessbox-rnd/artifacts/reports/post_openai_live_rerun_catchup_v1.md`
-- `C:/dev/wellnessbox-rnd/PENDING_USER_ACTIONS.md`
-- `C:/dev/wellnessbox-rnd/scripts/manual_backlog.ps1`
 - `C:/dev/wellnessbox-rnd/PROGRESS.md`
 - `C:/dev/wellnessbox-rnd/NEXT_STEPS.md`
 - `C:/dev/wellnessbox-rnd/SESSION_HANDOFF.md`
+- `C:/dev/wellnessbox-rnd/PENDING_USER_ACTIONS.md`
 
 ## What changed technically
 
-- Read the latest live smoke artifact and classified it as:
-  - `partial_success_fallback_without_failure_family`
-- Source-of-truth status now is:
-  - `attempted_live_call = true`
-  - `verification_passed = true`
-  - `provider = deterministic_template_fallback`
-  - `fallback_reason = openai_call_failed`
-  - `live_failure = null`
-- Narrowed the manual backlog so the remaining OpenAI item is explicitly optional diagnostic work only.
+- This was a docs-only close-out loop.
+- The operating docs now use one aligned state model for:
+  - closed-enough loops
+  - open bottlenecks
+  - next 3 bounded loops
+  - must-do vs optional backlog
+  - runtime/core path vs optional chat priority
+- Repeated or stale backlog phrasing was reduced.
 
 ## Outcome this loop
 
-- The latest OpenAI live rerun is no longer env-blocked, but it is still not a success state.
-- The remaining optional manual item is now:
-  - rerun the latest OpenAI live smoke only if chat-path diagnosis is still needed, and confirm either `provider = openai_responses_api` or `live_failure` is populated
-- Manual backlog remains:
-  - must-do = `0`
-  - optional = `1`
+- The docs now agree on:
+  - deterministic baseline stays the runtime reference
+  - replay compare is complete enough to keep the latest candidate held
+  - PRO baseline/follow-up contract wiring is closed enough
+  - weakest-slice core path is closed enough for headline KPI reading
+  - learned artifacts remain replay-only
+  - optional chat/OpenAI is optional-only and lower priority than every core KPI-path item
+  - `must-do = none`, `optional backlog = one chat/OpenAI rerun item`
 
 ## Why it matters
 
-- We now have a sharper distinction between:
-  - chat-only optional adapter work
-  - core KPI-path work
-- The latest artifact confirms the adapter preserves bounded fallback and verifier behavior even when live OpenAI does not win.
-- Because the failure family is still not exposed, any further OpenAI rerun stays optional and below the KPI path.
+- The next session can start from one consistent handoff state instead of re-resolving document differences.
+- Current forward order is now stable:
+  - replay first
+  - synthetic-validity audit second
+  - `cgm` outside-band geometry third
+  - weakest-slice residual proof only if needed
+  - training rerun only after new replay/data evidence
+  - optional chat last
+
+## Key evidence snapshot
+
+- held state remains:
+  - `decision = hold_baseline_candidate_not_ready`
+  - `principal_blocker = synthetic_data_circularity_and_generator_contamination`
+  - `dominant_replay_regression_family = non_cgm_continue_to_monitor_threshold_cross`
+- closed-enough core path remains:
+  - `shared_event_path_connected`
+  - `bridge_connected_with_direct_gap`
+  - `replay_only_boundary_preserved`
+- optional backlog remains:
+  - one chat/OpenAI live smoke rerun item only
+  - no must-do user action currently exists
 
 ## Runtime boundary
 
+- No replay behavior changed
 - Recommendation runtime unchanged
 - Safety runtime unchanged
-- Workflow runtime unchanged
-- Learned artifacts remain replay-only
-- OpenAI remains optional and chat-only
-- `chat_only_boundary = true`
-- `recommendation_runtime_affected = false`
-- `safety_runtime_affected = false`
-- `optimizer_runtime_affected = false`
-- This loop added catch-up/reporting only
+- Optimizer runtime unchanged
+- Inference API unchanged
+- No training rerun
+- Chat/OpenAI unchanged
 
 ## Interface contract for next loop
 
 - Highest-ROI next loop:
-  - add the smallest effect-training input guard that consumes `dataset_f_effect_training_view_v1` and excludes outcome-side fields from the actual training view
+  - replay-only `non_cgm_continue_to_monitor_threshold_cross`
+  - stay on the already-selected smallest bounded replay surface:
+    - `threshold_duration_sensitive`
+    - `mid_margin`
+    - `small_drop`
+    - `regimen_count`
+    - `trajectory_step`
+    - `fixed_uniform_offset`
+    - `0.5` half-offset
+    - local contract `uniform_score_gap_offset`
 - Second:
-  - add the smallest adapter or validator that computes `PROImprovementSummaryV1` directly from the shared baseline/follow-up PRO event contract
+  - if replay stalls cleanly, run one narrow synthetic-validity audit on circularity / generator contamination / calibration-target coupling
 - Third:
-  - link parser outputs, supported parser failure types, `CGMNormalizedEventV1`, `cgm_slice_bridge_summary_v1`, `FollowUpTransitionEventV1`, `NextActionWorkflowEventV1`, and structured safety evidence linkage into a weakest-slice frozen-eval audit
+  - if `cgm` is reopened, stay strictly on outside-band final-step geometry
 
 ## Guard boundary
 
 - runtime recommendation remains deterministic
+- runtime safety remains deterministic and structured-rule first
 - frozen eval remains comparable
-- recommendation/safety core still has no LLM dependency
 - learned artifacts remain replay-only
-- no runtime widening was introduced
-- this loop only added OpenAI live rerun catch-up reporting
+- do not widen `dataset_f_effect_training_view_v1`
+- do not reintroduce forbidden outcome-side or leakage-prone feature families
+- optional chat/OpenAI stays below runtime/core KPI-path work
 
 ## Deterministic baseline status
 
@@ -106,13 +128,6 @@
 
 ## Validation snapshot
 
-- `python -c "import json, pathlib; json.loads(pathlib.Path('artifacts/reports/post_openai_live_rerun_catchup_v1.json').read_text(encoding='utf-8')); print('post_openai_live_rerun_catchup_v1_json_ok')"`
-- `Get-Content artifacts/reports/post_openai_live_rerun_catchup_v1.md`
-
-## Recommended next five loops
-
-1. add the smallest effect-training input guard that consumes `dataset_f_effect_training_view_v1` and excludes outcome-side fields from the actual training view
-2. add the smallest adapter or validator that computes `PROImprovementSummaryV1` directly from the shared baseline/follow-up PRO event contract
-3. link sensor/genetic parser outputs, file schema validation, supported parser failure types, `CGMNormalizedEventV1`, `cgm_slice_bridge_summary_v1`, `FollowUpTransitionEventV1`, `NextActionWorkflowEventV1`, and structured safety evidence linkage to a frozen-eval-compatible weakest-slice audit
-4. revisit `cgm` only with a final-step `continue_plan` versus `re_optimize` score-geometry loop
-5. if chat-path diagnosis is explicitly needed later, rerun the OpenAI live smoke and confirm either `provider = openai_responses_api` or `live_failure` is populated
+- `rg -n "## Closed-enough loops|## Open bottlenecks 5|## Next 3 bounded loops|## Priority rule|## Manual backlog priority" NEXT_STEPS.md`
+- `rg -n "## Must do|## Optional|## Blocked-by-user items" PENDING_USER_ACTIONS.md`
+- `git diff --check -- PROGRESS.md NEXT_STEPS.md SESSION_HANDOFF.md PENDING_USER_ACTIONS.md`

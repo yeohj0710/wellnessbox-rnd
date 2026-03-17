@@ -13,11 +13,11 @@ from pydantic import BaseModel, Field
 from wellnessbox_rnd.models.effect_model_v1 import (
     EffectFeatureVectorizerV1,
     EffectModelV1Artifact,
-    build_effect_feature_dict_v1,
     predict_aggregate_delta_v1,
     predict_domain_deltas_v1,
     predict_policy_effect_proxy_v1,
 )
+from wellnessbox_rnd.schemas.recommendation import RecommendationGoal
 
 if TYPE_CHECKING:
     from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import RichSyntheticCohortRecord
@@ -128,6 +128,42 @@ EFFECT_DATASET_PAIR_TOP_LEVEL_FIELDS: tuple[str, ...] = (
     "provenance",
     "response_profile",
 )
+
+EFFECT_TRAINING_VIEW_FORBIDDEN_FEATURE_NAMES: tuple[str, ...] = (
+    "adherence_proxy",
+    "side_effect_proxy",
+    "risk_tier_high",
+    "risk_tier_moderate",
+    "risk_tier_low",
+)
+
+EFFECT_TRAINING_ALLOWED_SOURCE_FIELDS_V1: tuple[str, ...] = (
+    "goal",
+    "baseline",
+    "input_flags",
+    "recommended_set",
+    "period",
+)
+
+EFFECT_TRAINING_FORBIDDEN_LEAKAGE_FAMILY_PATTERNS_V1: dict[str, tuple[str, ...]] = {
+    "follow_up": ("follow_up::", "follow_up_aggregate_z"),
+    "adverse_event": ("adverse_event",),
+    "expected_effect_proxy": ("expected_effect_proxy",),
+    "adherence_proxy": ("adherence_proxy",),
+    "side_effect_proxy": ("side_effect_proxy",),
+    "next_action": ("next_action::", "next_action_"),
+    "risk_tier": ("risk_tier_",),
+    "response_profile": (
+        "response_profile::",
+        "response_family::",
+        "response_strength_band::",
+        "adherence_band::",
+        "tolerability_band::",
+        "modality_signature::",
+    ),
+}
+
+DEFAULT_EFFECT_VALIDATION_SELECTION_PROFILE_V1 = "aggregate_mae_v1"
 
 
 def build_effect_dataset_training_view_contract_v1() -> dict[str, object]:
@@ -433,8 +469,23 @@ def fit_effect_model_v1(
     *,
     seed: int,
     alpha_grid: tuple[float, ...] = (0.01, 0.1, 1.0, 5.0, 10.0),
+    validation_selection_profile: str = DEFAULT_EFFECT_VALIDATION_SELECTION_PROFILE_V1,
+    validation_selection_tolerance: float = 0.0,
 ) -> tuple[EffectModelV1Artifact, dict[str, EffectEvaluationMetricsV1]]:
-    train_rows = [build_effect_feature_dict_v1(record) for record in train_records]
+    train_pair_rows = build_effect_dataset_pairs_v1(train_records)
+    val_pair_rows = build_effect_dataset_pairs_v1(val_records)
+    training_view_issues = validate_effect_dataset_training_view_contract_v1(
+        train_pair_rows + val_pair_rows
+    )
+    if training_view_issues:
+        raise ValueError(
+            "dataset_f_effect_training_view_v1 violation: "
+            + "; ".join(training_view_issues)
+        )
+
+    train_rows = [
+        build_effect_training_feature_dict_v1(pair_row) for pair_row in train_pair_rows
+    ]
     vectorizer = EffectFeatureVectorizerV1.fit(train_rows)
     output_names = sorted(train_records[0].delta_z_by_domain) if train_records else []
 
@@ -444,6 +495,9 @@ def fit_effect_model_v1(
     best_artifact: EffectModelV1Artifact | None = None
     best_val_metrics: EffectEvaluationMetricsV1 | None = None
     best_train_metrics: EffectEvaluationMetricsV1 | None = None
+    best_selection_score: float | None = None
+    best_selection_summary: dict[str, object] | None = None
+    alpha_search: list[dict[str, object]] = []
 
     for alpha in alpha_grid:
         weights, intercepts = _fit_multitarget_ridge(x_train, y_train, alpha=alpha)
@@ -458,24 +512,54 @@ def fit_effect_model_v1(
                 [round(float(weight), 8) for weight in output_weights]
                 for output_weights in weights
             ],
+            validation_selection_profile=validation_selection_profile,
+            validation_selection_tolerance=round(float(validation_selection_tolerance), 6),
         )
         train_metrics = evaluate_effect_model_v1(artifact, train_records)
         val_metrics = evaluate_effect_model_v1(artifact, val_records)
-        if (
-            best_val_metrics is None
-            or val_metrics.aggregate_mae < best_val_metrics.aggregate_mae
+        selection_summary = build_effect_validation_selection_summary_v1(
+            artifact,
+            val_records=val_records,
+            val_metrics=val_metrics,
+            profile=validation_selection_profile,
+        )
+        selection_score = float(selection_summary["selection_score"])
+        alpha_search.append(
+            {
+                "alpha": round(float(alpha), 6),
+                **selection_summary,
+            }
+        )
+        if _is_better_effect_validation_candidate_v1(
+            candidate_score=selection_score,
+            candidate_alpha=alpha,
+            best_score=best_selection_score,
+            best_alpha=best_artifact.alpha if best_artifact is not None else None,
+            tolerance=validation_selection_tolerance,
         ):
             best_artifact = artifact
             best_val_metrics = val_metrics
             best_train_metrics = train_metrics
+            best_selection_score = selection_score
+            best_selection_summary = selection_summary
 
     assert best_artifact is not None
     assert best_val_metrics is not None
     assert best_train_metrics is not None
+    assert best_selection_summary is not None
     calibrated_artifact = _fit_policy_proxy_calibration(
         best_artifact,
         train_records=train_records,
         val_records=val_records,
+    ).model_copy(
+        update={
+            "validation_selection_score": round(float(best_selection_score), 6),
+            "validation_selection_summary": {
+                **best_selection_summary,
+                "selected_alpha": round(float(best_artifact.alpha), 6),
+                "alpha_search": alpha_search,
+            },
+        }
     )
     best_train_metrics = evaluate_effect_model_v1(calibrated_artifact, train_records)
     best_val_metrics = evaluate_effect_model_v1(calibrated_artifact, val_records)
@@ -569,6 +653,10 @@ def build_effect_feature_schema_v1(
     for feature_name in artifact.feature_names:
         prefix = feature_name.split("::", 1)[0] if "::" in feature_name else "scalar"
         prefix_counts[prefix] = prefix_counts.get(prefix, 0) + 1
+    training_view_enforcement = summarize_effect_training_view_enforcement_v1(artifact)
+    training_feature_family_audit = summarize_effect_training_feature_family_boundary_v1(
+        artifact
+    )
     return {
         "model_name": artifact.model_name,
         "target_name": artifact.target_name,
@@ -581,9 +669,97 @@ def build_effect_feature_schema_v1(
             "clip_min": artifact.policy_proxy_clip_min,
             "clip_max": artifact.policy_proxy_clip_max,
         },
+        "validation_selection": {
+            "profile": artifact.validation_selection_profile,
+            "score": artifact.validation_selection_score,
+            "tolerance": artifact.validation_selection_tolerance,
+            "summary": artifact.validation_selection_summary,
+        },
+        "training_view_enforcement": training_view_enforcement,
+        "training_feature_family_audit": training_feature_family_audit,
         "feature_prefix_counts": dict(sorted(prefix_counts.items())),
         "feature_names": artifact.feature_names,
     }
+
+
+def validate_effect_feature_schema_v1(schema: dict[str, object]) -> list[str]:
+    issues: list[str] = []
+    training_view_enforcement = schema.get("training_view_enforcement")
+    if not isinstance(training_view_enforcement, dict):
+        training_view_enforcement = {}
+    training_feature_family_audit = schema.get("training_feature_family_audit")
+    if not isinstance(training_feature_family_audit, dict):
+        training_feature_family_audit = {}
+    feature_names = schema.get("feature_names")
+    if not isinstance(feature_names, list):
+        feature_names = []
+    allowed_source_family_counts = training_feature_family_audit.get(
+        "allowed_source_family_counts"
+    )
+    if not isinstance(allowed_source_family_counts, dict):
+        allowed_source_family_counts = {}
+    forbidden_leakage_family_counts = training_feature_family_audit.get(
+        "forbidden_leakage_family_counts"
+    )
+    if not isinstance(forbidden_leakage_family_counts, dict):
+        forbidden_leakage_family_counts = {}
+    forbidden_feature_names_present = training_view_enforcement.get(
+        "forbidden_feature_names_present"
+    )
+    if not isinstance(forbidden_feature_names_present, list):
+        forbidden_feature_names_present = []
+    unknown_features = training_feature_family_audit.get("unknown_features")
+    if not isinstance(unknown_features, list):
+        unknown_features = []
+
+    if schema.get("feature_count") != len(feature_names):
+        issues.append("feature_count_does_not_match_feature_names_length")
+    if (
+        training_view_enforcement.get("contract_version")
+        != "dataset_f_effect_training_view_v1"
+    ):
+        issues.append("unexpected_training_view_contract_version")
+    if training_view_enforcement.get("training_input_allowed_fields") != list(
+        EFFECT_TRAINING_ALLOWED_SOURCE_FIELDS_V1
+    ):
+        issues.append("training_input_allowed_fields_drifted_from_contract")
+    if training_feature_family_audit.get("allowed_source_fields") != list(
+        EFFECT_TRAINING_ALLOWED_SOURCE_FIELDS_V1
+    ):
+        issues.append("allowed_source_fields_drifted_from_contract")
+    if training_view_enforcement.get("training_input_allowed_fields") != (
+        training_feature_family_audit.get("allowed_source_fields")
+    ):
+        issues.append("training_view_and_feature_family_allowed_fields_mismatch")
+    if sorted(allowed_source_family_counts) != sorted(EFFECT_TRAINING_ALLOWED_SOURCE_FIELDS_V1):
+        issues.append("allowed_source_family_counts_keys_drifted")
+    if (
+        training_feature_family_audit.get("classified_feature_count")
+        != sum(int(value) for value in allowed_source_family_counts.values())
+    ):
+        issues.append("classified_feature_count_mismatch")
+    if training_feature_family_audit.get("unknown_feature_count") != len(unknown_features):
+        issues.append("unknown_feature_count_mismatch")
+    if sorted(forbidden_leakage_family_counts) != sorted(
+        EFFECT_TRAINING_FORBIDDEN_LEAKAGE_FAMILY_PATTERNS_V1
+    ):
+        issues.append("forbidden_leakage_family_counts_keys_drifted")
+    if training_view_enforcement.get("forbidden_feature_count") != len(
+        forbidden_feature_names_present
+    ):
+        issues.append("forbidden_feature_count_mismatch")
+    if training_feature_family_audit.get("forbidden_leakage_feature_count") != sum(
+        int(value) for value in forbidden_leakage_family_counts.values()
+    ):
+        issues.append("forbidden_leakage_feature_count_mismatch")
+    if (
+        int(training_feature_family_audit.get("classified_feature_count", 0))
+        + int(training_feature_family_audit.get("forbidden_leakage_feature_count", 0))
+        != len(feature_names)
+    ):
+        issues.append("feature_family_audit_does_not_cover_feature_names")
+
+    return issues
 
 
 def render_effect_training_report_v1(
@@ -606,6 +782,15 @@ def render_effect_training_report_v1(
             "clip_min": artifact.policy_proxy_clip_min,
             "clip_max": artifact.policy_proxy_clip_max,
         },
+        "validation_selection": {
+            "profile": artifact.validation_selection_profile,
+            "score": artifact.validation_selection_score,
+            "tolerance": artifact.validation_selection_tolerance,
+            "summary": artifact.validation_selection_summary,
+        },
+        "training_view_enforcement": summarize_effect_training_view_enforcement_v1(
+            artifact
+        ),
         "feature_count": len(artifact.feature_names),
         "output_names": artifact.output_names,
         "split_record_counts": {
@@ -656,6 +841,17 @@ def render_effect_training_markdown_v1(report: dict[str, object]) -> str:
             f"slope=`{report['policy_proxy_calibration']['slope']}`, "
             f"intercept=`{report['policy_proxy_calibration']['intercept']}`"
         ),
+        (
+            "- validation_selection: "
+            f"profile=`{report['validation_selection']['profile']}`, "
+            f"score=`{report['validation_selection']['score']}`, "
+            f"tolerance=`{report['validation_selection']['tolerance']}`"
+        ),
+        (
+            "- training_view_enforcement: "
+            f"contract_version=`{report['training_view_enforcement']['contract_version']}`, "
+            f"forbidden_feature_count=`{report['training_view_enforcement']['forbidden_feature_count']}`"
+        ),
         f"- feature_count: `{report['feature_count']}`",
         f"- output_names: `{', '.join(report['output_names'])}`",
         "",
@@ -691,9 +887,45 @@ def render_effect_feature_schema_markdown_v1(schema: dict[str, object]) -> str:
             f"slope=`{schema['policy_proxy_calibration']['slope']}`, "
             f"intercept=`{schema['policy_proxy_calibration']['intercept']}`"
         ),
-        "",
-        "## Feature Prefix Counts",
+        (
+            "- validation_selection: "
+            f"profile=`{schema['validation_selection']['profile']}`, "
+            f"score=`{schema['validation_selection']['score']}`, "
+            f"tolerance=`{schema['validation_selection']['tolerance']}`"
+        ),
+        (
+            "- training_view_enforcement: "
+            f"contract_version=`{schema['training_view_enforcement']['contract_version']}`, "
+            f"forbidden_feature_count=`{schema['training_view_enforcement']['forbidden_feature_count']}`"
+        ),
     ]
+    lines.extend(["", "## Training View Enforcement"])
+    lines.append(
+        "- allowed_top_level_fields: "
+        f"`{schema['training_view_enforcement']['training_input_allowed_fields']}`"
+    )
+    lines.append(
+        "- forbidden_feature_names_checked: "
+        f"`{schema['training_view_enforcement']['forbidden_feature_names_checked']}`"
+    )
+    lines.append(
+        "- forbidden_feature_names_present: "
+        f"`{schema['training_view_enforcement']['forbidden_feature_names_present']}`"
+    )
+    lines.extend(["", "## Training Feature Family Audit"])
+    lines.append(
+        "- allowed_source_family_counts: "
+        f"`{schema['training_feature_family_audit']['allowed_source_family_counts']}`"
+    )
+    lines.append(
+        "- forbidden_leakage_family_counts: "
+        f"`{schema['training_feature_family_audit']['forbidden_leakage_family_counts']}`"
+    )
+    lines.append(
+        "- unknown_features: "
+        f"`{schema['training_feature_family_audit']['unknown_features']}`"
+    )
+    lines.extend(["", "## Feature Prefix Counts"])
     for key, value in schema["feature_prefix_counts"].items():
         lines.append(f"- `{key}`: `{value}`")
     lines.extend(["", "## Feature Names"])
@@ -1571,6 +1803,33 @@ def _build_target_matrix(
     )
 
 
+def build_effect_validation_selection_summary_v1(
+    artifact: EffectModelV1Artifact,
+    *,
+    val_records: list[RichSyntheticCohortRecord],
+    val_metrics: EffectEvaluationMetricsV1,
+    profile: str = DEFAULT_EFFECT_VALIDATION_SELECTION_PROFILE_V1,
+) -> dict[str, object]:
+    slice_summary = _build_effect_validation_slice_summary_v1(
+        artifact,
+        records=val_records,
+    )
+    selection_score = _effect_validation_selection_score_v1(
+        val_metrics=val_metrics,
+        slice_summary=slice_summary,
+        profile=profile,
+    )
+    return {
+        "selection_stage": "pre_policy_proxy_calibration",
+        "profile": profile,
+        "selection_score": round(float(selection_score), 6),
+        "aggregate_mae": val_metrics.aggregate_mae,
+        "aggregate_r2": val_metrics.aggregate_r2,
+        "pre_policy_proxy_mae": val_metrics.policy_proxy_mae,
+        "slice_summary": slice_summary,
+    }
+
+
 def _fit_multitarget_ridge(
     x: np.ndarray,
     y: np.ndarray,
@@ -1584,6 +1843,201 @@ def _fit_multitarget_ridge(
     intercepts = solution[0]
     weights = solution[1:].T
     return weights, intercepts
+
+
+def _build_effect_validation_slice_summary_v1(
+    artifact: EffectModelV1Artifact,
+    *,
+    records: list[RichSyntheticCohortRecord],
+) -> dict[str, object]:
+    cgm_records = [record for record in records if record.request.input_availability.cgm]
+    non_cgm_records = [record for record in records if not record.request.input_availability.cgm]
+    low_risk_records = [record for record in records if record.labels.risk_tier == "low"]
+    low_risk_cgm_records = [
+        record
+        for record in low_risk_records
+        if record.request.input_availability.cgm
+    ]
+    goal_values = sorted(
+        {record.request.goals[0].value for record in records if record.request.goals}
+    )
+    goal_slice_aggregate_mae = {
+        goal: _evaluate_effect_slice_aggregate_mae_v1(
+            artifact,
+            [
+                record
+                for record in records
+                if record.request.goals and record.request.goals[0].value == goal
+            ],
+        )
+        for goal in goal_values
+    }
+    goal_slice_values = list(goal_slice_aggregate_mae.values())
+    low_risk_response_family_aggregate_mae = _build_response_family_aggregate_mae_v1(
+        artifact,
+        records=low_risk_records,
+    )
+    low_risk_response_family_values = list(low_risk_response_family_aggregate_mae.values())
+    low_risk_cgm_response_family_aggregate_mae = _build_response_family_aggregate_mae_v1(
+        artifact,
+        records=low_risk_cgm_records,
+    )
+    low_risk_cgm_response_family_values = list(
+        low_risk_cgm_response_family_aggregate_mae.values()
+    )
+    return {
+        "case_count": len(records),
+        "cgm_case_count": len(cgm_records),
+        "non_cgm_case_count": len(non_cgm_records),
+        "low_risk_case_count": len(low_risk_records),
+        "low_risk_cgm_case_count": len(low_risk_cgm_records),
+        "cgm_aggregate_mae": _evaluate_effect_slice_aggregate_mae_v1(
+            artifact,
+            cgm_records,
+        ),
+        "non_cgm_aggregate_mae": _evaluate_effect_slice_aggregate_mae_v1(
+            artifact,
+            non_cgm_records,
+        ),
+        "goal_slice_aggregate_mae": goal_slice_aggregate_mae,
+        "mean_goal_slice_aggregate_mae": round(
+            float(np.mean(goal_slice_values)) if goal_slice_values else 0.0,
+            6,
+        ),
+        "worst_goal_slice_aggregate_mae": round(
+            float(max(goal_slice_values)) if goal_slice_values else 0.0,
+            6,
+        ),
+        "low_risk_response_family_aggregate_mae": low_risk_response_family_aggregate_mae,
+        "mean_low_risk_response_family_aggregate_mae": round(
+            float(np.mean(low_risk_response_family_values))
+            if low_risk_response_family_values
+            else 0.0,
+            6,
+        ),
+        "worst_low_risk_response_family_aggregate_mae": round(
+            float(max(low_risk_response_family_values))
+            if low_risk_response_family_values
+            else 0.0,
+            6,
+        ),
+        "low_risk_cgm_response_family_aggregate_mae": (
+            low_risk_cgm_response_family_aggregate_mae
+        ),
+        "mean_low_risk_cgm_response_family_aggregate_mae": round(
+            float(np.mean(low_risk_cgm_response_family_values))
+            if low_risk_cgm_response_family_values
+            else 0.0,
+            6,
+        ),
+        "worst_low_risk_cgm_response_family_aggregate_mae": round(
+            float(max(low_risk_cgm_response_family_values))
+            if low_risk_cgm_response_family_values
+            else 0.0,
+            6,
+        ),
+    }
+
+
+def _evaluate_effect_slice_aggregate_mae_v1(
+    artifact: EffectModelV1Artifact,
+    records: list[RichSyntheticCohortRecord],
+) -> float:
+    if not records:
+        return 0.0
+    return evaluate_effect_model_v1(artifact, records).aggregate_mae
+
+
+def _effect_validation_selection_score_v1(
+    *,
+    val_metrics: EffectEvaluationMetricsV1,
+    slice_summary: dict[str, object],
+    profile: str,
+) -> float:
+    if profile == "aggregate_mae_v1":
+        return float(val_metrics.aggregate_mae)
+    if profile == "allowed_slice_balance_v1":
+        mean_goal_slice_aggregate_mae = float(slice_summary["mean_goal_slice_aggregate_mae"])
+        cgm_gap = abs(
+            float(slice_summary["cgm_aggregate_mae"])
+            - float(slice_summary["non_cgm_aggregate_mae"])
+        )
+        return round(
+            float(val_metrics.aggregate_mae)
+            + (0.25 * mean_goal_slice_aggregate_mae)
+            + (0.1 * cgm_gap),
+            6,
+        )
+    if profile != "allowed_slice_heterogeneity_v1":
+        raise ValueError(f"Unsupported effect validation selection profile: {profile}")
+
+    mean_goal_slice_aggregate_mae = float(slice_summary["mean_goal_slice_aggregate_mae"])
+    cgm_gap = abs(
+        float(slice_summary["cgm_aggregate_mae"])
+        - float(slice_summary["non_cgm_aggregate_mae"])
+    )
+    mean_low_risk_response_family_aggregate_mae = float(
+        slice_summary["mean_low_risk_response_family_aggregate_mae"]
+    )
+    worst_low_risk_response_family_aggregate_mae = float(
+        slice_summary["worst_low_risk_response_family_aggregate_mae"]
+    )
+    mean_low_risk_cgm_response_family_aggregate_mae = float(
+        slice_summary["mean_low_risk_cgm_response_family_aggregate_mae"]
+    )
+    worst_low_risk_cgm_response_family_aggregate_mae = float(
+        slice_summary["worst_low_risk_cgm_response_family_aggregate_mae"]
+    )
+    return round(
+        float(val_metrics.aggregate_mae)
+        + (0.2 * mean_goal_slice_aggregate_mae)
+        + (0.05 * cgm_gap)
+        + (0.2 * mean_low_risk_response_family_aggregate_mae)
+        + (0.2 * worst_low_risk_response_family_aggregate_mae)
+        + (0.15 * mean_low_risk_cgm_response_family_aggregate_mae)
+        + (0.15 * worst_low_risk_cgm_response_family_aggregate_mae),
+        6,
+    )
+
+
+def _build_response_family_aggregate_mae_v1(
+    artifact: EffectModelV1Artifact,
+    *,
+    records: list[RichSyntheticCohortRecord],
+) -> dict[str, float]:
+    response_families = sorted(
+        {
+            build_effect_dataset_response_profile_v1(record).response_family
+            for record in records
+        }
+    )
+    return {
+        response_family: _evaluate_effect_slice_aggregate_mae_v1(
+            artifact,
+            [
+                record
+                for record in records
+                if build_effect_dataset_response_profile_v1(record).response_family
+                == response_family
+            ],
+        )
+        for response_family in response_families
+    }
+
+
+def _is_better_effect_validation_candidate_v1(
+    *,
+    candidate_score: float,
+    candidate_alpha: float,
+    best_score: float | None,
+    best_alpha: float | None,
+    tolerance: float,
+) -> bool:
+    if best_score is None or best_alpha is None:
+        return True
+    if candidate_score < (best_score - tolerance):
+        return True
+    return abs(candidate_score - best_score) <= tolerance and candidate_alpha > best_alpha
 
 
 def _fit_policy_proxy_calibration(
@@ -1661,3 +2115,195 @@ def _count_string_values(values) -> dict[str, int]:
     for value in values:
         counts[value] = counts.get(value, 0) + 1
     return dict(sorted(counts.items()))
+
+
+def build_effect_training_feature_dict_v1(
+    pair_row: EffectDatasetPairRowV1,
+) -> dict[str, float]:
+    features: dict[str, float] = {
+        "trajectory_step": float(pair_row.period.trajectory_step),
+        "day_index": float(pair_row.period.end_day_index),
+        "goal_count": 1.0,
+        "wearable_available": float(pair_row.input_flags.wearable),
+        "cgm_available": float(pair_row.input_flags.cgm),
+        "genetic_available": float(pair_row.input_flags.genetic),
+        "nhis_available": float(pair_row.input_flags.nhis),
+        "baseline_aggregate_z": float(pair_row.baseline.aggregate_z),
+        "regimen_count": float(len(pair_row.recommended_set)),
+        "active_regimen_count": float(
+            sum(1 for item in pair_row.recommended_set if item.regimen_status == "active")
+        ),
+        "planned_regimen_count": float(
+            sum(1 for item in pair_row.recommended_set if item.regimen_status == "planned")
+        ),
+        "reduced_regimen_count": float(
+            sum(1 for item in pair_row.recommended_set if item.regimen_status == "reduced")
+        ),
+        "stopped_regimen_count": float(
+            sum(1 for item in pair_row.recommended_set if item.regimen_status == "stopped")
+        ),
+        "total_daily_dose": float(
+            round(sum(item.daily_dose for item in pair_row.recommended_set), 3)
+        ),
+    }
+
+    for goal in RecommendationGoal:
+        features[f"goal::{goal.value}"] = float(pair_row.goal == goal.value)
+        features[f"baseline::{goal.value}"] = float(
+            pair_row.baseline.domain_z.get(goal.value, 0.0)
+        )
+
+    for regimen_item in pair_row.recommended_set:
+        features[f"regimen::{regimen_item.ingredient_key}"] = 1.0
+        features[f"dose::{regimen_item.ingredient_key}"] = float(regimen_item.daily_dose)
+        features[f"schedule::{regimen_item.schedule}"] = 1.0
+        features[f"regimen_status::{regimen_item.regimen_status}"] = 1.0
+
+    return features
+
+
+def summarize_effect_training_view_enforcement_v1(
+    artifact: EffectModelV1Artifact,
+) -> dict[str, object]:
+    contract = build_effect_dataset_training_view_contract_v1()
+    forbidden_present = [
+        feature_name
+        for feature_name in EFFECT_TRAINING_VIEW_FORBIDDEN_FEATURE_NAMES
+        if feature_name in artifact.feature_names
+    ]
+    return {
+        "contract_version": contract["contract_version"],
+        "training_input_allowed_fields": contract["training_input_allowed_fields"],
+        "forbidden_feature_names_checked": list(
+            EFFECT_TRAINING_VIEW_FORBIDDEN_FEATURE_NAMES
+        ),
+        "forbidden_feature_names_present": forbidden_present,
+        "forbidden_feature_count": len(forbidden_present),
+    }
+
+
+def summarize_effect_training_feature_family_boundary_v1(
+    artifact: EffectModelV1Artifact,
+) -> dict[str, object]:
+    allowed_source_family_counts = {
+        field_name: 0 for field_name in EFFECT_TRAINING_ALLOWED_SOURCE_FIELDS_V1
+    }
+    feature_to_source_family: dict[str, str] = {}
+    unknown_features: list[str] = []
+    for feature_name in artifact.feature_names:
+        source_family = _classify_effect_training_feature_source_family_v1(feature_name)
+        if source_family is None:
+            if _match_effect_training_forbidden_family_v1(feature_name) is None:
+                unknown_features.append(feature_name)
+            continue
+        allowed_source_family_counts[source_family] += 1
+        feature_to_source_family[feature_name] = source_family
+
+    forbidden_leakage_family_counts = {
+        family_name: 0
+        for family_name in EFFECT_TRAINING_FORBIDDEN_LEAKAGE_FAMILY_PATTERNS_V1
+    }
+    forbidden_leakage_features_present: dict[str, list[str]] = {
+        family_name: []
+        for family_name in EFFECT_TRAINING_FORBIDDEN_LEAKAGE_FAMILY_PATTERNS_V1
+    }
+    for feature_name in artifact.feature_names:
+        family_name = _match_effect_training_forbidden_family_v1(feature_name)
+        if family_name is None:
+            continue
+        forbidden_leakage_family_counts[family_name] += 1
+        forbidden_leakage_features_present[family_name].append(feature_name)
+
+    forbidden_leakage_features_present = {
+        family_name: feature_names
+        for family_name, feature_names in forbidden_leakage_features_present.items()
+        if feature_names
+    }
+
+    return {
+        "allowed_source_fields": list(EFFECT_TRAINING_ALLOWED_SOURCE_FIELDS_V1),
+        "allowed_source_family_counts": allowed_source_family_counts,
+        "classified_feature_count": sum(allowed_source_family_counts.values()),
+        "feature_to_source_family": feature_to_source_family,
+        "unknown_features": unknown_features,
+        "unknown_feature_count": len(unknown_features),
+        "forbidden_leakage_family_patterns_checked": {
+            family_name: list(patterns)
+            for family_name, patterns in (
+                EFFECT_TRAINING_FORBIDDEN_LEAKAGE_FAMILY_PATTERNS_V1.items()
+            )
+        },
+        "forbidden_leakage_family_counts": forbidden_leakage_family_counts,
+        "forbidden_leakage_features_present": forbidden_leakage_features_present,
+        "forbidden_leakage_feature_count": sum(
+            forbidden_leakage_family_counts.values()
+        ),
+    }
+
+
+def validate_effect_training_feature_family_boundary_v1(
+    artifact: EffectModelV1Artifact,
+) -> list[str]:
+    audit = summarize_effect_training_feature_family_boundary_v1(artifact)
+    issues: list[str] = []
+    classified_or_forbidden_count = (
+        audit["classified_feature_count"] + audit["forbidden_leakage_feature_count"]
+    )
+    if classified_or_forbidden_count != len(artifact.feature_names):
+        issues.append("unclassified training feature names detected")
+    if audit["unknown_feature_count"] != 0:
+        issues.append(
+            "unknown training feature names present: "
+            + ", ".join(audit["unknown_features"])
+        )
+    for family_name, count in audit["allowed_source_family_counts"].items():
+        if count == 0:
+            issues.append(f"allowed source family missing from artifact: {family_name}")
+    if audit["forbidden_leakage_feature_count"] != 0:
+        issues.append(
+            "forbidden leakage-prone feature families present: "
+            + ", ".join(
+                f"{family_name}={len(feature_names)}"
+                for family_name, feature_names in sorted(
+                    audit["forbidden_leakage_features_present"].items()
+                )
+            )
+        )
+    return issues
+
+
+def _classify_effect_training_feature_source_family_v1(
+    feature_name: str,
+) -> str | None:
+    if feature_name.startswith("goal::") or feature_name == "goal_count":
+        return "goal"
+    if feature_name.startswith("baseline::") or feature_name == "baseline_aggregate_z":
+        return "baseline"
+    if feature_name in {
+        "wearable_available",
+        "cgm_available",
+        "genetic_available",
+        "nhis_available",
+    }:
+        return "input_flags"
+    if feature_name in {"trajectory_step", "day_index"}:
+        return "period"
+    if feature_name.startswith(
+        ("regimen::", "dose::", "schedule::", "regimen_status::")
+    ) or feature_name in {
+        "regimen_count",
+        "active_regimen_count",
+        "planned_regimen_count",
+        "reduced_regimen_count",
+        "stopped_regimen_count",
+        "total_daily_dose",
+    }:
+        return "recommended_set"
+    return None
+
+
+def _match_effect_training_forbidden_family_v1(feature_name: str) -> str | None:
+    for family_name, patterns in EFFECT_TRAINING_FORBIDDEN_LEAKAGE_FAMILY_PATTERNS_V1.items():
+        if any(feature_name.startswith(pattern) for pattern in patterns):
+            return family_name
+    return None

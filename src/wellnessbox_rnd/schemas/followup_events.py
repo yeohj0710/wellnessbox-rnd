@@ -6,6 +6,9 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
+from wellnessbox_rnd.schemas.next_action_state_machine import (
+    project_followup_closed_loop_state,
+)
 from wellnessbox_rnd.schemas.recommendation import (
     NextAction,
     RecommendationGoal,
@@ -202,19 +205,11 @@ def render_followup_transition_event_contract_markdown_v1(report: dict[str, obje
 
 
 def _expected_closed_loop_state(event: FollowUpTransitionEventV1) -> str:
-    if event.adverse_event or event.next_action == NextAction.REDUCE_OR_STOP:
-        return "stop_or_escalate"
-    if event.next_action == NextAction.TRIGGER_SAFETY_RECHECK:
-        return "safety_review"
-    if event.next_action == NextAction.ASK_TARGETED_FOLLOWUP:
-        return "baseline_questionnaire_due" if event.trajectory_step == 0 else "re_evaluation"
-    if event.next_action == NextAction.RE_OPTIMIZE:
-        return "adjust_plan"
-    if event.next_action == NextAction.MONITOR_ONLY:
-        return "recommendation_ready" if event.trajectory_step == 0 else "followup_due"
-    if event.trajectory_step == 0:
-        return "recommendation_ready"
-    return "followup_due"
+    return project_followup_closed_loop_state(
+        action=event.next_action,
+        trajectory_step=event.trajectory_step,
+        adverse_event=event.adverse_event,
+    )
 
 
 def _read_value(payload: Any, key: str) -> Any:

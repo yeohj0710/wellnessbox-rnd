@@ -6,6 +6,12 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, ValidationError
 
+from wellnessbox_rnd.schemas.pro_events import (
+    BASELINE_FOLLOWUP_PRO_EVENT_SCHEMA_VERSION_V1,
+    BaselineFollowUpPROEventV1,
+    build_baseline_followup_pro_event_v1,
+    validate_baseline_followup_pro_event_v1,
+)
 from wellnessbox_rnd.schemas.recommendation import RecommendationGoal
 from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import RichSyntheticCohortRecord
 
@@ -310,7 +316,7 @@ def transform_pro_response_to_zscores_v1(
     )
 
 
-def summarize_pro_improvement_v1(
+def _summarize_pro_improvement_from_snapshots_v1(
     *,
     baseline_snapshot: PROZScoreSnapshotV1 | dict[str, object] | object,
     follow_up_snapshot: PROZScoreSnapshotV1 | dict[str, object] | object,
@@ -362,6 +368,108 @@ def summarize_pro_improvement_v1(
         worsened_domain_count=worsened_domain_count,
         unchanged_domain_count=unchanged_domain_count,
         net_status=net_status,
+    )
+
+
+def coerce_baseline_followup_pro_event_v1(
+    event: BaselineFollowUpPROEventV1 | dict[str, object] | object,
+) -> BaselineFollowUpPROEventV1:
+    event_model = (
+        event
+        if isinstance(event, BaselineFollowUpPROEventV1)
+        else (
+            build_baseline_followup_pro_event_v1(event)
+            if _looks_like_record_payload(event)
+            else BaselineFollowUpPROEventV1.model_validate(event)
+        )
+    )
+    event_issues = validate_baseline_followup_pro_event_v1(event_model)
+    if event_issues:
+        raise ValueError("invalid_baseline_followup_pro_event::" + "|".join(event_issues))
+    return event_model
+
+
+def summarize_pro_improvement_from_normalized_event_v1(
+    event: BaselineFollowUpPROEventV1 | dict[str, object],
+) -> PROImprovementSummaryV1:
+    event_model = (
+        event
+        if isinstance(event, BaselineFollowUpPROEventV1)
+        else BaselineFollowUpPROEventV1.model_validate(event)
+    )
+    event_issues = validate_baseline_followup_pro_event_v1(event_model)
+    if event_issues:
+        raise ValueError("invalid_baseline_followup_pro_event::" + "|".join(event_issues))
+    return _summarize_pro_improvement_from_snapshots_v1(
+        baseline_snapshot=event_model.baseline,
+        follow_up_snapshot=event_model.follow_up,
+    )
+
+
+def summarize_pro_improvement_from_event_v1(
+    event: BaselineFollowUpPROEventV1 | dict[str, object] | object,
+) -> PROImprovementSummaryV1:
+    event_model = coerce_baseline_followup_pro_event_v1(event)
+    return summarize_pro_improvement_from_normalized_event_v1(
+        event_model.model_dump(mode="json")
+    )
+
+
+def validate_pro_improvement_summary_from_normalized_event_v1(
+    *,
+    event: BaselineFollowUpPROEventV1 | dict[str, object],
+    summary: PROImprovementSummaryV1 | dict[str, object],
+) -> list[str]:
+    summary_model = (
+        summary
+        if isinstance(summary, PROImprovementSummaryV1)
+        else PROImprovementSummaryV1.model_validate(summary)
+    )
+    expected = summarize_pro_improvement_from_normalized_event_v1(event)
+    issues: list[str] = []
+
+    if (
+        abs(summary_model.aggregate_delta_z - expected.aggregate_delta_z)
+        > PRO_IMPROVEMENT_DELTA_TOLERANCE
+    ):
+        issues.append(
+            "aggregate_delta_mismatch::"
+            f"{expected.aggregate_delta_z}::{summary_model.aggregate_delta_z}"
+        )
+    if summary_model.domain_delta_z != expected.domain_delta_z:
+        issues.append("domain_delta_mismatch")
+    if summary_model.improved_domain_count != expected.improved_domain_count:
+        issues.append(
+            "improved_domain_count_mismatch::"
+            f"{expected.improved_domain_count}::{summary_model.improved_domain_count}"
+        )
+    if summary_model.worsened_domain_count != expected.worsened_domain_count:
+        issues.append(
+            "worsened_domain_count_mismatch::"
+            f"{expected.worsened_domain_count}::{summary_model.worsened_domain_count}"
+        )
+    if summary_model.unchanged_domain_count != expected.unchanged_domain_count:
+        issues.append(
+            "unchanged_domain_count_mismatch::"
+            f"{expected.unchanged_domain_count}::{summary_model.unchanged_domain_count}"
+        )
+    if summary_model.net_status != expected.net_status:
+        issues.append(
+            "net_status_mismatch::"
+            f"{expected.net_status}::{summary_model.net_status}"
+        )
+    return issues
+
+
+def validate_pro_improvement_summary_from_event_v1(
+    *,
+    event: BaselineFollowUpPROEventV1 | dict[str, object] | object,
+    summary: PROImprovementSummaryV1 | dict[str, object],
+) -> list[str]:
+    event_model = coerce_baseline_followup_pro_event_v1(event)
+    return validate_pro_improvement_summary_from_normalized_event_v1(
+        event=event_model.model_dump(mode="json"),
+        summary=summary,
     )
 
 
@@ -418,35 +526,63 @@ def summarize_pro_form_contract_v1(
         schema=schema,
         norms=norms,
     )
-    sample_improvement_summary = summarize_pro_improvement_v1(
-        baseline_snapshot=sample_mid_z,
-        follow_up_snapshot=sample_improved_z,
+    sample_improvement_event = BaselineFollowUpPROEventV1(
+        record_id="sample_pro_improvement_event",
+        user_id="sample_user",
+        cohort_version="pro_scoring_contract_v1_sample",
+        trajectory_step=0,
+        day_index=0,
+        recommendation_goals=[RecommendationGoal.SLEEP_SUPPORT],
+        follow_up_next_action="continue_plan",
+        adverse_event=False,
+        baseline={
+            "timepoint": sample_mid_z.timepoint,
+            "aggregate_z": sample_mid_z.aggregate_z,
+            "domain_z": sample_mid_z.domain_z,
+        },
+        follow_up={
+            "timepoint": sample_improved_z.timepoint,
+            "aggregate_z": sample_improved_z.aggregate_z,
+            "domain_z": sample_improved_z.domain_z,
+        },
+        delta_z_by_domain={
+            domain_key: round(
+                sample_improved_z.domain_z[domain_key] - sample_mid_z.domain_z[domain_key],
+                6,
+            )
+            for domain_key in domain_keys
+        },
     )
+    sample_improvement_summary = summarize_pro_improvement_from_event_v1(
+        sample_improvement_event
+    )
+    event_summaries: list[PROImprovementSummaryV1] = []
+    invalid_event_summary_record_ids: list[str] = []
+    for record in records:
+        try:
+            event_summaries.append(summarize_pro_improvement_from_event_v1(record))
+        except ValueError:
+            invalid_event_summary_record_ids.append(record.record_id)
     improved_case_count = sum(
-        1
-        for record in records
-        if record.follow_up_pro.aggregate_z > record.baseline_pro.aggregate_z
+        1 for summary in event_summaries if summary.net_status == "net_improvement"
     )
     worsened_case_count = sum(
-        1
-        for record in records
-        if record.follow_up_pro.aggregate_z < record.baseline_pro.aggregate_z
+        1 for summary in event_summaries if summary.net_status == "net_worsening"
     )
-    unchanged_case_count = len(records) - improved_case_count - worsened_case_count
+    unchanged_case_count = sum(
+        1 for summary in event_summaries if summary.net_status == "no_material_change"
+    )
     mean_aggregate_delta_z = round(
-        sum(
-            record.follow_up_pro.aggregate_z - record.baseline_pro.aggregate_z
-            for record in records
-        )
-        / len(records),
+        sum(summary.aggregate_delta_z for summary in event_summaries) / len(event_summaries),
         6,
-    ) if records else 0.0
+    ) if event_summaries else 0.0
     mean_domain_delta_z_by_domain = {
         domain_key: round(
-            sum(record.delta_z_by_domain[domain_key] for record in records) / len(records),
+            sum(summary.domain_delta_z[domain_key] for summary in event_summaries)
+            / len(event_summaries),
             6,
         )
-        if records
+        if event_summaries
         else 0.0
         for domain_key in domain_keys
     }
@@ -480,6 +616,29 @@ def summarize_pro_form_contract_v1(
             "summary_version": PRO_IMPROVEMENT_SUMMARY_VERSION_V1,
             "formula": "follow_up_z - baseline_z",
             "aggregate_definition": "follow_up.aggregate_z - baseline.aggregate_z",
+            "shared_event_schema_version": BASELINE_FOLLOWUP_PRO_EVENT_SCHEMA_VERSION_V1,
+            "shared_event_adapter": "summarize_pro_improvement_from_event_v1",
+            "direct_normalized_event_adapter": (
+                "summarize_pro_improvement_from_normalized_event_v1"
+            ),
+            "shared_event_unifier": "coerce_baseline_followup_pro_event_v1",
+            "shared_event_validator": "validate_pro_improvement_summary_from_event_v1",
+            "direct_normalized_event_validator": (
+                "validate_pro_improvement_summary_from_normalized_event_v1"
+            ),
+            "single_path_status": {
+                "event_adapter_only_public_entrypoint": True,
+                "normalized_event_direct_compute_path": True,
+                "direct_normalized_event_internal_only": True,
+                "package_public_summary_entrypoint": (
+                    "summarize_pro_improvement_from_event_v1"
+                ),
+                "package_public_validator_entrypoint": (
+                    "validate_pro_improvement_summary_from_event_v1"
+                ),
+                "snapshot_pair_entrypoint_internal_only": True,
+                "record_or_event_payloads_unified_by": "coerce_baseline_followup_pro_event_v1",
+            },
             "net_status_rule": {
                 "improvement": f"aggregate_delta_z > {PRO_IMPROVEMENT_DELTA_TOLERANCE}",
                 "worsening": f"aggregate_delta_z < -{PRO_IMPROVEMENT_DELTA_TOLERANCE}",
@@ -494,6 +653,16 @@ def summarize_pro_form_contract_v1(
                 "unchanged_case_count": unchanged_case_count,
                 "mean_aggregate_delta_z": mean_aggregate_delta_z,
                 "mean_domain_delta_z_by_domain": mean_domain_delta_z_by_domain,
+            },
+            "shared_event_path_proof": {
+                "valid_case_count": len(event_summaries),
+                "invalid_case_count": len(invalid_event_summary_record_ids),
+                "invalid_record_ids": sorted(invalid_event_summary_record_ids),
+                "example_summary": (
+                    event_summaries[0].model_dump(mode="json")
+                    if event_summaries
+                    else None
+                ),
             },
         },
         "synthetic_alignment": {
@@ -568,6 +737,17 @@ def render_pro_form_contract_markdown_v1(report: dict[str, object]) -> str:
             f"- summary_version: {report['improvement_metric']['summary_version']}",
             f"- formula: `{report['improvement_metric']['formula']}`",
             f"- aggregate_definition: {report['improvement_metric']['aggregate_definition']}",
+            "- shared_event_schema_version: "
+            f"{report['improvement_metric']['shared_event_schema_version']}",
+            f"- shared_event_adapter: {report['improvement_metric']['shared_event_adapter']}",
+            "- direct_normalized_event_adapter: "
+            f"{report['improvement_metric']['direct_normalized_event_adapter']}",
+            f"- shared_event_unifier: {report['improvement_metric']['shared_event_unifier']}",
+            f"- shared_event_validator: {report['improvement_metric']['shared_event_validator']}",
+            "- direct_normalized_event_validator: "
+            f"{report['improvement_metric']['direct_normalized_event_validator']}",
+            "- single_path_status: "
+            f"{report['improvement_metric']['single_path_status']}",
             f"- sample_summary.aggregate_delta_z: "
             f"{report['improvement_metric']['sample_summary']['aggregate_delta_z']}",
             f"- sample_summary.net_status: "
@@ -580,6 +760,10 @@ def render_pro_form_contract_markdown_v1(report: dict[str, object]) -> str:
             f"{report['improvement_metric']['synthetic_dataset_summary']['unchanged_case_count']}",
             f"- synthetic mean_aggregate_delta_z: "
             f"{report['improvement_metric']['synthetic_dataset_summary']['mean_aggregate_delta_z']}",
+            f"- shared_event_path valid_case_count: "
+            f"{report['improvement_metric']['shared_event_path_proof']['valid_case_count']}",
+            f"- shared_event_path invalid_case_count: "
+            f"{report['improvement_metric']['shared_event_path_proof']['invalid_case_count']}",
             "",
             "## domain item counts",
             "",
@@ -680,6 +864,28 @@ def _read_snapshot_value(snapshot: PROZScoreSnapshotV1 | dict[str, object] | obj
     return getattr(snapshot, key)
 
 
+def _looks_like_record_payload(payload: object) -> bool:
+    if isinstance(payload, dict):
+        required_keys = {
+            "record_id",
+            "user_id",
+            "baseline_pro",
+            "follow_up_pro",
+            "delta_z_by_domain",
+        }
+        return required_keys <= set(payload)
+    return all(
+        hasattr(payload, key)
+        for key in (
+            "record_id",
+            "user_id",
+            "baseline_pro",
+            "follow_up_pro",
+            "delta_z_by_domain",
+        )
+    )
+
+
 __all__ = [
     "PRO_IMPROVEMENT_SUMMARY_VERSION_V1",
     "PRODomainNormV1",
@@ -695,10 +901,14 @@ __all__ = [
     "PRO_Z_SCORE_TRANSFORM_VERSION_V1",
     "build_default_pro_domain_norms_v1",
     "build_default_pro_form_schema_v1",
+    "coerce_baseline_followup_pro_event_v1",
     "render_pro_form_contract_markdown_v1",
     "summarize_pro_form_contract_v1",
-    "summarize_pro_improvement_v1",
+    "summarize_pro_improvement_from_event_v1",
+    "summarize_pro_improvement_from_normalized_event_v1",
     "transform_pro_response_to_zscores_v1",
+    "validate_pro_improvement_summary_from_event_v1",
+    "validate_pro_improvement_summary_from_normalized_event_v1",
     "validate_pro_domain_norms_v1",
     "validate_pro_form_response_v1",
     "write_pro_form_contract_report_v1",

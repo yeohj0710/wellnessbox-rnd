@@ -39,6 +39,19 @@ def test_next_action_workflow_contract_validates_structured_safety_recheck_fixtu
     assert validate_next_action_workflow_event_v1(event) == []
 
 
+def test_next_action_workflow_contract_validates_blocked_collect_more_input_fixture() -> None:
+    request = _load_request("api_recommend_blocked_collect_more_input_request_v1.json")
+    response = recommend(request)
+
+    event = build_next_action_workflow_event_v1(response)
+
+    assert event.response_status.value == "blocked"
+    assert event.next_action.value == "collect_more_input"
+    assert event.projected_workflow_state == "baseline_questionnaire_due"
+    assert "missing_survey" in event.missing_information_codes
+    assert validate_next_action_workflow_event_v1(event) == []
+
+
 def test_next_action_workflow_contract_flags_collect_more_input_without_missing_codes() -> None:
     request = RecommendationRequest.model_validate(
         {
@@ -87,6 +100,13 @@ def test_next_action_workflow_contract_summary_keeps_state_machine_connection() 
     report = summarize_next_action_workflow_contract_v1(event)
 
     assert report["issue_count"] == 0
+    assert report["state_machine_scope"] == "runtime_request_decision"
+    assert report["phase_sensitive_followup_actions"] == [
+        "ask_targeted_followup",
+        "continue_plan",
+        "monitor_only",
+        "start_plan",
+    ]
     assert report["connection_map"]["follow_up_state_machine"] == [
         "next_action",
         "projected_workflow_state",
