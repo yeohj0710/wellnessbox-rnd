@@ -166,11 +166,10 @@ def generate_release(
             + "idempotency·hash audit·durable postcondition을 남긴다. 검색 근거 본문은 "
             + "항상 `untrusted_content`로 취급해 명령으로 실행하지 않는다.\n"
             + "\n## 생산 전 의존성 gate\n\n"
-            + "현재 WellnessBox의 React는 `19.0.0-rc` 계열이다. 보안 지원 버전으로 "
-            + "업그레이드하고 전체 회귀 검증하기 전에는 이 기능을 production에 켜지 않는다. "
-            + "`npm audit --omit=dev`는 기존 production tree에서 37건(critical 3, high 11, "
-            + "moderate 23)을 보고했다. 이 저장소 변경은 기존 서비스 의존성을 임의로 올리지 "
-            + "않았다. feature flag는 remediation 전까지 꺼 둔다.\n"
+            + "WellnessBox는 Next.js 15.5.20과 React 19.1.2로 올리고 회귀 검증했다. "
+            + "`npm audit --omit=dev`의 critical/high는 0건이며, Next.js 번들 PostCSS의 "
+            + "moderate 2건이 남았다. audit의 강제 수정은 Next.js 9 역다운그레이드를 제안해 "
+            + "적용하지 않았다. feature flag는 외부 연구·법무·인증 gate 전까지 꺼 둔다.\n"
         ),
         interim_root / "ADR_REPORT.md": (
             _frontmatter("ADR 프록시 보고서", generated_at)
@@ -206,7 +205,6 @@ def generate_release(
             + "- 1,200명·12개월 실제 ADR 운영\n"
             + "- 생산 wearable·CGM·genetic provider 자격증명과 세션\n"
             + "- 외부 시험기관 성적서·인증·법무 승인\n\n"
-            + "- 기존 WellnessBox production dependency audit 37건 remediation·회귀 검증\n\n"
             + "이 항목은 `MISSING`이 아니라 외부 투입 전까지 `BLOCKED_EXTERNAL`이다.\n"
         ),
         interim_root / "RUNBOOK.md": (

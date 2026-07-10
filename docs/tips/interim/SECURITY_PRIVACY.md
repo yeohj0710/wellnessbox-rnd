@@ -1,6 +1,6 @@
 # 보안·개인정보
 
-> 상태: `PROXY_GOLD_SIMULATION` · 생성 시각: 2026-07-10T06:43:58.432475+00:00
+> 상태: `PROXY_GOLD_SIMULATION` · 생성 시각: 2026-07-10T06:52:11.930327+00:00
 
 > 이 문서는 중간 시뮬레이션 근거다. 실제 약사 판정, 실제 임상 효과, 12개월 실제 운영, 생산 기기 연동, 외부 시험·인증 완료를 뜻하지 않는다.
 
@@ -10,4 +10,4 @@
 
 ## 생산 전 의존성 gate
 
-현재 WellnessBox의 React는 `19.0.0-rc` 계열이다. 보안 지원 버전으로 업그레이드하고 전체 회귀 검증하기 전에는 이 기능을 production에 켜지 않는다. `npm audit --omit=dev`는 기존 production tree에서 37건(critical 3, high 11, moderate 23)을 보고했다. 이 저장소 변경은 기존 서비스 의존성을 임의로 올리지 않았다. feature flag는 remediation 전까지 꺼 둔다.
+WellnessBox는 Next.js 15.5.20과 React 19.1.2로 올리고 회귀 검증했다. `npm audit --omit=dev`의 critical/high는 0건이며, Next.js 번들 PostCSS의 moderate 2건이 남았다. audit의 강제 수정은 Next.js 9 역다운그레이드를 제안해 적용하지 않았다. feature flag는 외부 연구·법무·인증 gate 전까지 꺼 둔다.

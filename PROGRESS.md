@@ -16,8 +16,10 @@
 - Independent code review Critical findings were fixed and covered by added regression tests.
 - Full legacy pytest remains red from pre-existing missing ignored `artifacts/reports/**` inputs and
   existing CGM geometry baseline drift; the TIPS interim test selection is green.
-- `npm audit --omit=dev`: 37 pre-existing production dependency advisories. Keep the service feature
-  flag off until dependency remediation and full regression verification.
+- `npm audit --omit=dev`: 2 moderate advisories remain in Next.js's bundled PostCSS; critical/high
+  advisories are 0. The audit's forced fix incorrectly proposes a Next.js 9 downgrade, so it was rejected.
+- Upgraded Next.js/React and direct production dependencies; service QA, typecheck, lint, and production
+  build pass. Keep the feature flag off until the external research, legal, and certification gates pass.
 - The older strict effect-training `NO-GO` below remains unchanged and applies to the legacy learned
   effect-model promotion path. This proxy override did not promote that model into runtime.
 
