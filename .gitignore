@@ -11,8 +11,11 @@ htmlcov/
 
 # Virtual environments
 .venv/
+.venv-interim/
 venv/
 env/
+.pytest_tmp/
+.tmp_pytest/
 
 # Environment files
 .env
@@ -25,4 +28,3 @@ dist/
 # Local artifacts
 artifacts/
 logs/
-

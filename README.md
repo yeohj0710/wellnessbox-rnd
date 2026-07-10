@@ -147,3 +147,15 @@ uvicorn apps.inference_api.main:app --reload
   - `python scripts/run_staging_api_smoke.py --base-url http://127.0.0.1:8000`
 
 상세 배포 계약은 `docs/deployment/staging_api.md` 를 따른다.
+
+## Interim proxy pipeline
+
+검증된 150,000건 `PROXY_GOLD_SIMULATION` 패키지는 원본을 덮어쓰지 않고 경로와 SHA-256으로
+등록한다. Proxy 완료와 실제 데이터 교체 상태는 항상 별도로 보존한다.
+
+```powershell
+python scripts/run_interim_pipeline.py verify-package
+python scripts/run_interim_pipeline.py migrate --clean
+python scripts/run_interim_pipeline.py import
+python scripts/run_interim_pipeline.py evaluate
+```

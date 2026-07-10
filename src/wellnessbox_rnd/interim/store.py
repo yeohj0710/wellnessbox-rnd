@@ -1,0 +1,341 @@
+from __future__ import annotations
+
+import sqlite3
+from collections.abc import Iterator
+from contextlib import contextmanager
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+SCHEMA_VERSION = 2
+
+SCHEMA_SQL = """
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS schema_migrations (
+  version INTEGER PRIMARY KEY,
+  applied_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS import_jobs (
+  import_key TEXT PRIMARY KEY,
+  package_root TEXT NOT NULL,
+  manifest_sha256 TEXT NOT NULL,
+  status TEXT NOT NULL,
+  counts_json TEXT NOT NULL,
+  completed_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS source_registry (
+  source_id TEXT PRIMARY KEY,
+  source_tier TEXT NOT NULL,
+  title TEXT NOT NULL,
+  canonical_uri TEXT NOT NULL,
+  license_status TEXT NOT NULL,
+  effective_at TEXT,
+  retired_at TEXT,
+  checksum TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  metadata_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS evidence_passages (
+  evidence_id TEXT PRIMARY KEY,
+  source_id TEXT NOT NULL REFERENCES source_registry(source_id),
+  passage_text TEXT NOT NULL,
+  effective_at TEXT,
+  checksum TEXT NOT NULL,
+  approved_for_safety INTEGER NOT NULL DEFAULT 0,
+  data_class TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS safety_rules (
+  rule_version_id TEXT PRIMARY KEY,
+  rule_id TEXT NOT NULL,
+  version INTEGER NOT NULL,
+  severity TEXT NOT NULL,
+  action TEXT NOT NULL,
+  predicate_json TEXT NOT NULL,
+  evidence_ids_json TEXT NOT NULL,
+  valid_from TEXT NOT NULL,
+  valid_to TEXT,
+  review_status TEXT NOT NULL,
+  rule_sha256 TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  UNIQUE(rule_id, version)
+);
+
+CREATE TABLE IF NOT EXISTS dataset_snapshots (
+  dataset_id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  manifest_uri TEXT NOT NULL,
+  manifest_sha256 TEXT NOT NULL,
+  record_count INTEGER NOT NULL,
+  split_counts_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS proxy_cases (
+  case_id TEXT PRIMARY KEY,
+  dataset_id TEXT NOT NULL REFERENCES dataset_snapshots(dataset_id),
+  split TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  teacher_session TEXT NOT NULL,
+  archetype_id TEXT NOT NULL,
+  source_file TEXT NOT NULL,
+  source_line INTEGER NOT NULL,
+  row_sha256 TEXT NOT NULL,
+  payload_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS model_versions (
+  model_id TEXT PRIMARY KEY,
+  model_name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  artifact_uri TEXT NOT NULL,
+  artifact_sha256 TEXT NOT NULL,
+  dataset_id TEXT NOT NULL REFERENCES dataset_snapshots(dataset_id),
+  metrics_json TEXT NOT NULL,
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS evaluation_cases (
+  evaluation_kind TEXT NOT NULL,
+  case_id TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  source_file TEXT NOT NULL,
+  source_line INTEGER NOT NULL,
+  row_sha256 TEXT NOT NULL,
+  payload_json TEXT NOT NULL,
+  PRIMARY KEY(evaluation_kind, case_id)
+);
+
+CREATE TABLE IF NOT EXISTS user_profiles (
+  profile_id TEXT PRIMARY KEY,
+  data_class TEXT NOT NULL,
+  consent_scopes_json TEXT NOT NULL,
+  payload_json TEXT NOT NULL,
+  payload_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS recommendation_runs (
+  run_id TEXT PRIMARY KEY,
+  profile_id TEXT REFERENCES user_profiles(profile_id),
+  model_id TEXT REFERENCES model_versions(model_id),
+  status TEXT NOT NULL,
+  request_sha256 TEXT NOT NULL,
+  response_json TEXT,
+  created_at TEXT NOT NULL,
+  completed_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS recommendation_items (
+  run_id TEXT NOT NULL REFERENCES recommendation_runs(run_id),
+  ingredient_id TEXT NOT NULL,
+  rank INTEGER NOT NULL,
+  score REAL NOT NULL,
+  decision TEXT NOT NULL,
+  evidence_ids_json TEXT NOT NULL,
+  PRIMARY KEY(run_id, ingredient_id)
+);
+
+CREATE TABLE IF NOT EXISTS agent_runs (
+  run_id TEXT PRIMARY KEY,
+  profile_id TEXT REFERENCES user_profiles(profile_id),
+  idempotency_key TEXT NOT NULL UNIQUE,
+  state_before TEXT NOT NULL,
+  state_after TEXT,
+  risk_tier INTEGER NOT NULL,
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  completed_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS agent_steps (
+  run_id TEXT NOT NULL REFERENCES agent_runs(run_id),
+  step_index INTEGER NOT NULL,
+  tool_name TEXT NOT NULL,
+  arguments_sha256 TEXT NOT NULL,
+  result_sha256 TEXT NOT NULL,
+  postcondition_success INTEGER NOT NULL,
+  reason_codes_json TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  PRIMARY KEY(run_id, step_index)
+);
+
+CREATE TABLE IF NOT EXISTS followups (
+  followup_id TEXT PRIMARY KEY,
+  profile_id TEXT NOT NULL REFERENCES user_profiles(profile_id),
+  due_at TEXT NOT NULL,
+  requested_data_json TEXT NOT NULL,
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pro_observations (
+  observation_id TEXT PRIMARY KEY,
+  profile_id TEXT,
+  data_class TEXT NOT NULL,
+  timepoint_weeks INTEGER NOT NULL,
+  z_pre REAL NOT NULL,
+  z_post REAL NOT NULL,
+  percentile_point_change REAL NOT NULL,
+  adherence REAL,
+  row_sha256 TEXT NOT NULL,
+  payload_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS adverse_events (
+  case_id TEXT PRIMARY KEY,
+  profile_id TEXT,
+  data_class TEXT NOT NULL,
+  related_to_recommendation INTEGER NOT NULL,
+  serious INTEGER NOT NULL,
+  status TEXT NOT NULL,
+  observation_month INTEGER,
+  row_sha256 TEXT NOT NULL,
+  payload_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS connector_sessions (
+  session_id TEXT PRIMARY KEY,
+  profile_id TEXT,
+  source TEXT NOT NULL CHECK(source IN ('W','C','G')),
+  environment TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  success INTEGER NOT NULL,
+  schema_valid INTEGER NOT NULL,
+  unit_valid INTEGER NOT NULL,
+  timezone_valid INTEGER NOT NULL,
+  deduplicated INTEGER NOT NULL,
+  provenance_saved INTEGER NOT NULL,
+  row_sha256 TEXT NOT NULL,
+  payload_json TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS review_tasks (
+  review_id TEXT PRIMARY KEY,
+  run_id TEXT REFERENCES agent_runs(run_id),
+  profile_id TEXT,
+  data_class TEXT NOT NULL,
+  simulation_badge INTEGER NOT NULL,
+  urgency TEXT NOT NULL,
+  reason_codes_json TEXT NOT NULL,
+  status TEXT NOT NULL,
+  decision_json TEXT,
+  created_at TEXT NOT NULL,
+  completed_at TEXT,
+  pharmacy_id INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS kpi_results (
+  kpi_id TEXT PRIMARY KEY,
+  proxy_value REAL NOT NULL,
+  sample_count INTEGER NOT NULL,
+  ci95_lower REAL,
+  ci95_upper REAL,
+  proxy_pass INTEGER NOT NULL,
+  replacement_status TEXT NOT NULL,
+  hard_failures INTEGER NOT NULL,
+  details_json TEXT NOT NULL,
+  evaluated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS audit_events (
+  event_id TEXT PRIMARY KEY,
+  event_type TEXT NOT NULL,
+  subject_id TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  payload_sha256 TEXT NOT NULL,
+  metadata_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS research_notes (
+  note_id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  command TEXT NOT NULL,
+  inputs_json TEXT NOT NULL,
+  outputs_json TEXT NOT NULL,
+  note_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE VIEW IF NOT EXISTS v_proxy_dataset_counts AS
+SELECT split, COUNT(*) AS record_count
+FROM proxy_cases
+GROUP BY split;
+
+CREATE VIEW IF NOT EXISTS v_connector_kpi AS
+SELECT source, COUNT(*) AS attempted, SUM(success) AS succeeded,
+       100.0 * SUM(success) / COUNT(*) AS success_rate
+FROM connector_sessions
+GROUP BY source;
+"""
+
+
+class InterimStore:
+    def __init__(self, database_path: str | Path):
+        self.database_path = Path(database_path)
+
+    def connect(self) -> sqlite3.Connection:
+        self.database_path.parent.mkdir(parents=True, exist_ok=True)
+        connection = sqlite3.connect(self.database_path)
+        connection.row_factory = sqlite3.Row
+        connection.execute("PRAGMA foreign_keys = ON")
+        connection.execute("PRAGMA journal_mode = WAL")
+        return connection
+
+    @contextmanager
+    def transaction(self) -> Iterator[sqlite3.Connection]:
+        connection = self.connect()
+        try:
+            connection.execute("BEGIN")
+            yield connection
+            connection.commit()
+        except Exception:
+            connection.rollback()
+            raise
+        finally:
+            connection.close()
+
+    def migrate(self) -> None:
+        with self.connect() as connection:
+            connection.executescript(SCHEMA_SQL)
+            columns = {str(row[1]) for row in connection.execute("pragma table_info(review_tasks)")}
+            if "pharmacy_id" not in columns:
+                connection.execute("alter table review_tasks add column pharmacy_id integer")
+            connection.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (?, ?)",
+                (SCHEMA_VERSION, datetime.now(UTC).isoformat()),
+            )
+
+    def is_migrated(self) -> bool:
+        if not self.database_path.exists():
+            return False
+        try:
+            return self.scalar("select max(version) from schema_migrations") == SCHEMA_VERSION
+        except sqlite3.OperationalError:
+            return False
+
+    def scalar(self, sql: str, parameters: tuple[Any, ...] = ()) -> Any:
+        with self.connect() as connection:
+            row = connection.execute(sql, parameters).fetchone()
+        return None if row is None else row[0]
+
+    def rows(
+        self,
+        sql: str,
+        parameters: tuple[Any, ...] = (),
+    ) -> list[sqlite3.Row]:
+        with self.connect() as connection:
+            return list(connection.execute(sql, parameters).fetchall())
+
+    def table_names(self) -> set[str]:
+        rows = self.rows("select name from sqlite_master where type = 'table'")
+        return {str(row[0]) for row in rows}

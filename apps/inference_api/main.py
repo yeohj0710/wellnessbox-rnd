@@ -5,6 +5,7 @@ from time import perf_counter
 from fastapi import FastAPI, Request
 
 from apps.inference_api.routes.health import router as health_router
+from apps.inference_api.routes.interim import router as interim_router
 from apps.inference_api.routes.recommend import router as recommend_router
 from wellnessbox_rnd.config import get_settings
 from wellnessbox_rnd.logging import configure_logging
@@ -36,6 +37,9 @@ app = FastAPI(
     version="0.1.0",
     description="WellnessBox R&D inference API scaffold",
     lifespan=lifespan,
+    docs_url=None if settings.app_env == "production" else "/docs",
+    redoc_url=None if settings.app_env == "production" else "/redoc",
+    openapi_url=None if settings.app_env == "production" else "/openapi.json",
 )
 
 
@@ -56,4 +60,5 @@ async def log_request(request: Request, call_next):
 
 app.include_router(health_router)
 app.include_router(recommend_router, prefix=settings.api_prefix)
+app.include_router(interim_router, prefix=settings.api_prefix)
 

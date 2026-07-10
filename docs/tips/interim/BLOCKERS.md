@@ -1,0 +1,17 @@
+# 외부 차단 항목
+
+> 상태: `PROXY_GOLD_SIMULATION` · 생성 시각: 2026-07-10T06:43:58.432475+00:00
+
+> 이 문서는 중간 시뮬레이션 근거다. 실제 약사 판정, 실제 임상 효과, 12개월 실제 운영, 생산 기기 연동, 외부 시험·인증 완료를 뜻하지 않는다.
+
+## 자동화로 끝낼 수 없는 일
+
+- 실제 약사 계약·독립 라벨링·합의 판정
+- 실제 참여자 동의·PRO·임상적 효과 관찰
+- 1,200명·12개월 실제 ADR 운영
+- 생산 wearable·CGM·genetic provider 자격증명과 세션
+- 외부 시험기관 성적서·인증·법무 승인
+
+- 기존 WellnessBox production dependency audit 37건 remediation·회귀 검증
+
+이 항목은 `MISSING`이 아니라 외부 투입 전까지 `BLOCKED_EXTERNAL`이다.

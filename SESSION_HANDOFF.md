@@ -1,5 +1,18 @@
 # SESSION_HANDOFF
 
+## 2026-07-10 TIPS interim handoff
+
+- Run environment: `.venv-interim` (Python 3.12) with `.[dev,interim]`.
+- Final pipeline: `python scripts/run_interim_pipeline.py all --verify`.
+- Database: `artifacts/tips/interim/interim.sqlite3` (ignored local artifact).
+- Retrain package: `artifacts/tips/interim/retrained` (ignored local artifact).
+- Tracked evidence: `docs/tips/CURRENT_REPO_AUDIT.md` and `docs/tips/interim/*.md`.
+- Service integration: `C:/dev/wellnessbox` under `/tips`, `/pharm/tips`, `/admin/tips` and their
+  authenticated API routes. Existing user-modified service files were preserved.
+- Truth boundary: proxy 7/7 passed; real pharmacist labels, real outcomes, 12-month ADR,
+  production devices, external testing/certification and legal review remain external.
+- Legacy effect-training gate remains `NO-GO`; no legacy candidate was promoted.
+
 ## Scope guardrails
 
 - Work only inside `C:/dev/wellnessbox-rnd`

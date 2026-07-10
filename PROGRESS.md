@@ -1,5 +1,26 @@
 # PROGRESS
 
+## 2026-07-10 TIPS interim end-to-end override
+
+- Mode: `PROXY_GOLD_SIMULATION`
+- Source manifest SHA-256: `2a430ac5899544885d4be923213b50d526ffd0df016b2b34bf57a077d4c650a4`
+- Retrained model SHA-256: `f6b053ee0eb39d16e12e102723f9435a03e71068b70502f6ca702c80e82a7612`
+- Imported: 150,000 cases, 240 PRO, 3 ADR, 180 W/C/G sessions, 10,000 eval cases.
+- Implemented: manifest verification, SQLite lineage, corrected KPI formulas, retraining and registry,
+  evidence/license gates, 14-category safety, 12-state bounded Agent, 10 typed tools, operational API,
+  PRO/ADR/WCG paths, reports, release manifest, and thin authenticated WellnessBox UI/API.
+- Proxy KPI: `7/7` passed. Real research completion: `false`.
+- Release manifest: 13/13 files valid.
+- Verification: 29 interim tests, ruff, service QA, encoding/route audit, TypeScript, ESLint,
+  production build, desktop/mobile browser snapshots, console 0, role APIs unauthenticated 401.
+- Independent code review Critical findings were fixed and covered by added regression tests.
+- Full legacy pytest remains red from pre-existing missing ignored `artifacts/reports/**` inputs and
+  existing CGM geometry baseline drift; the TIPS interim test selection is green.
+- `npm audit --omit=dev`: 37 pre-existing production dependency advisories. Keep the service feature
+  flag off until dependency remediation and full regression verification.
+- The older strict effect-training `NO-GO` below remains unchanged and applies to the legacy learned
+  effect-model promotion path. This proxy override did not promote that model into runtime.
+
 ## Current loop
 
 - Chosen stage: `P3/P4`

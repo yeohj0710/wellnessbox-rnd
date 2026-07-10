@@ -1,5 +1,19 @@
 # NEXT_STEPS
 
+## TIPS interim external replacement gates
+
+The automated `PROXY_GOLD_SIMULATION` package is complete. Remaining work requires external inputs:
+
+1. independent pharmacist labels for KPI-1 and KPI-5;
+2. consented real PRO/outcomes for KPI-2;
+3. external blind action/answer testing for KPI-3 and KPI-4;
+4. 1,200-person, 12-month real ADR operation for KPI-6;
+5. production wearable/CGM/genetic sessions for KPI-7;
+6. external security, privacy, legal, test-lab and certification review.
+
+Do not remove the simulation badge or set `real_research_completion=true` before these gates close.
+The legacy narrow-loop priorities below remain valid for the separate learned effect-model track.
+
 ## Current priority
 
 The current repo state is:
