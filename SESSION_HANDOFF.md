@@ -1,5 +1,43 @@
 # SESSION_HANDOFF
 
+## 2026-07-13 Cloud GPU bulk-inference handoff
+
+- Chosen stage: `P3/P4 infrastructure validation`
+- Chosen task: production-shaped CPU/CUDA bulk inference using the held `effect_model_v3`
+- Primary dataset: `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
+- Case count: `480` records, `96` users
+- Entry point: `scripts/run_gpu_inference_testbed.py`
+- Focused tests: `tests/test_gpu_inference_testbed.py`
+- Operational guide: `docs/cloud_gpu_inference_testbed.md`
+- Cloud result: `artifacts/gpu_testbed/cloud_kakao/`
+- Successful job: `abe1d1b1-4e77-47a4-a4fe-9d1fcc96f1ef`
+- Runtime: Python `3.11.15`, PyTorch `2.6.0+cu124`, Tesla T4
+- Workload per device: `10,485,760` rows
+- CPU: `0.315231663 s`, `33,263,663.619 rows/s`
+- CUDA: `0.030179957 s`, `347,441,184.227 rows/s`
+- Speedup: `10.4451x`; max absolute difference: `0.0`
+- Total task cost: `138.171818083333 KRW` excluding VAT
+- Total billed GPU time: `746.077 s`
+- Closing balances: NAVER `5,299,999.835918042 KRW`; Kakao `9,999,498.635506416 KRW`
+- Cleanup: instances `0`, public IPs `0`, instance-owned temporary disk released
+
+Frozen-eval deltas: none. Official baseline values remain unchanged. No training or learned runtime promotion
+occurred. Deterministic recommendation and structured safety paths remain unchanged.
+
+Biggest remaining bottlenecks:
+
+1. unresolved `non_cgm_continue_to_monitor_threshold_cross` replay residual;
+2. synthetic-data circularity and generator contamination;
+3. incomplete weakest-slice lineage closure;
+4. unresolved `cgm` final-step geometry overlap;
+5. strict training gate remains `NO-GO` because evidence quality, not infrastructure, is insufficient.
+
+Recommended next loops:
+
+1. `threshold_duration_sensitive / mid_margin / large_drop` replay-only attribution;
+2. the single `mid_margin / medium_drop` replay-only attribution;
+3. `generator_contamination` single-item synthetic-validity follow-up.
+
 ## 2026-07-10 TIPS interim handoff
 
 - Run environment: `.venv-interim` (Python 3.12) with `.[dev,interim]`.

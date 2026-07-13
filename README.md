@@ -159,3 +159,17 @@ python scripts/run_interim_pipeline.py migrate --clean
 python scripts/run_interim_pipeline.py import
 python scripts/run_interim_pipeline.py evaluate
 ```
+
+## Cloud GPU 대량 추론 테스트베드
+
+기존 replay-only `effect_model_v3`를 PyTorch `Linear`로 동등 변환해 같은 대량 배치를 CPU와
+CUDA에서 비교한다. 새 학습, runtime 승격, deterministic safety 변경은 없다.
+
+```powershell
+python -m pip install -r requirements.txt
+python -m pytest tests/test_gpu_inference_testbed.py -q
+python scripts/run_gpu_inference_testbed.py --devices cpu,cuda --require-cuda --output artifacts/gpu_testbed/local
+```
+
+Cloud GPU Runner 실행, 비용 경계, 출력 계약, 자원 반납 확인은
+`docs/cloud_gpu_inference_testbed.md`를 따른다.

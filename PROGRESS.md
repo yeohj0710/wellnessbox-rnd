@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-13 Cloud GPU bulk-inference testbed
+
+- Chosen stage: `P3/P4 infrastructure validation`
+- Chosen task: reusable CPU/CUDA bulk-inference testbed for the held `effect_model_v3` artifact
+- Primary dataset: `data/synthetic/synthetic_longitudinal_v4.jsonl`
+- Case count: `480` trajectory records, `96` users
+- Implemented equivalent PyTorch `Linear` inference, CPU/CUDA benchmarking, numerical parity checks,
+  structured logs, TorchScript export, prediction samples, metrics, and SHA-256 manifest verification.
+- Real Cloud run: Kakao `gn1i.xlarge`, Tesla T4, PyTorch `2.6.0+cu124`.
+- Same-workload result: CPU `33,263,663.619 rows/s`; CUDA `347,441,184.227 rows/s`; `10.4451x` speedup.
+- CPU/CUDA maximum absolute difference: `0.0`.
+- Task cost: `138.171818083333 KRW` excluding VAT; GPU time: `746.077 s` including retries.
+- Postflight resources: instances `0`, public IPs `0`; instance-owned temporary disk released.
+- No training, runtime promotion, safety change, optimizer change, or frozen-eval change.
+- Result: `artifacts/gpu_testbed/cloud_kakao/`.
+
 ## 2026-07-10 TIPS interim end-to-end override
 
 - Mode: `PROXY_GOLD_SIMULATION`

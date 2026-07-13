@@ -1,5 +1,19 @@
 # NEXT_STEPS
 
+## 2026-07-13 Cloud GPU loop outcome
+
+The reusable Cloud GPU inference path is operational. Infrastructure is no longer the immediate blocker.
+Keep GPU use limited to sufficiently large offline batches because the measured first-transfer cost was
+`0.323738 s`, while CUDA compute itself took `0.030180 s` for the benchmark batch.
+
+The evidence priorities remain unchanged:
+
+1. replay-only attribution for `threshold_duration_sensitive / mid_margin / large_drop`;
+2. replay-only attribution for the single `mid_margin / medium_drop` case;
+3. one narrow synthetic-validity follow-up on `generator_contamination`.
+
+Do not run effect training or promote `effect_model_v3`. The strict training gate remains `NO-GO`.
+
 ## TIPS interim external replacement gates
 
 The automated `PROXY_GOLD_SIMULATION` package is complete. Remaining work requires external inputs:
