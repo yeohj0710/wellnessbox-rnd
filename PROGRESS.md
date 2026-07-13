@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-13 large-drop replay prerequisite audit
+
+- Chosen stage: `P3/P4 replay evidence reproducibility`
+- Chosen task: preflight the next `threshold_duration_sensitive / mid_margin / large_drop` replay-only attribution
+- Primary dataset: `data/synthetic/synthetic_longitudinal_v4.jsonl`
+- Case count: `480` trajectory records, `96` users; expected target slice count `3`
+- Classification: shared reproducibility-contract defect, not a new model defect
+- Required inputs: `8`; present: `3`; missing: `5`
+- Present: dataset, `policy_model_v1`, reference `effect_model_v3`
+- Missing: held candidate artifact, family diagnostic, subgroup diagnostic, mid-margin diagnostic,
+  and prior small-drop attribution
+- Added a deterministic prerequisite audit with file size and SHA-256 evidence.
+- The replay command now writes a structured blocked report before attempting evidence loads.
+- No retraining, candidate creation, attribution fabrication, runtime promotion, safety change, or frozen-eval change.
+- Result: `artifacts/reports/large_drop_replay_prerequisite_audit_v1.json`
+
 ## 2026-07-13 Cloud GPU bulk-inference testbed
 
 - Chosen stage: `P3/P4 infrastructure validation`

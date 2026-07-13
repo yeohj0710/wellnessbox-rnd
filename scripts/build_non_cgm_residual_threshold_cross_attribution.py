@@ -1,7 +1,12 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from sys import stderr
 
+from wellnessbox_rnd.evals.large_drop_replay_prerequisite_audit import (
+    build_large_drop_replay_prerequisite_audit,
+    write_large_drop_replay_prerequisite_audit,
+)
 from wellnessbox_rnd.evals.non_cgm_residual_threshold_cross_attribution import (
     build_non_cgm_residual_threshold_cross_attribution,
     load_json_artifact,
@@ -67,11 +72,36 @@ def build_parser() -> ArgumentParser:
         "--report-md",
         default="artifacts/reports/non_cgm_residual_threshold_cross_attribution_v2.md",
     )
+    parser.add_argument(
+        "--prerequisite-audit-json",
+        default="artifacts/reports/large_drop_replay_prerequisite_audit_v1.json",
+    )
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
+    prerequisite_audit = build_large_drop_replay_prerequisite_audit(
+        {
+            "dataset": args.dataset,
+            "policy_artifact": args.policy_artifact,
+            "reference_effect_artifact": args.reference_effect_artifact,
+            "held_candidate_effect_artifact": args.candidate_effect_artifact,
+            "family_diagnostic": args.family_diagnostic,
+            "subgroup_diagnostic": args.subgroup_diagnostic,
+            "mid_margin_diagnostic": args.mid_margin_diagnostic,
+            "prior_small_drop_attribution": args.prior_small_drop_attribution,
+        }
+    )
+    write_large_drop_replay_prerequisite_audit(
+        prerequisite_audit,
+        args.prerequisite_audit_json,
+    )
+    if prerequisite_audit["status"] != "ready":
+        missing = ", ".join(prerequisite_audit["missing_roles"])
+        stderr.write(f"large-drop replay blocked; missing roles: {missing}\n")
+        return 2
+
     report = build_non_cgm_residual_threshold_cross_attribution(
         dataset_path=args.dataset,
         max_cycles=args.max_cycles,

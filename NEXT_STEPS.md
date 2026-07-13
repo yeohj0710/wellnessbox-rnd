@@ -1,12 +1,26 @@
 # NEXT_STEPS
 
+## 2026-07-13 large-drop prerequisite outcome
+
+The highest-priority replay loop is correctly selected but cannot be reproduced from the current checkout.
+Its held candidate artifact and four prior replay reports are ignored local artifacts and are absent.
+
+Next action:
+
+1. restore the exact held candidate and prior replay evidence from their original trusted archive;
+2. verify restored SHA-256 values and rerun the prerequisite audit until status is `ready`;
+3. then run the three-case `threshold_duration_sensitive / mid_margin / large_drop` attribution.
+
+Do not regenerate the missing held candidate through training while the strict gate remains `NO-GO`.
+Do not infer the three-case result from narrative docs alone.
+
 ## 2026-07-13 Cloud GPU loop outcome
 
 The reusable Cloud GPU inference path is operational. Infrastructure is no longer the immediate blocker.
 Keep GPU use limited to sufficiently large offline batches because the measured first-transfer cost was
 `0.323738 s`, while CUDA compute itself took `0.030180 s` for the benchmark batch.
 
-The evidence priorities remain unchanged:
+The evidence priorities after prerequisite restoration remain unchanged:
 
 1. replay-only attribution for `threshold_duration_sensitive / mid_margin / large_drop`;
 2. replay-only attribution for the single `mid_margin / medium_drop` case;

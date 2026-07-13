@@ -1,5 +1,31 @@
 # SESSION_HANDOFF
 
+## 2026-07-13 large-drop replay prerequisite handoff
+
+- Chosen stage: `P3/P4 replay evidence reproducibility`
+- Chosen task: make the next large-drop replay loop fail safely and explainably when evidence is absent
+- Primary dataset: `C:/dev/wellnessbox-rnd/data/synthetic/synthetic_longitudinal_v4.jsonl`
+- Case count: `480` records, `96` users; expected large-drop target `3` cases
+- Audit: `artifacts/reports/large_drop_replay_prerequisite_audit_v1.json`
+- Status: `blocked_missing_prerequisites`
+- Required/present/missing: `8 / 3 / 5`
+- Missing roles:
+  - `held_candidate_effect_artifact`
+  - `family_diagnostic`
+  - `subgroup_diagnostic`
+  - `mid_margin_diagnostic`
+  - `prior_small_drop_attribution`
+- Root cause: replay evidence required by code/tests lives under ignored `artifacts/` and is absent from this checkout.
+- Narrow fix: added reusable preflight metadata and integrated it before all evidence loads.
+- Rejected broad work: no `.gitignore` redesign, no regeneration training, no hardcoded reconstruction from docs.
+- Boundary: no model creation, runtime promotion, deterministic safety change, or frozen-eval change.
+
+Next loops:
+
+1. restore and hash-verify the exact held candidate plus four prior reports;
+2. run the three-case `large_drop` replay-only attribution;
+3. run the single `medium_drop` replay-only attribution after large-drop closes or stalls cleanly.
+
 ## 2026-07-13 Cloud GPU bulk-inference handoff
 
 - Chosen stage: `P3/P4 infrastructure validation`
