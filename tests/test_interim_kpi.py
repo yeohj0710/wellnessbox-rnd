@@ -1,14 +1,13 @@
-from pathlib import Path
-
 from wellnessbox_rnd.interim.importer import import_interim_package
 from wellnessbox_rnd.interim.kpi import (
     evaluate_proxy_kpis,
     linkage_macro_rate,
     recommendation_reference_coverage,
 )
+from wellnessbox_rnd.interim.manifest import APPROVED_SOURCE_ROOT
 from wellnessbox_rnd.interim.store import InterimStore
 
-PACKAGE_ROOT = Path("C:/dev/wellnessbox_tips_interim_simulation_package")
+PACKAGE_ROOT = APPROVED_SOURCE_ROOT
 
 
 def test_recommendation_score_uses_reference_set_denominator_from_plan_page_26() -> None:

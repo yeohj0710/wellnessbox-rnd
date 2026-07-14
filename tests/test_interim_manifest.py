@@ -1,8 +1,6 @@
-from pathlib import Path
+from wellnessbox_rnd.interim.manifest import APPROVED_SOURCE_ROOT, validate_interim_package
 
-from wellnessbox_rnd.interim.manifest import validate_interim_package
-
-PACKAGE_ROOT = Path("C:/dev/wellnessbox_tips_interim_simulation_package")
+PACKAGE_ROOT = APPROVED_SOURCE_ROOT
 
 
 def test_bundled_interim_package_manifest_and_split_counts_are_frozen() -> None:

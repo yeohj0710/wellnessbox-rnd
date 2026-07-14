@@ -28,3 +28,6 @@ dist/
 # Local artifacts
 artifacts/
 logs/
+
+# Preserved source packages (local provenance archives)
+etc/source_packages/

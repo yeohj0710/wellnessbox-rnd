@@ -2,10 +2,11 @@ import json
 from pathlib import Path
 
 from wellnessbox_rnd.interim.importer import import_interim_package
+from wellnessbox_rnd.interim.manifest import APPROVED_SOURCE_ROOT
 from wellnessbox_rnd.interim.reports import generate_release, verify_release
 from wellnessbox_rnd.interim.store import InterimStore
 
-SOURCE_PACKAGE = Path("C:/dev/wellnessbox_tips_interim_simulation_package")
+SOURCE_PACKAGE = APPROVED_SOURCE_ROOT
 RETRAINED_PACKAGE = Path("artifacts/tips/interim/retrained")
 
 

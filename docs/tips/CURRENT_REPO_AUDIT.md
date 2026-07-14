@@ -20,7 +20,7 @@
 
 ## 직접 검증한 근거
 
-- 원본 패키지: `C:\dev\wellnessbox_tips_interim_simulation_package`
+- 원본 패키지: `C:\dev\wellnessbox-rnd\etc\source_packages\wellnessbox_tips_interim_simulation_package`
 - 원본 manifest SHA-256: `2a430ac5899544885d4be923213b50d526ffd0df016b2b34bf57a077d4c650a4`
 - 원본 manifest 항목: 19
 - 재학습 manifest SHA-256: `ec1a038a5ac372beed3b8254311c9c4a271e6aad970515397bd1d7028afcb934`

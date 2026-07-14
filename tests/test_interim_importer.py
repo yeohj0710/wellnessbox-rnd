@@ -1,9 +1,8 @@
-from pathlib import Path
-
 from wellnessbox_rnd.interim.importer import import_interim_package
+from wellnessbox_rnd.interim.manifest import APPROVED_SOURCE_ROOT
 from wellnessbox_rnd.interim.store import InterimStore
 
-PACKAGE_ROOT = Path("C:/dev/wellnessbox_tips_interim_simulation_package")
+PACKAGE_ROOT = APPROVED_SOURCE_ROOT
 
 
 def test_importer_streams_rows_and_is_idempotent(tmp_path) -> None:

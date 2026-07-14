@@ -14,7 +14,7 @@ from wellnessbox_rnd.interim.importer import (
     register_retrained_package,
 )
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
-from wellnessbox_rnd.interim.manifest import validate_interim_package
+from wellnessbox_rnd.interim.manifest import APPROVED_SOURCE_ROOT, validate_interim_package
 from wellnessbox_rnd.interim.reports import generate_release, verify_release
 from wellnessbox_rnd.interim.store import InterimStore
 
@@ -22,7 +22,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE_ROOT = Path(
     os.getenv(
         "WB_RND_INTERIM_PACKAGE_DIR",
-        "C:/dev/wellnessbox_tips_interim_simulation_package",
+        str(APPROVED_SOURCE_ROOT),
     )
 )
 DEFAULT_DATABASE = Path(

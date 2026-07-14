@@ -14,7 +14,9 @@ EXPECTED_SPLITS = {
     "calibration": 10_000,
     "blind_test": 5_000,
 }
-APPROVED_SOURCE_ROOT = Path("C:/dev/wellnessbox_tips_interim_simulation_package")
+APPROVED_SOURCE_ROOT = Path(
+    "C:/dev/wellnessbox-rnd/etc/source_packages/wellnessbox_tips_interim_simulation_package"
+)
 APPROVED_SOURCE_MANIFEST_SHA256 = "2a430ac5899544885d4be923213b50d526ffd0df016b2b34bf57a077d4c650a4"
 
 

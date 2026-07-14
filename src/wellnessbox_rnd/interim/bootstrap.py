@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 
 from wellnessbox_rnd.interim.connectors import OFFICIAL_SOURCE_ADAPTERS
 from wellnessbox_rnd.interim.evidence import EvidenceRegistry
+from wellnessbox_rnd.interim.manifest import APPROVED_SOURCE_ROOT
 from wellnessbox_rnd.interim.store import InterimStore
 
 
@@ -22,7 +23,7 @@ def bootstrap_operational_evidence(store: InterimStore) -> BootstrapSummary:
         source_id="tips-original-plan-p26",
         source_tier="internal_governance",
         title="TIPS original plan safety gate, page 26",
-        canonical_uri="file:///C:/dev/wellnessbox_tips_interim_simulation_package/docs/original-plan.pdf#page=26",
+        canonical_uri=(APPROVED_SOURCE_ROOT / "docs" / "original-plan.pdf").as_uri() + "#page=26",
         license_status="APPROVED_INTERNAL",
         metadata={"scope": "evaluation_policy_only", "clinical_claims": False},
     )
