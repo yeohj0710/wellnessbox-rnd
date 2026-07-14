@@ -2,6 +2,14 @@
 
 `wellnessbox-rnd` 는 TIPS 연구개발 전용 독립 저장소다.
 
+## 작업 위치 기준
+
+- `C:\dev\wellnessbox-rnd`: 연구 코드·평가·재학습 산출물의 유일한 작업 기준 저장소
+- `C:\dev\wellnessbox`: 프로덕션 웹 UI와 R&D 산출물의 읽기 전용 배포 스냅샷
+- `C:\dev\wellnessbox_tips_interim_simulation_package`: 2026-07-10 전달 원본 보관본. 무결성·계보 대조에만 사용하며 여기서 개발하거나 재평가하지 않음
+
+재학습과 KPI 평가는 이 저장소의 `scripts/run_interim_pipeline.py` 및 `artifacts/tips/interim/retrained`를 기준으로 수행한다. 원본 패키지는 삭제하거나 덮어쓰지 않는다.
+
 이 저장소는 **원문 구현 재현**이 아니라, **원문 p.25~26 KPI 달성**을 목표로 하는 R&D 작업 공간이다.
 
 ## 문서 역할
