@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
 from pathlib import Path
 
 AUDIT_NAME = "large_drop_replay_prerequisite_audit_v1"
@@ -75,7 +76,80 @@ def write_large_drop_replay_prerequisite_audit(
     temporary.replace(path)
 
 
+def restore_large_drop_replay_prerequisites(
+    *,
+    archive_root: str | Path,
+    repository_root: str | Path,
+    manifest: dict[str, object],
+) -> dict[str, object]:
+    archive = Path(archive_root).resolve()
+    repository = Path(repository_root).resolve()
+    raw_files = manifest.get("files")
+    if not isinstance(raw_files, list) or not raw_files:
+        raise ValueError("restore manifest must contain a non-empty files list")
+
+    verified: list[dict[str, object]] = []
+    issues: list[str] = []
+    for raw_item in raw_files:
+        if not isinstance(raw_item, dict):
+            raise ValueError("restore manifest file entries must be objects")
+        role = str(raw_item.get("role", ""))
+        source_relative = Path(str(raw_item.get("source", "")))
+        destination_relative = Path(str(raw_item.get("destination", "")))
+        expected_sha256 = str(raw_item.get("sha256", "")).lower()
+        source = (archive / source_relative).resolve()
+        destination = (repository / destination_relative).resolve()
+        if archive not in source.parents or repository not in destination.parents:
+            issues.append(f"{role}:path_outside_allowed_root")
+            continue
+        if not source.is_file():
+            issues.append(f"{role}:source_missing")
+            continue
+        actual_sha256 = _sha256(source)
+        if len(expected_sha256) != 64 or actual_sha256 != expected_sha256:
+            issues.append(f"{role}:sha256_mismatch")
+            continue
+        verified.append(
+            {
+                "role": role,
+                "source": str(source_relative),
+                "destination": str(destination_relative),
+                "bytes": source.stat().st_size,
+                "sha256": actual_sha256,
+                "source_path": source,
+                "destination_path": destination,
+            }
+        )
+
+    if issues:
+        return {
+            "status": "blocked_restore_verification_failed",
+            "verified_count": len(verified),
+            "restored_count": 0,
+            "issues": issues,
+        }
+
+    for item in verified:
+        source = item.pop("source_path")
+        destination = item.pop("destination_path")
+        assert isinstance(source, Path)
+        assert isinstance(destination, Path)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        temporary = destination.with_name(f".{destination.name}.restore.tmp")
+        shutil.copyfile(source, temporary)
+        temporary.replace(destination)
+
+    return {
+        "status": "restored_verified_prerequisites",
+        "verified_count": len(verified),
+        "restored_count": len(verified),
+        "issues": [],
+        "files": verified,
+    }
+
+
 __all__ = [
     "build_large_drop_replay_prerequisite_audit",
+    "restore_large_drop_replay_prerequisites",
     "write_large_drop_replay_prerequisite_audit",
 ]

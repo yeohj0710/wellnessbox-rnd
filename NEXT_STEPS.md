@@ -1,5 +1,13 @@
 # NEXT_STEPS
 
+## 2026-07-14 verified restoration path
+
+The human approval sequence was completed, and a fail-closed restoration command now exists. The next
+action is to supply the original trusted archive plus its SHA-256 manifest, run
+`scripts/restore_large_drop_replay_prerequisites.py`, rerun the prerequisite audit, and only then run the
+three-case `large_drop` attribution. Hash mismatch, missing input, or path escape must keep restoration
+blocked. Do not retrain or reconstruct the held evidence from narrative summaries.
+
 ## 2026-07-13 large-drop prerequisite outcome
 
 The highest-priority replay loop is correctly selected but cannot be reproduced from the current checkout.

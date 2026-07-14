@@ -1,5 +1,17 @@
 # PROGRESS
 
+## 2026-07-14 verified replay-input restoration loop
+
+- Chosen stage: `P3/P4 replay evidence reproducibility`
+- Chosen task: add a fail-closed restoration path for the five missing `large_drop` replay inputs
+- Primary dataset: `data/synthetic/synthetic_longitudinal_v4.jsonl`
+- Case count: `480` trajectory records, `96` users; target slice remains `3` cases
+- Human approvals received: research-loop start, pharmacist safety/recommendation basis, validation result
+- The approvals authorize the bounded evidence loop; they do not authorize retraining or fabricated artifacts.
+- Added manifest-driven archive restoration with SHA-256 verification, allowed-root checks, and atomic file replacement.
+- Restore remains blocked until the exact trusted archive and its hash manifest are supplied.
+- No training, runtime promotion, safety change, optimizer change, or frozen-eval change.
+
 ## 2026-07-13 large-drop replay prerequisite audit
 
 - Chosen stage: `P3/P4 replay evidence reproducibility`

@@ -1,5 +1,16 @@
 # SESSION_HANDOFF
 
+## 2026-07-14 verified replay-input restoration handoff
+
+- Stage: `P3/P4 replay evidence reproducibility`
+- Dataset: `data/synthetic/synthetic_longitudinal_v4.jsonl`, `case_count = 480`
+- Target: `threshold_duration_sensitive / mid_margin / large_drop`, expected `3` cases
+- Human checkpoint sequence: `3/3 APPROVED`
+- Added `scripts/restore_large_drop_replay_prerequisites.py` and fail-closed restore logic.
+- Current state: blocked until the exact archive and SHA-256 manifest are available.
+- After verified restore: rerun prerequisite audit, then run the three-case attribution.
+- Training and runtime promotion remain prohibited.
+
 ## 2026-07-13 large-drop replay prerequisite handoff
 
 - Chosen stage: `P3/P4 replay evidence reproducibility`
