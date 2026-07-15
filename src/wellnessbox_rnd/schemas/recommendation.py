@@ -7,6 +7,7 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    StrictBool,
     StringConstraints,
     field_validator,
     model_validator,
@@ -90,6 +91,14 @@ class ActivityLevel(StrEnum):
     LIGHTLY_ACTIVE = "lightly_active"
     MODERATELY_ACTIVE = "moderately_active"
     VERY_ACTIVE = "very_active"
+
+
+class DataSource(StrEnum):
+    SURVEY = "survey"
+    NHIS = "nhis"
+    WEARABLE = "wearable"
+    CGM = "cgm"
+    GENETIC = "genetic"
 
 
 class BudgetLevel(StrEnum):
@@ -228,6 +237,7 @@ class LaboratoryObservationInput(_StrictHealthInput):
     unit: LaboratoryUnit
     reference_range: LaboratoryReferenceRange
     measured_at: datetime
+    source: DataSource = DataSource.SURVEY
 
     @field_validator("value", mode="before")
     @classmethod
@@ -275,6 +285,28 @@ class InputAvailability(BaseModel):
     genetic: bool = False
 
 
+class DataSourceConsent(_StrictHealthInput):
+    use_for_recommendation: StrictBool = False
+    allow_persistent_storage: StrictBool = False
+
+
+class DataSourceConsents(_StrictHealthInput):
+    survey: DataSourceConsent = Field(default_factory=DataSourceConsent)
+    nhis: DataSourceConsent = Field(default_factory=DataSourceConsent)
+    wearable: DataSourceConsent = Field(default_factory=DataSourceConsent)
+    cgm: DataSourceConsent = Field(default_factory=DataSourceConsent)
+    genetic: DataSourceConsent = Field(default_factory=DataSourceConsent)
+
+
+def _legacy_data_source_consents() -> DataSourceConsents:
+    return DataSourceConsents(
+        **{
+            source.value: DataSourceConsent(use_for_recommendation=True)
+            for source in DataSource
+        }
+    )
+
+
 class RecommendationPreferences(BaseModel):
     budget_level: BudgetLevel = BudgetLevel.MEDIUM
     max_products: int = Field(default=2, ge=1, le=5)
@@ -297,12 +329,28 @@ class RecommendationRequest(BaseModel):
     )
     lifestyle: LifestyleInput = Field(default_factory=LifestyleInput)
     input_availability: InputAvailability = Field(default_factory=InputAvailability)
+    data_source_consents: DataSourceConsents = Field(
+        default_factory=_legacy_data_source_consents
+    )
     preferences: RecommendationPreferences = Field(default_factory=RecommendationPreferences)
+
+    @model_validator(mode="after")
+    def require_survey_recommendation_consent(self) -> "RecommendationRequest":
+        if not self.data_source_consents.survey.use_for_recommendation:
+            raise ValueError(
+                "survey use_for_recommendation consent is required for a recommendation request"
+            )
+        return self
 
     @model_validator(mode="after")
     def reject_conflicting_laboratory_observations(self) -> "RecommendationRequest":
         signatures_by_identity: dict[tuple[str, datetime], tuple[object, ...]] = {}
         for observation in self.laboratory_observations:
+            if not getattr(self.input_availability, observation.source.value) or not getattr(
+                self.data_source_consents,
+                observation.source.value,
+            ).use_for_recommendation:
+                continue
             identity = (
                 normalize_laboratory_observation_code(observation),
                 observation.measured_at,

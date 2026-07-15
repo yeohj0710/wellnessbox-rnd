@@ -1,4 +1,7 @@
+import hashlib
+import json
 from dataclasses import dataclass
+from typing import Any
 
 from wellnessbox_rnd.domain.catalog import canonicalize_catalog_term
 from wellnessbox_rnd.domain.loaders import load_safety_rules
@@ -6,7 +9,9 @@ from wellnessbox_rnd.domain.models import GoalContextRule
 from wellnessbox_rnd.schemas.recommendation import (
     ConditionInput,
     ConditionStatus,
+    DataSource,
     DietaryPatternInput,
+    InputAvailability,
     LaboratoryObservationInput,
     LaboratoryRangeStatus,
     LifestyleInput,
@@ -57,6 +62,10 @@ _HEART_LAB_CODES = {
 @dataclass(frozen=True)
 class NormalizedIntake:
     request: RecommendationRequest
+    declared_input_availability: InputAvailability
+    effective_input_availability: InputAvailability
+    recommendation_authorized_input_source_set: set[str]
+    storage_authorized_input_source_set: set[str]
     goal_set: set[RecommendationGoal]
     normalized_symptoms: list[SymptomInput]
     symptom_set: set[str]
@@ -89,6 +98,34 @@ class NormalizedIntake:
 
 def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
     rules = load_safety_rules()
+
+    declared_input_availability = request.input_availability.model_copy(deep=True)
+    effective_input_availability = _build_effective_input_availability(request)
+    recommendation_authorized_input_source_set = {
+        source.value
+        for source in DataSource
+        if getattr(effective_input_availability, source.value)
+    }
+    storage_authorized_input_source_set = {
+        source.value
+        for source in DataSource
+        if getattr(declared_input_availability, source.value)
+        and getattr(
+            request.data_source_consents,
+            source.value,
+        ).allow_persistent_storage
+    }
+    consent_gated_laboratory_observations = [
+        observation
+        for observation in request.laboratory_observations
+        if observation.source.value in recommendation_authorized_input_source_set
+    ]
+    request = request.model_copy(
+        update={
+            "input_availability": effective_input_availability,
+            "laboratory_observations": consent_gated_laboratory_observations,
+        }
+    )
 
     goal_set = set(request.goals)
     normalized_symptoms, symptom_set, symptom_severity_by_code = (
@@ -132,6 +169,18 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
         "Input strings are normalized to lowercase tokens for deterministic matching.",
         "Current ingredient catalog is a demo placeholder and not the production product SSOT.",
     ]
+    denied_sources = sorted(
+        source.value
+        for source in DataSource
+        if getattr(declared_input_availability, source.value)
+        and not getattr(effective_input_availability, source.value)
+    )
+    if denied_sources:
+        normalization_notes.append(
+            "Data sources without recommendation-use consent were excluded: "
+            + ", ".join(denied_sources)
+            + "."
+        )
     if request.input_availability.survey:
         normalization_notes.append("Survey input is present, so baseline recommendation can run.")
     else:
@@ -141,6 +190,12 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
 
     return NormalizedIntake(
         request=request,
+        declared_input_availability=declared_input_availability,
+        effective_input_availability=effective_input_availability,
+        recommendation_authorized_input_source_set=(
+            recommendation_authorized_input_source_set
+        ),
+        storage_authorized_input_source_set=storage_authorized_input_source_set,
         goal_set=goal_set,
         normalized_symptoms=normalized_symptoms,
         symptom_set=symptom_set,
@@ -174,6 +229,111 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
         missing_information=missing_information,
         normalization_notes=normalization_notes,
     )
+
+
+def _build_effective_input_availability(
+    request: RecommendationRequest,
+) -> InputAvailability:
+    return InputAvailability.model_validate(
+        {
+            source.value: getattr(request.input_availability, source.value)
+            and getattr(
+                request.data_source_consents,
+                source.value,
+            ).use_for_recommendation
+            for source in DataSource
+        }
+    )
+
+
+def _canonical_json(value: object) -> str:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
+
+
+def _normalize_json_numbers(value: Any) -> Any:
+    if isinstance(value, float) and value == 0.0:
+        return 0.0
+    if isinstance(value, dict):
+        return {key: _normalize_json_numbers(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_normalize_json_numbers(item) for item in value]
+    return value
+
+
+def _sorted_model_payloads(values: list[Any]) -> list[dict[str, object]]:
+    payloads = [value.model_dump(mode="json") for value in values]
+    return sorted(payloads, key=_canonical_json)
+
+
+def _sorted_supplement_payloads(
+    values: list[SupplementInput],
+) -> list[dict[str, object]]:
+    payloads: list[dict[str, object]] = []
+    for value in values:
+        payload = value.model_dump(mode="json")
+        ingredients = payload.get("ingredients")
+        if isinstance(ingredients, list):
+            payload["ingredients"] = sorted(ingredients, key=_canonical_json)
+        payloads.append(payload)
+    return sorted(payloads, key=_canonical_json)
+
+
+def build_normalized_input_snapshot_v1(
+    intake: NormalizedIntake,
+) -> dict[str, object]:
+    request = intake.request
+    snapshot = {
+        "schema_version": "normalized_recommendation_input_v1",
+        "user_profile": request.user_profile.model_dump(mode="json"),
+        "goals": sorted(goal.value for goal in intake.goal_set),
+        "symptoms": _sorted_model_payloads(intake.normalized_symptoms),
+        "conditions": _sorted_model_payloads(intake.normalized_conditions),
+        "allergies": list(intake.normalized_allergies),
+        "risk_signals": _sorted_model_payloads(intake.normalized_risk_signals),
+        "medications": _sorted_model_payloads(intake.normalized_medications),
+        "current_supplements": _sorted_supplement_payloads(
+            intake.normalized_current_supplements
+        ),
+        "dietary_patterns": _sorted_model_payloads(
+            intake.normalized_dietary_patterns
+        ),
+        "laboratory_observations": _sorted_model_payloads(
+            intake.normalized_laboratory_observations
+        ),
+        "lifestyle": intake.normalized_lifestyle.model_dump(mode="json"),
+        "input_sources": {
+            "declared_availability": intake.declared_input_availability.model_dump(
+                mode="json"
+            ),
+            "effective_availability": intake.effective_input_availability.model_dump(
+                mode="json"
+            ),
+            "consents": request.data_source_consents.model_dump(mode="json"),
+            "recommendation_authorized": sorted(
+                intake.recommendation_authorized_input_source_set
+            ),
+            "storage_authorized": sorted(
+                intake.storage_authorized_input_source_set
+            ),
+        },
+        "preferences": {
+            "budget_level": request.preferences.budget_level.value,
+            "max_products": request.preferences.max_products,
+            "avoid_ingredients": sorted(intake.avoid_ingredient_set),
+        },
+    }
+    return _normalize_json_numbers(snapshot)
+
+
+def calculate_normalized_input_sha256_v1(intake: NormalizedIntake) -> str:
+    canonical_payload = _canonical_json(build_normalized_input_snapshot_v1(intake))
+    return hashlib.sha256(canonical_payload.encode("utf-8")).hexdigest()
 
 
 def _derive_signal_flags(

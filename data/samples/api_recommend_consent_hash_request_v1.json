@@ -1,0 +1,72 @@
+{
+  "request_id": "consent-hash-representative-v1",
+  "user_profile": {
+    "age": 42,
+    "biological_sex": "female",
+    "pregnant": false,
+    "height_cm": 165,
+    "weight_kg": 61
+  },
+  "goals": [
+    "stress_support",
+    "sleep_support"
+  ],
+  "symptoms": [
+    "difficulty_falling_asleep",
+    "fatigue"
+  ],
+  "conditions": [],
+  "allergies": [
+    "peanut"
+  ],
+  "risk_flags": [],
+  "medications": [],
+  "current_supplements": [],
+  "dietary_patterns": [
+    "mediterranean diet"
+  ],
+  "laboratory_observations": [],
+  "lifestyle": {
+    "sleep_hours": 5.8,
+    "stress_level": 4,
+    "activity_level": "lightly_active",
+    "exercise_minutes_per_week": 90,
+    "smoker": false,
+    "alcohol_per_week": 1,
+    "caffeine_mg_per_day": 160
+  },
+  "input_availability": {
+    "survey": true,
+    "nhis": false,
+    "wearable": true,
+    "cgm": false,
+    "genetic": false
+  },
+  "data_source_consents": {
+    "survey": {
+      "use_for_recommendation": true,
+      "allow_persistent_storage": true
+    },
+    "nhis": {
+      "use_for_recommendation": false,
+      "allow_persistent_storage": false
+    },
+    "wearable": {
+      "use_for_recommendation": true,
+      "allow_persistent_storage": true
+    },
+    "cgm": {
+      "use_for_recommendation": false,
+      "allow_persistent_storage": false
+    },
+    "genetic": {
+      "use_for_recommendation": false,
+      "allow_persistent_storage": false
+    }
+  },
+  "preferences": {
+    "budget_level": "medium",
+    "max_products": 2,
+    "avoid_ingredients": []
+  }
+}

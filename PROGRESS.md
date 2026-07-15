@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-15 consent and deterministic input-hash loop
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen tasks: OP-017 source-specific consent scopes; OP-018 deterministic normalized-input snapshot and SHA-256
+- Primary fixture: `data/samples/api_recommend_consent_hash_request_v1.json`; `1` representative API request plus `13` focused consent, gating, normalization, hashing, API, and compatibility cases
+- Reused `RecommendationRequest`, `normalize_request`, the existing recommendation service, and the inference route instead of adding a parallel consent API or hash path.
+- Survey, National Health Insurance Service, wearable, CGM, and genetic sources now have independent `use_for_recommendation` and `allow_persistent_storage` scopes. Effective recommendation availability and storage-authorized source sets are calculated separately.
+- Omitting the whole consent block preserves legacy recommendation behavior without granting persistent storage. Once a caller supplies the consent block, omitted sources default to denied. Survey-use denial rejects the recommendation request at both the model and API boundaries.
+- Laboratory observations carry source provenance. Observations whose source lacks recommendation-use consent are removed before missing-information, safety, model-feature, and recommendation consumers run. Denied NHIS laboratory values cannot change the normalized snapshot, hash, or recommendation result.
+- The normalized snapshot excludes random request IDs, sorts unordered top-level records and nested supplement ingredients, canonicalizes existing health-input values, and normalizes `-0.0` to `0.0`. SHA-256 is calculated from compact UTF-8 JSON with sorted object keys.
+- Current audited disposition after regeneration: complete `20`, partial `0`, pending `99`, external `1`, contradicted `0`.
+- Validation: focused original-plan workflow contracts `81 passed`; recommendation and safety core regressions `206 passed`; full Ruff PASS; manifest audit and generated-report stale check PASS.
+- Full suite: `516 passed`, `77 failed`. The failure count remains the known `73` absent ignored report artifacts and `4` CGM geometry assertions.
+- Official frozen eval: `256` cases rerun; all seven metrics exactly match the previously recorded current values, so every metric delta is `0`.
+- This loop did not deploy or integrate the R&D process with `wellnessbox`; two-process integration remains open.
+
 ## 2026-07-15 diet, lifestyle, and laboratory input-contract loop
 
 - Chosen stage: `original plan / personal health inputs`

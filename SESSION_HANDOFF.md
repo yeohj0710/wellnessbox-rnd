@@ -1,5 +1,60 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 consent and deterministic input-hash handoff
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen tasks: OP-017 and OP-018
+- Primary dataset path and case count: `data/samples/api_recommend_consent_hash_request_v1.json`; `1` representative API request plus `13` focused contract cases
+- Current requirement count: `120`; valid claims: `20`
+
+Files changed:
+
+- `src/wellnessbox_rnd/schemas/recommendation.py`
+- `src/wellnessbox_rnd/domain/intake.py`
+- `apps/inference_api/routes/recommend.py`
+- `data/samples/api_recommend_consent_hash_request_v1.json`
+- `tests/test_consent_and_input_hash_contracts.py`
+- `docs/superpowers/plans/2026-07-15-op017-op018-consent-input-hash.md`
+- manifest, generated completion reports, workflow, completion ledger, and handoff documents
+
+Key changes:
+
+- Added separate recommendation-use and persistent-storage consent fields for survey, National Health Insurance Service, wearable, CGM, and genetic sources.
+- A wholly omitted consent block retains legacy use behavior but never grants storage. In a supplied block, every omitted source is denied. Survey-use denial fails closed because the recommendation request requires survey-derived profile and goals.
+- `normalize_request` combines declared availability with source consent. Existing downstream safety, efficacy, and recommendation code receives the consent-gated request rather than raw availability flags.
+- Laboratory observations now identify their source. A denied-source observation is removed before missing-context, safety, feature, and recommendation computation. Tests vary denied NHIS values and prove identical snapshots, hashes, and recommendations.
+- The normalized input snapshot excludes request IDs and sorts semantically unordered collections, including nested supplement ingredients. Compact sorted-key UTF-8 JSON produces a stable SHA-256; `0.0` and `-0.0` share one representation.
+- The API OpenAPI example and representative JSON fixture exercise all five source scopes through the real recommendation endpoint.
+- Current generated status: complete `20`, partial `0`, pending `99`, external `1`, contradicted `0`.
+
+Validation:
+
+- focused original-plan workflow contracts: `81 passed`
+- recommendation and safety core regressions: `206 passed`
+- full Ruff: PASS
+- manifest evidence audit: PASS; `20` claims, `46` unique evidence files, source hash matched, zero issues
+- generated completion-report stale check: PASS
+- full suite: `516 passed`, `77 failed`; failures remain in the known `73` missing report-artifact and `4` CGM geometry groups
+- frozen eval: `256` cases; all seven metrics match the previously recorded current values exactly
+
+Official frozen-eval metric deltas: all `0`.
+
+Replay/slice deltas: not applicable. This loop changed the input contract and did not produce a replay candidate.
+
+Biggest remaining bottlenecks:
+
+1. No lossless `wellnessbox` profile-to-R&D adapter has been proven across both repositories.
+2. Unsupported or ambiguous service fields do not yet fail through a shared cross-repository contract.
+3. Versioned profile and consent snapshots are not persisted.
+4. Conversation, recommendation, safety, optimization, and follow-up events lack one shared execution ID.
+5. No deployed R&D FastAPI process or production `WB_RND_*` configuration exists; the legacy suite also retains 77 known failures.
+
+Recommended next loops:
+
+1. OP-019 and OP-020 lossless service adapter plus ambiguous-input rejection.
+2. OP-021 and OP-022 profile/consent persistence plus shared execution IDs.
+3. OP-023 and OP-024 source-to-recommendation lineage plus knowledge validity metadata.
+
 ## 2026-07-15 diet, lifestyle, and laboratory input-contract handoff
 
 - Chosen stage: `original plan / personal health inputs`

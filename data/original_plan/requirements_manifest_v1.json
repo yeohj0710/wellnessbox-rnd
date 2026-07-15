@@ -243,8 +243,36 @@
             ]
           }
         },
-        {"requirement_id": "OP-017", "title": "설문, 국민건강보험, 웨어러블, CGM, 유전자 동의 범위를 분리한다."},
-        {"requirement_id": "OP-018", "title": "같은 입력이 같은 정규화 결과와 해시를 만드는지 회귀 테스트한다."},
+        {
+          "requirement_id": "OP-017",
+          "title": "설문, 국민건강보험, 웨어러블, CGM, 유전자 동의 범위를 분리한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+              "wellnessbox-rnd/apps/inference_api/routes/recommend.py",
+              "wellnessbox-rnd/data/samples/api_recommend_consent_hash_request_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_consent_and_input_hash_contracts.py"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-018",
+          "title": "같은 입력이 같은 정규화 결과와 해시를 만드는지 회귀 테스트한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+              "wellnessbox-rnd/data/samples/api_recommend_consent_hash_request_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_consent_and_input_hash_contracts.py"
+            ]
+          }
+        },
         {
           "requirement_id": "OP-019",
           "title": "wellnessbox 프로필을 R&D 요청으로 손실 없이 변환한다.",

@@ -172,6 +172,75 @@ _RECOMMEND_REQUEST_EXAMPLES = {
             },
         },
     },
+    "consent_scoped_deterministic_input": {
+        "summary": "Consent-scoped deterministic input",
+        "description": (
+            "Separates recommendation-use and persistent-storage consent for survey, "
+            "NHIS, wearable, CGM, and genetic data before normalization."
+        ),
+        "value": {
+            "request_id": "consent-hash-representative-v1",
+            "user_profile": {
+                "age": 42,
+                "biological_sex": "female",
+                "pregnant": False,
+                "height_cm": 165,
+                "weight_kg": 61,
+            },
+            "goals": ["stress_support", "sleep_support"],
+            "symptoms": ["difficulty_falling_asleep", "fatigue"],
+            "conditions": [],
+            "allergies": ["peanut"],
+            "risk_flags": [],
+            "medications": [],
+            "current_supplements": [],
+            "dietary_patterns": ["mediterranean diet"],
+            "laboratory_observations": [],
+            "lifestyle": {
+                "sleep_hours": 5.8,
+                "stress_level": 4,
+                "activity_level": "lightly_active",
+                "exercise_minutes_per_week": 90,
+                "smoker": False,
+                "alcohol_per_week": 1,
+                "caffeine_mg_per_day": 160,
+            },
+            "input_availability": {
+                "survey": True,
+                "nhis": False,
+                "wearable": True,
+                "cgm": False,
+                "genetic": False,
+            },
+            "data_source_consents": {
+                "survey": {
+                    "use_for_recommendation": True,
+                    "allow_persistent_storage": True,
+                },
+                "nhis": {
+                    "use_for_recommendation": False,
+                    "allow_persistent_storage": False,
+                },
+                "wearable": {
+                    "use_for_recommendation": True,
+                    "allow_persistent_storage": True,
+                },
+                "cgm": {
+                    "use_for_recommendation": False,
+                    "allow_persistent_storage": False,
+                },
+                "genetic": {
+                    "use_for_recommendation": False,
+                    "allow_persistent_storage": False,
+                },
+            },
+            "preferences": {
+                "budget_level": "medium",
+                "max_products": 2,
+                "avoid_ingredients": [],
+            },
+        },
+    },
     "structured_start_plan_path": {
         "summary": "Structured start plan path",
         "description": (
