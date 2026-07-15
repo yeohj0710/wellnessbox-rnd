@@ -26,6 +26,7 @@ Validation:
 - full Ruff: PASS
 - audit command: PASS; `120` requirements, `11` claims, `20` unique evidence files, zero issues, PDF hash match
 - `git diff --check`: PASS
+- GitHub Actions run `29402915435`: PASS after fixing checkout-relative test roots
 
 Official frozen-eval metric deltas: none.
 

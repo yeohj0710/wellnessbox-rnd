@@ -12,6 +12,7 @@
 - Added CLI tests for a valid manifest, a deliberately corrupted hash, and workflow command coverage.
 - OP-009 is the eleventh claimed requirement. The remaining `109` requirements stay unclaimed.
 - Validation: `16 passed`; full Ruff PASS; CLI audit PASS with `20` unique evidence files, zero issues, and PDF hash match.
+- GitHub Actions run `29402915435` passed after replacing hard-coded Windows test roots with checkout-relative roots. The workflow now uses current `actions/checkout@v7` and `actions/setup-python@v6` releases.
 - Official frozen-eval metric deltas: none. No runtime or production deployment changed.
 
 ## 2026-07-15 original plan evidence-audit loop
