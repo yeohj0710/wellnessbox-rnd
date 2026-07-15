@@ -15,6 +15,7 @@
 - `wellnessbox` validation: adapter and POST-route QA PASS (`16` checks), existing preview QA PASS (`4` checks), TypeScript PASS, encoding PASS, lint PASS, production build PASS.
 - Full R&D suite: `549 passed`, `77 failed`. The failure count remains the known `73` absent ignored report artifacts and `4` CGM geometry assertions.
 - Official frozen eval: `256` cases rerun; all seven metrics exactly match the previously recorded current values, so every metric delta is `0`.
+- Publication: service commit `485da91` passed Encoding Guard run `29414011315`; R&D implementation commit `10ba2a7` passed Original plan evidence run `29414033364`. Independent final review reported zero Critical, Important, and Minor findings.
 - This loop did not deploy the R&D process or enable production `WB_RND_*` settings. The two production processes still do not run together; OP-101 through OP-105 remain open.
 
 ## 2026-07-15 unsupported-input rejection loop

@@ -179,10 +179,10 @@ Record that OP-019 is integrated in source and contract tests, but the R&D proce
 
 Review both repositories' exact diffs for field loss, unsafe consent defaults, schema drift, route bypasses, and unrelated user-owned changes. Resolve all Critical and Important findings.
 
-- [ ] **Step 4: Commit and push exact related files**
+- [x] **Step 4: Commit and push exact related files**
 
 Commit `wellnessbox` first so the R&D evidence workflow can checkout the referenced service files. Then commit and push `wellnessbox-rnd`, excluding `docs/plans/2026-07-14-tips-evaluator-ui-overhaul.md`.
 
-- [ ] **Step 5: Verify both remote branches and CI runs**
+- [x] **Step 5: Verify both remote branches and CI runs**
 
 Expected: local `HEAD` equals each `origin/main`; WellnessBox encoding/adapter CI and R&D Original plan evidence CI both conclude `success`.
