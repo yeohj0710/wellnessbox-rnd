@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from wellnessbox_rnd.governance.original_plan_audit import (
@@ -12,8 +13,13 @@ from wellnessbox_rnd.schemas.original_plan_manifest import (
     load_original_plan_manifest_v1,
 )
 
+RND_ROOT = Path(__file__).resolve().parents[1]
+SERVICE_ROOT = Path(
+    os.environ.get("WELLNESSBOX_EVIDENCE_ROOT", str(RND_ROOT.parent / "wellnessbox"))
+).resolve()
 REPO_ROOTS = {
-    RepositoryName.WELLNESSBOX_RND: Path(__file__).resolve().parents[1],
+    RepositoryName.WELLNESSBOX_RND: RND_ROOT,
+    RepositoryName.WELLNESSBOX: SERVICE_ROOT,
 }
 
 
@@ -38,7 +44,7 @@ def test_original_plan_audit_accepts_current_claimed_evidence() -> None:
 
     assert report.status == OriginalPlanAuditStatus.PASS
     assert report.requirement_count == 120
-    assert report.claimed_requirement_count == 21
+    assert report.claimed_requirement_count == 22
     assert report.manifest_sha256 == calculate_original_plan_manifest_sha256_v1(
         _manifest_copy()
     )

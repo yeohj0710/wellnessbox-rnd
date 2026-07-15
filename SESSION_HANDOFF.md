@@ -1,5 +1,61 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 WellnessBox profile-adapter integration handoff
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen task: OP-019
+- Primary dataset path and case count: `data/contracts/wellnessbox_profile_adapter_v1.json`; `1` representative profile containing all `12` service profile properties plus `10` shared boundary cases, `15` R&D contract tests, and `16` service adapter and POST-route checks
+- Current requirement count: `120`; valid claims: `22`
+
+Files changed:
+
+- R&D schema and contract: `src/wellnessbox_rnd/schemas/recommendation.py`, `data/contracts/wellnessbox_profile_adapter_v1.json`, `tests/test_wellnessbox_profile_adapter_contract.py`
+- Service adapter and route: `wellnessbox/lib/server/wb-rnd-profile-adapter.ts`, `wellnessbox/lib/server/wb-rnd-client.ts`, `wellnessbox/lib/server/wb-rnd-recommend-preview-payload.ts`, `wellnessbox/lib/server/wb-rnd-recommend-preview-route.ts`
+- Service contract QA: `wellnessbox/contracts/wb-rnd/profile-adapter-v1.json`, `wellnessbox/scripts/qa/check-rnd-profile-adapter.cts`, service package script and encoding workflow
+- R&D evidence: manifest, completion ledger, generated reports, audit/report scripts, original-plan workflow, governance tests, dedicated implementation plan, and handoff documents
+
+Key changes:
+
+- Added a strict runtime adapter for the current `types/chat.UserProfile`. It rejects unknown source properties, invalid values, missing age/sex/goals, absent survey recommendation consent, and unsupported goal aliases with structured field paths.
+- Aligned the Zod and Pydantic source limits. Both boundaries now test the same Unicode code-point medication lengths, numeric types, blank text, and list counts. The R&D source trace rejects string, boolean, and fractional ages while accepting integral numeric values such as `42.0`, matching JavaScript number semantics.
+- Preserved every current source property under `source_profile.profile` with schema version `wellnessbox.chat.UserProfile.v1`. The operational request maps all compatible health fields; name and caffeine sensitivity remain in the exact trace, while the combined pregnancy-or-breastfeeding flag is mapped conservatively to the existing pregnancy safety flag and also retained verbatim.
+- Connected profile-shaped POST bodies to the existing internal recommendation-preview route and preserved the existing raw R&D payload preview path. The same request is forwarded unchanged by `callWbRndRecommendPreview`. Malformed JSON returns `400`, while top-level `null`, arrays, and invalid profiles return structured `422` responses; none are replaced by the sample request.
+- Added the strict source envelope to the R&D request and OpenAPI. The envelope is excluded from the normalized clinical-input hash so nonclinical source metadata cannot alter frozen-eval results.
+- Registered OP-019 as `INTEGRATED`, not `OPERATED`. The audit now validates tracked implementation, tests, route evidence, and byte-identical contract snapshots in both repositories.
+- Current generated status: complete `22`, partial `0`, pending `97`, external `1`, contradicted `0`.
+
+Validation:
+
+- service adapter and POST-route QA: PASS, `16` checks
+- existing service preview QA: PASS, `4` checks
+- service TypeScript, encoding audit, lint, and production build: PASS
+- exact original-plan workflow selection: `114 passed`
+- full Ruff and both repositories' `git diff --check`: PASS
+- manifest evidence audit: PASS; `22` claims, `55` unique evidence files, source hash matched, zero issues
+- generated completion-report stale check: PASS
+- full suite: `549 passed`, `77 failed`; failures remain in the known `73` missing report-artifact and `4` CGM geometry groups
+- frozen eval: `256` cases; all seven metrics match the previously recorded current values exactly
+
+Official frozen-eval metric deltas: recommendation coverage `0`, efficacy improvement `0`, next-action accuracy `0`, explanation-quality accuracy `0`, safety-reference accuracy `0`, yearly adverse-event count `0`, sensor/genetic integration rate `0`.
+
+Replay/slice deltas: not applicable. This loop changed a cross-repository input adapter and did not produce a replay candidate.
+
+Biggest remaining bottlenecks:
+
+1. Versioned profile and consent snapshots are not persisted.
+2. Conversation, recommendation, safety, optimization, and follow-up events lack one shared execution ID.
+3. Source passages, claims, rules, and recommendation outputs lack a complete lineage chain.
+4. Knowledge effective dates, expiration dates, source types, and licenses are incomplete.
+5. No deployed R&D FastAPI process or production `WB_RND_*` configuration exists; the legacy suite also retains 77 known failures.
+
+Recommended next loops:
+
+1. OP-021 and OP-022 profile/consent persistence plus shared execution IDs.
+2. OP-023 and OP-024 source-to-recommendation lineage plus knowledge validity metadata.
+3. OP-025 and OP-026 log separation plus reproducible execution identity metadata.
+
+Production status: `wellnessbox` and `wellnessbox-rnd` still do not run together in production. This loop adds and verifies the adapter contract only; it does not satisfy OP-101 through OP-105.
+
 ## 2026-07-15 unsupported-input rejection handoff
 
 - Chosen stage: `original plan / personal health inputs`

@@ -6,6 +6,7 @@ on:
       - ".github/workflows/original-plan-evidence.yml"
       - "apps/inference_api/routes/recommend.py"
       - "data/original_plan/**"
+      - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
       - "data/catalog/ingredients.json"
       - "data/rules/safety_rules.json"
@@ -43,6 +44,7 @@ on:
       - "tests/test_diet_lifestyle_lab_input_contracts.py"
       - "tests/test_consent_and_input_hash_contracts.py"
       - "tests/test_unsupported_input_contracts.py"
+      - "tests/test_wellnessbox_profile_adapter_contract.py"
       - "tests/test_inference_api.py"
   push:
     branches: [main]
@@ -50,6 +52,7 @@ on:
       - ".github/workflows/original-plan-evidence.yml"
       - "apps/inference_api/routes/recommend.py"
       - "data/original_plan/**"
+      - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
       - "data/catalog/ingredients.json"
       - "data/rules/safety_rules.json"
@@ -87,6 +90,7 @@ on:
       - "tests/test_diet_lifestyle_lab_input_contracts.py"
       - "tests/test_consent_and_input_hash_contracts.py"
       - "tests/test_unsupported_input_contracts.py"
+      - "tests/test_wellnessbox_profile_adapter_contract.py"
       - "tests/test_inference_api.py"
   workflow_dispatch:
 
@@ -96,8 +100,15 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
+    env:
+      WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox
     steps:
       - uses: actions/checkout@v7
+      - name: Checkout WellnessBox service evidence
+        uses: actions/checkout@v7
+        with:
+          repository: yeohj0710/wellnessbox
+          path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
@@ -120,6 +131,7 @@ jobs:
           tests/test_diet_lifestyle_lab_input_contracts.py
           tests/test_consent_and_input_hash_contracts.py
           tests/test_unsupported_input_contracts.py
+          tests/test_wellnessbox_profile_adapter_contract.py
           tests/test_inference_api.py
       - name: Lint requirement audit
         run: >-
@@ -153,4 +165,5 @@ jobs:
           tests/test_diet_lifestyle_lab_input_contracts.py
           tests/test_consent_and_input_hash_contracts.py
           tests/test_unsupported_input_contracts.py
+          tests/test_wellnessbox_profile_adapter_contract.py
           tests/test_inference_api.py

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -20,7 +21,16 @@ from wellnessbox_rnd.schemas.original_plan_manifest import (
 )
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-REPOSITORY_ROOTS = {RepositoryName.WELLNESSBOX_RND: REPOSITORY_ROOT}
+SERVICE_REPOSITORY_ROOT = Path(
+    os.environ.get(
+        "WELLNESSBOX_EVIDENCE_ROOT",
+        str(REPOSITORY_ROOT.parent / "wellnessbox"),
+    )
+).resolve()
+REPOSITORY_ROOTS = {
+    RepositoryName.WELLNESSBOX_RND: REPOSITORY_ROOT,
+    RepositoryName.WELLNESSBOX: SERVICE_REPOSITORY_ROOT,
+}
 SCRIPT_PATH = Path("scripts/build_original_plan_completion_report.py")
 
 
@@ -53,9 +63,9 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
 
     assert report.requirement_count == 120
     assert report.disposition_counts == {
-        CompletionDisposition.COMPLETE: 21,
+        CompletionDisposition.COMPLETE: 22,
         CompletionDisposition.PARTIAL: 0,
-        CompletionDisposition.PENDING: 98,
+        CompletionDisposition.PENDING: 97,
         CompletionDisposition.EXTERNAL: 1,
         CompletionDisposition.CONTRADICTED: 0,
     }
@@ -67,7 +77,7 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
     assert _completion_by_id(report, "OP-016").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-017").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-018").disposition == CompletionDisposition.COMPLETE
-    assert _completion_by_id(report, "OP-019").disposition == CompletionDisposition.PENDING
+    assert _completion_by_id(report, "OP-019").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-020").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-039").disposition == CompletionDisposition.EXTERNAL
 
@@ -133,7 +143,7 @@ def test_global_source_failure_invalidates_every_existing_completion_claim() -> 
     report = build_original_plan_completion_report_v1(manifest, audit)
 
     assert report.disposition_counts[CompletionDisposition.COMPLETE] == 0
-    assert report.disposition_counts[CompletionDisposition.CONTRADICTED] == 21
+    assert report.disposition_counts[CompletionDisposition.CONTRADICTED] == 22
     assert "original_plan_sha256_mismatch" in report.global_audit_issues
 
 
@@ -145,8 +155,8 @@ def test_markdown_uses_audited_korean_status_language() -> None:
     markdown = render_original_plan_completion_report_markdown_v1(report)
 
     assert "원계획 요구사항 포함: **120/120건**" in markdown
-    assert "| 완료 | 21 |" in markdown
-    assert "| 대기 | 98 |" in markdown
+    assert "| 완료 | 22 |" in markdown
+    assert "| 대기 | 97 |" in markdown
     assert "전체 완료: **100%**" not in markdown
 
 
@@ -188,5 +198,5 @@ def test_report_cli_writes_and_checks_deterministic_artifacts(tmp_path: Path) ->
     assert generated.returncode == 0
     assert checked.returncode == 0
     assert stale.returncode == 1
-    assert json.loads(generated.stdout)["disposition_counts"]["COMPLETE"] == 21
+    assert json.loads(generated.stdout)["disposition_counts"]["COMPLETE"] == 22
     assert str(markdown_output) in json.loads(stale.stdout)["stale_outputs"]

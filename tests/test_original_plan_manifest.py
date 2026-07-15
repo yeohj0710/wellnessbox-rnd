@@ -64,6 +64,7 @@ def test_original_plan_manifest_claims_only_currently_evidenced_steps() -> None:
         "OP-016": EvidenceStage.IMPLEMENTED,
         "OP-017": EvidenceStage.IMPLEMENTED,
         "OP-018": EvidenceStage.IMPLEMENTED,
+        "OP-019": EvidenceStage.INTEGRATED,
         "OP-020": EvidenceStage.INTEGRATED,
         "OP-031": EvidenceStage.IMPLEMENTED,
         "OP-032": EvidenceStage.IMPLEMENTED,

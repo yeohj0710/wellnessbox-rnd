@@ -1,5 +1,22 @@
 # PROGRESS
 
+## 2026-07-15 WellnessBox profile-adapter integration loop
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen task: OP-019 lossless `wellnessbox` stored-profile adapter
+- Primary contract: `data/contracts/wellnessbox_profile_adapter_v1.json`; `1` representative profile containing all `12` current `types/chat.UserProfile` properties plus `10` shared boundary cases, `15` R&D contract tests, and `16` service adapter and POST-route checks
+- Added a strict Zod adapter in `wellnessbox` and connected it to the existing internal recommendation-preview route. The adapter requires age, sex, at least one supported goal, and explicit survey recommendation-use consent; unknown fields and unsupported goals return structured errors instead of disappearing.
+- The adapter preserves the complete source object under versioned `source_profile.profile`. It also maps age, sex, height, weight, conditions, medication names, allergies, goals, dietary restrictions, and the conservative pregnancy-or-breastfeeding flag into the existing R&D request fields. Name and caffeine sensitivity remain available in the exact source trace rather than being invented as unrelated clinical fields.
+- Added the matching strict Pydantic source-profile envelope to `RecommendationRequest`. The trace is exposed in OpenAPI but excluded from the established normalized clinical-input hash, so frozen-eval comparability is preserved.
+- Aligned source validation at both boundaries: medication and other source list items are capped at `128` Unicode code points, list counts match, blank text is rejected, and R&D no longer coerces string, boolean, or fractional ages. Integral numeric ages such as `42.0` remain compatible with JavaScript number semantics. Malformed JSON returns `400`; top-level `null` or arrays return structured `422` responses instead of silently running the sample request.
+- The contract snapshot is byte-identical in both repositories. The R&D evidence workflow now checks out the public `wellnessbox` repository and audits tracked evidence from both owners; the service encoding workflow runs the adapter contract QA.
+- Current audited disposition after regeneration: complete `22`, partial `0`, pending `97`, external `1`, contradicted `0`.
+- Validation: exact original-plan workflow selection `114 passed`; full Ruff PASS; manifest audit (`22` claims, `55` evidence files) and generated-report stale check PASS.
+- `wellnessbox` validation: adapter and POST-route QA PASS (`16` checks), existing preview QA PASS (`4` checks), TypeScript PASS, encoding PASS, lint PASS, production build PASS.
+- Full R&D suite: `549 passed`, `77 failed`. The failure count remains the known `73` absent ignored report artifacts and `4` CGM geometry assertions.
+- Official frozen eval: `256` cases rerun; all seven metrics exactly match the previously recorded current values, so every metric delta is `0`.
+- This loop did not deploy the R&D process or enable production `WB_RND_*` settings. The two production processes still do not run together; OP-101 through OP-105 remain open.
+
 ## 2026-07-15 unsupported-input rejection loop
 
 - Chosen stage: `original plan / personal health inputs`

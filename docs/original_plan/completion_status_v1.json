@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "c023b3255e36f6f632382dde1f943a65fc5f1cb40b66ca99e84389da2010c187",
+  "audited_manifest_sha256": "4b11eceee85fafdecd09f5e0b2727563dcdd0f493f19fdc8cb652b8023483134",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 21,
+    "COMPLETE": 22,
     "PARTIAL": 0,
-    "PENDING": 98,
+    "PENDING": 97,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -32,9 +32,9 @@
       "title": "개인 건강 입력과 동의 계약",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 9,
+        "COMPLETE": 10,
         "PARTIAL": 0,
-        "PENDING": 1,
+        "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -704,15 +704,27 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox/lib/server/wb-rnd-profile-adapter.ts",
+          "wellnessbox/lib/server/wb-rnd-client.ts",
+          "wellnessbox/lib/server/wb-rnd-recommend-preview-payload.ts",
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py"
+        ],
+        "test_files": [
+          "wellnessbox/scripts/qa/check-rnd-profile-adapter.cts",
+          "wellnessbox-rnd/tests/test_wellnessbox_profile_adapter_contract.py"
+        ],
+        "integration_evidence": [
+          "wellnessbox/lib/server/wb-rnd-recommend-preview-route.ts",
+          "wellnessbox/contracts/wb-rnd/profile-adapter-v1.json",
+          "wellnessbox-rnd/data/contracts/wellnessbox_profile_adapter_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []

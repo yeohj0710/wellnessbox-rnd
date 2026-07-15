@@ -9,6 +9,8 @@ from pydantic import (
     ConfigDict,
     Field,
     StrictBool,
+    StrictFloat,
+    StrictInt,
     StringConstraints,
     field_validator,
     model_validator,
@@ -25,6 +27,24 @@ LegacyDoseText = Annotated[
 LaboratoryUnit = Annotated[
     str,
     StringConstraints(strip_whitespace=True, min_length=1, max_length=64),
+]
+WellnessBoxSourceName = Annotated[
+    str,
+    StringConstraints(
+        strict=True,
+        min_length=1,
+        max_length=200,
+        pattern=r"(?s).*\S.*",
+    ),
+]
+WellnessBoxSourceText = Annotated[
+    str,
+    StringConstraints(
+        strict=True,
+        min_length=1,
+        max_length=128,
+        pattern=r"(?s).*\S.*",
+    ),
 ]
 
 _LABORATORY_UNIT_ALIASES = {
@@ -165,6 +185,49 @@ class ConfidenceBand(StrEnum):
 
 class _StrictRequestInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
+
+
+class WellnessBoxChatUserProfileV1(_StrictRequestInput):
+    """Versioned trace of the service-owned chat profile contract.
+
+    Camel-case field names intentionally match ``wellnessbox/types/chat.ts`` so
+    integration code can prove that no source property disappeared in transit.
+    """
+
+    name: WellnessBoxSourceName | None = None
+    age: int | None = Field(default=None, ge=18, le=120)
+    sex: Literal["male", "female", "other"] | None = None
+    heightCm: StrictInt | StrictFloat | None = Field(default=None, gt=0, le=300)
+    weightKg: StrictInt | StrictFloat | None = Field(default=None, gt=0, le=500)
+    conditions: list[WellnessBoxSourceText] | None = Field(
+        default=None, max_length=100
+    )
+    medications: list[WellnessBoxSourceText] | None = Field(
+        default=None, max_length=100
+    )
+    allergies: list[WellnessBoxSourceText] | None = Field(
+        default=None, max_length=100
+    )
+    goals: list[WellnessBoxSourceText] | None = Field(default=None, max_length=20)
+    dietaryRestrictions: list[WellnessBoxSourceText] | None = Field(
+        default=None, max_length=100
+    )
+    pregnantOrBreastfeeding: StrictBool | None = None
+    caffeineSensitivity: StrictBool | None = None
+
+    @field_validator("age", mode="before")
+    @classmethod
+    def require_numeric_integer_age(cls, value: object) -> object:
+        if value is None:
+            return value
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise ValueError("age must be a numeric integer")
+        return value
+
+
+class SourceProfileInput(_StrictRequestInput):
+    schema_version: Literal["wellnessbox.chat.UserProfile.v1"]
+    profile: WellnessBoxChatUserProfileV1
 
 
 class UserProfile(_StrictRequestInput):
@@ -403,6 +466,7 @@ def _supplement_signature(value: SupplementInput) -> tuple[object, ...]:
 
 class RecommendationRequest(_StrictRequestInput):
     request_id: str = Field(default_factory=lambda: str(uuid4()))
+    source_profile: SourceProfileInput | None = Field(default=None, exclude=True)
     user_profile: UserProfile
     goals: list[RecommendationGoal] = Field(min_length=1)
     symptoms: list[str | SymptomInput] = Field(default_factory=list)

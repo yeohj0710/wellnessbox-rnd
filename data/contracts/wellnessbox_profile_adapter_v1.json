@@ -1,0 +1,237 @@
+{
+  "contract_version": "wellnessbox-profile-adapter-v1",
+  "source_profile": {
+    "name": "홍길동",
+    "age": 42,
+    "sex": "female",
+    "heightCm": 165,
+    "weightKg": 61,
+    "conditions": [
+      "고혈압",
+      "type 2 diabetes"
+    ],
+    "medications": [
+      "메트포르민",
+      "atorvastatin"
+    ],
+    "allergies": [
+      "shellfish"
+    ],
+    "goals": [
+      "sleep",
+      "스트레스",
+      "digestion",
+      "immunity"
+    ],
+    "dietaryRestrictions": [
+      "채식",
+      "gluten-free"
+    ],
+    "pregnantOrBreastfeeding": true,
+    "caffeineSensitivity": true
+  },
+  "adapter_options": {
+    "requestId": "wb-profile-adapter-contract-001",
+    "surveyConsent": {
+      "useForRecommendation": true,
+      "allowPersistentStorage": false
+    }
+  },
+  "source_profile_validation_cases": [
+    {
+      "case_id": "medication_name_128",
+      "field": "medications",
+      "value_factory": {
+        "kind": "repeated_text_array",
+        "text": "m",
+        "count": 128
+      },
+      "expected": "accepted"
+    },
+    {
+      "case_id": "medication_name_129",
+      "field": "medications",
+      "value_factory": {
+        "kind": "repeated_text_array",
+        "text": "m",
+        "count": 129
+      },
+      "issue_path": "medications.0",
+      "expected": "rejected"
+    },
+    {
+      "case_id": "medication_unicode_code_points_128",
+      "field": "medications",
+      "value_factory": {
+        "kind": "repeated_text_array",
+        "text": "😀",
+        "count": 128
+      },
+      "expected": "accepted"
+    },
+    {
+      "case_id": "medication_unicode_code_points_129",
+      "field": "medications",
+      "value_factory": {
+        "kind": "repeated_text_array",
+        "text": "😀",
+        "count": 129
+      },
+      "issue_path": "medications.0",
+      "expected": "rejected"
+    },
+    {
+      "case_id": "age_string",
+      "field": "age",
+      "value": "42",
+      "issue_path": "age",
+      "expected": "rejected"
+    },
+    {
+      "case_id": "age_integral_float",
+      "field": "age",
+      "value": 42.0,
+      "expected": "accepted"
+    },
+    {
+      "case_id": "age_fractional",
+      "field": "age",
+      "value": 42.5,
+      "issue_path": "age",
+      "expected": "rejected"
+    },
+    {
+      "case_id": "height_boolean",
+      "field": "heightCm",
+      "value": true,
+      "issue_path": "heightCm",
+      "expected": "rejected"
+    },
+    {
+      "case_id": "blank_medication",
+      "field": "medications",
+      "value": [
+        "   "
+      ],
+      "issue_path": "medications.0",
+      "expected": "rejected"
+    },
+    {
+      "case_id": "conditions_101",
+      "field": "conditions",
+      "value_factory": {
+        "kind": "repeated_array_item",
+        "item": "condition",
+        "count": 101
+      },
+      "issue_path": "conditions",
+      "expected": "rejected"
+    }
+  ],
+  "expected_request": {
+    "request_id": "wb-profile-adapter-contract-001",
+    "source_profile": {
+      "schema_version": "wellnessbox.chat.UserProfile.v1",
+      "profile": {
+        "name": "홍길동",
+        "age": 42,
+        "sex": "female",
+        "heightCm": 165,
+        "weightKg": 61,
+        "conditions": [
+          "고혈압",
+          "type 2 diabetes"
+        ],
+        "medications": [
+          "메트포르민",
+          "atorvastatin"
+        ],
+        "allergies": [
+          "shellfish"
+        ],
+        "goals": [
+          "sleep",
+          "스트레스",
+          "digestion",
+          "immunity"
+        ],
+        "dietaryRestrictions": [
+          "채식",
+          "gluten-free"
+        ],
+        "pregnantOrBreastfeeding": true,
+        "caffeineSensitivity": true
+      }
+    },
+    "user_profile": {
+      "age": 42,
+      "biological_sex": "female",
+      "pregnant": true,
+      "height_cm": 165,
+      "weight_kg": 61
+    },
+    "goals": [
+      "sleep_support",
+      "stress_support",
+      "gut_health",
+      "immunity_support"
+    ],
+    "symptoms": [],
+    "conditions": [
+      "고혈압",
+      "type 2 diabetes"
+    ],
+    "allergies": [
+      "shellfish"
+    ],
+    "risk_flags": [],
+    "medications": [
+      {
+        "name": "메트포르민"
+      },
+      {
+        "name": "atorvastatin"
+      }
+    ],
+    "current_supplements": [],
+    "dietary_patterns": [
+      "채식",
+      "gluten-free"
+    ],
+    "laboratory_observations": [],
+    "input_availability": {
+      "survey": true,
+      "nhis": false,
+      "wearable": false,
+      "cgm": false,
+      "genetic": false
+    },
+    "data_source_consents": {
+      "survey": {
+        "use_for_recommendation": true,
+        "allow_persistent_storage": false
+      },
+      "nhis": {
+        "use_for_recommendation": false,
+        "allow_persistent_storage": false
+      },
+      "wearable": {
+        "use_for_recommendation": false,
+        "allow_persistent_storage": false
+      },
+      "cgm": {
+        "use_for_recommendation": false,
+        "allow_persistent_storage": false
+      },
+      "genetic": {
+        "use_for_recommendation": false,
+        "allow_persistent_storage": false
+      }
+    },
+    "preferences": {
+      "budget_level": "medium",
+      "max_products": 2,
+      "avoid_ingredients": []
+    }
+  }
+}

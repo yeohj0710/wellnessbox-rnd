@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from argparse import ArgumentParser
 from pathlib import Path
 
@@ -64,6 +65,9 @@ def main() -> int:
 def _resolve_service_root(value: str | None, *, rnd_root: Path) -> Path | None:
     if value:
         return Path(value).resolve()
+    configured = os.environ.get("WELLNESSBOX_EVIDENCE_ROOT")
+    if configured:
+        return Path(configured).resolve()
     sibling = rnd_root.parent / "wellnessbox"
     return sibling.resolve() if sibling.is_dir() else None
 
