@@ -10,7 +10,7 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
     store.migrate()
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 4
+    assert store.scalar("select max(version) from schema_migrations") == 5
     assert "pharmacy_id" in {row[1] for row in store.rows("pragma table_info(review_tasks)")}
     required_tables = {
         "proxy_cases",
@@ -29,6 +29,10 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
         "active_profile_consents",
         "executions",
         "execution_events",
+        "knowledge_claims",
+        "knowledge_rules",
+        "claim_rule_links",
+        "execution_knowledge_lineage",
     }
     assert required_tables.issubset(store.table_names())
 
@@ -71,7 +75,7 @@ def test_schema_version_2_profile_data_survives_lineage_migration(tmp_path) -> N
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 4
+    assert store.scalar("select max(version) from schema_migrations") == 5
     assert store.scalar("select count(*) from user_profiles") == 1
     assert store.scalar(
         "select payload_json from user_profiles where profile_id='usr_1234567890abcdef'"
@@ -90,7 +94,7 @@ def test_interim_store_read_helpers_close_database_connections(tmp_path) -> None
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 4
+    assert store.scalar("select max(version) from schema_migrations") == 5
     assert store.rows("select version from schema_migrations")
 
     database_path.unlink()
@@ -168,10 +172,75 @@ def test_schema_version_3_events_gain_consent_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 4
+    assert store.scalar("select max(version) from schema_migrations") == 5
     assert store.scalar(
         "select consent_snapshot_id from execution_events where event_id='event_1'"
     ) == "consent_1"
     assert store.scalar(
         "select consent_snapshot_id from active_profile_consents where profile_id='usr_1'"
     ) == "consent_2"
+
+
+def test_schema_version_4_evidence_gains_parsed_span_lineage(tmp_path) -> None:
+    database_path = tmp_path / "version-4.sqlite3"
+    with sqlite3.connect(database_path) as connection:
+        connection.executescript(
+            """
+            create table schema_migrations (
+              version integer primary key,
+              applied_at text not null
+            );
+            insert into schema_migrations values (4, '2026-07-15T00:00:00+00:00');
+            create table source_registry (
+              source_id text primary key,
+              source_tier text not null,
+              title text not null,
+              canonical_uri text not null,
+              license_status text not null,
+              effective_at text,
+              retired_at text,
+              checksum text not null,
+              data_class text not null,
+              metadata_json text not null
+            );
+            create table evidence_passages (
+              evidence_id text primary key,
+              source_id text not null references source_registry,
+              passage_text text not null,
+              effective_at text,
+              checksum text not null,
+              approved_for_safety integer not null default 0,
+              data_class text not null
+            );
+            insert into source_registry values (
+              'REF-OLD', 'guideline', 'Old source', 'docs/old.md',
+              'APPROVED_INTERNAL', '2026-01-01', null, 'source-hash',
+              'PROXY_GOLD_SIMULATION', '{}'
+            );
+            insert into evidence_passages values (
+              'ev_old', 'REF-OLD', 'old passage', '2026-01-01',
+              'passage-hash', 1, 'PROXY_GOLD_SIMULATION'
+            );
+            """
+        )
+
+    store = InterimStore(database_path)
+    store.migrate()
+
+    assert store.scalar("select max(version) from schema_migrations") == 5
+    columns = {row[1] for row in store.rows("pragma table_info(evidence_passages)")}
+    assert {"page_or_section", "line_start", "line_end", "metadata_json"}.issubset(
+        columns
+    )
+    assert store.scalar(
+        "select passage_text from evidence_passages where evidence_id='ev_old'"
+    ) == "old passage"
+    assert store.scalar(
+        "select metadata_json from evidence_passages where evidence_id='ev_old'"
+    ) == "{}"
+    assert {
+        "knowledge_claims",
+        "knowledge_rules",
+        "claim_rule_links",
+        "execution_knowledge_lineage",
+    }.issubset(store.table_names())

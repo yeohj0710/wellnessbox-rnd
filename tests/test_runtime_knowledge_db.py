@@ -38,6 +38,19 @@ def test_runtime_knowledge_db_builds_required_tables() -> None:
     assert runtime_db.references
     assert runtime_db.reference_spans
     assert runtime_db.workflow_policies
+    assert all(
+        reference.license_status == "APPROVED_INTERNAL"
+        for reference in runtime_db.references
+    )
+    assert all(
+        reference.effective_at == "2026-03-10T00:00:00Z"
+        for reference in runtime_db.references
+    )
+    assert all(reference.retired_at is None for reference in runtime_db.references)
+    assert all(
+        reference.parsed_source_uri.startswith("data/raw_references/")
+        for reference in runtime_db.references
+    )
     assert any(
         rule.rule_id == "KB-SAFETY-ANTICOAG-001" and rule.source_kind == "knowledge_artifact"
         for rule in runtime_db.interaction_rules

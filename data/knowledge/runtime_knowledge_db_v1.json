@@ -563,21 +563,33 @@
       "source_title": "WellnessBox R&D Master Context",
       "source_type": "master_context",
       "page_or_section": "autonomous closed-loop action policy",
-      "reference_uri": "docs/context/master_context.md"
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_action_space.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-03-10T00:00:00Z",
+      "retired_at": null
     },
     {
       "reference_id": "REF-MC-CITATION-001",
       "source_title": "WellnessBox R&D Master Context",
       "source_type": "master_context",
       "page_or_section": "17.4 citation structure",
-      "reference_uri": "docs/context/master_context.md"
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_citation_structure.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-03-10T00:00:00Z",
+      "retired_at": null
     },
     {
       "reference_id": "REF-KNOWLEDGE-ANTICOAG-001",
       "source_title": "Supplement Interaction Notes",
       "source_type": "interaction_reference",
       "page_or_section": "glucosamine chondroitin and anticoagulants",
-      "reference_uri": "data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md"
+      "reference_uri": "data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md",
+      "parsed_source_uri": "data/raw_references/supplement_warfarin_interaction.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-03-10T00:00:00Z",
+      "retired_at": null
     }
   ],
   "reference_spans": [

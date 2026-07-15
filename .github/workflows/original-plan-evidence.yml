@@ -8,6 +8,8 @@ on:
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
+      - "data/knowledge/reference_knowledge_base_v1.json"
+      - "data/raw_references/**"
       - "data/catalog/ingredients.json"
       - "data/rules/safety_rules.json"
       - "data/samples/api_recommend_structured_health_input_request_v1.json"
@@ -19,8 +21,12 @@ on:
       - "docs/plans/2026-07-15-original-plan-completion-program.md"
       - "scripts/audit_original_plan_requirements.py"
       - "scripts/build_original_plan_completion_report.py"
+      - "scripts/run_data_lake_lineage_smoke.py"
+      - "scripts/run_knowledge_lineage_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
+      - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
+      - "src/wellnessbox_rnd/interim/**"
       - "src/wellnessbox_rnd/domain/catalog.py"
       - "src/wellnessbox_rnd/domain/loaders.py"
       - "src/wellnessbox_rnd/domain/intake.py"
@@ -46,6 +52,13 @@ on:
       - "tests/test_unsupported_input_contracts.py"
       - "tests/test_wellnessbox_profile_adapter_contract.py"
       - "tests/test_inference_api.py"
+      - "tests/test_interim_api.py"
+      - "tests/test_data_lake_lineage.py"
+      - "tests/test_interim_evidence.py"
+      - "tests/test_interim_store.py"
+      - "tests/test_knowledge_lineage.py"
+      - "tests/test_reference_ingestion.py"
+      - "tests/test_runtime_knowledge_db.py"
   push:
     branches: [main]
     paths:
@@ -54,6 +67,8 @@ on:
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
+      - "data/knowledge/reference_knowledge_base_v1.json"
+      - "data/raw_references/**"
       - "data/catalog/ingredients.json"
       - "data/rules/safety_rules.json"
       - "data/samples/api_recommend_structured_health_input_request_v1.json"
@@ -65,8 +80,12 @@ on:
       - "docs/plans/2026-07-15-original-plan-completion-program.md"
       - "scripts/audit_original_plan_requirements.py"
       - "scripts/build_original_plan_completion_report.py"
+      - "scripts/run_data_lake_lineage_smoke.py"
+      - "scripts/run_knowledge_lineage_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
+      - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
+      - "src/wellnessbox_rnd/interim/**"
       - "src/wellnessbox_rnd/domain/catalog.py"
       - "src/wellnessbox_rnd/domain/loaders.py"
       - "src/wellnessbox_rnd/domain/intake.py"
@@ -92,6 +111,13 @@ on:
       - "tests/test_unsupported_input_contracts.py"
       - "tests/test_wellnessbox_profile_adapter_contract.py"
       - "tests/test_inference_api.py"
+      - "tests/test_interim_api.py"
+      - "tests/test_data_lake_lineage.py"
+      - "tests/test_interim_evidence.py"
+      - "tests/test_interim_store.py"
+      - "tests/test_knowledge_lineage.py"
+      - "tests/test_reference_ingestion.py"
+      - "tests/test_runtime_knowledge_db.py"
   workflow_dispatch:
 
 permissions:
@@ -133,6 +159,13 @@ jobs:
           tests/test_unsupported_input_contracts.py
           tests/test_wellnessbox_profile_adapter_contract.py
           tests/test_inference_api.py
+          tests/test_interim_api.py
+          tests/test_data_lake_lineage.py
+          tests/test_interim_evidence.py
+          tests/test_interim_store.py
+          tests/test_knowledge_lineage.py
+          tests/test_reference_ingestion.py
+          tests/test_runtime_knowledge_db.py
       - name: Lint requirement audit
         run: >-
           python -m ruff check
@@ -167,3 +200,14 @@ jobs:
           tests/test_unsupported_input_contracts.py
           tests/test_wellnessbox_profile_adapter_contract.py
           tests/test_inference_api.py
+          scripts/run_data_lake_lineage_smoke.py
+          scripts/run_knowledge_lineage_smoke.py
+          src/wellnessbox_rnd/ingestion/reference_ingestion.py
+          src/wellnessbox_rnd/interim
+          tests/test_interim_api.py
+          tests/test_data_lake_lineage.py
+          tests/test_interim_evidence.py
+          tests/test_interim_store.py
+          tests/test_knowledge_lineage.py
+          tests/test_reference_ingestion.py
+          tests/test_runtime_knowledge_db.py

@@ -50,13 +50,27 @@ class EvidenceRegistry:
         normalized_license = license_status.upper()
         payload = {
             "source_id": source_id,
+            "source_tier": source_tier,
             "title": title,
             "canonical_uri": canonical_uri,
+            "license_status": normalized_license,
             "effective_at": effective_at,
             "retired_at": retired_at,
             "metadata": metadata or {},
         }
+        legacy_payload = {
+            key: payload[key]
+            for key in (
+                "source_id",
+                "title",
+                "canonical_uri",
+                "effective_at",
+                "retired_at",
+                "metadata",
+            )
+        }
         checksum = _sha(_canonical(payload))
+        legacy_checksum = _sha(_canonical(legacy_payload))
         quarantined = normalized_license not in APPROVED_LICENSES or retired_at is not None
         reason = "license_not_approved" if normalized_license not in APPROVED_LICENSES else None
         if retired_at is not None:
@@ -64,15 +78,46 @@ class EvidenceRegistry:
         stored_metadata = {**(metadata or {}), "quarantined": quarantined, "reason": reason}
         with self.store.transaction() as connection:
             previous = connection.execute(
-                "select checksum from source_registry where source_id = ?", (source_id,)
+                """
+                select checksum, metadata_json, source_tier, license_status
+                from source_registry where source_id = ?
+                """,
+                (source_id,),
             ).fetchone()
-            if previous is not None and previous[0] != checksum:
+            previous_metadata = (
+                {} if previous is None else json.loads(previous["metadata_json"])
+            )
+            legacy_envelope_upgrade = (
+                previous is not None
+                and previous["checksum"] == legacy_checksum
+                and previous["source_tier"] == source_tier
+                and previous["license_status"] == normalized_license
+                and not previous_metadata.get("content_changed")
+            )
+            if (
+                previous is not None
+                and previous["checksum"] != checksum
+                and not legacy_envelope_upgrade
+            ):
                 quarantined = True
                 reason = "content_changed_requires_review"
                 stored_metadata["content_changed"] = True
-                stored_metadata["previous_checksum"] = previous[0]
+                stored_metadata["previous_checksum"] = previous_metadata.get(
+                    "previous_checksum",
+                    previous["checksum"],
+                )
                 stored_metadata["quarantined"] = True
                 stored_metadata["reason"] = reason
+            elif previous is not None:
+                if previous_metadata.get("content_changed"):
+                    quarantined = True
+                    reason = "content_changed_requires_review"
+                    stored_metadata["content_changed"] = True
+                    stored_metadata["previous_checksum"] = previous_metadata[
+                        "previous_checksum"
+                    ]
+                    stored_metadata["quarantined"] = True
+                    stored_metadata["reason"] = reason
             connection.execute(
                 """
                 insert into source_registry(
@@ -108,6 +153,11 @@ class EvidenceRegistry:
         passage_text: str,
         approved_for_safety: bool = False,
         effective_at: str | None = None,
+        evidence_id: str | None = None,
+        page_or_section: str | None = None,
+        line_start: int | None = None,
+        line_end: int | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> EvidenceResult:
         source = self.store.rows(
             """
@@ -118,32 +168,61 @@ class EvidenceRegistry:
         )
         if not source:
             raise ValueError("unknown_source")
-        metadata = json.loads(source[0]["metadata_json"])
-        quarantined = bool(metadata.get("quarantined"))
+        source_metadata = json.loads(source[0]["metadata_json"])
+        quarantined = bool(source_metadata.get("quarantined"))
         if approved_for_safety and quarantined:
             raise ValueError("quarantined_source_cannot_support_safety")
-        checksum = _sha(passage_text.strip())
-        evidence_id = f"ev_{checksum[:20]}"
+        normalized_passage = passage_text.strip()
+        has_span_metadata = any(
+            value is not None for value in (page_or_section, line_start, line_end)
+        ) or bool(metadata)
+        if has_span_metadata:
+            passage_payload = {
+                "passage_text": normalized_passage,
+                "page_or_section": page_or_section,
+                "line_start": line_start,
+                "line_end": line_end,
+                "metadata": metadata or {},
+            }
+            checksum = _sha(_canonical(passage_payload))
+        else:
+            checksum = _sha(normalized_passage)
+        resolved_evidence_id = evidence_id or f"ev_{checksum[:20]}"
         with self.store.transaction() as connection:
             connection.execute(
                 """
                 insert into evidence_passages(
-                  evidence_id, source_id, passage_text, effective_at, checksum,
+                  evidence_id, source_id, passage_text, page_or_section,
+                  line_start, line_end, metadata_json, effective_at, checksum,
                   approved_for_safety, data_class
-                ) values (?, ?, ?, ?, ?, ?, ?)
-                on conflict(evidence_id) do nothing
+                ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                on conflict(evidence_id) do update set
+                  source_id=excluded.source_id,
+                  passage_text=excluded.passage_text,
+                  page_or_section=excluded.page_or_section,
+                  line_start=excluded.line_start,
+                  line_end=excluded.line_end,
+                  metadata_json=excluded.metadata_json,
+                  effective_at=excluded.effective_at,
+                  checksum=excluded.checksum,
+                  approved_for_safety=excluded.approved_for_safety,
+                  data_class=excluded.data_class
                 """,
                 (
-                    evidence_id,
+                    resolved_evidence_id,
                     source_id,
-                    passage_text.strip(),
+                    normalized_passage,
+                    page_or_section,
+                    line_start,
+                    line_end,
+                    _canonical(metadata or {}),
                     effective_at or datetime.now(UTC).isoformat(),
                     checksum,
                     int(approved_for_safety),
                     DataClass.PROXY_GOLD_SIMULATION,
                 ),
             )
-        return EvidenceResult(evidence_id, checksum, quarantined)
+        return EvidenceResult(resolved_evidence_id, checksum, quarantined)
 
     def activate_rule(
         self,

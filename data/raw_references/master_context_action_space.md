@@ -4,11 +4,11 @@ source_title: WellnessBox R&D Master Context
 source_type: master_context
 page_or_section: autonomous closed-loop action policy
 reference_uri: docs/context/master_context.md
+license_status: APPROVED_INTERNAL
+effective_at: 2026-03-10T00:00:00Z
+parsed_source_uri: data/raw_references/master_context_action_space.md
 ---
-
-This sample reference captures the no-human action space required for the autonomous closed-loop agent.
-Runtime actions must remain system-owned so the state machine can continue without manual review or handoff semantics.
-
+This sample reference captures the no-human action space required for the autonomous closed-loop agent. Runtime actions must remain system-owned so the state machine can continue without manual review or handoff semantics.
 ```json
 {
   "claim_id": "CLM-MC-ACTION-001",

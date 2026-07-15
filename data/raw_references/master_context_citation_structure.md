@@ -4,11 +4,11 @@ source_title: WellnessBox R&D Master Context
 source_type: master_context
 page_or_section: 17.4 citation structure
 reference_uri: docs/context/master_context.md
+license_status: APPROVED_INTERNAL
+effective_at: 2026-03-10T00:00:00Z
+parsed_source_uri: data/raw_references/master_context_citation_structure.md
 ---
-
-This sample reference normalizes citation requirements from the master context into a deterministic raw document.
-Structured citations need stable identifiers and typed fields so downstream safety and explanation modules can validate them.
-
+This sample reference normalizes citation requirements from the master context into a deterministic raw document. Structured citations need stable identifiers and typed fields so downstream safety and explanation modules can validate them.
 ```json
 {
   "claim_id": "CLM-MC-CITATION-001",

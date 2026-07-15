@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -43,10 +43,48 @@ CREATE TABLE IF NOT EXISTS evidence_passages (
   evidence_id TEXT PRIMARY KEY,
   source_id TEXT NOT NULL REFERENCES source_registry(source_id),
   passage_text TEXT NOT NULL,
+  page_or_section TEXT,
+  line_start INTEGER,
+  line_end INTEGER,
+  metadata_json TEXT NOT NULL DEFAULT '{}',
   effective_at TEXT,
   checksum TEXT NOT NULL,
   approved_for_safety INTEGER NOT NULL DEFAULT 0,
   data_class TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS knowledge_claims (
+  claim_id TEXT PRIMARY KEY,
+  evidence_id TEXT NOT NULL REFERENCES evidence_passages(evidence_id),
+  normalized_claim_type TEXT NOT NULL,
+  claim_text TEXT NOT NULL,
+  ingredient_keys_json TEXT NOT NULL,
+  medication_keys_json TEXT NOT NULL,
+  domain_keys_json TEXT NOT NULL,
+  checksum TEXT NOT NULL,
+  effective_at TEXT,
+  retired_at TEXT,
+  data_class TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS knowledge_rules (
+  rule_id TEXT PRIMARY KEY,
+  rule_type TEXT NOT NULL,
+  severity TEXT NOT NULL,
+  source_kind TEXT NOT NULL,
+  predicate_json TEXT NOT NULL,
+  action_json TEXT NOT NULL,
+  checksum TEXT NOT NULL,
+  valid_from TEXT,
+  valid_to TEXT,
+  status TEXT NOT NULL,
+  data_class TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS claim_rule_links (
+  claim_id TEXT NOT NULL REFERENCES knowledge_claims(claim_id),
+  rule_id TEXT NOT NULL REFERENCES knowledge_rules(rule_id),
+  PRIMARY KEY(claim_id, rule_id)
 );
 
 CREATE TABLE IF NOT EXISTS safety_rules (
@@ -206,6 +244,34 @@ ON executions(profile_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_execution_events_execution_index
 ON execution_events(execution_id, event_index);
+
+CREATE TABLE IF NOT EXISTS execution_knowledge_lineage (
+  lineage_id TEXT PRIMARY KEY,
+  execution_id TEXT NOT NULL REFERENCES executions(execution_id),
+  event_id TEXT NOT NULL REFERENCES execution_events(event_id),
+  output_type TEXT NOT NULL CHECK(output_type IN (
+    'recommendation_item',
+    'safety_rule',
+    'recommendation_decision'
+  )),
+  output_key TEXT NOT NULL,
+  rule_id TEXT NOT NULL REFERENCES knowledge_rules(rule_id),
+  claim_id TEXT NOT NULL REFERENCES knowledge_claims(claim_id),
+  evidence_id TEXT NOT NULL REFERENCES evidence_passages(evidence_id),
+  source_id TEXT NOT NULL REFERENCES source_registry(source_id),
+  data_class TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE(execution_id, event_id, output_type, output_key, claim_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_knowledge_claims_evidence
+ON knowledge_claims(evidence_id);
+
+CREATE INDEX IF NOT EXISTS idx_claim_rule_links_rule
+ON claim_rule_links(rule_id);
+
+CREATE INDEX IF NOT EXISTS idx_execution_knowledge_lineage_execution
+ON execution_knowledge_lineage(execution_id, created_at);
 
 CREATE TABLE IF NOT EXISTS recommendation_runs (
   run_id TEXT PRIMARY KEY,
@@ -415,6 +481,24 @@ class InterimStore:
                     where consent_snapshot_id is null
                     """
                 )
+            passage_columns = {
+                str(row[1])
+                for row in connection.execute("pragma table_info(evidence_passages)")
+            }
+            passage_column_migrations = {
+                "page_or_section": "text",
+                "line_start": "integer",
+                "line_end": "integer",
+                "metadata_json": "text not null default '{}'",
+            }
+            for column_name, column_type in passage_column_migrations.items():
+                if column_name not in passage_columns:
+                    connection.execute(
+                        f"alter table evidence_passages add column {column_name} {column_type}"
+                    )
+            connection.execute(
+                "update evidence_passages set metadata_json='{}' where metadata_json is null"
+            )
             connection.execute(
                 """
                 insert or ignore into active_profile_consents(

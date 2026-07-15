@@ -13,6 +13,7 @@ from uuid import uuid4
 from pydantic import BaseModel, ConfigDict
 
 from wellnessbox_rnd.interim.contracts import DataClass
+from wellnessbox_rnd.interim.knowledge_lineage import persist_execution_knowledge_lineage
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.schemas.recommendation import (
     DataSource,
@@ -41,6 +42,12 @@ class ExecutionEventSource(StrEnum):
     GENETIC = "genetic"
 
 
+class KnowledgeOutputType(StrEnum):
+    RECOMMENDATION_ITEM = "recommendation_item"
+    SAFETY_RULE = "safety_rule"
+    RECOMMENDATION_DECISION = "recommendation_decision"
+
+
 class _StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -58,6 +65,40 @@ class ExecutionEventRecord(_StrictModel):
     created_at: str
 
 
+class KnowledgeLineageRecord(_StrictModel):
+    lineage_id: str
+    execution_id: str
+    event_id: str
+    event_type: ExecutionEventType
+    output_type: KnowledgeOutputType
+    output_key: str
+    rule_id: str
+    rule_type: str
+    rule_severity: str
+    rule_valid_from: str | None
+    rule_valid_to: str | None
+    rule_status: str
+    claim_id: str
+    normalized_claim_type: str
+    claim_text: str
+    evidence_id: str
+    passage_text: str
+    page_or_section: str | None
+    line_start: int | None
+    line_end: int | None
+    source_id: str
+    source_title: str
+    source_type: str
+    source_uri: str
+    upstream_reference_uri: str | None
+    license_status: str
+    source_effective_at: str | None
+    source_retired_at: str | None
+    source_content_checksum: str | None
+    data_class: DataClass
+    created_at: str
+
+
 class ExecutionTrace(_StrictModel):
     execution_id: str
     response_execution_id: str
@@ -72,6 +113,7 @@ class ExecutionTrace(_StrictModel):
     created_at: str
     updated_at: str
     events: list[ExecutionEventRecord]
+    knowledge_lineage: list[KnowledgeLineageRecord]
 
 
 class AppendEventResult(_StrictModel):
@@ -256,6 +298,57 @@ def _event_from_row(row: sqlite3.Row) -> ExecutionEventRecord:
     )
 
 
+def _knowledge_lineage_from_row(row: sqlite3.Row) -> KnowledgeLineageRecord:
+    source_metadata = json.loads(row["source_metadata_json"])
+    return KnowledgeLineageRecord(
+        lineage_id=str(row["lineage_id"]),
+        execution_id=str(row["execution_id"]),
+        event_id=str(row["event_id"]),
+        event_type=str(row["event_type"]),
+        output_type=str(row["output_type"]),
+        output_key=str(row["output_key"]),
+        rule_id=str(row["rule_id"]),
+        rule_type=str(row["rule_type"]),
+        rule_severity=str(row["rule_severity"]),
+        rule_valid_from=(
+            None if row["rule_valid_from"] is None else str(row["rule_valid_from"])
+        ),
+        rule_valid_to=(
+            None if row["rule_valid_to"] is None else str(row["rule_valid_to"])
+        ),
+        rule_status=str(row["rule_status"]),
+        claim_id=str(row["claim_id"]),
+        normalized_claim_type=str(row["normalized_claim_type"]),
+        claim_text=str(row["claim_text"]),
+        evidence_id=str(row["evidence_id"]),
+        passage_text=str(row["passage_text"]),
+        page_or_section=(
+            None if row["page_or_section"] is None else str(row["page_or_section"])
+        ),
+        line_start=None if row["line_start"] is None else int(row["line_start"]),
+        line_end=None if row["line_end"] is None else int(row["line_end"]),
+        source_id=str(row["source_id"]),
+        source_title=str(row["source_title"]),
+        source_type=str(row["source_type"]),
+        source_uri=str(row["source_uri"]),
+        upstream_reference_uri=source_metadata.get("upstream_reference_uri"),
+        license_status=str(row["license_status"]),
+        source_effective_at=(
+            None
+            if row["source_effective_at"] is None
+            else str(row["source_effective_at"])
+        ),
+        source_retired_at=(
+            None
+            if row["source_retired_at"] is None
+            else str(row["source_retired_at"])
+        ),
+        source_content_checksum=source_metadata.get("content_checksum"),
+        data_class=str(row["data_class"]),
+        created_at=str(row["created_at"]),
+    )
+
+
 class ExecutionLedger:
     def __init__(self, store: InterimStore):
         self.store = store
@@ -333,8 +426,9 @@ class ExecutionLedger:
                 response,
                 store_derived_outputs=store_derived_outputs,
             )
+            event_ids: dict[str, str] = {}
             for event_index, (event_type, payload) in enumerate(core_events):
-                self._insert_event(
+                event = self._insert_event(
                     connection=connection,
                     execution_id=execution_id,
                     consent_snapshot_id=consent_snapshot_id,
@@ -343,6 +437,15 @@ class ExecutionLedger:
                     source=ExecutionEventSource.SYSTEM,
                     idempotency_key="core",
                     payload=payload,
+                    created_at=now,
+                )
+                event_ids[event_type.value] = event.event_id
+            if store_derived_outputs:
+                persist_execution_knowledge_lineage(
+                    connection=connection,
+                    execution_id=execution_id,
+                    response=response,
+                    event_ids=event_ids,
                     created_at=now,
                 )
         return self.get_trace(execution_id)
@@ -483,6 +586,37 @@ class ExecutionLedger:
                 (execution_id,),
             )
         ]
+        knowledge_lineage = [
+            _knowledge_lineage_from_row(lineage)
+            for lineage in self.store.rows(
+                """
+                select l.*, ee.event_type,
+                       kr.rule_type, kr.severity as rule_severity,
+                       kr.valid_from as rule_valid_from,
+                       kr.valid_to as rule_valid_to,
+                       kr.status as rule_status,
+                       kc.normalized_claim_type, kc.claim_text,
+                       ep.passage_text, ep.page_or_section,
+                       ep.line_start, ep.line_end,
+                       src.title as source_title,
+                       src.source_tier as source_type,
+                       src.canonical_uri as source_uri,
+                       src.license_status,
+                       src.effective_at as source_effective_at,
+                       src.retired_at as source_retired_at,
+                       src.metadata_json as source_metadata_json
+                from execution_knowledge_lineage l
+                join execution_events ee on ee.event_id=l.event_id
+                join knowledge_rules kr on kr.rule_id=l.rule_id
+                join knowledge_claims kc on kc.claim_id=l.claim_id
+                join evidence_passages ep on ep.evidence_id=l.evidence_id
+                join source_registry src on src.source_id=l.source_id
+                where l.execution_id=?
+                order by ee.event_index, l.output_type, l.output_key, l.claim_id
+                """,
+                (execution_id,),
+            )
+        ]
         return ExecutionTrace(
             execution_id=str(row["execution_id"]),
             response_execution_id=str(row["execution_id"]),
@@ -501,6 +635,7 @@ class ExecutionLedger:
             created_at=str(row["created_at"]),
             updated_at=str(row["updated_at"]),
             events=events,
+            knowledge_lineage=knowledge_lineage,
         )
 
     @staticmethod
@@ -713,6 +848,8 @@ __all__ = [
     "ExecutionNotFoundError",
     "ExecutionTrace",
     "IdempotencyConflictError",
+    "KnowledgeLineageRecord",
+    "KnowledgeOutputType",
     "PROFILE_SNAPSHOT_SCHEMA_VERSION",
     "data_lake_database_path",
     "open_data_lake_store",

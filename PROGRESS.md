@@ -1,10 +1,25 @@
 # PROGRESS
 
+## 2026-07-15 knowledge evidence-lineage loop
+
+- Chosen stage: `original plan / Data Lake evidence lineage`
+- Chosen tasks: OP-023 source-to-result lineage; OP-024 source lifecycle, type, and license metadata
+- Primary evidence: `data/original_plan/evidence/op023_op024_knowledge_lineage_smoke_v1.json`; `1` actual FastAPI route case, SQLite schema `5`, three sources, five parsed passages, five normalized claims, five rules, five claim-rule links, and two execution-result lineage rows
+- Reused the existing reference knowledge artifact and `InterimStore`. No parallel knowledge base was created. The schema now stores parsed source URI, upstream reference URI, page or section, line span, normalized claim, rule, source lifecycle, source type, license, and raw-content checksum.
+- The actual `/v1/recommend` route synchronizes the versioned local knowledge artifact and persists safety-rule and final-decision lineage under the response execution ID. The authenticated execution trace returns structured lineage without returning full raw source documents.
+- Recommendation-result lineage is skipped when used-source storage consent is denied. A changed source remains quarantined across identical re-synchronizations until a future explicit review workflow clears it.
+- Parsed source identity and upstream reference identity are separate. Citation lines `13..33` and their checksum point to `data/raw_references/supplement_warfarin_interaction.md`; the upstream supplement note remains recorded separately.
+- Evidence status: OP-023 and OP-024 are `IMPLEMENTED`, not `INTEGRATED` or `OPERATED`. Local `TestClient` plus temporary SQLite does not prove a real two-process round trip or production re-query. Generated status: complete `22`, partial `4`, pending `93`, external `1`, contradicted `0`.
+- Focused CI-equivalent selection: `159 passed`. Full suite: `569 passed`, `78 failed`; the unchanged failures are `74` absent ignored report artifacts and `4` CGM geometry assertions.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, and every weakest-slice category is unchanged. Data Lake replay delta: not applicable to this persistence-only loop.
+- Biggest bottlenecks: no deployed R&D process; no durable production R&D database; no authenticated service-to-R&D process round trip; no production storage re-query evidence; only three normalized local source documents, with the upstream supplement file still requiring encoding/source-quality remediation.
+- Recommended next loops: OP-025/026 log separation and execution identities; OP-027/028 broader idempotency plus deletion/correction audit handling; OP-029/030 replay API plus service UI.
+
 ## 2026-07-15 Data Lake profile and execution-lineage loop
 
 - Chosen stage: `original plan / Data Lake evidence lineage`
 - Chosen tasks: OP-021 versioned profile and consent snapshots; OP-022 common execution IDs for recommendation, safety, optimization, conversation, and follow-up events
-- Primary evidence: `data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json`; `3` local runtime cases, SQLite schema `4`, two authorized profile versions, two consent versions, and five linked event types
+- Primary evidence: `data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json`; `3` local runtime cases, current SQLite schema `5`, two authorized profile versions, two consent versions, and five linked event types
 - Added profile snapshots, immutable consent snapshots, execution records, and event records to the existing `InterimStore`. The actual recommendation route writes the three stages that ran; authenticated internal routes append conversation and follow-up events.
 - Every event now records the consent snapshot that authorized the write. A profile-level active consent pointer preserves decision order even when an old immutable snapshot is reused, so `거부 → 허용 → 재거부` blocks writes to the older allowed execution. Replays with a changed source or payload fail closed.
 - Added an autouse temporary database fixture to recommendation API tests. Test runs no longer write to the default interim artifact database; pre-existing rows were not deleted.

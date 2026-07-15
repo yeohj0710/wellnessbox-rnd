@@ -1,0 +1,28 @@
+{
+  "schema_version": "op023_op024_knowledge_lineage_smoke_v1",
+  "status": "passed",
+  "data_class": "INTERIM_RUNTIME_EVENT",
+  "case_count": 1,
+  "database_schema_version": 5,
+  "source_count": 3,
+  "passage_count": 5,
+  "claim_count": 5,
+  "rule_count": 5,
+  "claim_rule_link_count": 5,
+  "execution_lineage_count": 2,
+  "linked_output_types": [
+    "recommendation_decision",
+    "safety_rule"
+  ],
+  "parsed_source_uri": "data/raw_references/supplement_warfarin_interaction.md",
+  "upstream_reference_uri": "data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md",
+  "checks": {
+    "database_schema_version_is_5": true,
+    "canonical_artifact_counts_match": true,
+    "actual_response_is_blocked": true,
+    "rule_and_decision_outputs_connected": true,
+    "all_lineage_uses_response_execution_id": true,
+    "canonical_rule_claim_source_connected": true,
+    "source_lifecycle_and_span_match": true
+  }
+}

@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Body
 
 from wellnessbox_rnd.interim.data_lake import ExecutionLedger, open_data_lake_store
+from wellnessbox_rnd.interim.knowledge_lineage import KnowledgeLineageRegistry
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.schemas.recommendation import RecommendationRequest, RecommendationResponse
 
@@ -291,7 +292,9 @@ def recommend_endpoint(
     ],
 ) -> RecommendationResponse:
     response = recommend(payload)
-    ExecutionLedger(open_data_lake_store()).record_recommendation(
+    store = open_data_lake_store()
+    KnowledgeLineageRegistry(store).sync_reference_artifact()
+    ExecutionLedger(store).record_recommendation(
         request=payload,
         response=response,
     )

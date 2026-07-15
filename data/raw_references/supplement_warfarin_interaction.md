@@ -4,11 +4,11 @@ source_title: Supplement Interaction Notes
 source_type: interaction_reference
 page_or_section: glucosamine chondroitin and anticoagulants
 reference_uri: data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md
+license_status: APPROVED_INTERNAL
+effective_at: 2026-03-10T00:00:00Z
+parsed_source_uri: data/raw_references/supplement_warfarin_interaction.md
 ---
-
-This sample reference captures the anticoagulant interaction note already present in the local supplement knowledge files.
-Glucosamine and chondroitin should be treated as a bleeding-risk interaction when warfarin or Coumadin is present.
-
+This sample reference captures the anticoagulant interaction note already present in the local supplement knowledge files. Glucosamine and chondroitin should be treated as a bleeding-risk interaction when warfarin or Coumadin is present.
 ```json
 {
   "claim_id": "CLM-KNOWLEDGE-ANTICOAG-001",

@@ -15,6 +15,10 @@ class ReferenceMetadata(BaseModel):
     source_type: str
     page_or_section: str
     reference_uri: str
+    parsed_source_uri: str
+    license_status: str
+    effective_at: str
+    retired_at: str | None = None
 
 
 class CitationSpan(BaseModel):

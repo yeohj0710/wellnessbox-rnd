@@ -1,3 +1,5 @@
+import hashlib
+import json
 from pathlib import Path
 
 import pytest
@@ -65,3 +67,143 @@ def test_source_content_change_preserves_previous_hash_in_metadata(tmp_path: Pat
     row = registry.store.rows("select metadata_json from source_registry")[0][0]
     assert first.checksum != second.checksum
     assert first.checksum in row
+
+
+def test_source_content_change_stays_quarantined_on_identical_resync(tmp_path: Path) -> None:
+    registry = _registry(tmp_path)
+    common = {
+        "source_id": "source-1",
+        "source_tier": "official",
+        "canonical_uri": "https://example.test/",
+        "license_status": "OPEN",
+    }
+    first = registry.register_source(title="v1", **common)
+    changed = registry.register_source(title="v2", **common)
+    repeated = registry.register_source(title="v2", **common)
+    metadata = registry.store.rows(
+        "select metadata_json from source_registry where source_id='source-1'"
+    )[0][0]
+
+    assert changed.quarantined is True
+    assert repeated.quarantined is True
+    assert repeated.reason == "content_changed_requires_review"
+    assert first.checksum in metadata
+
+
+def test_legacy_source_checksum_upgrades_without_false_content_quarantine(
+    tmp_path: Path,
+) -> None:
+    registry = _registry(tmp_path)
+    legacy_payload = {
+        "source_id": "source-legacy",
+        "title": "Legacy source",
+        "canonical_uri": "https://example.test/legacy",
+        "effective_at": None,
+        "retired_at": None,
+        "metadata": {},
+    }
+    legacy_checksum = hashlib.sha256(
+        json.dumps(
+            legacy_payload,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    with registry.store.transaction() as connection:
+        connection.execute(
+            "insert into source_registry values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                "source-legacy",
+                "official",
+                "Legacy source",
+                "https://example.test/legacy",
+                "OPEN",
+                None,
+                None,
+                legacy_checksum,
+                "PROXY_GOLD_SIMULATION",
+                "{}",
+            ),
+        )
+
+    result = registry.register_source(
+        source_id="source-legacy",
+        source_tier="official",
+        title="Legacy source",
+        canonical_uri="https://example.test/legacy",
+        license_status="OPEN",
+    )
+
+    assert result.checksum != legacy_checksum
+    assert result.quarantined is False
+    assert result.reason is None
+
+
+def test_legacy_checksum_upgrade_still_quarantines_tier_change(tmp_path: Path) -> None:
+    registry = _registry(tmp_path)
+    legacy_payload = {
+        "source_id": "source-legacy",
+        "title": "Legacy source",
+        "canonical_uri": "https://example.test/legacy",
+        "effective_at": None,
+        "retired_at": None,
+        "metadata": {},
+    }
+    legacy_checksum = hashlib.sha256(
+        json.dumps(
+            legacy_payload,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    with registry.store.transaction() as connection:
+        connection.execute(
+            "insert into source_registry values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                "source-legacy",
+                "secondary",
+                "Legacy source",
+                "https://example.test/legacy",
+                "OPEN",
+                None,
+                None,
+                legacy_checksum,
+                "PROXY_GOLD_SIMULATION",
+                "{}",
+            ),
+        )
+
+    result = registry.register_source(
+        source_id="source-legacy",
+        source_tier="official",
+        title="Legacy source",
+        canonical_uri="https://example.test/legacy",
+        license_status="OPEN",
+    )
+
+    assert result.quarantined is True
+    assert result.reason == "content_changed_requires_review"
+
+
+def test_passage_without_span_metadata_keeps_legacy_content_addressed_id(
+    tmp_path: Path,
+) -> None:
+    registry = _registry(tmp_path)
+    registry.register_source(
+        source_id="source-1",
+        source_tier="official",
+        title="Source",
+        canonical_uri="https://example.test/source",
+        license_status="OPEN",
+    )
+
+    passage = registry.add_passage(
+        source_id="source-1",
+        passage_text="Legacy passage identity",
+    )
+    expected_checksum = hashlib.sha256(b"Legacy passage identity").hexdigest()
+
+    assert passage.checksum == expected_checksum
+    assert passage.identifier == f"ev_{expected_checksum[:20]}"

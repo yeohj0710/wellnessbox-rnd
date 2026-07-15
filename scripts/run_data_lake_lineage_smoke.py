@@ -237,8 +237,8 @@ def run_smoke() -> dict[str, Any]:
                 "followup_evaluation",
             ]
             checks = {
-                "database_schema_version_is_4": (
-                    store.scalar("select max(version) from schema_migrations") == 4
+                "database_schema_version_is_5": (
+                    store.scalar("select max(version) from schema_migrations") == 5
                 ),
                 "authorized_profile_versions_are_1_and_2": profile_versions == [1, 2],
                 "denied_profile_payload_count_is_0": denied_profile_payload_count == 0,
@@ -255,7 +255,7 @@ def run_smoke() -> dict[str, Any]:
                 "status": "passed",
                 "data_class": "INTERIM_RUNTIME_EVENT",
                 "case_count": 3,
-                "database_schema_version": 4,
+                "database_schema_version": 5,
                 "profile_version_count": len(profile_versions),
                 "profile_versions": profile_versions,
                 "consent_snapshot_count": int(

@@ -14,6 +14,13 @@ def test_parse_reference_markdown_extracts_metadata_and_claims() -> None:
     )
 
     assert document.metadata.reference_id == "REF-MC-CITATION-001"
+    assert document.metadata.source_type == "master_context"
+    assert document.metadata.parsed_source_uri == (
+        "data/raw_references/master_context_citation_structure.md"
+    )
+    assert document.metadata.license_status == "APPROVED_INTERNAL"
+    assert document.metadata.effective_at == "2026-03-10T00:00:00Z"
+    assert document.metadata.retired_at is None
     assert [claim.claim_id for claim in document.claims] == [
         "CLM-MC-CITATION-001",
         "CLM-MC-CITATION-002",
@@ -28,6 +35,8 @@ def test_ingest_reference_directory_builds_rule_and_evidence_artifacts() -> None
 
     assert validate_knowledge_artifact(artifact) == []
     assert len(artifact.references) == 3
+    assert all(reference.license_status == "APPROVED_INTERNAL" for reference in artifact.references)
+    assert all(reference.effective_at for reference in artifact.references)
     assert len(artifact.parsed_claims) == 5
     assert any(rule.rule_id == "KB-SAFETY-ANTICOAG-001" for rule in artifact.rule_candidates)
     assert any(
