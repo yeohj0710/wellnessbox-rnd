@@ -15,6 +15,7 @@
 - Frozen evaluation: `256` cases; zero delta for all seven metrics against the pre-loop report. Replay/slice delta: not applicable.
 - Biggest bottlenecks: deployed R&D URL; durable production R&D storage; authenticated service-to-R&D round trip; production re-query evidence; committed quarantine review workflow.
 - Next three loops: OP-027/028 idempotency plus deletion/correction audit handling; OP-029/030 replay API plus service UI; OP-033/034 safety-engine group D start.
+- Publication: commit `12591d4` is on `origin/main`; Original plan evidence run `29422080597` PASS.
 
 ## 2026-07-15 knowledge evidence-lineage handoff
 

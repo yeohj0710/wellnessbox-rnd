@@ -14,6 +14,7 @@
 - Frozen evaluation: `256` cases; all seven metric deltas are `0` against the pre-loop report. Replay/slice deltas: not applicable to this persistence-only loop.
 - Biggest bottlenecks: no deployed R&D process; no durable production R&D database; no authenticated service-to-R&D round trip; no production storage re-query evidence; no explicit committed review workflow for quarantined sources yet.
 - Recommended next loops: OP-027/028 idempotency plus deletion/correction audit handling; OP-029/030 replay API plus service UI; OP-033/034 safety-engine group D start.
+- Publication: implementation commit `12591d4` passed Original plan evidence run `29422080597` on the first attempt.
 
 ## 2026-07-15 knowledge evidence-lineage loop
 
