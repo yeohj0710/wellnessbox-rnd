@@ -12,8 +12,7 @@ from wellnessbox_rnd.schemas.original_plan_manifest import (
 )
 
 REPO_ROOTS = {
-    RepositoryName.WELLNESSBOX_RND: Path("C:/dev/wellnessbox-rnd"),
-    RepositoryName.WELLNESSBOX: Path("C:/dev/wellnessbox"),
+    RepositoryName.WELLNESSBOX_RND: Path(__file__).resolve().parents[1],
 }
 
 
@@ -103,7 +102,6 @@ def test_original_plan_audit_rejects_untracked_evidence() -> None:
     manifest = _manifest_copy()
     tracked_files = {
         RepositoryName.WELLNESSBOX_RND: set(),
-        RepositoryName.WELLNESSBOX: set(),
     }
 
     report = audit_original_plan_manifest_v1(
