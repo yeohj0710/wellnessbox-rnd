@@ -5,8 +5,7 @@ import hmac
 import json
 import os
 from datetime import UTC, datetime
-from pathlib import Path
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
@@ -15,10 +14,18 @@ from pydantic import BaseModel, ConfigDict, Field
 from wellnessbox_rnd.interim.agent import BoundedAgent
 from wellnessbox_rnd.interim.connectors import ingest_device_session, source_adapters
 from wellnessbox_rnd.interim.contracts import DataClass
+from wellnessbox_rnd.interim.data_lake import (
+    ConsentStorageDeniedError,
+    ExecutionLedger,
+    ExecutionNotFoundError,
+    IdempotencyConflictError,
+    open_data_lake_store,
+)
 from wellnessbox_rnd.interim.inference import recommend_with_registered_model
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
 from wellnessbox_rnd.interim.safety import evaluate_safety
 from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.schemas.recommendation import DataSource
 
 
 def require_internal_token(
@@ -40,17 +47,8 @@ router = APIRouter(
 )
 
 
-def _database_path() -> Path:
-    default = (
-        Path(__file__).resolve().parents[3] / "artifacts" / "tips" / "interim" / "interim.sqlite3"
-    )
-    return Path(os.getenv("WB_RND_INTERIM_DATABASE", str(default)))
-
-
 def _store() -> InterimStore:
-    store = InterimStore(_database_path())
-    store.migrate()
-    return store
+    return open_data_lake_store()
 
 
 class ProfileRequest(BaseModel):
@@ -90,6 +88,15 @@ class DeviceRequest(BaseModel):
     environment: str = "simulation"
 
 
+class ExecutionEventRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    event_type: Literal["conversation", "followup_evaluation"]
+    source: DataSource
+    idempotency_key: str = Field(min_length=1, max_length=128)
+    payload: dict[str, Any]
+
+
 @router.get("/status")
 def status() -> dict[str, Any]:
     store = _store()
@@ -99,6 +106,10 @@ def status() -> dict[str, Any]:
         "adverse_events",
         "connector_sessions",
         "kpi_results",
+        "profile_snapshots",
+        "consent_snapshots",
+        "executions",
+        "execution_events",
     )
     return {
         "mode": DataClass.PROXY_GOLD_SIMULATION,
@@ -251,6 +262,38 @@ def connector(payload: DeviceRequest) -> dict[str, Any]:
         )
     except PermissionError as error:
         raise HTTPException(status_code=403, detail=str(error)) from error
+
+
+@router.get("/executions/{execution_id}")
+def execution_trace(execution_id: str) -> dict[str, Any]:
+    try:
+        return ExecutionLedger(_store()).get_trace(execution_id).model_dump(mode="json")
+    except ExecutionNotFoundError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+
+
+@router.post("/executions/{execution_id}/events")
+def append_execution_event(
+    execution_id: str,
+    payload: ExecutionEventRequest,
+) -> dict[str, Any]:
+    try:
+        result = ExecutionLedger(_store()).append_event(
+            execution_id=execution_id,
+            event_type=payload.event_type,
+            source=payload.source.value,
+            idempotency_key=payload.idempotency_key,
+            payload=payload.payload,
+        )
+        return result.model_dump(mode="json")
+    except ExecutionNotFoundError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except ConsentStorageDeniedError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
+    except IdempotencyConflictError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
 
 
 @router.get("/admin/sources")

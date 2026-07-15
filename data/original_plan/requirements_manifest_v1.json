@@ -325,8 +325,49 @@
       "owners": ["wellnessbox-rnd", "wellnessbox"],
       "default_required_stage": "OPERATED",
       "requirements": [
-        {"requirement_id": "OP-021", "title": "사용자 프로필 버전과 동의 스냅샷을 영속 저장한다."},
-        {"requirement_id": "OP-022", "title": "대화, 추천, 안전, 최적화, 후속평가 이벤트를 공통 실행 ID로 연결한다."},
+        {
+          "requirement_id": "OP-021",
+          "title": "사용자 프로필 버전과 동의 스냅샷을 영속 저장한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+              "wellnessbox-rnd/apps/inference_api/routes/recommend.py",
+              "wellnessbox/lib/server/wb-rnd-profile-adapter.ts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_store.py",
+              "wellnessbox-rnd/tests/test_data_lake_lineage.py",
+              "wellnessbox-rnd/tests/test_inference_api.py",
+              "wellnessbox/scripts/qa/check-rnd-profile-adapter.cts",
+              "wellnessbox/contracts/wb-rnd/profile-adapter-v1.json",
+              "wellnessbox-rnd/data/contracts/wellnessbox_profile_adapter_v1.json",
+              "wellnessbox-rnd/tests/test_wellnessbox_profile_adapter_contract.py"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-022",
+          "title": "대화, 추천, 안전, 최적화, 후속평가 이벤트를 공통 실행 ID로 연결한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py",
+              "wellnessbox-rnd/apps/inference_api/routes/recommend.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_data_lake_lineage.py",
+              "wellnessbox-rnd/tests/test_inference_api.py",
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox-rnd/scripts/run_data_lake_lineage_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-023", "title": "원문, 파싱 구간, 주장, 규칙, 추천 결과의 계보를 연결한다."},
         {"requirement_id": "OP-024", "title": "지식 원문의 시행일, 만료일, 출처 유형, 라이선스를 저장한다."},
         {"requirement_id": "OP-025", "title": "사용자 행동 로그와 연구평가 로그를 분리해 저장한다."},

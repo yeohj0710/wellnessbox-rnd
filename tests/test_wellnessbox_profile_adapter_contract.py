@@ -56,6 +56,7 @@ def test_adapter_contract_preserves_every_source_property_and_operational_mappin
 
     assert request.source_profile is not None
     assert request.source_profile.schema_version == "wellnessbox.chat.UserProfile.v1"
+    assert request.source_profile.subject_id == "usr_11112222333344445555666677778888"
     assert request.source_profile.profile.model_dump(exclude_none=True) == source_profile
     assert type(request.source_profile.profile.heightCm) is int
     assert type(request.source_profile.profile.weightKg) is int

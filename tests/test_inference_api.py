@@ -1,12 +1,24 @@
 import json
+import re
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
+from wellnessbox_rnd.interim.data_lake import ExecutionLedger
+from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.schemas.recommendation import RecommendationResponse
 
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def isolate_interim_database(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv(
+        "WB_RND_INTERIM_DATABASE",
+        str(tmp_path / "inference-api-interim.sqlite3"),
+    )
 
 
 def test_health_endpoint_returns_ok() -> None:
@@ -314,6 +326,46 @@ def test_recommend_endpoint_start_plan_fixture_keeps_structured_response_shape()
         "no_llm_core_decision",
     ]
     assert validated.metadata.mode == "deterministic_baseline_v1"
+
+
+def test_recommend_endpoint_persists_profile_consent_and_core_event_lineage(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "recommend-lineage.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    payload = _load_sample_request("api_recommend_start_plan_request_v1.json")
+    payload["request_id"] = "api-lineage-001"
+    payload["source_profile"] = {
+        "schema_version": "wellnessbox.chat.UserProfile.v1",
+        "subject_id": "usr_abcdef0123456789abcdef0123456789",
+        "profile": {
+            "age": payload["user_profile"]["age"],  # type: ignore[index]
+            "sex": payload["user_profile"]["biological_sex"],  # type: ignore[index]
+            "goals": ["sleep"],
+        },
+    }
+    payload["data_source_consents"] = {
+        source: {
+            "use_for_recommendation": source == "survey",
+            "allow_persistent_storage": source == "survey",
+        }
+        for source in ("survey", "nhis", "wearable", "cgm", "genetic")
+    }
+
+    response = client.post("/v1/recommend", json=payload)
+
+    assert response.status_code == 200
+    execution_id = response.json()["execution_id"]
+    assert re.fullmatch(r"exec_[a-f0-9]{32}", execution_id)
+    trace = ExecutionLedger(InterimStore(database)).get_trace(execution_id)
+    assert trace.profile_id == "usr_abcdef0123456789abcdef0123456789"
+    assert trace.profile_version == 1
+    assert trace.consent_version == 1
+    assert [event.event_type.value for event in trace.events] == [
+        "recommendation",
+        "safety",
+        "optimization",
+    ]
 
 
 def _load_sample_request(filename: str) -> dict[str, object]:

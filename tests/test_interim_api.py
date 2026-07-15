@@ -104,3 +104,90 @@ def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
     )
     assert first.status_code == 200
     assert second.status_code == 409
+
+
+def test_execution_event_api_connects_conversation_and_followup_to_recommendation(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "execution-events.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    client = TestClient(app)
+    payload = {
+        "request_id": "execution-api-001",
+        "source_profile": {
+            "schema_version": "wellnessbox.chat.UserProfile.v1",
+            "subject_id": "usr_1234567890abcdef1234567890abcdef",
+            "profile": {
+                "age": 39,
+                "sex": "female",
+                "goals": ["sleep"],
+            },
+        },
+        "user_profile": {
+            "age": 39,
+            "biological_sex": "female",
+            "pregnant": False,
+        },
+        "goals": ["sleep_support"],
+        "symptoms": ["difficulty_falling_asleep"],
+        "conditions": [],
+        "medications": [],
+        "current_supplements": [],
+        "input_availability": {
+            "survey": True,
+            "nhis": False,
+            "wearable": False,
+            "cgm": False,
+            "genetic": False,
+        },
+        "data_source_consents": {
+            source: {
+                "use_for_recommendation": source == "survey",
+                "allow_persistent_storage": source == "survey",
+            }
+            for source in ("survey", "nhis", "wearable", "cgm", "genetic")
+        },
+    }
+
+    recommendation = client.post("/v1/recommend", json=payload)
+    execution_id = recommendation.json()["execution_id"]
+    conversation = client.post(
+        f"/v1/interim/executions/{execution_id}/events",
+        headers=_headers(),
+        json={
+            "event_type": "conversation",
+            "source": "survey",
+            "idempotency_key": "turn-1",
+            "payload": {"intent": "sleep_question"},
+        },
+    )
+    followup = client.post(
+        f"/v1/interim/executions/{execution_id}/events",
+        headers=_headers(),
+        json={
+            "event_type": "followup_evaluation",
+            "source": "survey",
+            "idempotency_key": "week-2",
+            "payload": {"timepoint_weeks": 2, "status": "received"},
+        },
+    )
+    trace = client.get(
+        f"/v1/interim/executions/{execution_id}",
+        headers=_headers(),
+    )
+
+    assert recommendation.status_code == 200
+    assert conversation.status_code == 200
+    assert followup.status_code == 200
+    assert trace.status_code == 200
+    assert [event["event_type"] for event in trace.json()["events"]] == [
+        "recommendation",
+        "safety",
+        "optimization",
+        "conversation",
+        "followup_evaluation",
+    ]
+    assert {event["execution_id"] for event in trace.json()["events"]} == {
+        execution_id
+    }

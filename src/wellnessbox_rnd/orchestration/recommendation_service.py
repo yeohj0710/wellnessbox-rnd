@@ -29,6 +29,7 @@ def recommend(
     enable_learned_reranking: bool = False,
     learned_efficacy_artifact_path: str | None = None,
 ) -> RecommendationResponse:
+    execution_id = f"exec_{uuid4().hex}"
     intake = normalize_request(request)
     safety_summary = assess_safety(intake)
     wearable_context_considered = _wearable_context_considered(intake)
@@ -128,6 +129,7 @@ def recommend(
                         "still blocked deterministic planning."
                     )
             return RecommendationResponse(
+                execution_id=execution_id,
                 request_id=request.request_id,
                 decision_id=str(uuid4()),
                 status=RecommendationStatus.BLOCKED,
@@ -200,6 +202,7 @@ def recommend(
     )
 
     return RecommendationResponse(
+        execution_id=execution_id,
         request_id=request.request_id,
         decision_id=str(uuid4()),
         status=status,

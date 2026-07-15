@@ -32,6 +32,7 @@
   },
   "adapter_options": {
     "requestId": "wb-profile-adapter-contract-001",
+    "subjectId": "usr_11112222333344445555666677778888",
     "surveyConsent": {
       "useForRecommendation": true,
       "allowPersistentStorage": false
@@ -132,6 +133,7 @@
     "request_id": "wb-profile-adapter-contract-001",
     "source_profile": {
       "schema_version": "wellnessbox.chat.UserProfile.v1",
+      "subject_id": "usr_11112222333344445555666677778888",
       "profile": {
         "name": "홍길동",
         "age": 42,

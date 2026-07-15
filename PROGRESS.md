@@ -1,5 +1,20 @@
 # PROGRESS
 
+## 2026-07-15 Data Lake profile and execution-lineage loop
+
+- Chosen stage: `original plan / Data Lake evidence lineage`
+- Chosen tasks: OP-021 versioned profile and consent snapshots; OP-022 common execution IDs for recommendation, safety, optimization, conversation, and follow-up events
+- Primary evidence: `data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json`; `3` local runtime cases, SQLite schema `4`, two authorized profile versions, two consent versions, and five linked event types
+- Added profile snapshots, immutable consent snapshots, execution records, and event records to the existing `InterimStore`. The actual recommendation route writes the three stages that ran; authenticated internal routes append conversation and follow-up events.
+- Every event now records the consent snapshot that authorized the write. A profile-level active consent pointer preserves decision order even when an old immutable snapshot is reused, so `거부 → 허용 → 재거부` blocks writes to the older allowed execution. Replays with a changed source or payload fail closed.
+- Added an autouse temporary database fixture to recommendation API tests. Test runs no longer write to the default interim artifact database; pre-existing rows were not deleted.
+- The service adapter forwards one stable `usr_<hex>` subject ID without exposing a raw service database ID. Both repository contracts remain byte-identical.
+- Evidence status: OP-021 and OP-022 are `IMPLEMENTED`, not `INTEGRATED` or `OPERATED`. The local `TestClient` and temporary SQLite smoke does not prove a real two-process round trip or production re-query. Generated status: complete `22`, partial `2`, pending `95`, external `1`, contradicted `0`.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`. Replay/slice deltas: not applicable to this persistence-only loop.
+- Focused Data Lake and API tests pass. The current full suite has `563` passes and `78` known failures: `74` missing ignored report artifacts and `4` CGM geometry assertions.
+- Biggest bottlenecks: no deployed R&D process; no persistent production R&D database; no service-to-R&D process round trip; no authenticated production recommendation write path; no production storage re-query evidence.
+- Recommended next loops: OP-023/024 source-to-recommendation lineage; OP-025/026 log separation and execution identities; OP-027/028 broader idempotency plus deletion/correction audit handling.
+
 ## 2026-07-15 WellnessBox profile-adapter integration loop
 
 - Chosen stage: `original plan / personal health inputs`

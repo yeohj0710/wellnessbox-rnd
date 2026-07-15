@@ -2,19 +2,19 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031, and OP-032 are complete. OP-019 is supported by the tracked adapter, route, byte-identical contract snapshots, and executable tests in both repositories; it is not a production deployment claim.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031, and OP-032 are complete. OP-021 and OP-022 are `IMPLEMENTED` and therefore remain partial at their required `OPERATED` stage. The existing SQLite `InterimStore` stores consent-authorized profile versions, immutable consent decisions, and recommendation/safety/optimization events; authenticated internal calls append conversation and follow-up events under the same execution ID. Delayed writes check the profile's explicit active consent decision and record the authorizing consent snapshot on each event.
 
 Next three loops:
 
-1. Implement OP-021 and OP-022: persist versioned profile/consent snapshots and connect core events with one execution ID.
-2. Implement OP-023 and OP-024: connect source passages, claims, rules, and recommendations while preserving effective dates, source types, and licenses.
-3. Implement OP-025 and OP-026: separate user-behavior logs from research-evaluation logs and record model, dataset, code-commit, and configuration identities for every recommendation run.
+1. Implement OP-023 and OP-024: connect source passages, claims, rules, and recommendations while preserving effective dates, source types, and licenses.
+2. Implement OP-025 and OP-026: separate user-behavior logs from research-evaluation logs and record model, dataset, code-commit, and configuration identities for every recommendation run.
+3. Implement OP-027 and OP-028: extend idempotency coverage and add deletion/correction workflows that preserve lineage and audit history.
 
-Continue through the Data Lake evidence group in two-requirement slices. The current service adapter accepts the existing stored `UserProfile` shape and forwards a valid R&D request through the preview client, but it does not persist a versioned snapshot or perform a production two-process round trip; those are separate OP-021/022 and OP-101/105 requirements.
+Continue through the Data Lake evidence group in two-requirement slices. The current service adapter accepts the existing stored `UserProfile` shape, forwards a stable pseudonymous subject ID, and the R&D recommendation route persists authorized profile and consent lineage. It still does not perform a production two-process round trip; OP-101 through OP-105 remain separate deployment and production-integration requirements.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 
-The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
+The legacy full-test baseline remains red for two independent reasons: 74 ignored report files are absent and four CGM geometry assertions do not match current execution. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
 
 ## 2026-07-14 verified restoration path
 

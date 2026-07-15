@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 4
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -122,6 +122,90 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   payload_sha256 TEXT NOT NULL,
   created_at TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS profile_snapshots (
+  profile_snapshot_id TEXT PRIMARY KEY,
+  profile_id TEXT NOT NULL,
+  version INTEGER NOT NULL,
+  schema_version TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  persisted_sources_json TEXT NOT NULL,
+  payload_json TEXT NOT NULL,
+  payload_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE(profile_id, version),
+  UNIQUE(profile_id, payload_sha256)
+);
+
+CREATE TABLE IF NOT EXISTS consent_snapshots (
+  consent_snapshot_id TEXT PRIMARY KEY,
+  profile_id TEXT NOT NULL,
+  version INTEGER NOT NULL,
+  schema_version TEXT NOT NULL,
+  payload_json TEXT NOT NULL,
+  payload_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE(profile_id, version),
+  UNIQUE(profile_id, payload_sha256)
+);
+
+CREATE TABLE IF NOT EXISTS active_profile_consents (
+  profile_id TEXT PRIMARY KEY,
+  consent_snapshot_id TEXT NOT NULL REFERENCES consent_snapshots(consent_snapshot_id),
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS executions (
+  execution_id TEXT PRIMARY KEY,
+  request_id TEXT NOT NULL,
+  profile_id TEXT NOT NULL,
+  profile_snapshot_id TEXT REFERENCES profile_snapshots(profile_snapshot_id),
+  consent_snapshot_id TEXT NOT NULL REFERENCES consent_snapshots(consent_snapshot_id),
+  request_sha256 TEXT NOT NULL,
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS execution_events (
+  event_id TEXT PRIMARY KEY,
+  execution_id TEXT NOT NULL REFERENCES executions(execution_id),
+  consent_snapshot_id TEXT NOT NULL REFERENCES consent_snapshots(consent_snapshot_id),
+  event_index INTEGER NOT NULL,
+  event_type TEXT NOT NULL CHECK(event_type IN (
+    'conversation',
+    'recommendation',
+    'safety',
+    'optimization',
+    'followup_evaluation'
+  )),
+  source TEXT NOT NULL CHECK(source IN (
+    'system',
+    'survey',
+    'nhis',
+    'wearable',
+    'cgm',
+    'genetic'
+  )),
+  idempotency_key TEXT NOT NULL,
+  payload_json TEXT NOT NULL,
+  payload_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE(execution_id, event_index),
+  UNIQUE(execution_id, event_type, idempotency_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_profile_snapshots_profile_version
+ON profile_snapshots(profile_id, version);
+
+CREATE INDEX IF NOT EXISTS idx_consent_snapshots_profile_version
+ON consent_snapshots(profile_id, version);
+
+CREATE INDEX IF NOT EXISTS idx_executions_profile_created
+ON executions(profile_id, created_at);
+
+CREATE INDEX IF NOT EXISTS idx_execution_events_execution_index
+ON execution_events(execution_id, event_index);
 
 CREATE TABLE IF NOT EXISTS recommendation_runs (
   run_id TEXT PRIMARY KEY,
@@ -292,10 +376,10 @@ class InterimStore:
         return connection
 
     @contextmanager
-    def transaction(self) -> Iterator[sqlite3.Connection]:
+    def transaction(self, *, immediate: bool = False) -> Iterator[sqlite3.Connection]:
         connection = self.connect()
         try:
-            connection.execute("BEGIN")
+            connection.execute("BEGIN IMMEDIATE" if immediate else "BEGIN")
             yield connection
             connection.commit()
         except Exception:
@@ -305,15 +389,55 @@ class InterimStore:
             connection.close()
 
     def migrate(self) -> None:
-        with self.connect() as connection:
+        connection = self.connect()
+        try:
             connection.executescript(SCHEMA_SQL)
             columns = {str(row[1]) for row in connection.execute("pragma table_info(review_tasks)")}
             if "pharmacy_id" not in columns:
                 connection.execute("alter table review_tasks add column pharmacy_id integer")
+            event_columns = {
+                str(row[1])
+                for row in connection.execute("pragma table_info(execution_events)")
+            }
+            if "consent_snapshot_id" not in event_columns:
+                connection.execute(
+                    "alter table execution_events add column consent_snapshot_id "
+                    "references consent_snapshots(consent_snapshot_id)"
+                )
+                connection.execute(
+                    """
+                    update execution_events
+                    set consent_snapshot_id=(
+                      select executions.consent_snapshot_id
+                      from executions
+                      where executions.execution_id=execution_events.execution_id
+                    )
+                    where consent_snapshot_id is null
+                    """
+                )
+            connection.execute(
+                """
+                insert or ignore into active_profile_consents(
+                  profile_id, consent_snapshot_id, updated_at
+                )
+                select e.profile_id, e.consent_snapshot_id, e.updated_at
+                from executions e
+                where e.rowid=(
+                  select latest.rowid
+                  from executions latest
+                  where latest.profile_id=e.profile_id
+                  order by latest.created_at desc, latest.rowid desc
+                  limit 1
+                )
+                """
+            )
             connection.execute(
                 "INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (?, ?)",
                 (SCHEMA_VERSION, datetime.now(UTC).isoformat()),
             )
+            connection.commit()
+        finally:
+            connection.close()
 
     def is_migrated(self) -> bool:
         if not self.database_path.exists():
@@ -324,8 +448,11 @@ class InterimStore:
             return False
 
     def scalar(self, sql: str, parameters: tuple[Any, ...] = ()) -> Any:
-        with self.connect() as connection:
+        connection = self.connect()
+        try:
             row = connection.execute(sql, parameters).fetchone()
+        finally:
+            connection.close()
         return None if row is None else row[0]
 
     def rows(
@@ -333,8 +460,11 @@ class InterimStore:
         sql: str,
         parameters: tuple[Any, ...] = (),
     ) -> list[sqlite3.Row]:
-        with self.connect() as connection:
+        connection = self.connect()
+        try:
             return list(connection.execute(sql, parameters).fetchall())
+        finally:
+            connection.close()
 
     def table_names(self) -> set[str]:
         rows = self.rows("select name from sqlite_master where type = 'table'")

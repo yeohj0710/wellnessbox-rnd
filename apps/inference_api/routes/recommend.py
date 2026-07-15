@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body
 
+from wellnessbox_rnd.interim.data_lake import ExecutionLedger, open_data_lake_store
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.schemas.recommendation import RecommendationRequest, RecommendationResponse
 
@@ -289,4 +290,9 @@ def recommend_endpoint(
         Body(openapi_examples=_RECOMMEND_REQUEST_EXAMPLES),
     ],
 ) -> RecommendationResponse:
-    return recommend(payload)
+    response = recommend(payload)
+    ExecutionLedger(open_data_lake_store()).record_recommendation(
+        request=payload,
+        response=response,
+    )
+    return response

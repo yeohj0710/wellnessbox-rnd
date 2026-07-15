@@ -1,5 +1,22 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 Data Lake profile and execution-lineage handoff
+
+- Chosen stage: `original plan / Data Lake evidence lineage`
+- Chosen tasks: OP-021 and OP-022
+- Primary dataset path and case count: `data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json`; `3` local runtime cases
+- R&D files: `src/wellnessbox_rnd/interim/store.py`, `src/wellnessbox_rnd/interim/data_lake.py`, recommendation and interim API routes, recommendation schemas and orchestration, smoke runner, contracts, manifest, reports, and focused tests
+- Service files: profile adapter contract, client type, profile adapter, preview payload builder, and adapter QA
+- Current result: schema `4`; profile versions `[1, 2]`; consent snapshots `2`; denied raw profile rows `0`; recommendation, safety, optimization, conversation, and follow-up events share one response execution ID.
+- Consent correction: delayed events use the profile's explicit active consent pointer and store the authorizing `consent_snapshot_id`. Reusing an older immutable denial snapshot moves the pointer back to denial, so `거부 → 허용 → 재거부` blocks writes to an older execution.
+- Provenance correction: a replay with the same event key but a different source or payload raises `IdempotencyConflictError`.
+- Test isolation correction: all recommendation API tests use a temporary interim database. The reviewer observed that earlier test runs populated the default artifact database; those existing rows remain untouched.
+- Evidence stage: `IMPLEMENTED`. OP-021 and OP-022 remain partial because `OPERATED` requires production persistence and postcondition re-query. No R&D deployment or production two-process integration was performed.
+- Validation: focused Data Lake/API suites pass; runtime smoke passes; manifest audit passes with `24` valid claims; generated counts are complete `22`, partial `2`, pending `95`, external `1`; R&D Ruff and service QA/TypeScript/encoding/lint/build pass. The full R&D suite has `563` passes and `78` known failures: `74` missing ignored report artifacts and `4` CGM geometry assertions.
+- Frozen evaluation: `256` cases and zero delta for recommendation accuracy, efficacy MAE, next-action accuracy, explanation completeness, safety-reference accuracy, adverse-event count, and sensor/genetic processing rate. Replay/slice delta: not applicable.
+- Biggest bottlenecks: deployed R&D URL, durable production R&D storage, internal authentication, service environment binding, and production E2E re-query evidence.
+- Next three loops: OP-023/024 lineage metadata; OP-025/026 log and execution identity separation; OP-027/028 idempotency and correction/deletion audit behavior.
+
 ## 2026-07-15 WellnessBox profile-adapter integration handoff
 
 - Chosen stage: `original plan / personal health inputs`

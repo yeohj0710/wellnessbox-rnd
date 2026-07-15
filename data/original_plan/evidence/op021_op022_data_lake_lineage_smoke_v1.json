@@ -1,0 +1,32 @@
+{
+  "schema_version": "op021_op022_data_lake_lineage_smoke_v1",
+  "status": "passed",
+  "data_class": "INTERIM_RUNTIME_EVENT",
+  "case_count": 3,
+  "database_schema_version": 4,
+  "profile_version_count": 2,
+  "profile_versions": [
+    1,
+    2
+  ],
+  "consent_snapshot_count": 2,
+  "denied_profile_payload_count": 0,
+  "execution_count": 3,
+  "linked_execution_event_types": [
+    "recommendation",
+    "safety",
+    "optimization",
+    "conversation",
+    "followup_evaluation"
+  ],
+  "all_event_execution_ids_match": true,
+  "checks": {
+    "database_schema_version_is_4": true,
+    "authorized_profile_versions_are_1_and_2": true,
+    "denied_profile_payload_count_is_0": true,
+    "denied_raw_value_absent": true,
+    "all_five_event_types_connected": true,
+    "all_events_share_execution_id": true,
+    "response_execution_id_matches_trace": true
+  }
+}

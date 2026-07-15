@@ -227,6 +227,10 @@ class WellnessBoxChatUserProfileV1(_StrictRequestInput):
 
 class SourceProfileInput(_StrictRequestInput):
     schema_version: Literal["wellnessbox.chat.UserProfile.v1"]
+    subject_id: str | None = Field(
+        default=None,
+        pattern=r"^usr_[a-f0-9]{16,64}$",
+    )
     profile: WellnessBoxChatUserProfileV1
 
 
@@ -699,6 +703,7 @@ class EngineMetadata(BaseModel):
 
 
 class RecommendationResponse(BaseModel):
+    execution_id: str = Field(pattern=r"^exec_[a-f0-9]{32}$")
     request_id: str
     decision_id: str
     status: RecommendationStatus
