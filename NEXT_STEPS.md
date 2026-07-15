@@ -2,13 +2,15 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`. OP-031 and OP-032 are complete. Do not mark OP-015 complete until dietary-pattern input is implemented and tested.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, and the machine-readable source is `data/original_plan/requirements_manifest_v1.json`. OP-006, OP-007, OP-031, and OP-032 are complete. Do not mark OP-015 complete until dietary-pattern input is implemented and tested.
 
 Next three loops:
 
-1. Implement OP-006 and OP-007: create the machine-readable original-plan requirement manifest and its `IMPLEMENTED`, `INTEGRATED`, `OPERATED`, and `EXTERNAL` evidence schema.
-2. Implement OP-008 through OP-010: reject unsupported completion claims, connect the audit to pytest, and generate the completion report from the manifest.
-3. Implement OP-011 through OP-020 in bounded slices: complete the health-profile and consent contract, then add the lossless `wellnessbox` profile-to-R&D adapter.
+1. Implement OP-008: verify claimed evidence paths, original-plan hash, repository ownership, and stage-specific evidence rather than trusting manifest strings.
+2. Implement OP-009: expose the evidence audit as a deterministic command and connect it to pytest and repository CI.
+3. Implement OP-010: generate a Korean completion report listing complete, partial, pending, external, and contradicted requirements directly from the validated manifest.
+
+After OP-008 through OP-010, implement OP-011 through OP-020 in bounded slices: complete the health-profile and consent contract, then add the lossless `wellnessbox` profile-to-R&D adapter.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 

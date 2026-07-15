@@ -1,5 +1,20 @@
 # PROGRESS
 
+## 2026-07-15 original plan evidence-manifest loop
+
+- Chosen stage: `original plan / evidence governance`
+- Chosen task: OP-006 machine-readable requirement manifest and OP-007 evidence-stage schema
+- Primary dataset: `data/original_plan/requirements_manifest_v1.json`
+- Case count: `120` requirements in `12` groups
+- Added exact OP-001 through OP-120 coverage with original-plan page references, repository ownership, required evidence stage, current claim, and six evidence collections.
+- Added strict Pydantic models for `IMPLEMENTED`, `INTEGRATED`, `OPERATED`, and `EXTERNAL` claims.
+- `IMPLEMENTED` requires implementation and test files; `INTEGRATED` additionally requires integration evidence; `OPERATED` additionally requires operational evidence; `EXTERNAL` requires an external dependency and replacement contract.
+- Unknown fields, unknown completion wording, duplicate or missing IDs, wrong group order, and non-ten-item groups are rejected.
+- Current conservative claim count: `9/120`; claimed IDs are OP-001 through OP-007, OP-031, and OP-032. The remaining `111` requirements stay unclaimed even when partial code exists.
+- Focused result: manifest and recommendation API tests `17 passed`; focused Ruff PASS.
+- Full suite: `529` collected, `452 passed`, `77 failed`; the same 73 missing-report and four CGM baseline failures remain, with no new failure introduced by this loop.
+- Official frozen-eval metric deltas: none. No training, model promotion, KPI substitution, service mutation, or deployment occurred.
+
 ## 2026-07-15 original plan completion loop 1
 
 - Chosen stage: `original plan / safety input contract`

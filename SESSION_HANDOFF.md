@@ -1,5 +1,51 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 original plan evidence-manifest handoff
+
+- Chosen stage: `original plan / evidence governance`
+- Chosen task: OP-006 and OP-007
+- Primary dataset path and case count: `data/original_plan/requirements_manifest_v1.json`; `120` requirements across `12` groups
+
+Files changed:
+
+- `data/original_plan/requirements_manifest_v1.json`
+- `src/wellnessbox_rnd/schemas/original_plan_manifest.py`
+- `src/wellnessbox_rnd/schemas/__init__.py`
+- `tests/test_original_plan_manifest.py`
+- `docs/plans/2026-07-15-original-plan-completion-program.md`
+- `PROGRESS.md`, `NEXT_STEPS.md`, `SESSION_HANDOFF.md`
+
+Key changes:
+
+- Every OP-001 through OP-120 requirement now resolves to one record with source pages, repository owners, required stage, current claim, and evidence fields.
+- Completion wording is restricted to `IMPLEMENTED`, `INTEGRATED`, `OPERATED`, and `EXTERNAL`.
+- Stage-specific evidence is mandatory, and unknown manifest fields are rejected.
+- Only nine requirements currently carry an evidence claim. The other 111 remain unclaimed.
+- No model, training dataset, runtime recommendation, order path, or production deployment changed.
+
+Validation:
+
+- manifest tests plus recommendation API tests: `17 passed`
+- focused Ruff: PASS
+- full pytest: `529` collected, `452 passed`, `77 failed`; failure set unchanged from the existing 73 missing-report and four CGM baseline failures
+- original PDF SHA-256 in manifest: `31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4`
+
+Official frozen-eval metric deltas: none. Replay and slice metrics were not changed.
+
+Biggest remaining bottlenecks:
+
+1. Manifest evidence references are not yet checked against actual files, hashes, or runtime state.
+2. No deployed R&D FastAPI runtime or production `WB_RND_*` configuration exists.
+3. Full profile, medication, supplement, laboratory, and consent contracts remain incomplete.
+4. Actual product catalog, stock, order, pharmacy, dispensing, and delivery feedback remain disconnected.
+5. Missing ignored reports and stale CGM geometry keep the full R&D suite red.
+
+Recommended next loops:
+
+1. OP-008 evidence-path, hash, ownership, and claim audit.
+2. OP-009 deterministic audit command plus pytest and CI gate.
+3. OP-010 generated requirement-completion report.
+
 ## 2026-07-15 original plan completion handoff
 
 - Chosen stage: `original plan / safety input contract`

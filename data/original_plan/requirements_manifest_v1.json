@@ -1,0 +1,343 @@
+{
+  "schema_version": "original_plan_requirements_v1",
+  "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
+  "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
+  "completion_program_path": "wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md",
+  "groups": [
+    {
+      "group_id": "A",
+      "title": "원본 요구사항과 증거 기준 고정",
+      "source_refs": ["docs/context/original_plan.pdf#page=1-59"],
+      "owners": ["wellnessbox-rnd"],
+      "default_required_stage": "IMPLEMENTED",
+      "requirements": [
+        {
+          "requirement_id": "OP-001",
+          "title": "전달된 원본과 저장소 원본의 SHA-256 일치를 확인한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": ["wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md"],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+          }
+        },
+        {
+          "requirement_id": "OP-002",
+          "title": "원본 59쪽을 시각적으로 확인하고 연구개발 기능과 사업 문구를 구분한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": ["wellnessbox-rnd/docs/context/master_context.md", "wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md"],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+          }
+        },
+        {
+          "requirement_id": "OP-003",
+          "title": "원본 15쪽의 여섯 기술 블록을 독립 요구사항으로 등록한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": ["wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md", "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json"],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+          }
+        },
+        {
+          "requirement_id": "OP-004",
+          "title": "원본 16~24쪽의 입력, 처리, 출력 요구사항을 master context와 대조한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": ["wellnessbox-rnd/docs/context/master_context.md", "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json"],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+          }
+        },
+        {
+          "requirement_id": "OP-005",
+          "title": "원본 25~26쪽의 일곱 KPI 수식과 분모를 현재 계산기와 대조한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": ["wellnessbox-rnd/docs/context/master_context.md", "wellnessbox-rnd/docs/tips/CURRENT_REPO_AUDIT.md"],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py", "wellnessbox-rnd/tests/test_interim_manifest.py"]
+          }
+        },
+        {
+          "requirement_id": "OP-006",
+          "title": "각 요구사항의 소유 저장소와 구현·테스트·운영 증거를 지정한 manifest를 만든다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/original_plan_manifest.py"
+            ],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+          }
+        },
+        {
+          "requirement_id": "OP-007",
+          "title": "IMPLEMENTED, INTEGRATED, OPERATED, EXTERNAL 증거 단계를 Pydantic 스키마로 고정한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": ["wellnessbox-rnd/src/wellnessbox_rnd/schemas/original_plan_manifest.py"],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+          }
+        },
+        {"requirement_id": "OP-008", "title": "증거가 없는 완료 표기를 거부하는 manifest 감사기를 만든다."},
+        {"requirement_id": "OP-009", "title": "manifest 감사를 pytest와 CI 명령에 연결한다."},
+        {"requirement_id": "OP-010", "title": "원본 요구사항 100% 감사 보고서를 manifest에서 자동 생성한다."}
+      ]
+    },
+    {
+      "group_id": "B",
+      "title": "개인 건강 입력과 동의 계약",
+      "source_refs": ["docs/context/original_plan.pdf#page=13", "docs/context/original_plan.pdf#page=16"],
+      "owners": ["wellnessbox-rnd"],
+      "default_required_stage": "IMPLEMENTED",
+      "requirements": [
+        {"requirement_id": "OP-011", "title": "나이, 성별, 임신 상태, 키, 체중을 구조화 입력으로 정의한다."},
+        {"requirement_id": "OP-012", "title": "질환, 증상, 증상 중증도, 응급 위험 신호를 구조화한다."},
+        {"requirement_id": "OP-013", "title": "복용 약물의 이름, 분류, 용량, 단위를 구조화한다."},
+        {"requirement_id": "OP-014", "title": "복용 건강기능식품의 제품명, 성분, 1일 용량을 구조화한다."},
+        {"requirement_id": "OP-015", "title": "알레르기, 식이 패턴, 생활 습관 입력을 정규화한다."},
+        {"requirement_id": "OP-016", "title": "검사값의 코드, 값, 단위, 기준범위, 측정시각을 구조화한다."},
+        {"requirement_id": "OP-017", "title": "설문, 국민건강보험, 웨어러블, CGM, 유전자 동의 범위를 분리한다."},
+        {"requirement_id": "OP-018", "title": "같은 입력이 같은 정규화 결과와 해시를 만드는지 회귀 테스트한다."},
+        {
+          "requirement_id": "OP-019",
+          "title": "wellnessbox 프로필을 R&D 요청으로 손실 없이 변환한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "INTEGRATED"
+        },
+        {
+          "requirement_id": "OP-020",
+          "title": "지원하지 않는 입력을 버리지 않고 오류 또는 missing_information으로 반환한다.",
+          "required_stage": "INTEGRATED"
+        }
+      ]
+    },
+    {
+      "group_id": "C",
+      "title": "Data Lake와 근거 계보",
+      "source_refs": ["docs/context/original_plan.pdf#page=16"],
+      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "default_required_stage": "OPERATED",
+      "requirements": [
+        {"requirement_id": "OP-021", "title": "사용자 프로필 버전과 동의 스냅샷을 영속 저장한다."},
+        {"requirement_id": "OP-022", "title": "대화, 추천, 안전, 최적화, 후속평가 이벤트를 공통 실행 ID로 연결한다."},
+        {"requirement_id": "OP-023", "title": "원문, 파싱 구간, 주장, 규칙, 추천 결과의 계보를 연결한다."},
+        {"requirement_id": "OP-024", "title": "지식 원문의 시행일, 만료일, 출처 유형, 라이선스를 저장한다."},
+        {"requirement_id": "OP-025", "title": "사용자 행동 로그와 연구평가 로그를 분리해 저장한다."},
+        {"requirement_id": "OP-026", "title": "모델 ID, 데이터셋 ID, 코드 커밋, 설정 해시를 실행에 기록한다."},
+        {"requirement_id": "OP-027", "title": "이벤트 중복 기록을 idempotency key로 차단한다."},
+        {"requirement_id": "OP-028", "title": "삭제·정정 요청이 계보와 감사 로그를 보존하며 처리되는지 검증한다."},
+        {"requirement_id": "OP-029", "title": "세션을 같은 입력과 버전으로 재생하는 replay API를 만든다."},
+        {"requirement_id": "OP-030", "title": "wellnessbox 화면에서 세션 저장 건수와 replay 결과를 조회한다."}
+      ]
+    },
+    {
+      "group_id": "D",
+      "title": "개인화 안전 검증 엔진",
+      "source_refs": ["docs/context/original_plan.pdf#page=17"],
+      "owners": ["wellnessbox-rnd"],
+      "default_required_stage": "IMPLEMENTED",
+      "requirements": [
+        {
+          "requirement_id": "OP-031",
+          "title": "알레르기 규칙을 구조화 데이터로 추가하고 추천 전에 적용한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/models.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py",
+              "wellnessbox-rnd/data/rules/safety_rules.json"
+            ],
+            "test_files": ["wellnessbox-rnd/tests/test_inference_api.py"]
+          }
+        },
+        {
+          "requirement_id": "OP-032",
+          "title": "응급 위험 신호 규칙을 추가하고 모든 추천을 중단한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/models.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py",
+              "wellnessbox-rnd/data/rules/safety_rules.json"
+            ],
+            "test_files": ["wellnessbox-rnd/tests/test_inference_api.py"]
+          }
+        },
+        {"requirement_id": "OP-033", "title": "임신·수유 상태별 제한 규칙을 분리한다."},
+        {"requirement_id": "OP-034", "title": "질환별 금기와 검토 필요 규칙을 확대한다."},
+        {"requirement_id": "OP-035", "title": "약물-성분 상호작용 규칙을 근거 ID와 연결한다."},
+        {"requirement_id": "OP-036", "title": "성분 중복과 제품 간 합산 용량을 계산한다."},
+        {"requirement_id": "OP-037", "title": "단위 변환 후 상한을 비교하고 불명확하면 보수적으로 차단한다."},
+        {"requirement_id": "OP-038", "title": "규칙 버전과 적용 시각을 안전 판정 응답에 포함한다."},
+        {
+          "requirement_id": "OP-039",
+          "title": "hard false negative 0을 고위험 frozen eval로 검증한다.",
+          "source_refs": ["docs/context/original_plan.pdf#page=17", "docs/context/original_plan.pdf#page=25"],
+          "required_stage": "EXTERNAL"
+        },
+        {
+          "requirement_id": "OP-040",
+          "title": "프로덕션 추천 경로에서 안전 엔진의 최종 차단 권한을 통합 검증한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "OPERATED"
+        }
+      ]
+    },
+    {
+      "group_id": "E",
+      "title": "추천 후보와 효과 점수",
+      "source_refs": ["docs/context/original_plan.pdf#page=18", "docs/context/original_plan.pdf#page=19"],
+      "owners": ["wellnessbox-rnd"],
+      "default_required_stage": "IMPLEMENTED",
+      "requirements": [
+        {"requirement_id": "OP-041", "title": "서비스와 R&D 성분 식별자의 변환표를 버전 관리한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-042", "title": "건강 목표별 후보 성분 prior와 근거를 등록한다."},
+        {"requirement_id": "OP-043", "title": "증상, 검사, 생활 습관, 식이 패턴이 후보 점수에 영향을 주게 한다."},
+        {"requirement_id": "OP-044", "title": "웨어러블, CGM, 유전자 관측값을 수치로 점수에 반영한다."},
+        {"requirement_id": "OP-045", "title": "안전 차단 전후 후보를 모두 보존한다."},
+        {"requirement_id": "OP-046", "title": "추천 이유를 입력 신호, 점수 항목, 근거 ID로 분해해 반환한다."},
+        {"requirement_id": "OP-047", "title": "결정 불확실성과 추가 입력 조건을 정량화한다."},
+        {"requirement_id": "OP-048", "title": "learned artifact가 없거나 의심스러우면 deterministic baseline으로 복귀한다."},
+        {"requirement_id": "OP-049", "title": "추천 모델과 deterministic baseline 차이를 replay에서 비교한다."},
+        {"requirement_id": "OP-050", "title": "추천 결과를 실제 서비스 성분과 상품 후보로 변환한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"}
+      ]
+    },
+    {
+      "group_id": "F",
+      "title": "복용 전후 효과 수치화와 PRO",
+      "source_refs": ["docs/context/original_plan.pdf#page=18", "docs/context/original_plan.pdf#page=19"],
+      "owners": ["wellnessbox-rnd"],
+      "default_required_stage": "IMPLEMENTED",
+      "requirements": [
+        {"requirement_id": "OP-051", "title": "PSQI, ISI, PSS-10 원점수 계산을 버전 고정한다."},
+        {"requirement_id": "OP-052", "title": "시작 분포를 사용한 Z 점수와 건강 백분위 변환을 고정한다."},
+        {"requirement_id": "OP-053", "title": "복용 전, 2주, 4주, 중단 시점 PRO 이벤트를 저장한다.", "required_stage": "OPERATED"},
+        {"requirement_id": "OP-054", "title": "순응도, 누락 복용, 이상사례를 효과 해석에 반영한다."},
+        {"requirement_id": "OP-055", "title": "개인 개선도와 집단 평균 개선도를 분리한다."},
+        {"requirement_id": "OP-056", "title": "효과 추정에 표본 수, 신뢰구간, 불확실성 사유를 포함한다."},
+        {"requirement_id": "OP-057", "title": "실제 사용자 입력으로 PRO 점수를 수정하고 즉시 재계산한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-058", "title": "추천 성분과 관찰 효과 계보를 같은 계획 ID로 연결한다.", "required_stage": "OPERATED"},
+        {"requirement_id": "OP-059", "title": "효과 악화 시 상태기계가 유지, 감량, 중단, 재최적화를 선택한다.", "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-060", "title": "data_class 교체만으로 실제 결과 데이터를 같은 API에서 처리한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"}
+      ]
+    },
+    {
+      "group_id": "G",
+      "title": "다중제약 최적화와 실제 상품",
+      "source_refs": ["docs/context/original_plan.pdf#page=20"],
+      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "default_required_stage": "INTEGRATED",
+      "requirements": [
+        {"requirement_id": "OP-061", "title": "효능, 안전, 비용, 복용 수, 제형 선호를 최적화 제약으로 명시한다.", "owners": ["wellnessbox-rnd"], "required_stage": "IMPLEMENTED"},
+        {"requirement_id": "OP-062", "title": "판매 상품의 성분, 함량, 가격, 재고, 제형을 읽는 서비스 계약을 만든다."},
+        {"requirement_id": "OP-063", "title": "실제 상품을 성분 조합 후보로 변환한다."},
+        {"requirement_id": "OP-064", "title": "제품 간 중복 성분과 합산 용량을 계산한다."},
+        {"requirement_id": "OP-065", "title": "예산과 최대 복용 수를 넘는 조합을 제외한다."},
+        {"requirement_id": "OP-066", "title": "안전 차단 성분이 최적화 결과에 다시 들어오지 못하게 한다."},
+        {"requirement_id": "OP-067", "title": "Top-k 조합과 선택되지 않은 이유를 반환한다."},
+        {"requirement_id": "OP-068", "title": "같은 입력과 카탈로그 버전에서 같은 최적 조합을 재현한다."},
+        {"requirement_id": "OP-069", "title": "재고 변경 시 안전 조건을 유지하며 대체 조합을 계산한다."},
+        {"requirement_id": "OP-070", "title": "추천 조합을 장바구니 후보로 변환하되 승인 전 주문을 생성하지 않는다."}
+      ]
+    },
+    {
+      "group_id": "H",
+      "title": "Closed-loop 상태기계와 후속 실행",
+      "source_refs": ["docs/context/original_plan.pdf#page=21", "docs/context/original_plan.pdf#page=22"],
+      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "default_required_stage": "OPERATED",
+      "requirements": [
+        {"requirement_id": "OP-071", "title": "상태, 허용 작업, 금지 전이를 단일 R&D 계약으로 통합한다."},
+        {"requirement_id": "OP-072", "title": "안전검사, 후보 생성, 근거 조회, 최적화, 계획 시작 순서를 강제한다."},
+        {"requirement_id": "OP-073", "title": "후속 일정과 알림 예약을 실제 업무 큐에 저장한다."},
+        {"requirement_id": "OP-074", "title": "CronJob이 만기 계획을 찾아 재평가 작업을 생성한다."},
+        {"requirement_id": "OP-075", "title": "PRO와 기기 데이터 수신 후 다음 작업을 다시 결정한다."},
+        {"requirement_id": "OP-076", "title": "중대한 이상사례 발생 시 계획과 추가 추천을 즉시 중단한다."},
+        {"requirement_id": "OP-077", "title": "중복 작업, 오래된 근거, timeout, 동의 누락을 fail-closed로 처리한다."},
+        {"requirement_id": "OP-078", "title": "약사 검토 작업 생성과 완료 사후조건을 저장한다."},
+        {"requirement_id": "OP-079", "title": "유지, 조정, 교체, 중단, 모니터링 상태 전이를 E2E로 검증한다."},
+        {"requirement_id": "OP-080", "title": "상태기계 실행과 실제 주문 상태 변경을 명시적으로 분리한다."}
+      ]
+    },
+    {
+      "group_id": "I",
+      "title": "상담과 근거 검색",
+      "source_refs": ["docs/context/original_plan.pdf#page=15", "docs/context/original_plan.pdf#page=22"],
+      "owners": ["wellnessbox-rnd"],
+      "default_required_stage": "IMPLEMENTED",
+      "requirements": [
+        {"requirement_id": "OP-081", "title": "근거 문서를 passage 단위로 수집하고 출처와 시행일을 보존한다."},
+        {"requirement_id": "OP-082", "title": "질문에서 건강 목표, 성분, 약물, 위험 신호를 추출한다."},
+        {"requirement_id": "OP-083", "title": "bounded RAG가 허용된 지식 범위만 검색하게 한다."},
+        {"requirement_id": "OP-084", "title": "답변에 근거 ID, 유효일, 불확실성을 포함한다."},
+        {"requirement_id": "OP-085", "title": "verifier가 근거 없는 주장, 위험 누락, 금지 표현을 차단한다."},
+        {"requirement_id": "OP-086", "title": "응급 위험 질문은 추천보다 안전 안내를 우선한다."},
+        {"requirement_id": "OP-087", "title": "상담 답변과 추천 실행을 같은 세션에 저장한다.", "required_stage": "OPERATED"},
+        {"requirement_id": "OP-088", "title": "서비스 채팅이 R&D 상담 API를 호출하는 얇은 어댑터를 사용한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-089", "title": "provider 장애 시 구조화된 deterministic 답변으로 복귀한다."},
+        {"requirement_id": "OP-090", "title": "질문 유형별 frozen QA와 실제 API E2E를 통과한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"}
+      ]
+    },
+    {
+      "group_id": "J",
+      "title": "웨어러블·CGM·유전자 연동",
+      "source_refs": ["docs/context/original_plan.pdf#page=23", "docs/context/original_plan.pdf#page=24"],
+      "owners": ["wellnessbox-rnd"],
+      "default_required_stage": "IMPLEMENTED",
+      "requirements": [
+        {"requirement_id": "OP-091", "title": "Apple Health와 범용 CSV의 활동, 심박, 수면 필드를 정규화한다."},
+        {"requirement_id": "OP-092", "title": "CGM의 혈당, 식후 상승, time-in-range를 정규화한다."},
+        {"requirement_id": "OP-093", "title": "유전자 변이, 판정 기준, 검사기관, 검사일을 정규화한다."},
+        {"requirement_id": "OP-094", "title": "동의하지 않은 데이터 출처를 저장하거나 점수에 사용하지 않는다."},
+        {"requirement_id": "OP-095", "title": "파일 스키마 오류와 부분 성공 건수를 응답한다."},
+        {"requirement_id": "OP-096", "title": "원본 파일 해시와 정규화 결과 계보를 저장한다.", "required_stage": "OPERATED"},
+        {"requirement_id": "OP-097", "title": "기기 수치를 추천 점수와 후속평가에 실제 반영한다.", "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-098", "title": "생산 기기 세션과 시뮬레이션 세션을 data_class로 구분한다.", "required_stage": "OPERATED"},
+        {"requirement_id": "OP-099", "title": "같은 기기 이벤트의 중복 수신을 차단한다.", "required_stage": "OPERATED"},
+        {"requirement_id": "OP-100", "title": "W/C/G 출처별 성공률과 macro 평균을 다시 계산한다."}
+      ]
+    },
+    {
+      "group_id": "K",
+      "title": "프로덕션 서비스 통합",
+      "source_refs": ["docs/context/original_plan.pdf#page=13", "docs/context/original_plan.pdf#page=15", "docs/context/original_plan.pdf#page=22"],
+      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "default_required_stage": "OPERATED",
+      "requirements": [
+        {"requirement_id": "OP-101", "title": "R&D FastAPI 배포 대상, 영속 DB, 내부 인증 방식을 확정한다."},
+        {"requirement_id": "OP-102", "title": "health, 추천, 상태기계, 기기, 상담 API를 배포한다."},
+        {"requirement_id": "OP-103", "title": "wellnessbox Vercel에 WB_RND 환경변수를 안전하게 등록한다."},
+        {"requirement_id": "OP-104", "title": "평가 화면에서 R&D 실행 결과와 로컬 스냅샷 결과를 구분한다."},
+        {"requirement_id": "OP-105", "title": "사용자 프로필 저장과 추천 API가 R&D 서버까지 왕복하는지 검증한다."},
+        {"requirement_id": "OP-106", "title": "약사 검토 화면을 R&D 검토 큐와 연결한다."},
+        {"requirement_id": "OP-107", "title": "관리자 화면이 데이터, 규칙, 모델, 실행 상태를 실제 API에서 조회한다."},
+        {"requirement_id": "OP-108", "title": "실제 상품 후보를 추천 결과와 연결한다."},
+        {"requirement_id": "OP-109", "title": "사용자 승인 후 기존 createOrder만 재고와 주문을 변경한다."},
+        {"requirement_id": "OP-110", "title": "소분, 배송, 재주문, 취소 상태를 계획에 읽기 전용으로 환류한다."}
+      ]
+    },
+    {
+      "group_id": "L",
+      "title": "배포·보안·최종 완료 감사",
+      "source_refs": ["docs/context/original_plan.pdf#page=15-26"],
+      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "default_required_stage": "OPERATED",
+      "requirements": [
+        {"requirement_id": "OP-111", "title": "내부 API 인증과 사용자·약국·관리자 권한을 회귀 테스트한다.", "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-112", "title": "개인정보 최소수집, 가명처리, 로그 마스킹을 검증한다.", "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-113", "title": "timeout, 재시도, circuit breaker, fallback을 장애 주입으로 검증한다.", "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-114", "title": "R&D와 서비스 OpenAPI·TypeScript 계약 차이를 CI에서 차단한다.", "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-115", "title": "두 저장소의 단위·통합·E2E·인코딩·빌드 검사를 통과한다.", "required_stage": "INTEGRATED"},
+        {"requirement_id": "OP-116", "title": "프로덕션 배포 후 R&D health와 WellnessBox alias를 확인한다."},
+        {"requirement_id": "OP-117", "title": "브라우저에서 사용자, 약사, 관리자 핵심 경로를 재현한다."},
+        {"requirement_id": "OP-118", "title": "모든 비외부 요구사항에 운영 증거를 연결한다."},
+        {"requirement_id": "OP-119", "title": "외부 항목별 책임자, 입력, 교체 계약, 차단 사유를 기록한다.", "required_stage": "IMPLEMENTED"},
+        {"requirement_id": "OP-120", "title": "독립 최종 감사가 100% 완료를 증명한 뒤 전체 목표를 완료 처리한다."}
+      ]
+    }
+  ]
+}
