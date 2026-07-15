@@ -15,6 +15,7 @@
 - Frozen evaluation: `256` cases; zero delta for all seven metrics; weakest overall category and every metric-specific weakest category are unchanged. Data Lake replay/slice delta: not applicable.
 - Biggest bottlenecks: deployed R&D URL; durable production R&D storage; authenticated service-to-R&D round trip; production re-query evidence; source-corpus breadth and upstream supplement-file encoding quality.
 - Next three loops: OP-025/026 log and execution identity separation; OP-027/028 idempotency and correction/deletion audit behavior; OP-029/030 replay API and service UI.
+- Publication: commits `2ea5e40` and `194db51` are on `origin/main`; Original plan evidence run `29419358491` PASS. The interim recommendation API test now skips explicitly when the ignored local retrained package is absent from a fresh checkout; local behavior and expected values are unchanged.
 
 ## 2026-07-15 Data Lake profile and execution-lineage handoff
 

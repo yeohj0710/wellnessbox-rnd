@@ -14,6 +14,7 @@
 - Frozen evaluation: `256` cases; all seven metric deltas are `0`, and every weakest-slice category is unchanged. Data Lake replay delta: not applicable to this persistence-only loop.
 - Biggest bottlenecks: no deployed R&D process; no durable production R&D database; no authenticated service-to-R&D process round trip; no production storage re-query evidence; only three normalized local source documents, with the upstream supplement file still requiring encoding/source-quality remediation.
 - Recommended next loops: OP-025/026 log separation and execution identities; OP-027/028 broader idempotency plus deletion/correction audit handling; OP-029/030 replay API plus service UI.
+- Publication: implementation commit `2ea5e40` plus CI-compatibility commit `194db51` passed Original plan evidence run `29419358491`. The first push run `29419151688` failed only because the newly CI-selected `tests/test_interim_api.py` recommendation test requires the ignored local `artifacts/tips/interim/retrained` package, which fresh CI checkouts do not have; the fix adds an explicit artifact-absence skip guard to that one test and changes no expected values. Local rerun before publication: focused selection PASS, full Ruff PASS, knowledge-lineage smoke deterministic PASS, manifest audit PASS with zero issues, completion-report stale check PASS, and the official `256`-case frozen evaluation exactly matches all seven recorded current metric values.
 
 ## 2026-07-15 Data Lake profile and execution-lineage loop
 
