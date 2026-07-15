@@ -10,6 +10,7 @@ from wellnessbox_rnd.schemas.recommendation import (
     RecommendationGoal,
     RecommendationRequest,
     RecommendationStatus,
+    has_current_condition_inputs,
 )
 from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import (
     DEFAULT_RICH_SYNTHETIC_SEED,
@@ -198,7 +199,7 @@ def _is_effect_enrichment_target(record: RichSyntheticCohortRecord) -> bool:
     request = record.request
     return (
         not request.user_profile.pregnant
-        and not request.conditions
+        and not has_current_condition_inputs(request.conditions)
         and not request.medications
         and len(request.goals) == 1
     )

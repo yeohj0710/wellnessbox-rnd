@@ -5,7 +5,10 @@ from typing import TYPE_CHECKING
 
 from pydantic import BaseModel, Field
 
-from wellnessbox_rnd.schemas.recommendation import RecommendationGoal
+from wellnessbox_rnd.schemas.recommendation import (
+    RecommendationGoal,
+    count_current_condition_inputs,
+)
 
 if TYPE_CHECKING:
     from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import RichSyntheticCohortRecord
@@ -72,7 +75,7 @@ def build_effect_feature_dict_v1(
         "day_index": float(record.day_index),
         "goal_count": float(len(request.goals)),
         "symptom_count": float(len(request.symptoms)),
-        "condition_count": float(len(request.conditions)),
+        "condition_count": float(count_current_condition_inputs(request.conditions)),
         "medication_count": float(len(request.medications)),
         "current_supplement_count": float(len(request.current_supplements)),
         "max_products": float(preferences.max_products),

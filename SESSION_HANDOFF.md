@@ -1,5 +1,58 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 structured health-input contract handoff
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen tasks: OP-011 and OP-012
+- Primary fixture: `data/samples/api_recommend_structured_health_input_request_v1.json`
+- Current requirement count: `120`; valid claims: `14`
+
+Files changed:
+
+- `src/wellnessbox_rnd/schemas/recommendation.py`
+- `src/wellnessbox_rnd/domain/intake.py`
+- `src/wellnessbox_rnd/models/efficacy_model_v0.py`
+- `src/wellnessbox_rnd/models/policy_model_v0.py`
+- `src/wellnessbox_rnd/synthetic/rich_longitudinal_v2.py`
+- `apps/inference_api/routes/recommend.py`
+- `data/samples/api_recommend_structured_health_input_request_v1.json`
+- `tests/test_health_input_contracts.py`
+- manifest, generated completion reports, workflow, completion ledger, and handoff documents
+
+Key changes:
+
+- `UserProfile` now carries optional bounded `height_cm` and `weight_kg` alongside the existing age, biological sex, and pregnancy state.
+- Conditions, symptoms, and urgent-risk flags retain the existing field names and legacy string compatibility while also accepting strict structured objects.
+- Normalized intake contains canonical detail records as well as code maps. It retains condition display name and status, symptom severity and duration, and urgent-signal presence and source without rereading the heterogeneous request.
+- Resolved conditions and absent urgent signals do not become active safety codes, risk labels, model features, synthetic penalties, or learned-model guard reasons.
+- Existing model feature paths consume canonical codes rather than Python object representations and omit resolved conditions.
+- The structured urgent signal executes the existing safety rule and returns a blocked response with no recommendations.
+- CI runs both the focused contract test and inference API regression test for this claim.
+
+Current generated status:
+
+- complete `14`
+- partial `0`
+- pending `105`
+- external `1`
+- contradicted `0`
+
+Validation:
+
+- original-plan, health-input, and inference API contracts: `42 passed`
+- broader recommendation and safety regressions: `199 passed`
+- downstream model and synthetic compatibility tests: `30 passed`
+- full Ruff, manifest audit, and generated-report stale check: PASS
+- full suite: `477 passed`, `77 failed`; failures remain in the known `73` missing report-artifact and `4` CGM geometry groups
+
+Official frozen-eval metric deltas: none.
+
+Recommended next loops:
+
+1. OP-013 and OP-014 medication and supplement dose/unit contracts.
+2. OP-015 and OP-016 dietary/lifestyle normalization and laboratory observations.
+3. OP-017 and OP-018 consent scopes and deterministic normalized-input hashing.
+
 ## 2026-07-15 original plan completion-report handoff
 
 - Chosen stage: `original plan / evidence governance`

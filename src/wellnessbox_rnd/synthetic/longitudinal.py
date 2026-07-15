@@ -16,6 +16,8 @@ from wellnessbox_rnd.schemas.recommendation import (
     RecommendationGoal,
     RecommendationRequest,
     RecommendationStatus,
+    count_current_condition_inputs,
+    has_current_condition_inputs,
 )
 
 COHORT_VERSION = "synthetic_longitudinal_v1"
@@ -584,7 +586,7 @@ def _default_symptom_from_goals(goals: list[RecommendationGoal]) -> str:
 def _compute_effect_proxy(*, request: RecommendationRequest, step: int, response) -> float:
     goal_bonus = 0.08 * len(request.goals)
     symptom_penalty = 0.07 * len(request.symptoms)
-    condition_penalty = 0.12 * len(request.conditions)
+    condition_penalty = 0.12 * count_current_condition_inputs(request.conditions)
     medication_penalty = 0.1 * len(request.medications)
     pregnancy_penalty = 0.18 if request.user_profile.pregnant else 0.0
     modality_bonus = 0.03 * sum(
@@ -630,7 +632,11 @@ def _compute_adherence_proxy(*, request: RecommendationRequest, step: int, respo
         base += 0.05
     if request.preferences.max_products > 2:
         base -= 0.08
-    if request.medications or request.conditions or request.user_profile.pregnant:
+    if (
+        request.medications
+        or has_current_condition_inputs(request.conditions)
+        or request.user_profile.pregnant
+    ):
         base -= 0.1
     if step > 0 and request.current_supplements:
         base += 0.08
@@ -640,7 +646,11 @@ def _compute_adherence_proxy(*, request: RecommendationRequest, step: int, respo
 def _risk_tier(*, request: RecommendationRequest, response) -> Literal["low", "moderate", "high"]:
     if response.status in {RecommendationStatus.BLOCKED, RecommendationStatus.NEEDS_REVIEW}:
         return "high"
-    if request.user_profile.pregnant or request.conditions or request.medications:
+    if (
+        request.user_profile.pregnant
+        or has_current_condition_inputs(request.conditions)
+        or request.medications
+    ):
         return "high"
     if response.safety_summary.rule_refs:
         return "moderate"
@@ -660,7 +670,9 @@ def _adverse_event_label(
     if risk_tier == "high" and response.next_action != NextAction.START_PLAN:
         return True
     if expected_effect_proxy < -0.05 and (
-        request.user_profile.pregnant or request.conditions or request.medications
+        request.user_profile.pregnant
+        or has_current_condition_inputs(request.conditions)
+        or request.medications
     ):
         return True
     return False

@@ -5,7 +5,13 @@ from typing import TYPE_CHECKING
 
 from pydantic import BaseModel, Field
 
-from wellnessbox_rnd.schemas.recommendation import NextAction, RecommendationRequest
+from wellnessbox_rnd.schemas.recommendation import (
+    NextAction,
+    RecommendationRequest,
+    count_current_condition_inputs,
+    is_current_condition_input,
+    normalize_health_input_code,
+)
 
 if TYPE_CHECKING:
     from wellnessbox_rnd.synthetic.longitudinal import SyntheticCohortRecord
@@ -85,7 +91,7 @@ def build_runtime_policy_feature_dict(
         "day_index_scaled": day_index / 30.0,
         "goal_count": float(len(request.goals)),
         "symptom_count": float(len(request.symptoms)),
-        "condition_count": float(len(request.conditions)),
+        "condition_count": float(count_current_condition_inputs(request.conditions)),
         "medication_count": float(len(request.medications)),
         "current_supplement_count": float(len(request.current_supplements)),
         "max_products_scaled": preferences.max_products / 5.0,
@@ -120,9 +126,11 @@ def build_runtime_policy_feature_dict(
     for goal in request.goals:
         features[f"goal::{goal.value}"] = 1.0
     for symptom in request.symptoms:
-        features[f"symptom::{symptom}"] = 1.0
+        features[f"symptom::{normalize_health_input_code(symptom)}"] = 1.0
     for condition in request.conditions:
-        features[f"condition::{condition}"] = 1.0
+        if not is_current_condition_input(condition):
+            continue
+        features[f"condition::{normalize_health_input_code(condition)}"] = 1.0
     for medication in request.medications:
         features[f"medication::{medication.name.strip().lower()}"] = 1.0
     for supplement in request.current_supplements:

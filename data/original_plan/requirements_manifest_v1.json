@@ -122,8 +122,46 @@
       "owners": ["wellnessbox-rnd"],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
-        {"requirement_id": "OP-011", "title": "나이, 성별, 임신 상태, 키, 체중을 구조화 입력으로 정의한다."},
-        {"requirement_id": "OP-012", "title": "질환, 증상, 증상 중증도, 응급 위험 신호를 구조화한다."},
+        {
+          "requirement_id": "OP-011",
+          "title": "나이, 성별, 임신 상태, 키, 체중을 구조화 입력으로 정의한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/apps/inference_api/routes/recommend.py",
+              "wellnessbox-rnd/data/samples/api_recommend_structured_health_input_request_v1.json"
+            ],
+            "test_files": ["wellnessbox-rnd/tests/test_health_input_contracts.py"]
+          }
+        },
+        {
+          "requirement_id": "OP-012",
+          "title": "질환, 증상, 증상 중증도, 응급 위험 신호를 구조화한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/models/efficacy_model_v0.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/models/effect_model_v1.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/models/policy_model_v0.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/models/policy_model_v1.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/simulation/closed_loop_v0.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/synthetic/longitudinal.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/synthetic/rich_longitudinal_v2.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/synthetic/rich_longitudinal_v3.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/synthetic/rich_longitudinal_v4.py",
+              "wellnessbox-rnd/apps/inference_api/routes/recommend.py",
+              "wellnessbox-rnd/data/samples/api_recommend_structured_health_input_request_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_health_input_contracts.py",
+              "wellnessbox-rnd/tests/test_inference_api.py"
+            ]
+          }
+        },
         {"requirement_id": "OP-013", "title": "복용 약물의 이름, 분류, 용량, 단위를 구조화한다."},
         {"requirement_id": "OP-014", "title": "복용 건강기능식품의 제품명, 성분, 1일 용량을 구조화한다."},
         {"requirement_id": "OP-015", "title": "알레르기, 식이 패턴, 생활 습관 입력을 정규화한다."},

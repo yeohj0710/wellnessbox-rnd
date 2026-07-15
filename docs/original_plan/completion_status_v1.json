@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "f0200f680cf8461308df16665eb62b6a51722161f226af82c0bb3da326c6ba71",
+  "audited_manifest_sha256": "106aaf4840bc8f8c486e2766e7813129090d0d90d33ff9d7b7b97661fd6532ed",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 12,
+    "COMPLETE": 14,
     "PARTIAL": 0,
-    "PENDING": 107,
+    "PENDING": 105,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -32,9 +32,9 @@
       "title": "개인 건강 입력과 동의 계약",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 0,
+        "COMPLETE": 2,
         "PARTIAL": 0,
-        "PENDING": 10,
+        "PENDING": 8,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -439,14 +439,20 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+          "wellnessbox-rnd/apps/inference_api/routes/recommend.py",
+          "wellnessbox-rnd/data/samples/api_recommend_structured_health_input_request_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_health_input_contracts.py"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -462,14 +468,32 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/models/efficacy_model_v0.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/models/effect_model_v1.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/models/policy_model_v0.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/models/policy_model_v1.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/simulation/closed_loop_v0.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/synthetic/longitudinal.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/synthetic/rich_longitudinal_v2.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/synthetic/rich_longitudinal_v3.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/synthetic/rich_longitudinal_v4.py",
+          "wellnessbox-rnd/apps/inference_api/routes/recommend.py",
+          "wellnessbox-rnd/data/samples/api_recommend_structured_health_input_request_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_health_input_contracts.py",
+          "wellnessbox-rnd/tests/test_inference_api.py"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],

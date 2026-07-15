@@ -20,7 +20,11 @@ from wellnessbox_rnd.models import (
 )
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.policy import apply_policy_guard
-from wellnessbox_rnd.schemas.recommendation import NextAction, RecommendationStatus
+from wellnessbox_rnd.schemas.recommendation import (
+    NextAction,
+    RecommendationStatus,
+    has_current_condition_inputs,
+)
 from wellnessbox_rnd.synthetic.rich_longitudinal_v2 import (
     DOSE_TEMPLATES,
     RichRegimenItem,
@@ -1203,7 +1207,7 @@ def _can_apply_learned_effect_guard(
         return False, "pregnancy_requires_deterministic_ranking"
     if record.request.medications:
         return False, "medication_risk_requires_deterministic_ranking"
-    if record.request.conditions:
+    if has_current_condition_inputs(record.request.conditions):
         return False, "condition_risk_requires_deterministic_ranking"
     if record.request.preferences.avoid_ingredients:
         return False, "explicit_avoid_requires_deterministic_ranking"
@@ -1277,7 +1281,7 @@ def _policy_guard_reason(
         return "pregnancy_requires_deterministic_policy"
     if record.request.medications:
         return "medication_risk_requires_deterministic_policy"
-    if record.request.conditions:
+    if has_current_condition_inputs(record.request.conditions):
         return "serious_condition_requires_deterministic_policy"
     if record.request.preferences.avoid_ingredients:
         return "explicit_avoid_requires_deterministic_policy"

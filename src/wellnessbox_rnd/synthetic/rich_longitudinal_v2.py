@@ -16,6 +16,10 @@ from wellnessbox_rnd.schemas.recommendation import (
     RecommendationGoal,
     RecommendationRequest,
     RecommendationStatus,
+    count_current_condition_inputs,
+    has_current_condition_inputs,
+    is_current_condition_input,
+    normalize_health_input_code,
 )
 
 COHORT_VERSION = "synthetic_longitudinal_v2"
@@ -436,8 +440,14 @@ def build_rich_policy_training_rows(
                 risk_tier=record.labels.risk_tier,
                 closed_loop_state=record.labels.closed_loop_state,
                 goals=[goal.value for goal in record.request.goals],
-                symptom_keys=sorted(record.request.symptoms),
-                condition_keys=sorted(record.request.conditions),
+                symptom_keys=sorted(
+                    normalize_health_input_code(item) for item in record.request.symptoms
+                ),
+                condition_keys=sorted(
+                    normalize_health_input_code(item)
+                    for item in record.request.conditions
+                    if is_current_condition_input(item)
+                ),
                 medication_keys=sorted(
                     medication.name.strip().lower() for medication in record.request.medications
                 ),
@@ -721,7 +731,11 @@ def _compute_side_effect_proxy(
         "targeted_followup_low_adherence": (0.1, 0.14, 0.16, 0.12, 0.1),
         "safety_recheck_high_risk": (0.22, 0.62, 0.81, 0.58, 0.32),
     }[trajectory_mode][step]
-    if request.user_profile.pregnant or request.conditions or request.medications:
+    if (
+        request.user_profile.pregnant
+        or has_current_condition_inputs(request.conditions)
+        or request.medications
+    ):
         curve += 0.08
     if response.status == RecommendationStatus.BLOCKED:
         curve += 0.06
@@ -737,7 +751,11 @@ def _risk_tier(
         RecommendationStatus.NEEDS_REVIEW,
     }:
         return "high"
-    if request.user_profile.pregnant or request.conditions or request.medications:
+    if (
+        request.user_profile.pregnant
+        or has_current_condition_inputs(request.conditions)
+        or request.medications
+    ):
         return "high"
     if (
         response.safety_summary.rule_refs
@@ -1004,7 +1022,9 @@ def _build_policy_feature_row(record: RichSyntheticCohortRecord) -> dict[str, fl
         "pregnant": float(record.request.user_profile.pregnant),
         "goal_count": float(len(record.request.goals)),
         "symptom_count": float(len(record.request.symptoms)),
-        "condition_count": float(len(record.request.conditions)),
+        "condition_count": float(
+            count_current_condition_inputs(record.request.conditions)
+        ),
         "medication_count": float(len(record.request.medications)),
         "current_supplement_count": float(len(record.request.current_supplements)),
         "max_products": float(record.request.preferences.max_products),

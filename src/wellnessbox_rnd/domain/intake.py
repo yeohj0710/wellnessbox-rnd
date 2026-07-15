@@ -4,10 +4,17 @@ from wellnessbox_rnd.domain.catalog import canonicalize_catalog_term
 from wellnessbox_rnd.domain.loaders import load_safety_rules
 from wellnessbox_rnd.domain.models import GoalContextRule
 from wellnessbox_rnd.schemas.recommendation import (
+    ConditionInput,
+    ConditionStatus,
     MissingInfoImportance,
     MissingInformationItem,
     RecommendationGoal,
     RecommendationRequest,
+    RiskSignalSource,
+    SymptomInput,
+    SymptomSeverity,
+    UrgentRiskSignal,
+    normalize_health_input_code,
 )
 
 
@@ -15,10 +22,16 @@ from wellnessbox_rnd.schemas.recommendation import (
 class NormalizedIntake:
     request: RecommendationRequest
     goal_set: set[RecommendationGoal]
+    normalized_symptoms: list[SymptomInput]
     symptom_set: set[str]
+    symptom_severity_by_code: dict[str, SymptomSeverity]
+    normalized_conditions: list[ConditionInput]
     condition_set: set[str]
+    condition_status_by_code: dict[str, ConditionStatus]
     allergy_set: set[str]
+    normalized_risk_signals: list[UrgentRiskSignal]
     risk_flag_set: set[str]
+    risk_signal_source_by_code: dict[str, RiskSignalSource]
     medication_set: set[str]
     current_ingredient_set: set[str]
     avoid_ingredient_set: set[str]
@@ -31,10 +44,16 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
     rules = load_safety_rules()
 
     goal_set = set(request.goals)
-    symptom_set = {_normalize_text(item) for item in request.symptoms}
-    condition_set = {_normalize_text(item) for item in request.conditions}
+    normalized_symptoms, symptom_set, symptom_severity_by_code = (
+        _normalize_symptom_inputs(request.symptoms)
+    )
+    normalized_conditions, condition_set, condition_status_by_code = (
+        _normalize_condition_inputs(request.conditions)
+    )
     allergy_set = {_normalize_text(item) for item in request.allergies}
-    risk_flag_set = {_normalize_text(item) for item in request.risk_flags}
+    normalized_risk_signals, risk_flag_set, risk_signal_source_by_code = (
+        _normalize_risk_signals(request.risk_flags)
+    )
     medication_set = {_normalize_text(item.name) for item in request.medications}
     current_ingredient_set = set()
     for supplement in request.current_supplements:
@@ -42,7 +61,7 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
         current_ingredient_set.update(_normalize_catalog_inputs(supplement.ingredients))
 
     avoid_ingredient_set = _normalize_catalog_inputs(request.preferences.avoid_ingredients)
-    signal_flags = _derive_signal_flags(request)
+    signal_flags = _derive_signal_flags(request, symptom_set=symptom_set)
     missing_information = _collect_missing_information(
         request,
         goal_set,
@@ -63,10 +82,16 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
     return NormalizedIntake(
         request=request,
         goal_set=goal_set,
-        symptom_set={item for item in symptom_set if item},
-        condition_set={item for item in condition_set if item},
+        normalized_symptoms=normalized_symptoms,
+        symptom_set=symptom_set,
+        symptom_severity_by_code=symptom_severity_by_code,
+        normalized_conditions=normalized_conditions,
+        condition_set=condition_set,
+        condition_status_by_code=condition_status_by_code,
         allergy_set={item for item in allergy_set if item},
-        risk_flag_set={item for item in risk_flag_set if item},
+        normalized_risk_signals=normalized_risk_signals,
+        risk_flag_set=risk_flag_set,
+        risk_signal_source_by_code=risk_signal_source_by_code,
         medication_set={item for item in medication_set if item},
         current_ingredient_set={item for item in current_ingredient_set if item},
         avoid_ingredient_set={item for item in avoid_ingredient_set if item},
@@ -76,9 +101,12 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
     )
 
 
-def _derive_signal_flags(request: RecommendationRequest) -> set[str]:
+def _derive_signal_flags(
+    request: RecommendationRequest,
+    *,
+    symptom_set: set[str],
+) -> set[str]:
     flags: set[str] = set()
-    symptom_set = {_normalize_text(item) for item in request.symptoms}
     if request.lifestyle.sleep_hours is not None and request.lifestyle.sleep_hours < 6:
         flags.add("sleep_deficit")
     if request.lifestyle.stress_level is not None and request.lifestyle.stress_level >= 4:
@@ -276,6 +304,92 @@ def _missing_info_sort_key(item: MissingInformationItem) -> tuple[int, str]:
 
 def _normalize_text(value: str) -> str:
     return " ".join(value.strip().lower().split())
+
+
+def _normalize_symptom_inputs(
+    values: list[str | SymptomInput],
+) -> tuple[list[SymptomInput], set[str], dict[str, SymptomSeverity]]:
+    severity_rank = {
+        SymptomSeverity.UNSPECIFIED: 0,
+        SymptomSeverity.MILD: 1,
+        SymptomSeverity.MODERATE: 2,
+        SymptomSeverity.SEVERE: 3,
+        SymptomSeverity.CRITICAL: 4,
+    }
+    normalized_inputs: list[SymptomInput] = []
+    severity_by_code: dict[str, SymptomSeverity] = {}
+    for value in values:
+        code = normalize_health_input_code(value)
+        if not code:
+            continue
+        normalized_input = (
+            value.model_copy(update={"code": code})
+            if isinstance(value, SymptomInput)
+            else SymptomInput(code=code, severity=SymptomSeverity.UNSPECIFIED)
+        )
+        normalized_inputs.append(normalized_input)
+        severity = normalized_input.severity
+        current = severity_by_code.get(code)
+        if current is None or severity_rank[severity] > severity_rank[current]:
+            severity_by_code[code] = severity
+    return normalized_inputs, set(severity_by_code), severity_by_code
+
+
+def _normalize_condition_inputs(
+    values: list[str | ConditionInput],
+) -> tuple[list[ConditionInput], set[str], dict[str, ConditionStatus]]:
+    status_rank = {
+        ConditionStatus.RESOLVED: 0,
+        ConditionStatus.HISTORY: 1,
+        ConditionStatus.SUSPECTED: 2,
+        ConditionStatus.ACTIVE: 3,
+    }
+    normalized_inputs: list[ConditionInput] = []
+    status_by_code: dict[str, ConditionStatus] = {}
+    for value in values:
+        code = normalize_health_input_code(value)
+        if not code:
+            continue
+        normalized_input = (
+            value.model_copy(update={"code": code})
+            if isinstance(value, ConditionInput)
+            else ConditionInput(code=code, status=ConditionStatus.ACTIVE)
+        )
+        normalized_inputs.append(normalized_input)
+        status = normalized_input.status
+        current = status_by_code.get(code)
+        if current is None or status_rank[status] > status_rank[current]:
+            status_by_code[code] = status
+    active_codes = {
+        code
+        for code, status in status_by_code.items()
+        if status != ConditionStatus.RESOLVED
+    }
+    return normalized_inputs, active_codes, status_by_code
+
+
+def _normalize_risk_signals(
+    values: list[str | UrgentRiskSignal],
+) -> tuple[list[UrgentRiskSignal], set[str], dict[str, RiskSignalSource]]:
+    normalized_inputs: list[UrgentRiskSignal] = []
+    source_by_code: dict[str, RiskSignalSource] = {}
+    for value in values:
+        code = normalize_health_input_code(value)
+        if not code:
+            continue
+        normalized_input = (
+            value.model_copy(update={"code": code})
+            if isinstance(value, UrgentRiskSignal)
+            else UrgentRiskSignal(
+                code=code,
+                present=True,
+                source=RiskSignalSource.LEGACY,
+            )
+        )
+        normalized_inputs.append(normalized_input)
+        if normalized_input.present:
+            source_by_code[code] = normalized_input.source
+    return normalized_inputs, set(source_by_code), source_by_code
 
 
 def _normalize_catalog_inputs(values: list[str]) -> set[str]:

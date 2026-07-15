@@ -1,9 +1,14 @@
 from datetime import UTC, datetime
 from enum import StrEnum
-from typing import Literal
+from typing import Annotated, Literal
 from uuid import uuid4
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints
+
+StructuredHealthCode = Annotated[
+    str,
+    StringConstraints(strip_whitespace=True, min_length=1, max_length=128),
+]
 
 
 class BiologicalSex(StrEnum):
@@ -11,6 +16,29 @@ class BiologicalSex(StrEnum):
     MALE = "male"
     OTHER = "other"
     UNDISCLOSED = "undisclosed"
+
+
+class ConditionStatus(StrEnum):
+    ACTIVE = "active"
+    SUSPECTED = "suspected"
+    HISTORY = "history"
+    RESOLVED = "resolved"
+
+
+class SymptomSeverity(StrEnum):
+    UNSPECIFIED = "unspecified"
+    MILD = "mild"
+    MODERATE = "moderate"
+    SEVERE = "severe"
+    CRITICAL = "critical"
+
+
+class RiskSignalSource(StrEnum):
+    SELF_REPORT = "self_report"
+    CLINICIAN = "clinician"
+    DEVICE = "device"
+    IMPORTED_RECORD = "imported_record"
+    LEGACY = "legacy"
 
 
 class RecommendationGoal(StrEnum):
@@ -78,6 +106,30 @@ class UserProfile(BaseModel):
     age: int = Field(ge=18, le=120)
     biological_sex: BiologicalSex
     pregnant: bool = False
+    height_cm: float | None = Field(default=None, gt=0, le=300)
+    weight_kg: float | None = Field(default=None, gt=0, le=500)
+
+
+class _StrictHealthInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class ConditionInput(_StrictHealthInput):
+    code: StructuredHealthCode
+    status: ConditionStatus = ConditionStatus.ACTIVE
+    display_name: str | None = Field(default=None, min_length=1, max_length=200)
+
+
+class SymptomInput(_StrictHealthInput):
+    code: StructuredHealthCode
+    severity: SymptomSeverity
+    duration_days: int | None = Field(default=None, ge=0, le=36500)
+
+
+class UrgentRiskSignal(_StrictHealthInput):
+    code: StructuredHealthCode
+    present: bool = True
+    source: RiskSignalSource = RiskSignalSource.SELF_REPORT
 
 
 class MedicationInput(BaseModel):
@@ -117,15 +169,34 @@ class RecommendationRequest(BaseModel):
     request_id: str = Field(default_factory=lambda: str(uuid4()))
     user_profile: UserProfile
     goals: list[RecommendationGoal] = Field(min_length=1)
-    symptoms: list[str] = Field(default_factory=list)
-    conditions: list[str] = Field(default_factory=list)
+    symptoms: list[str | SymptomInput] = Field(default_factory=list)
+    conditions: list[str | ConditionInput] = Field(default_factory=list)
     allergies: list[str] = Field(default_factory=list)
-    risk_flags: list[str] = Field(default_factory=list)
+    risk_flags: list[str | UrgentRiskSignal] = Field(default_factory=list)
     medications: list[MedicationInput] = Field(default_factory=list)
     current_supplements: list[SupplementInput] = Field(default_factory=list)
     lifestyle: LifestyleInput = Field(default_factory=LifestyleInput)
     input_availability: InputAvailability = Field(default_factory=InputAvailability)
     preferences: RecommendationPreferences = Field(default_factory=RecommendationPreferences)
+
+
+def normalize_health_input_code(
+    value: str | ConditionInput | SymptomInput | UrgentRiskSignal,
+) -> str:
+    raw_value = value if isinstance(value, str) else value.code
+    return " ".join(raw_value.strip().lower().split())
+
+
+def is_current_condition_input(value: str | ConditionInput) -> bool:
+    return not isinstance(value, ConditionInput) or value.status != ConditionStatus.RESOLVED
+
+
+def count_current_condition_inputs(values: list[str | ConditionInput]) -> int:
+    return sum(is_current_condition_input(value) for value in values)
+
+
+def has_current_condition_inputs(values: list[str | ConditionInput]) -> bool:
+    return any(is_current_condition_input(value) for value in values)
 
 
 class CitationReference(BaseModel):

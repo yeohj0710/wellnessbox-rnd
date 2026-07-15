@@ -9,6 +9,7 @@ from wellnessbox_rnd.schemas.recommendation import (
     NextAction,
     RecommendationGoal,
     RecommendationStatus,
+    count_current_condition_inputs,
 )
 
 if TYPE_CHECKING:
@@ -60,7 +61,9 @@ def build_policy_feature_dict_v1(
         "pregnant": float(record.request.user_profile.pregnant),
         "goal_count": float(len(record.request.goals)),
         "symptom_count": float(len(record.request.symptoms)),
-        "condition_count": float(len(record.request.conditions)),
+        "condition_count": float(
+            count_current_condition_inputs(record.request.conditions)
+        ),
         "medication_count": float(len(record.request.medications)),
         "current_supplement_count": float(len(record.request.current_supplements)),
         "max_products": float(record.request.preferences.max_products),

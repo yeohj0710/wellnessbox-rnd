@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-15 structured health-input contract loop
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen tasks: OP-011 biometric profile and OP-012 condition, symptom-severity, and urgent-risk contracts
+- Primary fixture: `data/samples/api_recommend_structured_health_input_request_v1.json`
+- Reused the existing age, biological-sex, pregnancy boolean, condition/symptom arrays, urgent-risk rules, and safety engine instead of creating a parallel request path.
+- Added bounded optional height and weight fields to `UserProfile`.
+- The existing `conditions`, `symptoms`, and `risk_flags` fields now accept either legacy strings or strict structured objects. Structured inputs retain condition status, symptom severity and duration, and urgent-signal presence and source.
+- One normalization path converts both formats into canonical detail records plus deterministic code sets and status maps. Symptom duration, condition display name, and explicitly absent risk-signal metadata remain available without rereading the heterogeneous request. Resolved conditions and absent risk signals do not activate safety, risk labels, model features, or learned-model guards.
+- The existing urgent chest-pain rule consumes a structured risk signal and stops recommendation generation with `trigger_safety_recheck`.
+- The original-plan CI now runs the health-input contract and inference API tests when their schemas, normalization, fixtures, or route examples change.
+- Current audited disposition after regeneration: complete `14`, partial `0`, pending `105`, external `1`, contradicted `0`.
+- Validation: original-plan and API contracts `42 passed`; broader recommendation and safety regressions `199 passed`; downstream model and synthetic compatibility tests `30 passed`; full Ruff, audit, and generated-report checks PASS.
+- Full suite: `477 passed`, `77 failed`. The failure set remains the known `73` absent ignored report artifacts and `4` CGM geometry assertions.
+- Official frozen-eval metric deltas: none. No model artifact, runtime deployment, or production service changed.
+
 ## 2026-07-15 original plan completion-report loop
 
 - Chosen stage: `original plan / evidence governance`
