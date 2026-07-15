@@ -3,9 +3,13 @@ from enum import StrEnum
 from typing import Annotated, Literal
 from uuid import uuid4
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
 
 StructuredHealthCode = Annotated[
+    str,
+    StringConstraints(strip_whitespace=True, min_length=1, max_length=128),
+]
+LegacyDoseText = Annotated[
     str,
     StringConstraints(strip_whitespace=True, min_length=1, max_length=128),
 ]
@@ -39,6 +43,17 @@ class RiskSignalSource(StrEnum):
     DEVICE = "device"
     IMPORTED_RECORD = "imported_record"
     LEGACY = "legacy"
+
+
+class DoseUnit(StrEnum):
+    GRAM = "g"
+    MILLIGRAM = "mg"
+    MICROGRAM = "mcg"
+    NANOGRAM = "ng"
+    MILLILITER = "mL"
+    INTERNATIONAL_UNIT = "IU"
+    TABLET = "tablet"
+    CAPSULE = "capsule"
 
 
 class RecommendationGoal(StrEnum):
@@ -132,15 +147,39 @@ class UrgentRiskSignal(_StrictHealthInput):
     source: RiskSignalSource = RiskSignalSource.SELF_REPORT
 
 
-class MedicationInput(BaseModel):
-    name: str = Field(min_length=1)
-    dose: str | None = None
+class DoseAmount(_StrictHealthInput):
+    amount: float = Field(gt=0, le=1_000_000)
+    unit: DoseUnit
 
 
-class SupplementInput(BaseModel):
-    name: str = Field(min_length=1)
-    dose: str | None = None
-    ingredients: list[str] = Field(default_factory=list)
+class MedicationClassification(_StrictHealthInput):
+    code: StructuredHealthCode
+    system: StructuredHealthCode = "local"
+    display_name: str | None = Field(default=None, min_length=1, max_length=200)
+
+
+class MedicationInput(_StrictHealthInput):
+    name: StructuredHealthCode
+    classification: MedicationClassification | None = None
+    dose: LegacyDoseText | DoseAmount | None = None
+
+
+class SupplementIngredientInput(_StrictHealthInput):
+    name: StructuredHealthCode
+    daily_dose: DoseAmount | None = None
+
+
+class SupplementInput(_StrictHealthInput):
+    name: StructuredHealthCode
+    dose: LegacyDoseText | None = None
+    daily_dose: DoseAmount | None = None
+    ingredients: list[LegacyDoseText | SupplementIngredientInput] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def reject_ambiguous_product_dose(self) -> "SupplementInput":
+        if self.dose is not None and self.daily_dose is not None:
+            raise ValueError("dose and daily_dose cannot both be provided")
+        return self
 
 
 class LifestyleInput(BaseModel):
@@ -184,6 +223,23 @@ def normalize_health_input_code(
     value: str | ConditionInput | SymptomInput | UrgentRiskSignal,
 ) -> str:
     raw_value = value if isinstance(value, str) else value.code
+    return " ".join(raw_value.strip().lower().split())
+
+
+def normalize_medication_classification_code(value: MedicationClassification) -> str:
+    return " ".join(value.code.strip().lower().split())
+
+
+def normalize_medication_classification_key(value: MedicationClassification) -> str:
+    system = " ".join(value.system.strip().lower().split())
+    code = normalize_medication_classification_code(value)
+    return f"{system}::{code}"
+
+
+def normalize_supplement_ingredient_name(
+    value: str | SupplementIngredientInput,
+) -> str:
+    raw_value = value if isinstance(value, str) else value.name
     return " ".join(raw_value.strip().lower().split())
 
 

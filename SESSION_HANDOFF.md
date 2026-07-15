@@ -1,5 +1,60 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 medication and supplement input-contract handoff
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen tasks: OP-013 and OP-014
+- Primary dataset path and case count: `data/samples/api_recommend_structured_safety_block_request_v1.json`; `1` representative API case plus focused compatibility, aggregation, conversion, ambiguity, and feature-path cases
+- Current requirement count: `120`; valid claims: `16`
+
+Files changed:
+
+- `src/wellnessbox_rnd/schemas/recommendation.py`
+- `src/wellnessbox_rnd/domain/intake.py`
+- `src/wellnessbox_rnd/safety/service.py`
+- `src/wellnessbox_rnd/models/efficacy_model_v0.py`
+- `src/wellnessbox_rnd/models/policy_model_v0.py`
+- `apps/inference_api/routes/recommend.py`
+- `data/samples/api_recommend_structured_safety_block_request_v1.json`
+- `tests/test_medication_supplement_input_contracts.py`
+- `tests/test_inference_api.py`
+- manifest, generated completion reports, workflow, completion ledger, and handoff documents
+
+Key changes:
+
+- Medication records carry a structured classification plus a bounded numeric dose and explicit unit; legacy dose strings still validate through the same request field.
+- Supplement records carry a product name, structured ingredients, ingredient-specific daily doses, and an optional product daily dose; legacy strings remain accepted.
+- Normalization retains canonical structured records and lookup sets without dropping uncatalogued terms used by the runtime knowledge DB.
+- Deterministic safety sums ingredient daily doses across products and converts `g`, `mg`, `mcg`, and vitamin D `IU` where the conversion is defined.
+- A product-level dose is assigned only when the input declares exactly one ingredient through an exact catalog alias. Fuzzy and compound text cannot assign a product dose to one ingredient. Supplying both the legacy product dose and structured product daily dose is rejected as ambiguous.
+- Existing medication-interaction rules and learned-model feature builders consume canonical values rather than Pydantic object representations.
+- Current generated status: complete `16`, partial `0`, pending `103`, external `1`, contradicted `0`.
+
+Validation:
+
+- focused original-plan workflow contracts: `58 passed`
+- broader requirement, knowledge, safety, and recommendation regressions: `258 passed`
+- full Ruff: PASS
+- manifest evidence audit: PASS; `16` claims, `42` unique evidence files, source hash matched, zero issues
+- generated completion-report stale check: PASS
+- full suite: `493 passed`, `77 failed`; failures remain in the known `73` missing report-artifact and `4` CGM geometry groups
+
+Official frozen-eval metric deltas: none.
+
+Biggest remaining bottlenecks:
+
+1. Dietary pattern and laboratory observation contracts are still incomplete.
+2. Consent scopes and deterministic normalized-input hashing are still incomplete.
+3. No lossless service profile adapter has been proven across both repositories.
+4. No deployed R&D FastAPI runtime or production `WB_RND_*` configuration exists.
+5. Missing ignored reports and stale CGM geometry keep the legacy full suite red.
+
+Recommended next loops:
+
+1. OP-015 and OP-016 dietary/lifestyle normalization and laboratory observations.
+2. OP-017 and OP-018 consent scopes and deterministic normalized-input hashing.
+3. OP-019 and OP-020 service adapter plus ambiguous-input rejection.
+
 ## 2026-07-15 structured health-input contract handoff
 
 - Chosen stage: `original plan / personal health inputs`

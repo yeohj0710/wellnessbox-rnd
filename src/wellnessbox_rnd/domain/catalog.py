@@ -41,6 +41,14 @@ def canonicalize_catalog_term(value: str) -> str | None:
     return _fuzzy_catalog_title_match(normalized, compact)
 
 
+def canonicalize_exact_catalog_term(value: str) -> str | None:
+    normalized = normalize_catalog_text(value)
+    if not normalized:
+        return None
+    alias_index = get_catalog_alias_index()
+    return alias_index.get(normalized) or alias_index.get(_compact_catalog_text(normalized))
+
+
 def normalize_catalog_text(value: str) -> str:
     collapsed = value.strip().lower().replace("_", " ").replace("-", " ")
     return " ".join(collapsed.split())

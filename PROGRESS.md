@@ -1,5 +1,22 @@
 # PROGRESS
 
+## 2026-07-15 medication and supplement input-contract loop
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen tasks: OP-013 medication classification and dose/unit contract; OP-014 current-supplement product, ingredient, and daily-dose contract
+- Primary fixture: `data/samples/api_recommend_structured_safety_block_request_v1.json`
+- Reused the existing `medications`, `current_supplements`, normalization, model-feature, and deterministic safety paths instead of adding a parallel intake API.
+- Medication input now accepts a strict classification object and either the existing legacy dose string or a numeric dose-unit object.
+- Supplement input now accepts a numeric product daily dose and ingredient objects with ingredient-specific daily doses while retaining the legacy product dose string and ingredient strings.
+- Normalized intake preserves canonical medication detail, classification codes, supplement products, ingredients, and typed doses. Existing unknown product and ingredient strings remain available for runtime knowledge matching.
+- The safety engine consumes normalized typed ingredient doses, sums the same ingredient across products, converts compatible mass and vitamin D IU units, and compares the total with the existing deterministic upper-limit rules.
+- Product-level doses are used only when the input declares exactly one ingredient through an exact catalog alias. Fuzzy matches and compound ingredient text cannot assign one product dose to a single ingredient.
+- Existing warfarin-glucosamine knowledge-rule behavior and legacy string dose requests remain compatible.
+- Current audited disposition after regeneration: complete `16`, partial `0`, pending `103`, external `1`, contradicted `0`.
+- Validation: focused original-plan workflow contracts `58 passed`; broader requirement, knowledge, safety, and recommendation regressions `258 passed`; full Ruff PASS; manifest audit and generated-report stale check PASS.
+- Full suite: `493 passed`, `77 failed`. The failure count remains the known `73` absent ignored report artifacts and `4` CGM geometry assertions.
+- Official frozen-eval metric deltas: none. No model artifact, dataset, runtime deployment, or production service changed.
+
 ## 2026-07-15 structured health-input contract loop
 
 - Chosen stage: `original plan / personal health inputs`

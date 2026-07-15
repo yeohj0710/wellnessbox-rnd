@@ -5,12 +5,15 @@ from typing import TYPE_CHECKING
 
 from pydantic import BaseModel, Field
 
+from wellnessbox_rnd.domain.catalog import canonicalize_catalog_term
 from wellnessbox_rnd.schemas.recommendation import (
     NextAction,
     RecommendationRequest,
     count_current_condition_inputs,
     is_current_condition_input,
     normalize_health_input_code,
+    normalize_medication_classification_key,
+    normalize_supplement_ingredient_name,
 )
 
 if TYPE_CHECKING:
@@ -133,9 +136,16 @@ def build_runtime_policy_feature_dict(
         features[f"condition::{normalize_health_input_code(condition)}"] = 1.0
     for medication in request.medications:
         features[f"medication::{medication.name.strip().lower()}"] = 1.0
+        if medication.classification is not None:
+            classification_key = normalize_medication_classification_key(
+                medication.classification
+            )
+            features[f"medication_classification::{classification_key}"] = 1.0
     for supplement in request.current_supplements:
         for ingredient in supplement.ingredients:
-            features[f"current_ingredient::{ingredient}"] = 1.0
+            ingredient_name = normalize_supplement_ingredient_name(ingredient)
+            ingredient_key = canonicalize_catalog_term(ingredient_name) or ingredient_name
+            features[f"current_ingredient::{ingredient_key}"] = 1.0
     for ingredient in baseline_recommendations:
         features[f"baseline_candidate::{ingredient}"] = 1.0
 

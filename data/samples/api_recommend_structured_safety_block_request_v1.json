@@ -11,13 +11,31 @@
     "low_sun_exposure"
   ],
   "conditions": [],
-  "medications": [],
+  "medications": [
+    {
+      "name": "Metformin",
+      "classification": {
+        "code": "A10BA02",
+        "system": "ATC",
+        "display_name": "Biguanides"
+      },
+      "dose": {
+        "amount": 500,
+        "unit": "mg"
+      }
+    }
+  ],
   "current_supplements": [
     {
       "name": "Daily Bone Softgel",
-      "dose": "125 mcg",
       "ingredients": [
-        "Vitamin D3"
+        {
+          "name": "Vitamin D3",
+          "daily_dose": {
+            "amount": 125,
+            "unit": "mcg"
+          }
+        }
       ]
     }
   ],

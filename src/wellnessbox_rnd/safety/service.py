@@ -1,6 +1,10 @@
 import re
 
-from wellnessbox_rnd.domain.catalog import canonicalize_catalog_term, get_catalog_index
+from wellnessbox_rnd.domain.catalog import (
+    canonicalize_catalog_term,
+    canonicalize_exact_catalog_term,
+    get_catalog_index,
+)
 from wellnessbox_rnd.domain.intake import NormalizedIntake
 from wellnessbox_rnd.domain.models import SafetyRuleMetadata
 from wellnessbox_rnd.knowledge.runtime_db import (
@@ -12,14 +16,20 @@ from wellnessbox_rnd.knowledge.runtime_db import (
 )
 from wellnessbox_rnd.safety.rules import get_safety_rule_set
 from wellnessbox_rnd.schemas.recommendation import (
+    DoseAmount,
     RecommendationStatus,
     RuleReference,
     SafetySummary,
     Severity,
+    SupplementIngredientInput,
     SupplementInput,
+    normalize_supplement_ingredient_name,
 )
 
-_DOSE_PATTERN = re.compile(r"(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>iu|mg|mcg|g)\b", re.IGNORECASE)
+_DOSE_PATTERN = re.compile(
+    r"(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>mcg|mg|ng|iu|g)\b",
+    re.IGNORECASE,
+)
 
 
 def assess_safety(intake: NormalizedIntake) -> SafetySummary:
@@ -184,7 +194,7 @@ def _find_triggered_dose_limits(
     }
     observed_amounts: dict[str, float] = {}
 
-    for supplement in intake.request.current_supplements:
+    for supplement in intake.normalized_current_supplements:
         for ingredient_key, normalized_amount in _extract_supplement_dose_observations(
             supplement=supplement,
             limits_by_ingredient=limits_by_ingredient,
@@ -213,17 +223,18 @@ def _extract_supplement_dose_observations(
     supplement: SupplementInput,
     limits_by_ingredient: dict[str, DoseLimitRecord],
 ) -> list[tuple[str, float]]:
-    structured_dose_observations = _extract_structured_supplement_dose_observations(
+    ingredient_observations = _extract_ingredient_daily_dose_observations(
         supplement=supplement,
         limits_by_ingredient=limits_by_ingredient,
     )
-    if structured_dose_observations:
-        return structured_dose_observations
-
-    ingredient_observations: list[tuple[str, float]] = []
-    for ingredient_text in supplement.ingredients:
+    for ingredient in supplement.ingredients:
+        if (
+            isinstance(ingredient, SupplementIngredientInput)
+            and ingredient.daily_dose is not None
+        ):
+            continue
         observation = _build_dose_observation(
-            source_text=ingredient_text,
+            source_text=normalize_supplement_ingredient_name(ingredient),
             limits_by_ingredient=limits_by_ingredient,
             evidence_source="ingredient_line",
         )
@@ -233,6 +244,13 @@ def _extract_supplement_dose_observations(
 
     if ingredient_observations:
         return ingredient_observations
+
+    product_daily_dose_observation = _extract_product_daily_dose_observation(
+        supplement=supplement,
+        limits_by_ingredient=limits_by_ingredient,
+    )
+    if product_daily_dose_observation is not None:
+        return [product_daily_dose_observation]
 
     title_observation = _build_dose_observation(
         source_text=supplement.name,
@@ -244,52 +262,122 @@ def _extract_supplement_dose_observations(
     return [title_observation]
 
 
-def _extract_structured_supplement_dose_observations(
+def _extract_ingredient_daily_dose_observations(
     *,
     supplement: SupplementInput,
     limits_by_ingredient: dict[str, DoseLimitRecord],
 ) -> list[tuple[str, float]]:
-    if not supplement.dose:
-        return []
+    observations: list[tuple[str, float]] = []
+    for ingredient in supplement.ingredients:
+        if not isinstance(ingredient, SupplementIngredientInput):
+            continue
+        if ingredient.daily_dose is None:
+            continue
+        ingredient_key = canonicalize_catalog_term(ingredient.name)
+        if ingredient_key is None or ingredient_key not in limits_by_ingredient:
+            continue
+        observation = _build_structured_dose_observation(
+            ingredient_key=ingredient_key,
+            dose=ingredient.daily_dose,
+            limits_by_ingredient=limits_by_ingredient,
+        )
+        if observation is not None:
+            observations.append(observation)
+    return observations
 
-    candidate_ingredient_keys = {
-        canonicalize_catalog_term(ingredient_text)
-        for ingredient_text in supplement.ingredients
-    }
-    candidate_ingredient_keys = {
-        ingredient_key
-        for ingredient_key in candidate_ingredient_keys
-        if ingredient_key and ingredient_key in limits_by_ingredient
-    }
-    if not candidate_ingredient_keys:
-        title_ingredient_key = canonicalize_catalog_term(supplement.name)
-        if title_ingredient_key and title_ingredient_key in limits_by_ingredient:
-            candidate_ingredient_keys = {title_ingredient_key}
 
-    if len(candidate_ingredient_keys) != 1:
-        return []
+def _extract_product_daily_dose_observation(
+    *,
+    supplement: SupplementInput,
+    limits_by_ingredient: dict[str, DoseLimitRecord],
+) -> tuple[str, float] | None:
+    ingredient_key = _single_product_dose_ingredient_key(
+        supplement=supplement,
+        limits_by_ingredient=limits_by_ingredient,
+    )
+    if ingredient_key is None:
+        return None
 
-    ingredient_key = next(iter(candidate_ingredient_keys))
-    if not _dose_evidence_source_allowed(
-        limits_by_ingredient[ingredient_key],
-        "structured_dose",
-    ):
-        return []
+    if supplement.daily_dose is not None:
+        return _build_structured_dose_observation(
+            ingredient_key=ingredient_key,
+            dose=supplement.daily_dose,
+            limits_by_ingredient=limits_by_ingredient,
+        )
+    if supplement.dose is None:
+        return None
 
     parsed_dose = _parse_supplement_amount(supplement.dose)
     if parsed_dose is None:
-        return []
-
+        return None
     amount, unit = parsed_dose
+    return _build_normalized_dose_observation(
+        ingredient_key=ingredient_key,
+        amount=amount,
+        unit=unit,
+        limits_by_ingredient=limits_by_ingredient,
+    )
+
+
+def _single_product_dose_ingredient_key(
+    *,
+    supplement: SupplementInput,
+    limits_by_ingredient: dict[str, DoseLimitRecord],
+) -> str | None:
+    declared_ingredient_keys = {
+        canonicalize_exact_catalog_term(normalize_supplement_ingredient_name(ingredient))
+        or normalize_supplement_ingredient_name(ingredient)
+        for ingredient in supplement.ingredients
+        if normalize_supplement_ingredient_name(ingredient)
+    }
+    if declared_ingredient_keys:
+        if len(declared_ingredient_keys) != 1:
+            return None
+        ingredient_key = next(iter(declared_ingredient_keys))
+        if ingredient_key not in limits_by_ingredient:
+            return None
+        return ingredient_key
+    else:
+        title_ingredient_key = canonicalize_exact_catalog_term(supplement.name)
+        if title_ingredient_key and title_ingredient_key in limits_by_ingredient:
+            return title_ingredient_key
+    return None
+
+
+def _build_structured_dose_observation(
+    *,
+    ingredient_key: str,
+    dose: DoseAmount,
+    limits_by_ingredient: dict[str, DoseLimitRecord],
+) -> tuple[str, float] | None:
+    return _build_normalized_dose_observation(
+        ingredient_key=ingredient_key,
+        amount=dose.amount,
+        unit=dose.unit.value,
+        limits_by_ingredient=limits_by_ingredient,
+    )
+
+
+def _build_normalized_dose_observation(
+    *,
+    ingredient_key: str,
+    amount: float,
+    unit: str,
+    limits_by_ingredient: dict[str, DoseLimitRecord],
+) -> tuple[str, float] | None:
+    dose_limit = limits_by_ingredient[ingredient_key]
+    if not _dose_evidence_source_allowed(dose_limit, "structured_dose"):
+        return None
+
     normalized_amount = _convert_amount_unit(
         amount=amount,
         unit=unit,
-        target_unit=limits_by_ingredient[ingredient_key].unit,
+        target_unit=dose_limit.unit,
         ingredient_key=ingredient_key,
     )
     if normalized_amount is None:
-        return []
-    return [(ingredient_key, normalized_amount)]
+        return None
+    return ingredient_key, normalized_amount
 
 
 def _build_dose_observation(
@@ -339,6 +427,7 @@ def _convert_amount_unit(
         return amount
 
     mass_scale_to_mg = {
+        "ng": 0.000001,
         "mcg": 0.001,
         "mg": 1.0,
         "g": 1000.0,
@@ -348,10 +437,13 @@ def _convert_amount_unit(
         return source_mg / mass_scale_to_mg[normalized_target]
 
     if ingredient_key == "vitamin_d3":
-        if normalized_unit == "mcg" and normalized_target == "iu":
-            return amount * 40.0
-        if normalized_unit == "iu" and normalized_target == "mcg":
-            return amount / 40.0
+        if normalized_unit in mass_scale_to_mg and normalized_target == "iu":
+            source_mcg = amount * mass_scale_to_mg[normalized_unit] / mass_scale_to_mg["mcg"]
+            return source_mcg * 40.0
+        if normalized_unit == "iu" and normalized_target in mass_scale_to_mg:
+            source_mcg = amount / 40.0
+            source_mg = source_mcg * mass_scale_to_mg["mcg"]
+            return source_mg / mass_scale_to_mg[normalized_target]
     return None
 
 

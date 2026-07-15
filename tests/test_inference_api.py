@@ -211,11 +211,29 @@ def test_openapi_schema_exposes_structured_current_supplement_dose_example() -> 
     assert response.status_code == 200
     supplement_schema = body["components"]["schemas"]["SupplementInput"]
     assert "dose" in supplement_schema["properties"]
+    assert "daily_dose" in supplement_schema["properties"]
+    medication_schema = body["components"]["schemas"]["MedicationInput"]
+    assert "classification" in medication_schema["properties"]
+    assert "dose" in medication_schema["properties"]
+    assert "DoseAmount" in body["components"]["schemas"]
+    assert "MedicationClassification" in body["components"]["schemas"]
+    assert "SupplementIngredientInput" in body["components"]["schemas"]
     request_body = body["paths"]["/v1/recommend"]["post"]["requestBody"]["content"][
         "application/json"
     ]
     assert "structured_current_supplement_dose" in request_body["examples"]
     assert "structured_start_plan_path" in request_body["examples"]
+    structured_example = request_body["examples"]["structured_current_supplement_dose"][
+        "value"
+    ]
+    assert structured_example["medications"][0]["classification"]["system"] == "ATC"
+    assert structured_example["medications"][0]["dose"] == {
+        "amount": 500,
+        "unit": "mg",
+    }
+    assert structured_example["current_supplements"][0]["ingredients"][0][
+        "daily_dose"
+    ] == {"amount": 125, "unit": "mcg"}
 
 
 def test_recommend_endpoint_accepts_structured_current_supplement_dose() -> None:

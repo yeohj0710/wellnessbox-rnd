@@ -6,15 +6,21 @@ from wellnessbox_rnd.domain.models import GoalContextRule
 from wellnessbox_rnd.schemas.recommendation import (
     ConditionInput,
     ConditionStatus,
+    MedicationInput,
     MissingInfoImportance,
     MissingInformationItem,
     RecommendationGoal,
     RecommendationRequest,
     RiskSignalSource,
+    SupplementIngredientInput,
+    SupplementInput,
     SymptomInput,
     SymptomSeverity,
     UrgentRiskSignal,
     normalize_health_input_code,
+    normalize_medication_classification_code,
+    normalize_medication_classification_key,
+    normalize_supplement_ingredient_name,
 )
 
 
@@ -32,7 +38,11 @@ class NormalizedIntake:
     normalized_risk_signals: list[UrgentRiskSignal]
     risk_flag_set: set[str]
     risk_signal_source_by_code: dict[str, RiskSignalSource]
+    normalized_medications: list[MedicationInput]
     medication_set: set[str]
+    medication_classification_set: set[str]
+    normalized_current_supplements: list[SupplementInput]
+    current_supplement_product_set: set[str]
     current_ingredient_set: set[str]
     avoid_ingredient_set: set[str]
     signal_flags: set[str]
@@ -54,11 +64,14 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
     normalized_risk_signals, risk_flag_set, risk_signal_source_by_code = (
         _normalize_risk_signals(request.risk_flags)
     )
-    medication_set = {_normalize_text(item.name) for item in request.medications}
-    current_ingredient_set = set()
-    for supplement in request.current_supplements:
-        current_ingredient_set.update(_normalize_catalog_inputs([supplement.name]))
-        current_ingredient_set.update(_normalize_catalog_inputs(supplement.ingredients))
+    normalized_medications, medication_set, medication_classification_set = (
+        _normalize_medication_inputs(request.medications)
+    )
+    (
+        normalized_current_supplements,
+        current_supplement_product_set,
+        current_ingredient_set,
+    ) = _normalize_supplement_inputs(request.current_supplements)
 
     avoid_ingredient_set = _normalize_catalog_inputs(request.preferences.avoid_ingredients)
     signal_flags = _derive_signal_flags(request, symptom_set=symptom_set)
@@ -92,7 +105,15 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
         normalized_risk_signals=normalized_risk_signals,
         risk_flag_set=risk_flag_set,
         risk_signal_source_by_code=risk_signal_source_by_code,
+        normalized_medications=normalized_medications,
         medication_set={item for item in medication_set if item},
+        medication_classification_set={
+            item for item in medication_classification_set if item
+        },
+        normalized_current_supplements=normalized_current_supplements,
+        current_supplement_product_set={
+            item for item in current_supplement_product_set if item
+        },
         current_ingredient_set={item for item in current_ingredient_set if item},
         avoid_ingredient_set={item for item in avoid_ingredient_set if item},
         signal_flags=signal_flags,
@@ -304,6 +325,76 @@ def _missing_info_sort_key(item: MissingInformationItem) -> tuple[int, str]:
 
 def _normalize_text(value: str) -> str:
     return " ".join(value.strip().lower().split())
+
+
+def _normalize_medication_inputs(
+    values: list[MedicationInput],
+) -> tuple[list[MedicationInput], set[str], set[str]]:
+    normalized_inputs: list[MedicationInput] = []
+    medication_set: set[str] = set()
+    classification_set: set[str] = set()
+    for value in values:
+        name = _normalize_text(value.name)
+        if not name:
+            continue
+        classification = value.classification
+        if classification is not None:
+            classification_code = normalize_medication_classification_code(classification)
+            classification = classification.model_copy(
+                update={
+                    "code": classification_code,
+                    "system": _normalize_text(classification.system),
+                }
+            )
+            classification_set.add(normalize_medication_classification_key(classification))
+        dose = value.dose.strip() if isinstance(value.dose, str) else value.dose
+        normalized_inputs.append(
+            value.model_copy(
+                update={
+                    "name": name,
+                    "classification": classification,
+                    "dose": dose,
+                }
+            )
+        )
+        medication_set.add(name)
+    return normalized_inputs, medication_set, classification_set
+
+
+def _normalize_supplement_inputs(
+    values: list[SupplementInput],
+) -> tuple[list[SupplementInput], set[str], set[str]]:
+    normalized_inputs: list[SupplementInput] = []
+    product_set: set[str] = set()
+    ingredient_set: set[str] = set()
+    for value in values:
+        product_name = _normalize_text(value.name)
+        normalized_ingredients: list[SupplementIngredientInput] = []
+        for ingredient in value.ingredients:
+            ingredient_name = normalize_supplement_ingredient_name(ingredient)
+            if not ingredient_name:
+                continue
+            normalized_ingredient = (
+                ingredient.model_copy(update={"name": ingredient_name})
+                if isinstance(ingredient, SupplementIngredientInput)
+                else SupplementIngredientInput(name=ingredient_name)
+            )
+            normalized_ingredients.append(normalized_ingredient)
+            ingredient_set.update(_normalize_catalog_inputs([ingredient_name]))
+
+        product_set.add(product_name)
+        ingredient_set.update(_normalize_catalog_inputs([product_name]))
+        dose = value.dose.strip() if value.dose is not None else None
+        normalized_inputs.append(
+            value.model_copy(
+                update={
+                    "name": product_name,
+                    "dose": dose,
+                    "ingredients": normalized_ingredients,
+                }
+            )
+        )
+    return normalized_inputs, product_set, ingredient_set
 
 
 def _normalize_symptom_inputs(

@@ -50,9 +50,10 @@ _RECOMMEND_REQUEST_EXAMPLES = {
         },
     },
     "structured_current_supplement_dose": {
-        "summary": "Structured current supplement dose",
+        "summary": "Structured medication and current supplement doses",
         "description": (
-            "Shows the bounded structured input path for current supplement dose capture."
+            "Shows medication classification and numeric dose-unit objects, plus an "
+            "ingredient-specific daily supplement dose used by deterministic safety rules."
         ),
         "value": {
             "user_profile": {
@@ -63,12 +64,26 @@ _RECOMMEND_REQUEST_EXAMPLES = {
             "goals": ["bone_joint"],
             "symptoms": ["low_sun_exposure"],
             "conditions": [],
-            "medications": [],
+            "medications": [
+                {
+                    "name": "Metformin",
+                    "classification": {
+                        "code": "A10BA02",
+                        "system": "ATC",
+                        "display_name": "Biguanides",
+                    },
+                    "dose": {"amount": 500, "unit": "mg"},
+                }
+            ],
             "current_supplements": [
                 {
                     "name": "Daily Bone Softgel",
-                    "dose": "125 mcg",
-                    "ingredients": ["Vitamin D3"],
+                    "ingredients": [
+                        {
+                            "name": "Vitamin D3",
+                            "daily_dose": {"amount": 125, "unit": "mcg"},
+                        }
+                    ],
                 }
             ],
             "lifestyle": {
