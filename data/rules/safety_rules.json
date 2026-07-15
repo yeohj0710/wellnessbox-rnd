@@ -11,6 +11,33 @@
       "blocked_reason": "Baseline survey input is required before recommendation can run."
     }
   ],
+  "risk_flag_rules": [
+    {
+      "risk_flags": [
+        "red_flag_chest_pain",
+        "red_flag_severe_abdominal_pain"
+      ],
+      "blocked_reason": "Urgent symptom input requires recommendation to stop.",
+      "metadata": {
+        "rule_id": "SAFETY-URGENT-SYMPTOM-001",
+        "message": "Urgent symptom input blocks supplement recommendation.",
+        "severity": "blocker",
+        "warning_text": "An urgent symptom was detected, so supplement recommendation stopped before candidate generation."
+      }
+    }
+  ],
+  "allergy_rules": [
+    {
+      "allergies": ["fish", "fish allergy"],
+      "excluded_ingredients": ["omega3"],
+      "metadata": {
+        "rule_id": "SAFETY-ALLERGY-FISH-001",
+        "message": "Fish allergy input requires conservative omega-3 exclusion.",
+        "severity": "warning",
+        "warning_text": "Fish allergy input was detected, so omega-3 was excluded conservatively."
+      }
+    }
+  ],
   "medication_rules": [
     {
       "medications": ["warfarin", "coumadin"],

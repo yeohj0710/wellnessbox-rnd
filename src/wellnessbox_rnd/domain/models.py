@@ -56,6 +56,18 @@ class ConditionExclusionRule(BaseModel):
     metadata: SafetyRuleMetadata
 
 
+class AllergyRule(BaseModel):
+    allergies: list[str] = Field(default_factory=list)
+    excluded_ingredients: list[str] = Field(default_factory=list)
+    metadata: SafetyRuleMetadata
+
+
+class RiskFlagRule(BaseModel):
+    risk_flags: list[str] = Field(default_factory=list)
+    blocked_reason: str
+    metadata: SafetyRuleMetadata
+
+
 class DoseLimitRule(BaseModel):
     ingredient_key: str
     max_daily_amount: float | None = None
@@ -81,6 +93,8 @@ class SafetyRuleSet(BaseModel):
     medication_rules: list[MedicationInteractionRule] = Field(default_factory=list)
     pregnancy_rule: PregnancyRule | None = None
     condition_rules: list[ConditionExclusionRule] = Field(default_factory=list)
+    allergy_rules: list[AllergyRule] = Field(default_factory=list)
+    risk_flag_rules: list[RiskFlagRule] = Field(default_factory=list)
     dose_limits: list[DoseLimitRule] = Field(default_factory=list)
     duplicate_overlap_rule: DuplicateOverlapRule | None = None
     goal_context_rules: dict[str, GoalContextRule] = Field(default_factory=dict)

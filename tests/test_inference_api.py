@@ -120,6 +120,43 @@ def test_recommend_endpoint_marks_review_when_warfarin_is_present() -> None:
     assert body["decision_summary"]["headline"] == "deterministic baseline result"
 
 
+def test_recommend_endpoint_excludes_omega3_for_fish_allergy() -> None:
+    payload = _load_sample_request("api_recommend_start_plan_request_v1.json")
+    payload["goals"] = ["heart_health"]
+    payload["symptoms"] = ["low_activity_tolerance"]
+    payload["allergies"] = ["fish"]
+
+    response = client.post("/v1/recommend", json=payload)
+    body = response.json()
+
+    assert response.status_code == 200
+    assert "omega3" in body["safety_summary"]["excluded_ingredients"]
+    assert any(
+        item["rule_id"] == "SAFETY-ALLERGY-FISH-001"
+        for item in body["safety_summary"]["rule_refs"]
+    )
+    assert all(
+        item["ingredient_key"] != "omega3" for item in body["recommendations"]
+    )
+
+
+def test_recommend_endpoint_blocks_urgent_risk_flag_before_recommendation() -> None:
+    payload = _load_sample_request("api_recommend_start_plan_request_v1.json")
+    payload["risk_flags"] = ["red_flag_chest_pain"]
+
+    response = client.post("/v1/recommend", json=payload)
+    body = response.json()
+
+    assert response.status_code == 200
+    assert body["status"] == "blocked"
+    assert body["recommendations"] == []
+    assert body["next_action"] == "trigger_safety_recheck"
+    assert any(
+        item["rule_id"] == "SAFETY-URGENT-SYMPTOM-001"
+        for item in body["safety_summary"]["rule_refs"]
+    )
+
+
 def test_recommend_endpoint_blocks_when_survey_input_is_missing() -> None:
     payload = {
         "user_profile": {

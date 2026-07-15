@@ -17,6 +17,8 @@ class NormalizedIntake:
     goal_set: set[RecommendationGoal]
     symptom_set: set[str]
     condition_set: set[str]
+    allergy_set: set[str]
+    risk_flag_set: set[str]
     medication_set: set[str]
     current_ingredient_set: set[str]
     avoid_ingredient_set: set[str]
@@ -31,6 +33,8 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
     goal_set = set(request.goals)
     symptom_set = {_normalize_text(item) for item in request.symptoms}
     condition_set = {_normalize_text(item) for item in request.conditions}
+    allergy_set = {_normalize_text(item) for item in request.allergies}
+    risk_flag_set = {_normalize_text(item) for item in request.risk_flags}
     medication_set = {_normalize_text(item.name) for item in request.medications}
     current_ingredient_set = set()
     for supplement in request.current_supplements:
@@ -61,6 +65,8 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
         goal_set=goal_set,
         symptom_set={item for item in symptom_set if item},
         condition_set={item for item in condition_set if item},
+        allergy_set={item for item in allergy_set if item},
+        risk_flag_set={item for item in risk_flag_set if item},
         medication_set={item for item in medication_set if item},
         current_ingredient_set={item for item in current_ingredient_set if item},
         avoid_ingredient_set={item for item in avoid_ingredient_set if item},

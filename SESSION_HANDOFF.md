@@ -1,5 +1,56 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 original plan completion handoff
+
+- Chosen stage: `original plan / safety input contract`
+- Chosen task: OP-031 allergy exclusion and OP-032 urgent-risk blocking
+- Primary dataset path and case count: `data/rules/safety_rules.json`; `2` new deterministic API cases
+- Repository topology: production does not run `C:/dev/wellnessbox` and `C:/dev/wellnessbox-rnd` together. `/tips` currently executes the service repository's local TypeScript lab runtime.
+
+Files changed:
+
+- R&D request, intake, rule, safety, and orchestration modules
+- R&D inference API tests and safety rule data
+- R&D Python 3.11-compatible sensor/genetic audit renderer
+- service R&D preview request type and forwarding QA
+- 120-step completion ledger and the three handoff documents
+
+Key changes:
+
+- `allergies` and `risk_flags` survive request parsing and normalization.
+- Fish allergy excludes `omega3` before candidates are returned.
+- Urgent symptom flags block all recommendations and select `trigger_safety_recheck`.
+- Service preview forwarding preserves both fields.
+- No data training, simulation regeneration, model promotion, order mutation, or deployment occurred.
+
+Validation:
+
+- `.venv-interim/Scripts/python.exe -m pytest tests/test_inference_api.py -q`: `10 passed`
+- sensor/genetic audit tests: `2 passed`
+- `.venv-interim/Scripts/python.exe -m ruff check .`: PASS
+- `npm run qa:rnd:preview-route`: PASS
+- `npx tsc --noEmit`: PASS
+- `npm run audit:encoding`: PASS
+- `git diff --check`: PASS in both repositories
+- `npm run build`: PASS
+- full R&D pytest: `445 passed, 77 failed, 68 warnings`; 73 missing ignored reports and 4 existing CGM geometry mismatches
+
+Official frozen-eval metric deltas: none. Replay and slice metrics were not changed.
+
+Biggest remaining bottlenecks:
+
+1. No deployed R&D FastAPI runtime or production `WB_RND_*` configuration exists.
+2. The original-plan ledger is not yet a machine-readable evidence manifest.
+3. The full profile, medication, supplement, laboratory, and consent contracts remain incomplete.
+4. Actual product catalog, stock, order, pharmacy, dispensing, and delivery feedback are not connected to the R&D runtime.
+5. Missing ignored reports and stale CGM geometry keep the full R&D suite red.
+
+Recommended next loops:
+
+1. OP-006 and OP-007 machine-readable requirement/evidence manifest.
+2. OP-008 through OP-010 evidence audit and generated completion report.
+3. OP-011 through OP-020 structured profile/consent contract and cross-repository adapter.
+
 ## 2026-07-14 verified replay-input restoration handoff
 
 - Stage: `P3/P4 replay evidence reproducibility`

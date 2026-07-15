@@ -3756,7 +3756,9 @@ def _has_structured_safety_blocker(safety_summary: SafetySummary) -> bool:
     return any(
         rule.severity == Severity.BLOCKER
         and (
-            rule.source == "knowledge_artifact" or rule.rule_id.startswith("SAFETY-DOSE-")
+            rule.source == "knowledge_artifact"
+            or rule.rule_id.startswith("SAFETY-DOSE-")
+            or rule.rule_id.startswith("SAFETY-URGENT-")
         )
         for rule in safety_summary.rule_refs
     )

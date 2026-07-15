@@ -1,5 +1,23 @@
 # PROGRESS
 
+## 2026-07-15 original plan completion loop 1
+
+- Chosen stage: `original plan / safety input contract`
+- Chosen task: implement deterministic allergy exclusion and urgent-risk blocking across the R&D and service request contracts
+- Primary rule dataset: `data/rules/safety_rules.json`
+- Case count: `2` new deterministic API scenarios
+- Production topology finding: `wellnessbox` and `wellnessbox-rnd` do not currently run together. The production `/tips` page uses the service repository's TypeScript lab runtime, and the R&D FastAPI proxy remains disabled and undeployed.
+- Added `allergies` and `risk_flags` to `RecommendationRequest`, normalized both inputs, and added version-controlled rule models.
+- A fish allergy now excludes `omega3` before recommendation output.
+- Chest pain and severe abdominal pain flags now block recommendation and return `trigger_safety_recheck`.
+- The `wellnessbox` preview client forwards both fields without changing the existing fallback contract.
+- Fixed one pre-existing Python 3.11 compatibility defect in the sensor/genetic audit Markdown renderer.
+- Focused R&D result: `10 passed` for `tests/test_inference_api.py`; sensor/genetic audit `2 passed`; full Ruff PASS.
+- Service result: preview-route QA PASS, TypeScript PASS, encoding audit PASS, production build PASS.
+- Full legacy R&D suite: `445 passed, 77 failed, 68 warnings`.
+- Full-suite failure root causes: `73` tests require absent ignored `artifacts/reports/**` files; `4` tests assert stale CGM geometry. Disabling the new safety rules produced the same CGM distribution, so the safety contract did not cause that drift.
+- Official frozen-eval metric deltas: none. No training, learned-model promotion, KPI substitution, or production R&D deployment occurred.
+
 ## 2026-07-14 verified replay-input restoration loop
 
 - Chosen stage: `P3/P4 replay evidence reproducibility`

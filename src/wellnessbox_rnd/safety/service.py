@@ -30,6 +30,12 @@ def assess_safety(intake: NormalizedIntake) -> SafetySummary:
     excluded_ingredients: set[str] = set(intake.avoid_ingredient_set)
     rule_refs: list[RuleReference] = []
 
+    for risk_flag_rule in rules.risk_flag_rules:
+        if set(risk_flag_rule.risk_flags).intersection(intake.risk_flag_set):
+            _append_unique_text(blocked_reasons, risk_flag_rule.blocked_reason)
+            _append_unique_text(warnings, risk_flag_rule.metadata.warning_text)
+            rule_refs.append(_build_rule_ref(risk_flag_rule.metadata))
+
     for input_rule in rules.input_requirements:
         if _required_input_missing(input_rule.input_key, intake):
             blocked_reasons.append(input_rule.blocked_reason)
@@ -51,6 +57,12 @@ def assess_safety(intake: NormalizedIntake) -> SafetySummary:
             excluded_ingredients.update(condition_rule.excluded_ingredients)
             _append_unique_text(warnings, condition_rule.metadata.warning_text)
             rule_refs.append(_build_rule_ref(condition_rule.metadata))
+
+    for allergy_rule in rules.allergy_rules:
+        if set(allergy_rule.allergies).intersection(intake.allergy_set):
+            excluded_ingredients.update(allergy_rule.excluded_ingredients)
+            _append_unique_text(warnings, allergy_rule.metadata.warning_text)
+            rule_refs.append(_build_rule_ref(allergy_rule.metadata))
 
     for dose_limit, observed_amount in _find_triggered_dose_limits(intake, runtime_knowledge_db):
         excluded_ingredients.add(dose_limit.ingredient_key)

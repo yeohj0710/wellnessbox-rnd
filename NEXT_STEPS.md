@@ -1,5 +1,19 @@
 # NEXT_STEPS
 
+## 2026-07-15 original plan completion program
+
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`. OP-031 and OP-032 are complete. Do not mark OP-015 complete until dietary-pattern input is implemented and tested.
+
+Next three loops:
+
+1. Implement OP-006 and OP-007: create the machine-readable original-plan requirement manifest and its `IMPLEMENTED`, `INTEGRATED`, `OPERATED`, and `EXTERNAL` evidence schema.
+2. Implement OP-008 through OP-010: reject unsupported completion claims, connect the audit to pytest, and generate the completion report from the manifest.
+3. Implement OP-011 through OP-020 in bounded slices: complete the health-profile and consent contract, then add the lossless `wellnessbox` profile-to-R&D adapter.
+
+Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
+
+The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
+
 ## 2026-07-14 verified restoration path
 
 The human approval sequence was completed, and a fail-closed restoration command now exists. The next

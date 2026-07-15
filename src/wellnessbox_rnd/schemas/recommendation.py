@@ -119,6 +119,8 @@ class RecommendationRequest(BaseModel):
     goals: list[RecommendationGoal] = Field(min_length=1)
     symptoms: list[str] = Field(default_factory=list)
     conditions: list[str] = Field(default_factory=list)
+    allergies: list[str] = Field(default_factory=list)
+    risk_flags: list[str] = Field(default_factory=list)
     medications: list[MedicationInput] = Field(default_factory=list)
     current_supplements: list[SupplementInput] = Field(default_factory=list)
     lifestyle: LifestyleInput = Field(default_factory=LifestyleInput)

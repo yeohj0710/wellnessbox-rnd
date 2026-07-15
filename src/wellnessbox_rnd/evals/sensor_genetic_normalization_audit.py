@@ -230,6 +230,11 @@ def render_sensor_genetic_normalization_audit_markdown(
     frozen_eval_category_join = _as_dict(audit.get("frozen_eval_category_join"))
     direct_cgm_case_family_join = _as_dict(audit.get("direct_cgm_case_family_join"))
     readable_summary = _as_dict(audit.get("readable_summary"))
+    integration_rate_linkage_status = _nested(
+        readable_summary,
+        "bridge_and_metric_digest",
+        "sensor_genetic_integration_rate_linkage_status",
+    )
     lines = [
         "# sensor genetic normalization audit v1",
         "",
@@ -238,11 +243,7 @@ def render_sensor_genetic_normalization_audit_markdown(
         f"- normalization_path_status: `{readable_summary.get('normalization_path_status')}`",
         (
             "- sensor_genetic_integration_rate_linkage_status: "
-            f"`{_nested(
-                readable_summary,
-                'bridge_and_metric_digest',
-                'sensor_genetic_integration_rate_linkage_status',
-            )}`"
+            f"`{integration_rate_linkage_status}`"
         ),
         (
             "- component_coverage_matrix: "
