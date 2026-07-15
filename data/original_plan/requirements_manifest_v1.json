@@ -77,7 +77,18 @@
             "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
           }
         },
-        {"requirement_id": "OP-008", "title": "증거가 없는 완료 표기를 거부하는 manifest 감사기를 만든다."},
+        {
+          "requirement_id": "OP-008",
+          "title": "증거가 없는 완료 표기를 거부하는 manifest 감사기를 만든다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/governance/original_plan_audit.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/governance/__init__.py"
+            ],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_audit.py"]
+          }
+        },
         {"requirement_id": "OP-009", "title": "manifest 감사를 pytest와 CI 명령에 연결한다."},
         {"requirement_id": "OP-010", "title": "원본 요구사항 100% 감사 보고서를 manifest에서 자동 생성한다."}
       ]

@@ -1,5 +1,48 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 original plan evidence-audit handoff
+
+- Chosen stage: `original plan / evidence governance`
+- Chosen task: OP-008
+- Primary dataset path and case count: `data/original_plan/requirements_manifest_v1.json`; `120` requirements, `10` claimed
+
+Files changed:
+
+- `src/wellnessbox_rnd/governance/original_plan_audit.py`
+- `src/wellnessbox_rnd/governance/__init__.py`
+- `tests/test_original_plan_audit.py`
+- requirement manifest, completion ledger, and handoff documents
+
+Key changes:
+
+- Completion evidence is resolved against explicit `wellnessbox-rnd` and `wellnessbox` roots.
+- Evidence outside the declared owner repository, outside the repository root, absent from disk, or absent from `git ls-files` fails the audit.
+- The stored original-plan hash is recomputed from `docs/context/original_plan.pdf`.
+- OP-008 is the tenth claimed requirement; no partial feature was promoted.
+
+Validation:
+
+- manifest and audit tests: `13 passed`
+- full Ruff: PASS
+- `git diff --check`: PASS
+- live manifest audit: PASS; `120` requirements, `10` claims, `17` unique evidence files, zero issues, PDF hash match
+
+Official frozen-eval metric deltas: none.
+
+Biggest remaining bottlenecks:
+
+1. The audit is not yet exposed as a repository command or CI gate.
+2. The completion report is not generated from the audited manifest.
+3. No deployed R&D FastAPI runtime or production `WB_RND_*` configuration exists.
+4. Full profile, consent, product, order, pharmacy, and delivery contracts remain incomplete.
+5. Missing ignored reports and stale CGM geometry keep the full R&D suite red.
+
+Recommended next loops:
+
+1. OP-009 deterministic audit command and CI gate.
+2. OP-010 generated Korean completion report.
+3. OP-011 and OP-012 biometric profile and symptom-severity contracts.
+
 ## 2026-07-15 original plan evidence-manifest handoff
 
 - Chosen stage: `original plan / evidence governance`

@@ -1,5 +1,18 @@
 # PROGRESS
 
+## 2026-07-15 original plan evidence-audit loop
+
+- Chosen stage: `original plan / evidence governance`
+- Chosen task: OP-008 verify completion claims against current repositories
+- Primary dataset: `data/original_plan/requirements_manifest_v1.json`
+- Case count: `120` requirements; `10` current claims
+- Added a deterministic audit report with PASS/FAIL status, claimed-stage counts, checked evidence count, source-hash result, and structured issue codes.
+- The audit verifies repository ownership, path containment, file existence, Git tracking, original PDF SHA-256, completion-program presence, and stage-specific evidence requirements.
+- Added negative tests for missing evidence, ownership mismatch, repository path escape, untracked evidence, and source hash mismatch.
+- Current claim count advances from `9/120` to `10/120` only because OP-008 now has tracked implementation and test evidence. The other `110` requirements remain unclaimed.
+- Focused result: manifest and audit tests `13 passed`; full Ruff PASS; live audit PASS with `17` unique evidence files and zero issues.
+- Official frozen-eval metric deltas: none. No runtime recommendation, model, dataset, order path, or production deployment changed.
+
 ## 2026-07-15 original plan evidence-manifest loop
 
 - Chosen stage: `original plan / evidence governance`

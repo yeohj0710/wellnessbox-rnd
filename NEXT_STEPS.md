@@ -6,11 +6,11 @@ The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-compl
 
 Next three loops:
 
-1. Implement OP-008: verify claimed evidence paths, original-plan hash, repository ownership, and stage-specific evidence rather than trusting manifest strings.
-2. Implement OP-009: expose the evidence audit as a deterministic command and connect it to pytest and repository CI.
-3. Implement OP-010: generate a Korean completion report listing complete, partial, pending, external, and contradicted requirements directly from the validated manifest.
+1. Implement OP-009: expose the evidence audit as a deterministic command and connect it to pytest and repository CI.
+2. Implement OP-010: generate a Korean completion report listing complete, partial, pending, external, and contradicted requirements directly from the validated manifest.
+3. Start OP-011 and OP-012: complete the biometric profile, structured symptom severity, and urgent-risk input contracts without duplicating the existing safety fields.
 
-After OP-008 through OP-010, implement OP-011 through OP-020 in bounded slices: complete the health-profile and consent contract, then add the lossless `wellnessbox` profile-to-R&D adapter.
+After OP-009 and OP-010, continue OP-011 through OP-020 in bounded slices and add the lossless `wellnessbox` profile-to-R&D adapter.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 
