@@ -101,7 +101,18 @@
             "test_files": ["wellnessbox-rnd/tests/test_original_plan_audit_cli.py"]
           }
         },
-        {"requirement_id": "OP-010", "title": "원본 요구사항 100% 감사 보고서를 manifest에서 자동 생성한다."}
+        {
+          "requirement_id": "OP-010",
+          "title": "원본 요구사항 100% 감사 보고서를 manifest에서 자동 생성한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/governance/original_plan_report.py",
+              "wellnessbox-rnd/scripts/build_original_plan_completion_report.py"
+            ],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_completion_report.py"]
+          }
+        }
       ]
     },
     {

@@ -41,7 +41,7 @@
 - [x] **OP-007** `IMPLEMENTED`, `INTEGRATED`, `OPERATED`, `EXTERNAL` 판정 스키마를 Pydantic 모델로 고정한다.
 - [x] **OP-008** manifest에서 증거 없는 완료 표기를 거부하는 감사 스크립트를 만든다.
 - [x] **OP-009** 감사 스크립트를 pytest와 CI 명령에 연결한다.
-- [ ] **OP-010** 원본 요구사항 100% 감사 보고서를 manifest에서 자동 생성한다.
+- [x] **OP-010** 원본 요구사항 100% 감사 보고서를 manifest에서 자동 생성한다.
 
 ### B. 개인 건강 입력과 동의 계약
 

@@ -1,5 +1,51 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 original plan completion-report handoff
+
+- Chosen stage: `original plan / evidence governance`
+- Chosen task: OP-010
+- Primary dataset path and case count: `data/original_plan/requirements_manifest_v1.json`; `120` requirements, `12` claimed
+
+Files changed:
+
+- `src/wellnessbox_rnd/governance/original_plan_report.py`
+- `scripts/build_original_plan_completion_report.py`
+- `tests/test_original_plan_completion_report.py`
+- `docs/original_plan/completion_status_v1.json`
+- `docs/original_plan/COMPLETION_STATUS.md`
+- workflow, manifest, completion ledger, and handoff documents
+
+Key changes:
+
+- The report builder consumes the validated manifest plus the real evidence audit and emits all 120 requirements.
+- Statuses are complete, partial, pending, external, and contradicted; missing claims never become complete.
+- Broken evidence downgrades a claim to contradicted, and a common source/manifest audit failure invalidates current completion claims.
+- A canonical manifest SHA-256 binds each report to the exact manifest content that the audit checked; stale audit objects are rejected.
+- `--check` compares normalized text content exactly so CI rejects stale committed reports across LF and CRLF checkouts.
+- OP-010 is the twelfth valid claim. Current counts are complete `12`, partial `0`, pending `107`, external `1`, contradicted `0`.
+
+Validation:
+
+- manifest, audit, CLI, and completion-report tests: `25 passed`
+- full Ruff: PASS
+- normal generation and stale-output check: PASS
+- full suite: `470 passed`, `77 failed`; all failures remain in the known `73` missing report-artifact and `4` CGM geometry groups
+
+Official frozen-eval metric deltas: none.
+
+Biggest remaining bottlenecks:
+
+1. Structured biometric, symptom-severity, medication-dose, supplement-dose, laboratory, and consent contracts remain incomplete.
+2. No deployed R&D FastAPI runtime or production `WB_RND_*` configuration exists.
+3. The current audited report proves only `12/120` requirements complete; it does not claim the original plan is fully implemented.
+4. Missing ignored reports and stale CGM geometry keep the full R&D suite red.
+
+Recommended next loops:
+
+1. OP-011 and OP-012 biometric profile and symptom-severity contracts.
+2. OP-013 and OP-014 medication and supplement dose/unit contracts.
+3. OP-015 and OP-016 dietary/lifestyle normalization and laboratory observations.
+
 ## 2026-07-15 original plan audit-command and CI handoff
 
 - Chosen stage: `original plan / evidence governance`

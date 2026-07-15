@@ -1,5 +1,19 @@
 # PROGRESS
 
+## 2026-07-15 original plan completion-report loop
+
+- Chosen stage: `original plan / evidence governance`
+- Chosen task: OP-010 generate the full requirement-status report from audited evidence
+- Primary dataset: `data/original_plan/requirements_manifest_v1.json`
+- Case count: `120` requirements; `12` valid completion claims
+- Added deterministic JSON and Korean Markdown reports covering every OP-001 through OP-120 requirement.
+- The generator classifies requirements as complete, partial, pending, external, or contradicted. A broken requirement-level evidence claim becomes contradicted; a common source or manifest audit failure invalidates every existing completion claim. The audit embeds a canonical manifest SHA-256, and the report rejects an audit produced from different manifest content.
+- CI now checks that both committed report artifacts exactly match the current manifest and evidence audit.
+- Current audited disposition: complete `12`, partial `0`, pending `107`, external `1`, contradicted `0`.
+- Focused validation: `25 passed`; full Ruff PASS; generator and stale-output checks PASS.
+- Full suite: `470 passed`, `77 failed`. The unchanged failures are `73` absent ignored report-artifact checks and `4` existing CGM geometry assertions; no OP-010 test failed.
+- Official frozen-eval metric deltas: none. No runtime or production deployment changed.
+
 ## 2026-07-15 original plan audit-command and CI loop
 
 - Chosen stage: `original plan / evidence governance`

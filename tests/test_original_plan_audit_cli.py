@@ -26,7 +26,7 @@ def test_original_plan_audit_cli_returns_zero_for_current_manifest() -> None:
     assert result.returncode == 0
     assert report["status"] == "PASS"
     assert report["requirement_count"] == 120
-    assert report["claimed_requirement_count"] == 11
+    assert report["claimed_requirement_count"] == 12
     assert report["issues"] == []
 
 
@@ -61,3 +61,7 @@ def test_original_plan_audit_workflow_runs_cli_and_contract_tests() -> None:
     assert "tests/test_original_plan_manifest.py" in workflow
     assert "tests/test_original_plan_audit.py" in workflow
     assert "tests/test_original_plan_audit_cli.py" in workflow
+    assert "python scripts/build_original_plan_completion_report.py --check" in workflow
+    assert "tests/test_original_plan_completion_report.py" in workflow
+    assert workflow.count('"docs/original_plan/**"') == 2
+    assert workflow.count('"tests/test_original_plan_completion_report.py"') == 2

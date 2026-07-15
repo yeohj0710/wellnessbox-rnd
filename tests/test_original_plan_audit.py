@@ -8,6 +8,7 @@ from wellnessbox_rnd.governance.original_plan_audit import (
 )
 from wellnessbox_rnd.schemas.original_plan_manifest import (
     RepositoryName,
+    calculate_original_plan_manifest_sha256_v1,
     load_original_plan_manifest_v1,
 )
 
@@ -37,7 +38,10 @@ def test_original_plan_audit_accepts_current_claimed_evidence() -> None:
 
     assert report.status == OriginalPlanAuditStatus.PASS
     assert report.requirement_count == 120
-    assert report.claimed_requirement_count == 11
+    assert report.claimed_requirement_count == 12
+    assert report.manifest_sha256 == calculate_original_plan_manifest_sha256_v1(
+        _manifest_copy()
+    )
     assert report.source_hash_matches is True
     assert report.checked_evidence_file_count > 0
     assert report.issues == []
@@ -57,6 +61,23 @@ def test_original_plan_audit_rejects_missing_evidence_file() -> None:
 
     assert any(
         issue.code == "evidence_file_missing"
+        and issue.requirement_id == "OP-031"
+        for issue in report.issues
+    )
+
+
+def test_original_plan_audit_attributes_contract_violation_to_requirement() -> None:
+    manifest = _manifest_copy()
+    requirement = _draft_by_id(manifest, "OP-031")
+    requirement.evidence.test_files = []
+
+    report = audit_original_plan_manifest_v1(
+        manifest,
+        repository_roots=REPO_ROOTS,
+    )
+
+    assert any(
+        issue.code == "manifest_contract_violation"
         and issue.requirement_id == "OP-031"
         for issue in report.issues
     )

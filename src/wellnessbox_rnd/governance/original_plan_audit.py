@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 import subprocess
 from collections.abc import Mapping
 from enum import StrEnum
@@ -13,6 +14,7 @@ from wellnessbox_rnd.schemas.original_plan_manifest import (
     OriginalPlanManifestV1,
     OriginalPlanRequirementV1,
     RepositoryName,
+    calculate_original_plan_manifest_sha256_v1,
     materialize_original_plan_requirements_v1,
     validate_original_plan_manifest_v1,
 )
@@ -38,6 +40,7 @@ class OriginalPlanAuditReportV1(BaseModel):
 
     status: OriginalPlanAuditStatus
     manifest_schema_version: str
+    manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     requirement_count: int
     claimed_requirement_count: int
     claimed_stage_counts: dict[EvidenceStage, int] = Field(default_factory=dict)
@@ -63,9 +66,13 @@ def audit_original_plan_manifest_v1(
     issues = list(tracking_issues)
 
     for contract_issue in validate_original_plan_manifest_v1(manifest):
+        requirement_match = re.match(r"^(OP-\d{3}):", contract_issue)
         issues.append(
             OriginalPlanAuditIssueV1(
                 code="manifest_contract_violation",
+                requirement_id=(
+                    requirement_match.group(1) if requirement_match is not None else None
+                ),
                 detail=contract_issue,
             )
         )
@@ -107,6 +114,7 @@ def audit_original_plan_manifest_v1(
     return OriginalPlanAuditReportV1(
         status=(OriginalPlanAuditStatus.PASS if not issues else OriginalPlanAuditStatus.FAIL),
         manifest_schema_version=manifest.schema_version,
+        manifest_sha256=calculate_original_plan_manifest_sha256_v1(manifest),
         requirement_count=len(requirements),
         claimed_requirement_count=len(claimed_requirements),
         claimed_stage_counts=claimed_stage_counts,

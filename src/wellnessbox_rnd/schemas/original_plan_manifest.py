@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from enum import StrEnum
 from pathlib import Path
@@ -82,6 +83,18 @@ def load_original_plan_manifest_v1(
 ) -> OriginalPlanManifestV1:
     payload = json.loads(Path(path).read_text(encoding="utf-8"))
     return OriginalPlanManifestV1.model_validate(payload)
+
+
+def calculate_original_plan_manifest_sha256_v1(
+    manifest: OriginalPlanManifestV1,
+) -> str:
+    canonical_payload = json.dumps(
+        manifest.model_dump(mode="json"),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(canonical_payload).hexdigest()
 
 
 def materialize_original_plan_requirements_v1(
