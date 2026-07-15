@@ -1,5 +1,60 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 diet, lifestyle, and laboratory input-contract handoff
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen tasks: OP-015 and OP-016
+- Primary dataset path and case count: `data/samples/api_recommend_diet_lifestyle_lab_request_v1.json`; `1` representative API case with `2` timestamped laboratory observations plus focused validation and compatibility cases
+- Current requirement count: `120`; valid claims: `18`
+
+Files changed:
+
+- `src/wellnessbox_rnd/schemas/recommendation.py`
+- `src/wellnessbox_rnd/domain/intake.py`
+- `src/wellnessbox_rnd/models/efficacy_model_v0.py`
+- `src/wellnessbox_rnd/models/policy_model_v0.py`
+- `apps/inference_api/routes/recommend.py`
+- `data/samples/api_recommend_diet_lifestyle_lab_request_v1.json`
+- `tests/test_diet_lifestyle_lab_input_contracts.py`
+- manifest, generated completion reports, workflow, completion ledger, and handoff documents
+
+Key changes:
+
+- Allergy strings share one sorted lowercase-whitespace normalization path and retain a normalized list plus lookup set.
+- Dietary patterns accept legacy strings or strict objects, deduplicate by normalized code, and preserve the richer display name when a duplicate structured record exists.
+- Lifestyle input adds bounded `exercise_minutes_per_week` and `caffeine_mg_per_day` fields without changing existing defaults.
+- Laboratory observations require code, finite non-boolean value, unit, at least one reference-range bound, and a timezone-aware measurement time. New exercise and caffeine fields also reject boolean coercion. Invalid ranges, naive times, and non-finite values fail validation.
+- Normalization canonicalizes common laboratory units and ASCII/Unicode micro prefixes, converts timestamps to UTC, retains the full observation list, selects the latest value per code, and records low/within-range/high status. Conflicting records at the same normalized code and UTC time fail request validation and return API `422`.
+- Allergy, diet, exercise, caffeine, laboratory code/unit/status features reach both existing learned-model feature dictionaries. Existing artifacts ignore unknown new feature names, preserving current replay behavior.
+- Relevant glucose and lipid observations satisfy existing missing-context checks. Frozen requests without the new fields keep their previous outputs.
+- Current generated status: complete `18`, partial `0`, pending `101`, external `1`, contradicted `0`.
+
+Validation:
+
+- focused original-plan workflow contracts: `68 passed`
+- expanded core regressions: `311 passed`, `2 failed`; both failures are documented legacy cases, one missing ignored report and one CGM geometry assertion
+- full Ruff: PASS
+- manifest evidence audit: PASS; `18` claims, `44` unique evidence files, source hash matched, zero issues
+- generated completion-report stale check: PASS
+- full suite: `503 passed`, `77 failed`; failures remain in the known `73` missing report-artifact and `4` CGM geometry groups
+- frozen eval: `256` cases; all seven metrics match the previously recorded current values exactly
+
+Official frozen-eval metric deltas: all `0`.
+
+Biggest remaining bottlenecks:
+
+1. Consent scopes and deterministic normalized-input hashing are incomplete.
+2. No lossless service profile adapter has been proven across both repositories.
+3. Versioned profile/consent snapshots and shared execution IDs are not persisted.
+4. No deployed R&D FastAPI runtime or production `WB_RND_*` configuration exists.
+5. Missing ignored reports and stale CGM geometry keep the legacy full suite red.
+
+Recommended next loops:
+
+1. OP-017 and OP-018 consent scopes and deterministic normalized-input hashing.
+2. OP-019 and OP-020 service adapter plus ambiguous-input rejection.
+3. OP-021 and OP-022 profile/consent persistence and shared execution IDs.
+
 ## 2026-07-15 medication and supplement input-contract handoff
 
 - Chosen stage: `original plan / personal health inputs`

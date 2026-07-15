@@ -53,9 +53,9 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
 
     assert report.requirement_count == 120
     assert report.disposition_counts == {
-        CompletionDisposition.COMPLETE: 16,
+        CompletionDisposition.COMPLETE: 18,
         CompletionDisposition.PARTIAL: 0,
-        CompletionDisposition.PENDING: 103,
+        CompletionDisposition.PENDING: 101,
         CompletionDisposition.EXTERNAL: 1,
         CompletionDisposition.CONTRADICTED: 0,
     }
@@ -63,6 +63,8 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
     assert _completion_by_id(report, "OP-011").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-013").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-014").disposition == CompletionDisposition.COMPLETE
+    assert _completion_by_id(report, "OP-015").disposition == CompletionDisposition.COMPLETE
+    assert _completion_by_id(report, "OP-016").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-039").disposition == CompletionDisposition.EXTERNAL
 
 
@@ -127,7 +129,7 @@ def test_global_source_failure_invalidates_every_existing_completion_claim() -> 
     report = build_original_plan_completion_report_v1(manifest, audit)
 
     assert report.disposition_counts[CompletionDisposition.COMPLETE] == 0
-    assert report.disposition_counts[CompletionDisposition.CONTRADICTED] == 16
+    assert report.disposition_counts[CompletionDisposition.CONTRADICTED] == 18
     assert "original_plan_sha256_mismatch" in report.global_audit_issues
 
 
@@ -139,8 +141,8 @@ def test_markdown_uses_audited_korean_status_language() -> None:
     markdown = render_original_plan_completion_report_markdown_v1(report)
 
     assert "원계획 요구사항 포함: **120/120건**" in markdown
-    assert "| 완료 | 16 |" in markdown
-    assert "| 대기 | 103 |" in markdown
+    assert "| 완료 | 18 |" in markdown
+    assert "| 대기 | 101 |" in markdown
     assert "전체 완료: **100%**" not in markdown
 
 
@@ -182,5 +184,5 @@ def test_report_cli_writes_and_checks_deterministic_artifacts(tmp_path: Path) ->
     assert generated.returncode == 0
     assert checked.returncode == 0
     assert stale.returncode == 1
-    assert json.loads(generated.stdout)["disposition_counts"]["COMPLETE"] == 16
+    assert json.loads(generated.stdout)["disposition_counts"]["COMPLETE"] == 18
     assert str(markdown_output) in json.loads(stale.stdout)["stale_outputs"]

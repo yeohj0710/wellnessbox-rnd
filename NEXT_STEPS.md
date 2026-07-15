@@ -2,15 +2,15 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-014, OP-031, and OP-032 are complete. Do not mark OP-015 complete until dietary-pattern input is implemented and tested.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-016, OP-031, and OP-032 are complete. Do not mark OP-017 complete until each data source has an explicit consent scope that gates storage and use.
 
 Next three loops:
 
-1. Implement OP-015 and OP-016: normalize dietary and lifestyle inputs, then add timestamped laboratory observations with units and reference ranges.
-2. Implement OP-017 and OP-018: separate consent scopes and prove deterministic normalization plus input hashing.
-3. Implement OP-019 and OP-020: build a lossless `wellnessbox` profile adapter and reject ambiguous units or conflicting duplicate inputs.
+1. Implement OP-017 and OP-018: separate consent scopes and prove deterministic normalization plus input hashing.
+2. Implement OP-019 and OP-020: build a lossless `wellnessbox` profile adapter and reject ambiguous units or conflicting duplicate inputs.
+3. Implement OP-021 and OP-022: persist versioned profile/consent snapshots and connect core events with one execution ID.
 
-Continue OP-011 through OP-020 in bounded slices and add the lossless `wellnessbox` profile-to-R&D adapter.
+Continue OP-017 through OP-020 in bounded slices, then move to the Data Lake evidence group.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 

@@ -107,6 +107,71 @@ _RECOMMEND_REQUEST_EXAMPLES = {
             },
         },
     },
+    "structured_diet_lifestyle_and_laboratory_observations": {
+        "summary": "Structured diet, lifestyle, and laboratory observations",
+        "description": (
+            "Shows normalized allergy and dietary-pattern inputs, explicit weekly exercise "
+            "and daily caffeine values, and timestamped laboratory observations with units "
+            "and reference ranges."
+        ),
+        "value": {
+            "user_profile": {
+                "age": 48,
+                "biological_sex": "female",
+                "pregnant": False,
+            },
+            "goals": ["blood_glucose"],
+            "symptoms": ["post_meal_spike_concern"],
+            "conditions": [],
+            "allergies": ["fish", "peanut"],
+            "medications": [],
+            "current_supplements": [],
+            "dietary_patterns": [
+                {
+                    "code": "mediterranean diet",
+                    "display_name": "Mediterranean diet",
+                },
+                "low sodium",
+            ],
+            "laboratory_observations": [
+                {
+                    "code": "hba1c",
+                    "value": 6.1,
+                    "unit": "%",
+                    "reference_range": {"low": 4.0, "high": 5.6},
+                    "measured_at": "2026-07-14T09:30:00+09:00",
+                },
+                {
+                    "code": "fasting glucose",
+                    "value": 102,
+                    "unit": "mg/dL",
+                    "reference_range": {"low": 70, "high": 99},
+                    "measured_at": "2026-07-14T09:30:00+09:00",
+                },
+            ],
+            "lifestyle": {
+                "sleep_hours": 6.5,
+                "stress_level": 3,
+                "activity_level": "lightly_active",
+                "exercise_minutes_per_week": 95,
+                "smoker": False,
+                "alcohol_per_week": 1,
+                "caffeine_mg_per_day": 240,
+            },
+            "input_availability": {
+                "survey": True,
+                "nhis": True,
+                "wearable": False,
+                "cgm": False,
+                "genetic": False,
+            },
+            "preferences": {
+                "budget_level": "medium",
+                "max_products": 2,
+                "avoid_ingredients": [],
+            },
+        },
+    },
     "structured_start_plan_path": {
         "summary": "Structured start plan path",
         "description": (

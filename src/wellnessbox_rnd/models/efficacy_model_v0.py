@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from pydantic import BaseModel, Field
 
 from wellnessbox_rnd.domain.catalog import canonicalize_catalog_term
+from wellnessbox_rnd.domain.intake import build_normalized_health_context_feature_dict
 from wellnessbox_rnd.schemas.recommendation import (
     RecommendationRequest,
     count_current_condition_inputs,
@@ -104,6 +105,7 @@ def build_runtime_efficacy_feature_dict(
         "baseline_recommendation_count": float(len(baseline_recommendations)),
         "adherence_proxy": adherence_proxy,
     }
+    features.update(build_normalized_health_context_feature_dict(request))
 
     features[f"sex::{profile.biological_sex.value}"] = 1.0
     features[f"activity::{lifestyle.activity_level.value}"] = 1.0

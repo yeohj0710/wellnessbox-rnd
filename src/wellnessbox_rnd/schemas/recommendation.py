@@ -3,7 +3,14 @@ from enum import StrEnum
 from typing import Annotated, Literal
 from uuid import uuid4
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StringConstraints,
+    field_validator,
+    model_validator,
+)
 
 StructuredHealthCode = Annotated[
     str,
@@ -13,6 +20,16 @@ LegacyDoseText = Annotated[
     str,
     StringConstraints(strip_whitespace=True, min_length=1, max_length=128),
 ]
+LaboratoryUnit = Annotated[
+    str,
+    StringConstraints(strip_whitespace=True, min_length=1, max_length=64),
+]
+
+
+def _reject_boolean_numeric(value: object) -> object:
+    if isinstance(value, bool):
+        raise ValueError("value must be numeric, not boolean")
+    return value
 
 
 class BiologicalSex(StrEnum):
@@ -182,12 +199,72 @@ class SupplementInput(_StrictHealthInput):
         return self
 
 
+class DietaryPatternInput(_StrictHealthInput):
+    code: StructuredHealthCode
+    display_name: str | None = Field(default=None, min_length=1, max_length=200)
+
+
+class LaboratoryReferenceRange(_StrictHealthInput):
+    low: float | None = Field(default=None, allow_inf_nan=False)
+    high: float | None = Field(default=None, allow_inf_nan=False)
+
+    @field_validator("low", "high", mode="before")
+    @classmethod
+    def reject_boolean_bounds(cls, value: object) -> object:
+        return _reject_boolean_numeric(value)
+
+    @model_validator(mode="after")
+    def validate_bounds(self) -> "LaboratoryReferenceRange":
+        if self.low is None and self.high is None:
+            raise ValueError("reference_range requires low or high")
+        if self.low is not None and self.high is not None and self.low > self.high:
+            raise ValueError("reference_range low cannot exceed high")
+        return self
+
+
+class LaboratoryObservationInput(_StrictHealthInput):
+    code: StructuredHealthCode
+    value: float = Field(allow_inf_nan=False)
+    unit: LaboratoryUnit
+    reference_range: LaboratoryReferenceRange
+    measured_at: datetime
+
+    @field_validator("value", mode="before")
+    @classmethod
+    def reject_boolean_value(cls, value: object) -> object:
+        return _reject_boolean_numeric(value)
+
+    @field_validator("measured_at")
+    @classmethod
+    def require_timezone(cls, value: datetime) -> datetime:
+        if value.tzinfo is None or value.utcoffset() is None:
+            raise ValueError("measured_at must include a timezone")
+        return value.astimezone(UTC)
+
+
+class LaboratoryRangeStatus(StrEnum):
+    LOW = "low"
+    WITHIN_RANGE = "within_range"
+    HIGH = "high"
+
+
 class LifestyleInput(BaseModel):
     sleep_hours: float | None = Field(default=None, ge=0, le=24)
     stress_level: int | None = Field(default=None, ge=1, le=5)
     activity_level: ActivityLevel = ActivityLevel.SEDENTARY
+    exercise_minutes_per_week: float | None = Field(default=None, ge=0, le=10_080)
     smoker: bool = False
     alcohol_per_week: int = Field(default=0, ge=0, le=50)
+    caffeine_mg_per_day: float | None = Field(default=None, ge=0, le=5_000)
+
+    @field_validator(
+        "exercise_minutes_per_week",
+        "caffeine_mg_per_day",
+        mode="before",
+    )
+    @classmethod
+    def reject_boolean_numeric_fields(cls, value: object) -> object:
+        return _reject_boolean_numeric(value)
 
 
 class InputAvailability(BaseModel):
@@ -214,9 +291,35 @@ class RecommendationRequest(BaseModel):
     risk_flags: list[str | UrgentRiskSignal] = Field(default_factory=list)
     medications: list[MedicationInput] = Field(default_factory=list)
     current_supplements: list[SupplementInput] = Field(default_factory=list)
+    dietary_patterns: list[str | DietaryPatternInput] = Field(default_factory=list)
+    laboratory_observations: list[LaboratoryObservationInput] = Field(
+        default_factory=list
+    )
     lifestyle: LifestyleInput = Field(default_factory=LifestyleInput)
     input_availability: InputAvailability = Field(default_factory=InputAvailability)
     preferences: RecommendationPreferences = Field(default_factory=RecommendationPreferences)
+
+    @model_validator(mode="after")
+    def reject_conflicting_laboratory_observations(self) -> "RecommendationRequest":
+        signatures_by_identity: dict[tuple[str, datetime], tuple[object, ...]] = {}
+        for observation in self.laboratory_observations:
+            identity = (
+                normalize_laboratory_observation_code(observation),
+                observation.measured_at,
+            )
+            signature = (
+                observation.value,
+                normalize_laboratory_unit(observation.unit),
+                observation.reference_range.low,
+                observation.reference_range.high,
+            )
+            existing = signatures_by_identity.get(identity)
+            if existing is not None and existing != signature:
+                raise ValueError(
+                    "conflicting laboratory observations for the same code and measured_at"
+                )
+            signatures_by_identity[identity] = signature
+        return self
 
 
 def normalize_health_input_code(
@@ -234,6 +337,48 @@ def normalize_medication_classification_key(value: MedicationClassification) -> 
     system = " ".join(value.system.strip().lower().split())
     code = normalize_medication_classification_code(value)
     return f"{system}::{code}"
+
+
+def normalize_dietary_pattern_code(value: str | DietaryPatternInput) -> str:
+    raw_value = value if isinstance(value, str) else value.code
+    return " ".join(raw_value.strip().lower().split())
+
+
+def normalize_laboratory_observation_code(value: LaboratoryObservationInput) -> str:
+    return " ".join(value.code.strip().lower().split())
+
+
+def normalize_laboratory_unit(value: str) -> str:
+    compact = "".join(value.strip().split())
+    normalized_key = compact.casefold().replace("μ", "u").replace("µ", "u")
+    if normalized_key.startswith("mcg"):
+        normalized_key = f"ug{normalized_key[3:]}"
+    aliases = {
+        "g/dl": "g/dL",
+        "iu/l": "IU/L",
+        "meq/l": "mEq/L",
+        "mg/dl": "mg/dL",
+        "miu/l": "mIU/L",
+        "mmol/l": "mmol/L",
+        "ng/ml": "ng/mL",
+        "pg/ml": "pg/mL",
+        "u/l": "U/L",
+        "umol/l": "umol/L",
+        "ug/dl": "ug/dL",
+        "ug/l": "ug/L",
+        "ug/ml": "ug/mL",
+    }
+    return aliases.get(normalized_key, compact)
+
+
+def classify_laboratory_observation(
+    value: LaboratoryObservationInput,
+) -> LaboratoryRangeStatus:
+    if value.reference_range.low is not None and value.value < value.reference_range.low:
+        return LaboratoryRangeStatus.LOW
+    if value.reference_range.high is not None and value.value > value.reference_range.high:
+        return LaboratoryRangeStatus.HIGH
+    return LaboratoryRangeStatus.WITHIN_RANGE
 
 
 def normalize_supplement_ingredient_name(

@@ -6,6 +6,10 @@ from wellnessbox_rnd.domain.models import GoalContextRule
 from wellnessbox_rnd.schemas.recommendation import (
     ConditionInput,
     ConditionStatus,
+    DietaryPatternInput,
+    LaboratoryObservationInput,
+    LaboratoryRangeStatus,
+    LifestyleInput,
     MedicationInput,
     MissingInfoImportance,
     MissingInformationItem,
@@ -17,11 +21,37 @@ from wellnessbox_rnd.schemas.recommendation import (
     SymptomInput,
     SymptomSeverity,
     UrgentRiskSignal,
+    classify_laboratory_observation,
+    normalize_dietary_pattern_code,
     normalize_health_input_code,
+    normalize_laboratory_observation_code,
+    normalize_laboratory_unit,
     normalize_medication_classification_code,
     normalize_medication_classification_key,
     normalize_supplement_ingredient_name,
 )
+
+_GLUCOSE_LAB_CODES = {
+    "fasting glucose",
+    "fasting_glucose",
+    "glucose",
+    "hba1c",
+    "hemoglobin a1c",
+    "hemoglobin_a1c",
+    "postprandial glucose",
+    "postprandial_glucose",
+}
+_HEART_LAB_CODES = {
+    "hdl",
+    "hdl cholesterol",
+    "hdl_cholesterol",
+    "ldl",
+    "ldl cholesterol",
+    "ldl_cholesterol",
+    "total cholesterol",
+    "total_cholesterol",
+    "triglycerides",
+}
 
 
 @dataclass(frozen=True)
@@ -34,6 +64,7 @@ class NormalizedIntake:
     normalized_conditions: list[ConditionInput]
     condition_set: set[str]
     condition_status_by_code: dict[str, ConditionStatus]
+    normalized_allergies: list[str]
     allergy_set: set[str]
     normalized_risk_signals: list[UrgentRiskSignal]
     risk_flag_set: set[str]
@@ -44,6 +75,12 @@ class NormalizedIntake:
     normalized_current_supplements: list[SupplementInput]
     current_supplement_product_set: set[str]
     current_ingredient_set: set[str]
+    normalized_dietary_patterns: list[DietaryPatternInput]
+    dietary_pattern_set: set[str]
+    normalized_lifestyle: LifestyleInput
+    normalized_laboratory_observations: list[LaboratoryObservationInput]
+    latest_laboratory_observation_by_code: dict[str, LaboratoryObservationInput]
+    laboratory_range_status_by_code: dict[str, LaboratoryRangeStatus]
     avoid_ingredient_set: set[str]
     signal_flags: set[str]
     missing_information: list[MissingInformationItem]
@@ -60,7 +97,8 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
     normalized_conditions, condition_set, condition_status_by_code = (
         _normalize_condition_inputs(request.conditions)
     )
-    allergy_set = {_normalize_text(item) for item in request.allergies}
+    normalized_allergies = _normalize_string_inputs(request.allergies)
+    allergy_set = set(normalized_allergies)
     normalized_risk_signals, risk_flag_set, risk_signal_source_by_code = (
         _normalize_risk_signals(request.risk_flags)
     )
@@ -72,6 +110,15 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
         current_supplement_product_set,
         current_ingredient_set,
     ) = _normalize_supplement_inputs(request.current_supplements)
+    normalized_dietary_patterns, dietary_pattern_set = _normalize_dietary_patterns(
+        request.dietary_patterns
+    )
+    normalized_lifestyle = request.lifestyle.model_copy()
+    (
+        normalized_laboratory_observations,
+        latest_laboratory_observation_by_code,
+        laboratory_range_status_by_code,
+    ) = _normalize_laboratory_observations(request.laboratory_observations)
 
     avoid_ingredient_set = _normalize_catalog_inputs(request.preferences.avoid_ingredients)
     signal_flags = _derive_signal_flags(request, symptom_set=symptom_set)
@@ -101,6 +148,7 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
         normalized_conditions=normalized_conditions,
         condition_set=condition_set,
         condition_status_by_code=condition_status_by_code,
+        normalized_allergies=normalized_allergies,
         allergy_set={item for item in allergy_set if item},
         normalized_risk_signals=normalized_risk_signals,
         risk_flag_set=risk_flag_set,
@@ -115,6 +163,12 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
             item for item in current_supplement_product_set if item
         },
         current_ingredient_set={item for item in current_ingredient_set if item},
+        normalized_dietary_patterns=normalized_dietary_patterns,
+        dietary_pattern_set={item for item in dietary_pattern_set if item},
+        normalized_lifestyle=normalized_lifestyle,
+        normalized_laboratory_observations=normalized_laboratory_observations,
+        latest_laboratory_observation_by_code=latest_laboratory_observation_by_code,
+        laboratory_range_status_by_code=laboratory_range_status_by_code,
         avoid_ingredient_set={item for item in avoid_ingredient_set if item},
         signal_flags=signal_flags,
         missing_information=missing_information,
@@ -134,6 +188,14 @@ def _derive_signal_flags(
         flags.add("high_stress")
     if request.lifestyle.activity_level.value == "sedentary":
         flags.add("low_activity")
+    if request.lifestyle.exercise_minutes_per_week is not None:
+        flags.add("exercise_context_available")
+    if request.lifestyle.caffeine_mg_per_day is not None:
+        flags.add("caffeine_context_available")
+    if request.dietary_patterns:
+        flags.add("dietary_pattern_context_available")
+    if request.laboratory_observations:
+        flags.add("laboratory_context_available")
     if request.input_availability.wearable:
         flags.add("wearable_data_available")
         if any(
@@ -247,7 +309,16 @@ def _collect_missing_information(
             )
         )
 
-    if RecommendationGoal.BLOOD_GLUCOSE in goals and not request.input_availability.cgm:
+    laboratory_codes = {
+        normalize_laboratory_observation_code(item)
+        for item in request.laboratory_observations
+    }
+
+    if (
+        RecommendationGoal.BLOOD_GLUCOSE in goals
+        and not request.input_availability.cgm
+        and not laboratory_codes.intersection(_GLUCOSE_LAB_CODES)
+    ):
         items.append(
             _build_goal_context_item(
                 code="missing_glucose_context",
@@ -263,7 +334,11 @@ def _collect_missing_information(
             )
         )
 
-    if RecommendationGoal.HEART_HEALTH in goals and not request.medications:
+    if (
+        RecommendationGoal.HEART_HEALTH in goals
+        and not request.medications
+        and not laboratory_codes.intersection(_HEART_LAB_CODES)
+    ):
         items.append(
             _build_goal_context_item(
                 code="missing_heart_context",
@@ -325,6 +400,105 @@ def _missing_info_sort_key(item: MissingInformationItem) -> tuple[int, str]:
 
 def _normalize_text(value: str) -> str:
     return " ".join(value.strip().lower().split())
+
+
+def _normalize_string_inputs(values: list[str]) -> list[str]:
+    normalized_values = {_normalize_text(value) for value in values}
+    return sorted(value for value in normalized_values if value)
+
+
+def _normalize_dietary_patterns(
+    values: list[str | DietaryPatternInput],
+) -> tuple[list[DietaryPatternInput], set[str]]:
+    by_code: dict[str, DietaryPatternInput] = {}
+    for value in values:
+        code = normalize_dietary_pattern_code(value)
+        if not code:
+            continue
+        normalized = (
+            value.model_copy(update={"code": code})
+            if isinstance(value, DietaryPatternInput)
+            else DietaryPatternInput(code=code)
+        )
+        current = by_code.get(code)
+        if current is None or (
+            current.display_name is None and normalized.display_name is not None
+        ):
+            by_code[code] = normalized
+    normalized_inputs = [by_code[code] for code in sorted(by_code)]
+    return normalized_inputs, set(by_code)
+
+
+def _normalize_laboratory_observations(
+    values: list[LaboratoryObservationInput],
+) -> tuple[
+    list[LaboratoryObservationInput],
+    dict[str, LaboratoryObservationInput],
+    dict[str, LaboratoryRangeStatus],
+]:
+    normalized_inputs: list[LaboratoryObservationInput] = []
+    latest_by_code: dict[str, LaboratoryObservationInput] = {}
+    for value in values:
+        code = normalize_laboratory_observation_code(value)
+        normalized = value.model_copy(
+            update={
+                "code": code,
+                "unit": normalize_laboratory_unit(value.unit),
+            }
+        )
+        normalized_inputs.append(normalized)
+        current = latest_by_code.get(code)
+        if current is None or normalized.measured_at > current.measured_at:
+            latest_by_code[code] = normalized
+
+    range_status_by_code = {
+        code: classify_laboratory_observation(value)
+        for code, value in latest_by_code.items()
+    }
+    return normalized_inputs, latest_by_code, range_status_by_code
+
+
+def build_normalized_health_context_feature_dict(
+    request: RecommendationRequest,
+) -> dict[str, float]:
+    normalized_allergies = _normalize_string_inputs(request.allergies)
+    _, dietary_pattern_set = _normalize_dietary_patterns(request.dietary_patterns)
+    normalized_laboratory_observations, latest_by_code, status_by_code = (
+        _normalize_laboratory_observations(request.laboratory_observations)
+    )
+    lifestyle = request.lifestyle
+    features: dict[str, float] = {
+        "allergy_count": float(len(normalized_allergies)),
+        "dietary_pattern_count": float(len(dietary_pattern_set)),
+        "laboratory_observation_count": float(
+            len(normalized_laboratory_observations)
+        ),
+        "exercise_minutes_per_week_scaled": (
+            0.0
+            if lifestyle.exercise_minutes_per_week is None
+            else lifestyle.exercise_minutes_per_week / 10_080.0
+        ),
+        "exercise_minutes_per_week_missing": float(
+            lifestyle.exercise_minutes_per_week is None
+        ),
+        "caffeine_mg_per_day_scaled": (
+            0.0
+            if lifestyle.caffeine_mg_per_day is None
+            else lifestyle.caffeine_mg_per_day / 5_000.0
+        ),
+        "caffeine_mg_per_day_missing": float(
+            lifestyle.caffeine_mg_per_day is None
+        ),
+    }
+    for allergy in normalized_allergies:
+        features[f"allergy::{allergy}"] = 1.0
+    for dietary_pattern in dietary_pattern_set:
+        features[f"dietary_pattern::{dietary_pattern}"] = 1.0
+    for code, observation in latest_by_code.items():
+        features[f"laboratory::{code}"] = 1.0
+        features[f"laboratory_unit::{code}::{observation.unit}"] = 1.0
+        features[f"laboratory_status::{code}::{status_by_code[code].value}"] = 1.0
+    return features
 
 
 def _normalize_medication_inputs(

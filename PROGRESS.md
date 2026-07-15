@@ -1,5 +1,20 @@
 # PROGRESS
 
+## 2026-07-15 diet, lifestyle, and laboratory input-contract loop
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen tasks: OP-015 allergy, dietary-pattern, and lifestyle normalization; OP-016 structured laboratory observations
+- Primary fixture: `data/samples/api_recommend_diet_lifestyle_lab_request_v1.json`; `1` representative API case with `2` laboratory observations
+- Reused `RecommendationRequest`, `normalize_request`, the efficacy/policy feature builders, missing-information decisions, and the existing inference route instead of adding a parallel intake API.
+- Allergy strings are now exposed as a stable sorted normalized list and set. Dietary patterns accept legacy strings or strict code/display-name objects, deduplicate by normalized code, and retain structured display names.
+- Lifestyle input retains the existing sleep, stress, activity, smoking, and alcohol fields and adds bounded weekly exercise minutes and daily caffeine milligrams.
+- Laboratory observations require a code, finite non-boolean value, explicit unit, bounded reference range, and timezone-aware measurement time. Normalization canonicalizes codes and common unit spellings, including ASCII and Unicode micro prefixes, converts times to UTC, retains every observation, selects the latest observation per code, and classifies it as low, within range, or high. Conflicting values at the same normalized code and UTC time are rejected.
+- Normalized allergy, diet, lifestyle, and laboratory context reaches both existing model feature dictionaries. Relevant glucose or lipid observations also satisfy the corresponding missing-context check without changing frozen requests that have no laboratory observations.
+- Current audited disposition after regeneration: complete `18`, partial `0`, pending `101`, external `1`, contradicted `0`.
+- Validation: focused original-plan workflow contracts `68 passed`; expanded core regressions `311 passed` with `2` documented legacy failures; full Ruff PASS; manifest audit and generated-report stale check PASS.
+- Full suite: `503 passed`, `77 failed`. The failure count remains the known `73` absent ignored report artifacts and `4` CGM geometry assertions.
+- Official frozen eval: `256` cases rerun; all seven metrics exactly match the previously recorded current values, so every metric delta is `0`.
+
 ## 2026-07-15 medication and supplement input-contract loop
 
 - Chosen stage: `original plan / personal health inputs`

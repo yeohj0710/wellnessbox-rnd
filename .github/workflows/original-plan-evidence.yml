@@ -11,6 +11,7 @@ on:
       - "data/rules/safety_rules.json"
       - "data/samples/api_recommend_structured_health_input_request_v1.json"
       - "data/samples/api_recommend_structured_safety_block_request_v1.json"
+      - "data/samples/api_recommend_diet_lifestyle_lab_request_v1.json"
       - "docs/context/original_plan.pdf"
       - "docs/original_plan/**"
       - "docs/plans/2026-07-15-original-plan-completion-program.md"
@@ -38,6 +39,7 @@ on:
       - "tests/test_original_plan_manifest.py"
       - "tests/test_health_input_contracts.py"
       - "tests/test_medication_supplement_input_contracts.py"
+      - "tests/test_diet_lifestyle_lab_input_contracts.py"
       - "tests/test_inference_api.py"
   push:
     branches: [main]
@@ -50,6 +52,7 @@ on:
       - "data/rules/safety_rules.json"
       - "data/samples/api_recommend_structured_health_input_request_v1.json"
       - "data/samples/api_recommend_structured_safety_block_request_v1.json"
+      - "data/samples/api_recommend_diet_lifestyle_lab_request_v1.json"
       - "docs/context/original_plan.pdf"
       - "docs/original_plan/**"
       - "docs/plans/2026-07-15-original-plan-completion-program.md"
@@ -77,6 +80,7 @@ on:
       - "tests/test_original_plan_manifest.py"
       - "tests/test_health_input_contracts.py"
       - "tests/test_medication_supplement_input_contracts.py"
+      - "tests/test_diet_lifestyle_lab_input_contracts.py"
       - "tests/test_inference_api.py"
   workflow_dispatch:
 
@@ -107,6 +111,7 @@ jobs:
           tests/test_original_plan_completion_report.py
           tests/test_health_input_contracts.py
           tests/test_medication_supplement_input_contracts.py
+          tests/test_diet_lifestyle_lab_input_contracts.py
           tests/test_inference_api.py
       - name: Lint requirement audit
         run: >-
@@ -137,4 +142,5 @@ jobs:
           src/wellnessbox_rnd/synthetic/longitudinal.py
           tests/test_health_input_contracts.py
           tests/test_medication_supplement_input_contracts.py
+          tests/test_diet_lifestyle_lab_input_contracts.py
           tests/test_inference_api.py

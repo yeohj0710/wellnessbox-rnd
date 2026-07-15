@@ -26,7 +26,7 @@ def test_original_plan_audit_cli_returns_zero_for_current_manifest() -> None:
     assert result.returncode == 0
     assert report["status"] == "PASS"
     assert report["requirement_count"] == 120
-    assert report["claimed_requirement_count"] == 16
+    assert report["claimed_requirement_count"] == 18
     assert report["issues"] == []
 
 
@@ -66,7 +66,11 @@ def test_original_plan_audit_workflow_runs_cli_and_contract_tests() -> None:
     assert workflow.count('"docs/original_plan/**"') == 2
     assert workflow.count('"tests/test_original_plan_completion_report.py"') == 2
     assert "tests/test_health_input_contracts.py" in workflow
+    assert "tests/test_diet_lifestyle_lab_input_contracts.py" in workflow
     assert "tests/test_inference_api.py" in workflow
+    assert workflow.count(
+        '"data/samples/api_recommend_diet_lifestyle_lab_request_v1.json"'
+    ) == 2
     assert 'python -m pip install -e ".[dev,interim]"' in workflow
     assert workflow.count('"data/rules/safety_rules.json"') == 2
     assert workflow.count('"src/wellnessbox_rnd/safety/**"') == 2

@@ -1,0 +1,76 @@
+{
+  "user_profile": {
+    "age": 48,
+    "biological_sex": "female",
+    "pregnant": false
+  },
+  "goals": [
+    "blood_glucose"
+  ],
+  "symptoms": [
+    "post_meal_spike_concern"
+  ],
+  "conditions": [],
+  "allergies": [
+    " Fish ",
+    "fish",
+    "Peanut"
+  ],
+  "risk_flags": [],
+  "medications": [],
+  "current_supplements": [],
+  "dietary_patterns": [
+    {
+      "code": " Mediterranean   Diet ",
+      "display_name": "Mediterranean diet"
+    },
+    " Low Sodium ",
+    {
+      "code": "low sodium",
+      "display_name": "Low-sodium diet"
+    }
+  ],
+  "laboratory_observations": [
+    {
+      "code": " HbA1c ",
+      "value": 6.1,
+      "unit": "%",
+      "reference_range": {
+        "low": 4.0,
+        "high": 5.6
+      },
+      "measured_at": "2026-07-14T09:30:00+09:00"
+    },
+    {
+      "code": " Fasting   Glucose ",
+      "value": 102,
+      "unit": " mg / dL ",
+      "reference_range": {
+        "low": 70,
+        "high": 99
+      },
+      "measured_at": "2026-07-14T09:30:00+09:00"
+    }
+  ],
+  "lifestyle": {
+    "sleep_hours": 6.5,
+    "stress_level": 3,
+    "activity_level": "lightly_active",
+    "exercise_minutes_per_week": 95,
+    "smoker": false,
+    "alcohol_per_week": 1,
+    "caffeine_mg_per_day": 240
+  },
+  "input_availability": {
+    "survey": true,
+    "nhis": true,
+    "wearable": false,
+    "cgm": false,
+    "genetic": false
+  },
+  "preferences": {
+    "budget_level": "medium",
+    "max_products": 2,
+    "avoid_ingredients": []
+  }
+}
