@@ -282,7 +282,21 @@
         {
           "requirement_id": "OP-020",
           "title": "지원하지 않는 입력을 버리지 않고 오류 또는 missing_information으로 반환한다.",
-          "required_stage": "INTEGRATED"
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/apps/inference_api/routes/recommend.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_unsupported_input_contracts.py"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/apps/inference_api/routes/recommend.py",
+              "wellnessbox-rnd/tests/test_unsupported_input_contracts.py"
+            ]
+          }
         }
       ]
     },

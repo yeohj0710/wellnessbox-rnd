@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-15 unsupported-input rejection loop
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen task: OP-020 unsupported or ambiguous recommendation input rejection
+- Primary fixture: `data/samples/api_recommend_consent_hash_request_v1.json`; `1` representative API request plus `18` focused field, unit, duplicate, Unicode, alias, multiplicity, and compatibility cases
+- Reused `RecommendationRequest` and the existing `/v1/recommend` route. No parallel validation endpoint or duplicate request schema was added.
+- Every recommendation request container now rejects unknown fields through one `extra="forbid"` base model. Unsupported top-level, profile, lifestyle, source-availability, preference, and nested fields return FastAPI 422 instead of disappearing during Pydantic parsing.
+- Structured medication dose units continue to use the bounded `DoseUnit` enum. Laboratory observations now accept only the existing canonical unit set and its explicit aliases; arbitrary units such as `bananas` return 422.
+- Medication, supplement product, and supplement ingredient identities use NFKC, case folding, and collapsed whitespace. Ingredient identity also uses exact catalog aliases, so `vitamin c` and `ascorbic acid` cannot bypass conflict detection. Fuzzy catalog matching is not used for rejection.
+- Same-name inputs with different classifications, doses, ingredient doses, or ingredient multiplicity return 422. Completely identical medication and supplement product duplicates remain compatible.
+- Current audited disposition after regeneration: complete `21`, partial `0`, pending `98`, external `1`, contradicted `0`. OP-019 remains pending because `wellnessbox` still lacks a real profile-to-R&D adapter.
+- Validation: exact original-plan workflow selection `99 passed`; recommendation and safety core regressions `206 passed`; full Ruff PASS; manifest audit and generated-report stale check PASS.
+- Full suite: `534 passed`, `77 failed`. The failure count remains the known `73` absent ignored report artifacts and `4` CGM geometry assertions.
+- Official frozen eval: `256` cases rerun; all seven metrics exactly match the previously recorded current values, so every metric delta is `0`.
+- This loop did not deploy or connect the R&D process to production `wellnessbox`.
+
 ## 2026-07-15 consent and deterministic input-hash loop
 
 - Chosen stage: `original plan / personal health inputs`

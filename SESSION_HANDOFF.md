@@ -1,5 +1,58 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 unsupported-input rejection handoff
+
+- Chosen stage: `original plan / personal health inputs`
+- Chosen task: OP-020
+- Primary dataset path and case count: `data/samples/api_recommend_consent_hash_request_v1.json`; `1` representative API request plus `18` focused contract cases
+- Current requirement count: `120`; valid claims: `21`
+
+Files changed:
+
+- `src/wellnessbox_rnd/schemas/recommendation.py`
+- `tests/test_unsupported_input_contracts.py`
+- `docs/superpowers/plans/2026-07-15-op020-unsupported-input-rejection.md`
+- manifest, generated completion reports, workflow, completion ledger, and handoff documents
+
+Key changes:
+
+- Added one strict base model for every `RecommendationRequest` input container. Unknown top-level or nested fields now fail with API 422 instead of being discarded.
+- Limited structured laboratory units to the existing canonical unit set and explicit aliases. Unsupported units fail at both model and API boundaries.
+- Added semantic signatures for duplicate medications, supplement products, and supplement ingredients. NFKC, case folding, whitespace normalization, exact ingredient aliases, and ingredient multiplicity participate in conflict detection.
+- Preserved exact medication and supplement product duplicates for compatibility, while rejecting duplicate identities with different classification, dose, ingredient dose, or ingredient counts.
+- Registered OP-020 as `INTEGRATED` because the actual FastAPI `/v1/recommend` route enforces the contract. OP-019 remains pending: `wellnessbox/types/chat.ts` and `lib/server/wb-rnd-client.ts` still have different profile shapes and no production adapter.
+- Current generated status: complete `21`, partial `0`, pending `98`, external `1`, contradicted `0`.
+
+Validation:
+
+- focused OP-020 contracts: `18 passed`
+- exact original-plan workflow selection: `99 passed`
+- recommendation and safety core regressions: `206 passed`
+- full Ruff: PASS
+- manifest evidence audit: PASS; `21` claims, `47` unique evidence files, source hash matched, zero issues
+- generated completion-report stale check: PASS
+- independent code review: no Critical or Important issues after fixes
+- full suite: `534 passed`, `77 failed`; failures remain in the known `73` missing report-artifact and `4` CGM geometry groups
+- frozen eval: `256` cases; all seven metrics match the previously recorded current values exactly
+
+Official frozen-eval metric deltas: all `0`.
+
+Replay/slice deltas: not applicable. This loop changed request validation and did not produce a replay candidate.
+
+Biggest remaining bottlenecks:
+
+1. The current `wellnessbox` stored `UserProfile` has no lossless adapter to `RecommendationRequest`; OP-019 remains pending.
+2. Versioned profile and consent snapshots are not persisted.
+3. Conversation, recommendation, safety, optimization, and follow-up events lack one shared execution ID.
+4. Source passages, claims, rules, and recommendation outputs lack a complete lineage chain with validity and license metadata.
+5. No deployed R&D FastAPI process or production `WB_RND_*` configuration exists; the legacy suite also retains 77 known failures.
+
+Recommended next loops:
+
+1. OP-019 cross-repository `wellnessbox` profile adapter and dual-repository contract proof.
+2. OP-021 and OP-022 profile/consent persistence plus shared execution IDs.
+3. OP-023 and OP-024 source-to-recommendation lineage plus knowledge validity metadata.
+
 ## 2026-07-15 consent and deterministic input-hash handoff
 
 - Chosen stage: `original plan / personal health inputs`

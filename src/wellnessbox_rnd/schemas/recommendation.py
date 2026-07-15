@@ -1,6 +1,7 @@
 from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Annotated, Literal
+from unicodedata import normalize as normalize_unicode
 from uuid import uuid4
 
 from pydantic import (
@@ -25,6 +26,25 @@ LaboratoryUnit = Annotated[
     str,
     StringConstraints(strip_whitespace=True, min_length=1, max_length=64),
 ]
+
+_LABORATORY_UNIT_ALIASES = {
+    "g/dl": "g/dL",
+    "iu/l": "IU/L",
+    "meq/l": "mEq/L",
+    "mg/dl": "mg/dL",
+    "miu/l": "mIU/L",
+    "mmol/l": "mmol/L",
+    "ng/ml": "ng/mL",
+    "pg/ml": "pg/mL",
+    "u/l": "U/L",
+    "umol/l": "umol/L",
+    "ug/dl": "ug/dL",
+    "ug/l": "ug/L",
+    "ug/ml": "ug/mL",
+}
+_SUPPORTED_LABORATORY_UNITS = frozenset(
+    {"%", *_LABORATORY_UNIT_ALIASES.values()}
+)
 
 
 def _reject_boolean_numeric(value: object) -> object:
@@ -143,7 +163,11 @@ class ConfidenceBand(StrEnum):
     HIGH = "high"
 
 
-class UserProfile(BaseModel):
+class _StrictRequestInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class UserProfile(_StrictRequestInput):
     age: int = Field(ge=18, le=120)
     biological_sex: BiologicalSex
     pregnant: bool = False
@@ -151,8 +175,8 @@ class UserProfile(BaseModel):
     weight_kg: float | None = Field(default=None, gt=0, le=500)
 
 
-class _StrictHealthInput(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+class _StrictHealthInput(_StrictRequestInput):
+    pass
 
 
 class ConditionInput(_StrictHealthInput):
@@ -244,6 +268,13 @@ class LaboratoryObservationInput(_StrictHealthInput):
     def reject_boolean_value(cls, value: object) -> object:
         return _reject_boolean_numeric(value)
 
+    @field_validator("unit")
+    @classmethod
+    def require_supported_unit(cls, value: str) -> str:
+        if normalize_laboratory_unit(value) not in _SUPPORTED_LABORATORY_UNITS:
+            raise ValueError("unsupported laboratory unit")
+        return value
+
     @field_validator("measured_at")
     @classmethod
     def require_timezone(cls, value: datetime) -> datetime:
@@ -258,7 +289,7 @@ class LaboratoryRangeStatus(StrEnum):
     HIGH = "high"
 
 
-class LifestyleInput(BaseModel):
+class LifestyleInput(_StrictRequestInput):
     sleep_hours: float | None = Field(default=None, ge=0, le=24)
     stress_level: int | None = Field(default=None, ge=1, le=5)
     activity_level: ActivityLevel = ActivityLevel.SEDENTARY
@@ -277,7 +308,7 @@ class LifestyleInput(BaseModel):
         return _reject_boolean_numeric(value)
 
 
-class InputAvailability(BaseModel):
+class InputAvailability(_StrictRequestInput):
     survey: bool = True
     nhis: bool = False
     wearable: bool = False
@@ -307,13 +338,70 @@ def _legacy_data_source_consents() -> DataSourceConsents:
     )
 
 
-class RecommendationPreferences(BaseModel):
+class RecommendationPreferences(_StrictRequestInput):
     budget_level: BudgetLevel = BudgetLevel.MEDIUM
     max_products: int = Field(default=2, ge=1, le=5)
     avoid_ingredients: list[str] = Field(default_factory=list)
 
 
-class RecommendationRequest(BaseModel):
+def _normalize_contract_text(value: str) -> str:
+    normalized = normalize_unicode("NFKC", value)
+    return " ".join(normalized.strip().casefold().split())
+
+
+def _dose_signature(
+    value: LegacyDoseText | DoseAmount | None,
+) -> tuple[object, ...] | None:
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return ("legacy_text", _normalize_contract_text(value))
+    return ("structured", value.amount, value.unit.value)
+
+
+def _medication_signature(value: MedicationInput) -> tuple[object, ...]:
+    classification_signature = None
+    if value.classification is not None:
+        classification_signature = (
+            _normalize_contract_text(value.classification.system),
+            _normalize_contract_text(value.classification.code),
+        )
+    return (classification_signature, _dose_signature(value.dose))
+
+
+def _supplement_ingredient_signatures(
+    value: SupplementInput,
+) -> tuple[tuple[str, tuple[object, ...] | None], ...]:
+    from wellnessbox_rnd.domain.catalog import canonicalize_exact_catalog_term
+
+    signatures_by_name: dict[str, tuple[object, ...] | None] = {}
+    entries: list[tuple[str, tuple[object, ...] | None]] = []
+    for ingredient in value.ingredients:
+        if isinstance(ingredient, str):
+            normalized_name = _normalize_contract_text(ingredient)
+            signature = None
+        else:
+            normalized_name = _normalize_contract_text(ingredient.name)
+            signature = _dose_signature(ingredient.daily_dose)
+        name = canonicalize_exact_catalog_term(normalized_name) or normalized_name
+        if name in signatures_by_name and signatures_by_name[name] != signature:
+            raise ValueError(
+                "conflicting duplicate supplement ingredients for the same normalized name"
+            )
+        signatures_by_name[name] = signature
+        entries.append((name, signature))
+    return tuple(sorted(entries))
+
+
+def _supplement_signature(value: SupplementInput) -> tuple[object, ...]:
+    return (
+        _dose_signature(value.dose),
+        _dose_signature(value.daily_dose),
+        _supplement_ingredient_signatures(value),
+    )
+
+
+class RecommendationRequest(_StrictRequestInput):
     request_id: str = Field(default_factory=lambda: str(uuid4()))
     user_profile: UserProfile
     goals: list[RecommendationGoal] = Field(min_length=1)
@@ -340,6 +428,32 @@ class RecommendationRequest(BaseModel):
             raise ValueError(
                 "survey use_for_recommendation consent is required for a recommendation request"
             )
+        return self
+
+    @model_validator(mode="after")
+    def reject_conflicting_duplicate_medications(self) -> "RecommendationRequest":
+        signatures_by_name: dict[str, tuple[object, ...]] = {}
+        for medication in self.medications:
+            name = _normalize_contract_text(medication.name)
+            signature = _medication_signature(medication)
+            if name in signatures_by_name and signatures_by_name[name] != signature:
+                raise ValueError(
+                    "conflicting duplicate medications for the same normalized name"
+                )
+            signatures_by_name[name] = signature
+        return self
+
+    @model_validator(mode="after")
+    def reject_conflicting_duplicate_supplements(self) -> "RecommendationRequest":
+        signatures_by_name: dict[str, tuple[object, ...]] = {}
+        for supplement in self.current_supplements:
+            name = _normalize_contract_text(supplement.name)
+            signature = _supplement_signature(supplement)
+            if name in signatures_by_name and signatures_by_name[name] != signature:
+                raise ValueError(
+                    "conflicting duplicate supplements for the same normalized name"
+                )
+            signatures_by_name[name] = signature
         return self
 
     @model_validator(mode="after")
@@ -397,26 +511,11 @@ def normalize_laboratory_observation_code(value: LaboratoryObservationInput) -> 
 
 
 def normalize_laboratory_unit(value: str) -> str:
-    compact = "".join(value.strip().split())
+    compact = "".join(normalize_unicode("NFKC", value).strip().split())
     normalized_key = compact.casefold().replace("μ", "u").replace("µ", "u")
     if normalized_key.startswith("mcg"):
         normalized_key = f"ug{normalized_key[3:]}"
-    aliases = {
-        "g/dl": "g/dL",
-        "iu/l": "IU/L",
-        "meq/l": "mEq/L",
-        "mg/dl": "mg/dL",
-        "miu/l": "mIU/L",
-        "mmol/l": "mmol/L",
-        "ng/ml": "ng/mL",
-        "pg/ml": "pg/mL",
-        "u/l": "U/L",
-        "umol/l": "umol/L",
-        "ug/dl": "ug/dL",
-        "ug/l": "ug/L",
-        "ug/ml": "ug/mL",
-    }
-    return aliases.get(normalized_key, compact)
+    return _LABORATORY_UNIT_ALIASES.get(normalized_key, compact)
 
 
 def classify_laboratory_observation(

@@ -42,6 +42,7 @@ on:
       - "tests/test_medication_supplement_input_contracts.py"
       - "tests/test_diet_lifestyle_lab_input_contracts.py"
       - "tests/test_consent_and_input_hash_contracts.py"
+      - "tests/test_unsupported_input_contracts.py"
       - "tests/test_inference_api.py"
   push:
     branches: [main]
@@ -85,6 +86,7 @@ on:
       - "tests/test_medication_supplement_input_contracts.py"
       - "tests/test_diet_lifestyle_lab_input_contracts.py"
       - "tests/test_consent_and_input_hash_contracts.py"
+      - "tests/test_unsupported_input_contracts.py"
       - "tests/test_inference_api.py"
   workflow_dispatch:
 
@@ -117,6 +119,7 @@ jobs:
           tests/test_medication_supplement_input_contracts.py
           tests/test_diet_lifestyle_lab_input_contracts.py
           tests/test_consent_and_input_hash_contracts.py
+          tests/test_unsupported_input_contracts.py
           tests/test_inference_api.py
       - name: Lint requirement audit
         run: >-
@@ -149,4 +152,5 @@ jobs:
           tests/test_medication_supplement_input_contracts.py
           tests/test_diet_lifestyle_lab_input_contracts.py
           tests/test_consent_and_input_hash_contracts.py
+          tests/test_unsupported_input_contracts.py
           tests/test_inference_api.py

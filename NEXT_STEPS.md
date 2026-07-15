@@ -2,15 +2,15 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-018, OP-031, and OP-032 are complete. OP-019 remains an integration claim and must not be completed from an R&D-only adapter test.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-018, OP-020, OP-031, and OP-032 are complete. OP-019 remains an integration claim and must not be completed from an R&D-only adapter test.
 
 Next three loops:
 
-1. Implement OP-019 and OP-020: build a lossless `wellnessbox` profile adapter and reject ambiguous units or conflicting duplicate inputs.
+1. Implement OP-019: map the current `wellnessbox` `types/chat.UserProfile` contract into the R&D request without silent loss, and prove the same contract in both repositories.
 2. Implement OP-021 and OP-022: persist versioned profile/consent snapshots and connect core events with one execution ID.
 3. Implement OP-023 and OP-024: connect source passages, claims, rules, and recommendations while preserving effective dates, source types, and licenses.
 
-Complete OP-019 and OP-020 as one bounded cross-repository contract loop, then move through the Data Lake evidence group in two-requirement slices.
+Complete OP-019 as one bounded cross-repository contract loop, then move through the Data Lake evidence group in two-requirement slices. The R&D endpoint now rejects unsupported fields, units, and conflicting duplicate medication/supplement inputs, but the current `wellnessbox` preview client still expects an already-R&D-shaped payload instead of adapting its stored user profile.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 
