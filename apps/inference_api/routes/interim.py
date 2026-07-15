@@ -12,11 +12,13 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from pydantic import BaseModel, ConfigDict, Field
 
 from wellnessbox_rnd.interim.agent import BoundedAgent
+from wellnessbox_rnd.interim.behavior_log import BehaviorLogRecorder
 from wellnessbox_rnd.interim.connectors import ingest_device_session, source_adapters
 from wellnessbox_rnd.interim.contracts import DataClass
 from wellnessbox_rnd.interim.data_lake import (
     ConsentStorageDeniedError,
     ExecutionLedger,
+    ExecutionLedgerError,
     ExecutionNotFoundError,
     IdempotencyConflictError,
     open_data_lake_store,
@@ -97,6 +99,16 @@ class ExecutionEventRequest(BaseModel):
     payload: dict[str, Any]
 
 
+class BehaviorEventRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    profile_id: str = Field(pattern=r"^usr_[a-f0-9]{16,64}$")
+    event_name: str = Field(min_length=1, max_length=64)
+    occurred_at: str = Field(min_length=1, max_length=64)
+    idempotency_key: str = Field(min_length=1, max_length=128)
+    payload: dict[str, Any] = Field(default_factory=dict)
+
+
 @router.get("/status")
 def status() -> dict[str, Any]:
     store = _store()
@@ -110,6 +122,8 @@ def status() -> dict[str, Any]:
         "consent_snapshots",
         "executions",
         "execution_events",
+        "execution_identities",
+        "behavior_events",
     )
     return {
         "mode": DataClass.PROXY_GOLD_SIMULATION,
@@ -294,6 +308,32 @@ def append_execution_event(
         raise HTTPException(status_code=409, detail=str(error)) from error
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.post("/behavior-events")
+def append_behavior_event(payload: BehaviorEventRequest) -> dict[str, Any]:
+    try:
+        result = BehaviorLogRecorder(_store()).append_event(
+            profile_id=payload.profile_id,
+            event_name=payload.event_name,
+            occurred_at=payload.occurred_at,
+            idempotency_key=payload.idempotency_key,
+            payload=payload.payload,
+        )
+        return result.model_dump(mode="json")
+    except ConsentStorageDeniedError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
+    except IdempotencyConflictError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except ExecutionLedgerError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.get("/log-classes")
+def log_class_summary() -> dict[str, Any]:
+    return BehaviorLogRecorder(_store()).log_class_summary().model_dump(mode="json")
 
 
 @router.get("/admin/sources")

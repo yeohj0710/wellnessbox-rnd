@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -263,6 +263,49 @@ CREATE TABLE IF NOT EXISTS execution_knowledge_lineage (
   created_at TEXT NOT NULL,
   UNIQUE(execution_id, event_id, output_type, output_key, claim_id)
 );
+
+CREATE TABLE IF NOT EXISTS execution_identities (
+  execution_id TEXT PRIMARY KEY REFERENCES executions(execution_id),
+  model_id TEXT NOT NULL,
+  engine_version TEXT NOT NULL,
+  code_commit TEXT NOT NULL,
+  code_commit_source TEXT NOT NULL CHECK(code_commit_source IN (
+    'environment',
+    'git',
+    'unresolved'
+  )),
+  dataset_ids_json TEXT NOT NULL,
+  config_json TEXT NOT NULL,
+  config_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS behavior_events (
+  behavior_event_id TEXT PRIMARY KEY,
+  profile_id TEXT NOT NULL,
+  consent_snapshot_id TEXT NOT NULL REFERENCES consent_snapshots(consent_snapshot_id),
+  log_class TEXT NOT NULL DEFAULT 'user_behavior' CHECK(log_class = 'user_behavior'),
+  event_name TEXT NOT NULL CHECK(event_name IN (
+    'page_view',
+    'product_exposure',
+    'product_click',
+    'cart_add',
+    'order_view',
+    'notification_open',
+    'session_start',
+    'session_end'
+  )),
+  occurred_at TEXT NOT NULL,
+  idempotency_key TEXT NOT NULL,
+  payload_json TEXT NOT NULL,
+  payload_sha256 TEXT NOT NULL,
+  data_class TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE(profile_id, event_name, idempotency_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_behavior_events_profile_created
+ON behavior_events(profile_id, created_at);
 
 CREATE INDEX IF NOT EXISTS idx_knowledge_claims_evidence
 ON knowledge_claims(evidence_id);

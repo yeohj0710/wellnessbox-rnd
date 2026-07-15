@@ -10,7 +10,7 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
     store.migrate()
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 5
+    assert store.scalar("select max(version) from schema_migrations") == 6
     assert "pharmacy_id" in {row[1] for row in store.rows("pragma table_info(review_tasks)")}
     required_tables = {
         "proxy_cases",
@@ -33,6 +33,8 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
         "knowledge_rules",
         "claim_rule_links",
         "execution_knowledge_lineage",
+        "execution_identities",
+        "behavior_events",
     }
     assert required_tables.issubset(store.table_names())
 
@@ -75,7 +77,7 @@ def test_schema_version_2_profile_data_survives_lineage_migration(tmp_path) -> N
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 5
+    assert store.scalar("select max(version) from schema_migrations") == 6
     assert store.scalar("select count(*) from user_profiles") == 1
     assert store.scalar(
         "select payload_json from user_profiles where profile_id='usr_1234567890abcdef'"
@@ -94,7 +96,7 @@ def test_interim_store_read_helpers_close_database_connections(tmp_path) -> None
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 5
+    assert store.scalar("select max(version) from schema_migrations") == 6
     assert store.rows("select version from schema_migrations")
 
     database_path.unlink()
@@ -172,7 +174,7 @@ def test_schema_version_3_events_gain_consent_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 5
+    assert store.scalar("select max(version) from schema_migrations") == 6
     assert store.scalar(
         "select consent_snapshot_id from execution_events where event_id='event_1'"
     ) == "consent_1"
@@ -227,7 +229,7 @@ def test_schema_version_4_evidence_gains_parsed_span_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 5
+    assert store.scalar("select max(version) from schema_migrations") == 6
     columns = {row[1] for row in store.rows("pragma table_info(evidence_passages)")}
     assert {"page_or_section", "line_start", "line_end", "metadata_json"}.issubset(
         columns
@@ -244,3 +246,71 @@ def test_schema_version_4_evidence_gains_parsed_span_lineage(tmp_path) -> None:
         "claim_rule_links",
         "execution_knowledge_lineage",
     }.issubset(store.table_names())
+
+
+def test_schema_version_5_gains_disjoint_log_and_identity_tables(tmp_path) -> None:
+    database_path = tmp_path / "version-5.sqlite3"
+    with sqlite3.connect(database_path) as connection:
+        connection.executescript(
+            """
+            create table schema_migrations (
+              version integer primary key,
+              applied_at text not null
+            );
+            insert into schema_migrations values (5, '2026-07-15T00:00:00+00:00');
+            create table consent_snapshots (
+              consent_snapshot_id text primary key,
+              profile_id text not null,
+              version integer not null,
+              schema_version text not null,
+              payload_json text not null,
+              payload_sha256 text not null,
+              created_at text not null,
+              unique(profile_id, version),
+              unique(profile_id, payload_sha256)
+            );
+            create table executions (
+              execution_id text primary key,
+              request_id text not null,
+              profile_id text not null,
+              profile_snapshot_id text,
+              consent_snapshot_id text not null references consent_snapshots,
+              request_sha256 text not null,
+              status text not null,
+              created_at text not null,
+              updated_at text not null
+            );
+            insert into consent_snapshots values (
+              'consent_v5', 'usr_v5', 1, 'v1', '{}', 'consent-hash-v5',
+              '2026-07-15T00:00:00+00:00'
+            );
+            insert into executions values (
+              'exec_v5', 'request_v5', 'usr_v5', null, 'consent_v5', 'request-hash-v5',
+              'COMPLETE', '2026-07-15T00:00:00+00:00', '2026-07-15T00:00:00+00:00'
+            );
+            """
+        )
+
+    store = InterimStore(database_path)
+    store.migrate()
+
+    assert store.scalar("select max(version) from schema_migrations") == 6
+    assert store.scalar("select count(*) from executions") == 1
+    assert {"execution_identities", "behavior_events"}.issubset(store.table_names())
+    behavior_sql = store.scalar(
+        "select sql from sqlite_master where type='table' and name='behavior_events'"
+    )
+    assert "'user_behavior'" in behavior_sql
+    for research_type in (
+        "'conversation'",
+        "'recommendation'",
+        "'safety'",
+        "'optimization'",
+        "'followup_evaluation'",
+    ):
+        assert research_type not in behavior_sql
+    events_sql = store.scalar(
+        "select sql from sqlite_master where type='table' and name='execution_events'"
+    )
+    for behavior_name in ("'page_view'", "'product_exposure'", "'session_start'"):
+        assert behavior_name not in events_sql

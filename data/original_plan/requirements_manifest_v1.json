@@ -408,8 +408,44 @@
             ]
           }
         },
-        {"requirement_id": "OP-025", "title": "사용자 행동 로그와 연구평가 로그를 분리해 저장한다."},
-        {"requirement_id": "OP-026", "title": "모델 ID, 데이터셋 ID, 코드 커밋, 설정 해시를 실행에 기록한다."},
+        {
+          "requirement_id": "OP-025",
+          "title": "사용자 행동 로그와 연구평가 로그를 분리해 저장한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/behavior_log.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_log_separation_execution_identity.py",
+              "wellnessbox-rnd/tests/test_interim_store.py",
+              "wellnessbox-rnd/scripts/run_log_separation_identity_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-026",
+          "title": "모델 ID, 데이터셋 ID, 코드 커밋, 설정 해시를 실행에 기록한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/execution_identity.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+              "wellnessbox-rnd/apps/inference_api/routes/recommend.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_log_separation_execution_identity.py",
+              "wellnessbox-rnd/tests/test_interim_store.py",
+              "wellnessbox-rnd/scripts/run_log_separation_identity_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-027", "title": "이벤트 중복 기록을 idempotency key로 차단한다."},
         {"requirement_id": "OP-028", "title": "삭제·정정 요청이 계보와 감사 로그를 보존하며 처리되는지 검증한다."},
         {"requirement_id": "OP-029", "title": "세션을 같은 입력과 버전으로 재생하는 replay API를 만든다."},

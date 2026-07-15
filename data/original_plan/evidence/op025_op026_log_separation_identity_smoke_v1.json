@@ -1,0 +1,31 @@
+{
+  "schema_version": "op025_op026_log_separation_identity_smoke_v1",
+  "status": "passed",
+  "data_class": "INTERIM_RUNTIME_EVENT",
+  "case_count": 2,
+  "database_schema_version": 6,
+  "execution_identity_count": 2,
+  "research_event_count": 6,
+  "behavior_event_count": 1,
+  "dataset_identity_ids": [
+    "ingredient_catalog_v1",
+    "reference_knowledge_base_v1",
+    "runtime_knowledge_db_v1",
+    "safety_rules_v1"
+  ],
+  "code_commit_source": "environment",
+  "checks": {
+    "database_schema_version_is_6": true,
+    "identity_recorded_for_every_execution": true,
+    "model_id_is_deterministic_baseline": true,
+    "code_commit_uses_environment_override": true,
+    "dataset_identities_are_hashed": true,
+    "identical_runs_share_config_hash": true,
+    "behavior_event_persisted_once": true,
+    "behavior_conflict_rejected": true,
+    "research_type_rejected_in_behavior_log": true,
+    "behavior_name_rejected_in_research_log": true,
+    "log_classes_separated_without_contamination": true,
+    "trace_contains_no_behavior_events": true
+  }
+}

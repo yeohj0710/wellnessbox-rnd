@@ -1,5 +1,20 @@
 # PROGRESS
 
+## 2026-07-15 log separation and execution-identity loop
+
+- Chosen stage: `original plan / Data Lake evidence lineage`
+- Chosen tasks: OP-025 user-behavior versus research-evaluation log separation; OP-026 model, dataset, code-commit, and config identity per recommendation execution
+- Primary evidence: `data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json`; `2` actual FastAPI route cases, SQLite schema `6`, two execution identities, six research events, one behavior event, deterministic across reruns
+- Schema `6` adds `behavior_events` with a bounded user-behavior vocabulary that is disjoint from the research event vocabulary at the SQL CHECK level, plus `execution_identities` keyed by execution ID. Existing v5 databases migrate in place with all rows preserved.
+- The actual `/v1/recommend` route now records model ID `deterministic_baseline_v1`, engine version, code commit (environment override first, local git HEAD second, explicit `unresolved` fallback), four hashed runtime dataset identities (runtime knowledge DB, reference knowledge base, safety rules, ingredient catalog), and a canonical config SHA-256 inside the same persistence transaction. The authenticated execution trace returns the structured identity, and identical runs share one config hash.
+- `POST /v1/interim/behavior-events` writes only to the behavior store: research event types return `422` there, behavior names return `422` on the research event route, identical replays deduplicate, changed payloads return `409`, and missing survey storage consent returns `403`. `GET /v1/interim/log-classes` reports per-class counts and zero cross-contamination.
+- Local artifact maintenance: the ignored local interim database still carried sticky `content_changed` quarantines caused by the audited OP-023/024 knowledge-artifact update. After confirming the stored checksums already match the current committed artifacts, the three internal reference sources were explicitly reviewed and un-quarantined with a recorded review note in their metadata; the eight external adapter `license_not_approved` quarantines remain untouched. Fresh checkouts never see this state, so CI was unaffected.
+- Evidence status: OP-025 and OP-026 are `IMPLEMENTED`, not `INTEGRATED` or `OPERATED`, because a local `TestClient` plus temporary SQLite proves neither a production round trip nor a production re-query. Generated status: complete `22`, partial `6`, pending `91`, external `1`, contradicted `0`.
+- Validation: focused CI-equivalent selection `176 passed`; full Ruff PASS; new smoke byte-identical across reruns; manifest audit PASS with `28` claims and zero issues; completion-report stale check PASS.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0` against the pre-loop report. Replay/slice deltas: not applicable to this persistence-only loop.
+- Biggest bottlenecks: no deployed R&D process; no durable production R&D database; no authenticated service-to-R&D round trip; no production storage re-query evidence; no explicit committed review workflow for quarantined sources yet.
+- Recommended next loops: OP-027/028 idempotency plus deletion/correction audit handling; OP-029/030 replay API plus service UI; OP-033/034 safety-engine group D start.
+
 ## 2026-07-15 knowledge evidence-lineage loop
 
 - Chosen stage: `original plan / Data Lake evidence lineage`

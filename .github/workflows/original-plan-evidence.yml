@@ -23,6 +23,7 @@ on:
       - "scripts/build_original_plan_completion_report.py"
       - "scripts/run_data_lake_lineage_smoke.py"
       - "scripts/run_knowledge_lineage_smoke.py"
+      - "scripts/run_log_separation_identity_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -57,6 +58,7 @@ on:
       - "tests/test_interim_evidence.py"
       - "tests/test_interim_store.py"
       - "tests/test_knowledge_lineage.py"
+      - "tests/test_log_separation_execution_identity.py"
       - "tests/test_reference_ingestion.py"
       - "tests/test_runtime_knowledge_db.py"
   push:
@@ -82,6 +84,7 @@ on:
       - "scripts/build_original_plan_completion_report.py"
       - "scripts/run_data_lake_lineage_smoke.py"
       - "scripts/run_knowledge_lineage_smoke.py"
+      - "scripts/run_log_separation_identity_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -116,6 +119,7 @@ on:
       - "tests/test_interim_evidence.py"
       - "tests/test_interim_store.py"
       - "tests/test_knowledge_lineage.py"
+      - "tests/test_log_separation_execution_identity.py"
       - "tests/test_reference_ingestion.py"
       - "tests/test_runtime_knowledge_db.py"
   workflow_dispatch:
@@ -164,6 +168,7 @@ jobs:
           tests/test_interim_evidence.py
           tests/test_interim_store.py
           tests/test_knowledge_lineage.py
+          tests/test_log_separation_execution_identity.py
           tests/test_reference_ingestion.py
           tests/test_runtime_knowledge_db.py
       - name: Lint requirement audit
@@ -202,6 +207,7 @@ jobs:
           tests/test_inference_api.py
           scripts/run_data_lake_lineage_smoke.py
           scripts/run_knowledge_lineage_smoke.py
+          scripts/run_log_separation_identity_smoke.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py
@@ -209,5 +215,6 @@ jobs:
           tests/test_interim_evidence.py
           tests/test_interim_store.py
           tests/test_knowledge_lineage.py
+          tests/test_log_separation_execution_identity.py
           tests/test_reference_ingestion.py
           tests/test_runtime_knowledge_db.py

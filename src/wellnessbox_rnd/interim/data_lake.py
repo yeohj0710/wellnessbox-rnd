@@ -13,6 +13,11 @@ from uuid import uuid4
 from pydantic import BaseModel, ConfigDict
 
 from wellnessbox_rnd.interim.contracts import DataClass
+from wellnessbox_rnd.interim.execution_identity import (
+    DatasetIdentityRecord,
+    ExecutionIdentityRecord,
+    build_execution_identity,
+)
 from wellnessbox_rnd.interim.knowledge_lineage import persist_execution_knowledge_lineage
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.schemas.recommendation import (
@@ -114,6 +119,7 @@ class ExecutionTrace(_StrictModel):
     updated_at: str
     events: list[ExecutionEventRecord]
     knowledge_lineage: list[KnowledgeLineageRecord]
+    execution_identity: ExecutionIdentityRecord | None = None
 
 
 class AppendEventResult(_StrictModel):
@@ -422,6 +428,33 @@ class ExecutionLedger:
                     now,
                 ),
             )
+            identity = build_execution_identity(
+                execution_id=execution_id,
+                response=response,
+                created_at=now,
+            )
+            connection.execute(
+                """
+                insert into execution_identities(
+                  execution_id, model_id, engine_version, code_commit,
+                  code_commit_source, dataset_ids_json, config_json,
+                  config_sha256, created_at
+                ) values (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    identity.execution_id,
+                    identity.model_id,
+                    identity.engine_version,
+                    identity.code_commit,
+                    identity.code_commit_source,
+                    _canonical_json(
+                        [item.model_dump(mode="json") for item in identity.datasets]
+                    ),
+                    _canonical_json(identity.config),
+                    identity.config_sha256,
+                    identity.created_at,
+                ),
+            )
             core_events = self._core_event_payloads(
                 response,
                 store_derived_outputs=store_derived_outputs,
@@ -617,6 +650,28 @@ class ExecutionLedger:
                 (execution_id,),
             )
         ]
+        identity_rows = self.store.rows(
+            "select * from execution_identities where execution_id=?",
+            (execution_id,),
+        )
+        execution_identity = None
+        if identity_rows:
+            identity_row = identity_rows[0]
+            config = json.loads(identity_row["config_json"])
+            execution_identity = ExecutionIdentityRecord(
+                execution_id=str(identity_row["execution_id"]),
+                model_id=str(identity_row["model_id"]),
+                engine_version=str(identity_row["engine_version"]),
+                code_commit=str(identity_row["code_commit"]),
+                code_commit_source=str(identity_row["code_commit_source"]),
+                datasets=[
+                    DatasetIdentityRecord(**item)
+                    for item in json.loads(identity_row["dataset_ids_json"])
+                ],
+                config=config,
+                config_sha256=str(identity_row["config_sha256"]),
+                created_at=str(identity_row["created_at"]),
+            )
         return ExecutionTrace(
             execution_id=str(row["execution_id"]),
             response_execution_id=str(row["execution_id"]),
@@ -636,6 +691,7 @@ class ExecutionLedger:
             updated_at=str(row["updated_at"]),
             events=events,
             knowledge_lineage=knowledge_lineage,
+            execution_identity=execution_identity,
         )
 
     @staticmethod

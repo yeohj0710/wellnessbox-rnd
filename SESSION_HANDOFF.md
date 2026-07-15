@@ -1,5 +1,21 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 log separation and execution-identity handoff
+
+- Chosen stage: `original plan / Data Lake evidence lineage`
+- Chosen tasks: OP-025 and OP-026
+- Primary dataset path and case count: `data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json`; `2` actual FastAPI route cases
+- Main files: `src/wellnessbox_rnd/interim/store.py` (schema `6`), new `src/wellnessbox_rnd/interim/behavior_log.py` and `src/wellnessbox_rnd/interim/execution_identity.py`, `src/wellnessbox_rnd/interim/data_lake.py`, `apps/inference_api/routes/interim.py`, smoke runner, manifest, generated reports, CI workflow, and focused tests
+- Current result: two disjoint log stores (`execution_events` research vocabulary versus `behavior_events` user-behavior vocabulary, both CHECK-bounded); every persistent recommendation execution stores model ID, engine version, code commit with resolution source, four hashed runtime dataset identities, and one canonical config SHA-256 that identical runs share; the authenticated trace returns the structured identity.
+- Consent boundary: behavior events require the profile's active survey persistent-storage consent and fail closed with `403`; unknown profiles return `404`; replays deduplicate; changed payloads return `409`.
+- Separation boundary: research event types are rejected by the behavior endpoint and behavior names are rejected by the research event route, both with `422`; `GET /v1/interim/log-classes` reports zero cross-contamination.
+- Local artifact note: the ignored local interim database carried sticky `content_changed` quarantines from the audited OP-023/024 artifact update; after checksum verification the three internal reference sources were explicitly reviewed and un-quarantined with a recorded metadata review note. Adapter license quarantines remain. Fresh checkouts and CI never see this state. A committed review workflow is still missing and stays on the bottleneck list.
+- Evidence stage: `IMPLEMENTED`. OP-025 and OP-026 remain partial because `OPERATED` requires production persistence and postcondition re-query. No service code, R&D deployment, or production two-process integration changed in this loop.
+- Validation: focused CI-equivalent selection `176 passed`; new smoke deterministic; manifest audit passes with `28` valid claims and zero issues; completion-report stale check passes; Ruff passes. Full suite is `586 passed`, `78 failed`, matching the known `74` missing report-artifact and `4` CGM geometry groups.
+- Frozen evaluation: `256` cases; zero delta for all seven metrics against the pre-loop report. Replay/slice delta: not applicable.
+- Biggest bottlenecks: deployed R&D URL; durable production R&D storage; authenticated service-to-R&D round trip; production re-query evidence; committed quarantine review workflow.
+- Next three loops: OP-027/028 idempotency plus deletion/correction audit handling; OP-029/030 replay API plus service UI; OP-033/034 safety-engine group D start.
+
 ## 2026-07-15 knowledge evidence-lineage handoff
 
 - Chosen stage: `original plan / Data Lake evidence lineage`

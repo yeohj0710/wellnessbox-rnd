@@ -106,8 +106,8 @@ def run_smoke() -> dict[str, Any]:
             lineage = list(trace["knowledge_lineage"])
             output_types = sorted({str(item["output_type"]) for item in lineage})
             checks = {
-                "database_schema_version_is_5": (
-                    store.scalar("select max(version) from schema_migrations") == 5
+                "database_schema_version_is_6": (
+                    store.scalar("select max(version) from schema_migrations") == 6
                 ),
                 "canonical_artifact_counts_match": (
                     (source_count, passage_count, claim_count, rule_count, link_count)
@@ -152,7 +152,7 @@ def run_smoke() -> dict[str, Any]:
                 "status": "passed",
                 "data_class": "INTERIM_RUNTIME_EVENT",
                 "case_count": 1,
-                "database_schema_version": 5,
+                "database_schema_version": 6,
                 "source_count": source_count,
                 "passage_count": passage_count,
                 "claim_count": claim_count,
