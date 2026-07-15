@@ -1,17 +1,24 @@
 import hashlib
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
 from wellnessbox_rnd.interim.importer import register_retrained_package
 from wellnessbox_rnd.interim.store import InterimStore
 
+RETRAINED_PACKAGE_ROOT = Path("artifacts/tips/interim/retrained")
+
 
 def _headers() -> dict[str, str]:
     return {"x-wb-rnd-token": "test-token"}
 
 
+@pytest.mark.skipif(
+    not RETRAINED_PACKAGE_ROOT.is_dir(),
+    reason="ignored local retrained package artifacts/tips/interim/retrained is absent",
+)
 def test_interim_api_requires_token_and_runs_recommendation(tmp_path, monkeypatch) -> None:
     database = tmp_path / "api.sqlite3"
     monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
