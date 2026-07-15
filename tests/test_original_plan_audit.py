@@ -38,7 +38,7 @@ def test_original_plan_audit_accepts_current_claimed_evidence() -> None:
 
     assert report.status == OriginalPlanAuditStatus.PASS
     assert report.requirement_count == 120
-    assert report.claimed_requirement_count == 10
+    assert report.claimed_requirement_count == 11
     assert report.source_hash_matches is True
     assert report.checked_evidence_file_count > 0
     assert report.issues == []

@@ -1,0 +1,59 @@
+name: Original plan evidence
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/original-plan-evidence.yml"
+      - "data/original_plan/**"
+      - "docs/context/original_plan.pdf"
+      - "docs/plans/2026-07-15-original-plan-completion-program.md"
+      - "scripts/audit_original_plan_requirements.py"
+      - "src/wellnessbox_rnd/governance/**"
+      - "src/wellnessbox_rnd/schemas/original_plan_manifest.py"
+      - "tests/test_original_plan_audit*.py"
+      - "tests/test_original_plan_manifest.py"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/original-plan-evidence.yml"
+      - "data/original_plan/**"
+      - "docs/context/original_plan.pdf"
+      - "docs/plans/2026-07-15-original-plan-completion-program.md"
+      - "scripts/audit_original_plan_requirements.py"
+      - "src/wellnessbox_rnd/governance/**"
+      - "src/wellnessbox_rnd/schemas/original_plan_manifest.py"
+      - "tests/test_original_plan_audit*.py"
+      - "tests/test_original_plan_manifest.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install audit dependencies
+        run: python -m pip install -e ".[dev]"
+      - name: Audit requirement evidence
+        run: python scripts/audit_original_plan_requirements.py
+      - name: Run requirement contract tests
+        run: >-
+          python -m pytest
+          tests/test_original_plan_manifest.py
+          tests/test_original_plan_audit.py
+          tests/test_original_plan_audit_cli.py
+      - name: Lint requirement audit
+        run: >-
+          python -m ruff check
+          scripts/audit_original_plan_requirements.py
+          src/wellnessbox_rnd/governance
+          src/wellnessbox_rnd/schemas/original_plan_manifest.py
+          tests/test_original_plan_manifest.py
+          tests/test_original_plan_audit.py
+          tests/test_original_plan_audit_cli.py

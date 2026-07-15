@@ -89,7 +89,18 @@
             "test_files": ["wellnessbox-rnd/tests/test_original_plan_audit.py"]
           }
         },
-        {"requirement_id": "OP-009", "title": "manifest 감사를 pytest와 CI 명령에 연결한다."},
+        {
+          "requirement_id": "OP-009",
+          "title": "manifest 감사를 pytest와 CI 명령에 연결한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/scripts/audit_original_plan_requirements.py",
+              "wellnessbox-rnd/.github/workflows/original-plan-evidence.yml"
+            ],
+            "test_files": ["wellnessbox-rnd/tests/test_original_plan_audit_cli.py"]
+          }
+        },
         {"requirement_id": "OP-010", "title": "원본 요구사항 100% 감사 보고서를 manifest에서 자동 생성한다."}
       ]
     },

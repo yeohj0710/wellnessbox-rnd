@@ -1,5 +1,19 @@
 # PROGRESS
 
+## 2026-07-15 original plan audit-command and CI loop
+
+- Chosen stage: `original plan / evidence governance`
+- Chosen task: OP-009 expose the audit as one deterministic command and CI gate
+- Primary dataset: `data/original_plan/requirements_manifest_v1.json`
+- Case count: `120` requirements; `11` current claims
+- Added `python scripts/audit_original_plan_requirements.py` with JSON output and strict PASS=`0`, FAIL=`1` exit codes.
+- Relative manifest paths resolve from the R&D repository root. The sibling service repository is optional until a claimed evidence file requires it.
+- Added a Python 3.11 GitHub Actions workflow that runs the CLI, manifest/audit/CLI tests, and focused Ruff checks on relevant changes.
+- Added CLI tests for a valid manifest, a deliberately corrupted hash, and workflow command coverage.
+- OP-009 is the eleventh claimed requirement. The remaining `109` requirements stay unclaimed.
+- Validation: `16 passed`; full Ruff PASS; CLI audit PASS with `20` unique evidence files, zero issues, and PDF hash match.
+- Official frozen-eval metric deltas: none. No runtime or production deployment changed.
+
 ## 2026-07-15 original plan evidence-audit loop
 
 - Chosen stage: `original plan / evidence governance`

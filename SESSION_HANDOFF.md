@@ -1,5 +1,48 @@
 # SESSION_HANDOFF
 
+## 2026-07-15 original plan audit-command and CI handoff
+
+- Chosen stage: `original plan / evidence governance`
+- Chosen task: OP-009
+- Primary dataset path and case count: `data/original_plan/requirements_manifest_v1.json`; `120` requirements, `11` claimed
+
+Files changed:
+
+- `scripts/audit_original_plan_requirements.py`
+- `.github/workflows/original-plan-evidence.yml`
+- `tests/test_original_plan_audit_cli.py`
+- manifest, completion ledger, and handoff documents
+
+Key changes:
+
+- Developers and CI now run the same audit function through one command.
+- The command emits machine-readable JSON and fails the process for any audit issue.
+- CI uses Python 3.11 and runs the audit command, contract tests, and Ruff.
+- OP-009 is claimed only with command, workflow, and CLI-test evidence.
+
+Validation:
+
+- manifest, audit, and CLI tests: `16 passed`
+- full Ruff: PASS
+- audit command: PASS; `120` requirements, `11` claims, `20` unique evidence files, zero issues, PDF hash match
+- `git diff --check`: PASS
+
+Official frozen-eval metric deltas: none.
+
+Biggest remaining bottlenecks:
+
+1. No Korean completion report is generated from the audited manifest.
+2. No deployed R&D FastAPI runtime or production `WB_RND_*` configuration exists.
+3. Full profile, consent, product, order, pharmacy, and delivery contracts remain incomplete.
+4. The service repository is not checked out in the standalone R&D CI job, so future cross-repository claims will need a second-checkout or signed evidence bundle.
+5. Missing ignored reports and stale CGM geometry keep the full R&D suite red.
+
+Recommended next loops:
+
+1. OP-010 generated completion report.
+2. OP-011 and OP-012 biometric profile and symptom-severity contracts.
+3. OP-013 and OP-014 medication and supplement dose/unit contracts.
+
 ## 2026-07-15 original plan evidence-audit handoff
 
 - Chosen stage: `original plan / evidence governance`
