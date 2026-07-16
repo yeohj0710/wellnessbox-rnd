@@ -1,0 +1,254 @@
+{
+  "schema_version": "goal_ingredient_priors_v1",
+  "prior_version": "2026-07-16.2",
+  "effective_at": "2026-07-16T00:00:00Z",
+  "score_scale": {
+    "minimum": 0.0,
+    "maximum": 35.0,
+    "standard_goal_prior": 35.0,
+    "general_wellness_prior": 18.0,
+    "meaning": "versioned candidate-ordering points; not treatment efficacy probability"
+  },
+  "records": [
+    {
+      "ingredient_key": "berberine",
+      "goal_key": "blood_glucose",
+      "prior_score": 35.0,
+      "evidence_strength": "limited",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NCCIH-BERBERINE-GLUCOSE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NCCIH-BERBERINE-GLUCOSE-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "heterogeneous and lower-quality studies", "medication and pregnancy restrictions"]
+    },
+    {
+      "ingredient_key": "calcium_citrate",
+      "goal_key": "bone_joint",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-CALCIUM-BONE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-CALCIUM-BONE-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "calcium-category evidence", "no calcium-citrate superiority claim"]
+    },
+    {
+      "ingredient_key": "coq10",
+      "goal_key": "energy_support",
+      "prior_score": 35.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001"],
+      "limitations": ["internal catalog-selection policy only", "no registered clinical energy-efficacy claim"]
+    },
+    {
+      "ingredient_key": "coq10",
+      "goal_key": "heart_health",
+      "prior_score": 35.0,
+      "evidence_strength": "inconclusive",
+      "evidence_direction": "exploratory_only",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NCCIH-COQ10-HEART-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NCCIH-COQ10-HEART-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "prevention and heart-failure findings are inconclusive"]
+    },
+    {
+      "ingredient_key": "l_theanine",
+      "goal_key": "sleep_support",
+      "prior_score": 35.0,
+      "evidence_strength": "limited",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-PUBMED-LTHEANINE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "small sample", "short duration"]
+    },
+    {
+      "ingredient_key": "l_theanine",
+      "goal_key": "stress_support",
+      "prior_score": 35.0,
+      "evidence_strength": "limited",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-PUBMED-LTHEANINE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "small sample", "short duration"]
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001"],
+      "limitations": ["nutritional catalog-selection policy only", "general_wellness is not a clinical outcome"]
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "goal_key": "sleep_support",
+      "prior_score": 35.0,
+      "evidence_strength": "mixed",
+      "evidence_direction": "exploratory_only",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NCCIH-MAGNESIUM-SLEEP-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NCCIH-MAGNESIUM-SLEEP-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "small low-quality and conflicting studies", "not magnesium-glycinate-specific"]
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "goal_key": "stress_support",
+      "prior_score": 35.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001"],
+      "limitations": ["internal catalog-selection policy only", "no registered clinical stress-efficacy claim"]
+    },
+    {
+      "ingredient_key": "omega3",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001"],
+      "limitations": ["nutritional catalog-selection policy only", "general_wellness is not a clinical outcome"]
+    },
+    {
+      "ingredient_key": "omega3",
+      "goal_key": "heart_health",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-OMEGA3-HEART-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-OMEGA3-HEART-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "cardiovascular endpoint evidence varies by population", "coronary-risk evidence is not conclusive"]
+    },
+    {
+      "ingredient_key": "probiotics",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001"],
+      "limitations": ["catalog-selection policy only", "general_wellness is not a strain-specific clinical outcome"]
+    },
+    {
+      "ingredient_key": "probiotics",
+      "goal_key": "gut_health",
+      "prior_score": 35.0,
+      "evidence_strength": "limited",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NCCIH-PROBIOTICS-GUT-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NCCIH-PROBIOTICS-GUT-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "strain- and condition-specific effects", "effective product and dose often uncertain"]
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "goal_key": "blood_glucose",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-CDC-SOLUBLE-FIBER-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-CDC-SOLUBLE-FIBER-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "fiber-category evidence", "no product-specific or dose-specific claim"]
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "goal_key": "gut_health",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-CDC-SOLUBLE-FIBER-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-CDC-SOLUBLE-FIBER-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "fiber-category evidence", "no product-specific or dose-specific claim"]
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "goal_key": "energy_support",
+      "prior_score": 35.0,
+      "evidence_strength": "null_without_deficiency",
+      "evidence_direction": "exploratory_only",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-B12-ENERGY-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-B12-ENERGY-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "component-level vitamin B12 evidence", "no benefit shown without nutritional deficit", "no whole B-complex efficacy claim"]
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001"],
+      "limitations": ["nutritional catalog-selection policy only", "general_wellness is not a clinical outcome"]
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-IMMUNE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"],
+      "limitations": ["nutritional adequacy prior only", "general_wellness is not a clinical outcome"]
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "goal_key": "immunity_support",
+      "prior_score": 35.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-IMMUNE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "routine supplementation without deficiency probably offers little infection benefit"]
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "goal_key": "bone_joint",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-VITD-BONE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-VITD-BONE-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "fracture and fall findings vary by population"]
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-IMMUNE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"],
+      "limitations": ["nutritional adequacy prior only", "general_wellness is not a clinical outcome"]
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "goal_key": "immunity_support",
+      "prior_score": 35.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-IMMUNE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "routine supplementation without deficiency probably offers little infection benefit"]
+    },
+    {
+      "ingredient_key": "zinc",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-IMMUNE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"],
+      "limitations": ["nutritional adequacy prior only", "general_wellness is not a clinical outcome"]
+    },
+    {
+      "ingredient_key": "zinc",
+      "goal_key": "immunity_support",
+      "prior_score": 35.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": ["REF-MC-GOAL-PRIOR-001", "REF-NIH-ODS-IMMUNE-001"],
+      "claim_ids": ["CLM-MC-GOAL-PRIOR-POLICY-001", "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"],
+      "limitations": ["candidate-ordering policy, not efficacy probability", "routine supplementation without deficiency probably offers little infection benefit"]
+    }
+  ]
+}

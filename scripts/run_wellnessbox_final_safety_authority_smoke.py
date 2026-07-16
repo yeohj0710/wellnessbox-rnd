@@ -205,12 +205,15 @@ def run_smoke(*, wellnessbox_root: Path, output_path: Path) -> dict[str, object]
     ]
     service_source_paths = [
         "app/api/tips/route.ts",
+        "contracts/wb-rnd/ingredient-identifier-map-v1.json",
         "lib/server/wb-rnd-interim-client.ts",
         "lib/server/wb-rnd-interim-route.ts",
         "lib/server/wb-rnd-interim-safety-authority.ts",
+        "lib/server/wb-rnd-ingredient-map.ts",
         "lib/server/wb-rnd-tips-route-test-hook.ts",
         "package.json",
         "scripts/qa/check-rnd-final-safety-authority.cts",
+        "scripts/qa/check-rnd-ingredient-map.cts",
     ]
     report: dict[str, object] = {
         "schema_version": "op040_final_safety_authority_integration_smoke_v2",

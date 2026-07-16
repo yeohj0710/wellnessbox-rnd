@@ -37,6 +37,7 @@ def main() -> None:
             "contraindication_rules": len(runtime_db.contraindication_rules),
             "dose_limits": len(runtime_db.dose_limits),
             "ingredient_domain_scores": len(runtime_db.ingredient_domain_scores),
+            "goal_ingredient_priors": len(runtime_db.goal_ingredient_priors),
             "references": len(runtime_db.references),
             "reference_spans": len(runtime_db.reference_spans),
             "workflow_policies": len(runtime_db.workflow_policies),

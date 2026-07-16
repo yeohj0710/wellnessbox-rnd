@@ -35,11 +35,13 @@ def test_runtime_knowledge_db_builds_required_tables() -> None:
     assert runtime_db.contraindication_rules
     assert runtime_db.dose_limits
     assert runtime_db.ingredient_domain_scores
+    assert runtime_db.goal_ingredient_priors
     assert runtime_db.references
     assert runtime_db.reference_spans
     assert runtime_db.workflow_policies
     assert {reference.license_status for reference in runtime_db.references} == {
         "APPROVED_INTERNAL",
+        "OPEN_ACCESS_RESEARCH",
         "PUBLIC_GOVERNMENT",
     }
     assert all(reference.effective_at for reference in runtime_db.references)

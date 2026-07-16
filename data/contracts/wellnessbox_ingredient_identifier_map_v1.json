@@ -1,0 +1,103 @@
+{
+  "schema_version": "wb_rnd_ingredient_identifier_map_v1",
+  "mapping_version": "2026-07-16.1",
+  "effective_at": "2026-07-16T00:00:00Z",
+  "service_namespace": "wellnessbox_tips_lab_proxy_model_v1",
+  "service_candidate_source": "wellnessbox/data/tips/proxy-recommendation-model.json",
+  "rnd_namespace": "wellnessbox_rnd_catalog_v1",
+  "rnd_catalog_source": "wellnessbox-rnd/data/catalog/ingredients.json",
+  "mappings": [
+    {
+      "service_ingredient_id": "ING:CALCIUM",
+      "rnd_ingredient_key": "calcium_citrate",
+      "relationship": "service_broader",
+      "allowed_directions": ["rnd_to_service"]
+    },
+    {
+      "service_ingredient_id": "ING:COQ10",
+      "rnd_ingredient_key": "coq10",
+      "relationship": "equivalent",
+      "allowed_directions": ["rnd_to_service", "service_to_rnd"]
+    },
+    {
+      "service_ingredient_id": "ING:MAGNESIUM",
+      "rnd_ingredient_key": "magnesium_glycinate",
+      "relationship": "service_broader",
+      "allowed_directions": ["rnd_to_service"]
+    },
+    {
+      "service_ingredient_id": "ING:OMEGA3",
+      "rnd_ingredient_key": "omega3",
+      "relationship": "equivalent",
+      "allowed_directions": ["rnd_to_service", "service_to_rnd"]
+    },
+    {
+      "service_ingredient_id": "ING:PROBIOTIC",
+      "rnd_ingredient_key": "probiotics",
+      "relationship": "equivalent",
+      "allowed_directions": ["rnd_to_service", "service_to_rnd"]
+    },
+    {
+      "service_ingredient_id": "ING:VITAMIN_C",
+      "rnd_ingredient_key": "vitamin_c",
+      "relationship": "equivalent",
+      "allowed_directions": ["rnd_to_service", "service_to_rnd"]
+    },
+    {
+      "service_ingredient_id": "ING:VITAMIN_D",
+      "rnd_ingredient_key": "vitamin_d3",
+      "relationship": "service_broader",
+      "allowed_directions": ["rnd_to_service"]
+    },
+    {
+      "service_ingredient_id": "ING:ZINC",
+      "rnd_ingredient_key": "zinc",
+      "relationship": "equivalent",
+      "allowed_directions": ["rnd_to_service", "service_to_rnd"]
+    }
+  ],
+  "unmapped_service_identifiers": [
+    {
+      "service_ingredient_id": "ING:FOLATE",
+      "reason": "no_equivalent_rnd_catalog_key"
+    },
+    {
+      "service_ingredient_id": "ING:IRON",
+      "reason": "no_equivalent_rnd_catalog_key"
+    },
+    {
+      "service_ingredient_id": "ING:LUTEIN",
+      "reason": "no_equivalent_rnd_catalog_key"
+    },
+    {
+      "service_ingredient_id": "ING:PROTEIN",
+      "reason": "no_equivalent_rnd_catalog_key"
+    },
+    {
+      "service_ingredient_id": "ING:PSYLLIUM",
+      "reason": "semantic_scope_mismatch_with_rnd_soluble_fiber"
+    },
+    {
+      "service_ingredient_id": "ING:VITAMIN_B12",
+      "reason": "service_vitamin_b12_not_equivalent_to_rnd_b_complex"
+    }
+  ],
+  "unmapped_rnd_identifiers": [
+    {
+      "rnd_ingredient_key": "berberine",
+      "reason": "no_service_candidate_identifier"
+    },
+    {
+      "rnd_ingredient_key": "l_theanine",
+      "reason": "no_service_candidate_identifier"
+    },
+    {
+      "rnd_ingredient_key": "soluble_fiber",
+      "reason": "semantic_scope_mismatch_with_service_psyllium"
+    },
+    {
+      "rnd_ingredient_key": "vitamin_b_complex",
+      "reason": "rnd_b_complex_not_equivalent_to_service_vitamin_b12"
+    }
+  ]
+}

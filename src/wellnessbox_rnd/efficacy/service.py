@@ -1,5 +1,6 @@
 from wellnessbox_rnd.domain.intake import NormalizedIntake
 from wellnessbox_rnd.domain.models import IngredientCatalogItem
+from wellnessbox_rnd.knowledge.goal_priors import get_goal_prior_index
 from wellnessbox_rnd.schemas.recommendation import (
     CandidateScoreBreakdown,
     RecommendationGoal,
@@ -11,10 +12,11 @@ def score_candidate(
     intake: NormalizedIntake,
     safety_review: bool,
 ) -> CandidateScoreBreakdown:
+    goal_priors = get_goal_prior_index()
     goal_alignment = sum(
-        _goal_alignment_weight(goal)
-        for goal in item.supported_goals
-        if goal in intake.goal_set
+        prior.prior_score
+        for goal in intake.goal_set
+        if (prior := goal_priors.get((item.key, goal))) is not None
     )
     symptom_alignment = 8.0 * len(set(item.supported_symptoms) & intake.symptom_set)
     lifestyle_alignment = 6.0 * len(set(item.preferred_signals) & intake.signal_flags)
@@ -86,12 +88,6 @@ def _budget_adjustment(item_budget: str, user_budget: str) -> float:
     if user_budget == "medium":
         return {"low": 1.0, "medium": 1.0, "high": -2.0}[item_budget]
     return {"low": 0.0, "medium": 1.0, "high": 1.0}[item_budget]
-
-
-def _goal_alignment_weight(goal: RecommendationGoal) -> float:
-    if goal == RecommendationGoal.GENERAL_WELLNESS:
-        return 18.0
-    return 35.0
 
 
 def _conservative_adjustment(

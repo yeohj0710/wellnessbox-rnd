@@ -84,6 +84,11 @@
       "source_kind": "deterministic_policy"
     },
     {
+      "ingredient_key": "berberine",
+      "alias": "berberine",
+      "source_kind": "knowledge_artifact"
+    },
+    {
       "ingredient_key": "calcium_citrate",
       "alias": "calcium citrate",
       "source_kind": "catalog"
@@ -97,6 +102,11 @@
       "ingredient_key": "calcium_citrate",
       "alias": "calcium_citrate",
       "source_kind": "deterministic_policy"
+    },
+    {
+      "ingredient_key": "calcium_citrate",
+      "alias": "calcium_citrate",
+      "source_kind": "knowledge_artifact"
     },
     {
       "ingredient_key": "chondroitin",
@@ -117,6 +127,11 @@
       "ingredient_key": "coq10",
       "alias": "coq10",
       "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "coq10",
+      "alias": "coq10",
+      "source_kind": "knowledge_artifact"
     },
     {
       "ingredient_key": "coq10",
@@ -145,6 +160,11 @@
     },
     {
       "ingredient_key": "l_theanine",
+      "alias": "l_theanine",
+      "source_kind": "knowledge_artifact"
+    },
+    {
+      "ingredient_key": "l_theanine",
       "alias": "theanine",
       "source_kind": "catalog"
     },
@@ -167,6 +187,11 @@
       "ingredient_key": "magnesium_glycinate",
       "alias": "magnesium_glycinate",
       "source_kind": "deterministic_policy"
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "alias": "magnesium_glycinate",
+      "source_kind": "knowledge_artifact"
     },
     {
       "ingredient_key": "omega3",
@@ -214,6 +239,11 @@
       "source_kind": "catalog"
     },
     {
+      "ingredient_key": "probiotics",
+      "alias": "probiotics",
+      "source_kind": "knowledge_artifact"
+    },
+    {
       "ingredient_key": "soluble_fiber",
       "alias": "psyllium",
       "source_kind": "catalog"
@@ -232,6 +262,11 @@
       "ingredient_key": "soluble_fiber",
       "alias": "soluble_fiber",
       "source_kind": "catalog"
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "alias": "soluble_fiber",
+      "source_kind": "knowledge_artifact"
     },
     {
       "ingredient_key": "vitamin_b_complex",
@@ -254,6 +289,11 @@
       "source_kind": "catalog"
     },
     {
+      "ingredient_key": "vitamin_b_complex",
+      "alias": "vitamin_b_complex",
+      "source_kind": "knowledge_artifact"
+    },
+    {
       "ingredient_key": "vitamin_c",
       "alias": "ascorbic acid",
       "source_kind": "catalog"
@@ -272,6 +312,11 @@
       "ingredient_key": "vitamin_c",
       "alias": "vitamin_c",
       "source_kind": "deterministic_policy"
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "alias": "vitamin_c",
+      "source_kind": "knowledge_artifact"
     },
     {
       "ingredient_key": "vitamin_d3",
@@ -299,6 +344,11 @@
       "source_kind": "deterministic_policy"
     },
     {
+      "ingredient_key": "vitamin_d3",
+      "alias": "vitamin_d3",
+      "source_kind": "knowledge_artifact"
+    },
+    {
       "ingredient_key": "zinc",
       "alias": "zinc",
       "source_kind": "catalog"
@@ -307,6 +357,11 @@
       "ingredient_key": "zinc",
       "alias": "zinc",
       "source_kind": "deterministic_policy"
+    },
+    {
+      "ingredient_key": "zinc",
+      "alias": "zinc",
+      "source_kind": "knowledge_artifact"
     },
     {
       "ingredient_key": "zinc",
@@ -612,6 +667,36 @@
   ],
   "ingredient_domain_scores": [
     {
+      "ingredient_key": "berberine",
+      "domain_key": "blood_glucose",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "limited_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NCCIH-BERBERINE-GLUCOSE-001"
+      ],
+      "claim_ids": [
+        "CLM-NCCIH-BERBERINE-GLUCOSE-001"
+      ]
+    },
+    {
+      "ingredient_key": "calcium_citrate",
+      "domain_key": "bone_joint",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "moderate_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-CALCIUM-BONE-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-CALCIUM-BONE-001"
+      ]
+    },
+    {
       "ingredient_key": "chondroitin",
       "domain_key": "bleeding_risk",
       "support_score": 1.0,
@@ -645,6 +730,21 @@
       ],
       "claim_ids": [
         "CLM-KNOWLEDGE-ANTICOAG-001"
+      ]
+    },
+    {
+      "ingredient_key": "coq10",
+      "domain_key": "heart_health",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "inconclusive_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NCCIH-COQ10-HEART-001"
+      ],
+      "claim_ids": [
+        "CLM-NCCIH-COQ10-HEART-001"
       ]
     },
     {
@@ -684,6 +784,51 @@
       ]
     },
     {
+      "ingredient_key": "l_theanine",
+      "domain_key": "sleep_support",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "limited_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-PUBMED-LTHEANINE-001"
+      ],
+      "claim_ids": [
+        "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"
+      ]
+    },
+    {
+      "ingredient_key": "l_theanine",
+      "domain_key": "stress_support",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "limited_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-PUBMED-LTHEANINE-001"
+      ],
+      "claim_ids": [
+        "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"
+      ]
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "domain_key": "sleep_support",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "mixed_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NCCIH-MAGNESIUM-SLEEP-001"
+      ],
+      "claim_ids": [
+        "CLM-NCCIH-MAGNESIUM-SLEEP-001"
+      ]
+    },
+    {
       "ingredient_key": "omega3",
       "domain_key": "bleeding_risk",
       "support_score": 1.0,
@@ -717,10 +862,658 @@
       ],
       "claim_ids": [
         "CLM-NIH-ODS-OMEGA3-WARFARIN-001"
+      ]
+    },
+    {
+      "ingredient_key": "omega3",
+      "domain_key": "heart_health",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "moderate_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-OMEGA3-HEART-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-OMEGA3-HEART-001"
+      ]
+    },
+    {
+      "ingredient_key": "probiotics",
+      "domain_key": "gut_health",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "limited_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NCCIH-PROBIOTICS-GUT-001"
+      ],
+      "claim_ids": [
+        "CLM-NCCIH-PROBIOTICS-GUT-001"
+      ]
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "domain_key": "blood_glucose",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "moderate_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-CDC-SOLUBLE-FIBER-001"
+      ],
+      "claim_ids": [
+        "CLM-CDC-SOLUBLE-FIBER-001"
+      ]
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "domain_key": "gut_health",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "moderate_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-CDC-SOLUBLE-FIBER-001"
+      ],
+      "claim_ids": [
+        "CLM-CDC-SOLUBLE-FIBER-001"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "domain_key": "energy_support",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "null_goal_evidence_without_deficiency"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-B12-ENERGY-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-B12-ENERGY-001"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "domain_key": "general_wellness",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "nutrient_adequacy_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "domain_key": "immunity_support",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "nutrient_adequacy_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "domain_key": "bone_joint",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "moderate_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-VITD-BONE-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-VITD-BONE-001"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "domain_key": "general_wellness",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "nutrient_adequacy_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "domain_key": "immunity_support",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "nutrient_adequacy_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ]
+    },
+    {
+      "ingredient_key": "zinc",
+      "domain_key": "general_wellness",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "nutrient_adequacy_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ]
+    },
+    {
+      "ingredient_key": "zinc",
+      "domain_key": "immunity_support",
+      "support_score": 1.0,
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "nutrient_adequacy_goal_evidence"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ]
+    }
+  ],
+  "goal_ingredient_priors": [
+    {
+      "ingredient_key": "berberine",
+      "goal_key": "blood_glucose",
+      "prior_score": 35.0,
+      "evidence_strength": "limited",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NCCIH-BERBERINE-GLUCOSE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NCCIH-BERBERINE-GLUCOSE-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "heterogeneous and lower-quality studies",
+        "medication and pregnancy restrictions"
+      ]
+    },
+    {
+      "ingredient_key": "calcium_citrate",
+      "goal_key": "bone_joint",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-CALCIUM-BONE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-CALCIUM-BONE-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "calcium-category evidence",
+        "no calcium-citrate superiority claim"
+      ]
+    },
+    {
+      "ingredient_key": "coq10",
+      "goal_key": "energy_support",
+      "prior_score": 35.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001"
+      ],
+      "limitations": [
+        "internal catalog-selection policy only",
+        "no registered clinical energy-efficacy claim"
+      ]
+    },
+    {
+      "ingredient_key": "coq10",
+      "goal_key": "heart_health",
+      "prior_score": 35.0,
+      "evidence_strength": "inconclusive",
+      "evidence_direction": "exploratory_only",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NCCIH-COQ10-HEART-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NCCIH-COQ10-HEART-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "prevention and heart-failure findings are inconclusive"
+      ]
+    },
+    {
+      "ingredient_key": "l_theanine",
+      "goal_key": "sleep_support",
+      "prior_score": 35.0,
+      "evidence_strength": "limited",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-PUBMED-LTHEANINE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "small sample",
+        "short duration"
+      ]
+    },
+    {
+      "ingredient_key": "l_theanine",
+      "goal_key": "stress_support",
+      "prior_score": 35.0,
+      "evidence_strength": "limited",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-PUBMED-LTHEANINE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "small sample",
+        "short duration"
+      ]
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001"
+      ],
+      "limitations": [
+        "nutritional catalog-selection policy only",
+        "general_wellness is not a clinical outcome"
+      ]
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "goal_key": "sleep_support",
+      "prior_score": 35.0,
+      "evidence_strength": "mixed",
+      "evidence_direction": "exploratory_only",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NCCIH-MAGNESIUM-SLEEP-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NCCIH-MAGNESIUM-SLEEP-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "small low-quality and conflicting studies",
+        "not magnesium-glycinate-specific"
+      ]
+    },
+    {
+      "ingredient_key": "magnesium_glycinate",
+      "goal_key": "stress_support",
+      "prior_score": 35.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001"
+      ],
+      "limitations": [
+        "internal catalog-selection policy only",
+        "no registered clinical stress-efficacy claim"
+      ]
+    },
+    {
+      "ingredient_key": "omega3",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001"
+      ],
+      "limitations": [
+        "nutritional catalog-selection policy only",
+        "general_wellness is not a clinical outcome"
+      ]
+    },
+    {
+      "ingredient_key": "omega3",
+      "goal_key": "heart_health",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-OMEGA3-HEART-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-OMEGA3-HEART-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "cardiovascular endpoint evidence varies by population",
+        "coronary-risk evidence is not conclusive"
+      ]
+    },
+    {
+      "ingredient_key": "probiotics",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001"
+      ],
+      "limitations": [
+        "catalog-selection policy only",
+        "general_wellness is not a strain-specific clinical outcome"
+      ]
+    },
+    {
+      "ingredient_key": "probiotics",
+      "goal_key": "gut_health",
+      "prior_score": 35.0,
+      "evidence_strength": "limited",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NCCIH-PROBIOTICS-GUT-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NCCIH-PROBIOTICS-GUT-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "strain- and condition-specific effects",
+        "effective product and dose often uncertain"
+      ]
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "goal_key": "blood_glucose",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-CDC-SOLUBLE-FIBER-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-CDC-SOLUBLE-FIBER-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "fiber-category evidence",
+        "no product-specific or dose-specific claim"
+      ]
+    },
+    {
+      "ingredient_key": "soluble_fiber",
+      "goal_key": "gut_health",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-CDC-SOLUBLE-FIBER-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-CDC-SOLUBLE-FIBER-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "fiber-category evidence",
+        "no product-specific or dose-specific claim"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "goal_key": "energy_support",
+      "prior_score": 35.0,
+      "evidence_strength": "null_without_deficiency",
+      "evidence_direction": "exploratory_only",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-B12-ENERGY-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-B12-ENERGY-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "component-level vitamin B12 evidence",
+        "no benefit shown without nutritional deficit",
+        "no whole B-complex efficacy claim"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "policy_only",
+      "evidence_direction": "selection_policy_only",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001"
+      ],
+      "limitations": [
+        "nutritional catalog-selection policy only",
+        "general_wellness is not a clinical outcome"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ],
+      "limitations": [
+        "nutritional adequacy prior only",
+        "general_wellness is not a clinical outcome"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_c",
+      "goal_key": "immunity_support",
+      "prior_score": 35.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "routine supplementation without deficiency probably offers little infection benefit"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "goal_key": "bone_joint",
+      "prior_score": 35.0,
+      "evidence_strength": "moderate",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-VITD-BONE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-VITD-BONE-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "fracture and fall findings vary by population"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ],
+      "limitations": [
+        "nutritional adequacy prior only",
+        "general_wellness is not a clinical outcome"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_d3",
+      "goal_key": "immunity_support",
+      "prior_score": 35.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "routine supplementation without deficiency probably offers little infection benefit"
+      ]
+    },
+    {
+      "ingredient_key": "zinc",
+      "goal_key": "general_wellness",
+      "prior_score": 18.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ],
+      "limitations": [
+        "nutritional adequacy prior only",
+        "general_wellness is not a clinical outcome"
+      ]
+    },
+    {
+      "ingredient_key": "zinc",
+      "goal_key": "immunity_support",
+      "prior_score": 35.0,
+      "evidence_strength": "nutrient_adequacy",
+      "evidence_direction": "supports_candidate",
+      "reference_ids": [
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NIH-ODS-IMMUNE-001"
+      ],
+      "claim_ids": [
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+      ],
+      "limitations": [
+        "candidate-ordering policy, not efficacy probability",
+        "routine supplementation without deficiency probably offers little infection benefit"
       ]
     }
   ],
   "references": [
+    {
+      "reference_id": "REF-CDC-SOLUBLE-FIBER-001",
+      "source_title": "CDC - Fiber Helps Manage Diabetes",
+      "source_type": "government_health_reference",
+      "page_or_section": "Health benefits; Soluble fiber",
+      "reference_uri": "https://www.cdc.gov/diabetes/healthy-eating/fiber-helps-diabetes.html",
+      "parsed_source_uri": "data/raw_references/cdc_soluble_fiber_glucose_gut.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2024-05-15T00:00:00Z",
+      "retired_at": null
+    },
     {
       "reference_id": "REF-MC-ACTION-001",
       "source_title": "WellnessBox R&D Master Context",
@@ -744,6 +1537,94 @@
       "retired_at": null
     },
     {
+      "reference_id": "REF-MC-GOAL-PRIOR-001",
+      "source_title": "WellnessBox R&D Master Context",
+      "source_type": "master_context",
+      "page_or_section": "Sections 13.3 and 18.1 - candidate generation and domain priors",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_goal_prior_policy.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-NCCIH-BERBERINE-GLUCOSE-001",
+      "source_title": "NCCIH - Diabetes and Dietary Supplements",
+      "source_type": "government_health_reference",
+      "page_or_section": "Berberine",
+      "reference_uri": "https://www.nccih.nih.gov/health/diabetes-and-dietary-supplements-what-you-need-to-know",
+      "parsed_source_uri": "data/raw_references/nccih_berberine_glucose.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-NCCIH-COQ10-HEART-001",
+      "source_title": "NCCIH - Coenzyme Q10",
+      "source_type": "government_health_reference",
+      "page_or_section": "Bottom Line",
+      "reference_uri": "https://www.nccih.nih.gov/health/coenzyme-q10",
+      "parsed_source_uri": "data/raw_references/nccih_coq10_heart.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-NCCIH-MAGNESIUM-SLEEP-001",
+      "source_title": "NCCIH - Magnesium Supplements for Sleep Disorders",
+      "source_type": "government_health_reference",
+      "page_or_section": "Evidence summary",
+      "reference_uri": "https://www.nccih.nih.gov/health/in-the-news-magnesium-supplements-for-sleep-disorders",
+      "parsed_source_uri": "data/raw_references/nccih_magnesium_sleep.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-NCCIH-PROBIOTICS-GUT-001",
+      "source_title": "NCCIH - Probiotics Usefulness and Safety",
+      "source_type": "government_health_reference",
+      "page_or_section": "Gastrointestinal Conditions",
+      "reference_uri": "https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety",
+      "parsed_source_uri": "data/raw_references/nccih_probiotics_gut.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-NIH-ODS-CALCIUM-BONE-001",
+      "source_title": "NIH Office of Dietary Supplements - Calcium",
+      "source_type": "government_health_reference",
+      "page_or_section": "Introduction; Calcium and Health",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/Calcium-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_calcium_bone.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-NIH-ODS-IMMUNE-001",
+      "source_title": "NIH Office of Dietary Supplements - Dietary Supplements for Immune Function and Infectious Diseases",
+      "source_type": "government_health_reference",
+      "page_or_section": "Introduction; Vitamins and Minerals",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/ImmuneFunction-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_immune_micronutrients.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-NIH-ODS-OMEGA3-HEART-001",
+      "source_title": "NIH Office of Dietary Supplements - Omega-3 Fatty Acids",
+      "source_type": "government_health_reference",
+      "page_or_section": "Conclusions about omega-3s and cardiovascular disease",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_omega3_heart.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2025-08-22T00:00:00Z",
+      "retired_at": null
+    },
+    {
       "reference_id": "REF-NIH-ODS-OMEGA3-001",
       "source_title": "NIH Office of Dietary Supplements - Omega-3 Fatty Acids",
       "source_type": "government_health_reference",
@@ -752,6 +1633,39 @@
       "parsed_source_uri": "data/raw_references/nih_ods_omega3_warfarin.md",
       "license_status": "PUBLIC_GOVERNMENT",
       "effective_at": "2025-08-22T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-NIH-ODS-B12-ENERGY-001",
+      "source_title": "NIH Office of Dietary Supplements - Vitamin B12",
+      "source_type": "government_health_reference",
+      "page_or_section": "Energy and endurance",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/VitaminB12-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_vitamin_b12_energy.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2024-03-26T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-NIH-ODS-VITD-BONE-001",
+      "source_title": "NIH Office of Dietary Supplements - Vitamin D",
+      "source_type": "government_health_reference",
+      "page_or_section": "Bone health and osteoporosis",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_vitamin_d_bone.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2025-06-27T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-PUBMED-LTHEANINE-001",
+      "source_title": "Effects of L-Theanine Administration on Stress-Related Symptoms and Cognitive Functions in Healthy Adults",
+      "source_type": "peer_reviewed_trial",
+      "page_or_section": "Abstract; randomized placebo-controlled crossover trial",
+      "reference_uri": "https://pubmed.ncbi.nlm.nih.gov/31623400/",
+      "parsed_source_uri": "data/raw_references/pubmed_l_theanine_stress_sleep.md",
+      "license_status": "OPEN_ACCESS_RESEARCH",
+      "effective_at": "2019-10-03T00:00:00Z",
       "retired_at": null
     },
     {
@@ -768,6 +1682,23 @@
   ],
   "reference_spans": [
     {
+      "span_id": "SPAN-CLM-CDC-SOLUBLE-FIBER-001",
+      "reference_id": "REF-CDC-SOLUBLE-FIBER-001",
+      "claim_id": "CLM-CDC-SOLUBLE-FIBER-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "CDC describes fiber as supporting digestive health and blood-sugar management. It explains that soluble fiber forms a gel and slows digestion, which can help control blood sugar and cholesterol. This is fiber-category evidence and does not establish one psyllium product or dose.",
+      "claim_text": "Soluble fiber slows digestion and can support blood-sugar control, while dietary fiber also supports digestive health; this category-level evidence does not establish a specific psyllium product or dose.",
+      "normalized_claim_type": "moderate_goal_evidence",
+      "ingredient_keys": [
+        "soluble_fiber"
+      ],
+      "domain_keys": [
+        "blood_glucose",
+        "gut_health"
+      ]
+    },
+    {
       "span_id": "SPAN-CLM-MC-ACTION-001",
       "reference_id": "REF-MC-ACTION-001",
       "claim_id": "CLM-MC-ACTION-001",
@@ -775,7 +1706,12 @@
       "line_end": 39,
       "excerpt": "This sample reference captures the no-human action space required for the autonomous closed-loop agent. Runtime actions must remain system-owned so the state machine can continue without manual review or handoff semantics.",
       "claim_text": "Runtime next_action must stay inside the system-owned action space and must not expose manual review or handoff actions.",
-      "normalized_claim_type": "action_space_constraint"
+      "normalized_claim_type": "action_space_constraint",
+      "ingredient_keys": [],
+      "domain_keys": [
+        "policy",
+        "action_space"
+      ]
     },
     {
       "span_id": "SPAN-CLM-MC-ACTION-002",
@@ -785,7 +1721,12 @@
       "line_end": 61,
       "excerpt": "When safety risk rises, the system still owns the control flow and should move into a safety recheck path rather than a human-review action.",
       "claim_text": "High-risk safety paths should route to trigger_safety_recheck as a system action instead of a human-handoff action.",
-      "normalized_claim_type": "safety_recheck_policy"
+      "normalized_claim_type": "safety_recheck_policy",
+      "ingredient_keys": [],
+      "domain_keys": [
+        "policy",
+        "safety_recheck"
+      ]
     },
     {
       "span_id": "SPAN-CLM-MC-CITATION-001",
@@ -795,7 +1736,12 @@
       "line_end": 29,
       "excerpt": "This sample reference normalizes citation requirements from the master context into a deterministic raw document. Structured citations need stable identifiers and typed fields so downstream safety and explanation modules can validate them.",
       "claim_text": "Safety engine outputs must always carry reference_ids so the closed-loop agent stays citation-backed.",
-      "normalized_claim_type": "citation_requirement"
+      "normalized_claim_type": "citation_requirement",
+      "ingredient_keys": [],
+      "domain_keys": [
+        "safety_engine",
+        "citations"
+      ]
     },
     {
       "span_id": "SPAN-CLM-MC-CITATION-002",
@@ -805,7 +1751,141 @@
       "line_end": 59,
       "excerpt": "The canonical citation payload also needs a stable structure instead of free-text retrieval output. That structure is what lets rule ids, claim ids, and references stay connected across ingestion and runtime explanation.",
       "claim_text": "Structured citations should include ref_id, source_title, source_type, page_or_section, claim_text, and normalized_claim_type.",
-      "normalized_claim_type": "citation_schema"
+      "normalized_claim_type": "citation_schema",
+      "ingredient_keys": [],
+      "domain_keys": [
+        "citations",
+        "knowledge_base"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-MC-GOAL-PRIOR-POLICY-001",
+      "reference_id": "REF-MC-GOAL-PRIOR-001",
+      "claim_id": "CLM-MC-GOAL-PRIOR-POLICY-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "The master context requires goal-specific candidate tables followed by a base prior score before safety filtering and optimization. The prior is a deterministic candidate-ordering policy, not an efficacy probability or treatment claim. Clinical evidence metadata must therefore qualify the policy without changing its meaning.",
+      "claim_text": "Each managed catalog ingredient-goal pair receives a versioned candidate-ordering prior before safety filtering; the prior is an internal selection policy and not a clinical efficacy probability.",
+      "normalized_claim_type": "candidate_prior_policy",
+      "ingredient_keys": [],
+      "domain_keys": [
+        "candidate_prior_policy"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-NCCIH-BERBERINE-GLUCOSE-001",
+      "reference_id": "REF-NCCIH-BERBERINE-GLUCOSE-001",
+      "claim_id": "CLM-NCCIH-BERBERINE-GLUCOSE-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "NCCIH summarizes a review suggesting possible glucose-lowering and insulin-resistance benefits from berberine, while emphasizing heterogeneous effects, weak study quality, and limited generalizability. It also notes medication interactions and pregnancy and breastfeeding restrictions.",
+      "claim_text": "Berberine might help blood-glucose control, but heterogeneous effects, study-quality limitations, limited generalizability, interactions, and pregnancy restrictions require cautious interpretation.",
+      "normalized_claim_type": "limited_goal_evidence",
+      "ingredient_keys": [
+        "berberine"
+      ],
+      "domain_keys": [
+        "blood_glucose"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-NCCIH-COQ10-HEART-001",
+      "reference_id": "REF-NCCIH-COQ10-HEART-001",
+      "claim_id": "CLM-NCCIH-COQ10-HEART-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "NCCIH reports that only a few studies have examined CoQ10 for heart-disease prevention and that results for prevention and heart failure are inconclusive. This supports only a very low exploratory prior, not a cardiovascular benefit claim.",
+      "claim_text": "Evidence for CoQ10 in heart-disease prevention and heart failure is inconclusive, so it supports only exploratory consideration rather than a cardiovascular efficacy claim.",
+      "normalized_claim_type": "inconclusive_goal_evidence",
+      "ingredient_keys": [
+        "coq10"
+      ],
+      "domain_keys": [
+        "heart_health"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-NCCIH-MAGNESIUM-SLEEP-001",
+      "reference_id": "REF-NCCIH-MAGNESIUM-SLEEP-001",
+      "claim_id": "CLM-NCCIH-MAGNESIUM-SLEEP-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "NCCIH reports that magnesium research for insomnia and other sleep disorders is sparse. Reviews found low-quality, small, or conflicting studies, so the evidence is not sufficient to determine effectiveness. This evidence concerns magnesium generally and does not establish a magnesium-glycinate-specific effect.",
+      "claim_text": "Research on magnesium supplements for insomnia and other sleep disorders is limited and conflicting, and rigorous evidence is insufficient to determine effectiveness; the evidence is not specific to magnesium glycinate.",
+      "normalized_claim_type": "mixed_goal_evidence",
+      "ingredient_keys": [
+        "magnesium_glycinate"
+      ],
+      "domain_keys": [
+        "sleep_support"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-NCCIH-PROBIOTICS-GUT-001",
+      "reference_id": "REF-NCCIH-PROBIOTICS-GUT-001",
+      "claim_id": "CLM-NCCIH-PROBIOTICS-GUT-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "NCCIH summarizes some promising gastrointestinal findings for probiotics but emphasizes that effects vary by strain and condition, and that the effective product, dose, and beneficiary groups often remain uncertain.",
+      "claim_text": "Some probiotics show promise for selected gastrointestinal outcomes, but effects are strain- and condition-specific and the effective product, dose, and beneficiary groups are often uncertain.",
+      "normalized_claim_type": "limited_goal_evidence",
+      "ingredient_keys": [
+        "probiotics"
+      ],
+      "domain_keys": [
+        "gut_health"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-NIH-ODS-CALCIUM-BONE-001",
+      "reference_id": "REF-NIH-ODS-CALCIUM-BONE-001",
+      "claim_id": "CLM-NIH-ODS-CALCIUM-BONE-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "NIH ODS describes calcium as a major structural component of bone and teeth and explains its continuous role in bone remodeling. This supports calcium-category relevance but does not establish that calcium citrate is superior to other calcium forms.",
+      "claim_text": "Calcium is a major structural component of bone and participates in bone remodeling; this category-level evidence does not establish calcium-citrate superiority over other forms.",
+      "normalized_claim_type": "moderate_goal_evidence",
+      "ingredient_keys": [
+        "calcium_citrate"
+      ],
+      "domain_keys": [
+        "bone_joint"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-NIH-ODS-IMMUNE-ADEQUACY-001",
+      "reference_id": "REF-NIH-ODS-IMMUNE-001",
+      "claim_id": "CLM-NIH-ODS-IMMUNE-ADEQUACY-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "NIH ODS states that adequate vitamin C, vitamin D, and zinc intake is important for immune function and that deficiencies can weaken immunity. It also cautions that routine micronutrient supplementation probably does little to prevent or treat specific infections when deficiency is absent.",
+      "claim_text": "Adequate vitamin C, vitamin D, and zinc status supports normal immune function, while routine supplementation in the absence of deficiency probably does little to prevent or treat specific infections.",
+      "normalized_claim_type": "nutrient_adequacy_goal_evidence",
+      "ingredient_keys": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "domain_keys": [
+        "immunity_support",
+        "general_wellness"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-NIH-ODS-OMEGA3-HEART-001",
+      "reference_id": "REF-NIH-ODS-OMEGA3-HEART-001",
+      "claim_id": "CLM-NIH-ODS-OMEGA3-HEART-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "NIH ODS reports that long-chain omega-3 supplements lower triglyceride levels and might reduce some cardiovascular endpoints, with stronger evidence in people with existing coronary disease than in healthy populations. Coronary-risk evidence remains supportive but not conclusive.",
+      "claim_text": "Long-chain omega-3 supplements lower triglycerides and might reduce some cardiovascular endpoints, but coronary-risk evidence is supportive rather than conclusive and varies by population.",
+      "normalized_claim_type": "moderate_goal_evidence",
+      "ingredient_keys": [
+        "omega3"
+      ],
+      "domain_keys": [
+        "heart_health"
+      ]
     },
     {
       "span_id": "SPAN-CLM-NIH-ODS-OMEGA3-WARFARIN-001",
@@ -815,7 +1895,63 @@
       "line_end": 20,
       "excerpt": "The NIH Office of Dietary Supplements describes a possible fish-oil and warfarin interaction, notes that most research at 3–6 g/day did not significantly change anticoagulant status, and reports that FDA-approved omega-3 pharmaceutical package inserts call for periodic INR monitoring when those products are used with anticoagulants. The source does not state that dietary omega-3 products universally require exclusion.",
       "claim_text": "Fish oil might prolong clotting time with warfarin, although most research found that 3–6 g/day did not significantly affect anticoagulant status; FDA-approved omega-3 pharmaceutical package inserts state that patients taking those products with anticoagulants should be monitored periodically for INR changes.",
-      "normalized_claim_type": "drug_interaction"
+      "normalized_claim_type": "drug_interaction",
+      "ingredient_keys": [
+        "omega3"
+      ],
+      "domain_keys": [
+        "drug_interaction",
+        "bleeding_risk"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-NIH-ODS-B12-ENERGY-001",
+      "reference_id": "REF-NIH-ODS-B12-ENERGY-001",
+      "claim_id": "CLM-NIH-ODS-B12-ENERGY-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "NIH ODS notes vitamin B12's role in energy metabolism but reports that supplementation does not appear to improve performance or endurance when vitamin B12 status is sufficient. This component-level evidence does not establish efficacy for a whole vitamin-B-complex product.",
+      "claim_text": "Vitamin B12 has a role in energy metabolism, but supplementation does not appear to improve performance or endurance without a nutritional deficit; this does not establish whole B-complex efficacy.",
+      "normalized_claim_type": "null_goal_evidence_without_deficiency",
+      "ingredient_keys": [
+        "vitamin_b_complex"
+      ],
+      "domain_keys": [
+        "energy_support"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-NIH-ODS-VITD-BONE-001",
+      "reference_id": "REF-NIH-ODS-VITD-BONE-001",
+      "claim_id": "CLM-NIH-ODS-VITD-BONE-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "NIH ODS describes vitamin D as necessary for calcium absorption and normal bone mineralization. Trials of vitamin D with calcium show small bone-density increases in some older populations, while community fracture and fall findings remain inconsistent.",
+      "claim_text": "Vitamin D is required for calcium absorption and normal bone mineralization, while supplementation outcomes for fractures and falls vary by population and remain inconsistent.",
+      "normalized_claim_type": "moderate_goal_evidence",
+      "ingredient_keys": [
+        "vitamin_d3"
+      ],
+      "domain_keys": [
+        "bone_joint"
+      ]
+    },
+    {
+      "span_id": "SPAN-CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001",
+      "reference_id": "REF-PUBMED-LTHEANINE-001",
+      "claim_id": "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001",
+      "line_start": 13,
+      "line_end": 19,
+      "excerpt": "A randomized, double-blind crossover study of 30 healthy adults reported lower stress-related scale and Pittsburgh Sleep Quality Index scores after four weeks of 200 mg/day L-theanine. The small sample and short duration limit generalization and do not establish treatment efficacy.",
+      "claim_text": "A small four-week randomized crossover trial in 30 healthy adults reported improvements in selected stress-related and sleep-quality scores with L-theanine, but the sample size and duration limit generalization.",
+      "normalized_claim_type": "limited_goal_evidence",
+      "ingredient_keys": [
+        "l_theanine"
+      ],
+      "domain_keys": [
+        "stress_support",
+        "sleep_support"
+      ]
     },
     {
       "span_id": "SPAN-CLM-KNOWLEDGE-ANTICOAG-001",
@@ -825,7 +1961,15 @@
       "line_end": 33,
       "excerpt": "This sample reference captures the anticoagulant interaction note already present in the local supplement knowledge files. Glucosamine and chondroitin should be treated as a bleeding-risk interaction when warfarin or Coumadin is present.",
       "claim_text": "Glucosamine or chondroitin used with warfarin or Coumadin can increase anticoagulant effect and bleeding risk.",
-      "normalized_claim_type": "drug_interaction"
+      "normalized_claim_type": "drug_interaction",
+      "ingredient_keys": [
+        "glucosamine",
+        "chondroitin"
+      ],
+      "domain_keys": [
+        "drug_interaction",
+        "bleeding_risk"
+      ]
     }
   ],
   "workflow_policies": [

@@ -8,6 +8,8 @@ on:
       - "apps/inference_api/routes/interim.py"
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
+      - "data/contracts/wellnessbox_ingredient_identifier_map_v1.json"
+      - "data/knowledge/goal_ingredient_priors_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
       - "data/knowledge/reference_knowledge_base_v1.json"
       - "data/raw_references/**"
@@ -32,8 +34,11 @@ on:
       - "scripts/run_dose_limit_fail_closed_rule_metadata_smoke.py"
       - "scripts/run_external_high_risk_safety_eval.py"
       - "scripts/run_wellnessbox_final_safety_authority_smoke.py"
+      - "scripts/run_ingredient_mapping_goal_prior_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
+      - "src/wellnessbox_rnd/knowledge/goal_priors.py"
+      - "src/wellnessbox_rnd/efficacy/service.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
       - "src/wellnessbox_rnd/interim/**"
       - "src/wellnessbox_rnd/domain/catalog.py"
@@ -77,6 +82,8 @@ on:
       - "tests/test_special_population_condition_safety.py"
       - "tests/test_learned_runtime_boundary_audit.py"
       - "tests/test_external_high_risk_safety_eval.py"
+      - "tests/test_ingredient_identifier_mapping.py"
+      - "tests/test_goal_ingredient_priors.py"
   push:
     branches: [main]
     paths:
@@ -85,6 +92,8 @@ on:
       - "apps/inference_api/routes/interim.py"
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
+      - "data/contracts/wellnessbox_ingredient_identifier_map_v1.json"
+      - "data/knowledge/goal_ingredient_priors_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
       - "data/knowledge/reference_knowledge_base_v1.json"
       - "data/raw_references/**"
@@ -109,8 +118,11 @@ on:
       - "scripts/run_dose_limit_fail_closed_rule_metadata_smoke.py"
       - "scripts/run_external_high_risk_safety_eval.py"
       - "scripts/run_wellnessbox_final_safety_authority_smoke.py"
+      - "scripts/run_ingredient_mapping_goal_prior_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
+      - "src/wellnessbox_rnd/knowledge/goal_priors.py"
+      - "src/wellnessbox_rnd/efficacy/service.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
       - "src/wellnessbox_rnd/interim/**"
       - "src/wellnessbox_rnd/domain/catalog.py"
@@ -154,6 +166,8 @@ on:
       - "tests/test_special_population_condition_safety.py"
       - "tests/test_learned_runtime_boundary_audit.py"
       - "tests/test_external_high_risk_safety_eval.py"
+      - "tests/test_ingredient_identifier_mapping.py"
+      - "tests/test_goal_ingredient_priors.py"
   workflow_dispatch:
 
 permissions:
@@ -172,7 +186,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 9609ce804ad06c609b794f455d4f6127b59361ac
+          ref: 58246f9a086c81bb3a38d4a1f33f5205b388d2b8
           path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
         with:
@@ -207,6 +221,11 @@ jobs:
           python scripts/run_wellnessbox_final_safety_authority_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op040_final_safety_authority_integration_smoke_v1.json
+      - name: Check ingredient mapping and goal-prior evidence
+        run: >-
+          python scripts/run_ingredient_mapping_goal_prior_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op041_op042_ingredient_mapping_goal_prior_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -235,6 +254,8 @@ jobs:
           tests/test_special_population_condition_safety.py
           tests/test_learned_runtime_boundary_audit.py
           tests/test_external_high_risk_safety_eval.py
+          tests/test_ingredient_identifier_mapping.py
+          tests/test_goal_ingredient_priors.py
       - name: Lint requirement audit
         run: >-
           python -m ruff check
@@ -280,8 +301,13 @@ jobs:
           scripts/run_dose_limit_fail_closed_rule_metadata_smoke.py
           scripts/run_external_high_risk_safety_eval.py
           scripts/run_wellnessbox_final_safety_authority_smoke.py
+          scripts/run_ingredient_mapping_goal_prior_smoke.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
+          src/wellnessbox_rnd/knowledge/goal_priors.py
+          src/wellnessbox_rnd/efficacy/service.py
           tests/test_external_high_risk_safety_eval.py
+          tests/test_ingredient_identifier_mapping.py
+          tests/test_goal_ingredient_priors.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py

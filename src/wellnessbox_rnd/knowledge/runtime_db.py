@@ -13,7 +13,22 @@ from wellnessbox_rnd.ingestion.reference_ingestion import (
     KnowledgeBaseArtifact,
     validate_knowledge_artifact,
 )
-from wellnessbox_rnd.schemas.recommendation import CitationReference, Severity
+from wellnessbox_rnd.knowledge.goal_priors import (
+    GOAL_PRIOR_CLINICAL_CLAIM_CONTRACTS,
+    GOAL_PRIOR_POLICY_CLAIM_ID,
+    GOAL_PRIOR_POLICY_CLAIM_TYPE,
+    GOAL_PRIOR_POLICY_REFERENCE_ID,
+    EvidenceDirection,
+    EvidenceStrength,
+    GoalIngredientPriorRecord,
+    load_goal_prior_registry,
+    validate_goal_prior_registry,
+)
+from wellnessbox_rnd.schemas.recommendation import (
+    CitationReference,
+    RecommendationGoal,
+    Severity,
+)
 
 
 class IngredientRecord(BaseModel):
@@ -114,6 +129,8 @@ class ReferenceSpanRecord(BaseModel):
     excerpt: str
     claim_text: str
     normalized_claim_type: str
+    ingredient_keys: list[str] = Field(default_factory=list)
+    domain_keys: list[str] = Field(default_factory=list)
 
 
 class WorkflowPolicyRecord(BaseModel):
@@ -138,6 +155,7 @@ class RuntimeKnowledgeDB(BaseModel):
     contraindication_rules: list[ContraindicationRuleRecord] = Field(default_factory=list)
     dose_limits: list[DoseLimitRecord] = Field(default_factory=list)
     ingredient_domain_scores: list[IngredientDomainScoreRecord] = Field(default_factory=list)
+    goal_ingredient_priors: list[GoalIngredientPriorRecord] = Field(default_factory=list)
     references: list[KnowledgeReferenceRecord] = Field(default_factory=list)
     reference_spans: list[ReferenceSpanRecord] = Field(default_factory=list)
     workflow_policies: list[WorkflowPolicyRecord] = Field(default_factory=list)
@@ -150,6 +168,14 @@ def build_runtime_knowledge_db(
     rules_payload = _load_raw_safety_rules()
     knowledge_rule_version = _version_from_artifact_version(artifact.artifact_version)
     claim_by_id = {claim.claim_id: claim for claim in artifact.parsed_claims}
+    goal_prior_registry = load_goal_prior_registry()
+    goal_prior_issues = validate_goal_prior_registry(
+        goal_prior_registry,
+        reference_artifact=artifact,
+        catalog=load_ingredient_catalog(),
+    )
+    if goal_prior_issues:
+        raise ValueError(f"invalid_goal_prior_registry:{','.join(goal_prior_issues)}")
 
     ingredient_map: dict[str, IngredientRecord] = {}
     alias_keys: set[tuple[str, str, str]] = set()
@@ -220,9 +246,7 @@ def build_runtime_knowledge_db(
         metadata = special_population_rule["metadata"]
         statuses = sorted(set(special_population_rule.get("statuses", [])))
         conditions = [special_population_condition_keys[status] for status in statuses]
-        excluded_ingredients = sorted(
-            set(special_population_rule.get("excluded_ingredients", []))
-        )
+        excluded_ingredients = sorted(set(special_population_rule.get("excluded_ingredients", [])))
         contraindication_rules.append(
             ContraindicationRuleRecord(
                 rule_id=metadata["rule_id"],
@@ -369,6 +393,8 @@ def build_runtime_knowledge_db(
             excerpt=claim.citation_span.excerpt,
             claim_text=claim.claim_text,
             normalized_claim_type=claim.normalized_claim_type,
+            ingredient_keys=claim.ingredient_keys,
+            domain_keys=claim.domain_keys,
         )
         for claim in artifact.parsed_claims
     ]
@@ -400,18 +426,13 @@ def build_runtime_knowledge_db(
             ingredient_aliases,
             key=lambda item: (item.ingredient_key, item.alias, item.source_kind),
         ),
-        medications=[
-            MedicationRecord(medication_key=item)
-            for item in sorted(medication_keys)
-        ],
-        conditions=[
-            ConditionRecord(condition_key=item)
-            for item in sorted(condition_keys)
-        ],
+        medications=[MedicationRecord(medication_key=item) for item in sorted(medication_keys)],
+        conditions=[ConditionRecord(condition_key=item) for item in sorted(condition_keys)],
         interaction_rules=interaction_rules,
         contraindication_rules=contraindication_rules,
         dose_limits=dose_limits,
         ingredient_domain_scores=ingredient_domain_scores,
+        goal_ingredient_priors=goal_prior_registry.records,
         references=references,
         reference_spans=reference_spans,
         workflow_policies=workflow_policies,
@@ -453,9 +474,7 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
     issues.extend(_validate_unique_keys("dose_limit", runtime_db.dose_limits, "rule_id"))
     issues.extend(_validate_unique_keys("reference", runtime_db.references, "reference_id"))
     issues.extend(_validate_unique_keys("reference_span", runtime_db.reference_spans, "span_id"))
-    issues.extend(
-        _validate_unique_keys("reference_claim", runtime_db.reference_spans, "claim_id")
-    )
+    issues.extend(_validate_unique_keys("reference_claim", runtime_db.reference_spans, "claim_id"))
     issues.extend(_validate_unique_keys("workflow_policy", runtime_db.workflow_policies, "rule_id"))
 
     required_tables = (
@@ -467,6 +486,7 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
         "contraindication_rules",
         "dose_limits",
         "ingredient_domain_scores",
+        "goal_ingredient_priors",
         "references",
         "reference_spans",
         "workflow_policies",
@@ -476,15 +496,12 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
             issues.append(f"missing_table:{table_name}")
 
     reference_ids = {reference.reference_id for reference in runtime_db.references}
-    claim_reference_ids = {
-        span.claim_id: span.reference_id for span in runtime_db.reference_spans
-    }
+    claim_reference_ids = {span.claim_id: span.reference_id for span in runtime_db.reference_spans}
     ingredient_keys = {record.ingredient_key for record in runtime_db.ingredients}
+    spans_by_claim_id = {span.claim_id: span for span in runtime_db.reference_spans}
     for rule in runtime_db.interaction_rules:
         if rule.source_kind not in {"knowledge_artifact", "evidence_linked_policy"}:
-            issues.append(
-                f"invalid_interaction_source_kind:{rule.rule_id}:{rule.source_kind}"
-            )
+            issues.append(f"invalid_interaction_source_kind:{rule.rule_id}:{rule.source_kind}")
         issues.extend(
             _validate_referenced_ids(
                 rule,
@@ -514,6 +531,111 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
             issues.append(f"invalid_dose_limit_evidence_source:{record.rule_id}:{source}")
     for record in runtime_db.ingredient_domain_scores:
         issues.extend(_validate_referenced_ids(record, reference_ids, claim_reference_ids))
+    seen_goal_priors: set[tuple[str, str]] = set()
+    covered_goals: set[str] = set()
+    for record in runtime_db.goal_ingredient_priors:
+        label = f"{record.ingredient_key}:{record.goal_key.value}"
+        pair = (record.ingredient_key, record.goal_key.value)
+        if pair in seen_goal_priors:
+            issues.append(f"duplicate_goal_prior:{label}")
+        seen_goal_priors.add(pair)
+        covered_goals.add(record.goal_key.value)
+        issues.extend(_validate_referenced_ids(record, reference_ids, claim_reference_ids))
+        if len(set(record.reference_ids)) != len(record.reference_ids):
+            issues.append(f"duplicate_goal_prior_reference:{label}")
+        if len(set(record.claim_ids)) != len(record.claim_ids):
+            issues.append(f"duplicate_goal_prior_claim:{label}")
+        if record.ingredient_key not in ingredient_keys:
+            issues.append(f"unknown_goal_prior_ingredient:{record.ingredient_key}")
+        expected_score = 18.0 if record.goal_key == RecommendationGoal.GENERAL_WELLNESS else 35.0
+        if record.prior_score != expected_score:
+            issues.append(
+                f"goal_prior_score_policy_mismatch:{label}:{record.prior_score}!={expected_score}"
+            )
+        if (
+            record.evidence_strength
+            in {
+                EvidenceStrength.NULL_WITHOUT_DEFICIENCY,
+                EvidenceStrength.INCONCLUSIVE,
+                EvidenceStrength.MIXED,
+            }
+            and record.evidence_direction != EvidenceDirection.EXPLORATORY_ONLY
+        ):
+            issues.append(f"weak_goal_prior_must_be_exploratory:{label}")
+        if (
+            record.evidence_strength == EvidenceStrength.POLICY_ONLY
+            and record.evidence_direction != EvidenceDirection.SELECTION_POLICY_ONLY
+        ):
+            issues.append(f"policy_goal_prior_direction_mismatch:{label}")
+        if GOAL_PRIOR_POLICY_REFERENCE_ID not in record.reference_ids:
+            issues.append(f"missing_goal_prior_policy_reference:{label}")
+        if GOAL_PRIOR_POLICY_CLAIM_ID not in record.claim_ids:
+            issues.append(f"missing_goal_prior_policy_claim:{label}")
+        clinical_contracts: set[tuple[EvidenceStrength, EvidenceDirection]] = set()
+        claim_owned_references: set[str] = set()
+        for claim_id in record.claim_ids:
+            span = spans_by_claim_id.get(claim_id)
+            if span is None:
+                continue
+            claim_owned_references.add(span.reference_id)
+            if claim_id == GOAL_PRIOR_POLICY_CLAIM_ID:
+                if (
+                    span.reference_id != GOAL_PRIOR_POLICY_REFERENCE_ID
+                    or span.normalized_claim_type != GOAL_PRIOR_POLICY_CLAIM_TYPE
+                    or span.ingredient_keys
+                    or span.domain_keys != [GOAL_PRIOR_POLICY_CLAIM_TYPE]
+                ):
+                    issues.append(f"invalid_goal_prior_policy_claim:{label}:{claim_id}")
+                continue
+            if span.normalized_claim_type == GOAL_PRIOR_POLICY_CLAIM_TYPE:
+                issues.append(f"unexpected_goal_prior_policy_claim:{label}:{claim_id}")
+            if record.ingredient_key not in span.ingredient_keys:
+                issues.append(f"goal_prior_claim_ingredient_mismatch:{label}:{claim_id}")
+            if record.goal_key.value not in span.domain_keys:
+                issues.append(f"goal_prior_claim_domain_mismatch:{label}:{claim_id}")
+            contract = GOAL_PRIOR_CLINICAL_CLAIM_CONTRACTS.get(span.normalized_claim_type)
+            if contract is None:
+                issues.append(
+                    f"unsupported_goal_prior_claim_type:{label}:{claim_id}:"
+                    f"{span.normalized_claim_type}"
+                )
+            else:
+                clinical_contracts.add(contract)
+        declared_references = set(record.reference_ids)
+        for reference_id in sorted(declared_references - claim_owned_references):
+            issues.append(f"unclaimed_goal_prior_reference:{label}:{reference_id}")
+        for reference_id in sorted(claim_owned_references - declared_references):
+            issues.append(f"undeclared_goal_prior_claim_reference:{label}:{reference_id}")
+        expected_contract = (
+            (EvidenceStrength.POLICY_ONLY, EvidenceDirection.SELECTION_POLICY_ONLY)
+            if not clinical_contracts
+            else next(iter(clinical_contracts))
+            if len(clinical_contracts) == 1
+            else None
+        )
+        if expected_contract is None:
+            issues.append(f"conflicting_goal_prior_evidence_claims:{label}")
+        elif (
+            record.evidence_strength,
+            record.evidence_direction,
+        ) != expected_contract:
+            issues.append(
+                f"goal_prior_evidence_contract_mismatch:{label}:"
+                f"{record.evidence_strength.value}:{record.evidence_direction.value}!="
+                f"{expected_contract[0].value}:{expected_contract[1].value}"
+            )
+    for goal in RecommendationGoal:
+        if goal.value not in covered_goals:
+            issues.append(f"goal_prior_goal_uncovered:{goal.value}")
+    expected_goal_priors = {
+        (item.key, goal.value)
+        for item in load_ingredient_catalog()
+        for goal in item.supported_goals
+    }
+    for ingredient_key, goal_key in sorted(expected_goal_priors - seen_goal_priors):
+        issues.append(f"goal_prior_catalog_pair_uncovered:{ingredient_key}:{goal_key}")
+    for ingredient_key, goal_key in sorted(seen_goal_priors - expected_goal_priors):
+        issues.append(f"goal_prior_catalog_pair_unknown:{ingredient_key}:{goal_key}")
     for policy in runtime_db.workflow_policies:
         issues.extend(_validate_referenced_ids(policy, reference_ids, claim_reference_ids))
 
@@ -544,12 +666,8 @@ def build_citations_for_rule(
     reference_ids: list[str],
     claim_ids: list[str],
 ) -> list[CitationReference]:
-    references_by_id = {
-        reference.reference_id: reference for reference in runtime_db.references
-    }
-    spans_by_claim_id = {
-        span.claim_id: span for span in runtime_db.reference_spans
-    }
+    references_by_id = {reference.reference_id: reference for reference in runtime_db.references}
+    spans_by_claim_id = {span.claim_id: span for span in runtime_db.reference_spans}
     citations: list[CitationReference] = []
     seen_keys: set[tuple[str, str | None]] = set()
     declared_reference_ids = set(reference_ids)
@@ -603,8 +721,10 @@ def build_citations_for_rule(
 def _load_reference_artifact(
     reference_artifact_path: str | Path | None,
 ) -> KnowledgeBaseArtifact:
-    path = Path(reference_artifact_path) if reference_artifact_path else (
-        repo_root() / "data" / "knowledge" / "reference_knowledge_base_v1.json"
+    path = (
+        Path(reference_artifact_path)
+        if reference_artifact_path
+        else (repo_root() / "data" / "knowledge" / "reference_knowledge_base_v1.json")
     )
     artifact = KnowledgeBaseArtifact.model_validate_json(path.read_text(encoding="utf-8"))
     issues = validate_knowledge_artifact(artifact)
@@ -666,9 +786,7 @@ def _validate_referenced_ids(
         if claim_reference_id is None:
             issues.append(f"missing_claim:{item_id}:{claim_id}")
         elif claim_reference_id not in item_reference_ids:
-            issues.append(
-                f"claim_reference_mismatch:{item_id}:{claim_id}:{claim_reference_id}"
-            )
+            issues.append(f"claim_reference_mismatch:{item_id}:{claim_id}:{claim_reference_id}")
     return issues
 
 
