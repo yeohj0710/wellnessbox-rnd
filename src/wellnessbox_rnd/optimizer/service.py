@@ -14,12 +14,16 @@ from wellnessbox_rnd.models import (
     build_runtime_efficacy_feature_dict,
     load_efficacy_model_artifact,
     predict_effect_proxy_from_feature_dict,
+    validate_efficacy_model_artifact_for_runtime,
 )
 from wellnessbox_rnd.schemas.recommendation import (
     CandidatePoolExclusion,
     CandidatePoolItem,
     CandidatePoolTrace,
+    CandidatePreselectionScore,
+    CandidateRankingSnapshot,
     CandidateScoreBreakdown,
+    LearnedRerankingDecision,
     RecommendationCandidate,
     RecommendationGoal,
     RecommendationReasonBreakdown,
@@ -38,6 +42,27 @@ def select_recommendations(
     enable_learned_reranking: bool = False,
     learned_efficacy_artifact_path: str | None = None,
 ) -> list[RecommendationCandidate]:
+    selected, _, _, _ = select_recommendations_with_diagnostics(
+        intake,
+        safety_summary,
+        enable_learned_reranking=enable_learned_reranking,
+        learned_efficacy_artifact_path=learned_efficacy_artifact_path,
+    )
+    return selected
+
+
+def select_recommendations_with_diagnostics(
+    intake: NormalizedIntake,
+    safety_summary: SafetySummary,
+    *,
+    enable_learned_reranking: bool = False,
+    learned_efficacy_artifact_path: str | None = None,
+) -> tuple[
+    list[RecommendationCandidate],
+    LearnedRerankingDecision,
+    CandidateRankingSnapshot,
+    list[CandidatePreselectionScore],
+]:
     candidates: list[RecommendationCandidate] = []
     safety_review = safety_summary.status == RecommendationStatus.NEEDS_REVIEW
     _, _, post_safety_pool = _partition_candidate_pool(
@@ -82,12 +107,15 @@ def select_recommendations(
             )
         )
 
-    candidates = _apply_learned_efficacy_reranking(
+    candidates, learned_decision = _apply_learned_efficacy_reranking(
         intake=intake,
         safety_summary=safety_summary,
         candidates=candidates,
         enable_learned_reranking=enable_learned_reranking,
         learned_efficacy_artifact_path=learned_efficacy_artifact_path,
+    )
+    ranking_snapshot, preselection_scores = _build_candidate_ranking_diagnostics(
+        candidates
     )
 
     selected: list[RecommendationCandidate] = []
@@ -107,7 +135,69 @@ def select_recommendations(
         selected.append(chosen)
         covered_goals.update(chosen.expected_support_goals)
 
-    return selected
+    return selected, learned_decision, ranking_snapshot, preselection_scores
+
+
+def _build_candidate_ranking_diagnostics(
+    candidates: list[RecommendationCandidate],
+) -> tuple[CandidateRankingSnapshot, list[CandidatePreselectionScore]]:
+    catalog_by_key = get_catalog_index()
+    ranked = sorted(
+        candidates,
+        key=lambda item: (
+            -_marginal_selection_score(item, set()),
+            -item.score_breakdown.total,
+            -item.score_breakdown.goal_alignment,
+            item.ingredient_key,
+        ),
+    )
+    preselection_scores = [
+        CandidatePreselectionScore(
+            rank=index,
+            ingredient_key=candidate.ingredient_key,
+            expected_support_goals=candidate.expected_support_goals,
+            rule_refs=candidate.rule_refs,
+            selection_score=round(_marginal_selection_score(candidate, set()), 6),
+            score_total=candidate.score_breakdown.total,
+            goal_alignment=candidate.score_breakdown.goal_alignment,
+            catalog_priority=catalog_by_key[candidate.ingredient_key].default_priority,
+            score_breakdown=candidate.score_breakdown,
+            reason_breakdown=candidate.reason_breakdown,
+        )
+        for index, candidate in enumerate(ranked, start=1)
+    ]
+    if not ranked:
+        return (
+            CandidateRankingSnapshot(
+                calculation_version="candidate_ranking_snapshot_v1",
+                candidate_count=0,
+            ),
+            preselection_scores,
+        )
+    top_score = round(_marginal_selection_score(ranked[0], set()), 6)
+    if len(ranked) == 1:
+        return (
+            CandidateRankingSnapshot(
+                calculation_version="candidate_ranking_snapshot_v1",
+                candidate_count=1,
+                top_candidate_key=ranked[0].ingredient_key,
+                top_selection_score=top_score,
+            ),
+            preselection_scores,
+        )
+    runner_up_score = round(_marginal_selection_score(ranked[1], set()), 6)
+    return (
+        CandidateRankingSnapshot(
+            calculation_version="candidate_ranking_snapshot_v1",
+            candidate_count=len(ranked),
+            top_candidate_key=ranked[0].ingredient_key,
+            runner_up_candidate_key=ranked[1].ingredient_key,
+            top_selection_score=top_score,
+            runner_up_selection_score=runner_up_score,
+            top_two_score_margin=round(top_score - runner_up_score, 6),
+        ),
+        preselection_scores,
+    )
 
 
 def build_candidate_pool_trace(
@@ -115,6 +205,7 @@ def build_candidate_pool_trace(
     intake: NormalizedIntake,
     safety_summary: SafetySummary,
     selected_candidates: list[RecommendationCandidate],
+    preselection_scores: list[CandidatePreselectionScore],
     global_blocked: bool | None = None,
 ) -> CandidatePoolTrace:
     pre_safety, excluded, post_safety = _partition_candidate_pool(
@@ -131,14 +222,11 @@ def build_candidate_pool_trace(
         pre_safety_candidates=pre_safety,
         excluded_candidates=excluded,
         post_safety_candidates=post_safety,
+        preselection_scores=preselection_scores,
         selected_candidate_keys=(
-            []
-            if is_global_blocked
-            else [item.ingredient_key for item in selected_candidates]
+            [] if is_global_blocked else [item.ingredient_key for item in selected_candidates]
         ),
-        applied_safety_rule_ids=sorted(
-            {item.rule_id for item in safety_summary.rule_refs}
-        ),
+        applied_safety_rule_ids=sorted({item.rule_id for item in safety_summary.rule_refs}),
         global_blocked=is_global_blocked,
     )
 
@@ -228,9 +316,7 @@ def build_recommendation_reason_breakdown(
                 unit=signal.unit,
             )
         )
-        applied_by_term.setdefault(source_to_term[signal.source], []).append(
-            signal.rule_id
-        )
+        applied_by_term.setdefault(source_to_term[signal.source], []).append(signal.rule_id)
     safety_reason_rules = (
         list(safety_summary.rule_refs) if breakdown.safety_adjustment != 0.0 else []
     )
@@ -244,9 +330,7 @@ def build_recommendation_reason_breakdown(
                         observed_value=safety_summary.status.value,
                     )
                 )
-                applied_by_term.setdefault("safety_adjustment", []).append(
-                    rule.rule_id
-                )
+                applied_by_term.setdefault("safety_adjustment", []).append(rule.rule_id)
         else:
             input_signals.append(
                 RecommendationReasonInputSignal(
@@ -413,9 +497,7 @@ def _marginal_selection_score(
         goal for goal in candidate.expected_support_goals if goal not in covered_goals
     ]
     coverage_bonus = sum(_goal_coverage_bonus(goal) for goal in uncovered_goals)
-    overlap_penalty = 4.0 * (
-        len(candidate.expected_support_goals) - len(uncovered_goals)
-    )
+    overlap_penalty = 4.0 * (len(candidate.expected_support_goals) - len(uncovered_goals))
     return candidate.score_breakdown.total + coverage_bonus - overlap_penalty
 
 
@@ -432,70 +514,147 @@ def _apply_learned_efficacy_reranking(
     candidates: list[RecommendationCandidate],
     enable_learned_reranking: bool,
     learned_efficacy_artifact_path: str | None,
-) -> list[RecommendationCandidate]:
+) -> tuple[list[RecommendationCandidate], LearnedRerankingDecision]:
     if not enable_learned_reranking:
-        return candidates
+        return candidates, LearnedRerankingDecision(
+            status="not_requested",
+            requested=False,
+            eligible=False,
+            artifact_validated=False,
+            learned_reranking_applied=False,
+            deterministic_baseline_used=True,
+            fallback_applied=False,
+        )
     if not _eligible_for_learned_reranking(intake, safety_summary, candidates):
-        return candidates
+        return candidates, LearnedRerankingDecision(
+            status="not_eligible",
+            requested=True,
+            eligible=False,
+            artifact_validated=False,
+            learned_reranking_applied=False,
+            deterministic_baseline_used=True,
+            fallback_applied=False,
+            issues=["eligibility_policy_not_met"],
+        )
     if learned_efficacy_artifact_path is None:
-        return candidates
+        return candidates, LearnedRerankingDecision(
+            status="fallback_missing_path",
+            requested=True,
+            eligible=True,
+            artifact_validated=False,
+            learned_reranking_applied=False,
+            deterministic_baseline_used=True,
+            fallback_applied=True,
+            issues=["artifact_path_not_supplied"],
+        )
 
     artifact_path = Path(learned_efficacy_artifact_path)
-    if not artifact_path.exists():
-        return candidates
+    if not artifact_path.is_file():
+        return candidates, LearnedRerankingDecision(
+            status="fallback_missing_file",
+            requested=True,
+            eligible=True,
+            artifact_validated=False,
+            learned_reranking_applied=False,
+            deterministic_baseline_used=True,
+            fallback_applied=True,
+            issues=["artifact_file_missing"],
+        )
 
-    artifact = load_efficacy_model_artifact(artifact_path)
-    top_deterministic_total = max(
-        candidate.score_breakdown.total for candidate in candidates
-    )
+    try:
+        artifact = load_efficacy_model_artifact(artifact_path)
+    except (OSError, ValueError):
+        return candidates, LearnedRerankingDecision(
+            status="fallback_invalid_artifact",
+            requested=True,
+            eligible=True,
+            artifact_validated=False,
+            learned_reranking_applied=False,
+            deterministic_baseline_used=True,
+            fallback_applied=True,
+            issues=["artifact_load_or_schema_failed"],
+        )
+    artifact_issues = validate_efficacy_model_artifact_for_runtime(artifact)
+    if artifact_issues:
+        return candidates, LearnedRerankingDecision(
+            status="fallback_suspicious_artifact",
+            requested=True,
+            eligible=True,
+            artifact_validated=False,
+            learned_reranking_applied=False,
+            deterministic_baseline_used=True,
+            fallback_applied=True,
+            issues=artifact_issues,
+        )
+    top_deterministic_total = max(candidate.score_breakdown.total for candidate in candidates)
     reranked: list[RecommendationCandidate] = []
 
-    for candidate in candidates:
-        deterministic_gap = top_deterministic_total - candidate.score_breakdown.total
-        if deterministic_gap > 1.0:
-            reranked.append(candidate)
-            continue
+    try:
+        for candidate in candidates:
+            deterministic_gap = top_deterministic_total - candidate.score_breakdown.total
+            if deterministic_gap > 1.0:
+                reranked.append(candidate)
+                continue
 
-        feature_row = build_runtime_efficacy_feature_dict(
-            request=intake.request,
-            follow_up_step=0,
-            day_index=0,
-            baseline_recommendations=[candidate.ingredient_key],
-            adherence_proxy=_runtime_adherence_proxy(intake),
-        )
-        predicted_effect = predict_effect_proxy_from_feature_dict(artifact, feature_row)
-        learned_effect_bonus = round(predicted_effect * 15.0, 6)
-        updated_breakdown = candidate.score_breakdown.model_copy(
-            update={
-                "learned_effect_bonus": learned_effect_bonus,
-                "total": candidate.score_breakdown.total + learned_effect_bonus,
-            }
-        )
-        updated_rule_refs = list(candidate.rule_refs)
-        if "OPT-LEARNED-001" not in updated_rule_refs:
-            updated_rule_refs.append("OPT-LEARNED-001")
-        reranked.append(
-            candidate.model_copy(
+            feature_row = build_runtime_efficacy_feature_dict(
+                request=intake.request,
+                follow_up_step=0,
+                day_index=0,
+                baseline_recommendations=[candidate.ingredient_key],
+                adherence_proxy=_runtime_adherence_proxy(intake),
+            )
+            predicted_effect = predict_effect_proxy_from_feature_dict(artifact, feature_row)
+            learned_effect_bonus = round(predicted_effect * 15.0, 6)
+            updated_breakdown = candidate.score_breakdown.model_copy(
                 update={
-                    "rule_refs": updated_rule_refs,
-                    "score_breakdown": updated_breakdown,
-                    "reason_breakdown": build_recommendation_reason_breakdown(
-                        item=get_catalog_index()[candidate.ingredient_key],
-                        intake=intake,
-                        breakdown=updated_breakdown,
-                        optimizer_rule_ids=updated_rule_refs,
-                        safety_summary=safety_summary,
-                    ),
-                    "rationale": (
-                        f"{candidate.rationale} A learned efficacy tie-breaker was applied "
-                        "after deterministic safety filtering and only among near-tied "
-                        "low-risk candidates."
-                    ),
+                    "learned_effect_bonus": learned_effect_bonus,
+                    "total": candidate.score_breakdown.total + learned_effect_bonus,
                 }
             )
+            updated_rule_refs = list(candidate.rule_refs)
+            if "OPT-LEARNED-001" not in updated_rule_refs:
+                updated_rule_refs.append("OPT-LEARNED-001")
+            reranked.append(
+                candidate.model_copy(
+                    update={
+                        "rule_refs": updated_rule_refs,
+                        "score_breakdown": updated_breakdown,
+                        "reason_breakdown": build_recommendation_reason_breakdown(
+                            item=get_catalog_index()[candidate.ingredient_key],
+                            intake=intake,
+                            breakdown=updated_breakdown,
+                            optimizer_rule_ids=updated_rule_refs,
+                            safety_summary=safety_summary,
+                        ),
+                        "rationale": (
+                            f"{candidate.rationale} A learned efficacy tie-breaker was "
+                            "applied after deterministic safety filtering and only among "
+                            "near-tied low-risk candidates."
+                        ),
+                    }
+                )
+            )
+    except Exception:
+        return candidates, LearnedRerankingDecision(
+            status="fallback_artifact_runtime_error",
+            requested=True,
+            eligible=True,
+            artifact_validated=True,
+            learned_reranking_applied=False,
+            deterministic_baseline_used=True,
+            fallback_applied=True,
+            issues=["artifact_prediction_failed"],
         )
 
-    return reranked
+    return reranked, LearnedRerankingDecision(
+        status="applied",
+        requested=True,
+        eligible=True,
+        artifact_validated=True,
+        learned_reranking_applied=True,
+        deterministic_baseline_used=False,
+        fallback_applied=False,
+    )
 
 
 def _eligible_for_learned_reranking(

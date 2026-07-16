@@ -7,7 +7,13 @@ from wellnessbox_rnd.schemas import (
     summarize_recommendation_set_contract_v1,
     validate_recommendation_set_contract_v1,
 )
-from wellnessbox_rnd.schemas.recommendation import RecommendationGoal, RecommendationRequest
+from wellnessbox_rnd.schemas.recommendation import (
+    LearnedRerankingDecision,
+    RecommendationGoal,
+    RecommendationRequest,
+    RecommendationStatus,
+)
+from wellnessbox_rnd.schemas.recommendation_contracts import RecommendationSetContractV1
 
 
 def test_recommendation_set_contract_validates_start_plan_fixture() -> None:
@@ -43,8 +49,7 @@ def test_recommendation_set_contract_flags_duplicate_and_limit_overflow() -> Non
     mutated = contract.model_copy(
         update={
             "selection_limit": 1,
-            "selected_recommendations": contract.selected_recommendations
-            + [duplicate_item],
+            "selected_recommendations": contract.selected_recommendations + [duplicate_item],
         }
     )
 
@@ -85,8 +90,7 @@ def test_recommendation_set_contract_flags_score_total_and_goal_mismatch() -> No
 
     assert any(issue.startswith("score_total_mismatch::magnesium_glycinate") for issue in issues)
     assert any(
-        issue.startswith("candidate_goal_outside_request::magnesium_glycinate")
-        for issue in issues
+        issue.startswith("candidate_goal_outside_request::magnesium_glycinate") for issue in issues
     )
 
 
@@ -127,9 +131,7 @@ def test_recommendation_set_contract_flags_reason_score_and_rule_mismatch() -> N
     issues = validate_recommendation_set_contract_v1(mutated)
 
     assert "reason_score_total_mismatch::magnesium_glycinate" in issues
-    assert (
-        "reason_score_term_mismatch::magnesium_glycinate::goal_alignment" in issues
-    )
+    assert "reason_score_term_mismatch::magnesium_glycinate::goal_alignment" in issues
     assert any(
         issue.startswith("reason_missing_candidate_rule_refs::magnesium_glycinate")
         for issue in issues
@@ -153,9 +155,7 @@ def test_recommendation_set_contract_rejects_forged_evidence_ownership() -> None
     original = contract.selected_recommendations[0]
     reason_payload = original.reason_breakdown.model_dump(mode="json")
     goal_link = next(
-        link
-        for link in reason_payload["evidence_links"]
-        if link["evidence_source"] == "goal_prior"
+        link for link in reason_payload["evidence_links"] if link["evidence_source"] == "goal_prior"
     )
     goal_link["reference_ids"].append("REF-FAKE-001")
     goal_link["claim_ids"].append("CLM-FAKE-001")
@@ -174,9 +174,7 @@ def test_recommendation_set_contract_rejects_forged_evidence_ownership() -> None
 
     issues = validate_recommendation_set_contract_v1(forged_contract)
 
-    assert (
-        f"reason_goal_prior_evidence_mismatch::{original.ingredient_key}" in issues
-    )
+    assert f"reason_goal_prior_evidence_mismatch::{original.ingredient_key}" in issues
 
 
 def test_recommendation_set_contract_rejects_unmarked_learned_bonus() -> None:
@@ -196,9 +194,7 @@ def test_recommendation_set_contract_rejects_unmarked_learned_bonus() -> None:
         }
     )
     updated_terms = [
-        term.model_copy(update={"points": 1.0})
-        if term.term == "learned_effect_bonus"
-        else term
+        term.model_copy(update={"points": 1.0}) if term.term == "learned_effect_bonus" else term
         for term in original.reason_breakdown.score_terms
     ]
     updated_reason = original.reason_breakdown.model_copy(
@@ -241,9 +237,7 @@ def test_recommendation_set_contract_accepts_marked_zero_learned_bonus() -> None
     reason_payload = original.reason_breakdown.model_dump(mode="json")
     reason_payload["rule_ids"].append("OPT-LEARNED-001")
     learned_term = next(
-        term
-        for term in reason_payload["score_terms"]
-        if term["term"] == "learned_effect_bonus"
+        term for term in reason_payload["score_terms"] if term["term"] == "learned_effect_bonus"
     )
     learned_term["rule_ids"] = ["OPT-LEARNED-001"]
     marked_reason = original.reason_breakdown.model_validate(reason_payload)
@@ -253,12 +247,39 @@ def test_recommendation_set_contract_accepts_marked_zero_learned_bonus() -> None
             "reason_breakdown": marked_reason,
         }
     )
+    assert contract.preselection_scores is not None
+    original_trace = contract.preselection_scores[0]
+    marked_trace = original_trace.model_copy(
+        update={
+            "rule_refs": [*original_trace.rule_refs, "OPT-LEARNED-001"],
+            "reason_breakdown": marked_reason,
+        }
+    )
+    learned_decision_payload = contract.learned_reranking_decision.model_dump(mode="json")
+    learned_decision_payload.update(
+        {
+            "status": "applied",
+            "requested": True,
+            "eligible": True,
+            "artifact_validated": True,
+            "learned_reranking_applied": True,
+            "deterministic_baseline_used": False,
+            "fallback_applied": False,
+        }
+    )
     marked_contract = contract.model_copy(
         update={
             "selected_recommendations": [
                 marked_item,
                 *contract.selected_recommendations[1:],
-            ]
+            ],
+            "learned_reranking_decision": LearnedRerankingDecision.model_validate(
+                learned_decision_payload
+            ),
+            "preselection_scores": [
+                marked_trace,
+                *contract.preselection_scores[1:],
+            ],
         }
     )
 
@@ -315,10 +336,7 @@ def test_recommendation_set_contract_rejects_component_signal_sum_mismatch() -> 
 
     issues = validate_recommendation_set_contract_v1(forged_contract)
 
-    assert (
-        f"score_signal_component_mismatch::{original.ingredient_key}::symptom"
-        in issues
-    )
+    assert f"score_signal_component_mismatch::{original.ingredient_key}::symptom" in issues
 
 
 def test_recommendation_set_contract_summary_reports_connection_map() -> None:
@@ -337,3 +355,197 @@ def test_recommendation_set_contract_summary_reports_connection_map() -> None:
     assert report["issue_count"] == 0
     assert "optimization" in report["connection_map"]
     assert "selected_recommendations.rule_refs" in report["connection_map"]["optimization"]
+    assert "decision_uncertainty" in report["connection_map"]["recommendation"]
+
+
+def test_recommendation_set_contract_rejects_learned_decision_selection_mismatch() -> None:
+    request = RecommendationRequest.model_validate(
+        json.loads(
+            Path("data/samples/api_recommend_start_plan_request_v1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+    )
+    contract = build_recommendation_set_contract_v1(request, recommend(request))
+    applied_payload = contract.learned_reranking_decision.model_dump(mode="json")
+    applied_payload.update(
+        {
+            "status": "applied",
+            "requested": True,
+            "eligible": True,
+            "artifact_validated": True,
+            "learned_reranking_applied": True,
+            "deterministic_baseline_used": False,
+            "fallback_applied": False,
+        }
+    )
+    mutated = contract.model_copy(
+        update={
+            "learned_reranking_decision": LearnedRerankingDecision.model_validate(applied_payload)
+        }
+    )
+
+    assert "learned_decision_selection_mismatch" in (
+        validate_recommendation_set_contract_v1(mutated)
+    )
+
+
+def test_recommendation_set_contract_revalidates_status_against_uncertainty() -> None:
+    request = RecommendationRequest.model_validate(
+        json.loads(
+            Path("data/samples/api_recommend_start_plan_request_v1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+    )
+    contract = build_recommendation_set_contract_v1(request, recommend(request))
+
+    mutated = contract.model_copy(update={"response_status": RecommendationStatus.NEEDS_REVIEW})
+
+    assert "decision_uncertainty_response_context_mismatch" in (
+        validate_recommendation_set_contract_v1(mutated)
+    )
+
+
+def test_recommendation_set_contract_revalidates_selection_count() -> None:
+    request = RecommendationRequest.model_validate(
+        json.loads(
+            Path("data/samples/api_recommend_start_plan_request_v1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+    )
+    contract = build_recommendation_set_contract_v1(request, recommend(request))
+    assert len(contract.selected_recommendations) > 1
+
+    mutated = contract.model_copy(
+        update={"selected_recommendations": contract.selected_recommendations[:1]}
+    )
+
+    assert "decision_uncertainty_selection_count_mismatch" in (
+        validate_recommendation_set_contract_v1(mutated)
+    )
+
+
+def test_recommendation_set_contract_v1_accepts_legacy_payload_without_diagnostics() -> None:
+    request = RecommendationRequest.model_validate(
+        json.loads(
+            Path("data/samples/api_recommend_start_plan_request_v1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+    )
+    payload = build_recommendation_set_contract_v1(
+        request,
+        recommend(request),
+    ).model_dump(mode="json")
+    del payload["decision_uncertainty"]
+    del payload["learned_reranking_decision"]
+    del payload["preselection_scores"]
+    payload["schema_version"] = "recommendation_set_contract_v1"
+
+    legacy_contract = RecommendationSetContractV1.model_validate(payload)
+
+    assert (
+        validate_recommendation_set_contract_v1(
+            legacy_contract,
+            require_current_diagnostics=False,
+        )
+        == []
+    )
+
+
+def test_diagnostics_contract_rejects_downgrade_by_field_removal() -> None:
+    request = RecommendationRequest.model_validate(
+        json.loads(
+            Path("data/samples/api_recommend_start_plan_request_v1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+    )
+    contract = build_recommendation_set_contract_v1(request, recommend(request))
+
+    missing_both = contract.model_copy(
+        update={
+            "decision_uncertainty": None,
+            "learned_reranking_decision": None,
+            "preselection_scores": None,
+        }
+    )
+    missing_learned = contract.model_copy(
+        update={"learned_reranking_decision": None}
+    )
+
+    assert "required_decision_diagnostics_missing" in (
+        validate_recommendation_set_contract_v1(missing_both)
+    )
+    assert "required_decision_diagnostics_missing" in (
+        validate_recommendation_set_contract_v1(missing_learned)
+    )
+
+    downgraded = contract.model_copy(
+        update={
+            "schema_version": "recommendation_set_contract_v1",
+            "decision_uncertainty": None,
+            "learned_reranking_decision": None,
+            "preselection_scores": None,
+        }
+    )
+    assert "current_contract_requires_diagnostics_schema" in (
+        validate_recommendation_set_contract_v1(downgraded)
+    )
+
+
+def test_diagnostics_contract_reconciles_snapshot_with_preselection_scores() -> None:
+    request_payload = json.loads(
+        Path("data/samples/api_recommend_start_plan_request_v1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    request_payload["preferences"]["max_products"] = 1
+    request = RecommendationRequest.model_validate(request_payload)
+    contract = build_recommendation_set_contract_v1(request, recommend(request))
+    uncertainty = contract.decision_uncertainty
+    assert uncertainty is not None
+    forged_snapshot = uncertainty.candidate_ranking_snapshot.model_copy(
+        update={
+            "candidate_count": 1,
+            "runner_up_candidate_key": None,
+            "runner_up_selection_score": None,
+            "top_two_score_margin": None,
+        }
+    )
+    forged_uncertainty = uncertainty.model_copy(
+        update={
+            "candidate_ranking_snapshot": forged_snapshot,
+        }
+    )
+    forged = contract.model_copy(update={"decision_uncertainty": forged_uncertainty})
+
+    assert "decision_uncertainty_candidate_count_mismatch" in (
+        validate_recommendation_set_contract_v1(forged)
+    )
+
+
+def test_diagnostics_contract_reports_missing_goal_prior_without_key_error() -> None:
+    request_payload = json.loads(
+        Path("data/samples/api_recommend_start_plan_request_v1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    request_payload["preferences"]["max_products"] = 1
+    request = RecommendationRequest.model_validate(request_payload)
+    contract = build_recommendation_set_contract_v1(request, recommend(request))
+    assert contract.preselection_scores is not None
+    traced = contract.preselection_scores[0].model_copy(
+        update={"expected_support_goals": [RecommendationGoal.HEART_HEALTH]}
+    )
+    mutated = contract.model_copy(
+        update={
+            "preselection_scores": [traced, *contract.preselection_scores[1:]]
+        }
+    )
+
+    issues = validate_recommendation_set_contract_v1(mutated)
+
+    assert any(issue.startswith("missing_goal_prior::") for issue in issues)

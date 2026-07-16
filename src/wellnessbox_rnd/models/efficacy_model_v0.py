@@ -1,13 +1,19 @@
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from wellnessbox_rnd.domain.catalog import canonicalize_catalog_term
+from wellnessbox_rnd.domain.catalog import canonicalize_catalog_term, get_catalog_index
 from wellnessbox_rnd.domain.intake import build_normalized_health_context_feature_dict
 from wellnessbox_rnd.schemas.recommendation import (
+    ActivityLevel,
+    BiologicalSex,
+    BudgetLevel,
+    LaboratoryRangeStatus,
+    RecommendationGoal,
     RecommendationRequest,
     count_current_condition_inputs,
     is_current_condition_input,
@@ -21,14 +27,147 @@ if TYPE_CHECKING:
 
 
 class EfficacyModelArtifact(BaseModel):
-    model_name: str = "efficacy_model_v0"
-    cohort_version: str
-    seed: int
+    model_config = ConfigDict(extra="forbid")
+
+    model_name: str
+    cohort_version: str = Field(min_length=1)
+    seed: int = Field(ge=0)
     alpha: float
     feature_names: list[str] = Field(default_factory=list)
     intercept: float
     weights: list[float] = Field(default_factory=list)
-    target_name: str = "expected_effect_proxy"
+    target_name: str
+
+    @field_validator("cohort_version")
+    @classmethod
+    def require_nonblank_cohort_version(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("cohort_version must not be blank")
+        return value.strip()
+
+
+_RUNTIME_SCALAR_FEATURE_NAMES = {
+    "adherence_proxy",
+    "age_scaled",
+    "alcohol_scaled",
+    "allergy_count",
+    "avoid_count",
+    "baseline_recommendation_count",
+    "caffeine_mg_per_day_missing",
+    "caffeine_mg_per_day_scaled",
+    "cgm_available",
+    "condition_count",
+    "current_supplement_count",
+    "day_index_scaled",
+    "dietary_pattern_count",
+    "exercise_minutes_per_week_missing",
+    "exercise_minutes_per_week_scaled",
+    "follow_up_step",
+    "genetic_available",
+    "goal_count",
+    "laboratory_observation_count",
+    "max_products_scaled",
+    "medication_count",
+    "nhis_available",
+    "pregnant",
+    "sleep_hours_missing",
+    "sleep_hours_scaled",
+    "smoker",
+    "stress_level_missing",
+    "stress_level_scaled",
+    "symptom_count",
+    "wearable_available",
+}
+_RUNTIME_DYNAMIC_FEATURE_PREFIXES = (
+    "activity::",
+    "allergy::",
+    "baseline_candidate::",
+    "budget::",
+    "condition::",
+    "current_ingredient::",
+    "dietary_pattern::",
+    "goal::",
+    "laboratory::",
+    "laboratory_status::",
+    "laboratory_unit::",
+    "medication::",
+    "medication_classification::",
+    "sex::",
+    "symptom::",
+)
+_MAX_ABSOLUTE_RUNTIME_COEFFICIENT = 10.0
+
+
+def validate_efficacy_model_artifact_for_runtime(
+    artifact: EfficacyModelArtifact,
+) -> list[str]:
+    issues: list[str] = []
+    if artifact.model_name != "efficacy_model_v0":
+        issues.append("unexpected_model_name")
+    if artifact.target_name != "expected_effect_proxy":
+        issues.append("unexpected_target_name")
+    if not artifact.feature_names:
+        issues.append("empty_feature_names")
+    if len(artifact.feature_names) > 4096:
+        issues.append("feature_count_exceeds_runtime_limit")
+    if any(not value.strip() for value in artifact.feature_names):
+        issues.append("empty_feature_name")
+    if any(value != value.strip() for value in artifact.feature_names):
+        issues.append("feature_name_has_surrounding_whitespace")
+    if any(value.endswith("::") for value in artifact.feature_names):
+        issues.append("malformed_dynamic_feature_name")
+    if len(set(artifact.feature_names)) != len(artifact.feature_names):
+        issues.append("duplicate_feature_name")
+    if any(
+        feature_name not in _RUNTIME_SCALAR_FEATURE_NAMES
+        and not feature_name.startswith(_RUNTIME_DYNAMIC_FEATURE_PREFIXES)
+        for feature_name in artifact.feature_names
+    ):
+        issues.append("unsupported_runtime_feature")
+    closed_feature_values = {
+        "activity::": {item.value for item in ActivityLevel},
+        "budget::": {item.value for item in BudgetLevel},
+        "goal::": {item.value for item in RecommendationGoal},
+        "sex::": {item.value for item in BiologicalSex},
+    }
+    if any(
+        feature_name.removeprefix(prefix) not in allowed_values
+        for feature_name in artifact.feature_names
+        for prefix, allowed_values in closed_feature_values.items()
+        if feature_name.startswith(prefix)
+    ):
+        issues.append("unsupported_closed_domain_feature")
+    if any(
+        feature_name.rsplit("::", maxsplit=1)[-1]
+        not in {item.value for item in LaboratoryRangeStatus}
+        for feature_name in artifact.feature_names
+        if feature_name.startswith("laboratory_status::")
+    ):
+        issues.append("unsupported_laboratory_status_feature")
+    if not any(
+        feature_name.startswith("baseline_candidate::") for feature_name in artifact.feature_names
+    ):
+        issues.append("missing_candidate_specific_feature")
+    catalog_keys = set(get_catalog_index())
+    if any(
+        feature_name.removeprefix("baseline_candidate::") not in catalog_keys
+        for feature_name in artifact.feature_names
+        if feature_name.startswith("baseline_candidate::")
+    ):
+        issues.append("unsupported_candidate_feature")
+    if len(artifact.feature_names) != len(artifact.weights):
+        issues.append("feature_weight_dimension_mismatch")
+    if not math.isfinite(artifact.alpha) or artifact.alpha <= 0.0:
+        issues.append("invalid_regularization_alpha")
+    if not math.isfinite(artifact.intercept):
+        issues.append("nonfinite_intercept")
+    elif abs(artifact.intercept) > _MAX_ABSOLUTE_RUNTIME_COEFFICIENT:
+        issues.append("intercept_exceeds_runtime_limit")
+    if any(not math.isfinite(value) for value in artifact.weights):
+        issues.append("nonfinite_weight")
+    elif any(abs(value) > _MAX_ABSOLUTE_RUNTIME_COEFFICIENT for value in artifact.weights):
+        issues.append("weight_exceeds_runtime_limit")
+    return issues
 
 
 class EfficacyFeatureVectorizer:
@@ -122,9 +261,7 @@ def build_runtime_efficacy_feature_dict(
     for medication in request.medications:
         features[f"medication::{medication.name.strip().lower()}"] = 1.0
         if medication.classification is not None:
-            classification_key = normalize_medication_classification_key(
-                medication.classification
-            )
+            classification_key = normalize_medication_classification_key(medication.classification)
             features[f"medication_classification::{classification_key}"] = 1.0
     for supplement in request.current_supplements:
         for ingredient in supplement.ingredients:
@@ -158,6 +295,4 @@ def predict_effect_proxy_from_feature_dict(
 
 
 def load_efficacy_model_artifact(path: str | Path) -> EfficacyModelArtifact:
-    return EfficacyModelArtifact.model_validate_json(
-        Path(path).read_text(encoding="utf-8")
-    )
+    return EfficacyModelArtifact.model_validate_json(Path(path).read_text(encoding="utf-8"))

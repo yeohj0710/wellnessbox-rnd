@@ -279,12 +279,28 @@ def test_non_blocked_decision_is_a_hard_false_negative(
 
     def unsafe_recommendation(request) -> RecommendationResponse:
         response = recommend(request)
-        return response.model_copy(
-            update={
-                "status": "ok",
-                "safety_summary": response.safety_summary.model_copy(update={"status": "ok"}),
+        payload = response.model_dump(mode="json")
+        payload["status"] = "ok"
+        payload["safety_summary"]["status"] = "ok"
+        uncertainty = payload["decision_uncertainty"]
+        uncertainty["components"].append(
+            {
+                "code": "candidate_availability:no_selection",
+                "source": "candidate_availability",
+                "points": 0.15,
+                "basis_codes": ["no_selected_candidate"],
             }
         )
+        uncertainty["raw_uncertainty_score"] = round(
+            uncertainty["raw_uncertainty_score"] + 0.15,
+            6,
+        )
+        uncertainty["uncertainty_score"] = min(
+            1.0,
+            uncertainty["raw_uncertainty_score"],
+        )
+        uncertainty["uncertainty_band"] = "moderate"
+        return RecommendationResponse.model_validate(payload)
 
     report = _run(paths, monkeypatch, recommend_fn=unsafe_recommendation)
 

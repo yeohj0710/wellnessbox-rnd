@@ -17,6 +17,7 @@ from wellnessbox_rnd.models.efficacy_model_v0 import (
     load_efficacy_model_artifact,
     predict_effect_proxy,
     predict_effect_proxy_from_feature_dict,
+    validate_efficacy_model_artifact_for_runtime,
 )
 from wellnessbox_rnd.models.policy_model_v0 import (
     PolicyFeatureVectorizer,
@@ -64,6 +65,7 @@ __all__ = [
     "predict_policy_effect_proxy_v1",
     "predict_effect_proxy",
     "predict_effect_proxy_from_feature_dict",
+    "validate_efficacy_model_artifact_for_runtime",
     "predict_policy_action",
     "predict_policy_action_v1",
     "predict_policy_scores",

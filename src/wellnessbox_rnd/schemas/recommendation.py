@@ -63,9 +63,7 @@ _LABORATORY_UNIT_ALIASES = {
     "ug/l": "ug/L",
     "ug/ml": "ug/mL",
 }
-_SUPPORTED_LABORATORY_UNITS = frozenset(
-    {"%", *_LABORATORY_UNIT_ALIASES.values()}
-)
+_SUPPORTED_LABORATORY_UNITS = frozenset({"%", *_LABORATORY_UNIT_ALIASES.values()})
 
 
 def _reject_boolean_numeric(value: object) -> object:
@@ -200,19 +198,11 @@ class WellnessBoxChatUserProfileV1(_StrictRequestInput):
     sex: Literal["male", "female", "other"] | None = None
     heightCm: StrictInt | StrictFloat | None = Field(default=None, gt=0, le=300)
     weightKg: StrictInt | StrictFloat | None = Field(default=None, gt=0, le=500)
-    conditions: list[WellnessBoxSourceText] | None = Field(
-        default=None, max_length=100
-    )
-    medications: list[WellnessBoxSourceText] | None = Field(
-        default=None, max_length=100
-    )
-    allergies: list[WellnessBoxSourceText] | None = Field(
-        default=None, max_length=100
-    )
+    conditions: list[WellnessBoxSourceText] | None = Field(default=None, max_length=100)
+    medications: list[WellnessBoxSourceText] | None = Field(default=None, max_length=100)
+    allergies: list[WellnessBoxSourceText] | None = Field(default=None, max_length=100)
     goals: list[WellnessBoxSourceText] | None = Field(default=None, max_length=20)
-    dietaryRestrictions: list[WellnessBoxSourceText] | None = Field(
-        default=None, max_length=100
-    )
+    dietaryRestrictions: list[WellnessBoxSourceText] | None = Field(default=None, max_length=100)
     pregnantOrBreastfeeding: StrictBool | None = None
     caffeineSensitivity: StrictBool | None = None
 
@@ -381,17 +371,11 @@ class NormalizedSensorGeneticSnapshot(_StrictHealthInput):
     wearable_available: StrictBool = False
     cgm_available: StrictBool = False
     genetic_available: StrictBool = False
-    sleep_hours: float | None = Field(
-        default=None, ge=0.0, le=24.0, allow_inf_nan=False
-    )
+    sleep_hours: float | None = Field(default=None, ge=0.0, le=24.0, allow_inf_nan=False)
     steps: int | None = Field(default=None, ge=0, le=200_000)
     resting_heart_rate: int | None = Field(default=None, ge=20, le=250)
-    mean_glucose_mg_dl: float | None = Field(
-        default=None, ge=20.0, le=600.0, allow_inf_nan=False
-    )
-    time_in_range_pct: float | None = Field(
-        default=None, ge=0.0, le=100.0, allow_inf_nan=False
-    )
+    mean_glucose_mg_dl: float | None = Field(default=None, ge=20.0, le=600.0, allow_inf_nan=False)
+    time_in_range_pct: float | None = Field(default=None, ge=0.0, le=100.0, allow_inf_nan=False)
     time_in_range_low_mg_dl: float | None = Field(
         default=None, ge=20.0, le=600.0, allow_inf_nan=False
     )
@@ -415,8 +399,7 @@ class NormalizedSensorGeneticSnapshot(_StrictHealthInput):
     @model_validator(mode="after")
     def require_source_availability_for_values(self) -> "NormalizedSensorGeneticSnapshot":
         if not self.wearable_available and any(
-            value is not None
-            for value in (self.sleep_hours, self.steps, self.resting_heart_rate)
+            value is not None for value in (self.sleep_hours, self.steps, self.resting_heart_rate)
         ):
             raise ValueError("wearable values require wearable_available=true")
         if not self.cgm_available and (
@@ -468,10 +451,7 @@ class DataSourceConsents(_StrictHealthInput):
 
 def _legacy_data_source_consents() -> DataSourceConsents:
     return DataSourceConsents(
-        **{
-            source.value: DataSourceConsent(use_for_recommendation=True)
-            for source in DataSource
-        }
+        **{source.value: DataSourceConsent(use_for_recommendation=True) for source in DataSource}
     )
 
 
@@ -550,18 +530,14 @@ class RecommendationRequest(_StrictRequestInput):
     medications: list[MedicationInput] = Field(default_factory=list)
     current_supplements: list[SupplementInput] = Field(default_factory=list)
     dietary_patterns: list[str | DietaryPatternInput] = Field(default_factory=list)
-    laboratory_observations: list[LaboratoryObservationInput] = Field(
-        default_factory=list
-    )
+    laboratory_observations: list[LaboratoryObservationInput] = Field(default_factory=list)
     lifestyle: LifestyleInput = Field(default_factory=LifestyleInput)
     input_availability: InputAvailability = Field(default_factory=InputAvailability)
     sensor_genetic_snapshot: NormalizedSensorGeneticSnapshot | None = Field(
         default=None,
         exclude_if=lambda value: value is None,
     )
-    data_source_consents: DataSourceConsents = Field(
-        default_factory=_legacy_data_source_consents
-    )
+    data_source_consents: DataSourceConsents = Field(default_factory=_legacy_data_source_consents)
     preferences: RecommendationPreferences = Field(default_factory=RecommendationPreferences)
 
     @model_validator(mode="after")
@@ -578,9 +554,7 @@ class RecommendationRequest(_StrictRequestInput):
         if snapshot is None:
             return self
         if "data_source_consents" not in self.model_fields_set:
-            raise ValueError(
-                "sensor_genetic_snapshot requires explicit data_source_consents"
-            )
+            raise ValueError("sensor_genetic_snapshot requires explicit data_source_consents")
         for source in ("wearable", "cgm", "genetic"):
             if getattr(snapshot, f"{source}_available") and not getattr(
                 self.input_availability, source
@@ -597,9 +571,7 @@ class RecommendationRequest(_StrictRequestInput):
             name = _normalize_contract_text(medication.name)
             signature = _medication_signature(medication)
             if name in signatures_by_name and signatures_by_name[name] != signature:
-                raise ValueError(
-                    "conflicting duplicate medications for the same normalized name"
-                )
+                raise ValueError("conflicting duplicate medications for the same normalized name")
             signatures_by_name[name] = signature
         return self
 
@@ -610,9 +582,7 @@ class RecommendationRequest(_StrictRequestInput):
             name = _normalize_contract_text(supplement.name)
             signature = _supplement_signature(supplement)
             if name in signatures_by_name and signatures_by_name[name] != signature:
-                raise ValueError(
-                    "conflicting duplicate supplements for the same normalized name"
-                )
+                raise ValueError("conflicting duplicate supplements for the same normalized name")
             signatures_by_name[name] = signature
         return self
 
@@ -620,10 +590,13 @@ class RecommendationRequest(_StrictRequestInput):
     def reject_conflicting_laboratory_observations(self) -> "RecommendationRequest":
         signatures_by_identity: dict[tuple[str, datetime], tuple[object, ...]] = {}
         for observation in self.laboratory_observations:
-            if not getattr(self.input_availability, observation.source.value) or not getattr(
-                self.data_source_consents,
-                observation.source.value,
-            ).use_for_recommendation:
+            if (
+                not getattr(self.input_availability, observation.source.value)
+                or not getattr(
+                    self.data_source_consents,
+                    observation.source.value,
+                ).use_for_recommendation
+            ):
                 continue
             identity = (
                 normalize_laboratory_observation_code(observation),
@@ -720,10 +693,13 @@ class CitationReference(BaseModel):
 class RuleReference(BaseModel):
     rule_id: str
     rule_version: int = Field(ge=1)
-    application_reason: Literal[
-        "dose_evidence_incomplete",
-        "upper_limit_exceeded",
-    ] | None = None
+    application_reason: (
+        Literal[
+            "dose_evidence_incomplete",
+            "upper_limit_exceeded",
+        ]
+        | None
+    ) = None
     message: str
     severity: Severity
     source: str = "master_context_v1"
@@ -901,9 +877,7 @@ class RecommendationReasonEvidenceLink(BaseModel):
                 raise ValueError(f"reason evidence {field_name} must be unique")
         if self.evidence_source in {"input_signal", "safety_rule"} and self.rule_id is None:
             raise ValueError("input and safety evidence links require a rule ID")
-        if self.evidence_source != "safety_rule" and (
-            not self.reference_ids or not self.claim_ids
-        ):
+        if self.evidence_source != "safety_rule" and (not self.reference_ids or not self.claim_ids):
             raise ValueError("goal and scored-input evidence links require evidence IDs")
         return self
 
@@ -947,8 +921,7 @@ class RecommendationReasonBreakdown(BaseModel):
         if len(set(input_keys)) != len(input_keys):
             raise ValueError("recommendation reason input signals must be unique")
         evidence_link_keys = [
-            (link.evidence_source, link.code, link.rule_id)
-            for link in self.evidence_links
+            (link.evidence_source, link.code, link.rule_id) for link in self.evidence_links
         ]
         if len(set(evidence_link_keys)) != len(evidence_link_keys):
             raise ValueError("recommendation reason evidence links must be unique")
@@ -961,41 +934,27 @@ class RecommendationReasonBreakdown(BaseModel):
         linked_reference_ids = {
             value for link in self.evidence_links for value in link.reference_ids
         }
-        linked_claim_ids = {
-            value for link in self.evidence_links for value in link.claim_ids
-        }
-        linked_limitations = {
-            value for link in self.evidence_links for value in link.limitations
-        }
+        linked_claim_ids = {value for link in self.evidence_links for value in link.claim_ids}
+        linked_limitations = {value for link in self.evidence_links for value in link.limitations}
         if linked_reference_ids != set(self.reference_ids):
             raise ValueError("recommendation reason reference IDs must match evidence links")
         if linked_claim_ids != set(self.claim_ids):
             raise ValueError("recommendation reason claim IDs must match evidence links")
         if linked_limitations != set(self.limitations):
             raise ValueError("recommendation reason limitations must match evidence links")
-        goal_codes = {
-            item.code for item in self.input_signals if item.source == "goal"
-        }
+        goal_codes = {item.code for item in self.input_signals if item.source == "goal"}
         scored_signal_codes = {
-            item.code
-            for item in self.input_signals
-            if item.source not in {"goal", "safety"}
+            item.code for item in self.input_signals if item.source not in {"goal", "safety"}
         }
-        safety_signal_codes = {
-            item.code for item in self.input_signals if item.source == "safety"
-        }
+        safety_signal_codes = {item.code for item in self.input_signals if item.source == "safety"}
         linked_goal_codes = {
             link.code for link in self.evidence_links if link.evidence_source == "goal_prior"
         }
         linked_signal_codes = {
-            link.code
-            for link in self.evidence_links
-            if link.evidence_source == "input_signal"
+            link.code for link in self.evidence_links if link.evidence_source == "input_signal"
         }
         linked_safety_codes = {
-            link.code
-            for link in self.evidence_links
-            if link.evidence_source == "safety_rule"
+            link.code for link in self.evidence_links if link.evidence_source == "safety_rule"
         }
         if linked_goal_codes != goal_codes:
             raise ValueError("goal input signals must match goal-prior evidence links")
@@ -1003,12 +962,8 @@ class RecommendationReasonBreakdown(BaseModel):
             raise ValueError("scored input signals must match input-signal evidence links")
         if linked_safety_codes != safety_signal_codes:
             raise ValueError("safety input signals must match safety-rule evidence links")
-        linked_rule_ids = {
-            link.rule_id for link in self.evidence_links if link.rule_id is not None
-        }
-        term_rule_ids = {
-            rule_id for term in self.score_terms for rule_id in term.rule_ids
-        }
+        linked_rule_ids = {link.rule_id for link in self.evidence_links if link.rule_id is not None}
+        term_rule_ids = {rule_id for term in self.score_terms for rule_id in term.rule_ids}
         if linked_rule_ids | term_rule_ids != set(self.rule_ids):
             raise ValueError("recommendation reason rule IDs must match terms and evidence links")
         return self
@@ -1044,12 +999,67 @@ class CandidatePoolExclusion(CandidatePoolItem):
         return self
 
 
+class CandidatePreselectionScore(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    rank: int = Field(ge=1)
+    ingredient_key: StructuredHealthCode
+    expected_support_goals: list[RecommendationGoal] = Field(min_length=1)
+    rule_refs: list[ReasonIdentifier] = Field(min_length=1)
+    selection_score: float = Field(allow_inf_nan=False)
+    score_total: float = Field(allow_inf_nan=False)
+    goal_alignment: float = Field(allow_inf_nan=False)
+    catalog_priority: float = Field(allow_inf_nan=False)
+    score_breakdown: CandidateScoreBreakdown
+    reason_breakdown: RecommendationReasonBreakdown
+
+    @model_validator(mode="after")
+    def validate_preserved_candidate_score(self) -> "CandidatePreselectionScore":
+        if len(set(self.expected_support_goals)) != len(self.expected_support_goals):
+            raise ValueError("preserved candidate goals must be unique")
+        if len(set(self.rule_refs)) != len(self.rule_refs):
+            raise ValueError("preserved candidate rules must be unique")
+        breakdown = self.score_breakdown
+        expected_terms = {
+            "catalog_priority": self.catalog_priority,
+            "goal_alignment": breakdown.goal_alignment,
+            "symptom_alignment": breakdown.symptom_alignment,
+            "lifestyle_alignment": breakdown.lifestyle_alignment,
+            "laboratory_alignment": breakdown.laboratory_alignment,
+            "dietary_alignment": breakdown.dietary_alignment,
+            "wearable_adjustment": breakdown.wearable_adjustment,
+            "cgm_adjustment": breakdown.cgm_adjustment,
+            "genetic_adjustment": breakdown.genetic_adjustment,
+            "evidence_readiness": breakdown.evidence_readiness,
+            "budget_adjustment": breakdown.budget_adjustment,
+            "safety_adjustment": breakdown.safety_adjustment,
+            "conservative_adjustment": breakdown.conservative_adjustment,
+            "learned_effect_bonus": breakdown.learned_effect_bonus,
+        }
+        expected_total = sum(expected_terms.values())
+        reason_terms = {
+            item.term: item.points for item in self.reason_breakdown.score_terms
+        }
+        if abs(self.score_total - breakdown.total) > 1e-6:
+            raise ValueError("preserved candidate score total mismatch")
+        if abs(self.goal_alignment - breakdown.goal_alignment) > 1e-6:
+            raise ValueError("preserved candidate goal alignment mismatch")
+        if abs(breakdown.total - expected_total) > 1e-6:
+            raise ValueError("preserved candidate score components do not reconcile")
+        if abs(self.reason_breakdown.score_total - breakdown.total) > 1e-6:
+            raise ValueError("preserved candidate reason total mismatch")
+        if reason_terms != expected_terms:
+            raise ValueError("preserved candidate reason terms do not match score")
+        return self
+
+
 class CandidatePoolTrace(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     pre_safety_candidates: list[CandidatePoolItem]
     excluded_candidates: list[CandidatePoolExclusion]
     post_safety_candidates: list[CandidatePoolItem]
+    preselection_scores: list[CandidatePreselectionScore]
     selected_candidate_keys: list[StructuredHealthCode]
     applied_safety_rule_ids: list[ReasonIdentifier]
     global_blocked: bool
@@ -1059,10 +1069,12 @@ class CandidatePoolTrace(BaseModel):
         pre_keys = [item.ingredient_key for item in self.pre_safety_candidates]
         excluded_keys = [item.ingredient_key for item in self.excluded_candidates]
         post_keys = [item.ingredient_key for item in self.post_safety_candidates]
+        preselection_keys = [item.ingredient_key for item in self.preselection_scores]
         for label, values in (
             ("pre-safety", pre_keys),
             ("excluded", excluded_keys),
             ("post-safety", post_keys),
+            ("preselection-score", preselection_keys),
             ("selected", self.selected_candidate_keys),
             ("safety-rule", self.applied_safety_rule_ids),
         ):
@@ -1084,6 +1096,53 @@ class CandidatePoolTrace(BaseModel):
             raise ValueError("candidate identity must be preserved across the safety partition")
         if not set(self.selected_candidate_keys).issubset(post_keys):
             raise ValueError("selected candidates must be a subset of post-safety candidates")
+        if set(preselection_keys) != set(post_keys):
+            raise ValueError("every post-safety candidate must have a preselection score")
+        if not self.global_blocked and not set(self.selected_candidate_keys).issubset(
+            preselection_keys
+        ):
+            raise ValueError("selected candidates must have preselection scores")
+        if [item.rank for item in self.preselection_scores] != list(
+            range(1, len(self.preselection_scores) + 1)
+        ):
+            raise ValueError("preselection score ranks must be contiguous and ordered")
+        if any(
+            current.selection_score < following.selection_score
+            for current, following in zip(
+                self.preselection_scores,
+                self.preselection_scores[1:],
+                strict=False,
+            )
+        ):
+            raise ValueError("preselection scores must be ordered descending")
+        matched_goals_by_key = {
+            item.ingredient_key: item.matched_goals
+            for item in self.post_safety_candidates
+        }
+        for item in self.preselection_scores:
+            if set(item.expected_support_goals) != set(
+                matched_goals_by_key[item.ingredient_key]
+            ):
+                raise ValueError(
+                    "preselection candidate goals must match post-safety candidate goals"
+                )
+            coverage_bonus = sum(
+                4.0 if goal == RecommendationGoal.GENERAL_WELLNESS else 12.0
+                for goal in matched_goals_by_key[item.ingredient_key]
+            )
+            if abs(item.selection_score - (item.score_total + coverage_bonus)) > 1e-6:
+                raise ValueError("preselection score does not match candidate score and goals")
+        expected_score_order = sorted(
+            self.preselection_scores,
+            key=lambda item: (
+                -item.selection_score,
+                -item.score_total,
+                -item.goal_alignment,
+                item.ingredient_key,
+            ),
+        )
+        if self.preselection_scores != expected_score_order:
+            raise ValueError("preselection score tie-break order mismatch")
         if self.global_blocked and self.selected_candidate_keys:
             raise ValueError("globally blocked candidate traces cannot contain selections")
         return self
@@ -1106,6 +1165,237 @@ class DecisionSummary(BaseModel):
     confidence_band: ConfidenceBand
 
 
+class AdditionalInputCondition(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    code: StructuredHealthCode
+    importance: MissingInfoImportance
+    uncertainty_points: float = Field(ge=0.0, le=1.0, allow_inf_nan=False)
+    question: ReasonText
+    reason: ReasonText
+
+
+class DecisionUncertaintyComponent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    code: ReasonIdentifier
+    source: Literal[
+        "missing_information",
+        "recommendation_status",
+        "candidate_score_margin",
+        "candidate_availability",
+    ]
+    points: float = Field(ge=0.0, le=1.0, allow_inf_nan=False)
+    basis_codes: list[StructuredHealthCode] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def require_unique_basis_codes(self) -> "DecisionUncertaintyComponent":
+        if len(set(self.basis_codes)) != len(self.basis_codes):
+            raise ValueError("uncertainty component basis codes must be unique")
+        return self
+
+
+class CandidateRankingSnapshot(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    calculation_version: Literal["candidate_ranking_snapshot_v1"]
+    candidate_count: int = Field(ge=0)
+    top_candidate_key: str | None = None
+    runner_up_candidate_key: str | None = None
+    top_selection_score: float | None = Field(default=None, allow_inf_nan=False)
+    runner_up_selection_score: float | None = Field(default=None, allow_inf_nan=False)
+    top_two_score_margin: float | None = Field(
+        default=None,
+        ge=0.0,
+        allow_inf_nan=False,
+    )
+
+    @model_validator(mode="after")
+    def validate_ranking_snapshot(self) -> "CandidateRankingSnapshot":
+        top_values = (self.top_candidate_key, self.top_selection_score)
+        runner_up_values = (
+            self.runner_up_candidate_key,
+            self.runner_up_selection_score,
+            self.top_two_score_margin,
+        )
+        if self.candidate_count == 0:
+            if any(value is not None for value in (*top_values, *runner_up_values)):
+                raise ValueError("empty ranking snapshot cannot contain candidate scores")
+            return self
+        if any(value is None for value in top_values):
+            raise ValueError("nonempty ranking snapshot requires a top candidate")
+        if self.candidate_count == 1:
+            if any(value is not None for value in runner_up_values):
+                raise ValueError("single-candidate snapshot cannot contain a runner-up")
+            return self
+        if any(value is None for value in runner_up_values):
+            raise ValueError("multi-candidate snapshot requires a runner-up and margin")
+        if self.top_candidate_key == self.runner_up_candidate_key:
+            raise ValueError("ranking snapshot candidates must be distinct")
+        assert self.top_selection_score is not None
+        assert self.runner_up_selection_score is not None
+        assert self.top_two_score_margin is not None
+        expected_margin = round(
+            self.top_selection_score - self.runner_up_selection_score,
+            6,
+        )
+        if expected_margin < 0.0 or abs(expected_margin - self.top_two_score_margin) > 1e-6:
+            raise ValueError("ranking snapshot score margin mismatch")
+        return self
+
+
+class DecisionUncertainty(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    calculation_version: Literal["decision_uncertainty_v1"]
+    score_scope: Literal[
+        "unresolved_recommendation_inputs_and_ranking_stability_not_clinical_probability"
+    ]
+    raw_uncertainty_score: float = Field(ge=0.0, le=10.0, allow_inf_nan=False)
+    uncertainty_score: float = Field(ge=0.0, le=1.0, allow_inf_nan=False)
+    uncertainty_band: Literal["low", "moderate", "high"]
+    candidate_ranking_snapshot: CandidateRankingSnapshot
+    components: list[DecisionUncertaintyComponent] = Field(default_factory=list)
+    additional_input_conditions: list[AdditionalInputCondition] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_uncertainty_calculation(self) -> "DecisionUncertainty":
+        component_codes = [item.code for item in self.components]
+        if len(set(component_codes)) != len(component_codes):
+            raise ValueError("decision uncertainty component codes must be unique")
+        condition_codes = [item.code for item in self.additional_input_conditions]
+        if len(set(condition_codes)) != len(condition_codes):
+            raise ValueError("additional input condition codes must be unique")
+        calculated_raw = round(sum(item.points for item in self.components), 6)
+        if abs(calculated_raw - self.raw_uncertainty_score) > 1e-6:
+            raise ValueError("decision uncertainty raw score mismatch")
+        if abs(min(1.0, calculated_raw) - self.uncertainty_score) > 1e-6:
+            raise ValueError("decision uncertainty bounded score mismatch")
+        expected_band = (
+            "low"
+            if self.uncertainty_score <= 0.25
+            else "moderate"
+            if self.uncertainty_score <= 0.5
+            else "high"
+        )
+        if self.uncertainty_band != expected_band:
+            raise ValueError("decision uncertainty band mismatch")
+        missing_components = {
+            item.code: item for item in self.components if item.source == "missing_information"
+        }
+        expected_missing_codes = {
+            f"missing_information:{item.code}" for item in self.additional_input_conditions
+        }
+        if set(missing_components) != expected_missing_codes:
+            raise ValueError("additional input conditions must match uncertainty components")
+        for condition in self.additional_input_conditions:
+            component = missing_components[f"missing_information:{condition.code}"]
+            if abs(
+                component.points - condition.uncertainty_points
+            ) > 1e-6 or component.basis_codes != [condition.code]:
+                raise ValueError("additional input uncertainty points mismatch")
+        margin_components = [
+            item for item in self.components if item.source == "candidate_score_margin"
+        ]
+        snapshot = self.candidate_ranking_snapshot
+        margin_points = 0.0
+        if snapshot.top_two_score_margin is not None:
+            margin_points = (
+                0.20
+                if snapshot.top_two_score_margin < 1.0
+                else 0.10
+                if snapshot.top_two_score_margin < 3.0
+                else 0.05
+                if snapshot.top_two_score_margin < 5.0
+                else 0.0
+            )
+        if margin_points:
+            if len(margin_components) != 1:
+                raise ValueError("close candidate ranking requires one uncertainty component")
+            component = margin_components[0]
+            if (
+                component.code != "candidate_score_margin:top_two"
+                or abs(component.points - margin_points) > 1e-6
+                or component.basis_codes
+                != [snapshot.top_candidate_key, snapshot.runner_up_candidate_key]
+            ):
+                raise ValueError("candidate score margin uncertainty mismatch")
+        elif margin_components:
+            raise ValueError("candidate score margin component is not supported by ranking")
+        return self
+
+
+class LearnedRerankingDecision(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    status: Literal[
+        "not_requested",
+        "not_eligible",
+        "applied",
+        "fallback_missing_path",
+        "fallback_missing_file",
+        "fallback_invalid_artifact",
+        "fallback_suspicious_artifact",
+        "fallback_artifact_runtime_error",
+    ]
+    requested: bool
+    eligible: bool
+    artifact_validated: bool
+    learned_reranking_applied: bool
+    deterministic_baseline_used: bool
+    fallback_applied: bool
+    issues: list[ReasonIdentifier] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_learned_decision(self) -> "LearnedRerankingDecision":
+        if len(set(self.issues)) != len(self.issues):
+            raise ValueError("learned reranking decision issues must be unique")
+        if self.status == "applied":
+            if not (
+                self.requested
+                and self.eligible
+                and self.artifact_validated
+                and self.learned_reranking_applied
+                and not self.deterministic_baseline_used
+                and not self.fallback_applied
+            ):
+                raise ValueError("applied learned decision flags are inconsistent")
+        elif self.status.startswith("fallback_"):
+            if not (
+                self.requested
+                and self.eligible
+                and not self.learned_reranking_applied
+                and self.deterministic_baseline_used
+                and self.fallback_applied
+            ):
+                raise ValueError("fallback learned decision flags are inconsistent")
+            if not self.issues:
+                raise ValueError("fallback learned decisions require an issue code")
+            if self.status == "fallback_artifact_runtime_error" and not self.artifact_validated:
+                raise ValueError("runtime-error fallback requires a validated artifact")
+            if self.status != "fallback_artifact_runtime_error" and self.artifact_validated:
+                raise ValueError("pre-runtime fallback cannot claim artifact validation")
+        elif self.status == "not_requested":
+            if (
+                self.requested
+                or self.eligible
+                or self.artifact_validated
+                or self.learned_reranking_applied
+                or not self.deterministic_baseline_used
+                or self.fallback_applied
+            ):
+                raise ValueError("not-requested learned decision flags are inconsistent")
+        elif not (
+            self.requested
+            and not self.eligible
+            and not self.learned_reranking_applied
+            and self.deterministic_baseline_used
+            and not self.fallback_applied
+        ):
+            raise ValueError("ineligible learned decision flags are inconsistent")
+        return self
+
+
 class EngineMetadata(BaseModel):
     engine_version: str = "0.1.0"
     mode: str = "mock_deterministic_v0"
@@ -1118,6 +1408,8 @@ class RecommendationResponse(BaseModel):
     decision_id: str
     status: RecommendationStatus
     decision_summary: DecisionSummary
+    decision_uncertainty: DecisionUncertainty
+    learned_reranking_decision: LearnedRerankingDecision
     normalized_focus_goals: list[RecommendationGoal]
     safety_summary: SafetySummary
     safety_flags: list[str] = Field(default_factory=list)
@@ -1132,3 +1424,151 @@ class RecommendationResponse(BaseModel):
     limitations: list[str] = Field(default_factory=list)
     limitation_details: list[LimitationItem] = Field(default_factory=list)
     metadata: EngineMetadata
+
+    @model_validator(mode="after")
+    def validate_decision_diagnostics(self) -> "RecommendationResponse":
+        learned_candidates = [
+            item
+            for item in self.recommendations
+            if "OPT-LEARNED-001" in item.rule_refs
+            or abs(item.score_breakdown.learned_effect_bonus) > 1e-6
+        ]
+        learned_mode = "deterministic_baseline_v1_learned_efficacy_rerank_v0"
+        baseline_mode = "deterministic_baseline_v1"
+        if self.learned_reranking_decision.learned_reranking_applied:
+            if not learned_candidates or self.metadata.mode != learned_mode:
+                raise ValueError("applied learned decision must match response candidates and mode")
+        elif learned_candidates or self.metadata.mode != baseline_mode:
+            raise ValueError("deterministic fallback cannot retain learned candidates or mode")
+
+        expected_condition_points = {
+            MissingInfoImportance.LOW: 0.05,
+            MissingInfoImportance.MEDIUM: 0.10,
+            MissingInfoImportance.HIGH: 0.20,
+        }
+        actual_conditions = {
+            item.code: item for item in self.decision_uncertainty.additional_input_conditions
+        }
+        if set(actual_conditions) != {item.code for item in self.missing_information}:
+            raise ValueError("uncertainty conditions must match response missing information")
+        for missing in self.missing_information:
+            condition = actual_conditions[missing.code]
+            if (
+                condition.importance != missing.importance
+                or condition.question != missing.question
+                or condition.reason != missing.reason
+                or abs(condition.uncertainty_points - expected_condition_points[missing.importance])
+                > 1e-6
+            ):
+                raise ValueError("uncertainty condition metadata mismatch")
+
+        expected_nonmissing_components: dict[str, tuple[str, float, list[str]]] = {}
+        if self.status == RecommendationStatus.NEEDS_REVIEW:
+            expected_nonmissing_components["recommendation_status:needs_review"] = (
+                "recommendation_status",
+                0.20,
+                [RecommendationStatus.NEEDS_REVIEW.value],
+            )
+        if not self.recommendations and self.status != RecommendationStatus.BLOCKED:
+            expected_nonmissing_components["candidate_availability:no_selection"] = (
+                "candidate_availability",
+                0.15,
+                ["no_selected_candidate"],
+            )
+        snapshot = self.decision_uncertainty.candidate_ranking_snapshot
+        score_trace = self.candidate_pool_trace.preselection_scores
+        from wellnessbox_rnd.schemas.recommendation_contracts import (
+            validate_candidate_preselection_score_contract,
+        )
+
+        score_trace_issues = [
+            issue
+            for traced in score_trace
+            for issue in validate_candidate_preselection_score_contract(
+                traced,
+                safety_rule_refs=self.safety_summary.rule_refs,
+            )
+        ]
+        if score_trace_issues:
+            raise ValueError(
+                "preselection score trace failed registry validation: "
+                + ",".join(score_trace_issues)
+            )
+        if snapshot.candidate_count != len(score_trace):
+            raise ValueError("ranking snapshot candidate count mismatch")
+        if score_trace and (
+            snapshot.top_candidate_key != score_trace[0].ingredient_key
+            or snapshot.top_selection_score != score_trace[0].selection_score
+        ):
+            raise ValueError("ranking snapshot top candidate mismatch")
+        if len(score_trace) >= 2:
+            expected_margin = round(
+                score_trace[0].selection_score - score_trace[1].selection_score,
+                6,
+            )
+            if (
+                snapshot.runner_up_candidate_key != score_trace[1].ingredient_key
+                or snapshot.runner_up_selection_score != score_trace[1].selection_score
+                or snapshot.top_two_score_margin != expected_margin
+            ):
+                raise ValueError("ranking snapshot runner-up mismatch")
+        score_trace_by_key = {item.ingredient_key: item for item in score_trace}
+        for recommendation in self.recommendations:
+            traced = score_trace_by_key.get(recommendation.ingredient_key)
+            if traced is None or (
+                abs(traced.score_total - recommendation.score_breakdown.total) > 1e-6
+                or abs(
+                    traced.goal_alignment
+                    - recommendation.score_breakdown.goal_alignment
+                )
+                > 1e-6
+                or traced.score_breakdown != recommendation.score_breakdown
+                or traced.reason_breakdown != recommendation.reason_breakdown
+            ):
+                raise ValueError("preselection score trace does not match recommendation")
+        if snapshot.candidate_count > len(self.candidate_pool_trace.post_safety_candidates):
+            raise ValueError("ranking snapshot exceeds post-safety candidate pool")
+        post_safety_keys = {
+            item.ingredient_key for item in self.candidate_pool_trace.post_safety_candidates
+        }
+        ranked_keys = {
+            key
+            for key in (snapshot.top_candidate_key, snapshot.runner_up_candidate_key)
+            if key is not None
+        }
+        if not ranked_keys.issubset(post_safety_keys):
+            raise ValueError("ranking snapshot candidates must belong to post-safety pool")
+        recommendation_keys = [item.ingredient_key for item in self.recommendations]
+        if self.candidate_pool_trace.selected_candidate_keys != recommendation_keys:
+            raise ValueError("candidate pool selections must match recommendations")
+        if self.status != RecommendationStatus.BLOCKED:
+            if len(self.recommendations) > snapshot.candidate_count:
+                raise ValueError("ranking snapshot contains fewer candidates than selection")
+            if self.recommendations and (
+                self.recommendations[0].ingredient_key != snapshot.top_candidate_key
+            ):
+                raise ValueError("selected recommendation does not match ranking snapshot")
+        if snapshot.top_two_score_margin is not None:
+            margin_points = (
+                0.20
+                if snapshot.top_two_score_margin < 1.0
+                else 0.10
+                if snapshot.top_two_score_margin < 3.0
+                else 0.05
+                if snapshot.top_two_score_margin < 5.0
+                else 0.0
+            )
+            if margin_points:
+                expected_nonmissing_components["candidate_score_margin:top_two"] = (
+                    "candidate_score_margin",
+                    margin_points,
+                    [snapshot.top_candidate_key, snapshot.runner_up_candidate_key],
+                )
+        actual_nonmissing_components = {
+            item.code: (item.source, item.points, item.basis_codes)
+            for item in self.decision_uncertainty.components
+            if item.source != "missing_information"
+        }
+        if actual_nonmissing_components != expected_nonmissing_components:
+            raise ValueError("uncertainty components do not match response decision inputs")
+        return self

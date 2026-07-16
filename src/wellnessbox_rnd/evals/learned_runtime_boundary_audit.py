@@ -183,7 +183,8 @@ def build_learned_runtime_boundary_audit(
             "source_contains_optional_guards": (
                 "if not enable_learned_reranking:" in optimizer_module_text
                 and "if learned_efficacy_artifact_path is None:" in optimizer_module_text
-                and "if not artifact_path.exists():" in optimizer_module_text
+                and "if not artifact_path.is_file():" in optimizer_module_text
+                and "validate_efficacy_model_artifact_for_runtime" in optimizer_module_text
             ),
             "optimizer_imports_chat_modules": _has_import_prefix(
                 optimizer_imports, "wellnessbox_rnd.chat"

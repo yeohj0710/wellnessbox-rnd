@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pytest
@@ -24,10 +25,20 @@ def test_learned_rerank_can_swap_near_tied_general_wellness_single_product(
 ) -> None:
     request = _record("syn-user-009").request
     artifact_path = tmp_path / "efficacy_model.json"
-    artifact_path.write_text("{}", encoding="utf-8")
-    monkeypatch.setattr(
-        "wellnessbox_rnd.optimizer.service.load_efficacy_model_artifact",
-        lambda _: object(),
+    artifact_path.write_text(
+        json.dumps(
+            {
+                "model_name": "efficacy_model_v0",
+                "cohort_version": "test_fixture_v1",
+                "seed": 1,
+                "alpha": 0.1,
+                "feature_names": ["baseline_candidate::vitamin_c"],
+                "intercept": 0.0,
+                "weights": [0.0],
+                "target_name": "expected_effect_proxy",
+            }
+        ),
+        encoding="utf-8",
     )
     monkeypatch.setattr(
         "wellnessbox_rnd.optimizer.service.predict_effect_proxy_from_feature_dict",

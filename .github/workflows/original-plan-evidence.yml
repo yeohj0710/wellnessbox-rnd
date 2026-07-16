@@ -38,6 +38,7 @@ on:
       - "scripts/run_ingredient_mapping_goal_prior_smoke.py"
       - "scripts/run_candidate_signal_scoring_smoke.py"
       - "scripts/run_candidate_pool_structured_reasons_smoke.py"
+      - "scripts/run_decision_uncertainty_learned_fallback_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -53,6 +54,8 @@ on:
       - "src/wellnessbox_rnd/domain/sensor_parser.py"
       - "src/wellnessbox_rnd/domain/models.py"
       - "src/wellnessbox_rnd/models/efficacy_model_v0.py"
+      - "src/wellnessbox_rnd/training/efficacy_model_v0.py"
+      - "src/wellnessbox_rnd/models/__init__.py"
       - "src/wellnessbox_rnd/models/effect_model_v1.py"
       - "src/wellnessbox_rnd/models/policy_model_v0.py"
       - "src/wellnessbox_rnd/models/policy_model_v1.py"
@@ -67,6 +70,7 @@ on:
       - "src/wellnessbox_rnd/synthetic/longitudinal.py"
       - "src/wellnessbox_rnd/schemas/original_plan_manifest.py"
       - "src/wellnessbox_rnd/evals/external_high_risk_safety.py"
+      - "src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py"
       - "tests/test_original_plan_audit*.py"
       - "tests/test_original_plan_completion_report.py"
       - "tests/test_original_plan_manifest.py"
@@ -97,6 +101,7 @@ on:
       - "tests/test_recommendation_contracts.py"
       - "tests/test_candidate_pool_structured_reasons.py"
       - "tests/test_learned_optimizer_integration.py"
+      - "tests/test_decision_uncertainty_learned_fallback.py"
   push:
     branches: [main]
     paths:
@@ -135,6 +140,7 @@ on:
       - "scripts/run_ingredient_mapping_goal_prior_smoke.py"
       - "scripts/run_candidate_signal_scoring_smoke.py"
       - "scripts/run_candidate_pool_structured_reasons_smoke.py"
+      - "scripts/run_decision_uncertainty_learned_fallback_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -150,6 +156,8 @@ on:
       - "src/wellnessbox_rnd/domain/sensor_parser.py"
       - "src/wellnessbox_rnd/domain/models.py"
       - "src/wellnessbox_rnd/models/efficacy_model_v0.py"
+      - "src/wellnessbox_rnd/training/efficacy_model_v0.py"
+      - "src/wellnessbox_rnd/models/__init__.py"
       - "src/wellnessbox_rnd/models/effect_model_v1.py"
       - "src/wellnessbox_rnd/models/policy_model_v0.py"
       - "src/wellnessbox_rnd/models/policy_model_v1.py"
@@ -164,6 +172,7 @@ on:
       - "src/wellnessbox_rnd/synthetic/longitudinal.py"
       - "src/wellnessbox_rnd/schemas/original_plan_manifest.py"
       - "src/wellnessbox_rnd/evals/external_high_risk_safety.py"
+      - "src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py"
       - "tests/test_original_plan_audit*.py"
       - "tests/test_original_plan_completion_report.py"
       - "tests/test_original_plan_manifest.py"
@@ -194,6 +203,7 @@ on:
       - "tests/test_recommendation_contracts.py"
       - "tests/test_candidate_pool_structured_reasons.py"
       - "tests/test_learned_optimizer_integration.py"
+      - "tests/test_decision_uncertainty_learned_fallback.py"
   workflow_dispatch:
 
 permissions:
@@ -262,6 +272,11 @@ jobs:
           python scripts/run_candidate_pool_structured_reasons_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op045_op046_candidate_pool_structured_reasons_smoke_v1.json
+      - name: Check uncertainty and learned-fallback evidence
+        run: >-
+          python scripts/run_decision_uncertainty_learned_fallback_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op047_op048_decision_uncertainty_learned_fallback_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -296,6 +311,7 @@ jobs:
           tests/test_recommendation_contracts.py
           tests/test_candidate_pool_structured_reasons.py
           tests/test_learned_optimizer_integration.py
+          tests/test_decision_uncertainty_learned_fallback.py
       - name: Lint requirement audit
         run: >-
           python -m ruff check
@@ -316,6 +332,8 @@ jobs:
           src/wellnessbox_rnd/domain/sensor_parser.py
           src/wellnessbox_rnd/domain/models.py
           src/wellnessbox_rnd/models/efficacy_model_v0.py
+          src/wellnessbox_rnd/training/efficacy_model_v0.py
+          src/wellnessbox_rnd/models/__init__.py
           src/wellnessbox_rnd/models/effect_model_v1.py
           src/wellnessbox_rnd/models/policy_model_v0.py
           src/wellnessbox_rnd/models/policy_model_v1.py
@@ -348,7 +366,9 @@ jobs:
           scripts/run_ingredient_mapping_goal_prior_smoke.py
           scripts/run_candidate_signal_scoring_smoke.py
           scripts/run_candidate_pool_structured_reasons_smoke.py
+          scripts/run_decision_uncertainty_learned_fallback_smoke.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
+          src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py
           src/wellnessbox_rnd/knowledge/goal_priors.py
           src/wellnessbox_rnd/efficacy/service.py
           src/wellnessbox_rnd/optimizer/service.py
@@ -360,6 +380,7 @@ jobs:
           tests/test_recommendation_contracts.py
           tests/test_candidate_pool_structured_reasons.py
           tests/test_learned_optimizer_integration.py
+          tests/test_decision_uncertainty_learned_fallback.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py

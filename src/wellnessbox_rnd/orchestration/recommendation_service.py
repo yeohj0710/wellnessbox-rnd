@@ -6,11 +6,17 @@ from wellnessbox_rnd.efficacy.service import estimate_follow_up_window_days
 from wellnessbox_rnd.metrics.metadata import build_engine_metadata
 from wellnessbox_rnd.optimizer.service import (
     build_candidate_pool_trace,
-    select_recommendations,
+    select_recommendations_with_diagnostics,
 )
 from wellnessbox_rnd.safety.service import assess_safety
 from wellnessbox_rnd.schemas.recommendation import (
+    AdditionalInputCondition,
+    CandidatePreselectionScore,
+    CandidateRankingSnapshot,
     DecisionSummary,
+    DecisionUncertainty,
+    DecisionUncertaintyComponent,
+    LearnedRerankingDecision,
     LimitationItem,
     MissingInfoImportance,
     NextAction,
@@ -40,51 +46,77 @@ def recommend(
     genetic_context_considered = _genetic_context_considered(intake)
     recommendations: list[RecommendationCandidate] = []
     effective_safety_summary = safety_summary
+    learned_decision = LearnedRerankingDecision(
+        status="not_requested",
+        requested=False,
+        eligible=False,
+        artifact_validated=False,
+        learned_reranking_applied=False,
+        deterministic_baseline_used=True,
+        fallback_applied=False,
+    )
+    ranking_snapshot = CandidateRankingSnapshot(
+        calculation_version="candidate_ranking_snapshot_v1",
+        candidate_count=0,
+    )
+    preselection_scores: list[CandidatePreselectionScore] = []
 
     if safety_summary.status == RecommendationStatus.BLOCKED:
-        recommendations = select_recommendations(
-            intake,
-            safety_summary,
-            enable_learned_reranking=enable_learned_reranking,
-            learned_efficacy_artifact_path=learned_efficacy_artifact_path,
+        recommendations, learned_decision, ranking_snapshot, preselection_scores = (
+            select_recommendations_with_diagnostics(
+                intake,
+                safety_summary,
+                enable_learned_reranking=enable_learned_reranking,
+                learned_efficacy_artifact_path=learned_efficacy_artifact_path,
+            )
         )
-        if _can_clear_pregnancy_survey_only_block(
-            intake=intake,
-            safety_summary=safety_summary,
-            recommendations=recommendations,
-        ) or _can_clear_pregnancy_renal_survey_only_block(
-            intake=intake,
-            safety_summary=safety_summary,
-            recommendations=recommendations,
-        ) or _can_clear_general_wellness_survey_only_block(
-            intake=intake,
-            safety_summary=safety_summary,
-            recommendations=recommendations,
-        ) or _can_clear_baseline_survey_only_block(
-            intake=intake,
-            safety_summary=safety_summary,
-            recommendations=recommendations,
-        ) or _can_clear_renal_survey_only_block(
-            intake=intake,
-            safety_summary=safety_summary,
-            recommendations=recommendations,
-        ) or _can_clear_heart_survey_only_block(
-            intake=intake,
-            safety_summary=safety_summary,
-            recommendations=recommendations,
-        ) or _can_clear_anticoagulant_survey_only_block(
-            intake=intake,
-            safety_summary=safety_summary,
-            recommendations=recommendations,
+        if (
+            _can_clear_pregnancy_survey_only_block(
+                intake=intake,
+                safety_summary=safety_summary,
+                recommendations=recommendations,
+            )
+            or _can_clear_pregnancy_renal_survey_only_block(
+                intake=intake,
+                safety_summary=safety_summary,
+                recommendations=recommendations,
+            )
+            or _can_clear_general_wellness_survey_only_block(
+                intake=intake,
+                safety_summary=safety_summary,
+                recommendations=recommendations,
+            )
+            or _can_clear_baseline_survey_only_block(
+                intake=intake,
+                safety_summary=safety_summary,
+                recommendations=recommendations,
+            )
+            or _can_clear_renal_survey_only_block(
+                intake=intake,
+                safety_summary=safety_summary,
+                recommendations=recommendations,
+            )
+            or _can_clear_heart_survey_only_block(
+                intake=intake,
+                safety_summary=safety_summary,
+                recommendations=recommendations,
+            )
+            or _can_clear_anticoagulant_survey_only_block(
+                intake=intake,
+                safety_summary=safety_summary,
+                recommendations=recommendations,
+            )
         ):
             effective_safety_summary = safety_summary.model_copy(
                 update={"status": RecommendationStatus.OK}
             )
-            recommendations = select_recommendations(
-                intake,
-                effective_safety_summary,
-                enable_learned_reranking=enable_learned_reranking,
-                learned_efficacy_artifact_path=learned_efficacy_artifact_path,
+            recommendations, learned_decision, ranking_snapshot, preselection_scores = (
+                select_recommendations_with_diagnostics(
+                    intake,
+                    effective_safety_summary,
+                    enable_learned_reranking=enable_learned_reranking,
+                    learned_efficacy_artifact_path=learned_efficacy_artifact_path,
+                )
             )
         else:
             if _has_structured_safety_blocker(safety_summary):
@@ -141,6 +173,12 @@ def recommend(
                     summary=summary,
                     confidence_band="low",
                 ),
+                decision_uncertainty=_build_decision_uncertainty(
+                    intake=intake,
+                    status=RecommendationStatus.BLOCKED,
+                    ranking_snapshot=ranking_snapshot,
+                ),
+                learned_reranking_decision=learned_decision,
                 normalized_focus_goals=request.goals,
                 safety_summary=safety_summary,
                 safety_flags=safety_summary.warnings + safety_summary.blocked_reasons,
@@ -150,6 +188,7 @@ def recommend(
                     intake=intake,
                     safety_summary=safety_summary,
                     selected_candidates=[],
+                    preselection_scores=preselection_scores,
                     global_blocked=True,
                 ),
                 next_action=next_action,
@@ -167,11 +206,13 @@ def recommend(
                 metadata=build_engine_metadata(mode="deterministic_baseline_v1"),
             )
     else:
-        recommendations = select_recommendations(
-            intake,
-            safety_summary,
-            enable_learned_reranking=enable_learned_reranking,
-            learned_efficacy_artifact_path=learned_efficacy_artifact_path,
+        recommendations, learned_decision, ranking_snapshot, preselection_scores = (
+            select_recommendations_with_diagnostics(
+                intake,
+                safety_summary,
+                enable_learned_reranking=enable_learned_reranking,
+                learned_efficacy_artifact_path=learned_efficacy_artifact_path,
+            )
         )
         effective_safety_summary = _resolve_safety_review_status(
             intake=intake,
@@ -216,6 +257,12 @@ def recommend(
         decision_id=str(uuid4()),
         status=status,
         decision_summary=decision_summary,
+        decision_uncertainty=_build_decision_uncertainty(
+            intake=intake,
+            status=status,
+            ranking_snapshot=ranking_snapshot,
+        ),
+        learned_reranking_decision=learned_decision,
         normalized_focus_goals=request.goals,
         safety_summary=effective_safety_summary,
         safety_flags=effective_safety_summary.warnings + effective_safety_summary.blocked_reasons,
@@ -225,6 +272,7 @@ def recommend(
             intake=intake,
             safety_summary=effective_safety_summary,
             selected_candidates=recommendations,
+            preselection_scores=preselection_scores,
             global_blocked=False,
         ),
         next_action=next_action,
@@ -443,28 +491,16 @@ def _resolve_safety_review_status(
     if not recommendations:
         return safety_summary
     if not (
-        _can_clear_anticoagulant_heart_review(
-            intake, safety_summary, recommendations
-        )
-        or _can_clear_anticoagulant_heart_energy_review(
-            intake, safety_summary, recommendations
-        )
-        or _can_clear_anticoagulant_heart_glucose_review(
-            intake, safety_summary, recommendations
-        )
+        _can_clear_anticoagulant_heart_review(intake, safety_summary, recommendations)
+        or _can_clear_anticoagulant_heart_energy_review(intake, safety_summary, recommendations)
+        or _can_clear_anticoagulant_heart_glucose_review(intake, safety_summary, recommendations)
         or _can_clear_renal_only_review(intake, safety_summary, recommendations)
         or _can_clear_renal_bone_review(intake, safety_summary, recommendations)
         or _can_clear_pregnancy_baseline_review(intake, safety_summary, recommendations)
         or _can_clear_pregnancy_sleep_review(intake, safety_summary, recommendations)
-        or _can_clear_pregnancy_renal_baseline_review(
-            intake, safety_summary, recommendations
-        )
-        or _can_clear_pregnancy_renal_sleep_review(
-            intake, safety_summary, recommendations
-        )
-        or _can_clear_pregnancy_renal_glucose_review(
-            intake, safety_summary, recommendations
-        )
+        or _can_clear_pregnancy_renal_baseline_review(intake, safety_summary, recommendations)
+        or _can_clear_pregnancy_renal_sleep_review(intake, safety_summary, recommendations)
+        or _can_clear_pregnancy_renal_glucose_review(intake, safety_summary, recommendations)
     ):
         return safety_summary
     return safety_summary.model_copy(update={"status": RecommendationStatus.OK})
@@ -548,9 +584,7 @@ def _can_clear_anticoagulant_heart_energy_review(
         RecommendationGoal.ENERGY_SUPPORT,
     }:
         return False
-    if intake.avoid_ingredient_set and intake.avoid_ingredient_set != {
-        "vitamin_b_complex"
-    }:
+    if intake.avoid_ingredient_set and intake.avoid_ingredient_set != {"vitamin_b_complex"}:
         return False
     if not intake.medication_set:
         return False
@@ -683,8 +717,7 @@ def _can_clear_renal_bone_review(
         return False
 
     return "low_sun_exposure" in intake.symptom_set or any(
-        flag in intake.signal_flags
-        for flag in ("genetic_bone_context", "genetic_low_sun_context")
+        flag in intake.signal_flags for flag in ("genetic_bone_context", "genetic_low_sun_context")
     )
 
 
@@ -707,10 +740,7 @@ def _can_clear_pregnancy_baseline_review(
         return False
 
     allowed_ingredients = {"soluble_fiber", "probiotics"}
-    return all(
-        item.ingredient_key in allowed_ingredients
-        for item in recommendations
-    )
+    return all(item.ingredient_key in allowed_ingredients for item in recommendations)
 
 
 def _can_clear_pregnancy_renal_glucose_review(
@@ -1057,10 +1087,7 @@ def _can_clear_pregnancy_survey_only_block(
     allowed_ingredients = allowed_ingredients_by_goal.get(frozenset(intake.goal_set))
     if allowed_ingredients is None:
         return False
-    return all(
-        item.ingredient_key in allowed_ingredients
-        for item in recommendations
-    )
+    return all(item.ingredient_key in allowed_ingredients for item in recommendations)
 
 
 def _can_clear_pregnancy_renal_survey_only_block(
@@ -1106,8 +1133,7 @@ def _can_clear_pregnancy_renal_survey_only_block(
     if "post_meal_spike_concern" not in intake.symptom_set:
         return False
     if not any(
-        flag in intake.signal_flags
-        for flag in ("cgm_glucose_context", "genetic_glycemic_context")
+        flag in intake.signal_flags for flag in ("cgm_glucose_context", "genetic_glycemic_context")
     ):
         return False
 
@@ -1259,9 +1285,7 @@ def _can_clear_anticoagulant_survey_only_block(
     rule_ids = {rule.rule_id for rule in safety_summary.rule_refs}
     if not rule_ids:
         return False
-    if not rule_ids.issubset(
-        {"INTAKE-SURVEY-001", "SAFETY-ANTICOAG-001", "SAFETY-DUP-001"}
-    ):
+    if not rule_ids.issubset({"INTAKE-SURVEY-001", "SAFETY-ANTICOAG-001", "SAFETY-DUP-001"}):
         return False
     if {"INTAKE-SURVEY-001", "SAFETY-ANTICOAG-001"} - rule_ids:
         return False
@@ -1316,8 +1340,7 @@ def _can_clear_renal_survey_only_block(
     if recommendation_keys not in ({"vitamin_d3", "calcium_citrate"}, {"calcium_citrate"}):
         return False
     return "low_sun_exposure" in intake.symptom_set or any(
-        flag in intake.signal_flags
-        for flag in ("genetic_bone_context", "genetic_low_sun_context")
+        flag in intake.signal_flags for flag in ("genetic_bone_context", "genetic_low_sun_context")
     )
 
 
@@ -1470,9 +1493,7 @@ def _can_start_with_current_regimen_coverage(
     duplicate_glucose_regimen = False
     if intake.request.user_profile.pregnant:
         pregnancy_duplicate_glucose_regimen = (
-            _can_start_with_pregnancy_duplicate_glucose_regimen_coverage(
-                intake, safety_summary
-            )
+            _can_start_with_pregnancy_duplicate_glucose_regimen_coverage(intake, safety_summary)
         )
         if not pregnancy_duplicate_glucose_regimen:
             return False
@@ -1490,9 +1511,7 @@ def _can_start_with_current_regimen_coverage(
         missing_codes = {item.code for item in intake.missing_information}
         if not (
             pregnancy_duplicate_glucose_regimen
-            and missing_codes.issubset(
-                {"missing_glucose_context", "missing_current_supplements"}
-            )
+            and missing_codes.issubset({"missing_glucose_context", "missing_current_supplements"})
         ):
             return False
 
@@ -1527,18 +1546,13 @@ def _can_start_with_current_regimen_coverage(
     if (
         not duplicate_glucose_regimen
         and not statin_duplicate_heart_regimen
-        and any(
-            item.conservative_profile not in {"baseline", "standard"}
-            for item in current_items
-        )
+        and any(item.conservative_profile not in {"baseline", "standard"} for item in current_items)
     ):
         return False
     if any(item.key in intake.avoid_ingredient_set for item in current_items):
         return False
 
-    covered_goals = {
-        goal for item in current_items for goal in item.supported_goals
-    }
+    covered_goals = {goal for item in current_items for goal in item.supported_goals}
     if not intake.goal_set.issubset(covered_goals):
         return False
     if renal_only:
@@ -1791,9 +1805,7 @@ def _can_start_with_anticoagulant_heart_survey_fallback(
     rule_ids = {rule.rule_id for rule in safety_summary.rule_refs}
     if not rule_ids:
         return False
-    if not rule_ids.issubset(
-        {"INTAKE-SURVEY-001", "SAFETY-ANTICOAG-001", "SAFETY-DUP-001"}
-    ):
+    if not rule_ids.issubset({"INTAKE-SURVEY-001", "SAFETY-ANTICOAG-001", "SAFETY-DUP-001"}):
         return False
     if {"INTAKE-SURVEY-001", "SAFETY-ANTICOAG-001"} - rule_ids:
         return False
@@ -1863,9 +1875,7 @@ def _can_start_with_energy_missing_symptom_fallback(
     missing_codes = {item.code for item in intake.missing_information}
     if "missing_primary_symptom" not in missing_codes:
         return False
-    if not missing_codes.issubset(
-        {"missing_primary_symptom", "missing_current_supplements"}
-    ):
+    if not missing_codes.issubset({"missing_primary_symptom", "missing_current_supplements"}):
         return False
 
     rule_ids = {rule.rule_id for rule in safety_summary.rule_refs}
@@ -2033,9 +2043,7 @@ def _can_start_with_multimodal_general_wellness_missing_symptom_fallback(
     missing_codes = {item.code for item in intake.missing_information}
     if "missing_primary_symptom" not in missing_codes:
         return False
-    if not missing_codes.issubset(
-        {"missing_primary_symptom", "missing_current_supplements"}
-    ):
+    if not missing_codes.issubset({"missing_primary_symptom", "missing_current_supplements"}):
         return False
 
     rule_ids = {rule.rule_id for rule in safety_summary.rule_refs}
@@ -2506,10 +2514,13 @@ def _is_multigoal_sleep_multiple_missing_floor(
         return False
     if intake.symptom_set:
         return False
-    if not {
-        "wearable_sleep_context",
-        "genetic_recovery_context",
-    } & intake.signal_flags:
+    if (
+        not {
+            "wearable_sleep_context",
+            "genetic_recovery_context",
+        }
+        & intake.signal_flags
+    ):
         return False
 
     missing_codes = {item.code for item in intake.missing_information}
@@ -2659,6 +2670,88 @@ def _build_decision_summary(
     )
 
 
+def _build_decision_uncertainty(
+    *,
+    intake: NormalizedIntake,
+    status: RecommendationStatus,
+    ranking_snapshot: CandidateRankingSnapshot,
+) -> DecisionUncertainty:
+    importance_points = {
+        MissingInfoImportance.LOW: 0.05,
+        MissingInfoImportance.MEDIUM: 0.10,
+        MissingInfoImportance.HIGH: 0.20,
+    }
+    conditions = [
+        AdditionalInputCondition(
+            code=item.code,
+            importance=item.importance,
+            uncertainty_points=importance_points[item.importance],
+            question=item.question,
+            reason=item.reason,
+        )
+        for item in intake.missing_information
+    ]
+    components = [
+        DecisionUncertaintyComponent(
+            code=f"missing_information:{item.code}",
+            source="missing_information",
+            points=importance_points[item.importance],
+            basis_codes=[item.code],
+        )
+        for item in intake.missing_information
+    ]
+    if status == RecommendationStatus.NEEDS_REVIEW:
+        components.append(
+            DecisionUncertaintyComponent(
+                code="recommendation_status:needs_review",
+                source="recommendation_status",
+                points=0.20,
+                basis_codes=[RecommendationStatus.NEEDS_REVIEW.value],
+            )
+        )
+    if ranking_snapshot.candidate_count == 0 and status != RecommendationStatus.BLOCKED:
+        components.append(
+            DecisionUncertaintyComponent(
+                code="candidate_availability:no_selection",
+                source="candidate_availability",
+                points=0.15,
+                basis_codes=["no_selected_candidate"],
+            )
+        )
+    if ranking_snapshot.top_two_score_margin is not None:
+        margin = ranking_snapshot.top_two_score_margin
+        margin_points = (
+            0.20 if margin < 1.0 else 0.10 if margin < 3.0 else 0.05 if margin < 5.0 else 0.0
+        )
+        if margin_points:
+            components.append(
+                DecisionUncertaintyComponent(
+                    code="candidate_score_margin:top_two",
+                    source="candidate_score_margin",
+                    points=margin_points,
+                    basis_codes=[
+                        ranking_snapshot.top_candidate_key,
+                        ranking_snapshot.runner_up_candidate_key,
+                    ],
+                )
+            )
+    raw_score = round(sum(item.points for item in components), 6)
+    score = min(1.0, raw_score)
+    band = "low" if score <= 0.25 else "moderate" if score <= 0.5 else "high"
+    return DecisionUncertainty(
+        calculation_version="decision_uncertainty_v1",
+        score_scope=(
+            "unresolved_recommendation_inputs_and_ranking_stability_not_clinical_probability"
+        ),
+        raw_uncertainty_score=raw_score,
+        uncertainty_score=score,
+        uncertainty_band=band,
+        candidate_ranking_snapshot=ranking_snapshot,
+        components=components,
+        additional_input_conditions=conditions,
+    )
+
+
 def _build_limitations() -> list[str]:
     return [item.summary for item in _build_limitation_details()]
 
@@ -2704,9 +2797,7 @@ def _build_safety_evidence(
             item = SafetyEvidenceItem(
                 evidence_type="user_preference",
                 code=ingredient_key,
-                summary=(
-                    f"{ingredient_key} was excluded because the user asked to avoid it."
-                ),
+                summary=(f"{ingredient_key} was excluded because the user asked to avoid it."),
             )
         elif ingredient_key in intake.current_ingredient_set:
             item = SafetyEvidenceItem(
@@ -2782,8 +2873,7 @@ def _build_next_action_rationale(
                 supporting_codes=rule_ids,
             )
         summary = (
-            "The minimum intake contract is incomplete, so more input is "
-            "required before planning."
+            "The minimum intake contract is incomplete, so more input is required before planning."
         )
         if _wearable_context_considered(intake):
             summary += (
@@ -2894,12 +2984,10 @@ def _build_next_action_rationale(
             safety_summary=safety_summary,
             recommendations=recommendations,
         )
-        glucose_survivor_collapse_floor = (
-            _is_anticoagulant_glucose_survivor_collapse_review_floor(
-                intake=intake,
-                safety_summary=safety_summary,
-                recommendations=recommendations,
-            )
+        glucose_survivor_collapse_floor = _is_anticoagulant_glucose_survivor_collapse_review_floor(
+            intake=intake,
+            safety_summary=safety_summary,
+            recommendations=recommendations,
         )
         if stacked_floor:
             summary = (
@@ -2934,8 +3022,7 @@ def _build_next_action_rationale(
             )
         if _cgm_context_considered(intake):
             summary += (
-                " Available CGM context was considered, but safety review still "
-                "takes priority."
+                " Available CGM context was considered, but safety review still takes priority."
             )
         if stacked_floor and _genetic_context_considered(intake):
             summary += (
@@ -2968,8 +3055,7 @@ def _build_next_action_rationale(
                     "context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_duplicate_heart_symptom_fallback(
@@ -2986,8 +3072,7 @@ def _build_next_action_rationale(
                     "context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_heart_survey_fallback(
@@ -3003,8 +3088,7 @@ def _build_next_action_rationale(
                     "survey can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_bone_survey_fallback(
@@ -3020,8 +3104,7 @@ def _build_next_action_rationale(
                     "now, while the missing survey can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_renal_bone_survey_fallback(
@@ -3038,8 +3121,7 @@ def _build_next_action_rationale(
                     "survey can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_general_wellness_survey_fallback(
@@ -3055,8 +3137,7 @@ def _build_next_action_rationale(
                     "still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_pregnancy_gut_survey_fallback(
@@ -3073,8 +3154,7 @@ def _build_next_action_rationale(
                     "collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_pregnancy_general_wellness_survey_fallback(
@@ -3091,8 +3171,7 @@ def _build_next_action_rationale(
                     "missing survey can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_multimodal_heart_energy_fallback(
@@ -3109,8 +3188,7 @@ def _build_next_action_rationale(
                     "deeper heart context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_duplicate_heart_energy_fallback(
@@ -3127,8 +3205,7 @@ def _build_next_action_rationale(
                     "deeper heart context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_multimodal_heart_fallback(
@@ -3145,8 +3222,7 @@ def _build_next_action_rationale(
                     "deeper heart context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_multimodal_heart_sleep_fallback(
@@ -3163,8 +3239,7 @@ def _build_next_action_rationale(
                     "heart context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_multimodal_heart_glucose_fallback(
@@ -3181,8 +3256,7 @@ def _build_next_action_rationale(
                     "context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_glucose_sleep_fallback(
@@ -3200,8 +3274,7 @@ def _build_next_action_rationale(
                     "be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_wearable_heart_fallback(
@@ -3217,8 +3290,7 @@ def _build_next_action_rationale(
                     "context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_pregnancy_renal_genetic_glucose_fallback(
@@ -3235,8 +3307,7 @@ def _build_next_action_rationale(
                     "while deeper glucose context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_pregnancy_renal_cgm_glucose_fallback(
@@ -3253,8 +3324,7 @@ def _build_next_action_rationale(
                     "while deeper survey context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         if _can_start_with_glucose_symptom_fallback(
@@ -3270,8 +3340,7 @@ def _build_next_action_rationale(
                     "glucose context can still be collected later."
                 ),
                 supporting_codes=sorted(
-                    high_priority_codes
-                    + [item.ingredient_key for item in recommendations]
+                    high_priority_codes + [item.ingredient_key for item in recommendations]
                 ),
             )
         summary = (

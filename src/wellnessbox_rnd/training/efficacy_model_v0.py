@@ -85,12 +85,14 @@ def fit_efficacy_model(
     for alpha in alpha_grid:
         weights, intercept = _fit_ridge_regression(x_train, y_train, alpha=alpha)
         candidate = EfficacyModelArtifact(
+            model_name="efficacy_model_v0",
             cohort_version=train_records[0].cohort_version if train_records else "unknown",
             seed=seed,
             alpha=alpha,
             feature_names=vectorizer.feature_names,
             intercept=round(float(intercept), 8),
             weights=[round(float(weight), 8) for weight in weights],
+            target_name="expected_effect_proxy",
         )
         candidate_train_metrics = evaluate_efficacy_model(candidate, train_records)
         candidate_val_metrics = evaluate_efficacy_model(candidate, val_records)
