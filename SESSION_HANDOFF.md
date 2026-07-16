@@ -10,6 +10,7 @@
 - Evidence stage: OP-043 and OP-044 are `IMPLEMENTED`. Generated counts are complete `32`, partial `11`, pending `76`, external `1`, contradicted `0`. No WellnessBox service change, deployment, or production operation was performed.
 - Validation: focused selection `70 passed`; exact CI-equivalent selection `301 passed`; manifest audit PASS with `43` claims and `134` checked evidence files; stored runtime equals fresh; full Ruff PASS; independent final review Critical `0`, Important `0`, Minor `0`; full suite `705 passed`, `77 failed` with only the known `73` absent-report and `4` CGM-geometry groups.
 - Official frozen eval: `256` cases; all seven metric deltas are `0`; overall and metric-specific weakest-slice categories are unchanged.
+- Publication: source commit `1465db1c153b71b8b636231eb6487c32e469c85b` and evidence commit `64d67eceef2996869c897e9a0bc02b33a549010f` are on `origin/main`; Original plan evidence run `29501666136` passed.
 - Protected files: do not modify or stage `docs/plans/2026-07-14-tips-evaluator-ui-overhaul.md` or `docs/plans/2026-07-15-tips-full-implementation-roadmap.md`. The unrelated dirty WellnessBox UI files remain user-owned and unstaged.
 - Next three loops: OP-045/046 preserve pre/post safety candidate sets and return structured reasons; OP-047/048 quantify uncertainty and preserve deterministic fallback; OP-049/050 compare learned/baseline replay and convert candidates to service products.
 

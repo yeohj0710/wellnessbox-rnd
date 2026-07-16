@@ -13,7 +13,7 @@
 - Validation: focused candidate/parser/contract selection `70 passed`; exact CI-equivalent selection `301 passed`; full Ruff PASS; deterministic smoke byte-identical across reruns; manifest audit PASS with `43` claims, `134` checked evidence files, and zero issues; completion-report stale check PASS; stored runtime equals a fresh deterministic build; independent final review Critical `0`, Important `0`, Minor `0`.
 - Full suite: `705 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No OP-043/044 failure remains.
 - Frozen evaluation: `256` cases; all seven metric deltas are `0`, and the overall and metric-specific weakest-slice categories are unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
-- Publication: source commit `1465db1c153b71b8b636231eb6487c32e469c85b` is pinned by the smoke. Evidence publication and Original plan evidence CI are recorded after push.
+- Publication: source commit `1465db1c153b71b8b636231eb6487c32e469c85b` is pinned by the smoke; evidence commit `64d67eceef2996869c897e9a0bc02b33a549010f` is on `origin/main`; Original plan evidence run `29501666136` passed.
 - Recommended next loops: OP-045/046 pre/post safety-candidate preservation and structured recommendation reasons; OP-047/048 uncertainty/missing-input quantification and deterministic fallback; OP-049/050 learned-versus-baseline replay and service-product candidate conversion.
 
 ## 2026-07-16 ingredient identity and evidence-linked goal-prior loop
