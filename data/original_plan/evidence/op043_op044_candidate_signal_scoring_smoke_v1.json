@@ -150,7 +150,7 @@
   "score_meaning": "bounded deterministic candidate-ordering points, not diagnosis, dose advice, treatment target, efficacy probability, or individualized medical advice",
   "scoring_version": "2026-07-16.1",
   "source_identity": {
-    "commit": "1465db1c153b71b8b636231eb6487c32e469c85b",
-    "source_sha256": "7a41b81588a92ec08e9c865a62fa651a5a3bd3b7b095d569a02847d039c6bfc9"
+    "commit": "f7479d710e227fe428d96977a91ce2ab66438d06",
+    "source_sha256": "c6ec601785e9b08f6c25c4c2b7b574711e29b5d7994c11dc1d86d85b95458ce3"
   }
 }
