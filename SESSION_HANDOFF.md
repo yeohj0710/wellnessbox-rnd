@@ -1,10 +1,25 @@
 # SESSION_HANDOFF
 
+## 2026-07-16 candidate-pool and structured-reason handoff
+
+- Chosen stage: `original plan / candidate generation and efficacy scoring`
+- Chosen tasks: OP-045 and OP-046
+- Primary evidence: `data/original_plan/evidence/op045_op046_candidate_pool_structured_reasons_smoke_v1.json`; deterministic SHA-256 `719e750e6ea856b12e88526db4ea75ecbdb3647f2cdbe9ce3fea806036b2874d`; source commit `f7479d710e227fe428d96977a91ce2ab66438d06`
+- Main result: the existing optimizer and response now preserve one shared pre-safety/excluded/post-safety candidate partition and selected subset. Global blocking retains the pool for audit but returns no selection. User avoidance, current-regimen overlap, and safety exclusions remain distinguishable.
+- Structured reason result: every selected candidate returns goal and applied input signals, all 14 score terms, exact rule/reference/claim IDs, limitations, evidence links, and a total that reconciles to the candidate score. Safety-review scoring preserves the triggering safety rule and scoring-time status. Learned reranking rebuilds the same reason after its bonus is applied.
+- Fail-closed boundary: schemas and the recommendation contract reject partition identity drift, duplicate evidence links, incomplete terms, score/component mismatches, forged or empty evidence IDs, wrong ownership, wrong learned markers, and unexpected fields. Candidate selection and trace generation share one partition function instead of duplicating filter logic.
+- Evidence stage: OP-045 and OP-046 are `IMPLEMENTED`. Generated counts are complete `34`, partial `11`, pending `74`, external `1`, contradicted `0`. No WellnessBox service change, deployment, or production operation was performed.
+- Validation: focused selection `203 passed`; exact local CI-equivalent selection `315 passed`; full Ruff PASS; manifest audit PASS with `45` claims and `140` checked evidence files; completion report check PASS; independent final review Critical `0`, Important `0`, Minor `0`; full suite `716 passed`, `77 failed` with only the known `73` absent-report and `4` CGM-geometry groups.
+- Official frozen eval: `256` cases; all seven metric deltas are `0`; overall and metric-specific weakest-slice categories are unchanged.
+- Publication: commits `f7479d710e227fe428d96977a91ce2ab66438d06`, `c8c636c61497929a3afb3933236520226c555072`, `92cf53a8f0c2050e7b4ae2368d36b95d2396c9df`, and `0cd4db94c87ac223f7062ae75e6a2ac02267c722` are on `origin/main`; Original plan evidence run `29504825809` passed.
+- Protected files: do not modify or stage `docs/plans/2026-07-14-tips-evaluator-ui-overhaul.md` or `docs/plans/2026-07-15-tips-full-implementation-roadmap.md`. The unrelated dirty WellnessBox UI files remain user-owned and unstaged.
+- Next three loops: OP-047/048 quantify uncertainty and enforce learned-artifact fallback; OP-049/050 compare learned/baseline replay and convert to service products; OP-051/052 implement versioned PRO scoring and percentile conversion.
+
 ## 2026-07-16 candidate signal scoring handoff
 
 - Chosen stage: `original plan / candidate generation and efficacy scoring`
 - Chosen tasks: OP-043 and OP-044
-- Primary evidence: `data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json`; deterministic SHA-256 `f1887207db9d3991471029c3d1248161260d3c6c5d5ab63307767a797691a7bb`; source commit `1465db1c153b71b8b636231eb6487c32e469c85b`
+- Primary evidence: `data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json`; current deterministic SHA-256 `92fd4d007ef99e1d3f0f3168218f944635918982567ef38adfde1de23a184882`; source identity refreshed to commit `f7479d710e227fe428d96977a91ce2ab66438d06`
 - Main result: existing candidate scores now expose separate symptom, laboratory, lifestyle, dietary, wearable, CGM, and genetic terms with observed values, bounded points, versioned rule IDs, exact reference/claim IDs, and limitations. The recommendation contract includes every new term in its total.
 - Safety boundary: source-specific recommendation consent is explicit for snapshots. CGM TIR scoring requires a verified 70–180 mg/dL range, nonpregnant diabetes context, and a blood-glucose goal. Unknown genetic tags, custom TIR ranges, invalid aliases/bounds, and unscoped tags add zero. The scorer executes only the registry embedded in the validated runtime artifact.
 - Evidence stage: OP-043 and OP-044 are `IMPLEMENTED`. Generated counts are complete `32`, partial `11`, pending `76`, external `1`, contradicted `0`. No WellnessBox service change, deployment, or production operation was performed.
