@@ -1,0 +1,219 @@
+{
+  "cases": {
+    "contract_bridge": {
+      "issue_count": 0,
+      "selected_count": 2
+    },
+    "explicit_exclusion_sources": {
+      "l_theanine": [
+        "safety_summary_excluded",
+        "current_regimen_overlap"
+      ],
+      "magnesium_glycinate": [
+        "safety_summary_excluded",
+        "user_avoidance"
+      ]
+    },
+    "global_block": {
+      "applied_safety_rule_ids": [
+        "SAFETY-URGENT-SYMPTOM-001"
+      ],
+      "global_blocked": true,
+      "pre_safety_candidate_count": 2,
+      "selected_candidate_keys": []
+    },
+    "safety_partition": {
+      "applied_safety_rule_ids": [
+        "SAFETY-ANTICOAG-001"
+      ],
+      "excluded_candidate_keys": [
+        "omega3"
+      ],
+      "omega3_exclusion_reasons": [
+        "safety_summary_excluded"
+      ],
+      "post_safety_candidate_keys": [
+        "coq10"
+      ],
+      "pre_safety_candidate_keys": [
+        "coq10",
+        "omega3"
+      ],
+      "selected_candidate_keys": [
+        "coq10"
+      ],
+      "selected_candidate_safety_reason": {
+        "evidence_links": [
+          {
+            "claim_ids": [
+              "CLM-NIH-ODS-OMEGA3-WARFARIN-001"
+            ],
+            "code": "SAFETY-ANTICOAG-001",
+            "evidence_source": "safety_rule",
+            "limitations": [
+              "Potential medication interaction triggers conservative exclusion."
+            ],
+            "reference_ids": [
+              "REF-NIH-ODS-OMEGA3-001"
+            ],
+            "rule_id": "SAFETY-ANTICOAG-001"
+          }
+        ],
+        "ingredient_key": "coq10",
+        "input_signals": [
+          {
+            "code": "SAFETY-ANTICOAG-001",
+            "observed_value": "needs_review",
+            "source": "safety",
+            "unit": null
+          }
+        ],
+        "score_term": {
+          "points": -4.0,
+          "rule_ids": [
+            "OPT-BASELINE-001",
+            "SAFETY-ANTICOAG-001"
+          ],
+          "term": "safety_adjustment"
+        }
+      }
+    },
+    "schema_fail_closed": {
+      "candidate_identity": true,
+      "candidate_pool_partition": true,
+      "structured_reason_completeness": true,
+      "structured_reason_total": true
+    },
+    "structured_reason": {
+      "claim_ids": [
+        "CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+        "CLM-MC-GOAL-PRIOR-POLICY-001",
+        "CLM-NCCIH-MAGNESIUM-SLEEP-001"
+      ],
+      "evidence_links": [
+        {
+          "claim_ids": [
+            "CLM-MC-GOAL-PRIOR-POLICY-001",
+            "CLM-NCCIH-MAGNESIUM-SLEEP-001"
+          ],
+          "code": "sleep_support",
+          "evidence_source": "goal_prior",
+          "limitations": [
+            "candidate-ordering policy, not efficacy probability",
+            "small low-quality and conflicting studies",
+            "not magnesium-glycinate-specific"
+          ],
+          "reference_ids": [
+            "REF-MC-GOAL-PRIOR-001",
+            "REF-NCCIH-MAGNESIUM-SLEEP-001"
+          ],
+          "rule_id": null
+        },
+        {
+          "claim_ids": [
+            "CLM-MC-CANDIDATE-SIGNAL-POLICY-001"
+          ],
+          "code": "high_stress",
+          "evidence_source": "input_signal",
+          "limitations": [
+            "Deterministic candidate-ordering context only; not diagnosis, dose advice, or efficacy probability."
+          ],
+          "reference_ids": [
+            "REF-MC-CANDIDATE-SIGNAL-001"
+          ],
+          "rule_id": "CS-LIFESTYLE-MATCH-001"
+        },
+        {
+          "claim_ids": [
+            "CLM-MC-CANDIDATE-SIGNAL-POLICY-001"
+          ],
+          "code": "sleep_deficit",
+          "evidence_source": "input_signal",
+          "limitations": [
+            "Deterministic candidate-ordering context only; not diagnosis, dose advice, or efficacy probability."
+          ],
+          "reference_ids": [
+            "REF-MC-CANDIDATE-SIGNAL-001"
+          ],
+          "rule_id": "CS-LIFESTYLE-MATCH-001"
+        },
+        {
+          "claim_ids": [
+            "CLM-MC-CANDIDATE-SIGNAL-POLICY-001"
+          ],
+          "code": "difficulty_falling_asleep",
+          "evidence_source": "input_signal",
+          "limitations": [
+            "Deterministic candidate-ordering context only; not diagnosis, dose advice, or efficacy probability."
+          ],
+          "reference_ids": [
+            "REF-MC-CANDIDATE-SIGNAL-001"
+          ],
+          "rule_id": "CS-SYMPTOM-MATCH-001"
+        }
+      ],
+      "ingredient_key": "magnesium_glycinate",
+      "input_signals": [
+        "goal:sleep_support",
+        "lifestyle:high_stress",
+        "lifestyle:sleep_deficit",
+        "symptom:difficulty_falling_asleep"
+      ],
+      "limitations": [
+        "Deterministic candidate-ordering context only; not diagnosis, dose advice, or efficacy probability.",
+        "candidate-ordering policy, not efficacy probability",
+        "not magnesium-glycinate-specific",
+        "small low-quality and conflicting studies"
+      ],
+      "reference_ids": [
+        "REF-MC-CANDIDATE-SIGNAL-001",
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NCCIH-MAGNESIUM-SLEEP-001"
+      ],
+      "rule_ids": [
+        "CS-LIFESTYLE-MATCH-001",
+        "CS-SYMPTOM-MATCH-001",
+        "OPT-BASELINE-001"
+      ],
+      "score_terms": {
+        "budget_adjustment": 1.0,
+        "catalog_priority": 7.0,
+        "cgm_adjustment": 0.0,
+        "conservative_adjustment": 1.0,
+        "dietary_alignment": 0.0,
+        "evidence_readiness": 4.0,
+        "genetic_adjustment": 0.0,
+        "goal_alignment": 35.0,
+        "laboratory_alignment": 0.0,
+        "learned_effect_bonus": 0.0,
+        "lifestyle_alignment": 12.0,
+        "safety_adjustment": 0.0,
+        "symptom_alignment": 8.0,
+        "wearable_adjustment": 0.0
+      },
+      "score_total": 68.0
+    }
+  },
+  "checks": [
+    "pre_safety_pool_is_exact_partition_of_excluded_and_post_safety_candidates",
+    "selected_candidates_are_subset_of_post_safety_candidates",
+    "safety_user_avoidance_and_current_regimen_exclusions_are_distinguished",
+    "global_safety_block_preserves_pool_and_clears_selection",
+    "input_signals_score_terms_and_evidence_ids_are_separated",
+    "safety_adjustment_preserves_trigger_rule_and_evidence",
+    "evidence_ids_are_associated_with_goal_or_input_signal",
+    "fourteen_score_terms_reconcile_to_candidate_total",
+    "recommendation_contract_cross_checks_structured_reason",
+    "candidate_pool_and_reason_schema_mismatches_fail_closed"
+  ],
+  "production_operation_proven": false,
+  "requirement_stages": {
+    "OP-045": "IMPLEMENTED",
+    "OP-046": "IMPLEMENTED"
+  },
+  "schema_version": "op045_op046_candidate_pool_structured_reasons_smoke_v1",
+  "source_identity": {
+    "commit": "f7479d710e227fe428d96977a91ce2ab66438d06",
+    "source_sha256": "cf3fff02dc42da0a1d92f9b58ab0793914e33c8516e3aab88f1e24bc55ac6af4"
+  }
+}

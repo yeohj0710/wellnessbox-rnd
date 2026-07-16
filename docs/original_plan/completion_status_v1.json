@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "d37db5824066fa6e517be41b3f231163c8949cb96958a9bcf7564f5d4f89136a",
+  "audited_manifest_sha256": "4af1968f62c1c293034689f7f961104e770b6ffa7d7ce8e33d6b12a09c6cfe15",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 32,
+    "COMPLETE": 34,
     "PARTIAL": 11,
-    "PENDING": 76,
+    "PENDING": 74,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -68,9 +68,9 @@
       "title": "추천 후보와 효과 점수",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 4,
+        "COMPLETE": 6,
         "PARTIAL": 0,
-        "PENDING": 6,
+        "PENDING": 4,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -1591,14 +1591,22 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/service.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_candidate_pool_structured_reasons.py",
+          "wellnessbox-rnd/scripts/run_candidate_pool_structured_reasons_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op045_op046_candidate_pool_structured_reasons_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -1614,14 +1622,26 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation_contracts.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/service.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/goal_priors.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_candidate_pool_structured_reasons.py",
+          "wellnessbox-rnd/tests/test_recommendation_contracts.py",
+          "wellnessbox-rnd/tests/test_learned_optimizer_integration.py",
+          "wellnessbox-rnd/scripts/run_candidate_pool_structured_reasons_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op045_op046_candidate_pool_structured_reasons_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
