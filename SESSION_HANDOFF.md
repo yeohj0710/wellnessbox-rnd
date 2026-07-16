@@ -1,10 +1,25 @@
 # SESSION_HANDOFF
 
+## 2026-07-16 decision uncertainty and learned-fallback handoff
+
+- Chosen stage: `original plan / candidate generation and efficacy scoring`
+- Chosen tasks: OP-047 and OP-048
+- Primary evidence: `data/original_plan/evidence/op047_op048_decision_uncertainty_learned_fallback_smoke_v1.json`; deterministic SHA-256 `55eae7c9a7a99557fa47ecc687e622bc0a959550b7d629db4e7008e0f5d7d158`; source commit `22aca5e9d64a493562f9d17b302bead2ca02c555`
+- Main result: the existing recommendation response now returns versioned numeric uncertainty for missing inputs, review state, candidate availability, and the preselection top-two margin. The score is explicitly not a clinical probability. Every post-safety candidate has a complete ranked score trace with full breakdown, reason, rules, goals, catalog priority, and evidence linkage.
+- Fallback result: learned reranking exposes one explicit decision status. Missing, malformed, unsupported, suspicious, or runtime-failing artifacts discard all partial learned results and return the exact deterministic recommendations and `deterministic_baseline_v1` mode. Valid artifacts require explicit model/target identity, supported runtime features, catalog-valid candidate keys, closed-domain values, compatible dimensions, and bounded finite coefficients.
+- Fail-closed boundary: response and current-version contract validators reconcile the ranking snapshot and all selected/unselected scores against the post-safety pool, catalog, goal-prior, signal, and safety registries. They reject score/status/selection mutations, partial diagnostics removal, and schema downgrade. Legacy V1 contract validation is available only through explicit compatibility mode.
+- Evidence stage: OP-047 and OP-048 are `IMPLEMENTED`. Generated counts are complete `36`, partial `11`, pending `72`, external `1`, contradicted `0`. No WellnessBox service change, deployment, or production operation was performed.
+- Validation: focused selection `60 passed`; exact CI-equivalent selection `345 passed`; full Ruff PASS; manifest audit PASS with `47` claims and `145` checked evidence files; completion report check PASS; independent final review Critical `0`, Important `0`, Minor `0`; full suite `746 passed`, `77 failed` with only the known `73` absent-report and `4` CGM-geometry groups.
+- Official frozen eval: `256` cases; all seven metric deltas are `0`; overall and metric-specific weakest-slice categories are unchanged.
+- Publication: source commit `22aca5e9d64a493562f9d17b302bead2ca02c555` and evidence commit `ae38c36963f00d9c7f0f84cf4cd5597a1e271645` are on `origin/main`; Original plan evidence run `29509159767` passed.
+- Protected files: do not modify or stage `docs/plans/2026-07-14-tips-evaluator-ui-overhaul.md` or `docs/plans/2026-07-15-tips-full-implementation-roadmap.md`. The unrelated dirty WellnessBox UI files remain user-owned and unstaged.
+- Next three loops: OP-049/050 compare learned/baseline replay and convert ingredients to service products; OP-051/052 implement versioned PRO scoring and percentile conversion; OP-053/054 implement follow-up state and change calculation.
+
 ## 2026-07-16 candidate-pool and structured-reason handoff
 
 - Chosen stage: `original plan / candidate generation and efficacy scoring`
 - Chosen tasks: OP-045 and OP-046
-- Primary evidence: `data/original_plan/evidence/op045_op046_candidate_pool_structured_reasons_smoke_v1.json`; deterministic SHA-256 `719e750e6ea856b12e88526db4ea75ecbdb3647f2cdbe9ce3fea806036b2874d`; source commit `f7479d710e227fe428d96977a91ce2ab66438d06`
+- Primary evidence: `data/original_plan/evidence/op045_op046_candidate_pool_structured_reasons_smoke_v1.json`; current deterministic SHA-256 `86cc00d7662d96a2a350dfabc7b41395987b65db1f418d3bcd7de5741e6d335e`; source identity refreshed to commit `22aca5e9d64a493562f9d17b302bead2ca02c555`
 - Main result: the existing optimizer and response now preserve one shared pre-safety/excluded/post-safety candidate partition and selected subset. Global blocking retains the pool for audit but returns no selection. User avoidance, current-regimen overlap, and safety exclusions remain distinguishable.
 - Structured reason result: every selected candidate returns goal and applied input signals, all 14 score terms, exact rule/reference/claim IDs, limitations, evidence links, and a total that reconciles to the candidate score. Safety-review scoring preserves the triggering safety rule and scoring-time status. Learned reranking rebuilds the same reason after its bonus is applied.
 - Fail-closed boundary: schemas and the recommendation contract reject partition identity drift, duplicate evidence links, incomplete terms, score/component mismatches, forged or empty evidence IDs, wrong ownership, wrong learned markers, and unexpected fields. Candidate selection and trace generation share one partition function instead of duplicating filter logic.
@@ -19,7 +34,7 @@
 
 - Chosen stage: `original plan / candidate generation and efficacy scoring`
 - Chosen tasks: OP-043 and OP-044
-- Primary evidence: `data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json`; current deterministic SHA-256 `92fd4d007ef99e1d3f0f3168218f944635918982567ef38adfde1de23a184882`; source identity refreshed to commit `f7479d710e227fe428d96977a91ce2ab66438d06`
+- Primary evidence: `data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json`; current deterministic SHA-256 `b949483625e5fba4bdbea96afe9cb8ade1f7e45cbc1d5db2955b1e10f6f30052`; source identity refreshed to commit `22aca5e9d64a493562f9d17b302bead2ca02c555`
 - Main result: existing candidate scores now expose separate symptom, laboratory, lifestyle, dietary, wearable, CGM, and genetic terms with observed values, bounded points, versioned rule IDs, exact reference/claim IDs, and limitations. The recommendation contract includes every new term in its total.
 - Safety boundary: source-specific recommendation consent is explicit for snapshots. CGM TIR scoring requires a verified 70–180 mg/dL range, nonpregnant diabetes context, and a blood-glucose goal. Unknown genetic tags, custom TIR ranges, invalid aliases/bounds, and unscoped tags add zero. The scorer executes only the registry embedded in the validated runtime artifact.
 - Evidence stage: OP-043 and OP-044 are `IMPLEMENTED`. Generated counts are complete `32`, partial `11`, pending `76`, external `1`, contradicted `0`. No WellnessBox service change, deployment, or production operation was performed.
