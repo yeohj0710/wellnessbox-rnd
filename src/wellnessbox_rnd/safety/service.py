@@ -1,5 +1,7 @@
 import re
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
+from typing import Literal
 
 from wellnessbox_rnd.domain.catalog import (
     canonicalize_catalog_term,
@@ -30,7 +32,24 @@ from wellnessbox_rnd.schemas.recommendation import (
 )
 
 _DOSE_PATTERN = re.compile(
-    r"(?P<amount>\d+(?:\.\d+)?)\s*(?P<unit>mcg|mg|ng|iu|g)\b",
+    r"(?<![\d.,])"
+    r"(?P<amount>(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?)"
+    r"\s*(?P<unit>mcg|mg|ng|iu|g)\b",
+    re.IGNORECASE,
+)
+_COMPOUND_INGREDIENT_SEPARATOR = re.compile(
+    r"\s*(?:\+|&|/|;|(?<!\d),(?!\d)|\band\b|\bwith\b|\bplus\b)\s*",
+    re.IGNORECASE,
+)
+_AMBIGUOUS_DOSE_CONTEXT = re.compile(
+    r"(?:"
+    r"\b(?:twice|thrice|bid|tid|qid)\b"
+    r"|\b(?:two|three|four|[2-9])\s*(?:x|times?)\b"
+    r"|\bq\d+\s*h\b"
+    r"|\bevery\s+\d+\s*hours?\b"
+    r"|\b\d+\s+doses?\b"
+    r"|(?<!\w)\d[\d,.]*\s*(?:[-–—~]|\bto\b)\s*\d"
+    r")",
     re.IGNORECASE,
 )
 
@@ -45,15 +64,30 @@ class _DoseObservation:
     evidence_source: str
 
 
+@dataclass(frozen=True)
+class _DoseLimitApplication:
+    rule: DoseLimitRecord
+    observed_amount: float | None
+    reason: Literal["dose_evidence_incomplete", "upper_limit_exceeded"]
+
+
 @dataclass
 class _IngredientDoseAggregateState:
     product_names: set[str] = field(default_factory=set)
-    product_observations: list[tuple[int, list[_DoseObservation]]] = field(
+    product_observations: list[tuple[int, list[_DoseObservation], bool]] = field(
         default_factory=list
     )
 
 
-def assess_safety(intake: NormalizedIntake) -> SafetySummary:
+def assess_safety(
+    intake: NormalizedIntake,
+    *,
+    applied_at: datetime | None = None,
+) -> SafetySummary:
+    effective_applied_at = applied_at or datetime.now(UTC)
+    if effective_applied_at.tzinfo is None:
+        raise ValueError("applied_at must be timezone-aware")
+    effective_applied_at = effective_applied_at.astimezone(UTC)
     rules = get_safety_rule_set()
     runtime_knowledge_db = load_runtime_knowledge_db()
     warnings: list[str] = []
@@ -116,25 +150,35 @@ def assess_safety(intake: NormalizedIntake) -> SafetySummary:
         intake,
         runtime_knowledge_db,
     )
-    for dose_limit, observed_amount in _find_triggered_dose_limits(
+    for application in _find_triggered_dose_limits(
         ingredient_dose_aggregates,
         runtime_knowledge_db,
     ):
+        dose_limit = application.rule
         excluded_ingredients.add(dose_limit.ingredient_key)
-        triggered_warning = _format_dose_limit_warning(
-            warning_text=dose_limit.warning_text,
-            observed_amount=observed_amount,
-            max_daily_amount=dose_limit.max_daily_amount,
-            unit=dose_limit.unit,
-        )
+        if application.reason == "dose_evidence_incomplete":
+            triggered_warning = _format_incomplete_dose_limit_warning(dose_limit)
+            applied_severity = Severity.INFO
+        else:
+            if application.observed_amount is None:
+                raise ValueError("upper-limit application requires an observed amount")
+            triggered_warning = _format_dose_limit_warning(
+                warning_text=dose_limit.warning_text,
+                observed_amount=application.observed_amount,
+                max_daily_amount=dose_limit.max_daily_amount,
+                unit=dose_limit.unit,
+            )
+            applied_severity = dose_limit.severity
         _append_unique_text(warnings, triggered_warning)
-        if dose_limit.severity == Severity.BLOCKER:
+        if applied_severity == Severity.BLOCKER:
             _append_unique_text(blocked_reasons, triggered_warning)
         rule_refs.append(
             RuleReference(
                 rule_id=dose_limit.rule_id,
+                rule_version=dose_limit.rule_version,
+                application_reason=application.reason,
                 message=dose_limit.message,
-                severity=dose_limit.severity,
+                severity=applied_severity,
                 source=dose_limit.source_kind,
                 reference_ids=dose_limit.reference_ids,
                 claim_ids=dose_limit.claim_ids,
@@ -174,6 +218,7 @@ def assess_safety(intake: NormalizedIntake) -> SafetySummary:
 
     status = _derive_status(rule_refs, blocked_reasons)
     return SafetySummary(
+        applied_at=effective_applied_at,
         status=status,
         warnings=warnings,
         blocked_reasons=blocked_reasons,
@@ -201,6 +246,7 @@ def _recognized_current_duplicates(intake: NormalizedIntake) -> set[str]:
 def _build_rule_ref(metadata: SafetyRuleMetadata) -> RuleReference:
     return RuleReference(
         rule_id=metadata.rule_id,
+        rule_version=metadata.version,
         message=metadata.message,
         severity=metadata.severity,
     )
@@ -212,6 +258,7 @@ def _build_interaction_rule_ref(
 ) -> RuleReference:
     return RuleReference(
         rule_id=rule.rule_id,
+        rule_version=rule.rule_version,
         message=rule.message,
         severity=rule.severity,
         source=rule.source_kind,
@@ -244,22 +291,42 @@ def _derive_status(
 def _find_triggered_dose_limits(
     aggregates: list[IngredientDoseAggregate],
     runtime_knowledge_db: RuntimeKnowledgeDB,
-) -> list[tuple[DoseLimitRecord, float]]:
+) -> list[_DoseLimitApplication]:
     limits_by_ingredient = {
         record.ingredient_key: record
         for record in runtime_knowledge_db.dose_limits
         if record.max_daily_amount is not None and record.unit
     }
-    triggered: list[tuple[DoseLimitRecord, float]] = []
+    triggered: list[_DoseLimitApplication] = []
     for aggregate in aggregates:
-        if aggregate.total_daily_amount is None:
-            continue
         dose_limit = limits_by_ingredient.get(aggregate.ingredient_key)
         if dose_limit is None:
             continue
+        if aggregate.dose_input_count == 0:
+            continue
+        if (
+            not aggregate.dose_complete
+            or aggregate.total_daily_amount is None
+            or aggregate.unit is None
+            or aggregate.unit.lower() != dose_limit.unit.lower()
+        ):
+            triggered.append(
+                _DoseLimitApplication(
+                    rule=dose_limit,
+                    observed_amount=aggregate.total_daily_amount,
+                    reason="dose_evidence_incomplete",
+                )
+            )
+            continue
         observed_amount = aggregate.total_daily_amount
         if observed_amount > float(dose_limit.max_daily_amount):
-            triggered.append((dose_limit, observed_amount))
+            triggered.append(
+                _DoseLimitApplication(
+                    rule=dose_limit,
+                    observed_amount=observed_amount,
+                    reason="upper_limit_exceeded",
+                )
+            )
     return triggered
 
 
@@ -293,6 +360,10 @@ def _build_ingredient_dose_aggregates(
                 (
                     occurrence_counts.get(ingredient_key, 1),
                     observations_by_ingredient.get(ingredient_key, []),
+                    _supplement_has_dose_input_for_ingredient(
+                        supplement,
+                        ingredient_key,
+                    ),
                 )
             )
 
@@ -302,7 +373,7 @@ def _build_ingredient_dose_aggregates(
         dose_limit = limits_by_ingredient.get(ingredient_key)
         all_observations = [
             observation
-            for _, product_observations in state.product_observations
+            for _, product_observations, _ in state.product_observations
             for observation in product_observations
         ]
         target_unit = _select_aggregate_unit(
@@ -323,7 +394,7 @@ def _build_ingredient_dose_aggregates(
                 )
                 is not None
             ]
-            for _, product_observations in state.product_observations
+            for _, product_observations, _ in state.product_observations
         ]
         converted_amounts = [
             amount
@@ -333,7 +404,7 @@ def _build_ingredient_dose_aggregates(
         dose_observation_count = len(converted_amounts)
         dose_complete = bool(converted_amounts) and all(
             len(converted_observations) >= expected_occurrence_count
-            for (expected_occurrence_count, _), converted_observations in zip(
+            for (expected_occurrence_count, _, _), converted_observations in zip(
                 state.product_observations,
                 converted_by_product,
                 strict=True,
@@ -347,6 +418,10 @@ def _build_ingredient_dose_aggregates(
                 duplicate_across_products=product_count > 1,
                 total_daily_amount=sum(converted_amounts) if converted_amounts else None,
                 unit=target_unit if converted_amounts else None,
+                dose_input_count=sum(
+                    int(dose_input_present)
+                    for _, _, dose_input_present in state.product_observations
+                ),
                 dose_observation_count=dose_observation_count,
                 dose_complete=dose_complete,
             )
@@ -363,17 +438,17 @@ def _supplement_ingredient_occurrence_counts(
 ) -> dict[str, int]:
     occurrence_counts: dict[str, int] = {}
     for ingredient in supplement.ingredients:
-        ingredient_key = canonicalize_catalog_term(
+        ingredient_keys = _ingredient_keys_from_text(
             normalize_supplement_ingredient_name(ingredient)
         )
-        if ingredient_key is None:
-            continue
-        occurrence_counts[ingredient_key] = occurrence_counts.get(ingredient_key, 0) + 1
+        for ingredient_key in ingredient_keys:
+            occurrence_counts[ingredient_key] = (
+                occurrence_counts.get(ingredient_key, 0) + 1
+            )
     if occurrence_counts:
         return occurrence_counts
-    title_ingredient_key = canonicalize_catalog_term(supplement.name)
-    if title_ingredient_key is not None:
-        occurrence_counts[title_ingredient_key] = 1
+    for ingredient_key in _ingredient_keys_from_text(supplement.name):
+        occurrence_counts[ingredient_key] = occurrence_counts.get(ingredient_key, 0) + 1
     return occurrence_counts
 
 
@@ -394,11 +469,71 @@ def _select_aggregate_unit(
     return None
 
 
-def _parse_supplement_amount(value: str) -> tuple[float, str] | None:
-    match = _DOSE_PATTERN.search(value)
-    if match is None:
+def _parse_supplement_amount(
+    value: str,
+    *,
+    require_dose_only: bool = False,
+) -> tuple[float, str] | None:
+    matches = list(_DOSE_PATTERN.finditer(value))
+    if len(matches) != 1:
         return None
-    return float(match.group("amount")), match.group("unit").lower()
+    match = matches[0]
+    if require_dose_only:
+        remainder = f"{value[: match.start()]}{value[match.end() :]}"
+        if remainder.strip(" \t\r\n()[]{}:;,.\""):
+            return None
+    amount = float(match.group("amount").replace(",", ""))
+    return amount, match.group("unit").lower()
+
+
+def _ingredient_keys_from_text(value: str) -> list[str]:
+    parts = [
+        part
+        for part in _COMPOUND_INGREDIENT_SEPARATOR.split(value)
+        if part.strip()
+    ]
+    ingredient_keys: list[str] = []
+    for part in parts:
+        ingredient_text = _strip_dose_text(part)
+        ingredient_key = canonicalize_exact_catalog_term(
+            ingredient_text
+        ) or canonicalize_catalog_term(ingredient_text)
+        if ingredient_key is not None:
+            ingredient_keys.append(ingredient_key)
+    if ingredient_keys:
+        return ingredient_keys
+    if len(parts) <= 1:
+        ingredient_key = canonicalize_catalog_term(value)
+        if ingredient_key is not None:
+            return [ingredient_key]
+    return []
+
+
+def _supplement_has_dose_input_for_ingredient(
+    supplement: SupplementInput,
+    ingredient_key: str,
+) -> bool:
+    for ingredient in supplement.ingredients:
+        ingredient_name = normalize_supplement_ingredient_name(ingredient)
+        if ingredient_key not in _ingredient_keys_from_text(ingredient_name):
+            continue
+        if isinstance(ingredient, SupplementIngredientInput):
+            if ingredient.daily_dose is not None:
+                return True
+        if _DOSE_PATTERN.search(ingredient_name) is not None:
+            return True
+
+    if supplement.daily_dose is not None or supplement.dose is not None:
+        return True
+    return (
+        ingredient_key in _ingredient_keys_from_text(supplement.name)
+        and _DOSE_PATTERN.search(supplement.name) is not None
+    )
+
+
+def _strip_dose_text(value: str) -> str:
+    without_doses = _DOSE_PATTERN.sub("", value)
+    return without_doses.strip(" \t\r\n()[]{}:;,+&/-")
 
 
 def _extract_supplement_dose_observations(
@@ -460,9 +595,10 @@ def _extract_ingredient_daily_dose_observations(
             continue
         if ingredient.daily_dose is None:
             continue
-        ingredient_key = canonicalize_catalog_term(ingredient.name)
-        if ingredient_key is None:
+        ingredient_keys = _ingredient_keys_from_text(ingredient.name)
+        if len(ingredient_keys) != 1:
             continue
+        ingredient_key = ingredient_keys[0]
         observation = _build_structured_dose_observation(
             ingredient_key=ingredient_key,
             dose=ingredient.daily_dose,
@@ -494,7 +630,10 @@ def _extract_product_daily_dose_observation(
     if supplement.dose is None:
         return None
 
-    parsed_dose = _parse_supplement_amount(supplement.dose)
+    parsed_dose = _parse_supplement_amount(
+        supplement.dose,
+        require_dose_only=True,
+    )
     if parsed_dose is None:
         return None
     amount, unit = parsed_dose
@@ -521,13 +660,17 @@ def _single_product_dose_ingredient_key(
         if normalize_supplement_ingredient_name(ingredient)
     ]
     if declared_ingredient_names:
-        declared_ingredient_keys = {
-            canonicalize_exact_catalog_term(name) for name in declared_ingredient_names
-        }
-        if None in declared_ingredient_keys or len(declared_ingredient_keys) != 1:
+        resolved_ingredient_keys = [
+            _ingredient_keys_from_text(name) for name in declared_ingredient_names
+        ]
+        if any(len(keys) != 1 for keys in resolved_ingredient_keys):
+            return None
+        declared_ingredient_keys = {keys[0] for keys in resolved_ingredient_keys}
+        if len(declared_ingredient_keys) != 1:
             return None
         return next(iter(declared_ingredient_keys))
-    return canonicalize_exact_catalog_term(supplement.name)
+    title_ingredient_keys = _ingredient_keys_from_text(supplement.name)
+    return title_ingredient_keys[0] if len(title_ingredient_keys) == 1 else None
 
 
 def _build_structured_dose_observation(
@@ -548,13 +691,16 @@ def _build_dose_observation(
     source_text: str,
     evidence_source: str,
 ) -> _DoseObservation | None:
-    ingredient_key = canonicalize_catalog_term(source_text)
-    if ingredient_key is None:
+    if _AMBIGUOUS_DOSE_CONTEXT.search(source_text) is not None:
         return None
-
     parsed_dose = _parse_supplement_amount(source_text)
     if parsed_dose is None:
         return None
+
+    ingredient_keys = _ingredient_keys_from_text(source_text)
+    if len(ingredient_keys) != 1:
+        return None
+    ingredient_key = ingredient_keys[0]
 
     amount, unit = parsed_dose
     return _DoseObservation(
@@ -631,4 +777,13 @@ def _format_dose_limit_warning(
     return (
         f"{warning_text} Estimated current intake was {observed_display} {unit}"
         f" against a structured limit of {limit_display} {unit}."
+    )
+
+
+def _format_incomplete_dose_limit_warning(dose_limit: DoseLimitRecord) -> str:
+    unit_context = f" in {dose_limit.unit}" if dose_limit.unit else ""
+    return (
+        f"Current dose evidence for {dose_limit.ingredient_key} was missing, partial,"
+        f" or not convertible{unit_context}, so the regimen could not be compared"
+        " safely with the structured upper limit and was excluded conservatively."
     )

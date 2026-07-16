@@ -52,6 +52,12 @@ def test_runtime_knowledge_db_builds_required_tables() -> None:
         rule.rule_id == "KB-SAFETY-ANTICOAG-001" and rule.source_kind == "knowledge_artifact"
         for rule in runtime_db.interaction_rules
     )
+    versioned_rules = [
+        *runtime_db.interaction_rules,
+        *runtime_db.contraindication_rules,
+        *runtime_db.dose_limits,
+    ]
+    assert all(rule.rule_version >= 1 for rule in versioned_rules)
 
 
 def test_every_runtime_interaction_rule_is_evidence_linked() -> None:
@@ -321,7 +327,9 @@ def test_assess_safety_returns_deterministic_dose_limit_rule_ref_without_citatio
 
     assert dose_rule.model_dump() == {
         "rule_id": "SAFETY-DOSE-VITD3-001",
-        "message": "Vitamin D3 current intake stays below the structured adult upper limit.",
+        "rule_version": 1,
+        "application_reason": "upper_limit_exceeded",
+        "message": "Vitamin D3 daily intake is evaluated against the structured adult upper limit.",
         "severity": "blocker",
         "source": "deterministic_policy",
         "reference_ids": [],
@@ -450,7 +458,7 @@ def test_assess_safety_blocks_magnesium_when_ingredient_line_exceeds_structured_
     assert response.next_action_rationale.reason_code == "structured_safety_blocker"
 
 
-def test_assess_safety_skips_title_only_magnesium_dose_limit_when_rule_requires_stronger_evidence(
+def test_assess_safety_fails_closed_for_title_only_magnesium_dose_evidence(
 ) -> None:
     request = RecommendationRequest(
         user_profile=UserProfile(
@@ -479,10 +487,14 @@ def test_assess_safety_skips_title_only_magnesium_dose_limit_when_rule_requires_
 
     summary = assess_safety(normalize_request(request))
 
+    dose_rule = next(
+        rule for rule in summary.rule_refs if rule.rule_id == "SAFETY-DOSE-MAG-001"
+    )
+
     assert summary.status == RecommendationStatus.OK
     assert "magnesium_glycinate" in summary.excluded_ingredients
-    assert [rule.rule_id for rule in summary.rule_refs] == ["SAFETY-DUP-001"]
-    assert not any(rule.rule_id == "SAFETY-DOSE-MAG-001" for rule in summary.rule_refs)
+    assert dose_rule.application_reason == "dose_evidence_incomplete"
+    assert not any("above" in reason.lower() for reason in summary.blocked_reasons)
 
 
 def test_assess_safety_blocks_calcium_when_structured_dose_exceeds_limit() -> None:
@@ -574,7 +586,7 @@ def test_assess_safety_blocks_when_structured_supplement_dose_is_explicit() -> N
     assert response.next_action_rationale.reason_code == "structured_safety_blocker"
 
 
-def test_structured_supplement_dose_skips_ambiguous_ingredient_mapping() -> None:
+def test_structured_supplement_dose_fails_closed_for_ambiguous_ingredient_mapping() -> None:
     request = RecommendationRequest(
         user_profile=UserProfile(
             age=39,
@@ -608,8 +620,22 @@ def test_structured_supplement_dose_skips_ambiguous_ingredient_mapping() -> None
 
     summary = assess_safety(normalize_request(request))
 
+    dose_rules = {
+        rule.rule_id: rule
+        for rule in summary.rule_refs
+        if rule.rule_id.startswith("SAFETY-DOSE-")
+    }
+
     assert summary.status == RecommendationStatus.OK
     assert "vitamin_c" in summary.excluded_ingredients
     assert "zinc" in summary.excluded_ingredients
-    assert [rule.rule_id for rule in summary.rule_refs] == ["SAFETY-DUP-001"]
-    assert not any(rule.rule_id.startswith("SAFETY-DOSE-") for rule in summary.rule_refs)
+    assert set(dose_rules) == {"SAFETY-DOSE-VITC-001", "SAFETY-DOSE-ZINC-001"}
+    assert all(
+        rule.application_reason == "dose_evidence_incomplete"
+        for rule in dose_rules.values()
+    )
+    assert all(
+        aggregate.total_daily_amount is None
+        for aggregate in summary.ingredient_dose_aggregates
+        if aggregate.ingredient_key in {"vitamin_c", "zinc"}
+    )

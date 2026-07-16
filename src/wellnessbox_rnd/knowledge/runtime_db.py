@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal
@@ -36,6 +37,7 @@ class ConditionRecord(BaseModel):
 
 class InteractionRuleRecord(BaseModel):
     rule_id: str
+    rule_version: int = Field(ge=1)
     source_kind: Literal["knowledge_artifact", "evidence_linked_policy"]
     severity: Severity
     medication_keys: list[str] = Field(default_factory=list)
@@ -50,6 +52,7 @@ class InteractionRuleRecord(BaseModel):
 
 class ContraindicationRuleRecord(BaseModel):
     rule_id: str
+    rule_version: int = Field(ge=1)
     source_kind: str
     severity: Severity
     effect: Literal["contraindication", "review_required"] = "contraindication"
@@ -65,6 +68,7 @@ class ContraindicationRuleRecord(BaseModel):
 
 class DoseLimitRecord(BaseModel):
     rule_id: str
+    rule_version: int = Field(ge=1)
     source_kind: str
     severity: Severity
     ingredient_key: str
@@ -144,6 +148,7 @@ def build_runtime_knowledge_db(
 ) -> RuntimeKnowledgeDB:
     artifact = _load_reference_artifact(reference_artifact_path)
     rules_payload = _load_raw_safety_rules()
+    knowledge_rule_version = _version_from_artifact_version(artifact.artifact_version)
     claim_by_id = {claim.claim_id: claim for claim in artifact.parsed_claims}
 
     ingredient_map: dict[str, IngredientRecord] = {}
@@ -187,6 +192,7 @@ def build_runtime_knowledge_db(
         interaction_rules.append(
             InteractionRuleRecord(
                 rule_id=metadata["rule_id"],
+                rule_version=metadata["version"],
                 source_kind="evidence_linked_policy",
                 severity=Severity(metadata["severity"]),
                 medication_keys=medications,
@@ -220,6 +226,7 @@ def build_runtime_knowledge_db(
         contraindication_rules.append(
             ContraindicationRuleRecord(
                 rule_id=metadata["rule_id"],
+                rule_version=metadata["version"],
                 source_kind="deterministic_policy",
                 severity=Severity(metadata["severity"]),
                 effect="contraindication",
@@ -247,6 +254,7 @@ def build_runtime_knowledge_db(
         contraindication_rules.append(
             ContraindicationRuleRecord(
                 rule_id=metadata["rule_id"],
+                rule_version=metadata["version"],
                 source_kind="deterministic_policy",
                 severity=Severity(metadata["severity"]),
                 effect=raw_rule["effect"],
@@ -271,6 +279,7 @@ def build_runtime_knowledge_db(
         dose_limits.append(
             DoseLimitRecord(
                 rule_id=metadata["rule_id"],
+                rule_version=metadata["version"],
                 source_kind="deterministic_policy",
                 severity=Severity(metadata["severity"]),
                 ingredient_key=ingredient_key,
@@ -299,6 +308,7 @@ def build_runtime_knowledge_db(
             interaction_rules.append(
                 InteractionRuleRecord(
                     rule_id=candidate.rule_id,
+                    rule_version=knowledge_rule_version,
                     source_kind="knowledge_artifact",
                     severity=Severity(candidate.severity),
                     medication_keys=medications,
@@ -606,6 +616,13 @@ def _load_reference_artifact(
 def _load_raw_safety_rules() -> dict[str, Any]:
     path = repo_root() / "data" / "rules" / "safety_rules.json"
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _version_from_artifact_version(artifact_version: str) -> int:
+    match = re.fullmatch(r".*_v(?P<version>[1-9]\d*)", artifact_version)
+    if match is None:
+        raise ValueError("knowledge artifact version must end in _v<positive integer>")
+    return int(match.group("version"))
 
 
 def _validate_unique_keys(

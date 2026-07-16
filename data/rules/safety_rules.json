@@ -4,6 +4,7 @@
       "input_key": "survey",
       "metadata": {
         "rule_id": "INTAKE-SURVEY-001",
+        "version": 1,
         "message": "Survey input is the minimum contract for recommendation.",
         "severity": "blocker",
         "warning_text": "Baseline survey input is required before recommendation can run."
@@ -20,6 +21,7 @@
       "blocked_reason": "Urgent symptom input requires recommendation to stop.",
       "metadata": {
         "rule_id": "SAFETY-URGENT-SYMPTOM-001",
+        "version": 1,
         "message": "Urgent symptom input blocks supplement recommendation.",
         "severity": "blocker",
         "warning_text": "An urgent symptom was detected, so supplement recommendation stopped before candidate generation."
@@ -32,6 +34,7 @@
       "excluded_ingredients": ["omega3"],
       "metadata": {
         "rule_id": "SAFETY-ALLERGY-FISH-001",
+        "version": 1,
         "message": "Fish allergy input requires conservative omega-3 exclusion.",
         "severity": "warning",
         "warning_text": "Fish allergy input was detected, so omega-3 was excluded conservatively."
@@ -46,6 +49,7 @@
       "claim_ids": ["CLM-NIH-ODS-OMEGA3-WARFARIN-001"],
       "metadata": {
         "rule_id": "SAFETY-ANTICOAG-001",
+        "version": 1,
         "message": "Potential medication interaction triggers conservative exclusion.",
         "severity": "warning",
         "warning_text": "Potential interaction context was detected for anticoagulant medication, so related candidates were excluded."
@@ -58,6 +62,7 @@
       "excluded_ingredients": ["ashwagandha", "berberine"],
       "metadata": {
         "rule_id": "SAFETY-PREG-001",
+        "version": 1,
         "message": "Pregnancy input requires conservative exclusion and human review.",
         "severity": "warning",
         "warning_text": "Pregnancy input was detected, so restricted ingredients were excluded conservatively."
@@ -68,6 +73,7 @@
       "excluded_ingredients": ["ashwagandha", "berberine"],
       "metadata": {
         "rule_id": "SAFETY-LACT-001",
+        "version": 1,
         "message": "Lactation input requires conservative exclusion and human review.",
         "severity": "warning",
         "warning_text": "Lactation input was detected, so restricted ingredients were excluded conservatively."
@@ -81,6 +87,7 @@
       "excluded_ingredients": ["magnesium_glycinate"],
       "metadata": {
         "rule_id": "SAFETY-RENAL-001",
+        "version": 1,
         "message": "Condition-specific exclusion was applied conservatively.",
         "severity": "warning",
         "warning_text": "Kidney disease input requires a conservative mineral review."
@@ -92,6 +99,7 @@
       "excluded_ingredients": ["magnesium_glycinate"],
       "metadata": {
         "rule_id": "SAFETY-RENAL-SEVERE-001",
+        "version": 1,
         "message": "Severe renal impairment is outside the automated recommendation range.",
         "severity": "blocker",
         "warning_text": "Kidney failure or dialysis input was detected, so automated supplement recommendation stopped for clinical review."
@@ -103,6 +111,7 @@
       "excluded_ingredients": [],
       "metadata": {
         "rule_id": "SAFETY-HEPATIC-001",
+        "version": 1,
         "message": "Hepatic impairment requires human review before recommendation.",
         "severity": "blocker",
         "warning_text": "Liver failure or cirrhosis input was detected, so automated supplement recommendation requires clinical review."
@@ -114,6 +123,7 @@
       "excluded_ingredients": ["iron", "vitamin_c"],
       "metadata": {
         "rule_id": "SAFETY-HEMO-001",
+        "version": 1,
         "message": "Hemochromatosis input contraindicates iron and vitamin C supplements in the automated recommendation range.",
         "severity": "warning",
         "warning_text": "Hemochromatosis input was detected, so iron and vitamin C supplements were excluded and clinical review is required."
@@ -127,7 +137,8 @@
       "unit": "iu",
       "metadata": {
         "rule_id": "SAFETY-DOSE-VITD3-001",
-        "message": "Vitamin D3 current intake stays below the structured adult upper limit.",
+        "version": 1,
+        "message": "Vitamin D3 daily intake is evaluated against the structured adult upper limit.",
         "severity": "blocker",
         "warning_text": "Current vitamin D3 regimen appears above the structured adult upper limit, so vitamin D3 was excluded conservatively."
       }
@@ -138,7 +149,8 @@
       "unit": "mg",
       "metadata": {
         "rule_id": "SAFETY-DOSE-VITC-001",
-        "message": "Vitamin C current intake stays below the structured adult upper limit.",
+        "version": 1,
+        "message": "Vitamin C daily intake is evaluated against the structured adult upper limit.",
         "severity": "blocker",
         "warning_text": "Current vitamin C regimen appears above the structured adult upper limit, so vitamin C was excluded conservatively."
       }
@@ -149,7 +161,8 @@
       "unit": "mg",
       "metadata": {
         "rule_id": "SAFETY-DOSE-ZINC-001",
-        "message": "Zinc current intake stays below the structured adult upper limit.",
+        "version": 1,
+        "message": "Zinc daily intake is evaluated against the structured adult upper limit.",
         "severity": "blocker",
         "warning_text": "Current zinc regimen appears above the structured adult upper limit, so zinc was excluded conservatively."
       }
@@ -161,7 +174,8 @@
       "allowed_evidence_sources": ["structured_dose", "ingredient_line"],
       "metadata": {
         "rule_id": "SAFETY-DOSE-MAG-001",
-        "message": "Magnesium Glycinate current intake stays below the structured adult supplemental upper limit.",
+        "version": 1,
+        "message": "Magnesium glycinate daily intake is evaluated against the structured adult supplemental upper limit.",
         "severity": "blocker",
         "warning_text": "Current magnesium glycinate regimen appears above the structured adult supplemental upper limit, so magnesium glycinate was excluded conservatively."
       }
@@ -173,7 +187,8 @@
       "allowed_evidence_sources": ["structured_dose", "ingredient_line"],
       "metadata": {
         "rule_id": "SAFETY-DOSE-CAL-001",
-        "message": "Calcium Citrate current intake stays below the structured adult upper limit.",
+        "version": 1,
+        "message": "Calcium citrate daily intake is evaluated against the structured adult upper limit.",
         "severity": "blocker",
         "warning_text": "Current calcium citrate regimen appears above the structured adult upper limit, so calcium citrate was excluded conservatively."
       }
@@ -182,6 +197,7 @@
   "duplicate_overlap_rule": {
     "metadata": {
       "rule_id": "SAFETY-DUP-001",
+      "version": 1,
       "message": "Current supplement overlap is excluded by policy.",
       "severity": "info",
       "warning_text": "Current supplement overlap was detected, so duplicate ingredients were excluded."

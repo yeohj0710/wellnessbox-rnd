@@ -354,6 +354,7 @@
   "interaction_rules": [
     {
       "rule_id": "SAFETY-ANTICOAG-001",
+      "rule_version": 1,
       "source_kind": "evidence_linked_policy",
       "severity": "warning",
       "medication_keys": [
@@ -376,6 +377,7 @@
     },
     {
       "rule_id": "KB-SAFETY-ANTICOAG-001",
+      "rule_version": 1,
       "source_kind": "knowledge_artifact",
       "severity": "blocker",
       "medication_keys": [
@@ -401,6 +403,7 @@
   "contraindication_rules": [
     {
       "rule_id": "SAFETY-PREG-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "warning",
       "effect": "contraindication",
@@ -420,6 +423,7 @@
     },
     {
       "rule_id": "SAFETY-LACT-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "warning",
       "effect": "contraindication",
@@ -439,6 +443,7 @@
     },
     {
       "rule_id": "SAFETY-RENAL-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "warning",
       "effect": "review_required",
@@ -458,6 +463,7 @@
     },
     {
       "rule_id": "SAFETY-RENAL-SEVERE-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "blocker",
       "effect": "contraindication",
@@ -477,6 +483,7 @@
     },
     {
       "rule_id": "SAFETY-HEPATIC-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "blocker",
       "effect": "review_required",
@@ -494,6 +501,7 @@
     },
     {
       "rule_id": "SAFETY-HEMO-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "warning",
       "effect": "contraindication",
@@ -515,6 +523,7 @@
   "dose_limits": [
     {
       "rule_id": "SAFETY-DOSE-VITD3-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "blocker",
       "ingredient_key": "vitamin_d3",
@@ -525,13 +534,14 @@
         "ingredient_line",
         "title"
       ],
-      "message": "Vitamin D3 current intake stays below the structured adult upper limit.",
+      "message": "Vitamin D3 daily intake is evaluated against the structured adult upper limit.",
       "warning_text": "Current vitamin D3 regimen appears above the structured adult upper limit, so vitamin D3 was excluded conservatively.",
       "reference_ids": [],
       "claim_ids": []
     },
     {
       "rule_id": "SAFETY-DOSE-VITC-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "blocker",
       "ingredient_key": "vitamin_c",
@@ -542,13 +552,14 @@
         "ingredient_line",
         "title"
       ],
-      "message": "Vitamin C current intake stays below the structured adult upper limit.",
+      "message": "Vitamin C daily intake is evaluated against the structured adult upper limit.",
       "warning_text": "Current vitamin C regimen appears above the structured adult upper limit, so vitamin C was excluded conservatively.",
       "reference_ids": [],
       "claim_ids": []
     },
     {
       "rule_id": "SAFETY-DOSE-ZINC-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "blocker",
       "ingredient_key": "zinc",
@@ -559,13 +570,14 @@
         "ingredient_line",
         "title"
       ],
-      "message": "Zinc current intake stays below the structured adult upper limit.",
+      "message": "Zinc daily intake is evaluated against the structured adult upper limit.",
       "warning_text": "Current zinc regimen appears above the structured adult upper limit, so zinc was excluded conservatively.",
       "reference_ids": [],
       "claim_ids": []
     },
     {
       "rule_id": "SAFETY-DOSE-MAG-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "blocker",
       "ingredient_key": "magnesium_glycinate",
@@ -575,13 +587,14 @@
         "structured_dose",
         "ingredient_line"
       ],
-      "message": "Magnesium Glycinate current intake stays below the structured adult supplemental upper limit.",
+      "message": "Magnesium glycinate daily intake is evaluated against the structured adult supplemental upper limit.",
       "warning_text": "Current magnesium glycinate regimen appears above the structured adult supplemental upper limit, so magnesium glycinate was excluded conservatively.",
       "reference_ids": [],
       "claim_ids": []
     },
     {
       "rule_id": "SAFETY-DOSE-CAL-001",
+      "rule_version": 1,
       "source_kind": "deterministic_policy",
       "severity": "blocker",
       "ingredient_key": "calcium_citrate",
@@ -591,7 +604,7 @@
         "structured_dose",
         "ingredient_line"
       ],
-      "message": "Calcium Citrate current intake stays below the structured adult upper limit.",
+      "message": "Calcium citrate daily intake is evaluated against the structured adult upper limit.",
       "warning_text": "Current calcium citrate regimen appears above the structured adult upper limit, so calcium citrate was excluded conservatively.",
       "reference_ids": [],
       "claim_ids": []

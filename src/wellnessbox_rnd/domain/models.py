@@ -28,6 +28,7 @@ class IngredientCatalogItem(BaseModel):
 
 class SafetyRuleMetadata(BaseModel):
     rule_id: str
+    version: int = Field(ge=1)
     message: str
     severity: Severity
     warning_text: str

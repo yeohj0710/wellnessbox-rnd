@@ -5,6 +5,7 @@ from unicodedata import normalize as normalize_unicode
 from uuid import uuid4
 
 from pydantic import (
+    AwareDatetime,
     BaseModel,
     ConfigDict,
     Field,
@@ -628,6 +629,11 @@ class CitationReference(BaseModel):
 
 class RuleReference(BaseModel):
     rule_id: str
+    rule_version: int = Field(ge=1)
+    application_reason: Literal[
+        "dose_evidence_incomplete",
+        "upper_limit_exceeded",
+    ] | None = None
     message: str
     severity: Severity
     source: str = "master_context_v1"
@@ -643,11 +649,13 @@ class IngredientDoseAggregate(BaseModel):
     duplicate_across_products: bool
     total_daily_amount: float | None = Field(default=None, ge=0)
     unit: str | None = None
+    dose_input_count: int = Field(ge=0)
     dose_observation_count: int = Field(ge=0)
     dose_complete: bool
 
 
 class SafetySummary(BaseModel):
+    applied_at: AwareDatetime
     status: RecommendationStatus
     warnings: list[str] = Field(default_factory=list)
     blocked_reasons: list[str] = Field(default_factory=list)

@@ -29,6 +29,7 @@ on:
       - "scripts/run_session_replay_service_ui_smoke.py"
       - "scripts/run_special_population_condition_safety_smoke.py"
       - "scripts/run_interaction_dose_aggregation_smoke.py"
+      - "scripts/run_dose_limit_fail_closed_rule_metadata_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -36,6 +37,7 @@ on:
       - "src/wellnessbox_rnd/domain/catalog.py"
       - "src/wellnessbox_rnd/domain/loaders.py"
       - "src/wellnessbox_rnd/domain/intake.py"
+      - "src/wellnessbox_rnd/domain/models.py"
       - "src/wellnessbox_rnd/models/efficacy_model_v0.py"
       - "src/wellnessbox_rnd/models/effect_model_v1.py"
       - "src/wellnessbox_rnd/models/policy_model_v0.py"
@@ -70,6 +72,7 @@ on:
       - "tests/test_reference_ingestion.py"
       - "tests/test_runtime_knowledge_db.py"
       - "tests/test_special_population_condition_safety.py"
+      - "tests/test_learned_runtime_boundary_audit.py"
   push:
     branches: [main]
     paths:
@@ -99,6 +102,7 @@ on:
       - "scripts/run_session_replay_service_ui_smoke.py"
       - "scripts/run_special_population_condition_safety_smoke.py"
       - "scripts/run_interaction_dose_aggregation_smoke.py"
+      - "scripts/run_dose_limit_fail_closed_rule_metadata_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -106,6 +110,7 @@ on:
       - "src/wellnessbox_rnd/domain/catalog.py"
       - "src/wellnessbox_rnd/domain/loaders.py"
       - "src/wellnessbox_rnd/domain/intake.py"
+      - "src/wellnessbox_rnd/domain/models.py"
       - "src/wellnessbox_rnd/models/efficacy_model_v0.py"
       - "src/wellnessbox_rnd/models/effect_model_v1.py"
       - "src/wellnessbox_rnd/models/policy_model_v0.py"
@@ -140,6 +145,7 @@ on:
       - "tests/test_reference_ingestion.py"
       - "tests/test_runtime_knowledge_db.py"
       - "tests/test_special_population_condition_safety.py"
+      - "tests/test_learned_runtime_boundary_audit.py"
   workflow_dispatch:
 
 permissions:
@@ -172,6 +178,11 @@ jobs:
           python scripts/run_interaction_dose_aggregation_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json
+      - name: Check dose-limit and rule metadata evidence
+        run: >-
+          python scripts/run_dose_limit_fail_closed_rule_metadata_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op037_op038_dose_limit_rule_metadata_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -198,6 +209,7 @@ jobs:
           tests/test_reference_ingestion.py
           tests/test_runtime_knowledge_db.py
           tests/test_special_population_condition_safety.py
+          tests/test_learned_runtime_boundary_audit.py
       - name: Lint requirement audit
         run: >-
           python -m ruff check
@@ -214,6 +226,7 @@ jobs:
           tests/test_original_plan_completion_report.py
           apps/inference_api/routes/recommend.py
           src/wellnessbox_rnd/domain/intake.py
+          src/wellnessbox_rnd/domain/models.py
           src/wellnessbox_rnd/models/efficacy_model_v0.py
           src/wellnessbox_rnd/models/effect_model_v1.py
           src/wellnessbox_rnd/models/policy_model_v0.py
@@ -239,6 +252,7 @@ jobs:
           scripts/run_session_replay_service_ui_smoke.py
           scripts/run_special_population_condition_safety_smoke.py
           scripts/run_interaction_dose_aggregation_smoke.py
+          scripts/run_dose_limit_fail_closed_rule_metadata_smoke.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py
@@ -253,3 +267,4 @@ jobs:
           tests/test_reference_ingestion.py
           tests/test_runtime_knowledge_db.py
           tests/test_special_population_condition_safety.py
+          tests/test_learned_runtime_boundary_audit.py

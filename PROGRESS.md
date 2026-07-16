@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-16 dose-limit fail-closed and rule-metadata loop
+
+- Chosen stage: `original plan / personalized safety engine`
+- Chosen tasks: OP-037 compare unit-normalized upper limits and conservatively exclude ingredients when supplied dose evidence is ambiguous; OP-038 return the applied rule version and one timezone-aware application time
+- Primary evidence: `data/original_plan/evidence/op037_op038_dose_limit_rule_metadata_smoke_v1.json`; seven deterministic dose cases, byte-identical across reruns (`2a34f58b4564b903560341bf0862d1ce12016a0a84f6b4efd298616255347dbb`)
+- Reused the existing supplement parser, `IngredientDoseAggregate`, runtime knowledge database, deterministic safety service, recommendation response, Data Lake replay projection, and CI evidence workflow. No parallel dose calculator, safety engine, or recommendation path was added.
+- Complete compatible doses are converted into the rule unit before comparison. The returned aggregate remains the only compared total. An optional dose that was not supplied has `dose_input_count=0` and does not claim an upper-limit evaluation. A supplied but partial, non-convertible, compound, ranged, or schedule-qualified legacy dose returns `dose_evidence_incomplete`, excludes each affected ingredient, and never invents a total or stops unrelated safe alternatives. Complete above-limit totals remain global blockers.
+- Legacy parsing now accepts comma-grouped numbers, rejects multi-dose ranges and schedules, resolves each compound segment independently, and permits a fuzzy catalog title only when the text resolves to exactly one ingredient. Regression coverage includes `plus`/modifier compounds, `twice daily`, `bid`, `N x`, single-unit ranges, and branded single-ingredient titles.
+- Every structured safety rule and runtime interaction, contraindication, and dose-limit record has a positive version. Every returned `RuleReference` exposes the applied version and bounded application reason. `SafetySummary.applied_at` is timezone-aware and can be injected for replay/smoke determinism. Session replay excludes only this volatile timestamp from its behavior fingerprint while retaining it in stored and API responses.
+- Evidence status: OP-037 and OP-038 are complete at their required `IMPLEMENTED` stage. Generated status: complete `28`, partial `10`, pending `81`, external `1`, contradicted `0`.
+- Validation: focused parser/safety/recommendation selection `240 passed`; exact CI-equivalent selection `252 passed`; full Ruff PASS; manifest audit PASS with `38` claims, `105` checked evidence files, and zero issues; completion-report stale check PASS; runtime stored artifact equals a fresh build with zero validation issues; independent final review found zero Critical, Important, or Minor issues.
+- Full suite: `657 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No OP-037/038 or recommendation-baseline failure remains.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, the overall weakest category is unchanged, and every metric-specific weakest category is unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
+- Remaining boundary: this R&D-only loop did not change WellnessBox service code, deploy the R&D app, or prove production two-process integration. OP-039 still needs external high-risk labels for hard false-negative proof. OP-040 still needs real production evidence that final safety blocking authority cannot be bypassed.
+- Recommended next loops: OP-039/040 high-risk false-negative and production final-block authority; OP-041/042 service/R&D ingredient identity and evidence-backed goal priors; OP-043/044 candidate contraindication filtering and auditable candidate scoring.
+
 ## 2026-07-16 evidence-linked interaction and dose-aggregation loop
 
 - Chosen stage: `original plan / personalized safety engine`

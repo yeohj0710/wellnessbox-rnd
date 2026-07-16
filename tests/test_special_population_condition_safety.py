@@ -110,6 +110,7 @@ def test_contraindication_rule_requires_at_least_one_excluded_ingredient() -> No
             excluded_ingredients=[],
             metadata=SafetyRuleMetadata(
                 rule_id="TEST-CONTRAINDICATION-001",
+                version=1,
                 message="Test rule.",
                 severity=Severity.BLOCKER,
                 warning_text="Test warning.",

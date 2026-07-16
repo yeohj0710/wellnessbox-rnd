@@ -1,5 +1,21 @@
 # SESSION_HANDOFF
 
+## 2026-07-16 dose-limit and rule-metadata handoff
+
+- Chosen stage: `original plan / personalized safety engine`
+- Chosen tasks: OP-037 and OP-038
+- Primary dataset path and case count: `data/original_plan/evidence/op037_op038_dose_limit_rule_metadata_smoke_v1.json`; `7` deterministic dose-evaluation cases
+- Main files: safety rule DSL and models; runtime knowledge records and stored artifact; recommendation schema and safety service; Data Lake replay projection; focused parser, API, replay, and runtime-boundary tests; smoke runner; manifest, generated reports, CI workflow, and implementation plan
+- Current result: complete compatible doses use the existing aggregate and normalized unit for upper-limit comparison. Supplied but partial, non-convertible, compound, ranged, or schedule-qualified legacy evidence excludes the affected ingredient with `dose_evidence_incomplete` and no fabricated total. Optional absent doses do not claim evaluation. Complete above-limit totals retain blocker behavior.
+- Parser boundary: comma-grouped amounts parse correctly; multiple amount-unit pairs, single-unit ranges, `twice daily`/`bid`/`N x` schedules, and compound product doses fail closed. Compound segments including modifiers and `plus` are recognized separately. Fuzzy title matching is accepted only when exactly one ingredient remains.
+- Metadata result: every runtime safety record has a positive version derived from its rule metadata or knowledge-artifact suffix. Every returned rule includes the same version. `SafetySummary.applied_at` is timezone-aware; smoke injects `2026-07-16T00:00:00Z`. Replay omits that volatile timestamp only from deterministic output comparison.
+- Evidence stage: `IMPLEMENTED`. OP-037 and OP-038 are complete at their required stage. Generated counts are complete `28`, partial `10`, pending `81`, external `1`, contradicted `0`. No service code, deployment, or production two-process integration changed.
+- Validation: focused selection `240 passed`; exact CI-equivalent selection `252 passed`; full Ruff PASS; deterministic smoke hash `2a34f58b4564b903560341bf0862d1ce12016a0a84f6b4efd298616255347dbb`; manifest audit PASS with `38` claims and `105` checked evidence files; completion report check PASS; runtime stored/fresh equality PASS with zero issues; final independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `657 passed`, `77 failed`, matching the known `73` absent-report and `4` CGM-geometry groups.
+- Official frozen eval: `256` cases; all seven metric deltas are `0`; overall and metric-specific weakest-slice categories are unchanged.
+- Biggest bottlenecks: externally labeled high-risk cases for hard false-negative proof; production final-block authority across the real service/R&D boundary; deployed R&D process; durable production R&D storage; authenticated two-process round trip.
+- Next three loops: OP-039/040 high-risk and production blocking evidence; OP-041/042 identifier mapping and evidence-backed goal priors; OP-043/044 candidate filtering and auditable scoring.
+
 ## 2026-07-16 interaction evidence and dose aggregation handoff
 
 - Chosen stage: `original plan / personalized safety engine`

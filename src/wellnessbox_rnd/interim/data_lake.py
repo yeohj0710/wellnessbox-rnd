@@ -209,6 +209,9 @@ def replay_response_payload(response: RecommendationResponse) -> dict[str, Any]:
     metadata = payload.get("metadata")
     if isinstance(metadata, dict):
         metadata.pop("generated_at", None)
+    safety_summary = payload.get("safety_summary")
+    if isinstance(safety_summary, dict):
+        safety_summary.pop("applied_at", None)
     return payload
 
 

@@ -146,7 +146,8 @@ def build_learned_runtime_boundary_audit(
             {
                 "path": "src/wellnessbox_rnd/safety/service.py:25",
                 "detail": (
-                    "assess_safety() takes only normalized intake and "
+                    "assess_safety() takes normalized intake plus an optional injected "
+                    "application time and "
                     "returns deterministic SafetySummary."
                 ),
             },
@@ -480,8 +481,8 @@ def _proof_headline(section_name: str) -> str:
         )
     if section_name == "safety_path":
         return (
-            "assess_safety() consumes only normalized intake and safety rules stay "
-            "deterministic."
+            "assess_safety() consumes normalized intake plus an optional injected "
+            "application time, and safety rules stay deterministic."
         )
     if section_name == "optimizer_path":
         return (

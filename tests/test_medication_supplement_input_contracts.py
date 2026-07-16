@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime
+
 import pytest
 from pydantic import ValidationError
 
@@ -19,6 +21,7 @@ from wellnessbox_rnd.schemas.recommendation import (
     MedicationInput,
     RecommendationGoal,
     RecommendationRequest,
+    RecommendationStatus,
     SupplementIngredientInput,
     SupplementInput,
     UserProfile,
@@ -214,6 +217,145 @@ def test_partial_cross_product_dose_is_marked_incomplete() -> None:
     assert vitamin_d.dose_observation_count == 1
     assert vitamin_d.duplicate_across_products is True
     assert vitamin_d.dose_complete is False
+    dose_rule = next(
+        item for item in summary.rule_refs if item.rule_id == "SAFETY-DOSE-VITD3-001"
+    )
+    assert summary.status == RecommendationStatus.OK
+    assert "vitamin_d3" in summary.excluded_ingredients
+    assert dose_rule.application_reason == "dose_evidence_incomplete"
+
+
+@pytest.mark.parametrize(
+    ("supplement", "ingredient_key", "rule_id"),
+    [
+        (
+            SupplementInput(
+                name="Vitamin C incompatible unit",
+                ingredients=[
+                    SupplementIngredientInput(
+                        name="Vitamin C",
+                        daily_dose=DoseAmount(amount=500, unit="IU"),
+                    )
+                ],
+            ),
+            "vitamin_c",
+            "SAFETY-DOSE-VITC-001",
+        ),
+    ],
+)
+def test_nonconvertible_dose_evidence_fails_closed(
+    supplement: SupplementInput,
+    ingredient_key: str,
+    rule_id: str,
+) -> None:
+    summary = assess_safety(
+        normalize_request(_request(supplements=[supplement])),
+        applied_at=datetime(2026, 7, 16, tzinfo=UTC),
+    )
+    aggregate = next(
+        item
+        for item in summary.ingredient_dose_aggregates
+        if item.ingredient_key == ingredient_key
+    )
+    dose_rule = next(item for item in summary.rule_refs if item.rule_id == rule_id)
+
+    assert aggregate.dose_complete is False
+    assert summary.status == RecommendationStatus.OK
+    assert ingredient_key in summary.excluded_ingredients
+    assert dose_rule.application_reason == "dose_evidence_incomplete"
+    assert not any("above" in warning.lower() for warning in summary.blocked_reasons)
+
+
+def test_optional_absent_dose_does_not_claim_an_upper_limit_evaluation() -> None:
+    summary = assess_safety(
+        normalize_request(
+            _request(
+                supplements=[
+                    SupplementInput(
+                        name="Undosed vitamin D",
+                        ingredients=["Vitamin D3"],
+                    )
+                ]
+            )
+        )
+    )
+    aggregate = next(
+        item
+        for item in summary.ingredient_dose_aggregates
+        if item.ingredient_key == "vitamin_d3"
+    )
+
+    assert aggregate.dose_input_count == 0
+    assert aggregate.dose_complete is False
+    assert not any(
+        item.rule_id == "SAFETY-DOSE-VITD3-001" for item in summary.rule_refs
+    )
+
+
+@pytest.mark.parametrize(
+    ("amounts", "expected_total", "expected_reason"),
+    [
+        ((1.0, 1.2), 2200.0, "upper_limit_exceeded"),
+        ((0.5, 1.0), 1500.0, None),
+    ],
+)
+def test_complete_mass_doses_are_normalized_before_upper_limit_comparison(
+    amounts: tuple[float, float],
+    expected_total: float,
+    expected_reason: str | None,
+) -> None:
+    request = _request(
+        supplements=[
+            SupplementInput(
+                name=f"Vitamin C {index}",
+                ingredients=[
+                    SupplementIngredientInput(
+                        name="Vitamin C",
+                        daily_dose=DoseAmount(amount=amount, unit="g"),
+                    )
+                ],
+            )
+            for index, amount in enumerate(amounts, start=1)
+        ]
+    )
+    summary = assess_safety(
+        normalize_request(request),
+        applied_at=datetime(2026, 7, 16, tzinfo=UTC),
+    )
+    aggregate = next(
+        item
+        for item in summary.ingredient_dose_aggregates
+        if item.ingredient_key == "vitamin_c"
+    )
+    dose_rules = [
+        item for item in summary.rule_refs if item.rule_id == "SAFETY-DOSE-VITC-001"
+    ]
+
+    assert aggregate.total_daily_amount == expected_total
+    assert aggregate.unit == "mg"
+    assert aggregate.dose_complete is True
+    assert [item.application_reason for item in dose_rules] == (
+        [expected_reason] if expected_reason else []
+    )
+
+
+def test_safety_summary_returns_rule_versions_and_one_fixed_application_time() -> None:
+    fixed = datetime(2026, 7, 16, 9, 30, tzinfo=UTC)
+    request = _request(
+        supplements=[SupplementInput(name="Undosed vitamin D", ingredients=["Vitamin D3"])]
+    )
+
+    summary = assess_safety(normalize_request(request), applied_at=fixed)
+
+    assert summary.applied_at == fixed
+    assert summary.rule_refs
+    assert all(item.rule_version >= 1 for item in summary.rule_refs)
+
+    with pytest.raises(ValueError, match="timezone-aware"):
+        assess_safety(
+            normalize_request(request),
+            applied_at=datetime(2026, 7, 16, 9, 30),
+        )
 
 
 def test_multiple_same_ingredient_lines_in_one_product_are_not_cross_product_duplicates() -> None:
@@ -352,7 +494,19 @@ def test_product_daily_dose_is_not_assigned_to_multiple_ingredients() -> None:
         ]
     )
 
-    assert _dose_rule_ids(request) == set()
+    summary = assess_safety(normalize_request(request))
+    vitamin_d = next(
+        item
+        for item in summary.ingredient_dose_aggregates
+        if item.ingredient_key == "vitamin_d3"
+    )
+    dose_rule = next(
+        item for item in summary.rule_refs if item.rule_id == "SAFETY-DOSE-VITD3-001"
+    )
+
+    assert vitamin_d.total_daily_amount is None
+    assert vitamin_d.dose_complete is False
+    assert dose_rule.application_reason == "dose_evidence_incomplete"
 
 
 @pytest.mark.parametrize(
@@ -378,7 +532,196 @@ def test_product_daily_dose_is_not_assigned_to_multiple_ingredients() -> None:
 def test_product_dose_is_not_assigned_from_compound_legacy_text(
     supplement: SupplementInput,
 ) -> None:
-    assert _dose_rule_ids(_request(supplements=[supplement])) == set()
+    summary = assess_safety(
+        normalize_request(_request(supplements=[supplement]))
+    )
+    dose_rules = [
+        item for item in summary.rule_refs if item.rule_id.startswith("SAFETY-DOSE-")
+    ]
+
+    assert dose_rules
+    assert all(
+        item.application_reason == "dose_evidence_incomplete" for item in dose_rules
+    )
+    assert all(
+        item.total_daily_amount is None
+        for item in summary.ingredient_dose_aggregates
+        if item.ingredient_key in {"vitamin_d3", "vitamin_c", "zinc"}
+    )
+
+
+@pytest.mark.parametrize(
+    "ingredient_line",
+    [
+        "Vitamin C 1000 mg + Zinc 100 mg",
+        "Magnesium Glycinate 300 mg + Vitamin D3 1000 IU",
+        "Vitamin C 500 mg + Zinc supplement 100 mg",
+        "Vitamin D3 1000 IU + Magnesium Glycinate powder 500 mg",
+        "Vitamin C 500 mg plus Zinc 100 mg",
+    ],
+)
+def test_compound_legacy_ingredient_line_never_assigns_one_dose_to_one_ingredient(
+    ingredient_line: str,
+) -> None:
+    summary = assess_safety(
+        normalize_request(
+            _request(
+                supplements=[
+                    SupplementInput(name="Compound product", ingredients=[ingredient_line])
+                ]
+            )
+        )
+    )
+    limited_aggregates = [
+        item
+        for item in summary.ingredient_dose_aggregates
+        if item.ingredient_key
+        in {"vitamin_c", "zinc", "magnesium_glycinate", "vitamin_d3"}
+    ]
+
+    assert len(limited_aggregates) == 2
+    assert all(item.total_daily_amount is None for item in limited_aggregates)
+    assert all(item.dose_complete is False for item in limited_aggregates)
+    assert {
+        item.application_reason
+        for item in summary.rule_refs
+        if item.rule_id.startswith("SAFETY-DOSE-")
+    } == {"dose_evidence_incomplete"}
+
+
+@pytest.mark.parametrize(
+    ("ingredient_line", "expected_total", "expected_reason"),
+    [
+        ("Vitamin D3 5,000 IU", 5000.0, "upper_limit_exceeded"),
+        ("Vitamin C 2,500 mg", 2500.0, "upper_limit_exceeded"),
+        ("Vitamin C 1000 mg - 2500 mg", None, "dose_evidence_incomplete"),
+    ],
+)
+def test_legacy_dose_parser_handles_thousands_and_rejects_ranges(
+    ingredient_line: str,
+    expected_total: float | None,
+    expected_reason: str,
+) -> None:
+    summary = assess_safety(
+        normalize_request(
+            _request(
+                supplements=[
+                    SupplementInput(name="Legacy dose", ingredients=[ingredient_line])
+                ]
+            )
+        )
+    )
+    aggregate = next(
+        item
+        for item in summary.ingredient_dose_aggregates
+        if item.ingredient_key in {"vitamin_d3", "vitamin_c"}
+    )
+    dose_rule = next(
+        item for item in summary.rule_refs if item.rule_id.startswith("SAFETY-DOSE-")
+    )
+
+    assert aggregate.total_daily_amount == expected_total
+    assert aggregate.dose_complete is (expected_total is not None)
+    assert dose_rule.application_reason == expected_reason
+
+
+@pytest.mark.parametrize(
+    ("ingredient_name", "legacy_dose"),
+    [
+        ("Vitamin C", "1500 mg twice daily"),
+        ("Vitamin C", "2 x 1500 mg"),
+        ("Vitamin C", "1500 mg bid"),
+        ("Vitamin C", "500-1000 mg"),
+        ("Vitamin D3", "3000 IU twice daily"),
+    ],
+)
+def test_legacy_product_schedule_is_not_treated_as_a_daily_total(
+    ingredient_name: str,
+    legacy_dose: str,
+) -> None:
+    summary = assess_safety(
+        normalize_request(
+            _request(
+                supplements=[
+                    SupplementInput(
+                        name=ingredient_name,
+                        dose=legacy_dose,
+                        ingredients=[],
+                    )
+                ]
+            )
+        )
+    )
+    aggregate = next(item for item in summary.ingredient_dose_aggregates)
+    dose_rule = next(
+        item for item in summary.rule_refs if item.rule_id.startswith("SAFETY-DOSE-")
+    )
+
+    assert aggregate.dose_input_count == 1
+    assert aggregate.total_daily_amount is None
+    assert aggregate.dose_complete is False
+    assert dose_rule.application_reason == "dose_evidence_incomplete"
+
+
+def test_unique_fuzzy_title_ingredient_with_one_dose_is_compared() -> None:
+    summary = assess_safety(
+        normalize_request(
+            _request(
+                supplements=[
+                    SupplementInput(
+                        name="Nature Made Vitamin D3 2000 IU",
+                        ingredients=[],
+                    )
+                ]
+            )
+        )
+    )
+    aggregate = next(
+        item
+        for item in summary.ingredient_dose_aggregates
+        if item.ingredient_key == "vitamin_d3"
+    )
+
+    assert aggregate.total_daily_amount == 2000.0
+    assert aggregate.unit == "iu"
+    assert aggregate.dose_complete is True
+    assert not any(
+        item.rule_id == "SAFETY-DOSE-VITD3-001" for item in summary.rule_refs
+    )
+
+
+@pytest.mark.parametrize(
+    "supplement",
+    [
+        SupplementInput(
+            name="Nature Made Vitamin D3 3000 IU twice daily",
+            ingredients=[],
+        ),
+        SupplementInput(
+            name="Vitamin C product",
+            ingredients=["Vitamin C 1500 mg twice daily"],
+        ),
+        SupplementInput(
+            name="Vitamin C product",
+            ingredients=["Vitamin C 500-1000 mg"],
+        ),
+    ],
+)
+def test_title_or_ingredient_schedule_context_fails_closed(
+    supplement: SupplementInput,
+) -> None:
+    summary = assess_safety(
+        normalize_request(_request(supplements=[supplement]))
+    )
+    aggregate = next(item for item in summary.ingredient_dose_aggregates)
+    dose_rule = next(
+        item for item in summary.rule_refs if item.rule_id.startswith("SAFETY-DOSE-")
+    )
+
+    assert aggregate.dose_input_count == 1
+    assert aggregate.total_daily_amount is None
+    assert aggregate.dose_complete is False
+    assert dose_rule.application_reason == "dose_evidence_incomplete"
 
 
 def test_structured_and_legacy_ingredient_lines_are_both_counted() -> None:

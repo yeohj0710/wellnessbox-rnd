@@ -1,5 +1,6 @@
 import json
 import re
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -165,6 +166,12 @@ def test_recommend_endpoint_blocks_urgent_risk_flag_before_recommendation() -> N
     assert body["next_action"] == "trigger_safety_recheck"
     assert any(
         item["rule_id"] == "SAFETY-URGENT-SYMPTOM-001"
+        for item in body["safety_summary"]["rule_refs"]
+    )
+    applied_at = datetime.fromisoformat(body["safety_summary"]["applied_at"])
+    assert applied_at.tzinfo is not None
+    assert all(
+        item["rule_version"] >= 1
         for item in body["safety_summary"]["rule_refs"]
     )
 

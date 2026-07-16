@@ -40,12 +40,12 @@ def test_build_learned_runtime_boundary_audit_proves_no_core_promotion() -> None
                 "deterministic_baseline_v1 without learned rule refs."
             ),
         },
-        "safety_path": {
-            "core_dependency_promoted": False,
-            "proof_headline": (
-                "assess_safety() consumes only normalized intake and safety rules stay "
-                "deterministic."
-            ),
+            "safety_path": {
+                "core_dependency_promoted": False,
+                "proof_headline": (
+                    "assess_safety() consumes normalized intake plus an optional injected "
+                    "application time, and safety rules stay deterministic."
+                ),
         },
         "optimizer_path": {
             "core_dependency_promoted": False,
@@ -75,7 +75,10 @@ def test_build_learned_runtime_boundary_audit_proves_no_core_promotion() -> None
         "no_llm_core_decision",
     ]
     assert safety_path["core_dependency_promoted"] is False
-    assert safety_path["evidence"]["assess_safety_parameter_names"] == ["intake"]
+    assert safety_path["evidence"]["assess_safety_parameter_names"] == [
+        "intake",
+        "applied_at",
+    ]
     assert safety_path["evidence"]["imports_model_modules"] is False
     assert safety_path["evidence"]["imports_chat_modules"] is False
     assert optimizer_path["core_dependency_promoted"] is False
