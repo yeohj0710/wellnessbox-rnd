@@ -229,6 +229,7 @@ jobs:
         with:
           repository: yeohj0710/wellnessbox
           ref: a6b8ab1e92a112f6d2e904436bfe44ba688fc4e8
+          fetch-depth: 0
           path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
         with:
