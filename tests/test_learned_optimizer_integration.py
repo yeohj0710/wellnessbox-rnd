@@ -32,6 +32,16 @@ def test_learned_rerank_can_swap_near_tied_general_wellness_single_product() -> 
     )
     assert "OPT-LEARNED-001" in learned_response.recommendations[0].rule_refs
     assert learned_response.recommendations[0].score_breakdown.learned_effect_bonus > 0
+    reason = learned_response.recommendations[0].reason_breakdown
+    learned_term = next(
+        item for item in reason.score_terms if item.term == "learned_effect_bonus"
+    )
+    assert learned_term.points == (
+        learned_response.recommendations[0].score_breakdown.learned_effect_bonus
+    )
+    assert learned_term.rule_ids == ["OPT-LEARNED-001"]
+    assert "OPT-LEARNED-001" in reason.rule_ids
+    assert reason.score_total == learned_response.recommendations[0].score_breakdown.total
 
 
 def test_learned_rerank_does_not_apply_to_high_risk_anticoagulant_case() -> None:

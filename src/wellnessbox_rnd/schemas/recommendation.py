@@ -819,6 +819,276 @@ class CandidateScoreBreakdown(BaseModel):
     total: float
 
 
+ReasonIdentifier = Annotated[
+    str,
+    StringConstraints(
+        strict=True,
+        strip_whitespace=True,
+        min_length=1,
+        max_length=128,
+        pattern=r"^[A-Za-z0-9][A-Za-z0-9._:-]*$",
+    ),
+]
+ReasonText = Annotated[
+    str,
+    StringConstraints(strict=True, strip_whitespace=True, min_length=1, max_length=1000),
+]
+
+
+class RecommendationReasonInputSignal(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    source: Literal[
+        "goal",
+        "symptom",
+        "laboratory",
+        "lifestyle",
+        "dietary_pattern",
+        "wearable",
+        "cgm",
+        "genetic",
+        "safety",
+    ]
+    code: StructuredHealthCode
+    observed_value: float | str
+    unit: LaboratoryUnit | None = None
+
+
+class RecommendationReasonScoreTerm(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    term: Literal[
+        "catalog_priority",
+        "goal_alignment",
+        "symptom_alignment",
+        "lifestyle_alignment",
+        "laboratory_alignment",
+        "dietary_alignment",
+        "wearable_adjustment",
+        "cgm_adjustment",
+        "genetic_adjustment",
+        "evidence_readiness",
+        "budget_adjustment",
+        "safety_adjustment",
+        "conservative_adjustment",
+        "learned_effect_bonus",
+    ]
+    points: float = Field(ge=-1000.0, le=1000.0, allow_inf_nan=False)
+    rule_ids: list[ReasonIdentifier] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def require_unique_rule_ids(self) -> "RecommendationReasonScoreTerm":
+        if len(set(self.rule_ids)) != len(self.rule_ids):
+            raise ValueError("score-term rule IDs must be unique")
+        return self
+
+
+class RecommendationReasonEvidenceLink(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    evidence_source: Literal["goal_prior", "input_signal", "safety_rule"]
+    code: StructuredHealthCode
+    rule_id: ReasonIdentifier | None = None
+    reference_ids: list[ReasonIdentifier] = Field(default_factory=list)
+    claim_ids: list[ReasonIdentifier] = Field(default_factory=list)
+    limitations: list[ReasonText] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def require_unique_evidence_ids(self) -> "RecommendationReasonEvidenceLink":
+        for field_name in ("reference_ids", "claim_ids", "limitations"):
+            values = getattr(self, field_name)
+            if len(set(values)) != len(values):
+                raise ValueError(f"reason evidence {field_name} must be unique")
+        if self.evidence_source in {"input_signal", "safety_rule"} and self.rule_id is None:
+            raise ValueError("input and safety evidence links require a rule ID")
+        if self.evidence_source != "safety_rule" and (
+            not self.reference_ids or not self.claim_ids
+        ):
+            raise ValueError("goal and scored-input evidence links require evidence IDs")
+        return self
+
+
+class RecommendationReasonBreakdown(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    input_signals: list[RecommendationReasonInputSignal] = Field(min_length=1)
+    score_terms: list[RecommendationReasonScoreTerm] = Field(min_length=1)
+    evidence_links: list[RecommendationReasonEvidenceLink] = Field(min_length=1)
+    rule_ids: list[ReasonIdentifier] = Field(min_length=1)
+    reference_ids: list[ReasonIdentifier] = Field(min_length=1)
+    claim_ids: list[ReasonIdentifier] = Field(min_length=1)
+    limitations: list[ReasonText] = Field(min_length=1)
+    score_total: float = Field(allow_inf_nan=False)
+
+    @model_validator(mode="after")
+    def validate_reason_partition(self) -> "RecommendationReasonBreakdown":
+        expected_terms = {
+            "catalog_priority",
+            "goal_alignment",
+            "symptom_alignment",
+            "lifestyle_alignment",
+            "laboratory_alignment",
+            "dietary_alignment",
+            "wearable_adjustment",
+            "cgm_adjustment",
+            "genetic_adjustment",
+            "evidence_readiness",
+            "budget_adjustment",
+            "safety_adjustment",
+            "conservative_adjustment",
+            "learned_effect_bonus",
+        }
+        term_names = [item.term for item in self.score_terms]
+        if len(set(term_names)) != len(term_names):
+            raise ValueError("recommendation reason score terms must be unique")
+        if set(term_names) != expected_terms:
+            raise ValueError("recommendation reason must contain every score term")
+        input_keys = [(item.source, item.code) for item in self.input_signals]
+        if len(set(input_keys)) != len(input_keys):
+            raise ValueError("recommendation reason input signals must be unique")
+        evidence_link_keys = [
+            (link.evidence_source, link.code, link.rule_id)
+            for link in self.evidence_links
+        ]
+        if len(set(evidence_link_keys)) != len(evidence_link_keys):
+            raise ValueError("recommendation reason evidence links must be unique")
+        for field_name in ("rule_ids", "reference_ids", "claim_ids", "limitations"):
+            values = getattr(self, field_name)
+            if len(set(values)) != len(values):
+                raise ValueError(f"recommendation reason {field_name} must be unique")
+        if abs(sum(item.points for item in self.score_terms) - self.score_total) > 1e-6:
+            raise ValueError("recommendation reason score total mismatch")
+        linked_reference_ids = {
+            value for link in self.evidence_links for value in link.reference_ids
+        }
+        linked_claim_ids = {
+            value for link in self.evidence_links for value in link.claim_ids
+        }
+        linked_limitations = {
+            value for link in self.evidence_links for value in link.limitations
+        }
+        if linked_reference_ids != set(self.reference_ids):
+            raise ValueError("recommendation reason reference IDs must match evidence links")
+        if linked_claim_ids != set(self.claim_ids):
+            raise ValueError("recommendation reason claim IDs must match evidence links")
+        if linked_limitations != set(self.limitations):
+            raise ValueError("recommendation reason limitations must match evidence links")
+        goal_codes = {
+            item.code for item in self.input_signals if item.source == "goal"
+        }
+        scored_signal_codes = {
+            item.code
+            for item in self.input_signals
+            if item.source not in {"goal", "safety"}
+        }
+        safety_signal_codes = {
+            item.code for item in self.input_signals if item.source == "safety"
+        }
+        linked_goal_codes = {
+            link.code for link in self.evidence_links if link.evidence_source == "goal_prior"
+        }
+        linked_signal_codes = {
+            link.code
+            for link in self.evidence_links
+            if link.evidence_source == "input_signal"
+        }
+        linked_safety_codes = {
+            link.code
+            for link in self.evidence_links
+            if link.evidence_source == "safety_rule"
+        }
+        if linked_goal_codes != goal_codes:
+            raise ValueError("goal input signals must match goal-prior evidence links")
+        if linked_signal_codes != scored_signal_codes:
+            raise ValueError("scored input signals must match input-signal evidence links")
+        if linked_safety_codes != safety_signal_codes:
+            raise ValueError("safety input signals must match safety-rule evidence links")
+        linked_rule_ids = {
+            link.rule_id for link in self.evidence_links if link.rule_id is not None
+        }
+        term_rule_ids = {
+            rule_id for term in self.score_terms for rule_id in term.rule_ids
+        }
+        if linked_rule_ids | term_rule_ids != set(self.rule_ids):
+            raise ValueError("recommendation reason rule IDs must match terms and evidence links")
+        return self
+
+
+class CandidatePoolItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    ingredient_key: StructuredHealthCode
+    display_name: ReasonText
+    matched_goals: list[RecommendationGoal] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def require_unique_matched_goals(self) -> "CandidatePoolItem":
+        if len(set(self.matched_goals)) != len(self.matched_goals):
+            raise ValueError("candidate matched goals must be unique")
+        return self
+
+
+class CandidatePoolExclusion(CandidatePoolItem):
+    exclusion_reasons: list[
+        Literal[
+            "safety_summary_excluded",
+            "user_avoidance",
+            "current_regimen_overlap",
+        ]
+    ] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def require_unique_exclusion_reasons(self) -> "CandidatePoolExclusion":
+        if len(set(self.exclusion_reasons)) != len(self.exclusion_reasons):
+            raise ValueError("candidate exclusion reasons must be unique")
+        return self
+
+
+class CandidatePoolTrace(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    pre_safety_candidates: list[CandidatePoolItem]
+    excluded_candidates: list[CandidatePoolExclusion]
+    post_safety_candidates: list[CandidatePoolItem]
+    selected_candidate_keys: list[StructuredHealthCode]
+    applied_safety_rule_ids: list[ReasonIdentifier]
+    global_blocked: bool
+
+    @model_validator(mode="after")
+    def validate_candidate_partition(self) -> "CandidatePoolTrace":
+        pre_keys = [item.ingredient_key for item in self.pre_safety_candidates]
+        excluded_keys = [item.ingredient_key for item in self.excluded_candidates]
+        post_keys = [item.ingredient_key for item in self.post_safety_candidates]
+        for label, values in (
+            ("pre-safety", pre_keys),
+            ("excluded", excluded_keys),
+            ("post-safety", post_keys),
+            ("selected", self.selected_candidate_keys),
+            ("safety-rule", self.applied_safety_rule_ids),
+        ):
+            if len(set(values)) != len(values):
+                raise ValueError(f"{label} candidate trace values must be unique")
+        if set(excluded_keys) & set(post_keys):
+            raise ValueError("excluded and post-safety candidate sets must be disjoint")
+        if set(pre_keys) != set(excluded_keys) | set(post_keys):
+            raise ValueError("pre-safety candidates must partition into excluded and post-safety")
+        pre_by_key = {
+            item.ingredient_key: (item.display_name, tuple(item.matched_goals))
+            for item in self.pre_safety_candidates
+        }
+        partition_by_key = {
+            item.ingredient_key: (item.display_name, tuple(item.matched_goals))
+            for item in [*self.excluded_candidates, *self.post_safety_candidates]
+        }
+        if pre_by_key != partition_by_key:
+            raise ValueError("candidate identity must be preserved across the safety partition")
+        if not set(self.selected_candidate_keys).issubset(post_keys):
+            raise ValueError("selected candidates must be a subset of post-safety candidates")
+        if self.global_blocked and self.selected_candidate_keys:
+            raise ValueError("globally blocked candidate traces cannot contain selections")
+        return self
+
+
 class RecommendationCandidate(BaseModel):
     ingredient_key: str
     display_name: str
@@ -826,6 +1096,7 @@ class RecommendationCandidate(BaseModel):
     expected_support_goals: list[RecommendationGoal]
     rule_refs: list[str] = Field(default_factory=list)
     score_breakdown: CandidateScoreBreakdown
+    reason_breakdown: RecommendationReasonBreakdown
     follow_up_focus: str
 
 
@@ -852,6 +1123,7 @@ class RecommendationResponse(BaseModel):
     safety_flags: list[str] = Field(default_factory=list)
     safety_evidence: list[SafetyEvidenceItem] = Field(default_factory=list)
     recommendations: list[RecommendationCandidate]
+    candidate_pool_trace: CandidatePoolTrace
     next_action: NextAction
     next_action_rationale: NextActionRationale
     follow_up_window_days: int = Field(ge=1, le=90)

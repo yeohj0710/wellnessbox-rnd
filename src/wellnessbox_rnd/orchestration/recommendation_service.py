@@ -4,7 +4,10 @@ from wellnessbox_rnd.domain.catalog import list_catalog_items
 from wellnessbox_rnd.domain.intake import NormalizedIntake, normalize_request
 from wellnessbox_rnd.efficacy.service import estimate_follow_up_window_days
 from wellnessbox_rnd.metrics.metadata import build_engine_metadata
-from wellnessbox_rnd.optimizer.service import select_recommendations
+from wellnessbox_rnd.optimizer.service import (
+    build_candidate_pool_trace,
+    select_recommendations,
+)
 from wellnessbox_rnd.safety.service import assess_safety
 from wellnessbox_rnd.schemas.recommendation import (
     DecisionSummary,
@@ -143,6 +146,12 @@ def recommend(
                 safety_flags=safety_summary.warnings + safety_summary.blocked_reasons,
                 safety_evidence=_build_safety_evidence(intake, safety_summary),
                 recommendations=[],
+                candidate_pool_trace=build_candidate_pool_trace(
+                    intake=intake,
+                    safety_summary=safety_summary,
+                    selected_candidates=[],
+                    global_blocked=True,
+                ),
                 next_action=next_action,
                 next_action_rationale=_build_next_action_rationale(
                     intake=intake,
@@ -212,6 +221,12 @@ def recommend(
         safety_flags=effective_safety_summary.warnings + effective_safety_summary.blocked_reasons,
         safety_evidence=_build_safety_evidence(intake, effective_safety_summary),
         recommendations=recommendations,
+        candidate_pool_trace=build_candidate_pool_trace(
+            intake=intake,
+            safety_summary=effective_safety_summary,
+            selected_candidates=recommendations,
+            global_blocked=False,
+        ),
         next_action=next_action,
         next_action_rationale=_build_next_action_rationale(
             intake=intake,

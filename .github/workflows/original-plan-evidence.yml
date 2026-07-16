@@ -37,11 +37,14 @@ on:
       - "scripts/run_wellnessbox_final_safety_authority_smoke.py"
       - "scripts/run_ingredient_mapping_goal_prior_smoke.py"
       - "scripts/run_candidate_signal_scoring_smoke.py"
+      - "scripts/run_candidate_pool_structured_reasons_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
       - "src/wellnessbox_rnd/knowledge/candidate_signals.py"
       - "src/wellnessbox_rnd/efficacy/service.py"
+      - "src/wellnessbox_rnd/optimizer/service.py"
+      - "src/wellnessbox_rnd/orchestration/recommendation_service.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
       - "src/wellnessbox_rnd/interim/**"
       - "src/wellnessbox_rnd/domain/catalog.py"
@@ -92,6 +95,8 @@ on:
       - "tests/test_goal_ingredient_priors.py"
       - "tests/test_candidate_signal_scoring.py"
       - "tests/test_recommendation_contracts.py"
+      - "tests/test_candidate_pool_structured_reasons.py"
+      - "tests/test_learned_optimizer_integration.py"
   push:
     branches: [main]
     paths:
@@ -129,11 +134,14 @@ on:
       - "scripts/run_wellnessbox_final_safety_authority_smoke.py"
       - "scripts/run_ingredient_mapping_goal_prior_smoke.py"
       - "scripts/run_candidate_signal_scoring_smoke.py"
+      - "scripts/run_candidate_pool_structured_reasons_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
       - "src/wellnessbox_rnd/knowledge/candidate_signals.py"
       - "src/wellnessbox_rnd/efficacy/service.py"
+      - "src/wellnessbox_rnd/optimizer/service.py"
+      - "src/wellnessbox_rnd/orchestration/recommendation_service.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
       - "src/wellnessbox_rnd/interim/**"
       - "src/wellnessbox_rnd/domain/catalog.py"
@@ -184,6 +192,8 @@ on:
       - "tests/test_goal_ingredient_priors.py"
       - "tests/test_candidate_signal_scoring.py"
       - "tests/test_recommendation_contracts.py"
+      - "tests/test_candidate_pool_structured_reasons.py"
+      - "tests/test_learned_optimizer_integration.py"
   workflow_dispatch:
 
 permissions:
@@ -247,6 +257,11 @@ jobs:
           python scripts/run_candidate_signal_scoring_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json
+      - name: Check candidate-pool and structured-reason evidence
+        run: >-
+          python scripts/run_candidate_pool_structured_reasons_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op045_op046_candidate_pool_structured_reasons_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -279,6 +294,8 @@ jobs:
           tests/test_goal_ingredient_priors.py
           tests/test_candidate_signal_scoring.py
           tests/test_recommendation_contracts.py
+          tests/test_candidate_pool_structured_reasons.py
+          tests/test_learned_optimizer_integration.py
       - name: Lint requirement audit
         run: >-
           python -m ruff check
@@ -330,14 +347,19 @@ jobs:
           scripts/run_wellnessbox_final_safety_authority_smoke.py
           scripts/run_ingredient_mapping_goal_prior_smoke.py
           scripts/run_candidate_signal_scoring_smoke.py
+          scripts/run_candidate_pool_structured_reasons_smoke.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
           src/wellnessbox_rnd/knowledge/goal_priors.py
           src/wellnessbox_rnd/efficacy/service.py
+          src/wellnessbox_rnd/optimizer/service.py
+          src/wellnessbox_rnd/orchestration/recommendation_service.py
           tests/test_external_high_risk_safety_eval.py
           tests/test_ingredient_identifier_mapping.py
           tests/test_goal_ingredient_priors.py
           tests/test_candidate_signal_scoring.py
           tests/test_recommendation_contracts.py
+          tests/test_candidate_pool_structured_reasons.py
+          tests/test_learned_optimizer_integration.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py
