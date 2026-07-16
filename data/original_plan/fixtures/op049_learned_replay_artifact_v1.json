@@ -1,0 +1,14 @@
+{
+  "model_name": "efficacy_model_v0",
+  "cohort_version": "original_plan_op049_replay_fixture_v1",
+  "seed": 49,
+  "alpha": 0.1,
+  "feature_names": [
+    "baseline_candidate::vitamin_c"
+  ],
+  "intercept": 0.0,
+  "weights": [
+    0.2
+  ],
+  "target_name": "expected_effect_proxy"
+}
