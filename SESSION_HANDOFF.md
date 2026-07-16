@@ -1,5 +1,20 @@
 # SESSION_HANDOFF
 
+## 2026-07-16 external high-risk gate and final safety-authority handoff
+
+- Chosen stage: `original plan / personalized safety engine`
+- Chosen tasks: OP-039 and OP-040
+- Primary evidence: `data/original_plan/evidence/op040_final_safety_authority_integration_smoke_v1.json`; actual `POST /api/tips` export and localhost R&D `POST /v1/interim/recommendations`, deterministic SHA-256 `c01eca4f667cfcea00c95f7830ebd8f9711482d81e40e6f4b23629719b9c5183`
+- Main files: R&D interim route and safety evaluator; external high-risk evaluator, contracts, empty trust roots, tests, and CLI; service `/api/tips` route, R&D client, final-authority validator, test-only dependency hook, QA scripts, and both repositories' CI workflows
+- Current result: stored and current risk facts are conservatively combined before model execution, including multi-key dynamic predicates split across sources. Hard failures do not call the model and return zero recommendations. The service preserves a valid R&D final block and fails closed on transport or contract failure.
+- OP-039 boundary: no externally labeled high-risk dataset, detached attestation, independent verification receipt, or repository-approved trust-root entry exists. OP-039 therefore remains unclaimed at `EXTERNAL`; internal synthetic tests are contract verification only.
+- Evidence stage: OP-040 is `INTEGRATED`, not `OPERATED`. Generated counts are complete `28`, partial `11`, pending `80`, external `1`, contradicted `0`. The smoke explicitly records `production_operation_proven=false`.
+- Validation: focused selection `19 passed`; exact CI-equivalent selection `268 passed`; full Ruff PASS; manifest audit PASS with `39` claims and `113` checked evidence files; completion report check PASS; runtime stored/fresh equality PASS with zero issues; final independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `673 passed`, `77 failed`, matching the known `73` absent-report and `4` CGM-geometry groups. Official frozen eval: `256` cases, seven zero metric deltas, unchanged overall and metric-specific weakest-slice categories.
+- Publication: WellnessBox service commit `9609ce804ad06c609b794f455d4f6127b59361ac` is on `origin/main` and Encoding Guard run `29492239202` passed. The R&D implementation source commit is `e830c7debd4b103b756bba494fdbc73d7f0bad3a`; evidence publication and Original plan evidence CI remain the final loop steps.
+- Biggest bottlenecks: qualifying independent OP-039 labels and approvals; deployed R&D process; production `WB_RND_*` configuration; durable production storage; observed production final-block behavior.
+- Next three loops: OP-041/042 identifier mapping and evidence-backed goal priors; OP-043/044 candidate filtering and auditable scoring; OP-045/046 post-filter preservation and structured recommendation reasons.
+
 ## 2026-07-16 dose-limit and rule-metadata handoff
 
 - Chosen stage: `original plan / personalized safety engine`

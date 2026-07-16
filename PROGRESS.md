@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-16 external high-risk gate and final safety-authority loop
+
+- Chosen stage: `original plan / personalized safety engine`
+- Chosen tasks: OP-039 define a fail-closed intake and evaluation contract for an independently labeled high-risk frozen evaluation; OP-040 prove final safety blocking authority across the existing WellnessBox `/api/tips` and R&D interim recommendation paths
+- Primary evidence: `data/original_plan/evidence/op040_final_safety_authority_integration_smoke_v1.json`; actual service-route export plus localhost R&D HTTP process, byte-identical across reruns (`c01eca4f667cfcea00c95f7830ebd8f9711482d81e40e6f4b23629719b9c5183`)
+- Reused the existing `POST /api/tips` route, interim profile/recommendation client, `POST /v1/interim/recommendations`, deterministic safety evaluator, evidence registry, and original-plan CI workflow. No parallel service route, safety engine, or recommendation system was added.
+- The R&D interim route evaluates stored, current, and conservatively merged risk facts before model execution. A hard failure returns `BLOCKED`, no model ID, and zero recommendations. Dynamic multi-key predicates may draw each known risk fact from the stored or current source, so a later request cannot erase or split a blocking condition.
+- The service validates the full R&D safety response. A valid R&D block remains authoritative as `rnd_final`; transport, HTTP, decode, or contract failure returns a service-owned `service_fail_closed` block with zero recommendations. The smoke observes `SAFE-EMERGENCY-001`, `STOP_AND_ESCALATE`, `BLOCKED`, and an invalid-contract HTTP `502` through the actual `/api/tips` export.
+- OP-039 remains unclaimed at required stage `EXTERNAL`. The evaluator now requires a pre-approved coverage protocol, independently labeled cases, detached attestation, independent verification receipt, repository-pinned trust roots, chronological approvals, complete hazard-stratum coverage, a clean Git tree, and zero hard false negatives. Both trust-root allowlists are intentionally empty because no qualifying external dataset or approval exists.
+- Evidence status: OP-040 is `INTEGRATED` and remains partial at required stage `OPERATED`. Generated status: complete `28`, partial `11`, pending `80`, external `1`, contradicted `0`. No R&D deployment, production environment configuration, durable production storage, or production operation is claimed.
+- Validation: focused evaluator/interim selection `19 passed`; exact CI-equivalent selection `268 passed`; full Ruff PASS; manifest audit PASS with `39` claims, `113` checked evidence files, and zero issues; completion-report stale check PASS; runtime stored/fresh equality PASS with zero validation issues; independent final review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `673 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No OP-039/040 or recommendation-boundary failure remains.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, the overall weakest category is unchanged, and every metric-specific weakest category is unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
+- Publication boundary: WellnessBox service commit `9609ce804ad06c609b794f455d4f6127b59361ac` passed Encoding Guard run `29492239202`. R&D source commit `e830c7debd4b103b756bba494fdbc73d7f0bad3a` is pinned by the smoke evidence. The R&D evidence commit and CI result are recorded after publication.
+- Recommended next loops: OP-041/042 service/R&D ingredient identity and evidence-backed goal priors; OP-043/044 candidate contraindication filtering and auditable candidate scoring; OP-045/046 post-filter candidate preservation and structured recommendation reasons.
+
 ## 2026-07-16 dose-limit fail-closed and rule-metadata loop
 
 - Chosen stage: `original plan / personalized safety engine`

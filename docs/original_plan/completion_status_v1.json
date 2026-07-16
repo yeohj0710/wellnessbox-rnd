@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "ea2a83c5857ee0679b9a60bdd1ac86d58840eb16fb954b15c4e804d7df6181fc",
+  "audited_manifest_sha256": "898a3840a44160b6a54feb6b00de24e444d7de364ab711c22f09a3f05100624c",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -9,8 +9,8 @@
   "requirement_count": 120,
   "disposition_counts": {
     "COMPLETE": 28,
-    "PARTIAL": 10,
-    "PENDING": 81,
+    "PARTIAL": 11,
+    "PENDING": 80,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -57,8 +57,8 @@
       "requirement_count": 10,
       "disposition_counts": {
         "COMPLETE": 8,
-        "PARTIAL": 0,
-        "PENDING": 1,
+        "PARTIAL": 1,
+        "PENDING": 0,
         "EXTERNAL": 1,
         "CONTRADICTED": 0
       }
@@ -1378,12 +1378,24 @@
         "external_validation_required"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/evals/external_high_risk_safety.py",
+          "wellnessbox-rnd/scripts/run_external_high_risk_safety_eval.py",
+          "wellnessbox-rnd/docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
-        "external_dependencies": [],
-        "replacement_contracts": []
+        "external_dependencies": [
+          "Independent organization supplies a frozen high-risk dataset labeled under the pre-approved coverage and labeling protocols",
+          "Independent verification receipt and repository-pinned approvals remain absent"
+        ],
+        "replacement_contracts": [
+          "wellnessbox-rnd/data/original_plan/contracts/op039_external_coverage_trust_roots_v1.json",
+          "wellnessbox-rnd/data/original_plan/contracts/op039_external_attestation_trust_roots_v1.json"
+        ]
       }
     },
     {
@@ -1394,15 +1406,30 @@
         "docs/context/original_plan.pdf#page=17"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/safety.py",
+          "wellnessbox/app/api/tips/route.ts",
+          "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+          "wellnessbox/lib/server/wb-rnd-interim-safety-authority.ts"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_interim_api.py",
+          "wellnessbox-rnd/scripts/run_wellnessbox_final_safety_authority_smoke.py",
+          "wellnessbox/scripts/qa/check-rnd-final-safety-authority.cts",
+          "wellnessbox/scripts/qa/check-rnd-interim-safety-authority.cts"
+        ],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/evidence/op040_final_safety_authority_integration_smoke_v1.json",
+          "wellnessbox-rnd/.github/workflows/original-plan-evidence.yml",
+          "wellnessbox/.github/workflows/encoding-guard.yml"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []

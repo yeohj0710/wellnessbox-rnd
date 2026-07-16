@@ -702,13 +702,52 @@
           "requirement_id": "OP-039",
           "title": "hard false negative 0을 고위험 frozen eval로 검증한다.",
           "source_refs": ["docs/context/original_plan.pdf#page=17", "docs/context/original_plan.pdf#page=25"],
-          "required_stage": "EXTERNAL"
+          "required_stage": "EXTERNAL",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/evals/external_high_risk_safety.py",
+              "wellnessbox-rnd/scripts/run_external_high_risk_safety_eval.py",
+              "wellnessbox-rnd/docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py"
+            ],
+            "external_dependencies": [
+              "Independent organization supplies a frozen high-risk dataset labeled under the pre-approved coverage and labeling protocols",
+              "Independent verification receipt and repository-pinned approvals remain absent"
+            ],
+            "replacement_contracts": [
+              "wellnessbox-rnd/data/original_plan/contracts/op039_external_coverage_trust_roots_v1.json",
+              "wellnessbox-rnd/data/original_plan/contracts/op039_external_attestation_trust_roots_v1.json"
+            ]
+          }
         },
         {
           "requirement_id": "OP-040",
           "title": "프로덕션 추천 경로에서 안전 엔진의 최종 차단 권한을 통합 검증한다.",
           "owners": ["wellnessbox-rnd", "wellnessbox"],
-          "required_stage": "OPERATED"
+          "required_stage": "OPERATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/safety.py",
+              "wellnessbox/app/api/tips/route.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-safety-authority.ts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox-rnd/scripts/run_wellnessbox_final_safety_authority_smoke.py",
+              "wellnessbox/scripts/qa/check-rnd-final-safety-authority.cts",
+              "wellnessbox/scripts/qa/check-rnd-interim-safety-authority.cts"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op040_final_safety_authority_integration_smoke_v1.json",
+              "wellnessbox-rnd/.github/workflows/original-plan-evidence.yml",
+              "wellnessbox/.github/workflows/encoding-guard.yml"
+            ]
+          }
         }
       ]
     },

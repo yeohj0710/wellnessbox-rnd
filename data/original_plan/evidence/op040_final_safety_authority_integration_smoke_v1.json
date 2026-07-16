@@ -1,0 +1,38 @@
+{
+  "checks": [
+    "api_tips_post_export",
+    "real_http_rnd_interim_response",
+    "expected_emergency_rule_matched",
+    "rnd_final_authority",
+    "top_level_blocked",
+    "zero_recommendations",
+    "invalid_upstream_contract_fail_closed"
+  ],
+  "claimed_evidence_stage": "INTEGRATED",
+  "observed": {
+    "authority_mode": "rnd_final",
+    "invalid_contract_authority_mode": "service_fail_closed",
+    "invalid_contract_http_status": 502,
+    "matched_rule_id": "SAFE-EMERGENCY-001",
+    "recommendation_count": 0,
+    "rnd_route": "POST /v1/interim/recommendations",
+    "safety_action": "STOP_AND_ESCALATE",
+    "service_route": "POST /api/tips",
+    "source": "rnd_interim",
+    "status": "BLOCKED"
+  },
+  "processes": [
+    "wellnessbox-rnd FastAPI /v1/interim/recommendations",
+    "wellnessbox POST /api/tips route handler"
+  ],
+  "production_operation_proven": false,
+  "requirement_id": "OP-040",
+  "schema_version": "op040_final_safety_authority_integration_smoke_v2",
+  "source_identity": {
+    "wellnessbox_commit": "9609ce804ad06c609b794f455d4f6127b59361ac",
+    "wellnessbox_rnd_commit": "e830c7debd4b103b756bba494fdbc73d7f0bad3a",
+    "wellnessbox_rnd_source_sha256": "fc4ca79badfdacf5b8fb23247a96926b1148610219a05b9d177500d98347a2e9",
+    "wellnessbox_source_sha256": "5b34989376679f42c3e41c4faad4e645fabc8aee588d010820e44e72585c199a"
+  },
+  "transport": "localhost_http"
+}
