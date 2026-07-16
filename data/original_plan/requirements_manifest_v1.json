@@ -806,8 +806,52 @@
             ]
           }
         },
-        {"requirement_id": "OP-043", "title": "증상, 검사, 생활 습관, 식이 패턴이 후보 점수에 영향을 주게 한다."},
-        {"requirement_id": "OP-044", "title": "웨어러블, CGM, 유전자 관측값을 수치로 점수에 반영한다."},
+        {
+          "requirement_id": "OP-043",
+          "title": "증상, 검사, 생활 습관, 식이 패턴이 후보 점수에 영향을 주게 한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/rules/candidate_signal_scoring_rules_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/candidate_signals.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/efficacy/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_candidate_signal_scoring.py",
+              "wellnessbox-rnd/tests/test_diet_lifestyle_lab_input_contracts.py",
+              "wellnessbox-rnd/tests/test_recommendation_contracts.py",
+              "wellnessbox-rnd/scripts/run_candidate_signal_scoring_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-044",
+          "title": "웨어러블, CGM, 유전자 관측값을 수치로 점수에 반영한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/rules/candidate_signal_scoring_rules_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/candidate_signals.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/efficacy/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/sensor_parser.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/cgm_events.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_candidate_signal_scoring.py",
+              "wellnessbox-rnd/tests/test_sensor_parser.py",
+              "wellnessbox-rnd/tests/test_cgm_events.py",
+              "wellnessbox-rnd/tests/test_data_lake_lineage.py",
+              "wellnessbox-rnd/scripts/run_candidate_signal_scoring_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-045", "title": "안전 차단 전후 후보를 모두 보존한다."},
         {"requirement_id": "OP-046", "title": "추천 이유를 입력 신호, 점수 항목, 근거 ID로 분해해 반환한다."},
         {"requirement_id": "OP-047", "title": "결정 불확실성과 추가 입력 조건을 정량화한다."},

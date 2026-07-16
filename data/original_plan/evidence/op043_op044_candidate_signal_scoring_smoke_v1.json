@@ -1,0 +1,156 @@
+{
+  "cases": {
+    "cgm": {
+      "cgm_adjustment": 3.0,
+      "pregnant_adjustment": 0.0,
+      "signal": {
+        "claim_ids": [
+          "CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+          "CLM-ADA-CGM-TIR-001",
+          "CLM-CDC-SOLUBLE-FIBER-001"
+        ],
+        "code": "time_in_range_pct",
+        "limitation": "Only explicit diabetes context is eligible; this is candidate ordering and not an individualized CGM treatment target.",
+        "observed_value": 55.0,
+        "points": 3.0,
+        "reference_ids": [
+          "REF-MC-CANDIDATE-SIGNAL-001",
+          "REF-ADA-CGM-TIR-001",
+          "REF-CDC-SOLUBLE-FIBER-001"
+        ],
+        "rule_id": "CS-CGM-TIR-FIBER-001",
+        "scoring_version": "2026-07-16.1",
+        "source": "cgm",
+        "unit": "percent"
+      },
+      "time_in_range_mg_dl": [
+        70.0,
+        180.0
+      ],
+      "wrong_range_adjustment": 0.0
+    },
+    "consent_denied": {
+      "effective_wearable": false,
+      "explicit_sensor_consent_required": true,
+      "hash_stable_across_denied_values": true,
+      "normalized_value": null,
+      "wearable_adjustment": 0.0
+    },
+    "dietary_pattern": {
+      "dietary_alignment": 3.0,
+      "signal": {
+        "claim_ids": [
+          "CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+          "CLM-NIH-ODS-B12-VEGETARIAN-001"
+        ],
+        "code": "vegan",
+        "limitation": "Raises candidate priority for inadequacy risk only; it does not diagnose deficiency or establish whole B-complex efficacy.",
+        "observed_value": "vegan",
+        "points": 3.0,
+        "reference_ids": [
+          "REF-MC-CANDIDATE-SIGNAL-001",
+          "REF-NIH-ODS-B12-ENERGY-001"
+        ],
+        "rule_id": "CS-DIET-VEGETARIAN-B12-001",
+        "scoring_version": "2026-07-16.1",
+        "source": "dietary_pattern",
+        "unit": null
+      }
+    },
+    "genetic": {
+      "genetic_adjustment": 4.0,
+      "signal": {
+        "claim_ids": [
+          "CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+          "CLM-MC-CANDIDATE-SIGNAL-LPL-001",
+          "CLM-NIH-ODS-OMEGA3-HEART-001"
+        ],
+        "code": "lpl_triglyceride_risk",
+        "limitation": "A declared tag changes prototype ordering only and is not independently reinterpreted as a genetic diagnosis.",
+        "observed_value": "lpl_triglyceride_risk",
+        "points": 4.0,
+        "reference_ids": [
+          "REF-MC-CANDIDATE-SIGNAL-001",
+          "REF-NIH-ODS-OMEGA3-HEART-001"
+        ],
+        "rule_id": "CS-GENE-LPL-OMEGA3-001",
+        "scoring_version": "2026-07-16.1",
+        "source": "genetic",
+        "unit": null
+      }
+    },
+    "laboratory": {
+      "laboratory_alignment": 4.0,
+      "signal": {
+        "claim_ids": [
+          "CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+          "CLM-CDC-SOLUBLE-FIBER-001"
+        ],
+        "code": "hba1c",
+        "limitation": "Uses the laboratory-provided reference range and does not diagnose dysglycemia or establish a product or dose.",
+        "observed_value": 6.1,
+        "points": 4.0,
+        "reference_ids": [
+          "REF-MC-CANDIDATE-SIGNAL-001",
+          "REF-CDC-SOLUBLE-FIBER-001"
+        ],
+        "rule_id": "CS-LAB-GLUCOSE-FIBER-001",
+        "scoring_version": "2026-07-16.1",
+        "source": "laboratory",
+        "unit": "%"
+      }
+    },
+    "symptom_lifestyle": {
+      "lifestyle_alignment": 6.0,
+      "symptom_alignment": 8.0
+    },
+    "wearable": {
+      "signal": {
+        "claim_ids": [
+          "CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+          "CLM-CDC-ADULT-SLEEP-001",
+          "CLM-NCCIH-MAGNESIUM-SLEEP-001"
+        ],
+        "code": "sleep_hours",
+        "limitation": "Short-sleep context is not a sleep-disorder diagnosis; magnesium sleep evidence is mixed.",
+        "observed_value": 5.5,
+        "points": 3.0,
+        "reference_ids": [
+          "REF-MC-CANDIDATE-SIGNAL-001",
+          "REF-CDC-ADULT-SLEEP-001",
+          "REF-NCCIH-MAGNESIUM-SLEEP-001"
+        ],
+        "rule_id": "CS-WEARABLE-SLEEP-MAGNESIUM-001",
+        "scoring_version": "2026-07-16.1",
+        "source": "wearable",
+        "unit": "hours"
+      },
+      "wearable_adjustment": 3.0
+    }
+  },
+  "checks": [
+    "symptom_points_auditable",
+    "laboratory_reference_range_status_scored",
+    "lifestyle_points_auditable",
+    "dietary_pattern_points_evidence_linked",
+    "wearable_value_converted_to_bounded_points",
+    "cgm_value_requires_standard_70_180_range_and_nonpregnant_diabetes_context",
+    "genetic_tag_converted_to_bounded_points",
+    "denied_sensor_values_excluded_from_score_and_hash",
+    "sensor_snapshot_requires_explicit_consent_contract",
+    "stored_runtime_matches_deterministic_fresh_builder"
+  ],
+  "production_operation_proven": false,
+  "requirement_stages": {
+    "OP-043": "IMPLEMENTED",
+    "OP-044": "IMPLEMENTED"
+  },
+  "rule_count": 10,
+  "schema_version": "op043_op044_candidate_signal_scoring_smoke_v1",
+  "score_meaning": "bounded deterministic candidate-ordering points, not diagnosis, dose advice, treatment target, efficacy probability, or individualized medical advice",
+  "scoring_version": "2026-07-16.1",
+  "source_identity": {
+    "commit": "26fe13001448e4adc0a816d1d4ea74aa6f5e6a8b",
+    "source_sha256": "23b338a44f2a908aa45aa349de33d93f9bbc841e0a8b3a83d066b3f49cd51e86"
+  }
+}

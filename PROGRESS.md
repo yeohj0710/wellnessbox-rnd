@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-16 evidence-linked candidate signal scoring loop
+
+- Chosen stage: `original plan / candidate generation and efficacy scoring`
+- Chosen tasks: OP-043 make symptom, laboratory, lifestyle, and dietary inputs affect candidate scores; OP-044 convert wearable, CGM, and genetic observations into numeric candidate-score terms
+- Primary evidence: `data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json`; deterministic SHA-256 `a4851854d43bcf99f8e525a0bad8475a54789ceebd1378d899573870dc511662`, pinned to source commit `26fe13001448e4adc0a816d1d4ea74aa6f5e6a8b`
+- Reused the existing request, consent normalization, sensor parser, catalog, goal priors, safety-first recommendation path, scorer, response contract, runtime knowledge DB, and Data Lake projection. No parallel recommendation engine, service route, or catalog was added.
+- The score breakdown now exposes separate symptom, laboratory, lifestyle, dietary, wearable, CGM, and genetic terms. Every applied signal includes the observed value or tag, bounded points, scoring version, rule ID, exact reference/claim IDs, and limitation. The returned total and recommendation-set contract reconcile every visible term.
+- Laboratory scoring uses only the observation's supplied reference range. Adult sleep scoring uses the bounded seven-hour context rule. CGM scoring requires explicit source consent, type 1/type 2 diabetes context, a blood-glucose goal, a nonpregnant profile, and a verified 70–180 mg/dL TIR range. Genetic scoring accepts only the two master-context tag families; unknown or unscoped tags add zero and do not alter unrelated rationales.
+- The runtime artifact embeds the strict scoring registry. Rule IDs, inputs, thresholds, weights, goal/ingredient scope, claim ownership, limitation text, score meaning, and version are fail-closed. TIR alias conflicts, invalid bounds, custom ranges, forged claims, unrelated references, stale runtime artifacts, and implicit sensor consent are rejected or contribute zero.
+- Evidence status: OP-043 and OP-044 are complete at required stage `IMPLEMENTED`. Generated status: complete `32`, partial `11`, pending `76`, external `1`, contradicted `0`. No WellnessBox service code, R&D deployment, or production two-process operation changed.
+- Validation: focused candidate/parser/contract selection `70 passed`; exact CI-equivalent selection `301 passed`; full Ruff PASS; deterministic smoke byte-identical across reruns; manifest audit PASS with `43` claims, `134` checked evidence files, and zero issues; completion-report stale check PASS; stored runtime equals a fresh deterministic build; independent final review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `705 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No OP-043/044 failure remains.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, and the overall and metric-specific weakest-slice categories are unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
+- Publication: source commit `26fe13001448e4adc0a816d1d4ea74aa6f5e6a8b` is pinned by the smoke. Evidence publication and Original plan evidence CI are recorded after push.
+- Recommended next loops: OP-045/046 pre/post safety-candidate preservation and structured recommendation reasons; OP-047/048 uncertainty/missing-input quantification and deterministic fallback; OP-049/050 learned-versus-baseline replay and service-product candidate conversion.
+
 ## 2026-07-16 ingredient identity and evidence-linked goal-prior loop
 
 - Chosen stage: `original plan / candidate generation and efficacy scoring`
