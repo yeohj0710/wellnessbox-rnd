@@ -15,7 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from apps.inference_api.main import app  # noqa: E402
-from wellnessbox_rnd.interim.store import InterimStore  # noqa: E402
+from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore  # noqa: E402
 
 INTERNAL_TOKEN = "op025-op026-log-separation-identity-smoke-token"
 CODE_COMMIT_OVERRIDE = "op025op026fixedcommitfixedcommitfixedco0"
@@ -196,8 +196,9 @@ def run_smoke() -> dict[str, Any]:
                 item["dataset_id"] for item in first_identity["datasets"]
             )
             checks = {
-                "database_schema_version_is_6": (
-                    store.scalar("select max(version) from schema_migrations") == 6
+                "database_schema_version_matches_current": (
+                    store.scalar("select max(version) from schema_migrations")
+                    == SCHEMA_VERSION
                 ),
                 "identity_recorded_for_every_execution": identity_count == 2,
                 "model_id_is_deterministic_baseline": (
@@ -263,7 +264,7 @@ def run_smoke() -> dict[str, Any]:
                 "status": "passed",
                 "data_class": "INTERIM_RUNTIME_EVENT",
                 "case_count": 2,
-                "database_schema_version": 6,
+                "database_schema_version": SCHEMA_VERSION,
                 "execution_identity_count": identity_count,
                 "research_event_count": research_count,
                 "behavior_event_count": behavior_count,

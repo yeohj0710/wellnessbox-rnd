@@ -15,7 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from apps.inference_api.main import app  # noqa: E402
-from wellnessbox_rnd.interim.store import InterimStore  # noqa: E402
+from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore  # noqa: E402
 
 AUTHORIZED_SUBJECT_ID = "usr_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 DENIED_SUBJECT_ID = "usr_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
@@ -237,8 +237,9 @@ def run_smoke() -> dict[str, Any]:
                 "followup_evaluation",
             ]
             checks = {
-                "database_schema_version_is_6": (
-                    store.scalar("select max(version) from schema_migrations") == 6
+                "database_schema_version_matches_current": (
+                    store.scalar("select max(version) from schema_migrations")
+                    == SCHEMA_VERSION
                 ),
                 "authorized_profile_versions_are_1_and_2": profile_versions == [1, 2],
                 "denied_profile_payload_count_is_0": denied_profile_payload_count == 0,
@@ -255,7 +256,7 @@ def run_smoke() -> dict[str, Any]:
                 "status": "passed",
                 "data_class": "INTERIM_RUNTIME_EVENT",
                 "case_count": 3,
-                "database_schema_version": 6,
+                "database_schema_version": SCHEMA_VERSION,
                 "profile_version_count": len(profile_versions),
                 "profile_versions": profile_versions,
                 "consent_snapshot_count": int(

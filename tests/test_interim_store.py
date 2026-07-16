@@ -1,6 +1,9 @@
 import sqlite3
+from shutil import copyfile
 
-from wellnessbox_rnd.interim.store import InterimStore
+import pytest
+
+from wellnessbox_rnd.interim.store import SCHEMA_SQL, InterimStore
 
 
 def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
@@ -10,7 +13,7 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
     store.migrate()
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 6
+    assert store.scalar("select max(version) from schema_migrations") == 7
     assert "pharmacy_id" in {row[1] for row in store.rows("pragma table_info(review_tasks)")}
     required_tables = {
         "proxy_cases",
@@ -77,7 +80,7 @@ def test_schema_version_2_profile_data_survives_lineage_migration(tmp_path) -> N
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 6
+    assert store.scalar("select max(version) from schema_migrations") == 7
     assert store.scalar("select count(*) from user_profiles") == 1
     assert store.scalar(
         "select payload_json from user_profiles where profile_id='usr_1234567890abcdef'"
@@ -96,7 +99,7 @@ def test_interim_store_read_helpers_close_database_connections(tmp_path) -> None
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 6
+    assert store.scalar("select max(version) from schema_migrations") == 7
     assert store.rows("select version from schema_migrations")
 
     database_path.unlink()
@@ -174,7 +177,7 @@ def test_schema_version_3_events_gain_consent_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 6
+    assert store.scalar("select max(version) from schema_migrations") == 7
     assert store.scalar(
         "select consent_snapshot_id from execution_events where event_id='event_1'"
     ) == "consent_1"
@@ -229,7 +232,7 @@ def test_schema_version_4_evidence_gains_parsed_span_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 6
+    assert store.scalar("select max(version) from schema_migrations") == 7
     columns = {row[1] for row in store.rows("pragma table_info(evidence_passages)")}
     assert {"page_or_section", "line_start", "line_end", "metadata_json"}.issubset(
         columns
@@ -294,7 +297,7 @@ def test_schema_version_5_gains_disjoint_log_and_identity_tables(tmp_path) -> No
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 6
+    assert store.scalar("select max(version) from schema_migrations") == 7
     assert store.scalar("select count(*) from executions") == 1
     assert {"execution_identities", "behavior_events"}.issubset(store.table_names())
     behavior_sql = store.scalar(
@@ -314,3 +317,139 @@ def test_schema_version_5_gains_disjoint_log_and_identity_tables(tmp_path) -> No
     )
     for behavior_name in ("'page_view'", "'product_exposure'", "'session_start'"):
         assert behavior_name not in events_sql
+
+
+def test_schema_version_6_lineage_keeps_multiple_rules_for_one_claim(tmp_path) -> None:
+    database_path = tmp_path / "version-6.sqlite3"
+    corrected_unique = (
+        "UNIQUE(execution_id, event_id, output_type, output_key, claim_id, rule_id)"
+    )
+    legacy_unique = (
+        "UNIQUE(execution_id, event_id, output_type, output_key, claim_id)"
+    )
+    legacy_schema = SCHEMA_SQL.replace(corrected_unique, legacy_unique)
+    with sqlite3.connect(database_path) as connection:
+        connection.executescript(legacy_schema)
+        connection.execute(
+            "insert into schema_migrations values (6, '2026-07-15T00:00:00+00:00')"
+        )
+        connection.execute(
+            "insert into source_registry values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                "source_1",
+                "guideline",
+                "Source",
+                "docs/source.md",
+                "APPROVED_INTERNAL",
+                "2026-01-01T00:00:00Z",
+                None,
+                "source-hash",
+                "PROXY_GOLD_SIMULATION",
+                "{}",
+            ),
+        )
+        connection.execute(
+            """
+            insert into evidence_passages values (
+              'evidence_1', 'source_1', 'Passage', 'section', 1, 2, '{}',
+              '2026-01-01T00:00:00Z', 'evidence-hash', 1,
+              'PROXY_GOLD_SIMULATION'
+            )
+            """
+        )
+        connection.execute(
+            """
+            insert into knowledge_claims values (
+              'claim_1', 'evidence_1', 'safety', 'Claim', '[]', '[]', '[]',
+              'claim-hash', '2026-01-01T00:00:00Z', null,
+              'PROXY_GOLD_SIMULATION'
+            )
+            """
+        )
+        for rule_id in ("rule_1", "rule_2"):
+            connection.execute(
+                """
+                insert into knowledge_rules values (
+                  ?, 'safety', 'HIGH', 'knowledge', '{}', '{}', ?,
+                  '2026-01-01T00:00:00Z', null, 'ACTIVE',
+                  'PROXY_GOLD_SIMULATION'
+                )
+                """,
+                (rule_id, f"{rule_id}-hash"),
+            )
+            connection.execute(
+                "insert into claim_rule_links values ('claim_1', ?)", (rule_id,)
+            )
+        connection.execute(
+            """
+            insert into consent_snapshots values (
+              'consent_1', 'profile_1', 1, 'v1', '{}', 'consent-hash',
+              '2026-07-15T00:00:00+00:00'
+            )
+            """
+        )
+        connection.execute(
+            """
+            insert into executions values (
+              'execution_1', 'request_1', 'profile_1', null, 'consent_1',
+              'request-hash', 'COMPLETE', '2026-07-15T00:00:00+00:00',
+              '2026-07-15T00:00:00+00:00'
+            )
+            """
+        )
+        connection.execute(
+            """
+            insert into execution_events values (
+              'event_1', 'execution_1', 'consent_1', 0, 'recommendation',
+              'system', 'core', '{}', 'event-hash',
+              '2026-07-15T00:00:00+00:00'
+            )
+            """
+        )
+        connection.execute(
+            """
+            insert into execution_knowledge_lineage values (
+              'lineage_1', 'execution_1', 'event_1', 'recommendation_decision',
+              'decision_1', 'rule_1', 'claim_1', 'evidence_1', 'source_1',
+              'INTERIM_RUNTIME_EVENT', '2026-07-15T00:00:00+00:00'
+            )
+            """
+        )
+
+    corrupt_database_path = tmp_path / "version-6-corrupt.sqlite3"
+    copyfile(database_path, corrupt_database_path)
+    with sqlite3.connect(corrupt_database_path) as connection:
+        connection.execute(
+            "update execution_knowledge_lineage set rule_id='missing_rule'"
+        )
+
+    corrupt_store = InterimStore(corrupt_database_path)
+    with pytest.raises(sqlite3.IntegrityError):
+        corrupt_store.migrate()
+    assert corrupt_store.scalar("select max(version) from schema_migrations") == 6
+    corrupt_table_sql = corrupt_store.scalar(
+        "select sql from sqlite_master "
+        "where type='table' and name='execution_knowledge_lineage'"
+    )
+    assert legacy_unique in corrupt_table_sql
+    assert corrected_unique not in corrupt_table_sql
+
+    store = InterimStore(database_path)
+    store.migrate()
+
+    assert store.scalar("select max(version) from schema_migrations") == 7
+    assert store.scalar("select count(*) from execution_knowledge_lineage") == 1
+    with store.transaction() as connection:
+        connection.execute(
+            """
+            insert into execution_knowledge_lineage values (
+              'lineage_2', 'execution_1', 'event_1', 'recommendation_decision',
+              'decision_1', 'rule_2', 'claim_1', 'evidence_1', 'source_1',
+              'INTERIM_RUNTIME_EVENT', '2026-07-15T00:00:00+00:00'
+            )
+            """
+        )
+    store.migrate()
+
+    assert store.scalar("select count(*) from execution_knowledge_lineage") == 2
+    assert store.scalar("pragma foreign_keys") == 1

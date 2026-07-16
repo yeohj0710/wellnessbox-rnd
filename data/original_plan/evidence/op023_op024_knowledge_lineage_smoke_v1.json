@@ -3,7 +3,7 @@
   "status": "passed",
   "data_class": "INTERIM_RUNTIME_EVENT",
   "case_count": 1,
-  "database_schema_version": 6,
+  "database_schema_version": 7,
   "source_count": 3,
   "passage_count": 5,
   "claim_count": 5,
@@ -17,7 +17,7 @@
   "parsed_source_uri": "data/raw_references/supplement_warfarin_interaction.md",
   "upstream_reference_uri": "data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md",
   "checks": {
-    "database_schema_version_is_6": true,
+    "database_schema_version_matches_current": true,
     "canonical_artifact_counts_match": true,
     "actual_response_is_blocked": true,
     "rule_and_decision_outputs_connected": true,

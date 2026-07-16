@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 6
+SCHEMA_VERSION = 7
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS execution_knowledge_lineage (
   source_id TEXT NOT NULL REFERENCES source_registry(source_id),
   data_class TEXT NOT NULL,
   created_at TEXT NOT NULL,
-  UNIQUE(execution_id, event_id, output_type, output_key, claim_id)
+  UNIQUE(execution_id, event_id, output_type, output_key, claim_id, rule_id)
 );
 
 CREATE TABLE IF NOT EXISTS execution_identities (
@@ -501,6 +501,7 @@ class InterimStore:
         connection = self.connect()
         try:
             connection.executescript(SCHEMA_SQL)
+            self._migrate_execution_knowledge_lineage_unique_key(connection)
             columns = {str(row[1]) for row in connection.execute("pragma table_info(review_tasks)")}
             if "pharmacy_id" not in columns:
                 connection.execute("alter table review_tasks add column pharmacy_id integer")
@@ -565,6 +566,91 @@ class InterimStore:
             connection.commit()
         finally:
             connection.close()
+
+    @staticmethod
+    def _migrate_execution_knowledge_lineage_unique_key(
+        connection: sqlite3.Connection,
+    ) -> None:
+        table_row = connection.execute(
+            "select sql from sqlite_master "
+            "where type='table' and name='execution_knowledge_lineage'"
+        ).fetchone()
+        if table_row is None:
+            return
+        normalized_sql = "".join(str(table_row[0]).lower().split())
+        corrected_unique = (
+            "unique(execution_id,event_id,output_type,output_key,claim_id,rule_id)"
+        )
+        if corrected_unique in normalized_sql:
+            return
+
+        connection.execute("PRAGMA foreign_keys = OFF")
+        try:
+            connection.execute("BEGIN IMMEDIATE")
+            try:
+                connection.execute(
+                    "ALTER TABLE execution_knowledge_lineage "
+                    "RENAME TO execution_knowledge_lineage_v6"
+                )
+                connection.execute(
+                    "DROP INDEX IF EXISTS idx_execution_knowledge_lineage_execution"
+                )
+                connection.execute(
+                    """
+                    CREATE TABLE execution_knowledge_lineage (
+                      lineage_id TEXT PRIMARY KEY,
+                      execution_id TEXT NOT NULL REFERENCES executions(execution_id),
+                      event_id TEXT NOT NULL REFERENCES execution_events(event_id),
+                      output_type TEXT NOT NULL CHECK(output_type IN (
+                        'recommendation_item',
+                        'safety_rule',
+                        'recommendation_decision'
+                      )),
+                      output_key TEXT NOT NULL,
+                      rule_id TEXT NOT NULL REFERENCES knowledge_rules(rule_id),
+                      claim_id TEXT NOT NULL REFERENCES knowledge_claims(claim_id),
+                      evidence_id TEXT NOT NULL REFERENCES evidence_passages(evidence_id),
+                      source_id TEXT NOT NULL REFERENCES source_registry(source_id),
+                      data_class TEXT NOT NULL,
+                      created_at TEXT NOT NULL,
+                      UNIQUE(
+                        execution_id, event_id, output_type, output_key,
+                        claim_id, rule_id
+                      )
+                    )
+                    """
+                )
+                connection.execute(
+                    """
+                    INSERT INTO execution_knowledge_lineage(
+                      lineage_id, execution_id, event_id, output_type, output_key,
+                      rule_id, claim_id, evidence_id, source_id, data_class, created_at
+                    )
+                    SELECT
+                      lineage_id, execution_id, event_id, output_type, output_key,
+                      rule_id, claim_id, evidence_id, source_id, data_class, created_at
+                    FROM execution_knowledge_lineage_v6
+                    """
+                )
+                connection.execute("DROP TABLE execution_knowledge_lineage_v6")
+                connection.execute(
+                    "CREATE INDEX idx_execution_knowledge_lineage_execution "
+                    "ON execution_knowledge_lineage(execution_id, created_at)"
+                )
+                foreign_key_violation = connection.execute(
+                    "PRAGMA foreign_key_check"
+                ).fetchone()
+                if foreign_key_violation is not None:
+                    raise sqlite3.IntegrityError(
+                        "execution_knowledge_lineage migration violated a foreign key"
+                    )
+            except Exception:
+                connection.rollback()
+                raise
+            else:
+                connection.commit()
+        finally:
+            connection.execute("PRAGMA foreign_keys = ON")
 
     def is_migrated(self) -> bool:
         if not self.database_path.exists():

@@ -15,7 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from apps.inference_api.main import app  # noqa: E402
-from wellnessbox_rnd.interim.store import InterimStore  # noqa: E402
+from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore  # noqa: E402
 
 INTERNAL_TOKEN = "op023-op024-knowledge-lineage-smoke-token"
 
@@ -106,8 +106,9 @@ def run_smoke() -> dict[str, Any]:
             lineage = list(trace["knowledge_lineage"])
             output_types = sorted({str(item["output_type"]) for item in lineage})
             checks = {
-                "database_schema_version_is_6": (
-                    store.scalar("select max(version) from schema_migrations") == 6
+                "database_schema_version_matches_current": (
+                    store.scalar("select max(version) from schema_migrations")
+                    == SCHEMA_VERSION
                 ),
                 "canonical_artifact_counts_match": (
                     (source_count, passage_count, claim_count, rule_count, link_count)
@@ -152,7 +153,7 @@ def run_smoke() -> dict[str, Any]:
                 "status": "passed",
                 "data_class": "INTERIM_RUNTIME_EVENT",
                 "case_count": 1,
-                "database_schema_version": 6,
+                "database_schema_version": SCHEMA_VERSION,
                 "source_count": source_count,
                 "passage_count": passage_count,
                 "claim_count": claim_count,

@@ -3,7 +3,7 @@
   "status": "passed",
   "data_class": "INTERIM_RUNTIME_EVENT",
   "case_count": 2,
-  "database_schema_version": 6,
+  "database_schema_version": 7,
   "execution_identity_count": 2,
   "research_event_count": 6,
   "behavior_event_count": 1,
@@ -15,7 +15,7 @@
   ],
   "code_commit_source": "environment",
   "checks": {
-    "database_schema_version_is_6": true,
+    "database_schema_version_matches_current": true,
     "identity_recorded_for_every_execution": true,
     "model_id_is_deterministic_baseline": true,
     "code_commit_uses_environment_override": true,
