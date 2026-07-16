@@ -40,6 +40,7 @@ DEFAULT_OUTPUT = (
     / "data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json"
 )
 SOURCE_PATHS = [
+    "scripts/run_candidate_signal_scoring_smoke.py",
     "data/rules/candidate_signal_scoring_rules_v1.json",
     "src/wellnessbox_rnd/knowledge/candidate_signals.py",
     "src/wellnessbox_rnd/knowledge/runtime_db.py",
@@ -100,14 +101,15 @@ def _source_sha256() -> str:
         path = PROJECT_ROOT / relative_path
         digest.update(relative_path.encode("utf-8"))
         digest.update(b"\0")
-        digest.update(path.read_bytes())
+        normalized_text = path.read_text(encoding="utf-8").replace("\r\n", "\n")
+        digest.update(normalized_text.encode("utf-8"))
         digest.update(b"\0")
     return digest.hexdigest()
 
 
 def _git_commit() -> str:
     result = subprocess.run(
-        ["git", "rev-parse", "HEAD"],
+        ["git", "log", "-1", "--format=%H", "--", *SOURCE_PATHS],
         cwd=PROJECT_ROOT,
         check=True,
         capture_output=True,
