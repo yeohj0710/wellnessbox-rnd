@@ -1,0 +1,518 @@
+{
+  "baseline_standardization_cases": {
+    "ISI": {
+      "distribution": {
+        "baseline_mean": 14.0,
+        "baseline_sample_std": 7.0,
+        "cohort_id": "op052-isi-synthetic-baseline",
+        "cohort_role": "BASELINE",
+        "contract_version": "2026-07-17.1",
+        "data_class": "SYNTHETIC_OUTCOME_PROXY",
+        "instrument": "ISI",
+        "instrument_scoring_version": "isi_item_sum_v1",
+        "sample_count": 3,
+        "schema_version": "pro_baseline_distribution_v1",
+        "sorted_baseline_raw_scores": [
+          7,
+          14,
+          21
+        ],
+        "source_scores_sha256": "a2b8548612cb95c32e226a10f58ad0ed642e26825c24b0be9f322212456c7aef",
+        "standardization_version": "pro_baseline_health_percentile_v1"
+      },
+      "standardized_scores": [
+        {
+          "baseline_distribution": {
+            "baseline_mean": 14.0,
+            "baseline_sample_std": 7.0,
+            "cohort_id": "op052-isi-synthetic-baseline",
+            "cohort_role": "BASELINE",
+            "contract_version": "2026-07-17.1",
+            "data_class": "SYNTHETIC_OUTCOME_PROXY",
+            "instrument": "ISI",
+            "instrument_scoring_version": "isi_item_sum_v1",
+            "sample_count": 3,
+            "schema_version": "pro_baseline_distribution_v1",
+            "sorted_baseline_raw_scores": [
+              7,
+              14,
+              21
+            ],
+            "source_scores_sha256": "a2b8548612cb95c32e226a10f58ad0ed642e26825c24b0be9f322212456c7aef",
+            "standardization_version": "pro_baseline_health_percentile_v1"
+          },
+          "contract_version": "2026-07-17.1",
+          "health_percentile": 84.134475,
+          "health_z_score": 1.0,
+          "instrument": "ISI",
+          "instrument_scoring_version": "isi_item_sum_v1",
+          "raw_score": 7,
+          "schema_version": "pro_standardized_score_v1",
+          "standardization_version": "pro_baseline_health_percentile_v1"
+        },
+        {
+          "baseline_distribution": {
+            "baseline_mean": 14.0,
+            "baseline_sample_std": 7.0,
+            "cohort_id": "op052-isi-synthetic-baseline",
+            "cohort_role": "BASELINE",
+            "contract_version": "2026-07-17.1",
+            "data_class": "SYNTHETIC_OUTCOME_PROXY",
+            "instrument": "ISI",
+            "instrument_scoring_version": "isi_item_sum_v1",
+            "sample_count": 3,
+            "schema_version": "pro_baseline_distribution_v1",
+            "sorted_baseline_raw_scores": [
+              7,
+              14,
+              21
+            ],
+            "source_scores_sha256": "a2b8548612cb95c32e226a10f58ad0ed642e26825c24b0be9f322212456c7aef",
+            "standardization_version": "pro_baseline_health_percentile_v1"
+          },
+          "contract_version": "2026-07-17.1",
+          "health_percentile": 50.0,
+          "health_z_score": 0.0,
+          "instrument": "ISI",
+          "instrument_scoring_version": "isi_item_sum_v1",
+          "raw_score": 14,
+          "schema_version": "pro_standardized_score_v1",
+          "standardization_version": "pro_baseline_health_percentile_v1"
+        },
+        {
+          "baseline_distribution": {
+            "baseline_mean": 14.0,
+            "baseline_sample_std": 7.0,
+            "cohort_id": "op052-isi-synthetic-baseline",
+            "cohort_role": "BASELINE",
+            "contract_version": "2026-07-17.1",
+            "data_class": "SYNTHETIC_OUTCOME_PROXY",
+            "instrument": "ISI",
+            "instrument_scoring_version": "isi_item_sum_v1",
+            "sample_count": 3,
+            "schema_version": "pro_baseline_distribution_v1",
+            "sorted_baseline_raw_scores": [
+              7,
+              14,
+              21
+            ],
+            "source_scores_sha256": "a2b8548612cb95c32e226a10f58ad0ed642e26825c24b0be9f322212456c7aef",
+            "standardization_version": "pro_baseline_health_percentile_v1"
+          },
+          "contract_version": "2026-07-17.1",
+          "health_percentile": 15.865525,
+          "health_z_score": -1.0,
+          "instrument": "ISI",
+          "instrument_scoring_version": "isi_item_sum_v1",
+          "raw_score": 21,
+          "schema_version": "pro_standardized_score_v1",
+          "standardization_version": "pro_baseline_health_percentile_v1"
+        }
+      ]
+    },
+    "PSQI": {
+      "distribution": {
+        "baseline_mean": 9.0,
+        "baseline_sample_std": 3.0,
+        "cohort_id": "op052-psqi-synthetic-baseline",
+        "cohort_role": "BASELINE",
+        "contract_version": "2026-07-17.1",
+        "data_class": "SYNTHETIC_OUTCOME_PROXY",
+        "instrument": "PSQI",
+        "instrument_scoring_version": "psqi_component_sum_v1",
+        "sample_count": 3,
+        "schema_version": "pro_baseline_distribution_v1",
+        "sorted_baseline_raw_scores": [
+          6,
+          9,
+          12
+        ],
+        "source_scores_sha256": "1e8abb188c12240e1a205818efab0be9991d0f3735cfa1bbe72c1cc5141b91fb",
+        "standardization_version": "pro_baseline_health_percentile_v1"
+      },
+      "standardized_scores": [
+        {
+          "baseline_distribution": {
+            "baseline_mean": 9.0,
+            "baseline_sample_std": 3.0,
+            "cohort_id": "op052-psqi-synthetic-baseline",
+            "cohort_role": "BASELINE",
+            "contract_version": "2026-07-17.1",
+            "data_class": "SYNTHETIC_OUTCOME_PROXY",
+            "instrument": "PSQI",
+            "instrument_scoring_version": "psqi_component_sum_v1",
+            "sample_count": 3,
+            "schema_version": "pro_baseline_distribution_v1",
+            "sorted_baseline_raw_scores": [
+              6,
+              9,
+              12
+            ],
+            "source_scores_sha256": "1e8abb188c12240e1a205818efab0be9991d0f3735cfa1bbe72c1cc5141b91fb",
+            "standardization_version": "pro_baseline_health_percentile_v1"
+          },
+          "contract_version": "2026-07-17.1",
+          "health_percentile": 84.134475,
+          "health_z_score": 1.0,
+          "instrument": "PSQI",
+          "instrument_scoring_version": "psqi_component_sum_v1",
+          "raw_score": 6,
+          "schema_version": "pro_standardized_score_v1",
+          "standardization_version": "pro_baseline_health_percentile_v1"
+        },
+        {
+          "baseline_distribution": {
+            "baseline_mean": 9.0,
+            "baseline_sample_std": 3.0,
+            "cohort_id": "op052-psqi-synthetic-baseline",
+            "cohort_role": "BASELINE",
+            "contract_version": "2026-07-17.1",
+            "data_class": "SYNTHETIC_OUTCOME_PROXY",
+            "instrument": "PSQI",
+            "instrument_scoring_version": "psqi_component_sum_v1",
+            "sample_count": 3,
+            "schema_version": "pro_baseline_distribution_v1",
+            "sorted_baseline_raw_scores": [
+              6,
+              9,
+              12
+            ],
+            "source_scores_sha256": "1e8abb188c12240e1a205818efab0be9991d0f3735cfa1bbe72c1cc5141b91fb",
+            "standardization_version": "pro_baseline_health_percentile_v1"
+          },
+          "contract_version": "2026-07-17.1",
+          "health_percentile": 50.0,
+          "health_z_score": 0.0,
+          "instrument": "PSQI",
+          "instrument_scoring_version": "psqi_component_sum_v1",
+          "raw_score": 9,
+          "schema_version": "pro_standardized_score_v1",
+          "standardization_version": "pro_baseline_health_percentile_v1"
+        },
+        {
+          "baseline_distribution": {
+            "baseline_mean": 9.0,
+            "baseline_sample_std": 3.0,
+            "cohort_id": "op052-psqi-synthetic-baseline",
+            "cohort_role": "BASELINE",
+            "contract_version": "2026-07-17.1",
+            "data_class": "SYNTHETIC_OUTCOME_PROXY",
+            "instrument": "PSQI",
+            "instrument_scoring_version": "psqi_component_sum_v1",
+            "sample_count": 3,
+            "schema_version": "pro_baseline_distribution_v1",
+            "sorted_baseline_raw_scores": [
+              6,
+              9,
+              12
+            ],
+            "source_scores_sha256": "1e8abb188c12240e1a205818efab0be9991d0f3735cfa1bbe72c1cc5141b91fb",
+            "standardization_version": "pro_baseline_health_percentile_v1"
+          },
+          "contract_version": "2026-07-17.1",
+          "health_percentile": 15.865525,
+          "health_z_score": -1.0,
+          "instrument": "PSQI",
+          "instrument_scoring_version": "psqi_component_sum_v1",
+          "raw_score": 12,
+          "schema_version": "pro_standardized_score_v1",
+          "standardization_version": "pro_baseline_health_percentile_v1"
+        }
+      ]
+    },
+    "PSS10": {
+      "distribution": {
+        "baseline_mean": 20.0,
+        "baseline_sample_std": 10.0,
+        "cohort_id": "op052-pss10-synthetic-baseline",
+        "cohort_role": "BASELINE",
+        "contract_version": "2026-07-17.1",
+        "data_class": "SYNTHETIC_OUTCOME_PROXY",
+        "instrument": "PSS10",
+        "instrument_scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+        "sample_count": 3,
+        "schema_version": "pro_baseline_distribution_v1",
+        "sorted_baseline_raw_scores": [
+          10,
+          20,
+          30
+        ],
+        "source_scores_sha256": "86cb1f97452e7dc1002668ba8d01c5d6ab9886b724268ec4cc40b4bfdc523907",
+        "standardization_version": "pro_baseline_health_percentile_v1"
+      },
+      "standardized_scores": [
+        {
+          "baseline_distribution": {
+            "baseline_mean": 20.0,
+            "baseline_sample_std": 10.0,
+            "cohort_id": "op052-pss10-synthetic-baseline",
+            "cohort_role": "BASELINE",
+            "contract_version": "2026-07-17.1",
+            "data_class": "SYNTHETIC_OUTCOME_PROXY",
+            "instrument": "PSS10",
+            "instrument_scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+            "sample_count": 3,
+            "schema_version": "pro_baseline_distribution_v1",
+            "sorted_baseline_raw_scores": [
+              10,
+              20,
+              30
+            ],
+            "source_scores_sha256": "86cb1f97452e7dc1002668ba8d01c5d6ab9886b724268ec4cc40b4bfdc523907",
+            "standardization_version": "pro_baseline_health_percentile_v1"
+          },
+          "contract_version": "2026-07-17.1",
+          "health_percentile": 84.134475,
+          "health_z_score": 1.0,
+          "instrument": "PSS10",
+          "instrument_scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+          "raw_score": 10,
+          "schema_version": "pro_standardized_score_v1",
+          "standardization_version": "pro_baseline_health_percentile_v1"
+        },
+        {
+          "baseline_distribution": {
+            "baseline_mean": 20.0,
+            "baseline_sample_std": 10.0,
+            "cohort_id": "op052-pss10-synthetic-baseline",
+            "cohort_role": "BASELINE",
+            "contract_version": "2026-07-17.1",
+            "data_class": "SYNTHETIC_OUTCOME_PROXY",
+            "instrument": "PSS10",
+            "instrument_scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+            "sample_count": 3,
+            "schema_version": "pro_baseline_distribution_v1",
+            "sorted_baseline_raw_scores": [
+              10,
+              20,
+              30
+            ],
+            "source_scores_sha256": "86cb1f97452e7dc1002668ba8d01c5d6ab9886b724268ec4cc40b4bfdc523907",
+            "standardization_version": "pro_baseline_health_percentile_v1"
+          },
+          "contract_version": "2026-07-17.1",
+          "health_percentile": 50.0,
+          "health_z_score": 0.0,
+          "instrument": "PSS10",
+          "instrument_scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+          "raw_score": 20,
+          "schema_version": "pro_standardized_score_v1",
+          "standardization_version": "pro_baseline_health_percentile_v1"
+        },
+        {
+          "baseline_distribution": {
+            "baseline_mean": 20.0,
+            "baseline_sample_std": 10.0,
+            "cohort_id": "op052-pss10-synthetic-baseline",
+            "cohort_role": "BASELINE",
+            "contract_version": "2026-07-17.1",
+            "data_class": "SYNTHETIC_OUTCOME_PROXY",
+            "instrument": "PSS10",
+            "instrument_scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+            "sample_count": 3,
+            "schema_version": "pro_baseline_distribution_v1",
+            "sorted_baseline_raw_scores": [
+              10,
+              20,
+              30
+            ],
+            "source_scores_sha256": "86cb1f97452e7dc1002668ba8d01c5d6ab9886b724268ec4cc40b4bfdc523907",
+            "standardization_version": "pro_baseline_health_percentile_v1"
+          },
+          "contract_version": "2026-07-17.1",
+          "health_percentile": 15.865525,
+          "health_z_score": -1.0,
+          "instrument": "PSS10",
+          "instrument_scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+          "raw_score": 30,
+          "schema_version": "pro_standardized_score_v1",
+          "standardization_version": "pro_baseline_health_percentile_v1"
+        }
+      ]
+    }
+  },
+  "canonical_raw_scores": {
+    "ISI": {
+      "contract_version": "2026-07-17.1",
+      "input_kind": "item_scores",
+      "instrument": "ISI",
+      "item_score_range": [
+        0,
+        4
+      ],
+      "lower_is_better": true,
+      "original_item_values": [
+        2,
+        2,
+        1,
+        2,
+        1,
+        1,
+        1
+      ],
+      "raw_score": 10,
+      "raw_score_range": [
+        0,
+        28
+      ],
+      "reverse_scored_positions": [],
+      "schema_version": "pro_instrument_score_v1",
+      "scored_item_values": [
+        2,
+        2,
+        1,
+        2,
+        1,
+        1,
+        1
+      ],
+      "scoring_version": "isi_item_sum_v1",
+      "source_ids": [
+        "ISI-MORIN-BASTIEN-2001"
+      ]
+    },
+    "PSQI": {
+      "contract_version": "2026-07-17.1",
+      "input_kind": "component_scores",
+      "instrument": "PSQI",
+      "item_score_range": [
+        0,
+        3
+      ],
+      "lower_is_better": true,
+      "original_item_values": [
+        1,
+        2,
+        1,
+        1,
+        1,
+        0,
+        1
+      ],
+      "raw_score": 7,
+      "raw_score_range": [
+        0,
+        21
+      ],
+      "reverse_scored_positions": [],
+      "schema_version": "pro_instrument_score_v1",
+      "scored_item_values": [
+        1,
+        2,
+        1,
+        1,
+        1,
+        0,
+        1
+      ],
+      "scoring_version": "psqi_component_sum_v1",
+      "source_ids": [
+        "PSQI-BUYSSE-1989"
+      ]
+    },
+    "PSS10": {
+      "contract_version": "2026-07-17.1",
+      "input_kind": "item_scores",
+      "instrument": "PSS10",
+      "item_score_range": [
+        0,
+        4
+      ],
+      "lower_is_better": true,
+      "original_item_values": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2,
+        3,
+        3,
+        2,
+        2
+      ],
+      "raw_score": 16,
+      "raw_score_range": [
+        0,
+        40
+      ],
+      "reverse_scored_positions": [
+        4,
+        5,
+        7,
+        8
+      ],
+      "schema_version": "pro_instrument_score_v1",
+      "scored_item_values": [
+        2,
+        2,
+        2,
+        1,
+        1,
+        2,
+        1,
+        1,
+        2,
+        2
+      ],
+      "scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+      "source_ids": [
+        "PSS-COHEN-1983-1988"
+      ]
+    }
+  },
+  "contract": {
+    "contract_sha256": "73c5621bedcb30f00831d5dc37d157e1838cf7556a23f9bebdb19f89a52b9987",
+    "contract_version": "2026-07-17.1",
+    "instrument_order": [
+      "PSQI",
+      "ISI",
+      "PSS10"
+    ],
+    "operation_order": "raw_scores->mean_and_sample_std->round_statistics->health_z->round_z->normal_cdf_times_100->round_percentile",
+    "rounding_method": "python_round_half_to_even",
+    "schema_version": "pro_instrument_scoring_contract_v1",
+    "standardization_version": "pro_baseline_health_percentile_v1"
+  },
+  "evidence_boundary": {
+    "baseline_cohort_role_fixed": true,
+    "clinical_interpretation_proven": false,
+    "data_class": "SYNTHETIC_OUTCOME_PROXY",
+    "instrument_text_included": false,
+    "production_data_used": false,
+    "production_operation_proven": false,
+    "service_integration_proven": false
+  },
+  "fail_closed_checks": {
+    "boolean_item_rejected": true,
+    "contract_drift_rejected": true,
+    "contract_limitation_drift_rejected": true,
+    "float_item_rejected": true,
+    "follow_up_observation_rejected": true,
+    "forged_distribution_rejected": true,
+    "model_instance_distribution_rejected": true,
+    "model_instance_score_rejected": true,
+    "noncanonical_standardized_output_rejected": true,
+    "out_of_range_item_rejected": true,
+    "unknown_instrument_rejected": true,
+    "wrong_item_count_rejected": true,
+    "zero_spread_rejected": true
+  },
+  "requirement_stages": {
+    "OP-051": "IMPLEMENTED",
+    "OP-052": "IMPLEMENTED"
+  },
+  "schema_version": "op051_op052_versioned_pro_scoring_smoke_v1",
+  "source_identity": {
+    "commit": "fd7e4a3d1d6edb630d6c25cdb0fde11129d98975",
+    "source_paths": [
+      "data/contracts/pro_instrument_scoring_v1.json",
+      "scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py",
+      "src/wellnessbox_rnd/interim/contracts.py",
+      "src/wellnessbox_rnd/metrics/__init__.py",
+      "src/wellnessbox_rnd/metrics/calculators.py",
+      "src/wellnessbox_rnd/metrics/pro_scoring.py"
+    ],
+    "source_sha256": "7edc4cee9cd2a6dbd8d74be8fc10417d0959e27ddc03fb350218ce143e8a60bf"
+  }
+}

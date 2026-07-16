@@ -984,8 +984,38 @@
       "owners": ["wellnessbox-rnd"],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
-        {"requirement_id": "OP-051", "title": "PSQI, ISI, PSS-10 원점수 계산을 버전 고정한다."},
-        {"requirement_id": "OP-052", "title": "시작 분포를 사용한 Z 점수와 건강 백분위 변환을 고정한다."},
+        {
+          "requirement_id": "OP-051",
+          "title": "PSQI, ISI, PSS-10 원점수 계산을 버전 고정한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/contracts/pro_instrument_scoring_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_scoring.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_versioned_pro_instrument_scoring.py",
+              "wellnessbox-rnd/scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-052",
+          "title": "시작 분포를 사용한 Z 점수와 건강 백분위 변환을 고정한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/contracts/pro_instrument_scoring_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_scoring.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_versioned_pro_instrument_scoring.py",
+              "wellnessbox-rnd/scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-053", "title": "복용 전, 2주, 4주, 중단 시점 PRO 이벤트를 저장한다.", "required_stage": "OPERATED"},
         {"requirement_id": "OP-054", "title": "순응도, 누락 복용, 이상사례를 효과 해석에 반영한다."},
         {"requirement_id": "OP-055", "title": "개인 개선도와 집단 평균 개선도를 분리한다."},
