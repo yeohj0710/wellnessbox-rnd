@@ -13,7 +13,7 @@
 - Validation: focused mapping/prior/runtime selection `48 passed`; exact CI-equivalent selection `283 passed`; full Ruff PASS; manifest audit PASS with `41` claims, `124` checked evidence files, and zero issues; completion-report stale check PASS; stored/fresh runtime equality and fresh-build determinism PASS; independent final review Critical `0`, Important `0`.
 - Full suite: `683 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions.
 - Frozen evaluation: `256` cases; all seven metric deltas are `0`, and the overall and metric-specific weakest-slice categories are unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
-- Publication boundary: WellnessBox commit `58246f9a086c81bb3a38d4a1f33f5205b388d2b8` passed Encoding Guard run `29496255239`. R&D source commit `6a1f874b95fadbffbab796eefcbecd71284b6d9e` is pinned in deterministic evidence; evidence publication and Original plan evidence CI are the remaining loop steps.
+- Publication: WellnessBox commit `58246f9a086c81bb3a38d4a1f33f5205b388d2b8` passed Encoding Guard run `29496255239`. R&D source commit `6a1f874b95fadbffbab796eefcbecd71284b6d9e` and evidence commit `da2936206d0ebe8b2ef12d9e0b79f048f2239b10` are on `origin/main`; Original plan evidence run `29496879246` passed.
 - Recommended next loops: OP-043/044 candidate filtering and auditable score decomposition; OP-045/046 safe-candidate preservation and structured recommendation reasons; OP-047/048 uncertainty/missing-input quantification and deterministic fallback.
 
 ## 2026-07-16 external high-risk gate and final safety-authority loop
