@@ -14,7 +14,7 @@
 - Frozen evaluation: `256` cases; all seven tracked metric deltas are `0`. Replay/slice deltas: not applicable to this persistence-only loop.
 - Biggest bottlenecks: no deployed R&D process; no durable production R&D database; no authenticated service-to-R&D round trip; no production correction/deletion re-query evidence; no session replay API or service replay UI.
 - Recommended next loops: OP-029/030 session replay API and service UI; OP-033/034 pregnancy/lactation and condition-specific safety rules; OP-035/036 evidence-linked drug interactions and combined-dose calculation.
-- Publication: pending implementation commit, push, and `Original plan evidence` workflow result.
+- Publication: implementation commit `e2cfc54` was pushed to `main`; `Original plan evidence` run `29464603258` passed all audit, report, contract-test, and Ruff steps.
 
 ## 2026-07-15 log separation and execution-identity loop
 

@@ -235,6 +235,6 @@ Review findings required these completed corrections:
 - [x] Make the v7-to-v8 mutation-schema change atomic and preserve existing v7 event rows.
 - [x] Add raw-file erasure, post-mutation replay, tamper, audit-hash, and concurrent replay tests.
 
-- [ ] **Step 4: Commit, push, and verify CI**
+- [x] **Step 4: Commit, push, and verify CI**
 
 Stage only OP-027/028 files, keep user-owned untracked plans untouched, push `main`, and verify the `Original plan evidence` workflow succeeds.
