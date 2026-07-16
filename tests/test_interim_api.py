@@ -6,7 +6,10 @@ import pytest
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
-from wellnessbox_rnd.interim.bootstrap import bootstrap_operational_evidence
+from wellnessbox_rnd.interim.bootstrap import (
+    ORIGINAL_PLAN_PAGE_26_URI,
+    bootstrap_operational_evidence,
+)
 from wellnessbox_rnd.interim.evidence import EvidenceRegistry
 from wellnessbox_rnd.interim.importer import register_retrained_package
 from wellnessbox_rnd.interim.store import InterimStore
@@ -128,6 +131,13 @@ def test_current_safety_input_cannot_remove_stored_dynamic_rule_predicate(
     store = InterimStore(database)
     store.migrate()
     bootstrap_operational_evidence(store)
+    assert (
+        store.scalar(
+            "select canonical_uri from source_registry "
+            "where source_id='tips-original-plan-p26'"
+        )
+        == ORIGINAL_PLAN_PAGE_26_URI
+    )
     client = TestClient(app)
     profile_id = "usr_fedcba0987654321"
     profile = client.post(
