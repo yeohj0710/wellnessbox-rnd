@@ -4,7 +4,7 @@
 
 - Chosen stage: `original plan / candidate generation and efficacy scoring`
 - Chosen tasks: OP-043 and OP-044
-- Primary evidence: `data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json`; deterministic SHA-256 `a4851854d43bcf99f8e525a0bad8475a54789ceebd1378d899573870dc511662`; source commit `26fe13001448e4adc0a816d1d4ea74aa6f5e6a8b`
+- Primary evidence: `data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json`; deterministic SHA-256 `f1887207db9d3991471029c3d1248161260d3c6c5d5ab63307767a797691a7bb`; source commit `1465db1c153b71b8b636231eb6487c32e469c85b`
 - Main result: existing candidate scores now expose separate symptom, laboratory, lifestyle, dietary, wearable, CGM, and genetic terms with observed values, bounded points, versioned rule IDs, exact reference/claim IDs, and limitations. The recommendation contract includes every new term in its total.
 - Safety boundary: source-specific recommendation consent is explicit for snapshots. CGM TIR scoring requires a verified 70–180 mg/dL range, nonpregnant diabetes context, and a blood-glucose goal. Unknown genetic tags, custom TIR ranges, invalid aliases/bounds, and unscoped tags add zero. The scorer executes only the registry embedded in the validated runtime artifact.
 - Evidence stage: OP-043 and OP-044 are `IMPLEMENTED`. Generated counts are complete `32`, partial `11`, pending `76`, external `1`, contradicted `0`. No WellnessBox service change, deployment, or production operation was performed.
