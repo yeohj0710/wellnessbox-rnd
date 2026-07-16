@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/original-plan-evidence.yml"
       - "apps/inference_api/routes/recommend.py"
+      - "apps/inference_api/routes/interim.py"
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
@@ -25,6 +26,7 @@ on:
       - "scripts/run_knowledge_lineage_smoke.py"
       - "scripts/run_log_separation_identity_smoke.py"
       - "scripts/run_event_idempotency_data_mutation_smoke.py"
+      - "scripts/run_session_replay_service_ui_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -61,6 +63,7 @@ on:
       - "tests/test_knowledge_lineage.py"
       - "tests/test_log_separation_execution_identity.py"
       - "tests/test_event_idempotency_data_mutation.py"
+      - "tests/test_session_replay.py"
       - "tests/test_reference_ingestion.py"
       - "tests/test_runtime_knowledge_db.py"
   push:
@@ -68,6 +71,7 @@ on:
     paths:
       - ".github/workflows/original-plan-evidence.yml"
       - "apps/inference_api/routes/recommend.py"
+      - "apps/inference_api/routes/interim.py"
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
@@ -88,6 +92,7 @@ on:
       - "scripts/run_knowledge_lineage_smoke.py"
       - "scripts/run_log_separation_identity_smoke.py"
       - "scripts/run_event_idempotency_data_mutation_smoke.py"
+      - "scripts/run_session_replay_service_ui_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -124,6 +129,7 @@ on:
       - "tests/test_knowledge_lineage.py"
       - "tests/test_log_separation_execution_identity.py"
       - "tests/test_event_idempotency_data_mutation.py"
+      - "tests/test_session_replay.py"
       - "tests/test_reference_ingestion.py"
       - "tests/test_runtime_knowledge_db.py"
   workflow_dispatch:
@@ -174,6 +180,7 @@ jobs:
           tests/test_knowledge_lineage.py
           tests/test_log_separation_execution_identity.py
           tests/test_event_idempotency_data_mutation.py
+          tests/test_session_replay.py
           tests/test_reference_ingestion.py
           tests/test_runtime_knowledge_db.py
       - name: Lint requirement audit
@@ -214,6 +221,7 @@ jobs:
           scripts/run_knowledge_lineage_smoke.py
           scripts/run_log_separation_identity_smoke.py
           scripts/run_event_idempotency_data_mutation_smoke.py
+          scripts/run_session_replay_service_ui_smoke.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py
@@ -223,5 +231,6 @@ jobs:
           tests/test_knowledge_lineage.py
           tests/test_log_separation_execution_identity.py
           tests/test_event_idempotency_data_mutation.py
+          tests/test_session_replay.py
           tests/test_reference_ingestion.py
           tests/test_runtime_knowledge_db.py

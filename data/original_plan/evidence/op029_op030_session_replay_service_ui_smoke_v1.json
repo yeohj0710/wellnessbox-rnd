@@ -1,0 +1,39 @@
+{
+  "actual_route_cases": 4,
+  "changed_version": {
+    "input_match": true,
+    "mismatch_fields": [
+      "code_commit"
+    ],
+    "output_match": null,
+    "recommendation_execution_skipped": true,
+    "status": "VERSION_MISMATCH",
+    "version_match": false
+  },
+  "database_rows": {
+    "executions": 1,
+    "replay_runs": 2,
+    "replay_snapshots": 1
+  },
+  "proven_stage": "IMPLEMENTED",
+  "raw_health_payload_returned": false,
+  "required_stage": "OPERATED",
+  "same_input_and_version": {
+    "input_match": true,
+    "output_hashes_equal": true,
+    "output_match": true,
+    "status": "MATCH",
+    "version_match": true
+  },
+  "saved_sessions": {
+    "replayable": 1,
+    "total": 1,
+    "unavailable": 0,
+    "visible_items": 1
+  },
+  "schema_version": 9,
+  "security": {
+    "internal_token_required": true,
+    "list_without_token_status": 401
+  }
+}

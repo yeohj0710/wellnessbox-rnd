@@ -202,6 +202,16 @@ def _request_payload(request: RecommendationRequest) -> dict[str, Any]:
     return payload
 
 
+def replay_response_payload(response: RecommendationResponse) -> dict[str, Any]:
+    payload = response.model_dump(mode="json", exclude_none=False)
+    payload.pop("execution_id", None)
+    payload.pop("decision_id", None)
+    metadata = payload.get("metadata")
+    if isinstance(metadata, dict):
+        metadata.pop("generated_at", None)
+    return payload
+
+
 def _persisted_profile_payload(request: RecommendationRequest) -> dict[str, Any] | None:
     persisted_sources: dict[str, dict[str, Any]] = {}
     consents = request.data_source_consents
@@ -283,6 +293,19 @@ def _all_used_sources_allow_storage(request: RecommendationRequest) -> bool:
     return all(
         getattr(request.data_source_consents, source.value).allow_persistent_storage
         for source in used_sources
+    )
+
+
+def _all_request_sources_allow_storage(request: RecommendationRequest) -> bool:
+    represented_sources = {DataSource.SURVEY}
+    for source in (DataSource.NHIS, DataSource.WEARABLE, DataSource.CGM, DataSource.GENETIC):
+        if getattr(request.input_availability, source.value) or any(
+            observation.source == source for observation in request.laboratory_observations
+        ):
+            represented_sources.add(source)
+    return all(
+        getattr(request.data_source_consents, source.value).allow_persistent_storage
+        for source in represented_sources
     )
 
 
@@ -371,10 +394,12 @@ class ExecutionLedger:
     ) -> ExecutionTrace:
         execution_id = response.execution_id
         profile_id = _profile_id(request)
-        request_sha256 = _sha256(_request_payload(request))
+        request_payload = _request_payload(request)
+        request_sha256 = _sha256(request_payload)
         profile_payload = _persisted_profile_payload(request)
         consent_payload = _consent_payload(request)
         store_derived_outputs = _all_used_sources_allow_storage(request)
+        store_replay_snapshot = _all_request_sources_allow_storage(request)
         stored_request_id = (
             request.request_id
             if store_derived_outputs
@@ -459,6 +484,24 @@ class ExecutionLedger:
                     identity.created_at,
                 ),
             )
+            if store_replay_snapshot:
+                expected_output = replay_response_payload(response)
+                connection.execute(
+                    """
+                    insert into execution_replay_snapshots(
+                      execution_id, request_json, request_sha256,
+                      expected_output_json, expected_output_sha256, created_at
+                    ) values (?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        execution_id,
+                        _canonical_json(request_payload),
+                        request_sha256,
+                        _canonical_json(expected_output),
+                        _sha256(expected_output),
+                        now,
+                    ),
+                )
             core_events = self._core_event_payloads(
                 response,
                 store_derived_outputs=store_derived_outputs,
@@ -911,6 +954,7 @@ __all__ = [
     "ExecutionLedgerError",
     "ExecutionNotFoundError",
     "ExecutionTrace",
+    "replay_response_payload",
     "IdempotencyConflictError",
     "KnowledgeLineageRecord",
     "KnowledgeOutputType",

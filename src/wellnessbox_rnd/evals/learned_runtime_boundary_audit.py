@@ -211,8 +211,7 @@ def build_learned_runtime_boundary_audit(
         "evidence": {
             "route_parameter_names": list(inspect.signature(recommend_endpoint).parameters),
             "route_calls_recommend_without_learned_args": (
-                "return recommend(payload)" in route_source
-                and "enable_learned_reranking" not in route_source
+                _calls_recommend_with_only_payload(route_source)
             ),
             "route_imports_chat_modules": _has_import_prefix(
                 route_imports, "wellnessbox_rnd.chat"
@@ -452,6 +451,25 @@ def _has_import_prefix(imports: list[str], prefix: str) -> bool:
 def _has_import_text(imports: list[str], text: str) -> bool:
     lowered = text.lower()
     return any(lowered in item.lower() for item in imports)
+
+
+def _calls_recommend_with_only_payload(source: str) -> bool:
+    calls = [
+        node
+        for node in ast.walk(ast.parse(source))
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "recommend"
+    ]
+    if len(calls) != 1:
+        return False
+    call = calls[0]
+    return (
+        len(call.args) == 1
+        and isinstance(call.args[0], ast.Name)
+        and call.args[0].id == "payload"
+        and not call.keywords
+    )
 
 
 def _proof_headline(section_name: str) -> str:

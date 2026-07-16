@@ -9,7 +9,7 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
-from wellnessbox_rnd.schemas.recommendation import RecommendationResponse
+from wellnessbox_rnd.schemas.recommendation import EngineMetadata, RecommendationResponse
 
 CODE_COMMIT_ENV_VAR = "WB_RND_CODE_COMMIT"
 CODE_COMMIT_SOURCES = ("environment", "git", "unresolved")
@@ -138,18 +138,35 @@ def build_execution_identity(
     created_at: str,
     repository_root: Path | None = None,
 ) -> ExecutionIdentityRecord:
+    return build_runtime_identity(
+        execution_id=execution_id,
+        model_id=response.metadata.mode,
+        engine_version=response.metadata.engine_version,
+        created_at=created_at,
+        repository_root=repository_root,
+    )
+
+
+def build_runtime_identity(
+    *,
+    execution_id: str,
+    model_id: str,
+    engine_version: str,
+    created_at: str,
+    repository_root: Path | None = None,
+) -> ExecutionIdentityRecord:
     code_commit_source, code_commit = resolve_code_commit(repository_root)
     datasets = runtime_dataset_identities(repository_root)
     config: dict[str, Any] = {
-        "model_id": response.metadata.mode,
-        "engine_version": response.metadata.engine_version,
+        "model_id": model_id,
+        "engine_version": engine_version,
         "app_env": os.getenv("WB_RND_APP_ENV", os.getenv("APP_ENV", "local")).lower(),
         "datasets": {item.dataset_id: item.sha256 for item in datasets},
     }
     return ExecutionIdentityRecord(
         execution_id=execution_id,
-        model_id=response.metadata.mode,
-        engine_version=response.metadata.engine_version,
+        model_id=model_id,
+        engine_version=engine_version,
         code_commit=code_commit,
         code_commit_source=code_commit_source,
         datasets=datasets,
@@ -159,6 +176,38 @@ def build_execution_identity(
     )
 
 
+def build_current_deterministic_identity(
+    *,
+    execution_id: str,
+    created_at: str,
+    repository_root: Path | None = None,
+) -> ExecutionIdentityRecord:
+    metadata = EngineMetadata(mode="deterministic_baseline_v1")
+    return build_runtime_identity(
+        execution_id=execution_id,
+        model_id=metadata.mode,
+        engine_version=metadata.engine_version,
+        created_at=created_at,
+        repository_root=repository_root,
+    )
+
+
+def identity_version_payload(identity: ExecutionIdentityRecord) -> dict[str, Any]:
+    return {
+        "model_id": identity.model_id,
+        "engine_version": identity.engine_version,
+        "code_commit": identity.code_commit,
+        "code_commit_source": identity.code_commit_source,
+        "datasets": [item.model_dump(mode="json") for item in identity.datasets],
+        "config": identity.config,
+        "config_sha256": identity.config_sha256,
+    }
+
+
+def identity_version_sha256(identity: ExecutionIdentityRecord) -> str:
+    return _sha256_text(_canonical_json(identity_version_payload(identity)))
+
+
 __all__ = [
     "CODE_COMMIT_ENV_VAR",
     "CODE_COMMIT_SOURCES",
@@ -166,7 +215,11 @@ __all__ = [
     "ExecutionIdentityRecord",
     "RUNTIME_DATASET_ARTIFACTS",
     "UNRESOLVED_CODE_COMMIT",
+    "build_current_deterministic_identity",
     "build_execution_identity",
+    "build_runtime_identity",
+    "identity_version_payload",
+    "identity_version_sha256",
     "resolve_code_commit",
     "runtime_dataset_identities",
 ]

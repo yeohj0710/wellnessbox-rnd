@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 8
+SCHEMA_VERSION = 9
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -283,6 +283,57 @@ CREATE TABLE IF NOT EXISTS execution_identities (
   config_sha256 TEXT NOT NULL,
   created_at TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS execution_replay_snapshots (
+  execution_id TEXT PRIMARY KEY REFERENCES executions(execution_id),
+  request_json TEXT NOT NULL,
+  request_sha256 TEXT NOT NULL,
+  expected_output_json TEXT NOT NULL,
+  expected_output_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS execution_replay_runs (
+  replay_id TEXT PRIMARY KEY,
+  execution_id TEXT NOT NULL REFERENCES executions(execution_id),
+  status TEXT NOT NULL CHECK(status IN ('MATCH', 'MISMATCH', 'VERSION_MISMATCH')),
+  input_match INTEGER NOT NULL CHECK(input_match IN (0, 1)),
+  version_match INTEGER NOT NULL CHECK(version_match IN (0, 1)),
+  output_match INTEGER CHECK(output_match IN (0, 1)),
+  expected_output_sha256 TEXT NOT NULL,
+  actual_output_sha256 TEXT,
+  mismatch_fields_json TEXT NOT NULL,
+  stored_identity_sha256 TEXT NOT NULL,
+  active_identity_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_execution_replay_runs_execution_created
+ON execution_replay_runs(execution_id, created_at);
+
+CREATE TRIGGER IF NOT EXISTS execution_replay_snapshots_no_update
+BEFORE UPDATE ON execution_replay_snapshots
+BEGIN
+  SELECT RAISE(ABORT, 'execution_replay_snapshots_append_only');
+END;
+
+CREATE TRIGGER IF NOT EXISTS execution_replay_snapshots_no_delete
+BEFORE DELETE ON execution_replay_snapshots
+BEGIN
+  SELECT RAISE(ABORT, 'execution_replay_snapshots_append_only');
+END;
+
+CREATE TRIGGER IF NOT EXISTS execution_replay_runs_no_update
+BEFORE UPDATE ON execution_replay_runs
+BEGIN
+  SELECT RAISE(ABORT, 'execution_replay_runs_append_only');
+END;
+
+CREATE TRIGGER IF NOT EXISTS execution_replay_runs_no_delete
+BEFORE DELETE ON execution_replay_runs
+BEGIN
+  SELECT RAISE(ABORT, 'execution_replay_runs_append_only');
+END;
 
 CREATE TABLE IF NOT EXISTS behavior_events (
   behavior_event_id TEXT PRIMARY KEY,

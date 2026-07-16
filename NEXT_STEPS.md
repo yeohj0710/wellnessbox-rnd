@@ -2,15 +2,15 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031, and OP-032 are complete. OP-021 through OP-028 are `IMPLEMENTED` and therefore remain partial at their required `OPERATED` stage. SQLite schema `8` separates both log classes, records execution identity, blocks changed event replays under an existing idempotency key, preserves immutable ingestion hashes, and applies authenticated corrections or restart-recoverable secure tombstone deletions through a trigger-protected hash chain while preserving event IDs and knowledge lineage.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031, and OP-032 are complete. OP-021 through OP-030 are `IMPLEMENTED` and therefore remain partial at their required `OPERATED` stage. SQLite schema `9` separates both log classes, records execution identity, enforces event idempotency and mutation audit chains, and stores consent-authorized deterministic replay snapshots plus append-only replay results.
 
 Next three loops:
 
-1. Implement OP-029 and OP-030: add deterministic session replay and expose saved-session counts and replay results through the service UI.
-2. Implement OP-033 and OP-034: separate pregnancy/lactation restrictions and expand condition-specific contraindication rules.
-3. Implement OP-035 and OP-036: connect drug-ingredient interaction rules to evidence IDs and calculate combined ingredient dose across products.
+1. Implement OP-033 and OP-034: separate pregnancy/lactation restrictions and expand condition-specific contraindication rules.
+2. Implement OP-035 and OP-036: connect drug-ingredient interaction rules to evidence IDs and calculate combined ingredient dose across products.
+3. Implement OP-037 and OP-038: normalize allergy risks and handle repeated or overlapping risk signals consistently.
 
-Continue through the Data Lake evidence group in two-requirement slices. The current service adapter accepts the existing stored `UserProfile` shape, forwards a stable pseudonymous subject ID, and the R&D recommendation route persists authorized profile, consent, and knowledge lineage. It still does not perform a production two-process round trip; OP-101 through OP-105 remain separate deployment and production-integration requirements.
+Continue through the safety-engine group in two-requirement slices. The current service adapter accepts the existing stored `UserProfile` shape, forwards a stable pseudonymous subject ID, and the R&D recommendation route persists authorized profile, consent, knowledge lineage, and replay snapshots. The service UI can query and replay saved sessions through the existing internal client, but production has no deployed R&D endpoint or `WB_RND_*` settings. OP-029 and OP-030 therefore remain below `OPERATED`, and OP-101 through OP-105 remain separate deployment and production-integration requirements.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 

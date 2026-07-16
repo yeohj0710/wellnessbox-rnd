@@ -31,6 +31,11 @@ from wellnessbox_rnd.interim.data_mutation import (
 from wellnessbox_rnd.interim.inference import recommend_with_registered_model
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
 from wellnessbox_rnd.interim.safety import evaluate_safety
+from wellnessbox_rnd.interim.session_replay import (
+    SessionReplayIntegrityError,
+    SessionReplayLedger,
+    SessionReplayUnavailableError,
+)
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.schemas.recommendation import DataSource
 
@@ -149,6 +154,8 @@ def status() -> dict[str, Any]:
         "executions",
         "execution_events",
         "execution_identities",
+        "execution_replay_snapshots",
+        "execution_replay_runs",
         "behavior_events",
         "event_mutations",
     )
@@ -311,6 +318,27 @@ def execution_trace(execution_id: str) -> dict[str, Any]:
         return ExecutionLedger(_store()).get_trace(execution_id).model_dump(mode="json")
     except ExecutionNotFoundError as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
+
+
+@router.get("/executions")
+def saved_executions(
+    limit: Annotated[int, Query(ge=1, le=100)] = 20,
+) -> dict[str, Any]:
+    return SessionReplayLedger(_store()).summary(limit=limit).model_dump(mode="json")
+
+
+@router.post("/executions/{execution_id}/replay")
+def replay_execution(execution_id: str) -> dict[str, Any]:
+    try:
+        return SessionReplayLedger(_store()).replay(execution_id).model_dump(mode="json")
+    except ExecutionNotFoundError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except SessionReplayUnavailableError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except SessionReplayIntegrityError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
 
 
 @router.post("/executions/{execution_id}/events")

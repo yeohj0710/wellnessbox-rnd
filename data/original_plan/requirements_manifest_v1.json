@@ -485,8 +485,48 @@
             ]
           }
         },
-        {"requirement_id": "OP-029", "title": "세션을 같은 입력과 버전으로 재생하는 replay API를 만든다."},
-        {"requirement_id": "OP-030", "title": "wellnessbox 화면에서 세션 저장 건수와 replay 결과를 조회한다."}
+        {
+          "requirement_id": "OP-029",
+          "title": "세션을 같은 입력과 버전으로 재생하는 replay API를 만든다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/execution_identity.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/session_replay.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_session_replay.py",
+              "wellnessbox-rnd/tests/test_interim_store.py",
+              "wellnessbox-rnd/scripts/run_session_replay_service_ui_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op029_op030_session_replay_service_ui_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-030",
+          "title": "wellnessbox 화면에서 세션 저장 건수와 replay 결과를 조회한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+              "wellnessbox/lib/server/tips-lab/rnd-session-replay.ts",
+              "wellnessbox/lib/server/tips-lab/runtime.ts",
+              "wellnessbox/components/tips/InterimUserConsole.tsx",
+              "wellnessbox/components/tips/interim.module.css"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_session_replay.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op029_op030_session_replay_service_ui_smoke_v1.json",
+              "wellnessbox/scripts/qa/check-tips-rnd-session-replay.cts",
+              "wellnessbox/scripts/qa/check-tips-interim-modules.cts",
+              "wellnessbox/scripts/qa/check-tips-web-lab.cts"
+            ]
+          }
+        }
       ]
     },
     {

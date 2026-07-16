@@ -13,7 +13,7 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
     store.migrate()
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 8
+    assert store.scalar("select max(version) from schema_migrations") == 9
     assert "pharmacy_id" in {row[1] for row in store.rows("pragma table_info(review_tasks)")}
     required_tables = {
         "proxy_cases",
@@ -38,6 +38,8 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
         "claim_rule_links",
         "execution_knowledge_lineage",
         "execution_identities",
+        "execution_replay_snapshots",
+        "execution_replay_runs",
         "behavior_events",
     }
     assert required_tables.issubset(store.table_names())
@@ -81,7 +83,7 @@ def test_schema_version_2_profile_data_survives_lineage_migration(tmp_path) -> N
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 8
+    assert store.scalar("select max(version) from schema_migrations") == 9
     assert store.scalar("select count(*) from user_profiles") == 1
     assert store.scalar(
         "select payload_json from user_profiles where profile_id='usr_1234567890abcdef'"
@@ -100,7 +102,7 @@ def test_interim_store_read_helpers_close_database_connections(tmp_path) -> None
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 8
+    assert store.scalar("select max(version) from schema_migrations") == 9
     assert store.rows("select version from schema_migrations")
 
     database_path.unlink()
@@ -178,7 +180,7 @@ def test_schema_version_3_events_gain_consent_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 8
+    assert store.scalar("select max(version) from schema_migrations") == 9
     assert store.scalar(
         "select consent_snapshot_id from execution_events where event_id='event_1'"
     ) == "consent_1"
@@ -233,7 +235,7 @@ def test_schema_version_4_evidence_gains_parsed_span_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 8
+    assert store.scalar("select max(version) from schema_migrations") == 9
     columns = {row[1] for row in store.rows("pragma table_info(evidence_passages)")}
     assert {"page_or_section", "line_start", "line_end", "metadata_json"}.issubset(
         columns
@@ -298,7 +300,7 @@ def test_schema_version_5_gains_disjoint_log_and_identity_tables(tmp_path) -> No
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 8
+    assert store.scalar("select max(version) from schema_migrations") == 9
     assert store.scalar("select count(*) from executions") == 1
     assert {"execution_identities", "behavior_events"}.issubset(store.table_names())
     behavior_sql = store.scalar(
@@ -442,7 +444,7 @@ def test_schema_version_6_lineage_keeps_multiple_rules_for_one_claim(tmp_path) -
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 8
+    assert store.scalar("select max(version) from schema_migrations") == 9
     assert store.scalar("select count(*) from execution_knowledge_lineage") == 1
     with store.transaction() as connection:
         connection.execute(
@@ -517,7 +519,7 @@ def test_schema_version_7_gains_event_mutation_history(tmp_path) -> None:
     store.migrate()
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 8
+    assert store.scalar("select max(version) from schema_migrations") == 9
     assert "event_mutations" in store.table_names()
     for table_name in ("execution_events", "behavior_events"):
         table_info = store.rows(f"pragma table_info({table_name})")

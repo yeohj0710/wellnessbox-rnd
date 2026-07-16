@@ -1,5 +1,22 @@
 # PROGRESS
 
+## 2026-07-16 deterministic session replay and service UI loop
+
+- Chosen stage: `original plan / Data Lake evidence lineage`
+- Chosen tasks: OP-029 deterministic saved-session replay; OP-030 saved-session count and replay-result display in the WellnessBox evaluator UI
+- Primary evidence: `data/original_plan/evidence/op029_op030_session_replay_service_ui_smoke_v1.json`; `4` actual FastAPI route cases, SQLite schema `9`, one replay snapshot, one exact-version `MATCH`, one fail-closed `VERSION_MISMATCH`, and two append-only replay-run rows
+- Reused the existing recommendation engine, `ExecutionLedger`, execution identity, interim internal-token policy, and WellnessBox `callWbRndInterim` client. No parallel recommendation engine, session store, browser credential path, or local KPI replay substitution was created.
+- Replay snapshots retain the exact validated request and a stable output projection only when every represented input source permits persistent storage. Replay checks request and snapshot integrity plus model, engine, code, dataset, and configuration identity before calling the recommendation engine. A version mismatch records the attempt and skips recommendation execution.
+- The WellnessBox evaluator now shows the R&D connection state, saved/replayable/run counts, recent replayable sessions, and separate input/version/output checks. The default view does not expose raw health payloads, hashes, execution IDs, model IDs, or internal credentials. Changing the selected session clears the prior result.
+- Evidence status: OP-029 and OP-030 are `IMPLEMENTED`, not `OPERATED`. The service production environment has no deployed R&D base URL or `WB_RND_*` configuration, so the two production processes still do not run together and the UI must report `R&D 서버 미연결`. Generated status: complete `22`, partial `10`, pending `87`, external `1`, contradicted `0`.
+- Validation: exact CI-equivalent selection `200 passed`; focused runtime-boundary audit `2 passed`; full Ruff PASS; replay smoke byte-identical across reruns (`45e4edfc5d4002853bd722d80e238cba954ca404af5bf687e5a3c79ecb856ded`); manifest audit PASS with `32` claims, `93` checked evidence files, and zero issues; completion-report stale check PASS; final independent review found no Critical, Important, or merge-blocking Minor findings.
+- Full suite: `611 passed`, `77 failed`; the unchanged failure groups remain `73` absent ignored report artifacts and `4` CGM geometry assertions. The runtime-boundary audit now inspects the actual `recommend(payload)` call through Python syntax instead of requiring one obsolete return-statement string.
+- Frozen evaluation: `256` cases; all seven tracked metric deltas are `0` against the previous 256-case report.
+- WellnessBox validation: replay contract QA, web-lab QA, interim QA, Data Lake QA, TypeScript, encoding audit, lint, `git diff --check`, and production build PASS.
+- Biggest bottlenecks: no deployed R&D process; no durable production R&D database; no production service-to-R&D internal authentication; no successful production replay round trip or postcondition re-query.
+- Recommended next loops: OP-033/034 pregnancy/lactation and condition-specific safety rules; OP-035/036 evidence-linked drug interactions and combined-dose calculation; OP-037/038 allergy normalization and repeated-risk handling.
+- Publication: WellnessBox implementation commit `6adf202` was pushed to `main`. R&D commit, evidence CI, service production deployment, and browser verification remain pending.
+
 ## 2026-07-16 event idempotency and data-mutation loop
 
 - Chosen stage: `original plan / Data Lake evidence lineage`
