@@ -15,7 +15,7 @@
 - WellnessBox validation: replay contract QA, web-lab QA, interim QA, Data Lake QA, TypeScript, encoding audit, lint, `git diff --check`, and production build PASS.
 - Biggest bottlenecks: no deployed R&D process; no durable production R&D database; no production service-to-R&D internal authentication; no successful production replay round trip or postcondition re-query.
 - Recommended next loops: OP-033/034 pregnancy/lactation and condition-specific safety rules; OP-035/036 evidence-linked drug interactions and combined-dose calculation; OP-037/038 allergy normalization and repeated-risk handling.
-- Publication: WellnessBox implementation commit `6adf202` was pushed to `main`. R&D commit, evidence CI, service production deployment, and browser verification remain pending.
+- Publication: WellnessBox commit `6adf202` and R&D commit `8727853` were pushed to `main`. Encoding Guard run `29467286428` and Original plan evidence run `29467301272` passed. Vercel production deployment `dpl_2exTp3pgV6YsPBqSQkoZFKYgi5w5` is `Ready` and aliased to `wellnessbox.kr`. A headed Chrome check completed password login, the evaluator's default 1→6 stage path, the replay-panel render, and the connection refresh with zero console errors and HTTP 200 lab responses. Because production has no `WB_RND_*` settings, the verified panel correctly shows `R&D 서버 미연결` and dash counts; no production replay was claimed.
 
 ## 2026-07-16 event idempotency and data-mutation loop
 

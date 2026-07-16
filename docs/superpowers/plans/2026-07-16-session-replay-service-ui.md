@@ -6,7 +6,7 @@
 
 **Architecture:** Extend the existing R&D `ExecutionLedger` and SQLite store rather than creating another session store. Schema version 9 adds one replay snapshot per execution and an append-only replay-run history. The authenticated interim API lists replayable sessions and performs fail-closed replay after comparing model, engine, code, dataset, and configuration identities. The WellnessBox lab runtime calls those endpoints through the existing authenticated `wb-rnd-interim-client`; the evaluator UI shows connection state, saved counts, and input/version/output checks without exposing raw payloads.
 
-**Status (2026-07-16):** Tasks 1 through 6 and both repository verification sections are complete. Publication, CI, deployment, and real-browser checks in Task 7 remain open. The detailed checklists below preserve the original execution plan; `PROGRESS.md` records the verified results.
+**Status (2026-07-16):** Tasks 1 through 7 are complete at the proven `IMPLEMENTED` boundary. Both repository commits and CI runs passed, the WellnessBox deployment is `Ready` with the `wellnessbox.kr` alias, and a headed Chrome check confirmed the explicit disconnected panel. Production still has no deployed R&D process or `WB_RND_*` settings, so OP-029/030 remain below `OPERATED`. The detailed checklists below preserve the original execution plan; `PROGRESS.md` records the verified results.
 
 **Tech Stack:** Python 3.11+, FastAPI, Pydantic v2, SQLite, pytest; Next.js App Router, React, TypeScript, Prisma-backed TIPS lab state, existing `WB_RND_INTERIM_*` service client.
 
