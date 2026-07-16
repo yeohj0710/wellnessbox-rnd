@@ -34,10 +34,34 @@ def test_ingest_reference_directory_builds_rule_and_evidence_artifacts() -> None
     artifact = ingest_reference_directory("data/raw_references")
 
     assert validate_knowledge_artifact(artifact) == []
-    assert len(artifact.references) == 3
-    assert all(reference.license_status == "APPROVED_INTERNAL" for reference in artifact.references)
+    assert len(artifact.references) == 4
+    assert {reference.license_status for reference in artifact.references} == {
+        "APPROVED_INTERNAL",
+        "PUBLIC_GOVERNMENT",
+    }
     assert all(reference.effective_at for reference in artifact.references)
-    assert len(artifact.parsed_claims) == 5
+    assert len(artifact.parsed_claims) == 6
+    nih_reference = next(
+        reference
+        for reference in artifact.references
+        if reference.reference_id == "REF-NIH-ODS-OMEGA3-001"
+    )
+    nih_claim = next(
+        claim
+        for claim in artifact.parsed_claims
+        if claim.claim_id == "CLM-NIH-ODS-OMEGA3-WARFARIN-001"
+    )
+    assert nih_reference.effective_at == "2025-08-22T00:00:00Z"
+    assert nih_claim.claim_text == (
+        "Fish oil might prolong clotting time with warfarin, although most research "
+        "found that 3–6 g/day did not significantly affect anticoagulant status; "
+        "FDA-approved omega-3 pharmaceutical package inserts state that patients "
+        "taking those products with anticoagulants should be monitored periodically "
+        "for INR changes."
+    )
+    assert "FDA-approved omega-3 pharmaceutical package inserts" in (
+        nih_claim.citation_span.excerpt
+    )
     assert any(rule.rule_id == "KB-SAFETY-ANTICOAG-001" for rule in artifact.rule_candidates)
     assert any(
         evidence.ingredient_key == "glucosamine"
@@ -52,10 +76,11 @@ def test_summarize_ingestion_reports_expected_counts() -> None:
 
     summary = summarize_ingestion(artifact)
 
-    assert summary.reference_count == 3
-    assert summary.claim_count == 5
+    assert summary.reference_count == 4
+    assert summary.claim_count == 6
     assert summary.rule_candidate_count == 5
     assert summary.source_type_counts == {
+        "government_health_reference": 1,
         "interaction_reference": 1,
         "master_context": 2,
     }

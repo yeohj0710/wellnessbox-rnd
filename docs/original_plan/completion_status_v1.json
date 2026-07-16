@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "c95f6c9ef22755e8b277f33ab93c25e1ea7dbe51d0b49644b8c7c89643a87e3f",
+  "audited_manifest_sha256": "1698912c96676e59267405f563ff875a7a1511ea9143e5a819310716883b18b5",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 24,
+    "COMPLETE": 26,
     "PARTIAL": 10,
-    "PENDING": 85,
+    "PENDING": 83,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -56,9 +56,9 @@
       "title": "개인화 안전 검증 엔진",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 4,
+        "COMPLETE": 6,
         "PARTIAL": 0,
-        "PENDING": 5,
+        "PENDING": 3,
         "EXTERNAL": 1,
         "CONTRADICTED": 0
       }
@@ -1233,14 +1233,30 @@
         "docs/context/original_plan.pdf#page=17"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/domain/models.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/runtime_db.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/safety.py",
+          "wellnessbox-rnd/data/rules/safety_rules.json",
+          "wellnessbox-rnd/data/raw_references/nih_ods_omega3_warfarin.md",
+          "wellnessbox-rnd/data/knowledge/reference_knowledge_base_v1.json",
+          "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_runtime_knowledge_db.py",
+          "wellnessbox-rnd/tests/test_reference_ingestion.py",
+          "wellnessbox-rnd/tests/test_medication_supplement_input_contracts.py",
+          "wellnessbox-rnd/tests/test_interim_safety.py",
+          "wellnessbox-rnd/scripts/run_interaction_dose_aggregation_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -1255,14 +1271,21 @@
         "docs/context/original_plan.pdf#page=17"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_medication_supplement_input_contracts.py",
+          "wellnessbox-rnd/scripts/run_interaction_dose_aggregation_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],

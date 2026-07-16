@@ -148,7 +148,172 @@ def test_structured_ingredient_daily_doses_are_summed_across_products() -> None:
         intake.normalized_current_supplements[0].ingredients[0].daily_dose
         == DoseAmount(amount=2400, unit=DoseUnit.INTERNATIONAL_UNIT)
     )
-    assert "SAFETY-DOSE-VITD3-001" in _dose_rule_ids(request)
+    summary = assess_safety(intake)
+    vitamin_d = next(
+        item for item in summary.ingredient_dose_aggregates if item.ingredient_key == "vitamin_d3"
+    )
+
+    assert "SAFETY-DOSE-VITD3-001" in {
+        reference.rule_id for reference in summary.rule_refs
+    }
+    assert summary.duplicate_ingredient_keys == ["vitamin_d3"]
+    assert vitamin_d.total_daily_amount == 4400
+    assert vitamin_d.unit == "iu"
+    assert vitamin_d.product_count == 2
+    assert vitamin_d.product_names == ["bone daily a", "bone daily b"]
+    assert vitamin_d.duplicate_across_products is True
+    assert vitamin_d.dose_observation_count == 2
+    assert vitamin_d.dose_complete is True
+
+
+def test_duplicate_ingredients_without_doses_are_reported_without_inventing_a_total() -> None:
+    request = _request(
+        supplements=[
+            SupplementInput(name="Gut Product A", ingredients=["Probiotics"]),
+            SupplementInput(name="Gut Product B", ingredients=["Probiotics"]),
+        ]
+    )
+
+    summary = assess_safety(normalize_request(request))
+    probiotics = next(
+        item for item in summary.ingredient_dose_aggregates if item.ingredient_key == "probiotics"
+    )
+
+    assert summary.duplicate_ingredient_keys == ["probiotics"]
+    assert probiotics.product_count == 2
+    assert probiotics.duplicate_across_products is True
+    assert probiotics.total_daily_amount is None
+    assert probiotics.unit is None
+    assert probiotics.dose_observation_count == 0
+    assert probiotics.dose_complete is False
+
+
+def test_partial_cross_product_dose_is_marked_incomplete() -> None:
+    request = _request(
+        supplements=[
+            SupplementInput(
+                name="Bone Product A",
+                ingredients=[
+                    SupplementIngredientInput(
+                        name="Vitamin D3",
+                        daily_dose=DoseAmount(amount=2000, unit="IU"),
+                    )
+                ],
+            ),
+            SupplementInput(name="Bone Product B", ingredients=["Vitamin D3"]),
+        ]
+    )
+
+    summary = assess_safety(normalize_request(request))
+    vitamin_d = next(
+        item for item in summary.ingredient_dose_aggregates if item.ingredient_key == "vitamin_d3"
+    )
+
+    assert vitamin_d.total_daily_amount == 2000
+    assert vitamin_d.product_count == 2
+    assert vitamin_d.dose_observation_count == 1
+    assert vitamin_d.duplicate_across_products is True
+    assert vitamin_d.dose_complete is False
+
+
+def test_multiple_same_ingredient_lines_in_one_product_are_not_cross_product_duplicates() -> None:
+    request = _request(
+        supplements=[
+            SupplementInput(
+                name="One Bone Product",
+                ingredients=["Vitamin D3 1000 IU", "Vitamin D3 500 IU"],
+            )
+        ]
+    )
+
+    summary = assess_safety(normalize_request(request))
+    vitamin_d = next(
+        item for item in summary.ingredient_dose_aggregates if item.ingredient_key == "vitamin_d3"
+    )
+
+    assert summary.duplicate_ingredient_keys == []
+    assert vitamin_d.total_daily_amount == 1500
+    assert vitamin_d.product_count == 1
+    assert vitamin_d.dose_observation_count == 2
+    assert vitamin_d.duplicate_across_products is False
+    assert vitamin_d.dose_complete is True
+
+
+def test_structured_doses_are_summed_for_ingredients_without_a_dose_limit() -> None:
+    request = _request(
+        supplements=[
+            SupplementInput(
+                name="Fish Oil A",
+                ingredients=[
+                    SupplementIngredientInput(
+                        name="Omega-3",
+                        daily_dose=DoseAmount(amount=1000, unit="mg"),
+                    )
+                ],
+            ),
+            SupplementInput(
+                name="Fish Oil B",
+                ingredients=[
+                    SupplementIngredientInput(
+                        name="Omega-3",
+                        daily_dose=DoseAmount(amount=500, unit="mg"),
+                    )
+                ],
+            ),
+        ]
+    )
+
+    summary = assess_safety(normalize_request(request))
+    omega3 = next(
+        item for item in summary.ingredient_dose_aggregates if item.ingredient_key == "omega3"
+    )
+
+    assert omega3.total_daily_amount == 1500
+    assert omega3.unit == "mg"
+    assert omega3.product_count == 2
+    assert omega3.dose_observation_count == 2
+    assert omega3.duplicate_across_products is True
+    assert omega3.dose_complete is True
+
+
+def test_undosed_duplicate_line_in_one_product_marks_the_total_incomplete() -> None:
+    request = _request(
+        supplements=[
+            SupplementInput(
+                name="Bone Product",
+                ingredients=["Vitamin D3 1000 IU", "Vitamin D3"],
+            )
+        ]
+    )
+
+    summary = assess_safety(normalize_request(request))
+    vitamin_d = next(
+        item for item in summary.ingredient_dose_aggregates if item.ingredient_key == "vitamin_d3"
+    )
+
+    assert vitamin_d.total_daily_amount == 1000
+    assert vitamin_d.dose_observation_count == 1
+    assert vitamin_d.dose_complete is False
+
+
+def test_warfarin_omega3_policy_returns_exact_reference_and_claim_ids() -> None:
+    request = _request(
+        medications=[MedicationInput(name="warfarin")],
+        supplements=[SupplementInput(name="Fish Oil", ingredients=["Omega-3"])],
+    )
+
+    summary = assess_safety(normalize_request(request))
+    rule = next(item for item in summary.rule_refs if item.rule_id == "SAFETY-ANTICOAG-001")
+
+    assert rule.source == "evidence_linked_policy"
+    assert rule.reference_ids == ["REF-NIH-ODS-OMEGA3-001"]
+    assert rule.claim_ids == ["CLM-NIH-ODS-OMEGA3-WARFARIN-001"]
+    assert [citation.reference_id for citation in rule.citations] == [
+        "REF-NIH-ODS-OMEGA3-001"
+    ]
+    assert [citation.claim_id for citation in rule.citations] == [
+        "CLM-NIH-ODS-OMEGA3-WARFARIN-001"
+    ]
 
 
 @pytest.mark.parametrize(

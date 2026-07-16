@@ -22,6 +22,8 @@ class SafetyFinding:
     category: str
     action: str
     reason: str
+    reference_ids: tuple[str, ...] = ()
+    claim_ids: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -34,8 +36,16 @@ class SafetyDecision:
         return self.action in {"BLOCK", "STOP_AND_ESCALATE"}
 
 
-def _finding(rule: str, category: str, action: str, reason: str) -> SafetyFinding:
-    return SafetyFinding(rule, category, action, reason)
+def _finding(
+    rule: str,
+    category: str,
+    action: str,
+    reason: str,
+    *,
+    reference_ids: tuple[str, ...] = (),
+    claim_ids: tuple[str, ...] = (),
+) -> SafetyFinding:
+    return SafetyFinding(rule, category, action, reason, reference_ids, claim_ids)
 
 
 def evaluate_safety(
@@ -92,9 +102,16 @@ def evaluate_safety(
         )
     if payload.get("surgery_within_days", 999) <= 14:
         findings.append(_finding("SAFE-SURGERY-001", "surgery", "BLOCK", "perioperative_window"))
-    if medications & {"warfarin", "apixaban", "rivaroxaban"} and ingredients & {"omega3", "ginkgo"}:
+    if medications & {"warfarin", "coumadin"} and "omega3" in ingredients:
         findings.append(
-            _finding("SAFE-DDI-001", "drug_interaction", "BLOCK", "anticoagulant_interaction")
+            _finding(
+                "SAFE-DDI-001",
+                "drug_interaction",
+                "BLOCK",
+                "anticoagulant_interaction",
+                reference_ids=("REF-NIH-ODS-OMEGA3-001",),
+                claim_ids=("CLM-NIH-ODS-OMEGA3-WARFARIN-001",),
+            )
         )
     if "hemochromatosis" in conditions and ingredients & {"iron", "vitamin c", "vitamin_c"}:
         findings.append(

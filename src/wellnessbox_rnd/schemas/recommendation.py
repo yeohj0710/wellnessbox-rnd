@@ -636,12 +636,25 @@ class RuleReference(BaseModel):
     citations: list[CitationReference] = Field(default_factory=list)
 
 
+class IngredientDoseAggregate(BaseModel):
+    ingredient_key: str
+    product_count: int = Field(ge=1)
+    product_names: list[str] = Field(min_length=1)
+    duplicate_across_products: bool
+    total_daily_amount: float | None = Field(default=None, ge=0)
+    unit: str | None = None
+    dose_observation_count: int = Field(ge=0)
+    dose_complete: bool
+
+
 class SafetySummary(BaseModel):
     status: RecommendationStatus
     warnings: list[str] = Field(default_factory=list)
     blocked_reasons: list[str] = Field(default_factory=list)
     excluded_ingredients: list[str] = Field(default_factory=list)
     rule_refs: list[RuleReference] = Field(default_factory=list)
+    duplicate_ingredient_keys: list[str] = Field(default_factory=list)
+    ingredient_dose_aggregates: list[IngredientDoseAggregate] = Field(default_factory=list)
 
 
 class MissingInformationItem(BaseModel):

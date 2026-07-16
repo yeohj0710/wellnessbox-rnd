@@ -612,8 +612,47 @@
             ]
           }
         },
-        {"requirement_id": "OP-035", "title": "약물-성분 상호작용 규칙을 근거 ID와 연결한다."},
-        {"requirement_id": "OP-036", "title": "성분 중복과 제품 간 합산 용량을 계산한다."},
+        {
+          "requirement_id": "OP-035",
+          "title": "약물-성분 상호작용 규칙을 근거 ID와 연결한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/models.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/runtime_db.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/safety.py",
+              "wellnessbox-rnd/data/rules/safety_rules.json",
+              "wellnessbox-rnd/data/raw_references/nih_ods_omega3_warfarin.md",
+              "wellnessbox-rnd/data/knowledge/reference_knowledge_base_v1.json",
+              "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_runtime_knowledge_db.py",
+              "wellnessbox-rnd/tests/test_reference_ingestion.py",
+              "wellnessbox-rnd/tests/test_medication_supplement_input_contracts.py",
+              "wellnessbox-rnd/tests/test_interim_safety.py",
+              "wellnessbox-rnd/scripts/run_interaction_dose_aggregation_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-036",
+          "title": "성분 중복과 제품 간 합산 용량을 계산한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_medication_supplement_input_contracts.py",
+              "wellnessbox-rnd/scripts/run_interaction_dose_aggregation_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-037", "title": "단위 변환 후 상한을 비교하고 불명확하면 보수적으로 차단한다."},
         {"requirement_id": "OP-038", "title": "규칙 버전과 적용 시각을 안전 판정 응답에 포함한다."},
         {

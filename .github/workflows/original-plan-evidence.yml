@@ -28,6 +28,7 @@ on:
       - "scripts/run_event_idempotency_data_mutation_smoke.py"
       - "scripts/run_session_replay_service_ui_smoke.py"
       - "scripts/run_special_population_condition_safety_smoke.py"
+      - "scripts/run_interaction_dose_aggregation_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -61,6 +62,7 @@ on:
       - "tests/test_data_lake_lineage.py"
       - "tests/test_interim_evidence.py"
       - "tests/test_interim_store.py"
+      - "tests/test_interim_safety.py"
       - "tests/test_knowledge_lineage.py"
       - "tests/test_log_separation_execution_identity.py"
       - "tests/test_event_idempotency_data_mutation.py"
@@ -96,6 +98,7 @@ on:
       - "scripts/run_event_idempotency_data_mutation_smoke.py"
       - "scripts/run_session_replay_service_ui_smoke.py"
       - "scripts/run_special_population_condition_safety_smoke.py"
+      - "scripts/run_interaction_dose_aggregation_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -129,6 +132,7 @@ on:
       - "tests/test_data_lake_lineage.py"
       - "tests/test_interim_evidence.py"
       - "tests/test_interim_store.py"
+      - "tests/test_interim_safety.py"
       - "tests/test_knowledge_lineage.py"
       - "tests/test_log_separation_execution_identity.py"
       - "tests/test_event_idempotency_data_mutation.py"
@@ -163,6 +167,11 @@ jobs:
         run: python scripts/audit_original_plan_requirements.py
       - name: Check generated completion report
         run: python scripts/build_original_plan_completion_report.py --check
+      - name: Check interaction and dose aggregation evidence
+        run: >-
+          python scripts/run_interaction_dose_aggregation_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -181,6 +190,7 @@ jobs:
           tests/test_data_lake_lineage.py
           tests/test_interim_evidence.py
           tests/test_interim_store.py
+          tests/test_interim_safety.py
           tests/test_knowledge_lineage.py
           tests/test_log_separation_execution_identity.py
           tests/test_event_idempotency_data_mutation.py
@@ -228,12 +238,14 @@ jobs:
           scripts/run_event_idempotency_data_mutation_smoke.py
           scripts/run_session_replay_service_ui_smoke.py
           scripts/run_special_population_condition_safety_smoke.py
+          scripts/run_interaction_dose_aggregation_smoke.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py
           tests/test_data_lake_lineage.py
           tests/test_interim_evidence.py
           tests/test_interim_store.py
+          tests/test_interim_safety.py
           tests/test_knowledge_lineage.py
           tests/test_log_separation_execution_identity.py
           tests/test_event_idempotency_data_mutation.py

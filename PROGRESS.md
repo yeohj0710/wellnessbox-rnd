@@ -1,5 +1,20 @@
 # PROGRESS
 
+## 2026-07-16 evidence-linked interaction and dose-aggregation loop
+
+- Chosen stage: `original plan / personalized safety engine`
+- Chosen tasks: OP-035 connect drug-ingredient interaction rules to evidence IDs; OP-036 calculate duplicate ingredients and cross-product daily-dose totals
+- Primary evidence: `data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json`; ten deterministic recommendation/replay cases, byte-identical across reruns (`9c001cb799b34e65899103f47f959b0d2c9a2125ed8be1bea847fb1daf9f554a`)
+- Reused the raw-reference ingestion, runtime knowledge database, normalized `RecommendationRequest`, current supplement dose extraction, deterministic safety service, and interim replay safety path. No parallel interaction engine or dose calculator was added.
+- `SAFETY-ANTICOAG-001` now carries `REF-NIH-ODS-OMEGA3-001` and `CLM-NIH-ODS-OMEGA3-WARFARIN-001`; the runtime validator rejects evidence-linked interaction records without valid reference or claim IDs. Recommendation safety returns the exact citation, and interim replay preserves the same stable IDs for both warfarin and its Coumadin alias. The NIH ODS source reports a possible INR effect, notes that most 3–6 g/day studies did not significantly change anticoagulant status, and attributes periodic INR monitoring to FDA-approved omega-3 pharmaceutical package inserts. The omega-3 candidate exclusion remains an explicitly conservative deterministic policy rather than a claim attributed to NIH.
+- `SafetySummary` now returns per-ingredient product count and names, cross-product duplicate state, normalized total daily amount and unit, dose-observation count, and completeness. Two vitamin-D products return `4400 IU`; two undosed probiotic products return a duplicate with no invented total; one dosed plus one undosed vitamin-D product returns a partial `2000 IU` total with `dose_complete=false`; repeated lines inside one product do not count as a cross-product duplicate.
+- Evidence status: OP-035 and OP-036 are complete at their required `IMPLEMENTED` stage. Generated status: complete `26`, partial `10`, pending `83`, external `1`, contradicted `0`.
+- Validation: focused interaction/dose/reference selection `53 passed`; exact CI-equivalent selection `228 passed`; full Ruff PASS; manifest audit PASS with `36` claims, `102` checked evidence files, and zero issues; completion-report stale check PASS; deterministic smoke hash stable across reruns; independent final review found zero Critical, Important, or Minor issues.
+- Full suite: `635 passed`, `77 failed`; the unchanged failure groups remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No new interaction, aggregation, lineage, or safety failure remains.
+- Frozen evaluation: `256` cases; all seven tracked metric deltas and all weakest-slice category deltas are exactly `0` against `artifacts/reports/op029_op030_frozen_eval/eval_report.json`.
+- Remaining boundary: incomplete or non-convertible dose evidence is now visible but is not yet conservatively blocked; OP-037 owns that decision. Rule version and application time remain absent until OP-038. No WellnessBox code, R&D deployment, or two-process production integration changed in this loop.
+- Recommended next loops: OP-037/038 unit-normalized upper-limit fail-closed handling and rule version/application time; OP-039/040 high-risk false-negative evidence and production final-blocking authority; OP-041/042 service/R&D ingredient identity and evidence-backed goal priors.
+
 ## 2026-07-16 special-population and condition safety loop
 
 - Chosen stage: `original plan / personalized safety engine`

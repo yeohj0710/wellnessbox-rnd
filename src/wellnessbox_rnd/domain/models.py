@@ -40,8 +40,10 @@ class InputRequirementRule(BaseModel):
 
 
 class MedicationInteractionRule(BaseModel):
-    medications: list[str] = Field(default_factory=list)
-    excluded_ingredients: list[str] = Field(default_factory=list)
+    medications: list[str] = Field(min_length=1)
+    excluded_ingredients: list[str] = Field(min_length=1)
+    reference_ids: list[str] = Field(min_length=1)
+    claim_ids: list[str] = Field(min_length=1)
     metadata: SafetyRuleMetadata
 
 

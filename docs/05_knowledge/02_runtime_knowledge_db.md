@@ -42,6 +42,8 @@
 ## Current runtime usage
 
 - knowledge-derived interaction rules are now available in deterministic safety
+- data-defined interaction policies must also carry valid `reference_ids` and `claim_ids`
+- `SAFETY-ANTICOAG-001` links the conservative warfarin/omega-3 candidate exclusion to the bounded NIH ODS interaction claim
 - current runtime match path:
   - medication set intersects a structured interaction rule
   - current supplement ingredients intersect the same structured rule

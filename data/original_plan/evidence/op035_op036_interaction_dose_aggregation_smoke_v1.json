@@ -1,0 +1,163 @@
+{
+  "contains_health_identifiers": false,
+  "dose_aggregation_cases": {
+    "complete_cross_product_total": {
+      "dose_complete": true,
+      "dose_observation_count": 2,
+      "duplicate_across_products": true,
+      "ingredient_key": "vitamin_d3",
+      "product_count": 2,
+      "product_names": [
+        "bone daily a",
+        "bone daily b"
+      ],
+      "total_daily_amount": 4400.0,
+      "unit": "iu"
+    },
+    "duplicate_unknown_total": {
+      "dose_complete": false,
+      "dose_observation_count": 0,
+      "duplicate_across_products": true,
+      "ingredient_key": "probiotics",
+      "product_count": 2,
+      "product_names": [
+        "gut product a",
+        "gut product b"
+      ],
+      "total_daily_amount": null,
+      "unit": null
+    },
+    "general_ingredient_total": {
+      "dose_complete": true,
+      "dose_observation_count": 2,
+      "duplicate_across_products": true,
+      "ingredient_key": "omega3",
+      "product_count": 2,
+      "product_names": [
+        "fish oil a",
+        "fish oil b"
+      ],
+      "total_daily_amount": 1500.0,
+      "unit": "mg"
+    },
+    "partial_cross_product_total": {
+      "dose_complete": false,
+      "dose_observation_count": 1,
+      "duplicate_across_products": true,
+      "ingredient_key": "vitamin_d3",
+      "product_count": 2,
+      "product_names": [
+        "bone product a",
+        "bone product b"
+      ],
+      "total_daily_amount": 2000.0,
+      "unit": "iu"
+    },
+    "partial_same_product_lines": {
+      "dose_complete": false,
+      "dose_observation_count": 1,
+      "duplicate_across_products": false,
+      "ingredient_key": "vitamin_d3",
+      "product_count": 1,
+      "product_names": [
+        "bone product"
+      ],
+      "total_daily_amount": 1000.0,
+      "unit": "iu"
+    }
+  },
+  "interaction_cases": {
+    "coumadin_interim_replay": {
+      "action": "BLOCK",
+      "finding": {
+        "claim_ids": [
+          "CLM-NIH-ODS-OMEGA3-WARFARIN-001"
+        ],
+        "reference_ids": [
+          "REF-NIH-ODS-OMEGA3-001"
+        ],
+        "rule_id": "SAFE-DDI-001"
+      }
+    },
+    "interim_replay": {
+      "action": "BLOCK",
+      "finding": {
+        "claim_ids": [
+          "CLM-NIH-ODS-OMEGA3-WARFARIN-001"
+        ],
+        "reference_ids": [
+          "REF-NIH-ODS-OMEGA3-001"
+        ],
+        "rule_id": "SAFE-DDI-001"
+      }
+    },
+    "unsupported_pair_has_warfarin_omega3_finding": false,
+    "warfarin_glucosamine": {
+      "rule": {
+        "citations": [
+          {
+            "claim_id": "CLM-KNOWLEDGE-ANTICOAG-001",
+            "excerpt": "This sample reference captures the anticoagulant interaction note already present in the local supplement knowledge files. Glucosamine and chondroitin should be treated as a bleeding-risk interaction when warfarin or Coumadin is present.",
+            "page_or_section": "glucosamine chondroitin and anticoagulants",
+            "reference_id": "REF-KNOWLEDGE-ANTICOAG-001",
+            "reference_uri": "data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md",
+            "source_title": "Supplement Interaction Notes",
+            "source_type": "interaction_reference"
+          }
+        ],
+        "claim_ids": [
+          "CLM-KNOWLEDGE-ANTICOAG-001"
+        ],
+        "message": "Glucosamine or chondroitin used with warfarin or Coumadin can increase anticoagulant effect and bleeding risk.",
+        "reference_ids": [
+          "REF-KNOWLEDGE-ANTICOAG-001"
+        ],
+        "rule_id": "KB-SAFETY-ANTICOAG-001",
+        "severity": "blocker",
+        "source": "knowledge_artifact"
+      },
+      "status": "blocked"
+    },
+    "warfarin_omega3": {
+      "excluded_ingredients": [
+        "omega3"
+      ],
+      "rule": {
+        "citations": [
+          {
+            "claim_id": "CLM-NIH-ODS-OMEGA3-WARFARIN-001",
+            "excerpt": "The NIH Office of Dietary Supplements describes a possible fish-oil and warfarin interaction, notes that most research at 3–6 g/day did not significantly change anticoagulant status, and reports that FDA-approved omega-3 pharmaceutical package inserts call for periodic INR monitoring when those products are used with anticoagulants. The source does not state that dietary omega-3 products universally require exclusion.",
+            "page_or_section": "Interactions with Medications - Warfarin and similar anticoagulants",
+            "reference_id": "REF-NIH-ODS-OMEGA3-001",
+            "reference_uri": "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/",
+            "source_title": "NIH Office of Dietary Supplements - Omega-3 Fatty Acids",
+            "source_type": "government_health_reference"
+          }
+        ],
+        "claim_ids": [
+          "CLM-NIH-ODS-OMEGA3-WARFARIN-001"
+        ],
+        "message": "Potential medication interaction triggers conservative exclusion.",
+        "reference_ids": [
+          "REF-NIH-ODS-OMEGA3-001"
+        ],
+        "rule_id": "SAFETY-ANTICOAG-001",
+        "severity": "warning",
+        "source": "evidence_linked_policy"
+      },
+      "status": "needs_review"
+    }
+  },
+  "requirements": [
+    "OP-035",
+    "OP-036"
+  ],
+  "schema_version": "op035_op036_interaction_dose_aggregation_smoke_v1",
+  "source_scope": {
+    "claim_id": "CLM-NIH-ODS-OMEGA3-WARFARIN-001",
+    "policy_addition": "The deterministic candidate policy excludes omega-3 conservatively when warfarin is present.",
+    "reference_id": "REF-NIH-ODS-OMEGA3-001",
+    "source_supports": "Possible fish-oil/warfarin INR effect; most research at 3–6 g/day found no significant anticoagulant-status change; FDA-approved omega-3 pharmaceutical package inserts state periodic INR monitoring for those products with anticoagulants.",
+    "url": "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/"
+  }
+}

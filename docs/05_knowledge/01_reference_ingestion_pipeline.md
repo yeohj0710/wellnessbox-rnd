@@ -72,17 +72,21 @@
 - this loop did not change runtime recommendation logic
 - safety rules remain upstream of learned ranking and simulation policy
 
-## Sample artifact summary
+## Current artifact summary
 
-- `reference_count = 3`
-- `claim_count = 5`
+- `reference_count = 4`
+- `claim_count = 6`
 - `rule_candidate_count = 5`
-- `ingredient_domain_evidence_count = 4`
+- `ingredient_domain_evidence_count = 6`
 - sample extracted safety rule:
   - `KB-SAFETY-ANTICOAG-001`
 - sample extracted ingredient evidence:
   - `glucosamine -> drug_interaction`
   - `chondroitin -> bleeding_risk`
+- authoritative interaction source:
+  - `REF-NIH-ODS-OMEGA3-001`
+  - `CLM-NIH-ODS-OMEGA3-WARFARIN-001`
+  - `omega3 -> warfarin interaction monitoring`
 
 ## Next recommended work
 

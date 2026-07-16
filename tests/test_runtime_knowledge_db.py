@@ -38,14 +38,11 @@ def test_runtime_knowledge_db_builds_required_tables() -> None:
     assert runtime_db.references
     assert runtime_db.reference_spans
     assert runtime_db.workflow_policies
-    assert all(
-        reference.license_status == "APPROVED_INTERNAL"
-        for reference in runtime_db.references
-    )
-    assert all(
-        reference.effective_at == "2026-03-10T00:00:00Z"
-        for reference in runtime_db.references
-    )
+    assert {reference.license_status for reference in runtime_db.references} == {
+        "APPROVED_INTERNAL",
+        "PUBLIC_GOVERNMENT",
+    }
+    assert all(reference.effective_at for reference in runtime_db.references)
     assert all(reference.retired_at is None for reference in runtime_db.references)
     assert all(
         reference.parsed_source_uri.startswith("data/raw_references/")
@@ -55,6 +52,80 @@ def test_runtime_knowledge_db_builds_required_tables() -> None:
         rule.rule_id == "KB-SAFETY-ANTICOAG-001" and rule.source_kind == "knowledge_artifact"
         for rule in runtime_db.interaction_rules
     )
+
+
+def test_every_runtime_interaction_rule_is_evidence_linked() -> None:
+    runtime_db = build_runtime_knowledge_db()
+
+    assert all(rule.reference_ids for rule in runtime_db.interaction_rules)
+    assert all(rule.claim_ids for rule in runtime_db.interaction_rules)
+    assert validate_runtime_knowledge_db(runtime_db) == []
+
+
+def test_runtime_validation_rejects_evidence_linked_policy_without_ids() -> None:
+    runtime_db = build_runtime_knowledge_db()
+    policy_index = next(
+        index
+        for index, rule in enumerate(runtime_db.interaction_rules)
+        if rule.source_kind == "evidence_linked_policy"
+    )
+    runtime_db.interaction_rules[policy_index] = runtime_db.interaction_rules[
+        policy_index
+    ].model_copy(update={"reference_ids": [], "claim_ids": []})
+
+    assert validate_runtime_knowledge_db(runtime_db) == [
+        "evidence_item_missing_reference:SAFETY-ANTICOAG-001",
+        "evidence_item_missing_claim:SAFETY-ANTICOAG-001",
+    ]
+
+
+def test_runtime_validation_rejects_unknown_interaction_source_kind() -> None:
+    runtime_db = build_runtime_knowledge_db()
+    policy_index = next(
+        index
+        for index, rule in enumerate(runtime_db.interaction_rules)
+        if rule.rule_id == "SAFETY-ANTICOAG-001"
+    )
+    runtime_db.interaction_rules[policy_index] = runtime_db.interaction_rules[
+        policy_index
+    ].model_copy(
+        update={"source_kind": "unknown", "reference_ids": [], "claim_ids": []}
+    )
+
+    assert validate_runtime_knowledge_db(runtime_db) == [
+        "invalid_interaction_source_kind:SAFETY-ANTICOAG-001:unknown",
+        "evidence_item_missing_reference:SAFETY-ANTICOAG-001",
+        "evidence_item_missing_claim:SAFETY-ANTICOAG-001",
+    ]
+
+
+def test_runtime_validation_rejects_claim_from_an_unlisted_reference() -> None:
+    runtime_db = build_runtime_knowledge_db()
+    policy_index = next(
+        index
+        for index, rule in enumerate(runtime_db.interaction_rules)
+        if rule.rule_id == "SAFETY-ANTICOAG-001"
+    )
+    runtime_db.interaction_rules[policy_index] = runtime_db.interaction_rules[
+        policy_index
+    ].model_copy(update={"claim_ids": ["CLM-KNOWLEDGE-ANTICOAG-001"]})
+
+    assert validate_runtime_knowledge_db(runtime_db) == [
+        "claim_reference_mismatch:SAFETY-ANTICOAG-001:"
+        "CLM-KNOWLEDGE-ANTICOAG-001:REF-KNOWLEDGE-ANTICOAG-001"
+    ]
+
+
+def test_runtime_validation_rejects_duplicate_claim_ids() -> None:
+    runtime_db = build_runtime_knowledge_db()
+    original_span = runtime_db.reference_spans[0]
+    runtime_db.reference_spans.append(
+        original_span.model_copy(update={"span_id": f"{original_span.span_id}-DUPLICATE"})
+    )
+
+    assert validate_runtime_knowledge_db(runtime_db) == [
+        f"duplicate_reference_claim:{original_span.claim_id}"
+    ]
 
 
 def test_runtime_knowledge_db_builds_structured_dose_limits() -> None:

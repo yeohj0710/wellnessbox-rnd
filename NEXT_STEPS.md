@@ -2,13 +2,13 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020 and OP-031 through OP-034 are complete. OP-021 through OP-030 are `IMPLEMENTED` and therefore remain partial at their required `OPERATED` stage. SQLite schema `9` separates both log classes, records execution identity, enforces event idempotency and mutation audit chains, and stores consent-authorized deterministic replay snapshots plus append-only replay results.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020 and OP-031 through OP-036 are complete. OP-021 through OP-030 are `IMPLEMENTED` and therefore remain partial at their required `OPERATED` stage. SQLite schema `9` separates both log classes, records execution identity, enforces event idempotency and mutation audit chains, and stores consent-authorized deterministic replay snapshots plus append-only replay results. Interaction policies now carry valid reference and claim IDs, and the safety response exposes cross-product duplicate and daily-dose aggregates without inventing totals for missing doses.
 
 Next three loops:
 
-1. Implement OP-035 and OP-036: connect drug-ingredient interaction rules to evidence IDs and calculate combined ingredient dose across products.
-2. Implement OP-037 and OP-038: compare upper limits after unit normalization and include the rule version and application time in safety results.
-3. Implement OP-039 and OP-040: verify zero hard false negatives on the high-risk frozen evaluation and prove that the production recommendation path gives the safety engine final blocking authority.
+1. Implement OP-037 and OP-038: compare upper limits after unit normalization, fail closed when dose evidence is incomplete or non-convertible, and include the rule version and application time in safety results.
+2. Implement OP-039 and OP-040: verify zero hard false negatives on the high-risk frozen evaluation and prove that the production recommendation path gives the safety engine final blocking authority.
+3. Implement OP-041 and OP-042: version the service/R&D ingredient identifier mapping and register evidence-linked goal priors without duplicating the current ingredient catalog.
 
 Continue through the safety-engine group in two-requirement slices. The current service adapter accepts the existing stored `UserProfile` shape, forwards a stable pseudonymous subject ID, and the R&D recommendation route persists authorized profile, consent, knowledge lineage, and replay snapshots. The service UI can query and replay saved sessions through the existing internal client, but production has no deployed R&D endpoint or `WB_RND_*` settings. OP-029 and OP-030 therefore remain below `OPERATED`, and OP-101 through OP-105 remain separate deployment and production-integration requirements.
 

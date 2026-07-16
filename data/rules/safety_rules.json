@@ -42,6 +42,8 @@
     {
       "medications": ["warfarin", "coumadin"],
       "excluded_ingredients": ["omega3"],
+      "reference_ids": ["REF-NIH-ODS-OMEGA3-001"],
+      "claim_ids": ["CLM-NIH-ODS-OMEGA3-WARFARIN-001"],
       "metadata": {
         "rule_id": "SAFETY-ANTICOAG-001",
         "message": "Potential medication interaction triggers conservative exclusion.",

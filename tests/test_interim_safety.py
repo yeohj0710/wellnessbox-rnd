@@ -46,6 +46,38 @@ def test_condition_replay_separates_renal_hepatic_and_hemochromatosis_rules() ->
     }
 
 
+def test_drug_interaction_replay_finding_keeps_reference_and_claim_ids() -> None:
+    result = evaluate_safety(
+        {"medications": ["warfarin"], "ingredients": ["omega3"]}
+    )
+    finding = next(item for item in result.findings if item.rule_id == "SAFE-DDI-001")
+
+    assert finding.reference_ids == ("REF-NIH-ODS-OMEGA3-001",)
+    assert finding.claim_ids == ("CLM-NIH-ODS-OMEGA3-WARFARIN-001",)
+
+
+def test_drug_interaction_replay_accepts_coumadin_alias() -> None:
+    result = evaluate_safety(
+        {"medications": ["Coumadin"], "ingredients": ["omega3"]}
+    )
+    finding = next(item for item in result.findings if item.rule_id == "SAFE-DDI-001")
+
+    assert finding.reference_ids == ("REF-NIH-ODS-OMEGA3-001",)
+    assert finding.claim_ids == ("CLM-NIH-ODS-OMEGA3-WARFARIN-001",)
+
+
+def test_drug_interaction_replay_does_not_reuse_evidence_for_other_pairs() -> None:
+    result = evaluate_safety(
+        {"medications": ["apixaban"], "ingredients": ["ginkgo"]}
+    )
+
+    assert all(finding.rule_id != "SAFE-DDI-001" for finding in result.findings)
+    assert all(
+        "CLM-NIH-ODS-OMEGA3-WARFARIN-001" not in finding.claim_ids
+        for finding in result.findings
+    )
+
+
 def test_all_fourteen_safety_categories_are_exercised() -> None:
     result = evaluate_safety(
         {

@@ -1,5 +1,20 @@
 # SESSION_HANDOFF
 
+## 2026-07-16 interaction evidence and dose aggregation handoff
+
+- Chosen stage: `original plan / personalized safety engine`
+- Chosen tasks: OP-035 and OP-036
+- Primary dataset path and case count: `data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json`; `10` deterministic recommendation/replay cases
+- Main files: NIH ODS raw reference and regenerated knowledge artifacts; safety rule DSL and models; runtime knowledge validation; recommendation and interim safety paths; structured safety response; focused tests; smoke runner; manifest, generated reports, CI workflow, and implementation plan
+- Current result: every runtime drug-ingredient interaction rule has non-empty, cross-validated reference and claim IDs, and duplicate claim IDs are rejected. The warfarin/omega-3 policy returns the exact NIH ODS citation, while the evidence artifact distinguishes the possible INR effect, mostly negative 3–6 g/day findings, FDA-approved pharmaceutical package-insert monitoring language, and the repository's conservative candidate-exclusion policy. The interim replay finding preserves the same IDs for both warfarin and Coumadin.
+- Dose result: the existing extraction path now produces one structured aggregate per recognized current ingredient. The result records product occurrences and names, a cross-product duplicate flag, normalized total and unit when available, observation count, and whether every contributing product supplied a usable dose. The same aggregate amount feeds upper-limit comparison, preventing a separate summation path.
+- Evidence stage: `IMPLEMENTED`. OP-035 and OP-036 are complete at their required stage. Generated counts are complete `26`, partial `10`, pending `83`, external `1`, contradicted `0`. No service code, R&D deployment, or production two-process integration changed.
+- Validation: focused selection `53 passed`; exact CI-equivalent selection `228 passed`; full Ruff PASS; deterministic smoke hash `9c001cb799b34e65899103f47f959b0d2c9a2125ed8be1bea847fb1daf9f554a`; manifest audit PASS with `36` claims and `102` evidence files; completion report check PASS; independent final review found zero Critical, Important, or Minor issues. Full suite is `635 passed`, `77 failed`, matching the known `73` absent-report and `4` CGM-geometry groups.
+- Official frozen eval metric deltas: `256` cases; recommendation coverage `0`, efficacy improvement `0`, next-action accuracy `0`, explanation-quality accuracy `0`, safety-reference accuracy `0`, yearly adverse-event count `0`, sensor/genetic integration rate `0`.
+- Replay/slice deltas: every weakest-slice category is unchanged; the interim DDI replay keeps the new reference and claim IDs.
+- Biggest bottlenecks: incomplete/non-convertible dose evidence is not yet fail-closed; safety responses lack rule version/application time; external high-risk labels for hard false-negative proof are absent; the production service has no final two-process safety-block proof; no deployed durable R&D service exists.
+- Next three loops: OP-037/038 unit and temporal rule metadata; OP-039/040 high-risk and production blocking evidence; OP-041/042 identifier mapping and evidence-backed goal priors.
+
 ## 2026-07-16 event idempotency and data-mutation handoff
 
 - Chosen stage: `original plan / Data Lake evidence lineage`

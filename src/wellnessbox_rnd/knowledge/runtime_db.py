@@ -36,7 +36,7 @@ class ConditionRecord(BaseModel):
 
 class InteractionRuleRecord(BaseModel):
     rule_id: str
-    source_kind: str
+    source_kind: Literal["knowledge_artifact", "evidence_linked_policy"]
     severity: Severity
     medication_keys: list[str] = Field(default_factory=list)
     ingredient_keys: list[str] = Field(default_factory=list)
@@ -187,12 +187,14 @@ def build_runtime_knowledge_db(
         interaction_rules.append(
             InteractionRuleRecord(
                 rule_id=metadata["rule_id"],
-                source_kind="deterministic_policy",
+                source_kind="evidence_linked_policy",
                 severity=Severity(metadata["severity"]),
                 medication_keys=medications,
                 ingredient_keys=excluded_ingredients,
                 message=metadata["message"],
                 warning_text=metadata["warning_text"],
+                reference_ids=sorted(set(raw_rule.get("reference_ids", []))),
+                claim_ids=sorted(set(raw_rule.get("claim_ids", []))),
             )
         )
         medication_keys.update(medications)
@@ -441,6 +443,9 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
     issues.extend(_validate_unique_keys("dose_limit", runtime_db.dose_limits, "rule_id"))
     issues.extend(_validate_unique_keys("reference", runtime_db.references, "reference_id"))
     issues.extend(_validate_unique_keys("reference_span", runtime_db.reference_spans, "span_id"))
+    issues.extend(
+        _validate_unique_keys("reference_claim", runtime_db.reference_spans, "claim_id")
+    )
     issues.extend(_validate_unique_keys("workflow_policy", runtime_db.workflow_policies, "rule_id"))
 
     required_tables = (
@@ -461,14 +466,27 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
             issues.append(f"missing_table:{table_name}")
 
     reference_ids = {reference.reference_id for reference in runtime_db.references}
-    claim_ids = {span.claim_id for span in runtime_db.reference_spans}
+    claim_reference_ids = {
+        span.claim_id: span.reference_id for span in runtime_db.reference_spans
+    }
     ingredient_keys = {record.ingredient_key for record in runtime_db.ingredients}
     for rule in runtime_db.interaction_rules:
-        issues.extend(_validate_referenced_ids(rule, reference_ids, claim_ids))
+        if rule.source_kind not in {"knowledge_artifact", "evidence_linked_policy"}:
+            issues.append(
+                f"invalid_interaction_source_kind:{rule.rule_id}:{rule.source_kind}"
+            )
+        issues.extend(
+            _validate_referenced_ids(
+                rule,
+                reference_ids,
+                claim_reference_ids,
+                require_evidence=True,
+            )
+        )
     for rule in runtime_db.contraindication_rules:
-        issues.extend(_validate_referenced_ids(rule, reference_ids, claim_ids))
+        issues.extend(_validate_referenced_ids(rule, reference_ids, claim_reference_ids))
     for record in runtime_db.dose_limits:
-        issues.extend(_validate_referenced_ids(record, reference_ids, claim_ids))
+        issues.extend(_validate_referenced_ids(record, reference_ids, claim_reference_ids))
         if record.ingredient_key not in ingredient_keys:
             issues.append(f"missing_ingredient:dose_limit:{record.ingredient_key}")
         if record.max_daily_amount is None or record.max_daily_amount <= 0:
@@ -485,9 +503,9 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
         for source in sorted(invalid_sources):
             issues.append(f"invalid_dose_limit_evidence_source:{record.rule_id}:{source}")
     for record in runtime_db.ingredient_domain_scores:
-        issues.extend(_validate_referenced_ids(record, reference_ids, claim_ids))
+        issues.extend(_validate_referenced_ids(record, reference_ids, claim_reference_ids))
     for policy in runtime_db.workflow_policies:
-        issues.extend(_validate_referenced_ids(policy, reference_ids, claim_ids))
+        issues.extend(_validate_referenced_ids(policy, reference_ids, claim_reference_ids))
 
     return issues
 
@@ -524,9 +542,12 @@ def build_citations_for_rule(
     }
     citations: list[CitationReference] = []
     seen_keys: set[tuple[str, str | None]] = set()
+    declared_reference_ids = set(reference_ids)
     for claim_id in claim_ids:
         span = spans_by_claim_id.get(claim_id)
         if span is None:
+            continue
+        if span.reference_id not in declared_reference_ids:
             continue
         reference = references_by_id.get(span.reference_id)
         if reference is None:
@@ -606,24 +627,31 @@ def _validate_unique_keys(
 def _validate_referenced_ids(
     item: Any,
     reference_ids: set[str],
-    claim_ids: set[str],
+    claim_reference_ids: dict[str, str],
+    *,
+    require_evidence: bool = False,
 ) -> list[str]:
     issues: list[str] = []
     source_kind = getattr(item, "source_kind", "deterministic_policy")
     item_id = getattr(item, "rule_id", getattr(item, "ingredient_key", "unknown"))
     item_reference_ids = getattr(item, "reference_ids", [])
     item_claim_ids = getattr(item, "claim_ids", [])
-    if source_kind == "knowledge_artifact":
+    if require_evidence or source_kind in {"knowledge_artifact", "evidence_linked_policy"}:
         if not item_reference_ids:
-            issues.append(f"knowledge_item_missing_reference:{item_id}")
+            issues.append(f"evidence_item_missing_reference:{item_id}")
         if not item_claim_ids:
-            issues.append(f"knowledge_item_missing_claim:{item_id}")
+            issues.append(f"evidence_item_missing_claim:{item_id}")
     for reference_id in item_reference_ids:
         if reference_id not in reference_ids:
             issues.append(f"missing_reference:{item_id}:{reference_id}")
     for claim_id in item_claim_ids:
-        if claim_id not in claim_ids:
+        claim_reference_id = claim_reference_ids.get(claim_id)
+        if claim_reference_id is None:
             issues.append(f"missing_claim:{item_id}:{claim_id}")
+        elif claim_reference_id not in item_reference_ids:
+            issues.append(
+                f"claim_reference_mismatch:{item_id}:{claim_id}:{claim_reference_id}"
+            )
     return issues
 
 
