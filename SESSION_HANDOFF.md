@@ -1,5 +1,20 @@
 # SESSION_HANDOFF
 
+## 2026-07-17 versioned PRO scoring and baseline-percentile handoff
+
+- Chosen stage: `original plan / pre-post outcome quantification and PRO`
+- Chosen tasks: OP-051 and OP-052
+- Primary evidence: `data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json`; deterministic SHA-256 `17f554025cae2a3410f07b3cd81d27dee7a41b2e1dcd31e370c74a8d8d377bd3`; source commit `fd7e4a3d1d6edb630d6c25cdb0fde11129d98975`; source bundle SHA-256 `7edc4cee9cd2a6dbd8d74be8fc10417d0959e27ddc03fb350218ce143e8a60bf`
+- Raw scores: the existing R&D PRO module now applies one strict contract to PSQI seven-component sums (`0..21`), ISI seven-item sums (`0..28`), and PSS-10 ten-item sums with items `4, 5, 7, 8` reversed (`0..40`). PSQI 19-item derivation and questionnaire text are intentionally outside this contract.
+- Standardization: versioned `BASELINE` observations of one instrument/version produce an order-independent mean and sample standard deviation. Lower problem scores map to higher health Z scores and percentiles. The smoke fixes Z scores `1, 0, -1` to percentiles `84.134475, 50, 15.865525` for all three instruments.
+- Fail-closed boundary: public functions revalidate supplied model instances; output models enforce canonical score metadata and ranges; distributions verify source scores, statistics, role, version, and SHA-256; standardized outputs embed the validated distribution. Rounding method and operation order are part of the committed contract.
+- Evidence boundary: `SYNTHETIC_OUTCOME_PROXY` only. No service code, authorized questionnaire text, production data, clinical interpretation, deployment, or production operation is claimed.
+- Evidence stage: OP-051 and OP-052 are `IMPLEMENTED`. Generated counts: complete `40`, partial `11`, pending `68`, external `1`, contradicted `0`.
+- Validation: related scoring tests `38 passed`; CI-equivalent `388 passed`; full Ruff PASS; audit PASS with `51` claims and `160` evidence files; full suite `769 passed`, `77 failed` with only the known `73` absent-report and `4` CGM-geometry groups; frozen eval has seven zero deltas and no weakest-slice changes; independent review Critical `0`, Important `0`, Minor `0`.
+- Publication: commits `fd7e4a3d1d6edb630d6c25cdb0fde11129d98975` and `3bfdfed8d1aabfbfbbcca908bfb17f154aba4e46` are on `origin/main`; Original plan evidence run `29515937856` passed.
+- Protected files: do not modify or stage `docs/plans/2026-07-14-tips-evaluator-ui-overhaul.md` or `docs/plans/2026-07-15-tips-full-implementation-roadmap.md`. The unrelated dirty WellnessBox UI files remain user-owned and unstaged.
+- Next three loops: OP-053/054 add follow-up PRO events and adherence/adverse-event interpretation; OP-055/056 separate personal/group effects and return uncertainty; OP-057/058 add user correction and plan-linked outcome lineage.
+
 ## 2026-07-17 learned replay and product-candidate handoff
 
 - Chosen stage: `original plan / candidate generation and efficacy scoring`

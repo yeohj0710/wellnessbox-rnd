@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-17 versioned PRO scoring and baseline-percentile loop
+
+- Chosen stage: `original plan / pre-post outcome quantification and PRO`
+- Chosen tasks: OP-051 fix PSQI, ISI, and PSS-10 raw-score algorithms to a versioned contract; OP-052 fix health-oriented Z scores and percentiles to a declared baseline distribution
+- Primary evidence: `data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json`; deterministic SHA-256 `17f554025cae2a3410f07b3cd81d27dee7a41b2e1dcd31e370c74a8d8d377bd3`; source commit `fd7e4a3d1d6edb630d6c25cdb0fde11129d98975`; source bundle SHA-256 `7edc4cee9cd2a6dbd8d74be8fc10417d0959e27ddc03fb350218ce143e8a60bf`
+- Reused the existing `src/wellnessbox_rnd/metrics/pro_scoring.py` path and package exports. No parallel metrics system or WellnessBox service implementation was added.
+- Raw-score contract: PSQI accepts seven already-derived component scores from `0..3` and sums to `0..21`; it does not reproduce or derive the licensed 19 self-rated items. ISI accepts seven item scores from `0..4` and sums to `0..28`. PSS-10 accepts ten item scores from `0..4`, reverses one-based positions `4, 5, 7, 8`, and sums to `0..40`. Floats, booleans, wrong counts/ranges, unknown instruments, metadata drift, and modified model instances fail closed.
+- Baseline contract: every source observation declares the versioned `BASELINE` role. A cohort requires one instrument/scoring version, at least two observations, and nonzero spread. The distribution uses arithmetic mean and sample standard deviation (`ddof=1`), then computes `health_z=(baseline_mean-raw_problem_score)/baseline_sample_std` and `100*Phi(health_z)`. Six-decimal half-even rounding and operation order are fixed. The transformed output embeds the validated distribution and rejects source-score, statistic, hash, instrument, version, or role changes.
+- Evidence boundary: all smoke cohorts use `SYNTHETIC_OUTCOME_PROXY`. The evidence does not claim authorized instrument text, clinical interpretation, service integration, production data, deployment, or production operation.
+- Evidence status: OP-051 and OP-052 are complete at required stage `IMPLEMENTED`. Generated status: complete `40`, partial `11`, pending `68`, external `1`, contradicted `0`.
+- Validation: related scoring tests `38 passed`; exact CI-equivalent selection `388 passed`; full Ruff PASS; deterministic smoke byte-identical across reruns; manifest audit PASS with `51` claims, `160` checked evidence files, and zero issues; completion report check PASS; independent final review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `769 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No OP-051/052 failure remains.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, and the overall and metric-specific weakest-slice categories are unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
+- Publication: source commit `fd7e4a3d1d6edb630d6c25cdb0fde11129d98975` and evidence commit `3bfdfed8d1aabfbfbbcca908bfb17f154aba4e46` are on `origin/main`; Original plan evidence run `29515937856` passed.
+- Recommended next loops: OP-053/054 follow-up PRO events and adherence/adverse-event interpretation; OP-055/056 personal/group effects and uncertainty; OP-057/058 user correction and plan-linked outcome lineage.
+
 ## 2026-07-17 learned replay and service product-candidate loop
 
 - Chosen stage: `original plan / candidate generation and efficacy scoring`
