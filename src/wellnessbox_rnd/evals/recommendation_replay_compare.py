@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+from collections import Counter
 from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -25,6 +27,27 @@ class ReplayRankChange(BaseModel):
     baseline_rank: int = Field(ge=1)
     learned_rank: int = Field(ge=1)
     score_delta: float = Field(allow_inf_nan=False)
+
+
+class ReplayDecisionStatusCounts(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    not_requested: int = Field(ge=0)
+    not_eligible: int = Field(ge=0)
+    applied: int = Field(ge=0)
+    fallback_missing_path: int = Field(ge=0)
+    fallback_missing_file: int = Field(ge=0)
+    fallback_invalid_artifact: int = Field(ge=0)
+    fallback_suspicious_artifact: int = Field(ge=0)
+    fallback_artifact_runtime_error: int = Field(ge=0)
+
+    @property
+    def fallback_total(self) -> int:
+        return sum(
+            value
+            for field_name, value in self.model_dump().items()
+            if field_name.startswith("fallback_")
+        )
 
 
 class RecommendationReplayCaseComparison(BaseModel):
@@ -106,7 +129,9 @@ class RecommendationReplayComparisonReport(BaseModel):
     learned_artifact_path: str
     case_count: int = Field(ge=1)
     learned_applied_case_count: int = Field(ge=0)
-    deterministic_fallback_case_count: int = Field(ge=0)
+    deterministic_baseline_case_count: int = Field(ge=0)
+    fallback_case_count: int = Field(ge=0)
+    decision_status_counts: ReplayDecisionStatusCounts
     selection_changed_case_count: int = Field(ge=0)
     rank_or_score_changed_case_count: int = Field(ge=0)
     response_status_changed_case_count: int = Field(ge=0)
@@ -123,8 +148,12 @@ class RecommendationReplayComparisonReport(BaseModel):
             raise ValueError("replay case IDs must be unique")
         expected = {
             "learned_applied_case_count": sum(item.learned_applied for item in self.cases),
-            "deterministic_fallback_case_count": sum(
+            "deterministic_baseline_case_count": sum(
                 not item.learned_applied for item in self.cases
+            ),
+            "fallback_case_count": sum(
+                item.learned_decision_status.startswith("fallback_")
+                for item in self.cases
             ),
             "selection_changed_case_count": sum(
                 item.selection_changed for item in self.cases
@@ -143,6 +172,12 @@ class RecommendationReplayComparisonReport(BaseModel):
         for field_name, expected_value in expected.items():
             if getattr(self, field_name) != expected_value:
                 raise ValueError(f"{field_name} mismatch")
+        status_counts = Counter(item.learned_decision_status for item in self.cases)
+        if self.decision_status_counts.model_dump() != {
+            field_name: status_counts[field_name]
+            for field_name in ReplayDecisionStatusCounts.model_fields
+        }:
+            raise ValueError("decision_status_counts mismatch")
         return self
 
 
@@ -158,17 +193,31 @@ def _candidate_scores(response: RecommendationResponse) -> list[ReplayCandidateS
     ]
 
 
-def _safety_fingerprint(response: RecommendationResponse) -> tuple[object, ...]:
-    return (
-        response.safety_summary.status.value,
-        tuple(response.safety_summary.excluded_ingredients),
-        tuple(
-            (item.rule_id, item.rule_version, item.severity.value)
-            for item in response.safety_summary.rule_refs
-        ),
-        tuple(response.safety_summary.blocked_reasons),
-        tuple(response.safety_summary.warnings),
+def _safety_fingerprint(response: RecommendationResponse) -> str:
+    return json.dumps(
+        {
+            "safety_summary": response.safety_summary.model_dump(
+                mode="json",
+                exclude={"applied_at"},
+            ),
+            "safety_flags": response.safety_flags,
+            "safety_evidence": [
+                item.model_dump(mode="json") for item in response.safety_evidence
+            ],
+        },
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
     )
+
+
+def _portable_source_path(value: str | Path) -> str:
+    path = Path(value)
+    project_root = Path(__file__).resolve().parents[3]
+    try:
+        return path.resolve().relative_to(project_root).as_posix()
+    except ValueError:
+        return path.as_posix()
 
 
 def _compare_case(
@@ -235,13 +284,26 @@ def build_recommendation_replay_comparison(
         _compare_case(case, learned_artifact_path=learned_artifact_path)
         for case in cases
     ]
+    decision_status_counts = Counter(
+        item.learned_decision_status for item in comparisons
+    )
     return RecommendationReplayComparisonReport(
-        dataset_path=str(dataset_path),
-        learned_artifact_path=str(learned_artifact_path),
+        dataset_path=_portable_source_path(dataset_path),
+        learned_artifact_path=_portable_source_path(learned_artifact_path),
         case_count=len(comparisons),
         learned_applied_case_count=sum(item.learned_applied for item in comparisons),
-        deterministic_fallback_case_count=sum(
+        deterministic_baseline_case_count=sum(
             not item.learned_applied for item in comparisons
+        ),
+        fallback_case_count=sum(
+            item.learned_decision_status.startswith("fallback_")
+            for item in comparisons
+        ),
+        decision_status_counts=ReplayDecisionStatusCounts(
+            **{
+                field_name: decision_status_counts[field_name]
+                for field_name in ReplayDecisionStatusCounts.model_fields
+            }
         ),
         selection_changed_case_count=sum(item.selection_changed for item in comparisons),
         rank_or_score_changed_case_count=sum(
@@ -262,6 +324,7 @@ __all__ = [
     "RecommendationReplayCaseComparison",
     "RecommendationReplayComparisonReport",
     "ReplayCandidateScore",
+    "ReplayDecisionStatusCounts",
     "ReplayRankChange",
     "build_recommendation_replay_comparison",
 ]

@@ -228,7 +228,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 39a0d0f274f5e1b0c61db8aade903c64f413aafe
+          ref: a6b8ab1e92a112f6d2e904436bfe44ba688fc4e8
           path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
         with:

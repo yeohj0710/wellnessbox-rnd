@@ -10,12 +10,16 @@ from pydantic import ValidationError
 from wellnessbox_rnd.evals.recommendation_replay_compare import (
     RecommendationReplayCaseComparison,
     RecommendationReplayComparisonReport,
+    _safety_fingerprint,
     build_recommendation_replay_comparison,
 )
+from wellnessbox_rnd.evals.runner import load_eval_cases
 from wellnessbox_rnd.models import (
     load_efficacy_model_artifact,
     validate_efficacy_model_artifact_for_runtime,
 )
+from wellnessbox_rnd.orchestration.recommendation_service import recommend
+from wellnessbox_rnd.schemas.recommendation import SafetyEvidenceItem
 
 RND_ROOT = Path(__file__).resolve().parents[1]
 SERVICE_ROOT = Path(
@@ -47,7 +51,22 @@ def test_paired_frozen_replay_compares_every_case_and_preserves_safety(
 ) -> None:
     assert replay_report.case_count == 256
     assert replay_report.learned_applied_case_count == 12
-    assert replay_report.deterministic_fallback_case_count == 244
+    assert replay_report.deterministic_baseline_case_count == 244
+    assert replay_report.fallback_case_count == 0
+    assert replay_report.decision_status_counts.model_dump() == {
+        "not_requested": 0,
+        "not_eligible": 244,
+        "applied": 12,
+        "fallback_missing_path": 0,
+        "fallback_missing_file": 0,
+        "fallback_invalid_artifact": 0,
+        "fallback_suspicious_artifact": 0,
+        "fallback_artifact_runtime_error": 0,
+    }
+    assert replay_report.dataset_path == "data/frozen_eval/frozen_eval_v1.jsonl"
+    assert replay_report.learned_artifact_path == (
+        "data/original_plan/fixtures/op049_learned_replay_artifact_v1.json"
+    )
     assert replay_report.selection_changed_case_count == 4
     assert replay_report.rank_or_score_changed_case_count == 5
     assert replay_report.response_status_changed_case_count == 0
@@ -61,6 +80,25 @@ def test_paired_frozen_replay_compares_every_case_and_preserves_safety(
         item.learned_applied or not item.selection_changed
         for item in replay_report.cases
     )
+
+
+def test_safety_replay_fingerprint_covers_full_summary_and_top_level_evidence() -> None:
+    case = load_eval_cases(DATASET_PATH)[0]
+    baseline = recommend(case.request)
+
+    summary_changed = baseline.model_copy(deep=True)
+    summary_changed.safety_summary.duplicate_ingredient_keys.append("forged_duplicate")
+    assert _safety_fingerprint(summary_changed) != _safety_fingerprint(baseline)
+
+    evidence_changed = baseline.model_copy(deep=True)
+    evidence_changed.safety_evidence.append(
+        SafetyEvidenceItem(
+            evidence_type="excluded_ingredient",
+            code="forged_evidence",
+            summary="forged safety evidence",
+        )
+    )
+    assert _safety_fingerprint(evidence_changed) != _safety_fingerprint(baseline)
 
 
 def test_replay_comparison_schemas_reject_forged_deltas(

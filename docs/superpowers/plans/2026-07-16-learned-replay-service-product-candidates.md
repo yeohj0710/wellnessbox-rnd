@@ -16,7 +16,7 @@
 
 - Reuse `recommend()` twice per request; do not add a second scorer.
 - Use a committed, explicitly labeled replay-only efficacy artifact fixture.
-- Preserve every case result and summarize applied, fallback/ineligible, changed-selection, rank-change, and safety/status-change counts.
+- Preserve every case result and report applied, deterministic-baseline, true fallback, ineligible, changed-selection, rank-change, and safety/status-change counts separately.
 
 ## Task 3: Lock service product-candidate conversion with failing QA
 
@@ -36,7 +36,7 @@
 
 - Start the actual R&D FastAPI process locally.
 - Invoke the exported WellnessBox `POST /api/tips` handler with its test-only dependency hook and a catalog fixture shaped exactly like the live Prisma query.
-- Observe R&D ingredient, mapped service ingredient, matched service product ID/name, no-match behavior, and final safety authority in one report.
+- Observe the actual R&D HTTP process on the safety-blocked boundary. Verify READY ingredient/product conversion and no-match behavior separately through the test-only route dependency seam and the captured live-catalog snapshot in the same report.
 
 ## Task 6: Close evidence and publish
 

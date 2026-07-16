@@ -22,9 +22,24 @@ DEFAULT_OUTPUT = (
     / "data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json"
 )
 RND_SOURCE_PATHS = [
+    "data/catalog/ingredients.json",
+    "data/frozen_eval/frozen_eval_v1.jsonl",
+    "data/knowledge/goal_ingredient_priors_v1.json",
     "data/original_plan/fixtures/op049_learned_replay_artifact_v1.json",
+    "data/rules/candidate_signal_scoring_rules_v1.json",
+    "data/rules/safety_rules.json",
     "scripts/run_learned_replay_product_candidates_smoke.py",
+    "src/wellnessbox_rnd/domain/loaders.py",
+    "src/wellnessbox_rnd/efficacy/service.py",
+    "src/wellnessbox_rnd/evals/runner.py",
     "src/wellnessbox_rnd/evals/recommendation_replay_compare.py",
+    "src/wellnessbox_rnd/knowledge/candidate_signals.py",
+    "src/wellnessbox_rnd/knowledge/goal_priors.py",
+    "src/wellnessbox_rnd/models/efficacy_model_v0.py",
+    "src/wellnessbox_rnd/optimizer/service.py",
+    "src/wellnessbox_rnd/orchestration/recommendation_service.py",
+    "src/wellnessbox_rnd/safety/service.py",
+    "src/wellnessbox_rnd/schemas/recommendation.py",
 ]
 SERVICE_SOURCE_PATHS = [
     "app/api/tips/route.ts",
@@ -37,6 +52,7 @@ SERVICE_SOURCE_PATHS = [
     "lib/server/wb-rnd-product-candidates.ts",
     "lib/server/wb-rnd-tips-route-test-hook.ts",
     "lib/product/product.catalog.ts",
+    "lib/product/product.shared.ts",
     "package.json",
     "scripts/qa/check-rnd-final-safety-authority.cts",
     "scripts/qa/check-rnd-product-candidates.cts",
@@ -150,9 +166,10 @@ def main() -> int:
             output_path=temporary_root / "product-candidates.json",
         )
 
-    observed_product_ids = product_conversion["observed"]["product_ids"]
-    if observed_product_ids != [29, 29]:
-        raise RuntimeError("service product candidate IDs did not match the catalog fixture")
+    if product_conversion["observed"]["mapping_coverage_count"] != 8:
+        raise RuntimeError("service product conversion did not cover every mapping")
+    if product_conversion["observed"]["unmatched_service_ingredient_ids"]:
+        raise RuntimeError("service product conversion left mapped ingredients unmatched")
 
     report = {
         "schema_version": "op049_op050_replay_product_candidates_smoke_v1",
