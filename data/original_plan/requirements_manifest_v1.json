@@ -890,8 +890,46 @@
             ]
           }
         },
-        {"requirement_id": "OP-047", "title": "결정 불확실성과 추가 입력 조건을 정량화한다."},
-        {"requirement_id": "OP-048", "title": "learned artifact가 없거나 의심스러우면 deterministic baseline으로 복귀한다."},
+        {
+          "requirement_id": "OP-047",
+          "title": "결정 불확실성과 추가 입력 조건을 정량화한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation_contracts.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_decision_uncertainty_learned_fallback.py",
+              "wellnessbox-rnd/tests/test_recommendation_contracts.py",
+              "wellnessbox-rnd/scripts/run_decision_uncertainty_learned_fallback_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op047_op048_decision_uncertainty_learned_fallback_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-048",
+          "title": "learned artifact가 없거나 의심스러우면 deterministic baseline으로 복귀한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/models/efficacy_model_v0.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/training/efficacy_model_v0.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_decision_uncertainty_learned_fallback.py",
+              "wellnessbox-rnd/tests/test_learned_optimizer_integration.py",
+              "wellnessbox-rnd/tests/test_learned_runtime_boundary_audit.py",
+              "wellnessbox-rnd/scripts/run_decision_uncertainty_learned_fallback_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op047_op048_decision_uncertainty_learned_fallback_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-049", "title": "추천 모델과 deterministic baseline 차이를 replay에서 비교한다."},
         {"requirement_id": "OP-050", "title": "추천 결과를 실제 서비스 성분과 상품 후보로 변환한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"}
       ]

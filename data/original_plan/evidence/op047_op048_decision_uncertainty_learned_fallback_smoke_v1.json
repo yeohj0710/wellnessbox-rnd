@@ -1,0 +1,258 @@
+{
+  "cases": {
+    "complete_input_uncertainty": {
+      "additional_input_conditions": [],
+      "calculation_version": "decision_uncertainty_v1",
+      "candidate_ranking_snapshot": {
+        "calculation_version": "candidate_ranking_snapshot_v1",
+        "candidate_count": 2,
+        "runner_up_candidate_key": "l_theanine",
+        "runner_up_selection_score": 67.5,
+        "top_candidate_key": "magnesium_glycinate",
+        "top_selection_score": 68.0,
+        "top_two_score_margin": 0.5
+      },
+      "components": [
+        {
+          "basis_codes": [
+            "magnesium_glycinate",
+            "l_theanine"
+          ],
+          "code": "candidate_score_margin:top_two",
+          "points": 0.2,
+          "source": "candidate_score_margin"
+        }
+      ],
+      "raw_uncertainty_score": 0.2,
+      "score_scope": "unresolved_recommendation_inputs_and_ranking_stability_not_clinical_probability",
+      "uncertainty_band": "low",
+      "uncertainty_score": 0.2
+    },
+    "contract_bridge": {
+      "diagnostics_downgrade_issues": [
+        "required_decision_diagnostics_missing"
+      ],
+      "issue_count": 0,
+      "selection_mutation_issues": [
+        "decision_uncertainty_selection_count_mismatch"
+      ],
+      "status_mutation_issues": [
+        "decision_uncertainty_response_context_mismatch"
+      ],
+      "version_downgrade_issues": [
+        "current_contract_requires_diagnostics_schema"
+      ]
+    },
+    "learned_fallback": {
+      "baseline_candidate_keys": [
+        "vitamin_d3",
+        "vitamin_c",
+        "zinc",
+        "vitamin_b_complex",
+        "magnesium_glycinate"
+      ],
+      "closed_domain_issues": [
+        "unsupported_closed_domain_feature"
+      ],
+      "extreme_weight_issues": [
+        "weight_exceeds_runtime_limit"
+      ],
+      "runtime_prediction_calls": 2,
+      "statuses": [
+        "fallback_missing_path",
+        "fallback_missing_file",
+        "fallback_invalid_artifact",
+        "fallback_suspicious_artifact",
+        "fallback_invalid_artifact",
+        "fallback_suspicious_artifact",
+        "fallback_suspicious_artifact",
+        "fallback_suspicious_artifact",
+        "fallback_suspicious_artifact",
+        "fallback_invalid_artifact",
+        "fallback_suspicious_artifact",
+        "fallback_artifact_runtime_error"
+      ],
+      "suspicious_issues": [
+        "unsupported_runtime_feature",
+        "missing_candidate_specific_feature",
+        "feature_weight_dimension_mismatch"
+      ],
+      "unknown_candidate_issues": [
+        "unsupported_candidate_feature"
+      ],
+      "unknown_feature_issues": [
+        "unsupported_runtime_feature",
+        "missing_candidate_specific_feature"
+      ],
+      "whitespace_feature_issues": [
+        "feature_name_has_surrounding_whitespace",
+        "unsupported_candidate_feature"
+      ]
+    },
+    "missing_input_uncertainty": {
+      "additional_input_conditions": [
+        {
+          "code": "missing_heart_context",
+          "importance": "high",
+          "question": "Please share heart-related medication or recent lipid and blood pressure context before starting the plan.",
+          "reason": "Heart-related goals need medication or lab context to avoid overconfident baseline recommendations.",
+          "uncertainty_points": 0.2
+        },
+        {
+          "code": "missing_primary_symptom",
+          "importance": "medium",
+          "question": "Please name the main symptom or support goal you want to prioritize.",
+          "reason": "Symptom detail helps deterministic ranking stay conservative but useful.",
+          "uncertainty_points": 0.1
+        },
+        {
+          "code": "missing_current_supplements",
+          "importance": "low",
+          "question": "Please list any supplements you are already taking.",
+          "reason": "Current supplement data helps avoid overlap.",
+          "uncertainty_points": 0.05
+        }
+      ],
+      "calculation_version": "decision_uncertainty_v1",
+      "candidate_ranking_snapshot": {
+        "calculation_version": "candidate_ranking_snapshot_v1",
+        "candidate_count": 2,
+        "runner_up_candidate_key": "coq10",
+        "runner_up_selection_score": 54.9,
+        "top_candidate_key": "omega3",
+        "top_selection_score": 57.3,
+        "top_two_score_margin": 2.4
+      },
+      "components": [
+        {
+          "basis_codes": [
+            "missing_heart_context"
+          ],
+          "code": "missing_information:missing_heart_context",
+          "points": 0.2,
+          "source": "missing_information"
+        },
+        {
+          "basis_codes": [
+            "missing_primary_symptom"
+          ],
+          "code": "missing_information:missing_primary_symptom",
+          "points": 0.1,
+          "source": "missing_information"
+        },
+        {
+          "basis_codes": [
+            "missing_current_supplements"
+          ],
+          "code": "missing_information:missing_current_supplements",
+          "points": 0.05,
+          "source": "missing_information"
+        },
+        {
+          "basis_codes": [
+            "omega3",
+            "coq10"
+          ],
+          "code": "candidate_score_margin:top_two",
+          "points": 0.1,
+          "source": "candidate_score_margin"
+        }
+      ],
+      "raw_uncertainty_score": 0.45,
+      "score_scope": "unresolved_recommendation_inputs_and_ranking_stability_not_clinical_probability",
+      "uncertainty_band": "moderate",
+      "uncertainty_score": 0.45
+    },
+    "preselection_close_ranking_with_one_output": {
+      "additional_input_conditions": [
+        {
+          "code": "missing_current_supplements",
+          "importance": "low",
+          "question": "Please list any supplements you are already taking.",
+          "reason": "Current supplement data helps avoid overlap.",
+          "uncertainty_points": 0.05
+        }
+      ],
+      "calculation_version": "decision_uncertainty_v1",
+      "candidate_ranking_snapshot": {
+        "calculation_version": "candidate_ranking_snapshot_v1",
+        "candidate_count": 7,
+        "runner_up_candidate_key": "vitamin_c",
+        "runner_up_selection_score": 42.0,
+        "top_candidate_key": "vitamin_d3",
+        "top_selection_score": 42.7,
+        "top_two_score_margin": 0.7
+      },
+      "components": [
+        {
+          "basis_codes": [
+            "missing_current_supplements"
+          ],
+          "code": "missing_information:missing_current_supplements",
+          "points": 0.05,
+          "source": "missing_information"
+        },
+        {
+          "basis_codes": [
+            "vitamin_d3",
+            "vitamin_c"
+          ],
+          "code": "candidate_score_margin:top_two",
+          "points": 0.2,
+          "source": "candidate_score_margin"
+        }
+      ],
+      "raw_uncertainty_score": 0.25,
+      "score_scope": "unresolved_recommendation_inputs_and_ranking_stability_not_clinical_probability",
+      "uncertainty_band": "low",
+      "uncertainty_score": 0.25
+    },
+    "schema_fail_closed": {
+      "fallback_engine_mode": true,
+      "learned_flags": true,
+      "preselection_score_registry": true,
+      "ranking_snapshot_score_trace": true,
+      "uncertainty_total": true
+    },
+    "valid_learned_artifact": {
+      "engine_mode": "deterministic_baseline_v1_learned_efficacy_rerank_v0",
+      "selected_candidate_keys": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc",
+        "vitamin_b_complex",
+        "magnesium_glycinate"
+      ],
+      "status": "applied"
+    }
+  },
+  "checks": [
+    "missing_input_importance_is_converted_to_versioned_numeric_points",
+    "uncertainty_components_reconcile_to_raw_and_bounded_scores",
+    "uncertainty_score_is_not_a_clinical_probability",
+    "candidate_margin_uses_preselection_pool_independent_of_output_limit",
+    "ranking_snapshot_reconciles_with_independent_preselection_scores",
+    "every_preselection_score_reconciles_with_external_registries",
+    "missing_path_and_file_preserve_deterministic_selection",
+    "invalid_identity_unsupported_features_and_extreme_weights_fall_back",
+    "runtime_prediction_error_discards_all_partial_reranking",
+    "all_fallback_cases_preserve_the_full_deterministic_recommendations",
+    "fallback_clears_learned_rules_bonus_and_engine_mode",
+    "valid_artifact_can_apply_only_after_runtime_validation",
+    "uncertainty_and_learned_diagnostic_mismatches_fail_closed",
+    "non_applied_response_requires_exact_deterministic_engine_mode",
+    "recommendation_contract_preserves_diagnostics",
+    "recommendation_contract_revalidates_status_and_selection_count",
+    "diagnostics_contract_version_rejects_field_removal_downgrade"
+  ],
+  "production_operation_proven": false,
+  "requirement_stages": {
+    "OP-047": "IMPLEMENTED",
+    "OP-048": "IMPLEMENTED"
+  },
+  "schema_version": "op047_op048_decision_uncertainty_learned_fallback_smoke_v1",
+  "source_identity": {
+    "commit": "22aca5e9d64a493562f9d17b302bead2ca02c555",
+    "source_sha256": "c54699b4a94e4df6192387bf64c09842cc13364a3b4be952c2536e4464c5ec90"
+  }
+}
