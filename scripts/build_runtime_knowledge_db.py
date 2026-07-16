@@ -38,6 +38,11 @@ def main() -> None:
             "dose_limits": len(runtime_db.dose_limits),
             "ingredient_domain_scores": len(runtime_db.ingredient_domain_scores),
             "goal_ingredient_priors": len(runtime_db.goal_ingredient_priors),
+            "candidate_signal_rules": len(
+                runtime_db.candidate_signal_scoring.all_rules()
+                if runtime_db.candidate_signal_scoring is not None
+                else []
+            ),
             "references": len(runtime_db.references),
             "reference_spans": len(runtime_db.reference_spans),
             "workflow_policies": len(runtime_db.workflow_policies),

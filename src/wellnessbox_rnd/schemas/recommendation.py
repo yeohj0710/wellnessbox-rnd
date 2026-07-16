@@ -377,6 +377,74 @@ class LifestyleInput(_StrictRequestInput):
         return _reject_boolean_numeric(value)
 
 
+class NormalizedSensorGeneticSnapshot(_StrictHealthInput):
+    wearable_available: StrictBool = False
+    cgm_available: StrictBool = False
+    genetic_available: StrictBool = False
+    sleep_hours: float | None = Field(
+        default=None, ge=0.0, le=24.0, allow_inf_nan=False
+    )
+    steps: int | None = Field(default=None, ge=0, le=200_000)
+    resting_heart_rate: int | None = Field(default=None, ge=20, le=250)
+    mean_glucose_mg_dl: float | None = Field(
+        default=None, ge=20.0, le=600.0, allow_inf_nan=False
+    )
+    time_in_range_pct: float | None = Field(
+        default=None, ge=0.0, le=100.0, allow_inf_nan=False
+    )
+    time_in_range_low_mg_dl: float | None = Field(
+        default=None, ge=20.0, le=600.0, allow_inf_nan=False
+    )
+    time_in_range_high_mg_dl: float | None = Field(
+        default=None, ge=20.0, le=600.0, allow_inf_nan=False
+    )
+    post_meal_spike_concern: StrictBool = False
+    genetic_tags: list[
+        Annotated[
+            str,
+            StringConstraints(
+                strip_whitespace=True,
+                min_length=1,
+                max_length=128,
+                pattern=r"^[a-z0-9]+(?:_[a-z0-9]+)*$",
+            ),
+        ]
+    ] = Field(default_factory=list)
+    normalization_notes: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def require_source_availability_for_values(self) -> "NormalizedSensorGeneticSnapshot":
+        if not self.wearable_available and any(
+            value is not None
+            for value in (self.sleep_hours, self.steps, self.resting_heart_rate)
+        ):
+            raise ValueError("wearable values require wearable_available=true")
+        if not self.cgm_available and (
+            self.mean_glucose_mg_dl is not None
+            or self.time_in_range_pct is not None
+            or self.time_in_range_low_mg_dl is not None
+            or self.time_in_range_high_mg_dl is not None
+            or self.post_meal_spike_concern
+        ):
+            raise ValueError("CGM values require cgm_available=true")
+        range_bounds = (
+            self.time_in_range_low_mg_dl,
+            self.time_in_range_high_mg_dl,
+        )
+        if (range_bounds[0] is None) != (range_bounds[1] is None):
+            raise ValueError("CGM time-in-range bounds must be supplied together")
+        if range_bounds[0] is not None:
+            if self.time_in_range_pct is None:
+                raise ValueError("CGM time-in-range bounds require time_in_range_pct")
+            if range_bounds[0] >= range_bounds[1]:
+                raise ValueError("CGM time-in-range lower bound must be below upper bound")
+        if not self.genetic_available and self.genetic_tags:
+            raise ValueError("genetic tags require genetic_available=true")
+        if len(set(self.genetic_tags)) != len(self.genetic_tags):
+            raise ValueError("genetic tags must be unique")
+        return self
+
+
 class InputAvailability(_StrictRequestInput):
     survey: bool = True
     nhis: bool = False
@@ -487,6 +555,10 @@ class RecommendationRequest(_StrictRequestInput):
     )
     lifestyle: LifestyleInput = Field(default_factory=LifestyleInput)
     input_availability: InputAvailability = Field(default_factory=InputAvailability)
+    sensor_genetic_snapshot: NormalizedSensorGeneticSnapshot | None = Field(
+        default=None,
+        exclude_if=lambda value: value is None,
+    )
     data_source_consents: DataSourceConsents = Field(
         default_factory=_legacy_data_source_consents
     )
@@ -498,6 +570,24 @@ class RecommendationRequest(_StrictRequestInput):
             raise ValueError(
                 "survey use_for_recommendation consent is required for a recommendation request"
             )
+        return self
+
+    @model_validator(mode="after")
+    def require_declared_sensor_snapshot_sources(self) -> "RecommendationRequest":
+        snapshot = self.sensor_genetic_snapshot
+        if snapshot is None:
+            return self
+        if "data_source_consents" not in self.model_fields_set:
+            raise ValueError(
+                "sensor_genetic_snapshot requires explicit data_source_consents"
+            )
+        for source in ("wearable", "cgm", "genetic"):
+            if getattr(snapshot, f"{source}_available") and not getattr(
+                self.input_availability, source
+            ):
+                raise ValueError(
+                    f"{source} snapshot values require input_availability.{source}=true"
+                )
         return self
 
     @model_validator(mode="after")
@@ -690,15 +780,42 @@ class LimitationItem(BaseModel):
     summary: str
 
 
+class CandidateScoreSignal(BaseModel):
+    source: Literal[
+        "symptom",
+        "laboratory",
+        "lifestyle",
+        "dietary_pattern",
+        "wearable",
+        "cgm",
+        "genetic",
+    ]
+    code: str = Field(min_length=1)
+    observed_value: float | str
+    unit: str | None = None
+    points: float = Field(ge=0.0, le=10.0, allow_inf_nan=False)
+    rule_id: str = Field(min_length=1)
+    scoring_version: str = Field(min_length=1)
+    reference_ids: list[str] = Field(min_length=1)
+    claim_ids: list[str] = Field(min_length=1)
+    limitation: str = Field(min_length=1)
+
+
 class CandidateScoreBreakdown(BaseModel):
     goal_alignment: float
     symptom_alignment: float
     lifestyle_alignment: float
+    laboratory_alignment: float = 0.0
+    dietary_alignment: float = 0.0
+    wearable_adjustment: float = 0.0
+    cgm_adjustment: float = 0.0
+    genetic_adjustment: float = 0.0
     evidence_readiness: float
     budget_adjustment: float
     safety_adjustment: float
     conservative_adjustment: float
     learned_effect_bonus: float = 0.0
+    applied_signals: list[CandidateScoreSignal] = Field(default_factory=list)
     total: float
 
 

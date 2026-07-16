@@ -6,7 +6,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from wellnessbox_rnd.domain.sensor_parser import NormalizedSensorGeneticSnapshot
+from wellnessbox_rnd.schemas.recommendation import NormalizedSensorGeneticSnapshot
 
 CGM_NORMALIZED_EVENT_SCHEMA_VERSION_V1 = "cgm_normalized_event_v1"
 
@@ -20,6 +20,8 @@ class CGMReplayBridgeProjectionV1(BaseModel):
     cgm_available: float
     parser_mean_glucose_mg_dl: float | None = None
     parser_time_in_range_pct: float | None = None
+    parser_time_in_range_low_mg_dl: float | None = None
+    parser_time_in_range_high_mg_dl: float | None = None
     parser_post_meal_spike_concern: float = 0.0
 
 
@@ -29,6 +31,8 @@ class CGMNormalizedEventV1(BaseModel):
     cgm_available: bool
     mean_glucose_mg_dl: float | None = None
     time_in_range_pct: float | None = None
+    time_in_range_low_mg_dl: float | None = None
+    time_in_range_high_mg_dl: float | None = None
     post_meal_spike_concern: bool = False
     normalization_notes: list[str] = Field(default_factory=list)
     threshold_tags: list[str] = Field(default_factory=list)
@@ -53,6 +57,8 @@ def build_cgm_normalized_event_v1(
         cgm_available=model.cgm_available,
         mean_glucose_mg_dl=model.mean_glucose_mg_dl,
         time_in_range_pct=model.time_in_range_pct,
+        time_in_range_low_mg_dl=model.time_in_range_low_mg_dl,
+        time_in_range_high_mg_dl=model.time_in_range_high_mg_dl,
         post_meal_spike_concern=model.post_meal_spike_concern,
         normalization_notes=list(model.normalization_notes),
         threshold_tags=_build_threshold_tags(model),
@@ -66,6 +72,8 @@ def build_cgm_normalized_event_v1(
             cgm_available=float(model.cgm_available),
             parser_mean_glucose_mg_dl=model.mean_glucose_mg_dl,
             parser_time_in_range_pct=model.time_in_range_pct,
+            parser_time_in_range_low_mg_dl=model.time_in_range_low_mg_dl,
+            parser_time_in_range_high_mg_dl=model.time_in_range_high_mg_dl,
             parser_post_meal_spike_concern=float(model.post_meal_spike_concern),
         ),
     )
@@ -101,6 +109,21 @@ def validate_cgm_normalized_event_v1(
         )
     if model.replay_bridge_projection.cgm_available != float(model.cgm_available):
         issues.append("replay_projection_mismatch::cgm_available")
+    if (
+        model.replay_bridge_projection.parser_time_in_range_pct
+        != model.time_in_range_pct
+    ):
+        issues.append("replay_projection_mismatch::time_in_range_pct")
+    if (
+        model.replay_bridge_projection.parser_time_in_range_low_mg_dl
+        != model.time_in_range_low_mg_dl
+    ):
+        issues.append("replay_projection_mismatch::time_in_range_low_mg_dl")
+    if (
+        model.replay_bridge_projection.parser_time_in_range_high_mg_dl
+        != model.time_in_range_high_mg_dl
+    ):
+        issues.append("replay_projection_mismatch::time_in_range_high_mg_dl")
     return issues
 
 
@@ -125,6 +148,8 @@ def summarize_cgm_normalized_event_bridge_v1(
             "cgm_parser": [
                 "mean_glucose_mg_dl",
                 "time_in_range_pct",
+                "time_in_range_low_mg_dl",
+                "time_in_range_high_mg_dl",
                 "post_meal_spike_concern",
             ],
             "cgm_eval_slice": [
@@ -135,6 +160,8 @@ def summarize_cgm_normalized_event_bridge_v1(
                 "replay_bridge_projection.cgm_available",
                 "replay_bridge_projection.parser_mean_glucose_mg_dl",
                 "replay_bridge_projection.parser_time_in_range_pct",
+                "replay_bridge_projection.parser_time_in_range_low_mg_dl",
+                "replay_bridge_projection.parser_time_in_range_high_mg_dl",
                 "threshold_tags",
             ],
         },
@@ -197,6 +224,8 @@ def summarize_cgm_slice_bridge_v1(
                 "normalization_notes",
                 "mean_glucose_mg_dl",
                 "time_in_range_pct",
+                "time_in_range_low_mg_dl",
+                "time_in_range_high_mg_dl",
             ],
             "cgm_weakest_slice_audit": [
                 "threshold_tag_counts",
@@ -207,6 +236,8 @@ def summarize_cgm_slice_bridge_v1(
             "replay_readiness": [
                 "replay_bridge_projection.parser_mean_glucose_mg_dl",
                 "replay_bridge_projection.parser_time_in_range_pct",
+                "replay_bridge_projection.parser_time_in_range_low_mg_dl",
+                "replay_bridge_projection.parser_time_in_range_high_mg_dl",
                 "replay_bridge_projection.parser_post_meal_spike_concern",
             ],
         },
@@ -315,7 +346,12 @@ def _build_threshold_tags(snapshot: NormalizedSensorGeneticSnapshot) -> list[str
             tags.append("mean_glucose_near_126_mg_dl_pm_10")
         if snapshot.mean_glucose_mg_dl >= 140.0:
             tags.append("mean_glucose_high_ge_140")
-    if snapshot.time_in_range_pct is not None and abs(snapshot.time_in_range_pct - 70.0) <= 5.0:
+    if (
+        snapshot.time_in_range_pct is not None
+        and snapshot.time_in_range_low_mg_dl == 70.0
+        and snapshot.time_in_range_high_mg_dl == 180.0
+        and abs(snapshot.time_in_range_pct - 70.0) <= 5.0
+    ):
         tags.append("time_in_range_near_70_pct_pm_5")
     if snapshot.post_meal_spike_concern:
         tags.append("post_meal_spike_flagged")

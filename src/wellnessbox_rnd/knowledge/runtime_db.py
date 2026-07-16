@@ -10,8 +10,16 @@ from pydantic import BaseModel, Field
 
 from wellnessbox_rnd.domain.loaders import load_ingredient_catalog, repo_root
 from wellnessbox_rnd.ingestion.reference_ingestion import (
+    CitationSpan,
     KnowledgeBaseArtifact,
+    ParsedReferenceClaim,
+    ReferenceMetadata,
     validate_knowledge_artifact,
+)
+from wellnessbox_rnd.knowledge.candidate_signals import (
+    CandidateSignalScoringRegistry,
+    load_candidate_signal_registry,
+    validate_candidate_signal_registry,
 )
 from wellnessbox_rnd.knowledge.goal_priors import (
     GOAL_PRIOR_CLINICAL_CLAIM_CONTRACTS,
@@ -156,6 +164,7 @@ class RuntimeKnowledgeDB(BaseModel):
     dose_limits: list[DoseLimitRecord] = Field(default_factory=list)
     ingredient_domain_scores: list[IngredientDomainScoreRecord] = Field(default_factory=list)
     goal_ingredient_priors: list[GoalIngredientPriorRecord] = Field(default_factory=list)
+    candidate_signal_scoring: CandidateSignalScoringRegistry | None = None
     references: list[KnowledgeReferenceRecord] = Field(default_factory=list)
     reference_spans: list[ReferenceSpanRecord] = Field(default_factory=list)
     workflow_policies: list[WorkflowPolicyRecord] = Field(default_factory=list)
@@ -176,6 +185,15 @@ def build_runtime_knowledge_db(
     )
     if goal_prior_issues:
         raise ValueError(f"invalid_goal_prior_registry:{','.join(goal_prior_issues)}")
+    candidate_signal_registry = load_candidate_signal_registry()
+    candidate_signal_issues = validate_candidate_signal_registry(
+        candidate_signal_registry,
+        reference_artifact=artifact,
+    )
+    if candidate_signal_issues:
+        raise ValueError(
+            f"invalid_candidate_signal_registry:{','.join(candidate_signal_issues)}"
+        )
 
     ingredient_map: dict[str, IngredientRecord] = {}
     alias_keys: set[tuple[str, str, str]] = set()
@@ -433,6 +451,7 @@ def build_runtime_knowledge_db(
         dose_limits=dose_limits,
         ingredient_domain_scores=ingredient_domain_scores,
         goal_ingredient_priors=goal_prior_registry.records,
+        candidate_signal_scoring=candidate_signal_registry,
         references=references,
         reference_spans=reference_spans,
         workflow_policies=workflow_policies,
@@ -499,6 +518,15 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
     claim_reference_ids = {span.claim_id: span.reference_id for span in runtime_db.reference_spans}
     ingredient_keys = {record.ingredient_key for record in runtime_db.ingredients}
     spans_by_claim_id = {span.claim_id: span for span in runtime_db.reference_spans}
+    if runtime_db.candidate_signal_scoring is None:
+        issues.append("missing_candidate_signal_scoring_registry")
+    else:
+        issues.extend(
+            validate_candidate_signal_registry(
+                runtime_db.candidate_signal_scoring,
+                reference_artifact=_runtime_reference_artifact(runtime_db),
+            )
+        )
     for rule in runtime_db.interaction_rules:
         if rule.source_kind not in {"knowledge_artifact", "evidence_linked_policy"}:
             issues.append(f"invalid_interaction_source_kind:{rule.rule_id}:{rule.source_kind}")
@@ -640,6 +668,41 @@ def validate_runtime_knowledge_db(runtime_db: RuntimeKnowledgeDB) -> list[str]:
         issues.extend(_validate_referenced_ids(policy, reference_ids, claim_reference_ids))
 
     return issues
+
+
+def _runtime_reference_artifact(runtime_db: RuntimeKnowledgeDB) -> KnowledgeBaseArtifact:
+    references_by_id = {
+        reference.reference_id: reference for reference in runtime_db.references
+    }
+    return KnowledgeBaseArtifact(
+        references=[
+            ReferenceMetadata.model_validate(reference.model_dump(mode="json"))
+            for reference in runtime_db.references
+        ],
+        parsed_claims=[
+            ParsedReferenceClaim(
+                reference_id=span.reference_id,
+                source_title=references_by_id[span.reference_id].source_title,
+                source_type=references_by_id[span.reference_id].source_type,
+                page_or_section=references_by_id[span.reference_id].page_or_section,
+                reference_uri=references_by_id[span.reference_id].reference_uri,
+                claim_id=span.claim_id,
+                claim_text=span.claim_text,
+                normalized_claim_type=span.normalized_claim_type,
+                citation_span=CitationSpan(
+                    line_start=span.line_start,
+                    line_end=span.line_end,
+                    excerpt=span.excerpt,
+                ),
+                ingredient_keys=span.ingredient_keys,
+                domain_keys=span.domain_keys,
+            )
+            for span in runtime_db.reference_spans
+            if span.reference_id in references_by_id
+        ],
+        rule_candidates=[],
+        ingredient_domain_evidence=[],
+    )
 
 
 def find_triggered_interaction_rules(

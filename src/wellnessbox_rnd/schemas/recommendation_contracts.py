@@ -243,6 +243,11 @@ def _score_component_total(
         + score_breakdown.goal_alignment
         + score_breakdown.symptom_alignment
         + score_breakdown.lifestyle_alignment
+        + score_breakdown.laboratory_alignment
+        + score_breakdown.dietary_alignment
+        + score_breakdown.wearable_adjustment
+        + score_breakdown.cgm_adjustment
+        + score_breakdown.genetic_adjustment
         + score_breakdown.evidence_readiness
         + score_breakdown.budget_adjustment
         + score_breakdown.safety_adjustment

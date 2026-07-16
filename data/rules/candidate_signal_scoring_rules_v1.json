@@ -1,0 +1,145 @@
+{
+  "schema_version": "candidate_signal_scoring_rules_v1",
+  "scoring_version": "2026-07-16.1",
+  "effective_at": "2026-07-16T00:00:00Z",
+  "score_meaning": "bounded deterministic candidate-ordering points, not diagnosis, dose advice, treatment target, efficacy probability, or individualized medical advice",
+  "symptom_rule_id": "CS-SYMPTOM-MATCH-001",
+  "symptom_points_per_match": 8.0,
+  "lifestyle_rule_id": "CS-LIFESTYLE-MATCH-001",
+  "lifestyle_signal_points_per_match": 6.0,
+  "policy_reference_id": "REF-MC-CANDIDATE-SIGNAL-001",
+  "policy_claim_id": "CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+  "laboratory_rules": [
+    {
+      "rule_id": "CS-LAB-GLUCOSE-FIBER-001",
+      "ingredient_key": "soluble_fiber",
+      "goal_keys": ["blood_glucose"],
+      "observation_codes": ["fasting glucose", "hba1c"],
+      "range_status": "high",
+      "points": 4.0,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-CDC-SOLUBLE-FIBER-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-CDC-SOLUBLE-FIBER-001"],
+      "limitation": "Uses the laboratory-provided reference range and does not diagnose dysglycemia or establish a product or dose."
+    },
+    {
+      "rule_id": "CS-LAB-GLUCOSE-BERBERINE-001",
+      "ingredient_key": "berberine",
+      "goal_keys": ["blood_glucose"],
+      "observation_codes": ["fasting glucose", "hba1c"],
+      "range_status": "high",
+      "points": 2.0,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-NCCIH-BERBERINE-GLUCOSE-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-NCCIH-BERBERINE-GLUCOSE-001"],
+      "limitation": "Uses the laboratory-provided reference range; berberine evidence is limited and safety filtering remains authoritative."
+    },
+    {
+      "rule_id": "CS-LAB-TRIGLYCERIDE-OMEGA3-001",
+      "ingredient_key": "omega3",
+      "goal_keys": ["heart_health"],
+      "observation_codes": ["triglyceride", "triglycerides"],
+      "range_status": "high",
+      "points": 4.0,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-NIH-ODS-OMEGA3-HEART-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-NIH-ODS-OMEGA3-HEART-001"],
+      "limitation": "Uses the laboratory-provided reference range and does not determine an omega-3 product or dose."
+    }
+  ],
+  "dietary_rules": [
+    {
+      "rule_id": "CS-DIET-VEGETARIAN-B12-001",
+      "ingredient_key": "vitamin_b_complex",
+      "goal_keys": ["energy_support", "general_wellness"],
+      "dietary_patterns": ["plant based", "strict vegetarian", "vegan", "vegetarian"],
+      "points": 3.0,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-NIH-ODS-B12-ENERGY-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-NIH-ODS-B12-VEGETARIAN-001"],
+      "limitation": "Raises candidate priority for inadequacy risk only; it does not diagnose deficiency or establish whole B-complex efficacy."
+    }
+  ],
+  "wearable_rules": [
+    {
+      "rule_id": "CS-WEARABLE-SLEEP-MAGNESIUM-001",
+      "ingredient_key": "magnesium_glycinate",
+      "goal_keys": ["sleep_support"],
+      "metric": "sleep_hours",
+      "operator": "below",
+      "threshold": 7.0,
+      "points_per_unit": 2.0,
+      "max_points": 6.0,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-CDC-ADULT-SLEEP-001", "REF-NCCIH-MAGNESIUM-SLEEP-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-CDC-ADULT-SLEEP-001", "CLM-NCCIH-MAGNESIUM-SLEEP-001"],
+      "limitation": "Short-sleep context is not a sleep-disorder diagnosis; magnesium sleep evidence is mixed."
+    },
+    {
+      "rule_id": "CS-WEARABLE-SLEEP-LTHEANINE-001",
+      "ingredient_key": "l_theanine",
+      "goal_keys": ["sleep_support"],
+      "metric": "sleep_hours",
+      "operator": "below",
+      "threshold": 7.0,
+      "points_per_unit": 1.5,
+      "max_points": 4.5,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-CDC-ADULT-SLEEP-001", "REF-PUBMED-LTHEANINE-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-CDC-ADULT-SLEEP-001", "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"],
+      "limitation": "Short-sleep context is not a sleep-disorder diagnosis; L-theanine evidence comes from a small short trial."
+    }
+  ],
+  "cgm_rules": [
+    {
+      "rule_id": "CS-CGM-TIR-FIBER-001",
+      "ingredient_key": "soluble_fiber",
+      "goal_keys": ["blood_glucose"],
+      "condition_keys": ["diabetes", "type 1 diabetes", "type 2 diabetes"],
+      "requires_nonpregnant": true,
+      "range_low_mg_dl": 70.0,
+      "range_high_mg_dl": 180.0,
+      "metric": "time_in_range_pct",
+      "operator": "below",
+      "threshold": 70.0,
+      "points_per_unit": 0.2,
+      "max_points": 6.0,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-ADA-CGM-TIR-001", "REF-CDC-SOLUBLE-FIBER-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-ADA-CGM-TIR-001", "CLM-CDC-SOLUBLE-FIBER-001"],
+      "limitation": "Only explicit diabetes context is eligible; this is candidate ordering and not an individualized CGM treatment target."
+    },
+    {
+      "rule_id": "CS-CGM-TIR-BERBERINE-001",
+      "ingredient_key": "berberine",
+      "goal_keys": ["blood_glucose"],
+      "condition_keys": ["diabetes", "type 1 diabetes", "type 2 diabetes"],
+      "requires_nonpregnant": true,
+      "range_low_mg_dl": 70.0,
+      "range_high_mg_dl": 180.0,
+      "metric": "time_in_range_pct",
+      "operator": "below",
+      "threshold": 70.0,
+      "points_per_unit": 0.1,
+      "max_points": 3.0,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-ADA-CGM-TIR-001", "REF-NCCIH-BERBERINE-GLUCOSE-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-ADA-CGM-TIR-001", "CLM-NCCIH-BERBERINE-GLUCOSE-001"],
+      "limitation": "Only explicit diabetes context is eligible; berberine evidence is limited and safety filtering remains authoritative."
+    }
+  ],
+  "genetic_rules": [
+    {
+      "rule_id": "CS-GENE-CYP1A2-LTHEANINE-001",
+      "ingredient_key": "l_theanine",
+      "goal_keys": ["sleep_support", "stress_support"],
+      "genetic_tags": ["cyp1a2_slow_metabolizer", "slow_caffeine_metabolism"],
+      "points": 4.0,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-PUBMED-LTHEANINE-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-MC-CANDIDATE-SIGNAL-CYP1A2-001", "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"],
+      "limitation": "A declared tag changes prototype ordering only and is not independently reinterpreted as a genetic diagnosis."
+    },
+    {
+      "rule_id": "CS-GENE-LPL-OMEGA3-001",
+      "ingredient_key": "omega3",
+      "goal_keys": ["heart_health"],
+      "genetic_tags": ["adverse_lpl_variant", "lpl_triglyceride_risk"],
+      "points": 4.0,
+      "reference_ids": ["REF-MC-CANDIDATE-SIGNAL-001", "REF-NIH-ODS-OMEGA3-HEART-001"],
+      "claim_ids": ["CLM-MC-CANDIDATE-SIGNAL-POLICY-001", "CLM-MC-CANDIDATE-SIGNAL-LPL-001", "CLM-NIH-ODS-OMEGA3-HEART-001"],
+      "limitation": "A declared tag changes prototype ordering only and is not independently reinterpreted as a genetic diagnosis."
+    }
+  ]
+}

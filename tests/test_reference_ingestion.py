@@ -34,14 +34,14 @@ def test_ingest_reference_directory_builds_rule_and_evidence_artifacts() -> None
     artifact = ingest_reference_directory("data/raw_references")
 
     assert validate_knowledge_artifact(artifact) == []
-    assert len(artifact.references) == 16
+    assert len(artifact.references) == 19
     assert {reference.license_status for reference in artifact.references} == {
         "APPROVED_INTERNAL",
         "OPEN_ACCESS_RESEARCH",
         "PUBLIC_GOVERNMENT",
     }
     assert all(reference.effective_at for reference in artifact.references)
-    assert len(artifact.parsed_claims) == 18
+    assert len(artifact.parsed_claims) == 24
     nih_reference = next(
         reference
         for reference in artifact.references
@@ -73,7 +73,7 @@ def test_ingest_reference_directory_builds_rule_and_evidence_artifacts() -> None
     assert any(
         evidence.ingredient_key == "omega3"
         and evidence.domain_key == "heart_health"
-        and evidence.claim_ids == ["CLM-NIH-ODS-OMEGA3-HEART-001"]
+        and "CLM-NIH-ODS-OMEGA3-HEART-001" in evidence.claim_ids
         for evidence in artifact.ingredient_domain_evidence
     )
 
@@ -83,12 +83,13 @@ def test_summarize_ingestion_reports_expected_counts() -> None:
 
     summary = summarize_ingestion(artifact)
 
-    assert summary.reference_count == 16
-    assert summary.claim_count == 18
+    assert summary.reference_count == 19
+    assert summary.claim_count == 24
     assert summary.rule_candidate_count == 5
     assert summary.source_type_counts == {
-        "government_health_reference": 11,
+        "clinical_guideline": 1,
+        "government_health_reference": 12,
         "interaction_reference": 1,
-        "master_context": 3,
+        "master_context": 4,
         "peer_reviewed_trial": 1,
     }

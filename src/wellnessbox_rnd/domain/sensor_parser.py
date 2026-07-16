@@ -7,19 +7,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-
-class NormalizedSensorGeneticSnapshot(BaseModel):
-    wearable_available: bool = False
-    cgm_available: bool = False
-    genetic_available: bool = False
-    sleep_hours: float | None = None
-    steps: int | None = None
-    resting_heart_rate: int | None = None
-    mean_glucose_mg_dl: float | None = None
-    time_in_range_pct: float | None = None
-    post_meal_spike_concern: bool = False
-    genetic_tags: list[str] = Field(default_factory=list)
-    normalization_notes: list[str] = Field(default_factory=list)
+from wellnessbox_rnd.schemas.recommendation import NormalizedSensorGeneticSnapshot
 
 
 class SensorFileSchemaValidationResult(BaseModel):
@@ -49,7 +37,12 @@ CGM_ALIAS_GROUPS: dict[str, tuple[str, ...]] = {
         "avg_glucose_mmol_l",
         "avg_glucose",
     ),
-    "time_in_range_summary": ("time_in_range_pct", "timeInRangePct"),
+    "time_in_range_summary": (
+        "time_in_range_pct",
+        "timeInRangePct",
+        "time_in_range_70_180_pct",
+        "timeInRange70To180Pct",
+    ),
 }
 GENE_ALIAS_GROUPS: dict[str, tuple[str, ...]] = {
     "genetic_tag_source": ("phenotypes", "risk_flags", "markers", "gene_markers"),
@@ -73,6 +66,52 @@ def normalize_sensor_genetic_payloads(
         _normalize_cgm_payload(cgm_payload or {})
     )
     notes.extend(cgm_notes)
+    cgm_input = cgm_payload or {}
+    tir_aliases = (
+        "time_in_range_pct",
+        "timeInRangePct",
+        "time_in_range_70_180_pct",
+        "timeInRange70To180Pct",
+    )
+    supplied_tir_values = [
+        _coerce_float(cgm_input[key])
+        for key in tir_aliases
+        if key in cgm_input and cgm_input[key] is not None
+    ]
+    if len(supplied_tir_values) > 1 and (
+        any(value is None for value in supplied_tir_values)
+        or len({value for value in supplied_tir_values if value is not None}) != 1
+    ):
+        raise ValueError("conflicting_cgm_time_in_range_aliases")
+    standardized_tir = _first_present(
+        cgm_input,
+        "time_in_range_70_180_pct",
+        "timeInRange70To180Pct",
+    )
+    if standardized_tir is not None:
+        supplied_low = _coerce_float(cgm_input.get("time_in_range_low_mg_dl"))
+        supplied_high = _coerce_float(cgm_input.get("time_in_range_high_mg_dl"))
+        if (
+            "time_in_range_low_mg_dl" in cgm_input
+            and cgm_input["time_in_range_low_mg_dl"] is not None
+            and supplied_low is None
+        ) or (
+            "time_in_range_high_mg_dl" in cgm_input
+            and cgm_input["time_in_range_high_mg_dl"] is not None
+            and supplied_high is None
+        ):
+            raise ValueError("standardized_cgm_time_in_range_bounds_invalid")
+        if supplied_low not in {None, 70.0} or supplied_high not in {None, 180.0}:
+            raise ValueError("standardized_cgm_time_in_range_bounds_mismatch")
+        time_in_range_low_mg_dl = 70.0
+        time_in_range_high_mg_dl = 180.0
+    else:
+        time_in_range_low_mg_dl = _coerce_float(
+            _first_present(cgm_input, "time_in_range_low_mg_dl")
+        )
+        time_in_range_high_mg_dl = _coerce_float(
+            _first_present(cgm_input, "time_in_range_high_mg_dl")
+        )
 
     genetic_tags, genetic_notes = _normalize_genetic_payload(genetic_payload or {})
     notes.extend(genetic_notes)
@@ -86,6 +125,8 @@ def normalize_sensor_genetic_payloads(
         resting_heart_rate=resting_hr,
         mean_glucose_mg_dl=mean_glucose_mg_dl,
         time_in_range_pct=time_in_range_pct,
+        time_in_range_low_mg_dl=time_in_range_low_mg_dl,
+        time_in_range_high_mg_dl=time_in_range_high_mg_dl,
         post_meal_spike_concern=post_meal_spike_concern,
         genetic_tags=genetic_tags,
         normalization_notes=notes,
@@ -270,9 +311,21 @@ def _normalize_cgm_payload(
             notes.append("cgm_mmol_l_converted_to_mg_dl")
 
     time_in_range_pct = _coerce_float(
-        _first_present(payload, "time_in_range_pct", "timeInRangePct")
+        _first_present(
+            payload,
+            "time_in_range_pct",
+            "timeInRangePct",
+            "time_in_range_70_180_pct",
+            "timeInRange70To180Pct",
+        )
     )
-    raw_time_in_range_pct = _first_present(payload, "time_in_range_pct", "timeInRangePct")
+    raw_time_in_range_pct = _first_present(
+        payload,
+        "time_in_range_pct",
+        "timeInRangePct",
+        "time_in_range_70_180_pct",
+        "timeInRange70To180Pct",
+    )
     if raw_time_in_range_pct is not None and time_in_range_pct is None:
         notes.append("cgm_time_in_range_invalid_numeric_ignored")
     elif time_in_range_pct is not None and isinstance(raw_time_in_range_pct, str):

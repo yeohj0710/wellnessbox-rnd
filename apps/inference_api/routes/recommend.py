@@ -214,6 +214,17 @@ _RECOMMEND_REQUEST_EXAMPLES = {
                 "cgm": False,
                 "genetic": False,
             },
+            "sensor_genetic_snapshot": {
+                "wearable_available": True,
+                "cgm_available": False,
+                "genetic_available": False,
+                "sleep_hours": 5.8,
+                "steps": 6200,
+                "resting_heart_rate": 68,
+                "post_meal_spike_concern": False,
+                "genetic_tags": [],
+                "normalization_notes": [],
+            },
             "data_source_consents": {
                 "survey": {
                     "use_for_recommendation": True,

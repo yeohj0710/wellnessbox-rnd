@@ -1,7 +1,29 @@
 {
   "artifact_version": "reference_knowledge_base_v1",
-  "generated_at": "2026-07-16T11:43:15.690032Z",
+  "generated_at": "2026-07-16T12:16:06.609581Z",
   "references": [
+    {
+      "reference_id": "REF-ADA-CGM-TIR-001",
+      "source_title": "ADA Standards of Care in Diabetes 2024 - Glycemic Goals and Hypoglycemia",
+      "source_type": "clinical_guideline",
+      "page_or_section": "Table 6.2 standardized CGM metrics",
+      "reference_uri": "https://diabetesjournals.org/care/article/47/Supplement_1/S111/153951/6-Glycemic-Goals-and-Hypoglycemia-Standards-of",
+      "parsed_source_uri": "data/raw_references/ada_cgm_time_in_range.md",
+      "license_status": "OPEN_ACCESS_RESEARCH",
+      "effective_at": "2024-01-01T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-CDC-ADULT-SLEEP-001",
+      "source_title": "CDC - FastStats Sleep in Adults",
+      "source_type": "government_health_reference",
+      "page_or_section": "Recommended sleep duration for adults",
+      "reference_uri": "https://www.cdc.gov/sleep/data-research/facts-stats/adults-sleep-facts-and-stats.html",
+      "parsed_source_uri": "data/raw_references/cdc_adult_sleep_duration.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null
+    },
     {
       "reference_id": "REF-CDC-SOLUBLE-FIBER-001",
       "source_title": "CDC - Fiber Helps Manage Diabetes",
@@ -22,6 +44,17 @@
       "parsed_source_uri": "data/raw_references/master_context_action_space.md",
       "license_status": "APPROVED_INTERNAL",
       "effective_at": "2026-03-10T00:00:00Z",
+      "retired_at": null
+    },
+    {
+      "reference_id": "REF-MC-CANDIDATE-SIGNAL-001",
+      "source_title": "Master context candidate signal scoring policy",
+      "source_type": "master_context",
+      "page_or_section": "Sections 6.9, 13.3, and 18.2",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_candidate_signal_scoring.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-07-16T00:00:00Z",
       "retired_at": null
     },
     {
@@ -181,6 +214,48 @@
   ],
   "parsed_claims": [
     {
+      "reference_id": "REF-ADA-CGM-TIR-001",
+      "source_title": "ADA Standards of Care in Diabetes 2024 - Glycemic Goals and Hypoglycemia",
+      "source_type": "clinical_guideline",
+      "page_or_section": "Table 6.2 standardized CGM metrics",
+      "reference_uri": "https://diabetesjournals.org/care/article/47/Supplement_1/S111/153951/6-Glycemic-Goals-and-Hypoglycemia-Standards-of",
+      "claim_id": "CLM-ADA-CGM-TIR-001",
+      "claim_text": "For many nonpregnant adults with type 1 or type 2 diabetes, ADA lists CGM time in range of 70 to 180 mg/dL with a goal above 70%; individual targets can differ.",
+      "normalized_claim_type": "candidate_signal_threshold",
+      "citation_span": {
+        "line_start": 13,
+        "line_end": 19,
+        "excerpt": "ADA defines CGM time in range as the percentage of readings and time between 70 and 180 mg/dL and lists a goal above 70% for many nonpregnant adults with type 1 or type 2 diabetes. The candidate scorer applies this only when diabetes context and a blood-glucose goal are explicit; it does not change medication, diagnose diabetes, or set an individualized treatment target."
+      },
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "blood_glucose",
+        "cgm"
+      ]
+    },
+    {
+      "reference_id": "REF-CDC-ADULT-SLEEP-001",
+      "source_title": "CDC - FastStats Sleep in Adults",
+      "source_type": "government_health_reference",
+      "page_or_section": "Recommended sleep duration for adults",
+      "reference_uri": "https://www.cdc.gov/sleep/data-research/facts-stats/adults-sleep-facts-and-stats.html",
+      "claim_id": "CLM-CDC-ADULT-SLEEP-001",
+      "claim_text": "Adults are generally recommended to obtain at least seven hours of sleep per day; using this boundary for candidate context does not diagnose a sleep disorder or prove supplement efficacy.",
+      "normalized_claim_type": "candidate_signal_threshold",
+      "citation_span": {
+        "line_start": 13,
+        "line_end": 19,
+        "excerpt": "CDC reports that the recommended amount of sleep for adults is at least seven hours per day. The scoring policy uses this only as a bounded adult sleep-context threshold and does not diagnose a sleep disorder or establish supplement efficacy."
+      },
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "sleep_support",
+        "wearable"
+      ]
+    },
+    {
       "reference_id": "REF-CDC-SOLUBLE-FIBER-001",
       "source_title": "CDC - Fiber Helps Manage Diabetes",
       "source_type": "government_health_reference",
@@ -243,6 +318,71 @@
       "domain_keys": [
         "policy",
         "safety_recheck"
+      ]
+    },
+    {
+      "reference_id": "REF-MC-CANDIDATE-SIGNAL-001",
+      "source_title": "Master context candidate signal scoring policy",
+      "source_type": "master_context",
+      "page_or_section": "Sections 6.9, 13.3, and 18.2",
+      "reference_uri": "docs/context/master_context.md",
+      "claim_id": "CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+      "claim_text": "Candidate scoring may use normalized symptom, laboratory, lifestyle, dietary, wearable, CGM, and genetic context after safety filtering; the resulting points are ordering policy rather than clinical efficacy probabilities.",
+      "normalized_claim_type": "candidate_signal_policy",
+      "citation_span": {
+        "line_start": 13,
+        "line_end": 19,
+        "excerpt": "The master context requires candidate generation to use symptoms, lifestyle, dietary and laboratory context after safety filtering. It also lists bounded genetic adjustment directions. Candidate points are deterministic ordering policy, not a diagnosis, treatment target, dose recommendation, or efficacy probability."
+      },
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "candidate_signal_policy"
+      ]
+    },
+    {
+      "reference_id": "REF-MC-CANDIDATE-SIGNAL-001",
+      "source_title": "Master context candidate signal scoring policy",
+      "source_type": "master_context",
+      "page_or_section": "Sections 6.9, 13.3, and 18.2",
+      "reference_uri": "docs/context/master_context.md",
+      "claim_id": "CLM-MC-CANDIDATE-SIGNAL-CYP1A2-001",
+      "claim_text": "The master-context prototype increases L-theanine priority for a declared CYP1A2 slow-metabolizer tag, without treating the tag as a diagnosis or efficacy guarantee.",
+      "normalized_claim_type": "genetic_candidate_signal_policy",
+      "citation_span": {
+        "line_start": 22,
+        "line_end": 28,
+        "excerpt": "Structured claim block."
+      },
+      "ingredient_keys": [
+        "l_theanine"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "sleep_support",
+        "stress_support"
+      ]
+    },
+    {
+      "reference_id": "REF-MC-CANDIDATE-SIGNAL-001",
+      "source_title": "Master context candidate signal scoring policy",
+      "source_type": "master_context",
+      "page_or_section": "Sections 6.9, 13.3, and 18.2",
+      "reference_uri": "docs/context/master_context.md",
+      "claim_id": "CLM-MC-CANDIDATE-SIGNAL-LPL-001",
+      "claim_text": "The master-context prototype increases omega-3 priority for a declared adverse LPL triglyceride-risk tag, without treating the tag as a diagnosis or efficacy guarantee.",
+      "normalized_claim_type": "genetic_candidate_signal_policy",
+      "citation_span": {
+        "line_start": 31,
+        "line_end": 37,
+        "excerpt": "Structured claim block."
+      },
+      "ingredient_keys": [
+        "omega3"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "heart_health"
       ]
     },
     {
@@ -510,6 +650,29 @@
       "medication_keys": [],
       "domain_keys": [
         "energy_support"
+      ]
+    },
+    {
+      "reference_id": "REF-NIH-ODS-B12-ENERGY-001",
+      "source_title": "NIH Office of Dietary Supplements - Vitamin B12",
+      "source_type": "government_health_reference",
+      "page_or_section": "Energy and endurance",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/VitaminB12-HealthProfessional/",
+      "claim_id": "CLM-NIH-ODS-B12-VEGETARIAN-001",
+      "claim_text": "Vegetarian and vegan dietary patterns increase the risk of vitamin B12 inadequacy because natural food sources are largely animal foods; this does not establish whole B-complex efficacy.",
+      "normalized_claim_type": "dietary_pattern_candidate_signal",
+      "citation_span": {
+        "line_start": 23,
+        "line_end": 29,
+        "excerpt": "NIH ODS also identifies vegetarian and vegan dietary patterns as risk factors for vitamin B12 inadequacy because natural food sources are largely animal foods. This supports a bounded diet-context ordering term, not a diagnosis and not whole B-complex efficacy."
+      },
+      "ingredient_keys": [
+        "vitamin_b_complex"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "energy_support",
+        "general_wellness"
       ]
     },
     {
@@ -827,13 +990,16 @@
       "ingredient_key": "l_theanine",
       "domain_key": "sleep_support",
       "claim_ids": [
+        "CLM-MC-CANDIDATE-SIGNAL-CYP1A2-001",
         "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"
       ],
       "reference_ids": [
+        "REF-MC-CANDIDATE-SIGNAL-001",
         "REF-PUBMED-LTHEANINE-001"
       ],
       "medication_keys": [],
       "normalized_claim_types": [
+        "genetic_candidate_signal_policy",
         "limited_goal_evidence"
       ]
     },
@@ -841,13 +1007,16 @@
       "ingredient_key": "l_theanine",
       "domain_key": "stress_support",
       "claim_ids": [
+        "CLM-MC-CANDIDATE-SIGNAL-CYP1A2-001",
         "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001"
       ],
       "reference_ids": [
+        "REF-MC-CANDIDATE-SIGNAL-001",
         "REF-PUBMED-LTHEANINE-001"
       ],
       "medication_keys": [],
       "normalized_claim_types": [
+        "genetic_candidate_signal_policy",
         "limited_goal_evidence"
       ]
     },
@@ -903,13 +1072,16 @@
       "ingredient_key": "omega3",
       "domain_key": "heart_health",
       "claim_ids": [
+        "CLM-MC-CANDIDATE-SIGNAL-LPL-001",
         "CLM-NIH-ODS-OMEGA3-HEART-001"
       ],
       "reference_ids": [
+        "REF-MC-CANDIDATE-SIGNAL-001",
         "REF-NIH-ODS-OMEGA3-HEART-001"
       ],
       "medication_keys": [],
       "normalized_claim_types": [
+        "genetic_candidate_signal_policy",
         "moderate_goal_evidence"
       ]
     },
@@ -959,14 +1131,30 @@
       "ingredient_key": "vitamin_b_complex",
       "domain_key": "energy_support",
       "claim_ids": [
-        "CLM-NIH-ODS-B12-ENERGY-001"
+        "CLM-NIH-ODS-B12-ENERGY-001",
+        "CLM-NIH-ODS-B12-VEGETARIAN-001"
       ],
       "reference_ids": [
         "REF-NIH-ODS-B12-ENERGY-001"
       ],
       "medication_keys": [],
       "normalized_claim_types": [
+        "dietary_pattern_candidate_signal",
         "null_goal_evidence_without_deficiency"
+      ]
+    },
+    {
+      "ingredient_key": "vitamin_b_complex",
+      "domain_key": "general_wellness",
+      "claim_ids": [
+        "CLM-NIH-ODS-B12-VEGETARIAN-001"
+      ],
+      "reference_ids": [
+        "REF-NIH-ODS-B12-ENERGY-001"
+      ],
+      "medication_keys": [],
+      "normalized_claim_types": [
+        "dietary_pattern_candidate_signal"
       ]
     },
     {

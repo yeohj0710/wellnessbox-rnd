@@ -15,6 +15,7 @@ on:
       - "data/raw_references/**"
       - "data/catalog/ingredients.json"
       - "data/rules/safety_rules.json"
+      - "data/rules/candidate_signal_scoring_rules_v1.json"
       - "data/samples/api_recommend_structured_health_input_request_v1.json"
       - "data/samples/api_recommend_structured_safety_block_request_v1.json"
       - "data/samples/api_recommend_diet_lifestyle_lab_request_v1.json"
@@ -35,21 +36,26 @@ on:
       - "scripts/run_external_high_risk_safety_eval.py"
       - "scripts/run_wellnessbox_final_safety_authority_smoke.py"
       - "scripts/run_ingredient_mapping_goal_prior_smoke.py"
+      - "scripts/run_candidate_signal_scoring_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
+      - "src/wellnessbox_rnd/knowledge/candidate_signals.py"
       - "src/wellnessbox_rnd/efficacy/service.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
       - "src/wellnessbox_rnd/interim/**"
       - "src/wellnessbox_rnd/domain/catalog.py"
       - "src/wellnessbox_rnd/domain/loaders.py"
       - "src/wellnessbox_rnd/domain/intake.py"
+      - "src/wellnessbox_rnd/domain/sensor_parser.py"
       - "src/wellnessbox_rnd/domain/models.py"
       - "src/wellnessbox_rnd/models/efficacy_model_v0.py"
       - "src/wellnessbox_rnd/models/effect_model_v1.py"
       - "src/wellnessbox_rnd/models/policy_model_v0.py"
       - "src/wellnessbox_rnd/models/policy_model_v1.py"
       - "src/wellnessbox_rnd/schemas/recommendation.py"
+      - "src/wellnessbox_rnd/schemas/recommendation_contracts.py"
+      - "src/wellnessbox_rnd/schemas/cgm_events.py"
       - "src/wellnessbox_rnd/safety/**"
       - "src/wellnessbox_rnd/simulation/closed_loop_v0.py"
       - "src/wellnessbox_rnd/synthetic/rich_longitudinal_v2.py"
@@ -84,6 +90,8 @@ on:
       - "tests/test_external_high_risk_safety_eval.py"
       - "tests/test_ingredient_identifier_mapping.py"
       - "tests/test_goal_ingredient_priors.py"
+      - "tests/test_candidate_signal_scoring.py"
+      - "tests/test_recommendation_contracts.py"
   push:
     branches: [main]
     paths:
@@ -99,6 +107,7 @@ on:
       - "data/raw_references/**"
       - "data/catalog/ingredients.json"
       - "data/rules/safety_rules.json"
+      - "data/rules/candidate_signal_scoring_rules_v1.json"
       - "data/samples/api_recommend_structured_health_input_request_v1.json"
       - "data/samples/api_recommend_structured_safety_block_request_v1.json"
       - "data/samples/api_recommend_diet_lifestyle_lab_request_v1.json"
@@ -119,21 +128,26 @@ on:
       - "scripts/run_external_high_risk_safety_eval.py"
       - "scripts/run_wellnessbox_final_safety_authority_smoke.py"
       - "scripts/run_ingredient_mapping_goal_prior_smoke.py"
+      - "scripts/run_candidate_signal_scoring_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
+      - "src/wellnessbox_rnd/knowledge/candidate_signals.py"
       - "src/wellnessbox_rnd/efficacy/service.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
       - "src/wellnessbox_rnd/interim/**"
       - "src/wellnessbox_rnd/domain/catalog.py"
       - "src/wellnessbox_rnd/domain/loaders.py"
       - "src/wellnessbox_rnd/domain/intake.py"
+      - "src/wellnessbox_rnd/domain/sensor_parser.py"
       - "src/wellnessbox_rnd/domain/models.py"
       - "src/wellnessbox_rnd/models/efficacy_model_v0.py"
       - "src/wellnessbox_rnd/models/effect_model_v1.py"
       - "src/wellnessbox_rnd/models/policy_model_v0.py"
       - "src/wellnessbox_rnd/models/policy_model_v1.py"
       - "src/wellnessbox_rnd/schemas/recommendation.py"
+      - "src/wellnessbox_rnd/schemas/recommendation_contracts.py"
+      - "src/wellnessbox_rnd/schemas/cgm_events.py"
       - "src/wellnessbox_rnd/safety/**"
       - "src/wellnessbox_rnd/simulation/closed_loop_v0.py"
       - "src/wellnessbox_rnd/synthetic/rich_longitudinal_v2.py"
@@ -168,6 +182,8 @@ on:
       - "tests/test_external_high_risk_safety_eval.py"
       - "tests/test_ingredient_identifier_mapping.py"
       - "tests/test_goal_ingredient_priors.py"
+      - "tests/test_candidate_signal_scoring.py"
+      - "tests/test_recommendation_contracts.py"
   workflow_dispatch:
 
 permissions:
@@ -226,6 +242,11 @@ jobs:
           python scripts/run_ingredient_mapping_goal_prior_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op041_op042_ingredient_mapping_goal_prior_smoke_v1.json
+      - name: Check candidate signal scoring evidence
+        run: >-
+          python scripts/run_candidate_signal_scoring_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -256,6 +277,8 @@ jobs:
           tests/test_external_high_risk_safety_eval.py
           tests/test_ingredient_identifier_mapping.py
           tests/test_goal_ingredient_priors.py
+          tests/test_candidate_signal_scoring.py
+          tests/test_recommendation_contracts.py
       - name: Lint requirement audit
         run: >-
           python -m ruff check
@@ -263,6 +286,7 @@ jobs:
           scripts/build_original_plan_completion_report.py
           src/wellnessbox_rnd/governance
           src/wellnessbox_rnd/knowledge/runtime_db.py
+          src/wellnessbox_rnd/knowledge/candidate_signals.py
           src/wellnessbox_rnd/schemas/original_plan_manifest.py
           src/wellnessbox_rnd/domain/catalog.py
           src/wellnessbox_rnd/domain/loaders.py
@@ -272,12 +296,15 @@ jobs:
           tests/test_original_plan_completion_report.py
           apps/inference_api/routes/recommend.py
           src/wellnessbox_rnd/domain/intake.py
+          src/wellnessbox_rnd/domain/sensor_parser.py
           src/wellnessbox_rnd/domain/models.py
           src/wellnessbox_rnd/models/efficacy_model_v0.py
           src/wellnessbox_rnd/models/effect_model_v1.py
           src/wellnessbox_rnd/models/policy_model_v0.py
           src/wellnessbox_rnd/models/policy_model_v1.py
           src/wellnessbox_rnd/schemas/recommendation.py
+          src/wellnessbox_rnd/schemas/recommendation_contracts.py
+          src/wellnessbox_rnd/schemas/cgm_events.py
           src/wellnessbox_rnd/safety
           src/wellnessbox_rnd/simulation/closed_loop_v0.py
           src/wellnessbox_rnd/synthetic/rich_longitudinal_v2.py
@@ -302,12 +329,15 @@ jobs:
           scripts/run_external_high_risk_safety_eval.py
           scripts/run_wellnessbox_final_safety_authority_smoke.py
           scripts/run_ingredient_mapping_goal_prior_smoke.py
+          scripts/run_candidate_signal_scoring_smoke.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
           src/wellnessbox_rnd/knowledge/goal_priors.py
           src/wellnessbox_rnd/efficacy/service.py
           tests/test_external_high_risk_safety_eval.py
           tests/test_ingredient_identifier_mapping.py
           tests/test_goal_ingredient_priors.py
+          tests/test_candidate_signal_scoring.py
+          tests/test_recommendation_contracts.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py

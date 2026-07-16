@@ -268,8 +268,31 @@ def _persisted_profile_payload(request: RecommendationRequest) -> dict[str, Any]
             for item in request.laboratory_observations
             if item.source == source
         ]
+        source_payload: dict[str, Any] = {}
         if observations:
-            persisted_sources[source.value] = {"laboratory_observations": observations}
+            source_payload["laboratory_observations"] = observations
+        snapshot = request.sensor_genetic_snapshot
+        if snapshot is not None:
+            if source == DataSource.WEARABLE and snapshot.wearable_available:
+                source_payload["sensor_genetic_snapshot"] = {
+                    "sleep_hours": snapshot.sleep_hours,
+                    "steps": snapshot.steps,
+                    "resting_heart_rate": snapshot.resting_heart_rate,
+                }
+            elif source == DataSource.CGM and snapshot.cgm_available:
+                source_payload["sensor_genetic_snapshot"] = {
+                    "mean_glucose_mg_dl": snapshot.mean_glucose_mg_dl,
+                    "time_in_range_pct": snapshot.time_in_range_pct,
+                    "time_in_range_low_mg_dl": snapshot.time_in_range_low_mg_dl,
+                    "time_in_range_high_mg_dl": snapshot.time_in_range_high_mg_dl,
+                    "post_meal_spike_concern": snapshot.post_meal_spike_concern,
+                }
+            elif source == DataSource.GENETIC and snapshot.genetic_available:
+                source_payload["sensor_genetic_snapshot"] = {
+                    "genetic_tags": list(snapshot.genetic_tags),
+                }
+        if source_payload:
+            persisted_sources[source.value] = source_payload
 
     if not persisted_sources:
         return None

@@ -36,6 +36,8 @@ def test_runtime_knowledge_db_builds_required_tables() -> None:
     assert runtime_db.dose_limits
     assert runtime_db.ingredient_domain_scores
     assert runtime_db.goal_ingredient_priors
+    assert runtime_db.candidate_signal_scoring is not None
+    assert len(runtime_db.candidate_signal_scoring.all_rules()) == 10
     assert runtime_db.references
     assert runtime_db.reference_spans
     assert runtime_db.workflow_policies

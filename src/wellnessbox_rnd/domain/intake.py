@@ -18,6 +18,7 @@ from wellnessbox_rnd.schemas.recommendation import (
     MedicationInput,
     MissingInfoImportance,
     MissingInformationItem,
+    NormalizedSensorGeneticSnapshot,
     RecommendationGoal,
     RecommendationRequest,
     RiskSignalSource,
@@ -90,6 +91,7 @@ class NormalizedIntake:
     normalized_laboratory_observations: list[LaboratoryObservationInput]
     latest_laboratory_observation_by_code: dict[str, LaboratoryObservationInput]
     laboratory_range_status_by_code: dict[str, LaboratoryRangeStatus]
+    sensor_genetic_snapshot: NormalizedSensorGeneticSnapshot | None
     avoid_ingredient_set: set[str]
     signal_flags: set[str]
     missing_information: list[MissingInformationItem]
@@ -120,10 +122,15 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
         for observation in request.laboratory_observations
         if observation.source.value in recommendation_authorized_input_source_set
     ]
+    consent_gated_sensor_snapshot = _consent_gate_sensor_snapshot(
+        request.sensor_genetic_snapshot,
+        effective_input_availability,
+    )
     request = request.model_copy(
         update={
             "input_availability": effective_input_availability,
             "laboratory_observations": consent_gated_laboratory_observations,
+            "sensor_genetic_snapshot": consent_gated_sensor_snapshot,
         }
     )
 
@@ -224,6 +231,7 @@ def normalize_request(request: RecommendationRequest) -> NormalizedIntake:
         normalized_laboratory_observations=normalized_laboratory_observations,
         latest_laboratory_observation_by_code=latest_laboratory_observation_by_code,
         laboratory_range_status_by_code=laboratory_range_status_by_code,
+        sensor_genetic_snapshot=consent_gated_sensor_snapshot,
         avoid_ingredient_set={item for item in avoid_ingredient_set if item},
         signal_flags=signal_flags,
         missing_information=missing_information,
@@ -242,6 +250,42 @@ def _build_effective_input_availability(
                 source.value,
             ).use_for_recommendation
             for source in DataSource
+        }
+    )
+
+
+def _consent_gate_sensor_snapshot(
+    snapshot: NormalizedSensorGeneticSnapshot | None,
+    availability: InputAvailability,
+) -> NormalizedSensorGeneticSnapshot | None:
+    if snapshot is None:
+        return None
+    return snapshot.model_copy(
+        update={
+            "wearable_available": snapshot.wearable_available and availability.wearable,
+            "sleep_hours": snapshot.sleep_hours if availability.wearable else None,
+            "steps": snapshot.steps if availability.wearable else None,
+            "resting_heart_rate": (
+                snapshot.resting_heart_rate if availability.wearable else None
+            ),
+            "cgm_available": snapshot.cgm_available and availability.cgm,
+            "mean_glucose_mg_dl": (
+                snapshot.mean_glucose_mg_dl if availability.cgm else None
+            ),
+            "time_in_range_pct": (
+                snapshot.time_in_range_pct if availability.cgm else None
+            ),
+            "time_in_range_low_mg_dl": (
+                snapshot.time_in_range_low_mg_dl if availability.cgm else None
+            ),
+            "time_in_range_high_mg_dl": (
+                snapshot.time_in_range_high_mg_dl if availability.cgm else None
+            ),
+            "post_meal_spike_concern": (
+                snapshot.post_meal_spike_concern if availability.cgm else False
+            ),
+            "genetic_available": snapshot.genetic_available and availability.genetic,
+            "genetic_tags": snapshot.genetic_tags if availability.genetic else [],
         }
     )
 
@@ -328,6 +372,13 @@ def build_normalized_input_snapshot_v1(
             "avoid_ingredients": sorted(intake.avoid_ingredient_set),
         },
     }
+    if intake.sensor_genetic_snapshot is not None:
+        snapshot["sensor_genetic_snapshot"] = (
+            intake.sensor_genetic_snapshot.model_dump(
+                mode="json",
+                exclude={"normalization_notes"},
+            )
+        )
     return _normalize_json_numbers(snapshot)
 
 
@@ -358,35 +409,54 @@ def _derive_signal_flags(
         flags.add("laboratory_context_available")
     if request.input_availability.wearable:
         flags.add("wearable_data_available")
-        if any(
-            goal in request.goals
-            for goal in (
-                RecommendationGoal.SLEEP_SUPPORT,
-                RecommendationGoal.STRESS_SUPPORT,
-            )
-        ):
-            flags.add("wearable_sleep_context")
-        if any(
-            goal in request.goals
-            for goal in (
-                RecommendationGoal.HEART_HEALTH,
-                RecommendationGoal.ENERGY_SUPPORT,
-                RecommendationGoal.GENERAL_WELLNESS,
-            )
-        ):
-            flags.add("wearable_activity_context")
+        snapshot = request.sensor_genetic_snapshot
+        if snapshot is not None:
+            if snapshot.sleep_hours is not None:
+                flags.add("wearable_sleep_context")
+            if snapshot.steps is not None or snapshot.resting_heart_rate is not None:
+                flags.add("wearable_activity_context")
+        else:
+            if any(
+                goal in request.goals
+                for goal in (
+                    RecommendationGoal.SLEEP_SUPPORT,
+                    RecommendationGoal.STRESS_SUPPORT,
+                )
+            ):
+                flags.add("wearable_sleep_context")
+            if any(
+                goal in request.goals
+                for goal in (
+                    RecommendationGoal.HEART_HEALTH,
+                    RecommendationGoal.ENERGY_SUPPORT,
+                    RecommendationGoal.GENERAL_WELLNESS,
+                )
+            ):
+                flags.add("wearable_activity_context")
     else:
         flags.add("no_wearable_data")
     if request.input_availability.cgm:
         flags.add("cgm_data_available")
-        if RecommendationGoal.BLOOD_GLUCOSE in request.goals:
+        snapshot = request.sensor_genetic_snapshot
+        has_cgm_observation = snapshot is None or (
+            snapshot.mean_glucose_mg_dl is not None
+            or snapshot.time_in_range_pct is not None
+        )
+        if RecommendationGoal.BLOOD_GLUCOSE in request.goals and has_cgm_observation:
             flags.add("cgm_glucose_context")
-            if "post_meal_spike_concern" in symptom_set:
+            if snapshot is not None:
+                spike_concern = snapshot.post_meal_spike_concern
+            else:
+                spike_concern = "post_meal_spike_concern" in symptom_set
+            if spike_concern:
                 flags.add("cgm_post_meal_spike_context")
     else:
         flags.add("no_cgm_data")
     if request.input_availability.genetic:
         flags.add("genetic_data_available")
+        snapshot = request.sensor_genetic_snapshot
+        if snapshot is not None:
+            return flags
         if "low_sun_exposure" in symptom_set:
             flags.add("genetic_low_sun_context")
         if RecommendationGoal.BLOOD_GLUCOSE in request.goals:

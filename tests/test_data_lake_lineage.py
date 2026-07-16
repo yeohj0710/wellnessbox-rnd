@@ -210,6 +210,54 @@ def test_laboratory_observation_is_partitioned_by_its_own_source_consent(tmp_pat
     assert "NHIS-PRIVATE-LAB" not in json.dumps(stored, ensure_ascii=False)
 
 
+def test_sensor_snapshot_is_partitioned_by_each_source_storage_consent(tmp_path) -> None:
+    store = _store(tmp_path)
+    payload = _payload()
+    payload["input_availability"].update(  # type: ignore[union-attr]
+        {"wearable": True, "cgm": True, "genetic": True}
+    )
+    payload["data_source_consents"]["wearable"] = {  # type: ignore[index]
+        "use_for_recommendation": True,
+        "allow_persistent_storage": True,
+    }
+    payload["sensor_genetic_snapshot"] = {
+        "wearable_available": True,
+        "cgm_available": True,
+        "genetic_available": True,
+        "sleep_hours": 5.75,
+        "steps": 4321,
+        "resting_heart_rate": 67,
+        "mean_glucose_mg_dl": 143,
+        "time_in_range_pct": 42,
+        "post_meal_spike_concern": True,
+        "genetic_tags": ["private_genetic_tag"],
+    }
+    request = RecommendationRequest.model_validate(payload)
+
+    trace = ExecutionLedger(store).record_recommendation(
+        request=request,
+        response=recommend(request),
+    )
+
+    stored = json.loads(
+        store.rows(
+            "select payload_json from profile_snapshots where profile_snapshot_id=?",
+            (trace.profile_snapshot_id,),
+        )[0][0]
+    )
+    sources = stored["persisted_sources"]
+    assert sources["wearable"]["sensor_genetic_snapshot"] == {
+        "sleep_hours": 5.75,
+        "steps": 4321,
+        "resting_heart_rate": 67,
+    }
+    assert "cgm" not in sources
+    assert "genetic" not in sources
+    stored_text = json.dumps(stored, ensure_ascii=False)
+    assert "143" not in stored_text
+    assert "private_genetic_tag" not in stored_text
+
+
 def test_core_and_delayed_events_share_the_response_execution_id(tmp_path) -> None:
     store = _store(tmp_path)
     trace = _record(store)

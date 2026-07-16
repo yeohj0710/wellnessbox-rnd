@@ -18,3 +18,13 @@ NIH ODS notes vitamin B12's role in energy metabolism but reports that supplemen
   "domain_keys": ["energy_support"]
 }
 ```
+NIH ODS also identifies vegetarian and vegan dietary patterns as risk factors for vitamin B12 inadequacy because natural food sources are largely animal foods. This supports a bounded diet-context ordering term, not a diagnosis and not whole B-complex efficacy.
+```json
+{
+  "claim_id": "CLM-NIH-ODS-B12-VEGETARIAN-001",
+  "claim_text": "Vegetarian and vegan dietary patterns increase the risk of vitamin B12 inadequacy because natural food sources are largely animal foods; this does not establish whole B-complex efficacy.",
+  "normalized_claim_type": "dietary_pattern_candidate_signal",
+  "ingredient_keys": ["vitamin_b_complex"],
+  "domain_keys": ["energy_support", "general_wellness"]
+}
+```

@@ -2,6 +2,8 @@ import json
 import subprocess
 import sys
 
+import pytest
+
 from wellnessbox_rnd.domain.sensor_parser import normalize_sensor_genetic_payloads
 
 
@@ -48,6 +50,42 @@ def test_normalize_sensor_genetic_payloads_normalizes_genetic_tags() -> None:
         "mthfr_c677t",
     ]
     assert "genetic_tags_normalized_to_snake_case" in snapshot.normalization_notes
+
+
+def test_standardized_cgm_tir_alias_records_ada_range_bounds() -> None:
+    snapshot = normalize_sensor_genetic_payloads(
+        cgm_payload={"time_in_range_70_180_pct": 68.0}
+    )
+
+    assert snapshot.time_in_range_pct == 68.0
+    assert snapshot.time_in_range_low_mg_dl == 70.0
+    assert snapshot.time_in_range_high_mg_dl == 180.0
+
+
+def test_conflicting_cgm_tir_aliases_fail_closed() -> None:
+    with pytest.raises(ValueError, match="conflicting_cgm_time_in_range_aliases"):
+        normalize_sensor_genetic_payloads(
+            cgm_payload={
+                "time_in_range_pct": 10.0,
+                "time_in_range_70_180_pct": 90.0,
+            }
+        )
+    with pytest.raises(ValueError, match="bounds_mismatch"):
+        normalize_sensor_genetic_payloads(
+            cgm_payload={
+                "time_in_range_70_180_pct": 90.0,
+                "time_in_range_low_mg_dl": 80.0,
+                "time_in_range_high_mg_dl": 140.0,
+            }
+        )
+    with pytest.raises(ValueError, match="bounds_invalid"):
+        normalize_sensor_genetic_payloads(
+            cgm_payload={
+                "time_in_range_70_180_pct": 90.0,
+                "time_in_range_low_mg_dl": "bad",
+                "time_in_range_high_mg_dl": 180.0,
+            }
+        )
 
 
 def test_normalize_sensor_genetic_payloads_ignores_malformed_numeric_values() -> None:

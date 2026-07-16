@@ -15,7 +15,7 @@ def test_build_cgm_normalized_event_v1_projects_parser_output_to_eval_and_replay
         cgm_payload={
             "avg_glucose": 6.8,
             "avg_glucose_unit": "mmol/L",
-            "timeInRangePct": "78",
+            "time_in_range_70_180_pct": "78",
             "postMealSpike": True,
         }
     )
@@ -26,6 +26,10 @@ def test_build_cgm_normalized_event_v1_projects_parser_output_to_eval_and_replay
     assert event.eval_integration_projection["cgm"].attempted == 1
     assert event.eval_integration_projection["cgm"].success == 1
     assert event.replay_bridge_projection.parser_mean_glucose_mg_dl == 122.4
+    assert event.time_in_range_low_mg_dl == 70.0
+    assert event.time_in_range_high_mg_dl == 180.0
+    assert event.replay_bridge_projection.parser_time_in_range_low_mg_dl == 70.0
+    assert event.replay_bridge_projection.parser_time_in_range_high_mg_dl == 180.0
     assert "mean_glucose_near_126_mg_dl_pm_10" in event.threshold_tags
     assert "post_meal_spike_flagged" in event.threshold_tags
 
@@ -40,10 +44,25 @@ def test_validate_cgm_normalized_event_v1_flags_projection_mismatch() -> None:
     )
     event = build_cgm_normalized_event_v1(snapshot)
     event.eval_integration_projection["cgm"].success = 0
+    event.replay_bridge_projection.parser_time_in_range_low_mg_dl = 70.0
 
     issues = validate_cgm_normalized_event_v1(event)
 
     assert "eval_projection_mismatch::success::1::0" in issues
+    assert "replay_projection_mismatch::time_in_range_low_mg_dl" in issues
+
+
+def test_custom_cgm_range_does_not_receive_standard_70_180_threshold_tag() -> None:
+    event = build_cgm_normalized_event_v1(
+        {
+            "cgm_available": True,
+            "time_in_range_pct": 68.0,
+            "time_in_range_low_mg_dl": 80.0,
+            "time_in_range_high_mg_dl": 140.0,
+        }
+    )
+
+    assert "time_in_range_near_70_pct_pm_5" not in event.threshold_tags
 
 
 def test_build_cgm_normalized_event_bridge_writes_expected_report(tmp_path) -> None:
