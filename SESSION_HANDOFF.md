@@ -1,11 +1,27 @@
 # SESSION_HANDOFF
 
+## 2026-07-16 event idempotency and data-mutation handoff
+
+- Chosen stage: `original plan / Data Lake evidence lineage`
+- Chosen tasks: OP-027 and OP-028
+- Primary dataset path and case count: `data/original_plan/evidence/op027_op028_event_idempotency_data_mutation_smoke_v1.json`; `3` actual FastAPI route cases
+- Main files: schema `8` in `src/wellnessbox_rnd/interim/store.py`; new `src/wellnessbox_rnd/interim/data_mutation.py`; existing execution and behavior record models; authenticated interim routes; focused tests; smoke runner; manifest, generated reports, CI workflow, and execution plan
+- Current result: execution and behavior events both return the existing record on an identical replay and reject a changed replay with `409`, even after the effective payload changes. Mutation routes require a configured internal token, verify profile ownership, preserve the immutable ingestion hash, update the effective payload in one immediate transaction, and append an indexed canonical hash-chain record plus audit row.
+- Deletion boundary: the event payload becomes `{"deleted":true,"mutation_id":"..."}`. A separate cleanup row remains `PENDING` until SQLite `secure_delete`, WAL truncation, and compaction finish; identical-request retry and store-startup recovery resume interrupted cleanup. Raw-file regressions cover normal deletion, injected cleanup failure, restart recovery, and an active reader. Mutation and audit tables contain identifiers and hashes only. The event ID, execution ID, ingestion fingerprint, and knowledge-lineage foreign keys remain intact.
+- Correction boundary: a new correction may follow an earlier correction and extends previous-mutation ID/hash pointers. No new correction may follow deletion. Append-only triggers reject mutation or data-mutation audit updates and deletes. Replaying an accepted mutation returns its original record without adding a row; 16 concurrent identical requests produce one mutation and one audit row.
+- Evidence stage: `IMPLEMENTED`. OP-027/028 remain partial because `OPERATED` requires a deployed R&D process, durable production database, and postcondition re-query. No service code, R&D deployment, or production two-process integration changed in this loop.
+- Validation: exact CI-equivalent selection `192 passed`; focused persistence regression `46 passed`; new smoke byte-identical across reruns; full Ruff PASS; manifest audit PASS with `30` claims and `81` evidence files; completion-report stale check PASS; independent final review found no findings. Full suite is `602 passed`, `78 failed`, matching the known `74` absent ignored-report and `4` CGM geometry groups.
+- Frozen evaluation: `256` cases; zero delta for all seven tracked metrics against `docs/02_eval/05_baseline_gap_report.md`. Replay/slice delta: not applicable.
+- Biggest bottlenecks: deployed R&D URL; durable production R&D storage; authenticated service-to-R&D round trip; production mutation postcondition re-query; deterministic whole-session replay and service UI.
+- Next three loops: OP-029/030 replay API and service UI; OP-033/034 pregnancy/lactation and condition safety expansion; OP-035/036 evidence-linked interactions and combined-dose calculation.
+- Publication: pending implementation commit, push, and `Original plan evidence` workflow result.
+
 ## 2026-07-15 log separation and execution-identity handoff
 
 - Chosen stage: `original plan / Data Lake evidence lineage`
 - Chosen tasks: OP-025 and OP-026
 - Primary dataset path and case count: `data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json`; `2` actual FastAPI route cases
-- Main files: `src/wellnessbox_rnd/interim/store.py` (schema `7`), new `src/wellnessbox_rnd/interim/behavior_log.py` and `src/wellnessbox_rnd/interim/execution_identity.py`, `src/wellnessbox_rnd/interim/data_lake.py`, `apps/inference_api/routes/interim.py`, smoke runner, manifest, generated reports, CI workflow, and focused tests
+- Main files: `src/wellnessbox_rnd/interim/store.py` (schema `8`), new `src/wellnessbox_rnd/interim/behavior_log.py` and `src/wellnessbox_rnd/interim/execution_identity.py`, `src/wellnessbox_rnd/interim/data_lake.py`, `apps/inference_api/routes/interim.py`, smoke runner, manifest, generated reports, CI workflow, and focused tests
 - Current result: two disjoint log stores (`execution_events` research vocabulary versus `behavior_events` user-behavior vocabulary, both CHECK-bounded); every persistent recommendation execution stores model ID, engine version, code commit with resolution source, four hashed runtime dataset identities, and one canonical config SHA-256 that identical runs share; the authenticated trace returns the structured identity.
 - Consent boundary: behavior events require the profile's active survey persistent-storage consent and fail closed with `403`; unknown profiles return `404`; replays deduplicate; changed payloads return `409`.
 - Separation boundary: research event types are rejected by the behavior endpoint and behavior names are rejected by the research event route, both with `422`; `GET /v1/interim/log-classes` reports zero cross-contamination.
@@ -23,7 +39,7 @@
 - Chosen tasks: OP-023 and OP-024
 - Primary dataset path and case count: `data/original_plan/evidence/op023_op024_knowledge_lineage_smoke_v1.json`; `1` actual FastAPI route case
 - Main files: schema and registries under `src/wellnessbox_rnd/interim/`, reference ingestion and runtime knowledge models, three raw references, two canonical knowledge artifacts, recommendation route, smoke runner, manifest, generated reports, CI workflow, and focused tests
-- Current result: SQLite schema `7`; sources `3`; parsed passages `5`; normalized claims `5`; rules `5`; claim-rule links `5`; execution lineage rows `2` for `safety_rule` and `recommendation_decision`; one claim and output can retain multiple linked rule rows
+- Current result: SQLite schema `8`; sources `3`; parsed passages `5`; normalized claims `5`; rules `5`; claim-rule links `5`; execution lineage rows `2` for `safety_rule` and `recommendation_decision`; one claim and output can retain multiple linked rule rows
 - Source identity: `source_uri` identifies the actual parsed raw document and `upstream_reference_uri` identifies its upstream note. The warfarin/glucosamine chain preserves lines `13..33`, license `APPROVED_INTERNAL`, local artifact effective date `2026-03-10T00:00:00Z`, null retirement date, and raw-content checksum.
 - Consent boundary: derived-result lineage is absent when any used source denies persistent storage. Source registry and normalized knowledge remain non-user reference data.
 - Change-control boundary: source checksum changes quarantine the source, and identical re-synchronization no longer clears the quarantine automatically.
@@ -41,7 +57,7 @@
 - Primary dataset path and case count: `data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json`; `3` local runtime cases
 - R&D files: `src/wellnessbox_rnd/interim/store.py`, `src/wellnessbox_rnd/interim/data_lake.py`, recommendation and interim API routes, recommendation schemas and orchestration, smoke runner, contracts, manifest, reports, and focused tests
 - Service files: profile adapter contract, client type, profile adapter, preview payload builder, and adapter QA
-- Current result: current schema `7`; profile versions `[1, 2]`; consent snapshots `2`; denied raw profile rows `0`; recommendation, safety, optimization, conversation, and follow-up events share one response execution ID.
+- Current result: current schema `8`; profile versions `[1, 2]`; consent snapshots `2`; denied raw profile rows `0`; recommendation, safety, optimization, conversation, and follow-up events share one response execution ID.
 - Consent correction: delayed events use the profile's explicit active consent pointer and store the authorizing `consent_snapshot_id`. Reusing an older immutable denial snapshot moves the pointer back to denial, so `거부 → 허용 → 재거부` blocks writes to an older execution.
 - Provenance correction: a replay with the same event key but a different source or payload raises `IdempotencyConflictError`.
 - Test isolation correction: all recommendation API tests use a temporary interim database. The reviewer observed that earlier test runs populated the default artifact database; those existing rows remain untouched.

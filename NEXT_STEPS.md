@@ -2,13 +2,13 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031, and OP-032 are complete. OP-021 through OP-026 are `IMPLEMENTED` and therefore remain partial at their required `OPERATED` stage. The existing SQLite `InterimStore` now separates user-behavior logs from research-evaluation logs through disjoint bounded vocabularies in two tables, and every persistent recommendation execution records its model ID, engine version, code commit with resolution source, four hashed runtime dataset identities, and a canonical config SHA-256 that the authenticated trace returns.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031, and OP-032 are complete. OP-021 through OP-028 are `IMPLEMENTED` and therefore remain partial at their required `OPERATED` stage. SQLite schema `8` separates both log classes, records execution identity, blocks changed event replays under an existing idempotency key, preserves immutable ingestion hashes, and applies authenticated corrections or restart-recoverable secure tombstone deletions through a trigger-protected hash chain while preserving event IDs and knowledge lineage.
 
 Next three loops:
 
-1. Implement OP-027 and OP-028: extend idempotency coverage and add deletion/correction workflows that preserve lineage and audit history.
-2. Implement OP-029 and OP-030: add deterministic session replay and expose saved-session counts and replay results through the service UI.
-3. Start safety-engine group D: OP-033 pregnancy/lactation rule separation and OP-034 condition-specific contraindication expansion.
+1. Implement OP-029 and OP-030: add deterministic session replay and expose saved-session counts and replay results through the service UI.
+2. Implement OP-033 and OP-034: separate pregnancy/lactation restrictions and expand condition-specific contraindication rules.
+3. Implement OP-035 and OP-036: connect drug-ingredient interaction rules to evidence IDs and calculate combined ingredient dose across products.
 
 Continue through the Data Lake evidence group in two-requirement slices. The current service adapter accepts the existing stored `UserProfile` shape, forwards a stable pseudonymous subject ID, and the R&D recommendation route persists authorized profile, consent, and knowledge lineage. It still does not perform a production two-process round trip; OP-101 through OP-105 remain separate deployment and production-integration requirements.
 

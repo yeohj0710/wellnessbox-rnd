@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -228,6 +228,10 @@ CREATE TABLE IF NOT EXISTS execution_events (
   idempotency_key TEXT NOT NULL,
   payload_json TEXT NOT NULL,
   payload_sha256 TEXT NOT NULL,
+  effective_payload_sha256 TEXT NOT NULL,
+  payload_state TEXT NOT NULL DEFAULT 'ACTIVE' CHECK(payload_state IN (
+    'ACTIVE', 'CORRECTED', 'DELETED'
+  )),
   created_at TEXT NOT NULL,
   UNIQUE(execution_id, event_index),
   UNIQUE(execution_id, event_type, idempotency_key)
@@ -299,6 +303,10 @@ CREATE TABLE IF NOT EXISTS behavior_events (
   idempotency_key TEXT NOT NULL,
   payload_json TEXT NOT NULL,
   payload_sha256 TEXT NOT NULL,
+  effective_payload_sha256 TEXT NOT NULL,
+  payload_state TEXT NOT NULL DEFAULT 'ACTIVE' CHECK(payload_state IN (
+    'ACTIVE', 'CORRECTED', 'DELETED'
+  )),
   data_class TEXT NOT NULL,
   created_at TEXT NOT NULL,
   UNIQUE(profile_id, event_name, idempotency_key)
@@ -482,6 +490,7 @@ class InterimStore:
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA foreign_keys = ON")
         connection.execute("PRAGMA journal_mode = WAL")
+        connection.execute("PRAGMA secure_delete = ON")
         return connection
 
     @contextmanager
@@ -525,6 +534,8 @@ class InterimStore:
                     where consent_snapshot_id is null
                     """
                 )
+            connection.commit()
+            self._migrate_event_mutation_schema_v8(connection)
             passage_columns = {
                 str(row[1])
                 for row in connection.execute("pragma table_info(evidence_passages)")
@@ -566,6 +577,259 @@ class InterimStore:
             connection.commit()
         finally:
             connection.close()
+        self.complete_pending_secure_compactions()
+
+    @staticmethod
+    def _migrate_event_mutation_schema_v8(
+        connection: sqlite3.Connection,
+    ) -> None:
+        event_columns = {
+            str(row[1])
+            for row in connection.execute("pragma table_info(execution_events)")
+        }
+        behavior_columns = {
+            str(row[1])
+            for row in connection.execute("pragma table_info(behavior_events)")
+        }
+        mutation_columns = {
+            str(row[1])
+            for row in connection.execute("pragma table_info(event_mutations)")
+        }
+        required_mutation_columns = {
+            "previous_mutation_id",
+            "previous_mutation_sha256",
+            "mutation_index",
+            "mutation_sha256",
+        }
+        trigger_names = {
+            str(row[0])
+            for row in connection.execute(
+                "select name from sqlite_master where type='trigger'"
+            )
+        }
+        required_trigger_names = {
+            "event_mutations_no_update",
+            "event_mutations_no_delete",
+            "data_mutation_audits_no_update",
+            "data_mutation_audits_no_delete",
+        }
+        index_names = {
+            str(row[0])
+            for row in connection.execute(
+                "select name from sqlite_master where type='index'"
+            )
+        }
+        required_index_names = {
+            "idx_event_mutations_target_created",
+            "idx_event_mutations_target_index",
+        }
+        table_names = {
+            str(row[0])
+            for row in connection.execute(
+                "select name from sqlite_master where type='table'"
+            )
+        }
+        if (
+            {"payload_state", "effective_payload_sha256"}.issubset(event_columns)
+            and {"payload_state", "effective_payload_sha256"}.issubset(
+                behavior_columns
+            )
+            and required_mutation_columns.issubset(mutation_columns)
+            and required_trigger_names.issubset(trigger_names)
+            and required_index_names.issubset(index_names)
+            and "event_mutation_cleanup" in table_names
+        ):
+            return
+
+        connection.execute("BEGIN IMMEDIATE")
+        try:
+            if "payload_state" not in event_columns:
+                connection.execute(
+                    "alter table execution_events add column payload_state "
+                    "text not null default 'ACTIVE' check(payload_state in "
+                    "('ACTIVE', 'CORRECTED', 'DELETED'))"
+                )
+            if "effective_payload_sha256" not in event_columns:
+                connection.execute(
+                    "alter table execution_events add column "
+                    "effective_payload_sha256 text not null default "
+                    "'0000000000000000000000000000000000000000000000000000000000000000'"
+                )
+                connection.execute(
+                    "update execution_events set effective_payload_sha256="
+                    "payload_sha256"
+                )
+            if "payload_state" not in behavior_columns:
+                connection.execute(
+                    "alter table behavior_events add column payload_state "
+                    "text not null default 'ACTIVE' check(payload_state in "
+                    "('ACTIVE', 'CORRECTED', 'DELETED'))"
+                )
+            if "effective_payload_sha256" not in behavior_columns:
+                connection.execute(
+                    "alter table behavior_events add column "
+                    "effective_payload_sha256 text not null default "
+                    "'0000000000000000000000000000000000000000000000000000000000000000'"
+                )
+                connection.execute(
+                    "update behavior_events set effective_payload_sha256="
+                    "payload_sha256"
+                )
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS event_mutations (
+                  mutation_id TEXT PRIMARY KEY,
+                  profile_id TEXT NOT NULL,
+                  target_type TEXT NOT NULL CHECK(target_type IN (
+                    'execution_event', 'behavior_event'
+                  )),
+                  target_event_id TEXT NOT NULL,
+                  operation TEXT NOT NULL CHECK(operation IN ('correction', 'deletion')),
+                  idempotency_key TEXT NOT NULL,
+                  request_sha256 TEXT NOT NULL,
+                  prior_payload_sha256 TEXT NOT NULL,
+                  result_payload_sha256 TEXT NOT NULL,
+                  previous_mutation_id TEXT,
+                  previous_mutation_sha256 TEXT,
+                  mutation_index INTEGER NOT NULL,
+                  mutation_sha256 TEXT NOT NULL,
+                  created_at TEXT NOT NULL,
+                  UNIQUE(profile_id, target_type, target_event_id, idempotency_key),
+                  UNIQUE(target_type, target_event_id, mutation_index)
+                )
+                """
+            )
+            mutation_columns = {
+                str(row[1])
+                for row in connection.execute("pragma table_info(event_mutations)")
+            }
+            if not required_mutation_columns.issubset(mutation_columns):
+                if connection.execute(
+                    "select count(*) from event_mutations"
+                ).fetchone()[0]:
+                    raise sqlite3.IntegrityError(
+                        "legacy_event_mutations_require_chain_rebuild"
+                    )
+                for column_name, column_type in {
+                    "previous_mutation_id": "text",
+                    "previous_mutation_sha256": "text",
+                    "mutation_index": "integer",
+                    "mutation_sha256": "text",
+                }.items():
+                    if column_name not in mutation_columns:
+                        connection.execute(
+                            f"alter table event_mutations add column {column_name} "
+                            f"{column_type}"
+                        )
+            connection.execute(
+                "create index if not exists idx_event_mutations_target_created "
+                "on event_mutations(target_type, target_event_id, created_at)"
+            )
+            connection.execute(
+                "create unique index if not exists "
+                "idx_event_mutations_target_index on "
+                "event_mutations(target_type, target_event_id, mutation_index)"
+            )
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS event_mutation_cleanup (
+                  mutation_id TEXT PRIMARY KEY REFERENCES event_mutations(mutation_id),
+                  status TEXT NOT NULL CHECK(status IN ('PENDING', 'COMPLETE')),
+                  requested_at TEXT NOT NULL,
+                  completed_at TEXT
+                )
+                """
+            )
+            connection.execute(
+                """
+                CREATE TRIGGER IF NOT EXISTS event_mutations_no_update
+                BEFORE UPDATE ON event_mutations
+                BEGIN
+                  SELECT RAISE(ABORT, 'event_mutations_append_only');
+                END
+                """
+            )
+            connection.execute(
+                """
+                CREATE TRIGGER IF NOT EXISTS event_mutations_no_delete
+                BEFORE DELETE ON event_mutations
+                BEGIN
+                  SELECT RAISE(ABORT, 'event_mutations_append_only');
+                END
+                """
+            )
+            connection.execute(
+                """
+                CREATE TRIGGER IF NOT EXISTS data_mutation_audits_no_update
+                BEFORE UPDATE ON audit_events
+                WHEN OLD.event_type IN ('data_correction', 'data_deletion')
+                BEGIN
+                  SELECT RAISE(ABORT, 'data_mutation_audits_append_only');
+                END
+                """
+            )
+            connection.execute(
+                """
+                CREATE TRIGGER IF NOT EXISTS data_mutation_audits_no_delete
+                BEFORE DELETE ON audit_events
+                WHEN OLD.event_type IN ('data_correction', 'data_deletion')
+                BEGIN
+                  SELECT RAISE(ABORT, 'data_mutation_audits_append_only');
+                END
+                """
+            )
+            connection.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version, applied_at) "
+                "VALUES (?, ?)",
+                (SCHEMA_VERSION, datetime.now(UTC).isoformat()),
+            )
+        except Exception:
+            connection.rollback()
+            raise
+        else:
+            connection.commit()
+
+    def secure_compact(self) -> None:
+        """Overwrite deleted payload pages and truncate the SQLite WAL."""
+        connection = self.connect()
+        try:
+            checkpoint = connection.execute(
+                "PRAGMA wal_checkpoint(TRUNCATE)"
+            ).fetchone()
+            if checkpoint is not None and int(checkpoint[0]) != 0:
+                raise sqlite3.OperationalError("secure_checkpoint_busy")
+            connection.execute("VACUUM")
+            checkpoint = connection.execute(
+                "PRAGMA wal_checkpoint(TRUNCATE)"
+            ).fetchone()
+            if checkpoint is not None and int(checkpoint[0]) != 0:
+                raise sqlite3.OperationalError("secure_checkpoint_busy")
+        finally:
+            connection.close()
+
+    def complete_pending_secure_compactions(self) -> None:
+        if "event_mutation_cleanup" not in self.table_names():
+            return
+        pending_mutation_ids = [
+            str(row["mutation_id"])
+            for row in self.rows(
+                "select mutation_id from event_mutation_cleanup "
+                "where status='PENDING' order by mutation_id"
+            )
+        ]
+        if not pending_mutation_ids:
+            return
+        self.secure_compact()
+        placeholders = ",".join("?" for _ in pending_mutation_ids)
+        with self.transaction(immediate=True) as connection:
+            connection.execute(
+                f"""
+                update event_mutation_cleanup
+                set status='COMPLETE', completed_at=?
+                where status='PENDING' and mutation_id in ({placeholders})
+                """,
+                (datetime.now(UTC).isoformat(), *pending_mutation_ids),
+            )
 
     @staticmethod
     def _migrate_execution_knowledge_lineage_unique_key(

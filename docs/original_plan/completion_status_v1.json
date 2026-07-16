@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "d9b86209894ef8ce133fb9f20c10aa617adc8189a6f206954991b11867fcc4ac",
+  "audited_manifest_sha256": "8eb5fc9c5544d484b00f15d9b7925594fe73432e84667df53c0a3c5abc0deaaa",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -9,8 +9,8 @@
   "requirement_count": 120,
   "disposition_counts": {
     "COMPLETE": 22,
-    "PARTIAL": 6,
-    "PENDING": 91,
+    "PARTIAL": 8,
+    "PENDING": 89,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -45,8 +45,8 @@
       "requirement_count": 10,
       "disposition_counts": {
         "COMPLETE": 0,
-        "PARTIAL": 6,
-        "PENDING": 4,
+        "PARTIAL": 8,
+        "PENDING": 2,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -968,14 +968,24 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/behavior_log.py",
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_event_idempotency_data_mutation.py",
+          "wellnessbox-rnd/tests/test_data_lake_lineage.py",
+          "wellnessbox-rnd/scripts/run_event_idempotency_data_mutation_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op027_op028_event_idempotency_data_mutation_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -990,14 +1000,25 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_mutation.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/behavior_log.py",
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_interim_store.py",
+          "wellnessbox-rnd/tests/test_event_idempotency_data_mutation.py",
+          "wellnessbox-rnd/scripts/run_event_idempotency_data_mutation_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op027_op028_event_idempotency_data_mutation_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],

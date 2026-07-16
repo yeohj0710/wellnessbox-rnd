@@ -12,7 +12,7 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict
 
-from wellnessbox_rnd.interim.contracts import DataClass
+from wellnessbox_rnd.interim.contracts import DataClass, EventPayloadState
 from wellnessbox_rnd.interim.execution_identity import (
     DatasetIdentityRecord,
     ExecutionIdentityRecord,
@@ -67,6 +67,8 @@ class ExecutionEventRecord(_StrictModel):
     idempotency_key: str
     payload: dict[str, Any]
     payload_sha256: str
+    effective_payload_sha256: str
+    payload_state: EventPayloadState
     created_at: str
 
 
@@ -300,6 +302,8 @@ def _event_from_row(row: sqlite3.Row) -> ExecutionEventRecord:
         idempotency_key=str(row["idempotency_key"]),
         payload=json.loads(row["payload_json"]),
         payload_sha256=str(row["payload_sha256"]),
+        effective_payload_sha256=str(row["effective_payload_sha256"]),
+        payload_state=str(row["payload_state"]),
         created_at=str(row["created_at"]),
     )
 
@@ -861,8 +865,9 @@ class ExecutionLedger:
             """
             insert into execution_events(
               event_id, execution_id, consent_snapshot_id, event_index, event_type, source,
-              idempotency_key, payload_json, payload_sha256, created_at
-            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 event_id,
@@ -873,6 +878,7 @@ class ExecutionLedger:
                 source.value,
                 idempotency_key,
                 _canonical_json(payload),
+                payload_sha256,
                 payload_sha256,
                 created_at,
             ),
@@ -887,6 +893,8 @@ class ExecutionLedger:
             idempotency_key=idempotency_key,
             payload=payload,
             payload_sha256=payload_sha256,
+            effective_payload_sha256=payload_sha256,
+            payload_state=EventPayloadState.ACTIVE,
             created_at=created_at,
         )
 

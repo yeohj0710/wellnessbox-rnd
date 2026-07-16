@@ -1,0 +1,32 @@
+{
+  "schema_version": "op027_op028_event_idempotency_data_mutation_smoke_v1",
+  "status": "passed",
+  "data_class": "INTERIM_RUNTIME_EVENT",
+  "case_count": 3,
+  "database_schema_version": 8,
+  "conversation_event_count": 1,
+  "behavior_event_count": 1,
+  "event_mutation_count": 2,
+  "mutation_audit_count": 2,
+  "knowledge_lineage_count_before": 2,
+  "knowledge_lineage_count_for_mutated_event": 1,
+  "final_payload_state": "DELETED",
+  "checks": {
+    "database_schema_version_matches_current": true,
+    "recommendation_and_trace_succeeded": true,
+    "conversation_replay_deduplicated": true,
+    "conversation_changed_replay_rejected": true,
+    "behavior_replay_deduplicated": true,
+    "behavior_changed_replay_rejected": true,
+    "correction_replay_deduplicated": true,
+    "correction_changed_replay_rejected": true,
+    "deletion_replay_deduplicated": true,
+    "correction_after_deletion_rejected": true,
+    "deleted_payload_is_tombstoned": true,
+    "mutation_and_audit_counts_match": true,
+    "mutation_hash_chain_is_contiguous": true,
+    "ingestion_fingerprint_is_immutable": true,
+    "deleted_correction_payload_is_absent_from_sqlite_files": true,
+    "knowledge_lineage_is_preserved": true
+  }
+}

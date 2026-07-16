@@ -13,7 +13,7 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
     store.migrate()
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 7
+    assert store.scalar("select max(version) from schema_migrations") == 8
     assert "pharmacy_id" in {row[1] for row in store.rows("pragma table_info(review_tasks)")}
     required_tables = {
         "proxy_cases",
@@ -27,6 +27,7 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
         "agent_steps",
         "kpi_results",
         "audit_events",
+        "event_mutation_cleanup",
         "profile_snapshots",
         "consent_snapshots",
         "active_profile_consents",
@@ -80,7 +81,7 @@ def test_schema_version_2_profile_data_survives_lineage_migration(tmp_path) -> N
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 7
+    assert store.scalar("select max(version) from schema_migrations") == 8
     assert store.scalar("select count(*) from user_profiles") == 1
     assert store.scalar(
         "select payload_json from user_profiles where profile_id='usr_1234567890abcdef'"
@@ -99,7 +100,7 @@ def test_interim_store_read_helpers_close_database_connections(tmp_path) -> None
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 7
+    assert store.scalar("select max(version) from schema_migrations") == 8
     assert store.rows("select version from schema_migrations")
 
     database_path.unlink()
@@ -177,7 +178,7 @@ def test_schema_version_3_events_gain_consent_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 7
+    assert store.scalar("select max(version) from schema_migrations") == 8
     assert store.scalar(
         "select consent_snapshot_id from execution_events where event_id='event_1'"
     ) == "consent_1"
@@ -232,7 +233,7 @@ def test_schema_version_4_evidence_gains_parsed_span_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 7
+    assert store.scalar("select max(version) from schema_migrations") == 8
     columns = {row[1] for row in store.rows("pragma table_info(evidence_passages)")}
     assert {"page_or_section", "line_start", "line_end", "metadata_json"}.issubset(
         columns
@@ -297,7 +298,7 @@ def test_schema_version_5_gains_disjoint_log_and_identity_tables(tmp_path) -> No
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 7
+    assert store.scalar("select max(version) from schema_migrations") == 8
     assert store.scalar("select count(*) from executions") == 1
     assert {"execution_identities", "behavior_events"}.issubset(store.table_names())
     behavior_sql = store.scalar(
@@ -399,9 +400,13 @@ def test_schema_version_6_lineage_keeps_multiple_rules_for_one_claim(tmp_path) -
         )
         connection.execute(
             """
-            insert into execution_events values (
+            insert into execution_events(
+              event_id, execution_id, consent_snapshot_id, event_index, event_type,
+              source, idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values (
               'event_1', 'execution_1', 'consent_1', 0, 'recommendation',
-              'system', 'core', '{}', 'event-hash',
+              'system', 'core', '{}', 'event-hash', 'event-hash',
               '2026-07-15T00:00:00+00:00'
             )
             """
@@ -437,7 +442,7 @@ def test_schema_version_6_lineage_keeps_multiple_rules_for_one_claim(tmp_path) -
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 7
+    assert store.scalar("select max(version) from schema_migrations") == 8
     assert store.scalar("select count(*) from execution_knowledge_lineage") == 1
     with store.transaction() as connection:
         connection.execute(
@@ -453,3 +458,189 @@ def test_schema_version_6_lineage_keeps_multiple_rules_for_one_claim(tmp_path) -
 
     assert store.scalar("select count(*) from execution_knowledge_lineage") == 2
     assert store.scalar("pragma foreign_keys") == 1
+
+
+def test_schema_version_7_gains_event_mutation_history(tmp_path) -> None:
+    database_path = tmp_path / "version-7.sqlite3"
+    with sqlite3.connect(database_path) as connection:
+        connection.executescript(SCHEMA_SQL)
+        connection.execute(
+            """
+            insert into consent_snapshots values (
+              'consent_v7', 'profile_v7', 1, 'v1', '{}', 'consent-v7-hash',
+              '2026-07-16T00:00:00+00:00'
+            )
+            """
+        )
+        connection.execute(
+            """
+            insert into executions values (
+              'execution_v7', 'request_v7', 'profile_v7', null, 'consent_v7',
+              'request-v7-hash', 'COMPLETE', '2026-07-16T00:00:00+00:00',
+              '2026-07-16T00:00:00+00:00'
+            )
+            """
+        )
+        connection.execute(
+            """
+            insert into execution_events values (
+              'event_v7', 'execution_v7', 'consent_v7', 0, 'conversation',
+              'survey', 'event-v7-key', '{"legacy":true}', 'event-v7-hash',
+              'event-v7-hash', 'ACTIVE', '2026-07-16T00:00:00+00:00'
+            )
+            """
+        )
+        connection.execute(
+            """
+            insert into behavior_events values (
+              'behavior_v7', 'profile_v7', 'consent_v7', 'user_behavior',
+              'page_view', '2026-07-16T00:00:00+00:00', 'behavior-v7-key',
+              '{"path":"/legacy"}', 'behavior-v7-hash', 'behavior-v7-hash',
+              'ACTIVE', 'INTERIM_RUNTIME_EVENT',
+              '2026-07-16T00:00:00+00:00'
+            )
+            """
+        )
+        connection.execute("alter table execution_events drop column payload_state")
+        connection.execute(
+            "alter table execution_events drop column effective_payload_sha256"
+        )
+        connection.execute("alter table behavior_events drop column payload_state")
+        connection.execute(
+            "alter table behavior_events drop column effective_payload_sha256"
+        )
+        connection.execute(
+            "insert into schema_migrations values (7, '2026-07-16T00:00:00+00:00')"
+        )
+
+    store = InterimStore(database_path)
+    store.migrate()
+    store.migrate()
+
+    assert store.scalar("select max(version) from schema_migrations") == 8
+    assert "event_mutations" in store.table_names()
+    for table_name in ("execution_events", "behavior_events"):
+        table_info = store.rows(f"pragma table_info({table_name})")
+        columns = {row[1] for row in table_info}
+        assert {"payload_state", "effective_payload_sha256"}.issubset(columns)
+        effective_column = next(
+            row for row in table_info if row[1] == "effective_payload_sha256"
+        )
+        assert effective_column[3] == 1
+    execution_row = store.rows(
+        "select * from execution_events where event_id='event_v7'"
+    )[0]
+    behavior_row = store.rows(
+        "select * from behavior_events where behavior_event_id='behavior_v7'"
+    )[0]
+    assert execution_row["payload_state"] == "ACTIVE"
+    assert execution_row["effective_payload_sha256"] == "event-v7-hash"
+    assert behavior_row["payload_state"] == "ACTIVE"
+    assert behavior_row["effective_payload_sha256"] == "behavior-v7-hash"
+
+
+def test_schema_version_7_event_mutation_migration_rolls_back_atomically(
+    tmp_path,
+) -> None:
+    database_path = tmp_path / "version-7-failed.sqlite3"
+    with sqlite3.connect(database_path) as connection:
+        connection.executescript(SCHEMA_SQL)
+        connection.execute("alter table execution_events drop column payload_state")
+        connection.execute(
+            "alter table execution_events drop column effective_payload_sha256"
+        )
+        connection.execute("alter table behavior_events drop column payload_state")
+        connection.execute(
+            "alter table behavior_events drop column effective_payload_sha256"
+        )
+        connection.execute("create view event_mutations as select 1 as mutation_id")
+        connection.execute(
+            "insert into schema_migrations values (7, '2026-07-16T00:00:00+00:00')"
+        )
+
+    store = InterimStore(database_path)
+    with pytest.raises(
+        sqlite3.IntegrityError, match="legacy_event_mutations_require_chain_rebuild"
+    ):
+        store.migrate()
+
+    assert store.scalar("select max(version) from schema_migrations") == 7
+    for table_name in ("execution_events", "behavior_events"):
+        columns = {row[1] for row in store.rows(f"pragma table_info({table_name})")}
+        assert "payload_state" not in columns
+        assert "effective_payload_sha256" not in columns
+
+
+def test_schema_version_8_migration_restores_cleanup_guards(tmp_path) -> None:
+    database_path = tmp_path / "version-8-guards.sqlite3"
+    store = InterimStore(database_path)
+    store.migrate()
+    with store.transaction() as connection:
+        connection.execute("drop trigger event_mutations_no_update")
+        connection.execute("drop index idx_event_mutations_target_created")
+        connection.execute("drop table event_mutation_cleanup")
+
+    store.migrate()
+
+    sqlite_objects = {
+        row["name"]
+        for row in store.rows(
+            "select name from sqlite_master where type in ('table','index','trigger')"
+        )
+    }
+    assert {
+        "event_mutation_cleanup",
+        "event_mutations_no_update",
+        "idx_event_mutations_target_created",
+    }.issubset(sqlite_objects)
+
+
+def test_secure_cleanup_completes_only_mutations_present_before_compaction(
+    tmp_path, monkeypatch
+) -> None:
+    database_path = tmp_path / "cleanup-snapshot.sqlite3"
+    store = InterimStore(database_path)
+    store.migrate()
+
+    def insert_pending(mutation_id: str, target_event_id: str) -> None:
+        with store.transaction(immediate=True) as connection:
+            connection.execute(
+                """
+                insert into event_mutations(
+                  mutation_id, profile_id, target_type, target_event_id,
+                  operation, idempotency_key, request_sha256,
+                  prior_payload_sha256, result_payload_sha256,
+                  previous_mutation_id, previous_mutation_sha256,
+                  mutation_index, mutation_sha256, created_at
+                ) values (?, 'profile', 'execution_event', ?, 'deletion', ?,
+                  'request-hash', 'prior-hash', 'result-hash', null, null, 0,
+                  'mutation-hash', '2026-07-16T00:00:00+00:00')
+                """,
+                (mutation_id, target_event_id, f"key-{mutation_id}"),
+            )
+            connection.execute(
+                """
+                insert into event_mutation_cleanup values (
+                  ?, 'PENDING', '2026-07-16T00:00:00+00:00', null
+                )
+                """,
+                (mutation_id,),
+            )
+
+    insert_pending("mutation_before", "event_before")
+
+    def compact_with_concurrent_pending_insert() -> None:
+        insert_pending("mutation_during", "event_during")
+
+    monkeypatch.setattr(store, "secure_compact", compact_with_concurrent_pending_insert)
+
+    store.complete_pending_secure_compactions()
+
+    cleanup_statuses = {
+        row["mutation_id"]: row["status"]
+        for row in store.rows("select * from event_mutation_cleanup")
+    }
+    assert cleanup_statuses == {
+        "mutation_before": "COMPLETE",
+        "mutation_during": "PENDING",
+    }

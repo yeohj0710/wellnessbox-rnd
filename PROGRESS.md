@@ -1,10 +1,26 @@
 # PROGRESS
 
+## 2026-07-16 event idempotency and data-mutation loop
+
+- Chosen stage: `original plan / Data Lake evidence lineage`
+- Chosen tasks: OP-027 idempotency-key duplicate blocking; OP-028 correction and deletion processing with lineage and audit preservation
+- Primary evidence: `data/original_plan/evidence/op027_op028_event_idempotency_data_mutation_smoke_v1.json`; `3` actual FastAPI route cases, SQLite schema `8`, one stored conversation replay, one stored behavior replay, two event mutations, two mutation audit rows, and one retained knowledge-lineage row on the mutated event
+- Reused `execution_events`, `behavior_events`, `execution_knowledge_lineage`, and `audit_events`. Schema `8` keeps the ingestion hash immutable, adds effective payload state and hash, and adds one indexed `event_mutations` chain; no parallel event store or review queue was created.
+- Identical event replays return the existing row and `deduplicated=true`. A changed source, timestamp, operation, or payload under the same scoped idempotency key returns `409`, while SQL unique constraints protect the same invariant under concurrent writes.
+- Mutation routes require a configured internal token in every environment and verify profile ownership. A correction changes only the effective payload. A deletion writes a non-sensitive tombstone and a `PENDING` cleanup state, then applies SQLite `secure_delete`, truncates the WAL, and compacts the database before returning success. Failed cleanup resumes on an identical request or the next store startup. Trigger-protected mutation and audit rows store canonical chain hashes and identifiers, not copied raw payloads. The original event ID, ingestion hash, and every `execution_knowledge_lineage` row remain queryable.
+- Evidence status: OP-027 and OP-028 are `IMPLEMENTED`, not `OPERATED`. The local `TestClient` plus temporary SQLite does not prove production persistence or a production postcondition re-query. Generated status: complete `22`, partial `8`, pending `89`, external `1`, contradicted `0`.
+- Validation: exact CI-equivalent selection `192 passed`; focused persistence regression `46 passed`; full Ruff PASS; new smoke byte-identical across reruns (`9342c871b4084fb09fccfc243ff1898c24e4798a64fb4260b267d817de3bfd48`); manifest audit PASS with `30` claims, `81` checked evidence files, and zero issues; completion-report stale check PASS; independent final review found no Critical, Important, or Minor findings.
+- Full suite: `602 passed`, `78 failed`; the unchanged failure groups remain `74` absent ignored report artifacts and `4` CGM geometry assertions.
+- Frozen evaluation: `256` cases; all seven tracked metric deltas are `0`. Replay/slice deltas: not applicable to this persistence-only loop.
+- Biggest bottlenecks: no deployed R&D process; no durable production R&D database; no authenticated service-to-R&D round trip; no production correction/deletion re-query evidence; no session replay API or service replay UI.
+- Recommended next loops: OP-029/030 session replay API and service UI; OP-033/034 pregnancy/lactation and condition-specific safety rules; OP-035/036 evidence-linked drug interactions and combined-dose calculation.
+- Publication: pending implementation commit, push, and `Original plan evidence` workflow result.
+
 ## 2026-07-15 log separation and execution-identity loop
 
 - Chosen stage: `original plan / Data Lake evidence lineage`
 - Chosen tasks: OP-025 user-behavior versus research-evaluation log separation; OP-026 model, dataset, code-commit, and config identity per recommendation execution
-- Primary evidence: `data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json`; `2` actual FastAPI route cases, SQLite schema `7`, two execution identities, six research events, one behavior event, deterministic across reruns
+- Primary evidence: `data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json`; `2` actual FastAPI route cases, SQLite schema `8`, two execution identities, six research events, one behavior event, deterministic across reruns
 - Schema `6` added `behavior_events` with a bounded user-behavior vocabulary that is disjoint from the research event vocabulary at the SQL CHECK level, plus `execution_identities` keyed by execution ID. Schema `7` corrects the execution-knowledge-lineage unique key so one claim and output can retain multiple linked rules. Existing v5 and v6 databases migrate in place with all rows preserved.
 - The actual `/v1/recommend` route now records model ID `deterministic_baseline_v1`, engine version, code commit (environment override first, local git HEAD second, explicit `unresolved` fallback), four hashed runtime dataset identities (runtime knowledge DB, reference knowledge base, safety rules, ingredient catalog), and a canonical config SHA-256 inside the same persistence transaction. The authenticated execution trace returns the structured identity, and identical runs share one config hash.
 - `POST /v1/interim/behavior-events` writes only to the behavior store: research event types return `422` there, behavior names return `422` on the research event route, identical replays deduplicate, changed payloads return `409`, and missing survey storage consent returns `403`. `GET /v1/interim/log-classes` reports per-class counts and zero cross-contamination.
@@ -20,7 +36,7 @@
 
 - Chosen stage: `original plan / Data Lake evidence lineage`
 - Chosen tasks: OP-023 source-to-result lineage; OP-024 source lifecycle, type, and license metadata
-- Primary evidence: `data/original_plan/evidence/op023_op024_knowledge_lineage_smoke_v1.json`; `1` actual FastAPI route case, SQLite schema `7`, three sources, five parsed passages, five normalized claims, five rules, five claim-rule links, and two execution-result lineage rows
+- Primary evidence: `data/original_plan/evidence/op023_op024_knowledge_lineage_smoke_v1.json`; `1` actual FastAPI route case, SQLite schema `8`, three sources, five parsed passages, five normalized claims, five rules, five claim-rule links, and two execution-result lineage rows
 - Reused the existing reference knowledge artifact and `InterimStore`. No parallel knowledge base was created. The schema now stores parsed source URI, upstream reference URI, page or section, line span, normalized claim, rule, source lifecycle, source type, license, and raw-content checksum.
 - The actual `/v1/recommend` route synchronizes the versioned local knowledge artifact and persists safety-rule and final-decision lineage under the response execution ID. The authenticated execution trace returns structured lineage without returning full raw source documents.
 - Recommendation-result lineage is skipped when used-source storage consent is denied. A changed source remains quarantined across identical re-synchronizations until a future explicit review workflow clears it.
@@ -36,7 +52,7 @@
 
 - Chosen stage: `original plan / Data Lake evidence lineage`
 - Chosen tasks: OP-021 versioned profile and consent snapshots; OP-022 common execution IDs for recommendation, safety, optimization, conversation, and follow-up events
-- Primary evidence: `data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json`; `3` local runtime cases, current SQLite schema `7`, two authorized profile versions, two consent versions, and five linked event types
+- Primary evidence: `data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json`; `3` local runtime cases, current SQLite schema `8`, two authorized profile versions, two consent versions, and five linked event types
 - Added profile snapshots, immutable consent snapshots, execution records, and event records to the existing `InterimStore`. The actual recommendation route writes the three stages that ran; authenticated internal routes append conversation and follow-up events.
 - Every event now records the consent snapshot that authorized the write. A profile-level active consent pointer preserves decision order even when an old immutable snapshot is reused, so `거부 → 허용 → 재거부` blocks writes to the older allowed execution. Replays with a changed source or payload fail closed.
 - Added an autouse temporary database fixture to recommendation API tests. Test runs no longer write to the default interim artifact database; pre-existing rows were not deleted.

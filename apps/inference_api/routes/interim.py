@@ -23,6 +23,11 @@ from wellnessbox_rnd.interim.data_lake import (
     IdempotencyConflictError,
     open_data_lake_store,
 )
+from wellnessbox_rnd.interim.data_mutation import (
+    DataMutationLedger,
+    EventMutationNotFoundError,
+    EventMutationStateError,
+)
 from wellnessbox_rnd.interim.inference import recommend_with_registered_model
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
 from wellnessbox_rnd.interim.safety import evaluate_safety
@@ -39,6 +44,16 @@ def require_internal_token(
     if (environment == "production" or enabled) and not expected:
         raise HTTPException(status_code=503, detail="internal_token_not_configured")
     if expected and (token is None or not hmac.compare_digest(token, expected)):
+        raise HTTPException(status_code=401, detail="invalid_internal_token")
+
+
+def require_event_mutation_token(
+    token: str | None = Header(default=None, alias="x-wb-rnd-token"),
+) -> None:
+    expected = os.getenv("WB_RND_INTERIM_INTERNAL_TOKEN", "")
+    if not expected:
+        raise HTTPException(status_code=503, detail="internal_token_not_configured")
+    if token is None or not hmac.compare_digest(token, expected):
         raise HTTPException(status_code=401, detail="invalid_internal_token")
 
 
@@ -109,6 +124,17 @@ class BehaviorEventRequest(BaseModel):
     payload: dict[str, Any] = Field(default_factory=dict)
 
 
+class EventMutationRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    profile_id: str = Field(pattern=r"^usr_[a-f0-9]{16,64}$")
+    target_type: Literal["execution_event", "behavior_event"]
+    target_event_id: str = Field(min_length=1, max_length=128)
+    operation: Literal["correction", "deletion"]
+    idempotency_key: str = Field(min_length=1, max_length=128)
+    replacement_payload: dict[str, Any] | None = None
+
+
 @router.get("/status")
 def status() -> dict[str, Any]:
     store = _store()
@@ -124,6 +150,7 @@ def status() -> dict[str, Any]:
         "execution_events",
         "execution_identities",
         "behavior_events",
+        "event_mutations",
     )
     return {
         "mode": DataClass.PROXY_GOLD_SIMULATION,
@@ -329,6 +356,36 @@ def append_behavior_event(payload: BehaviorEventRequest) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail=str(error)) from error
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.post(
+    "/event-mutations",
+    dependencies=[Depends(require_event_mutation_token)],
+)
+def mutate_event(payload: EventMutationRequest) -> dict[str, Any]:
+    try:
+        return (
+            DataMutationLedger(_store())
+            .apply(**payload.model_dump())
+            .model_dump(mode="json")
+        )
+    except EventMutationNotFoundError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except (IdempotencyConflictError, EventMutationStateError) as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.get(
+    "/event-mutations/{mutation_id}",
+    dependencies=[Depends(require_event_mutation_token)],
+)
+def event_mutation(mutation_id: str) -> dict[str, Any]:
+    try:
+        return DataMutationLedger(_store()).get(mutation_id).model_dump(mode="json")
+    except EventMutationNotFoundError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
 
 
 @router.get("/log-classes")

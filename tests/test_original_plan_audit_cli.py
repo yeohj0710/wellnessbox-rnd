@@ -26,7 +26,7 @@ def test_original_plan_audit_cli_returns_zero_for_current_manifest() -> None:
     assert result.returncode == 0
     assert report["status"] == "PASS"
     assert report["requirement_count"] == 120
-    assert report["claimed_requirement_count"] == 28
+    assert report["claimed_requirement_count"] == 30
     assert report["issues"] == []
 
 
@@ -71,6 +71,8 @@ def test_original_plan_audit_workflow_runs_cli_and_contract_tests() -> None:
     assert "tests/test_unsupported_input_contracts.py" in workflow
     assert "tests/test_wellnessbox_profile_adapter_contract.py" in workflow
     assert "tests/test_inference_api.py" in workflow
+    assert "tests/test_event_idempotency_data_mutation.py" in workflow
+    assert "scripts/run_event_idempotency_data_mutation_smoke.py" in workflow
     assert "yeohj0710/wellnessbox" in workflow
     assert "WELLNESSBOX_EVIDENCE_ROOT" in workflow
     assert workflow.count(

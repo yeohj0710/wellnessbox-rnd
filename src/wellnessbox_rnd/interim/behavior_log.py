@@ -10,7 +10,7 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict
 
-from wellnessbox_rnd.interim.contracts import DataClass
+from wellnessbox_rnd.interim.contracts import DataClass, EventPayloadState
 from wellnessbox_rnd.interim.data_lake import (
     ConsentStorageDeniedError,
     ExecutionLedgerError,
@@ -60,6 +60,8 @@ class BehaviorEventRecord(_StrictModel):
     idempotency_key: str
     payload: dict[str, Any]
     payload_sha256: str
+    effective_payload_sha256: str
+    payload_state: EventPayloadState
     data_class: DataClass
     created_at: str
 
@@ -117,6 +119,8 @@ def _record_from_row(row: sqlite3.Row) -> BehaviorEventRecord:
         idempotency_key=str(row["idempotency_key"]),
         payload=json.loads(row["payload_json"]),
         payload_sha256=str(row["payload_sha256"]),
+        effective_payload_sha256=str(row["effective_payload_sha256"]),
+        payload_state=str(row["payload_state"]),
         data_class=str(row["data_class"]),
         created_at=str(row["created_at"]),
     )
@@ -193,8 +197,8 @@ class BehaviorLogRecorder:
                 insert into behavior_events(
                   behavior_event_id, profile_id, consent_snapshot_id, log_class,
                   event_name, occurred_at, idempotency_key, payload_json,
-                  payload_sha256, data_class, created_at
-                ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  payload_sha256, effective_payload_sha256, data_class, created_at
+                ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     behavior_event_id,
@@ -205,6 +209,7 @@ class BehaviorLogRecorder:
                     normalized_occurred_at,
                     idempotency_key,
                     _canonical_json(payload),
+                    payload_sha256,
                     payload_sha256,
                     DataClass.INTERIM_RUNTIME_EVENT,
                     now,
@@ -220,6 +225,8 @@ class BehaviorLogRecorder:
                 idempotency_key=idempotency_key,
                 payload=payload,
                 payload_sha256=payload_sha256,
+                effective_payload_sha256=payload_sha256,
+                payload_state=EventPayloadState.ACTIVE,
                 data_class=DataClass.INTERIM_RUNTIME_EVENT,
                 created_at=now,
             )
