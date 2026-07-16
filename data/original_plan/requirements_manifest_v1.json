@@ -930,8 +930,51 @@
             ]
           }
         },
-        {"requirement_id": "OP-049", "title": "추천 모델과 deterministic baseline 차이를 replay에서 비교한다."},
-        {"requirement_id": "OP-050", "title": "추천 결과를 실제 서비스 성분과 상품 후보로 변환한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"}
+        {
+          "requirement_id": "OP-049",
+          "title": "추천 모델과 deterministic baseline 차이를 replay에서 비교한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/evals/recommendation_replay_compare.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py",
+              "wellnessbox-rnd/data/original_plan/fixtures/op049_learned_replay_artifact_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_recommendation_replay_product_candidates.py",
+              "wellnessbox-rnd/scripts/run_learned_replay_product_candidates_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-050",
+          "title": "추천 결과를 실제 서비스 성분과 상품 후보로 변환한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/contracts/wb-rnd/product-candidate-match-v1.json",
+              "wellnessbox/contracts/wb-rnd/product-candidate-catalog-snapshot-v1.json",
+              "wellnessbox/lib/product/product.catalog.ts",
+              "wellnessbox/lib/server/wb-rnd-product-candidates.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-product-candidates.cts",
+              "wellnessbox-rnd/tests/test_recommendation_replay_product_candidates.py",
+              "wellnessbox-rnd/scripts/run_learned_replay_product_candidates_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/app/api/tips/route.ts",
+              "wellnessbox/contracts/wb-rnd/ingredient-identifier-map-v1.json",
+              "wellnessbox/contracts/wb-rnd/product-candidate-match-v1.json",
+              "wellnessbox-rnd/data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json"
+            ]
+          }
+        }
       ]
     },
     {

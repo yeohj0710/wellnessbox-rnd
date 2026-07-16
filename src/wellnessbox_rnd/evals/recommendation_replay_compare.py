@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from collections import Counter
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -50,6 +51,18 @@ class ReplayDecisionStatusCounts(BaseModel):
         )
 
 
+ReplayLearnedDecisionStatus = Literal[
+    "not_requested",
+    "not_eligible",
+    "applied",
+    "fallback_missing_path",
+    "fallback_missing_file",
+    "fallback_invalid_artifact",
+    "fallback_suspicious_artifact",
+    "fallback_artifact_runtime_error",
+]
+
+
 class RecommendationReplayCaseComparison(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -58,7 +71,7 @@ class RecommendationReplayCaseComparison(BaseModel):
     category: str = Field(min_length=1)
     baseline_candidates: list[ReplayCandidateScore]
     learned_candidates: list[ReplayCandidateScore]
-    learned_decision_status: str = Field(min_length=1)
+    learned_decision_status: ReplayLearnedDecisionStatus
     learned_applied: bool
     selection_changed: bool
     added_ingredient_keys: list[str]
@@ -124,7 +137,9 @@ class RecommendationReplayCaseComparison(BaseModel):
 class RecommendationReplayComparisonReport(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    schema_version: str = "recommendation_learned_baseline_replay_compare_v1"
+    schema_version: Literal["recommendation_learned_baseline_replay_compare_v1"] = (
+        "recommendation_learned_baseline_replay_compare_v1"
+    )
     dataset_path: str
     learned_artifact_path: str
     case_count: int = Field(ge=1)
@@ -178,6 +193,8 @@ class RecommendationReplayComparisonReport(BaseModel):
             for field_name in ReplayDecisionStatusCounts.model_fields
         }:
             raise ValueError("decision_status_counts mismatch")
+        if sum(self.decision_status_counts.model_dump().values()) != self.case_count:
+            raise ValueError("decision status counts must cover every replay case")
         return self
 
 

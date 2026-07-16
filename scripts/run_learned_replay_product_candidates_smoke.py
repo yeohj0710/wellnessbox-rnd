@@ -171,6 +171,38 @@ def main() -> int:
     if product_conversion["observed"]["unmatched_service_ingredient_ids"]:
         raise RuntimeError("service product conversion left mapped ingredients unmatched")
 
+    authority_observed = authority["observed"]
+    actual_rnd_http_observation = {
+        key: authority_observed[key]
+        for key in (
+            "authority_mode",
+            "matched_rule_id",
+            "recommendation_count",
+            "rnd_route",
+            "safety_action",
+            "service_route",
+            "source",
+            "status",
+        )
+    }
+    ready_test_seam_observation = {
+        key: authority_observed[key]
+        for key in (
+            "mapped_service_ingredient_id",
+            "mapped_service_product_id",
+            "mapping_version",
+            "product_candidate_mapping_version",
+        )
+    }
+    fail_closed_test_seam_observation = {
+        key: authority_observed[key]
+        for key in (
+            "invalid_contract_authority_mode",
+            "invalid_contract_http_status",
+            "unmapped_identifier_http_status",
+        )
+    }
+
     report = {
         "schema_version": "op049_op050_replay_product_candidates_smoke_v1",
         "requirement_stages": {"OP-049": "IMPLEMENTED", "OP-050": "INTEGRATED"},
@@ -183,10 +215,14 @@ def main() -> int:
                 "in-stock PharmacyProduct predicate"
             ),
             "actual_rnd_http_process_observed": True,
-            "actual_rnd_observation": authority["observed"],
+            "actual_rnd_http_observation": actual_rnd_http_observation,
             "ready_product_conversion_source": (
                 "contract-valid R&D response injected through the existing "
                 "test-only route dependency seam"
+            ),
+            "ready_test_seam_observation": ready_test_seam_observation,
+            "fail_closed_test_seam_observation": (
+                fail_closed_test_seam_observation
             ),
             "ready_two_process_product_conversion_proven": False,
             "production_operation_proven": False,

@@ -54,9 +54,9 @@
   },
   "schema_version": "op041_op042_ingredient_mapping_goal_prior_smoke_v1",
   "source_identity": {
-    "wellnessbox_commit": "58246f9a086c81bb3a38d4a1f33f5205b388d2b8",
+    "wellnessbox_commit": "39a0d0f274f5e1b0c61db8aade903c64f413aafe",
     "wellnessbox_rnd_commit": "6a1f874b95fadbffbab796eefcbecd71284b6d9e",
     "wellnessbox_rnd_source_sha256": "867045f514af87198123ff34dc8822ce107baf198a089778686bc784279cde01",
-    "wellnessbox_source_sha256": "b6ba1079bba3b9998f1aa6c5b7a562a068503c2117eee8585325c82d8bd32434"
+    "wellnessbox_source_sha256": "79e0ea882496a8236feb8df208703c584169f22175739bd98f0c0c3a43048b2d"
   }
 }

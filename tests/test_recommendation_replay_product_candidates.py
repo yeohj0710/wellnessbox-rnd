@@ -115,6 +115,17 @@ def test_replay_comparison_schemas_reject_forged_deltas(
     with pytest.raises(ValidationError, match="selection_changed does not match"):
         RecommendationReplayCaseComparison.model_validate(case_payload)
 
+    unknown_status_payload = replay_report.model_dump(mode="json")
+    unknown_status_payload["cases"][0]["learned_decision_status"] = "banana"
+    unknown_status_payload["decision_status_counts"]["not_eligible"] -= 1
+    with pytest.raises(ValidationError, match="learned_decision_status"):
+        RecommendationReplayComparisonReport.model_validate(unknown_status_payload)
+
+    wrong_schema_payload = replay_report.model_dump(mode="json")
+    wrong_schema_payload["schema_version"] = "forged_replay_schema"
+    with pytest.raises(ValidationError, match="schema_version"):
+        RecommendationReplayComparisonReport.model_validate(wrong_schema_payload)
+
 
 def test_service_product_match_contract_covers_mapped_ingredient_contract() -> None:
     rnd_mapping = json.loads(
