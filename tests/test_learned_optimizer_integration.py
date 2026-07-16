@@ -1,3 +1,7 @@
+from pathlib import Path
+
+import pytest
+
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.training import load_synthetic_records
 
@@ -14,14 +18,29 @@ def _record(user_id: str):
     )
 
 
-def test_learned_rerank_can_swap_near_tied_general_wellness_single_product() -> None:
+def test_learned_rerank_can_swap_near_tied_general_wellness_single_product(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
     request = _record("syn-user-009").request
+    artifact_path = tmp_path / "efficacy_model.json"
+    artifact_path.write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(
+        "wellnessbox_rnd.optimizer.service.load_efficacy_model_artifact",
+        lambda _: object(),
+    )
+    monkeypatch.setattr(
+        "wellnessbox_rnd.optimizer.service.predict_effect_proxy_from_feature_dict",
+        lambda _, feature_row: (
+            0.2 if feature_row.get("baseline_candidate::vitamin_c") else 0.0
+        ),
+    )
 
     baseline_response = recommend(request)
     learned_response = recommend(
         request,
         enable_learned_reranking=True,
-        learned_efficacy_artifact_path=MODEL_ARTIFACT_PATH,
+        learned_efficacy_artifact_path=str(artifact_path),
     )
 
     assert baseline_response.recommendations[0].ingredient_key == "vitamin_d3"
