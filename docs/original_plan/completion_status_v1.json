@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "424a89deaacd69bfc6704e4bc8b55dc8e86e57c8df6b557bd2370024407df21c",
+  "audited_manifest_sha256": "9f820b3f3fd1afc465a043e1841f2f5b523a3b9eb1ffc7854b4981b000014008",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 36,
+    "COMPLETE": 38,
     "PARTIAL": 11,
-    "PENDING": 72,
+    "PENDING": 70,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -68,9 +68,9 @@
       "title": "추천 후보와 효과 점수",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 8,
+        "COMPLETE": 10,
         "PARTIAL": 0,
-        "PENDING": 2,
+        "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -1725,14 +1725,22 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/evals/recommendation_replay_compare.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py",
+          "wellnessbox-rnd/data/original_plan/fixtures/op049_learned_replay_artifact_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_recommendation_replay_product_candidates.py",
+          "wellnessbox-rnd/scripts/run_learned_replay_product_candidates_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -1748,15 +1756,31 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox/contracts/wb-rnd/product-candidate-match-v1.json",
+          "wellnessbox/contracts/wb-rnd/product-candidate-catalog-snapshot-v1.json",
+          "wellnessbox/lib/product/product.catalog.ts",
+          "wellnessbox/lib/server/wb-rnd-product-candidates.ts",
+          "wellnessbox/lib/server/wb-rnd-interim-route.ts"
+        ],
+        "test_files": [
+          "wellnessbox/scripts/qa/check-rnd-product-candidates.cts",
+          "wellnessbox-rnd/tests/test_recommendation_replay_product_candidates.py",
+          "wellnessbox-rnd/scripts/run_learned_replay_product_candidates_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox/app/api/tips/route.ts",
+          "wellnessbox/contracts/wb-rnd/ingredient-identifier-map-v1.json",
+          "wellnessbox/contracts/wb-rnd/product-candidate-match-v1.json",
+          "wellnessbox-rnd/data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []

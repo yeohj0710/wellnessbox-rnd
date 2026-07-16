@@ -1,25 +1,29 @@
 {
   "integration_boundary": {
-    "actual_rnd_http_process_observed": true,
-    "actual_rnd_observation": {
+    "actual_rnd_http_observation": {
       "authority_mode": "rnd_final",
-      "invalid_contract_authority_mode": "service_fail_closed",
-      "invalid_contract_http_status": 502,
-      "mapped_service_ingredient_id": "ING:MAGNESIUM",
-      "mapped_service_product_id": 29,
-      "mapping_version": "2026-07-16.1",
       "matched_rule_id": "SAFE-EMERGENCY-001",
-      "product_candidate_mapping_version": "2026-07-16.1",
       "recommendation_count": 0,
       "rnd_route": "POST /v1/interim/recommendations",
       "safety_action": "STOP_AND_ESCALATE",
       "service_route": "POST /api/tips",
       "source": "rnd_interim",
-      "status": "BLOCKED",
+      "status": "BLOCKED"
+    },
+    "actual_rnd_http_process_observed": true,
+    "fail_closed_test_seam_observation": {
+      "invalid_contract_authority_mode": "service_fail_closed",
+      "invalid_contract_http_status": 502,
       "unmapped_identifier_http_status": 502
     },
     "production_operation_proven": false,
     "ready_product_conversion_source": "contract-valid R&D response injected through the existing test-only route dependency seam",
+    "ready_test_seam_observation": {
+      "mapped_service_ingredient_id": "ING:MAGNESIUM",
+      "mapped_service_product_id": 29,
+      "mapping_version": "2026-07-16.1",
+      "product_candidate_mapping_version": "2026-07-16.1"
+    },
     "ready_two_process_product_conversion_proven": false,
     "service_product_catalog_path": "existing product.catalog getProductCandidateCatalog path with in-stock PharmacyProduct predicate",
     "service_route": "POST /api/tips"
@@ -8543,8 +8547,8 @@
   },
   "source_identity": {
     "wellnessbox_commit": "a6b8ab1e92a112f6d2e904436bfe44ba688fc4e8",
-    "wellnessbox_rnd_commit": "b008ed177563ac098ab8706186a2e45d20c3edcd",
-    "wellnessbox_rnd_source_sha256": "03ece9f66617e916b4f627131d7a7586fec2605bf33e68156b88d46edb17da1b",
+    "wellnessbox_rnd_commit": "eac41e69b75aee4efb84998b1ac45240784b4c8b",
+    "wellnessbox_rnd_source_sha256": "8e15cd0231c230ecc64693de10393cc411741c62face83d05beb2a0084b35f60",
     "wellnessbox_source_sha256": "7881185ab661f4853e739cc6a6e8181b1c295e1623f7b816b1ffdbc2a5e9d0a9"
   }
 }
