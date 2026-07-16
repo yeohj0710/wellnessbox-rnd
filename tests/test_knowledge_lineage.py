@@ -14,9 +14,9 @@ def test_reference_artifact_sync_persists_complete_claim_rule_chain(tmp_path) ->
     second = registry.sync_reference_artifact()
 
     assert first == second
-    assert first.source_count == 4
-    assert first.passage_count == 6
-    assert first.claim_count == 6
+    assert first.source_count == 16
+    assert first.passage_count == 18
+    assert first.claim_count == 18
     assert first.rule_count == 5
     assert first.claim_rule_link_count == 5
     row = store.rows(

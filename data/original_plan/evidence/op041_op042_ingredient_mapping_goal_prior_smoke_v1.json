@@ -1,0 +1,62 @@
+{
+  "checks": [
+    "cross_repository_mapping_contract_byte_identity",
+    "actual_api_tips_mapped_identifier_enrichment",
+    "actual_api_tips_unmapped_identifier_fail_closed",
+    "all_recommendation_goals_have_evidence_linked_priors",
+    "runtime_goal_prior_validation",
+    "fresh_runtime_db_builder_is_deterministic",
+    "stored_runtime_db_matches_fresh_builder",
+    "candidate_scorer_consumes_registered_priors"
+  ],
+  "goal_priors": {
+    "coq10_heart_goal_alignment": 35.0,
+    "covered_goals": [
+      "blood_glucose",
+      "bone_joint",
+      "energy_support",
+      "general_wellness",
+      "gut_health",
+      "heart_health",
+      "immunity_support",
+      "sleep_support",
+      "stress_support"
+    ],
+    "omega3_heart_goal_alignment": 35.0,
+    "record_count": 24,
+    "reference_ids": [
+      "REF-CDC-SOLUBLE-FIBER-001",
+      "REF-MC-GOAL-PRIOR-001",
+      "REF-NCCIH-BERBERINE-GLUCOSE-001",
+      "REF-NCCIH-COQ10-HEART-001",
+      "REF-NCCIH-MAGNESIUM-SLEEP-001",
+      "REF-NCCIH-PROBIOTICS-GUT-001",
+      "REF-NIH-ODS-B12-ENERGY-001",
+      "REF-NIH-ODS-CALCIUM-BONE-001",
+      "REF-NIH-ODS-IMMUNE-001",
+      "REF-NIH-ODS-OMEGA3-HEART-001",
+      "REF-NIH-ODS-VITD-BONE-001",
+      "REF-PUBMED-LTHEANINE-001"
+    ],
+    "version": "2026-07-16.2"
+  },
+  "mapping": {
+    "mapped_service_ingredient_id": "ING:MAGNESIUM",
+    "rnd_contract_sha256": "791665daff71fa747783cc2ff732daf9411ebb52940dd77b94b633130124ce53",
+    "service_contract_sha256": "791665daff71fa747783cc2ff732daf9411ebb52940dd77b94b633130124ce53",
+    "unmapped_identifier_http_status": 502,
+    "version": "2026-07-16.1"
+  },
+  "production_operation_proven": false,
+  "requirement_stages": {
+    "OP-041": "INTEGRATED",
+    "OP-042": "IMPLEMENTED"
+  },
+  "schema_version": "op041_op042_ingredient_mapping_goal_prior_smoke_v1",
+  "source_identity": {
+    "wellnessbox_commit": "58246f9a086c81bb3a38d4a1f33f5205b388d2b8",
+    "wellnessbox_rnd_commit": "6a1f874b95fadbffbab796eefcbecd71284b6d9e",
+    "wellnessbox_rnd_source_sha256": "867045f514af87198123ff34dc8822ce107baf198a089778686bc784279cde01",
+    "wellnessbox_source_sha256": "b6ba1079bba3b9998f1aa6c5b7a562a068503c2117eee8585325c82d8bd32434"
+  }
+}

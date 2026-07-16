@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "898a3840a44160b6a54feb6b00de24e444d7de364ab711c22f09a3f05100624c",
+  "audited_manifest_sha256": "c4801a1d61cf334f552ef46e96dd0ee2862c8ac63c4d88aa24a26f84b61ed869",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 28,
+    "COMPLETE": 30,
     "PARTIAL": 11,
-    "PENDING": 80,
+    "PENDING": 78,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -68,9 +68,9 @@
       "title": "추천 후보와 효과 점수",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 0,
+        "COMPLETE": 2,
         "PARTIAL": 0,
-        "PENDING": 10,
+        "PENDING": 8,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -1444,15 +1444,29 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox-rnd/data/contracts/wellnessbox_ingredient_identifier_map_v1.json",
+          "wellnessbox/contracts/wb-rnd/ingredient-identifier-map-v1.json",
+          "wellnessbox/lib/server/wb-rnd-ingredient-map.ts",
+          "wellnessbox/lib/server/wb-rnd-interim-safety-authority.ts"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_ingredient_identifier_mapping.py",
+          "wellnessbox-rnd/scripts/run_ingredient_mapping_goal_prior_smoke.py",
+          "wellnessbox/scripts/qa/check-rnd-ingredient-map.cts",
+          "wellnessbox/scripts/qa/check-rnd-final-safety-authority.cts"
+        ],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/evidence/op041_op042_ingredient_mapping_goal_prior_smoke_v1.json",
+          "wellnessbox-rnd/.github/workflows/original-plan-evidence.yml",
+          "wellnessbox/.github/workflows/encoding-guard.yml"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []
@@ -1467,14 +1481,27 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/data/knowledge/goal_ingredient_priors_v1.json",
+          "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/goal_priors.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/efficacy/service.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/runtime_db.py",
+          "wellnessbox-rnd/data/knowledge/reference_knowledge_base_v1.json",
+          "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_goal_ingredient_priors.py",
+          "wellnessbox-rnd/tests/test_reference_ingestion.py",
+          "wellnessbox-rnd/tests/test_runtime_knowledge_db.py",
+          "wellnessbox-rnd/scripts/run_ingredient_mapping_goal_prior_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op041_op042_ingredient_mapping_goal_prior_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],

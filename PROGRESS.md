@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-16 ingredient identity and evidence-linked goal-prior loop
+
+- Chosen stage: `original plan / candidate generation and efficacy scoring`
+- Chosen tasks: OP-041 version the WellnessBox service/R&D ingredient identifier mapping; OP-042 register evidence-linked candidate priors for every catalog-supported ingredient/goal pair
+- Primary evidence: `data/original_plan/evidence/op041_op042_ingredient_mapping_goal_prior_smoke_v1.json`; actual service `/api/tips` export plus localhost R&D HTTP process, byte-identical across reruns (`fd37111339773f86904cc3d4f6f2b5fda45ff2d51e4f1b8a6a5ff35d5013e8a6`)
+- Reused both existing ingredient catalogs, the existing `/api/tips` safety-authority path, the R&D candidate scorer, reference ingestion, and runtime knowledge DB. No parallel catalog, recommendation engine, or service route was added.
+- The byte-identical mapping contract covers every service identifier and every R&D catalog key as mapped or explicitly unmapped. Equivalent pairs allow both directions; a broader service identifier allows only R&D-to-service conversion. The actual `/api/tips` route returns `ING:MAGNESIUM` for `magnesium_glycinate` and fails closed with HTTP `502` and zero recommendations for an unmapped R&D identifier.
+- The versioned goal-prior registry covers all `24` current catalog-supported ingredient/goal pairs and all `9` recommendation goals. It preserves the established candidate-ordering points (`35` for a specific goal and `18` for general wellness); these points are selection policy, not clinical efficacy probabilities. Every record carries the fixed policy claim, and any clinical strength/direction must match a scoped claim type and the exact claim-owned reference set.
+- Source scope is conservative: insufficient, mixed, inconclusive, deficiency-dependent, strain-specific, population-dependent, or small-trial evidence remains labeled with its limitation. Forged policy claims, unrelated references, evidence-strength promotion, duplicate IDs, stale runtime artifacts, and nondeterministic fresh builds fail validation.
+- Evidence status: OP-041 is complete at required stage `INTEGRATED`; OP-042 is complete at required stage `IMPLEMENTED`. Generated status: complete `30`, partial `11`, pending `78`, external `1`, contradicted `0`. No R&D deployment or production two-process operation is claimed.
+- Validation: focused mapping/prior/runtime selection `48 passed`; exact CI-equivalent selection `283 passed`; full Ruff PASS; manifest audit PASS with `41` claims, `124` checked evidence files, and zero issues; completion-report stale check PASS; stored/fresh runtime equality and fresh-build determinism PASS; independent final review Critical `0`, Important `0`.
+- Full suite: `683 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, and the overall and metric-specific weakest-slice categories are unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
+- Publication boundary: WellnessBox commit `58246f9a086c81bb3a38d4a1f33f5205b388d2b8` passed Encoding Guard run `29496255239`. R&D source commit `6a1f874b95fadbffbab796eefcbecd71284b6d9e` is pinned in deterministic evidence; evidence publication and Original plan evidence CI are the remaining loop steps.
+- Recommended next loops: OP-043/044 candidate filtering and auditable score decomposition; OP-045/046 safe-candidate preservation and structured recommendation reasons; OP-047/048 uncertainty/missing-input quantification and deterministic fallback.
+
 ## 2026-07-16 external high-risk gate and final safety-authority loop
 
 - Chosen stage: `original plan / personalized safety engine`

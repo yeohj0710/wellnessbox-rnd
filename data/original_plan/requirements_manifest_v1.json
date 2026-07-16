@@ -758,8 +758,54 @@
       "owners": ["wellnessbox-rnd"],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
-        {"requirement_id": "OP-041", "title": "서비스와 R&D 성분 식별자의 변환표를 버전 관리한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"},
-        {"requirement_id": "OP-042", "title": "건강 목표별 후보 성분 prior와 근거를 등록한다."},
+        {
+          "requirement_id": "OP-041",
+          "title": "서비스와 R&D 성분 식별자의 변환표를 버전 관리한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/contracts/wellnessbox_ingredient_identifier_map_v1.json",
+              "wellnessbox/contracts/wb-rnd/ingredient-identifier-map-v1.json",
+              "wellnessbox/lib/server/wb-rnd-ingredient-map.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-safety-authority.ts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_ingredient_identifier_mapping.py",
+              "wellnessbox-rnd/scripts/run_ingredient_mapping_goal_prior_smoke.py",
+              "wellnessbox/scripts/qa/check-rnd-ingredient-map.cts",
+              "wellnessbox/scripts/qa/check-rnd-final-safety-authority.cts"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op041_op042_ingredient_mapping_goal_prior_smoke_v1.json",
+              "wellnessbox-rnd/.github/workflows/original-plan-evidence.yml",
+              "wellnessbox/.github/workflows/encoding-guard.yml"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-042",
+          "title": "건강 목표별 후보 성분 prior와 근거를 등록한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/knowledge/goal_ingredient_priors_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/goal_priors.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/efficacy/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/runtime_db.py",
+              "wellnessbox-rnd/data/knowledge/reference_knowledge_base_v1.json",
+              "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_goal_ingredient_priors.py",
+              "wellnessbox-rnd/tests/test_reference_ingestion.py",
+              "wellnessbox-rnd/tests/test_runtime_knowledge_db.py",
+              "wellnessbox-rnd/scripts/run_ingredient_mapping_goal_prior_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op041_op042_ingredient_mapping_goal_prior_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-043", "title": "증상, 검사, 생활 습관, 식이 패턴이 후보 점수에 영향을 주게 한다."},
         {"requirement_id": "OP-044", "title": "웨어러블, CGM, 유전자 관측값을 수치로 점수에 반영한다."},
         {"requirement_id": "OP-045", "title": "안전 차단 전후 후보를 모두 보존한다."},

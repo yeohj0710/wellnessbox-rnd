@@ -1,5 +1,20 @@
 # SESSION_HANDOFF
 
+## 2026-07-16 ingredient identity and goal-prior handoff
+
+- Chosen stage: `original plan / candidate generation and efficacy scoring`
+- Chosen tasks: OP-041 and OP-042
+- Primary evidence: `data/original_plan/evidence/op041_op042_ingredient_mapping_goal_prior_smoke_v1.json`; deterministic SHA-256 `fd37111339773f86904cc3d4f6f2b5fda45ff2d51e4f1b8a6a5ff35d5013e8a6`
+- Main files: byte-identical service/R&D identifier contracts; service mapping and final-authority modules; R&D goal-prior registry, validator, scorer integration, reference/runtime artifacts, official-source notes, focused tests, two-process smoke, manifest, generated status, and both CI workflows
+- Current result: every service and R&D catalog identifier is mapped or explicitly unmapped. Relationship and direction are validated. The actual `/api/tips` export enriches a mapped R&D recommendation with the service ID and returns a service-owned fail-closed block for an unmapped ID.
+- Goal-prior result: `24` catalog-supported pairs cover all `9` goals. Registered points preserve the prior `35/18` candidate ordering and are explicitly not efficacy probabilities. Clinical evidence labels are derived from exact scoped claim types; policy-only records cannot be promoted, and unrelated references or forged policy claims are rejected.
+- Evidence stage: OP-041 is `INTEGRATED`; OP-042 is `IMPLEMENTED`. Generated counts are complete `30`, partial `11`, pending `78`, external `1`, contradicted `0`. No deployment or production operation was performed.
+- Validation: focused selection `48 passed`; exact CI-equivalent selection `283 passed`; manifest audit PASS with `41` claims and `124` checked evidence files; stored runtime equals fresh and fresh builds are deterministic; full Ruff PASS; independent final review Critical `0`, Important `0`; full suite `683 passed`, `77 failed` with only the known `73` absent-report and `4` CGM-geometry groups.
+- Official frozen eval: `256` cases; all seven metric deltas are `0`; overall and metric-specific weakest-slice categories are unchanged.
+- Publication: WellnessBox commit `58246f9a086c81bb3a38d4a1f33f5205b388d2b8` is on `origin/main`, and Encoding Guard run `29496255239` passed. R&D source commit is `6a1f874b95fadbffbab796eefcbecd71284b6d9e`; evidence publication and Original plan evidence CI remain the final loop steps.
+- Protected files: do not modify or stage `docs/plans/2026-07-14-tips-evaluator-ui-overhaul.md` or `docs/plans/2026-07-15-tips-full-implementation-roadmap.md`. The unrelated dirty WellnessBox UI files remain user-owned and unstaged.
+- Next three loops: OP-043/044 candidate filtering and auditable scoring; OP-045/046 post-filter preservation and structured reasons; OP-047/048 uncertainty and deterministic fallback.
+
 ## 2026-07-16 external high-risk gate and final safety-authority handoff
 
 - Chosen stage: `original plan / personalized safety engine`
