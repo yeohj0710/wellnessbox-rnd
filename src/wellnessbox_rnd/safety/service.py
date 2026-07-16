@@ -57,10 +57,22 @@ def assess_safety(intake: NormalizedIntake) -> SafetySummary:
             _append_unique_text(warnings, medication_rule.metadata.warning_text)
             rule_refs.append(_build_rule_ref(medication_rule.metadata))
 
-    if intake.request.user_profile.pregnant and rules.pregnancy_rule is not None:
-        excluded_ingredients.update(rules.pregnancy_rule.excluded_ingredients)
-        _append_unique_text(warnings, rules.pregnancy_rule.metadata.warning_text)
-        rule_refs.append(_build_rule_ref(rules.pregnancy_rule.metadata))
+    special_population_statuses = {
+        status
+        for status, active in {
+            "pregnant": intake.request.user_profile.pregnant,
+            "lactating": intake.request.user_profile.lactating,
+        }.items()
+        if active
+    }
+    for special_population_rule in rules.special_population_rules:
+        if set(special_population_rule.statuses).intersection(special_population_statuses):
+            excluded_ingredients.update(special_population_rule.excluded_ingredients)
+            _append_unique_text(
+                warnings,
+                special_population_rule.metadata.warning_text,
+            )
+            rule_refs.append(_build_rule_ref(special_population_rule.metadata))
 
     for condition_rule in rules.condition_rules:
         if set(condition_rule.conditions).intersection(intake.condition_set):

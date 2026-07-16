@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from functools import lru_cache
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -52,11 +52,13 @@ class ContraindicationRuleRecord(BaseModel):
     rule_id: str
     source_kind: str
     severity: Severity
+    effect: Literal["contraindication", "review_required"] = "contraindication"
     condition_keys: list[str] = Field(default_factory=list)
     excluded_ingredients: list[str] = Field(default_factory=list)
     message: str
     warning_text: str
     applies_when_pregnant: bool = False
+    applies_when_lactating: bool = False
     reference_ids: list[str] = Field(default_factory=list)
     claim_ids: list[str] = Field(default_factory=list)
 
@@ -202,27 +204,37 @@ def build_runtime_knowledge_db(
             source_kind="deterministic_policy",
         )
 
-    pregnancy_rule = rules_payload.get("pregnancy_rule")
-    if pregnancy_rule is not None:
-        metadata = pregnancy_rule["metadata"]
+    special_population_condition_keys = {
+        "pregnant": "pregnancy",
+        "lactating": "lactation",
+    }
+    for special_population_rule in rules_payload.get("special_population_rules", []):
+        metadata = special_population_rule["metadata"]
+        statuses = sorted(set(special_population_rule.get("statuses", [])))
+        conditions = [special_population_condition_keys[status] for status in statuses]
+        excluded_ingredients = sorted(
+            set(special_population_rule.get("excluded_ingredients", []))
+        )
         contraindication_rules.append(
             ContraindicationRuleRecord(
                 rule_id=metadata["rule_id"],
                 source_kind="deterministic_policy",
                 severity=Severity(metadata["severity"]),
-                condition_keys=["pregnancy"],
-                excluded_ingredients=sorted(set(pregnancy_rule["excluded_ingredients"])),
+                effect="contraindication",
+                condition_keys=conditions,
+                excluded_ingredients=excluded_ingredients,
                 message=metadata["message"],
                 warning_text=metadata["warning_text"],
-                applies_when_pregnant=True,
+                applies_when_pregnant="pregnant" in statuses,
+                applies_when_lactating="lactating" in statuses,
             )
         )
-        condition_keys.add("pregnancy")
+        condition_keys.update(conditions)
         _register_ingredients(
             ingredient_map,
             ingredient_aliases,
             alias_keys,
-            pregnancy_rule["excluded_ingredients"],
+            excluded_ingredients,
             source_kind="deterministic_policy",
         )
 
@@ -235,6 +247,7 @@ def build_runtime_knowledge_db(
                 rule_id=metadata["rule_id"],
                 source_kind="deterministic_policy",
                 severity=Severity(metadata["severity"]),
+                effect=raw_rule["effect"],
                 condition_keys=conditions,
                 excluded_ingredients=excluded_ingredients,
                 message=metadata["message"],

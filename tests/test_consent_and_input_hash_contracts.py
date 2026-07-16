@@ -321,6 +321,25 @@ def test_same_normalized_input_has_same_snapshot_and_sha256() -> None:
     )
 
 
+def test_explicit_false_lactation_preserves_legacy_snapshot_and_hash() -> None:
+    legacy_payload = _payload()
+    explicit_false_payload = deepcopy(legacy_payload)
+    explicit_false_payload["user_profile"]["lactating"] = False  # type: ignore[index]
+
+    legacy = normalize_request(RecommendationRequest.model_validate(legacy_payload))
+    explicit_false = normalize_request(
+        RecommendationRequest.model_validate(explicit_false_payload)
+    )
+
+    assert build_normalized_input_snapshot_v1(
+        legacy
+    ) == build_normalized_input_snapshot_v1(explicit_false)
+    assert calculate_normalized_input_sha256_v1(
+        legacy
+    ) == calculate_normalized_input_sha256_v1(explicit_false)
+    assert "lactating" not in build_normalized_input_snapshot_v1(legacy)["user_profile"]
+
+
 def test_consent_change_changes_normalized_snapshot_hash() -> None:
     first_payload = _payload()
     second_payload = deepcopy(first_payload)

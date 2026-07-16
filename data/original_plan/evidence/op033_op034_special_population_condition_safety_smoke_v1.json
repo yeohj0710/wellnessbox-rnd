@@ -1,0 +1,176 @@
+{
+  "cases": [
+    {
+      "case_id": "pregnancy",
+      "interim_replay_path": {
+        "action": "BLOCK",
+        "rule_ids": [
+          "SAFE-PREG-001"
+        ]
+      },
+      "recommendation_path": {
+        "excluded_ingredients": [
+          "ashwagandha",
+          "berberine"
+        ],
+        "rule_ids": [
+          "SAFETY-PREG-001"
+        ],
+        "status": "needs_review"
+      }
+    },
+    {
+      "case_id": "lactation",
+      "interim_replay_path": {
+        "action": "BLOCK",
+        "rule_ids": [
+          "SAFE-LACT-001"
+        ]
+      },
+      "recommendation_path": {
+        "excluded_ingredients": [
+          "ashwagandha",
+          "berberine"
+        ],
+        "rule_ids": [
+          "SAFETY-LACT-001"
+        ],
+        "status": "needs_review"
+      }
+    },
+    {
+      "case_id": "pregnancy_and_lactation",
+      "interim_replay_path": {
+        "action": "BLOCK",
+        "rule_ids": [
+          "SAFE-PREG-001",
+          "SAFE-LACT-001"
+        ]
+      },
+      "recommendation_path": {
+        "excluded_ingredients": [
+          "ashwagandha",
+          "berberine"
+        ],
+        "rule_ids": [
+          "SAFETY-PREG-001",
+          "SAFETY-LACT-001"
+        ],
+        "status": "needs_review"
+      }
+    },
+    {
+      "case_id": "renal_review",
+      "interim_replay_path": {
+        "action": "WARN",
+        "rule_ids": [
+          "SAFE-RENAL-REVIEW-001"
+        ]
+      },
+      "recommendation_path": {
+        "excluded_ingredients": [
+          "magnesium_glycinate"
+        ],
+        "rule_ids": [
+          "SAFETY-RENAL-001"
+        ],
+        "status": "needs_review"
+      }
+    },
+    {
+      "case_id": "severe_renal_block",
+      "interim_replay_path": {
+        "action": "BLOCK",
+        "rule_ids": [
+          "SAFE-RENAL-001"
+        ]
+      },
+      "recommendation_path": {
+        "excluded_ingredients": [
+          "magnesium_glycinate"
+        ],
+        "rule_ids": [
+          "SAFETY-RENAL-SEVERE-001"
+        ],
+        "status": "blocked"
+      }
+    },
+    {
+      "case_id": "hepatic_review_block",
+      "interim_replay_path": {
+        "action": "BLOCK",
+        "rule_ids": [
+          "SAFE-HEPATIC-001"
+        ]
+      },
+      "recommendation_path": {
+        "excluded_ingredients": [],
+        "rule_ids": [
+          "SAFETY-HEPATIC-001"
+        ],
+        "status": "blocked"
+      }
+    },
+    {
+      "case_id": "hemochromatosis_contraindication",
+      "interim_replay_path": {
+        "action": "BLOCK",
+        "rule_ids": [
+          "SAFE-HEMO-001"
+        ]
+      },
+      "recommendation_path": {
+        "excluded_ingredients": [
+          "iron",
+          "vitamin_c"
+        ],
+        "rule_ids": [
+          "SAFETY-HEMO-001"
+        ],
+        "status": "needs_review"
+      }
+    },
+    {
+      "case_id": "unmatched_condition",
+      "interim_replay_path": {
+        "action": "PASS",
+        "rule_ids": []
+      },
+      "recommendation_path": {
+        "excluded_ingredients": [],
+        "rule_ids": [],
+        "status": "ok"
+      }
+    }
+  ],
+  "contains_health_identifiers": false,
+  "policy_sources": [
+    {
+      "source_id": "NIH-NCCIH-ASHWAGANDHA",
+      "supports": [
+        "pregnancy",
+        "lactation"
+      ],
+      "url": "https://www.nccih.nih.gov/health/ashwagandha"
+    },
+    {
+      "source_id": "NIH-ODS-MAGNESIUM-HP",
+      "supports": [
+        "renal_impairment"
+      ],
+      "url": "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/"
+    },
+    {
+      "source_id": "NIH-ODS-IRON-HP",
+      "supports": [
+        "hemochromatosis"
+      ],
+      "url": "https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/"
+    }
+  ],
+  "requirements": [
+    "OP-033",
+    "OP-034"
+  ],
+  "schema_version": "op033_op034_special_population_condition_safety_smoke_v1"
+}

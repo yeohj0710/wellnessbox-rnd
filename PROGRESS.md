@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-16 special-population and condition safety loop
+
+- Chosen stage: `original plan / personalized safety engine`
+- Chosen tasks: OP-033 separate pregnancy and lactation restrictions; OP-034 expand condition-specific contraindication and review-required rules
+- Primary evidence: `data/original_plan/evidence/op033_op034_special_population_condition_safety_smoke_v1.json`; eight real schema-normalization-safety cases plus the interim replay decisions, byte-identical across reruns (`9a69c6a19e9b7d4c403b3887e15c2ffa21fac934e9a2ff2d8c5a4e0553a7c2e1`)
+- Reused the strict `RecommendationRequest`, normalized intake, data-defined `SafetyRuleSet`, recommendation safety service, interim replay safety path, and runtime knowledge builder. No parallel safety engine or recommendation path was created.
+- `UserProfile` now accepts an independent `lactating` flag. The false default remains present in OpenAPI but is omitted from serialized requests, preserving existing request payloads, normalized hashes, and the WellnessBox profile-adapter contract. Pregnancy keeps `SAFETY-PREG-001`; lactation uses `SAFETY-LACT-001`; both active states apply each rule once.
+- Condition rules now declare `contraindication` or `review_required`. The data covers chronic kidney review, kidney failure or dialysis blocking, liver failure or cirrhosis blocking pending clinical review, and hemochromatosis exclusions for iron and vitamin C. Contraindication records cannot omit their excluded ingredients.
+- Policy support was checked against the NIH NCCIH ashwagandha safety page and NIH ODS magnesium and iron health-professional fact sheets. OP-035 evidence-ID lineage remains a separate requirement; this loop does not claim that drug-interaction evidence work.
+- Evidence status: OP-033 and OP-034 are complete at their required `IMPLEMENTED` stage. Generated status: complete `24`, partial `10`, pending `85`, external `1`, contradicted `0`.
+- Validation: exact CI-equivalent selection `208 passed`; focused safety/runtime selection `27 passed`; full Ruff PASS; manifest audit PASS with `34` claims, `99` checked evidence files, and zero issues; completion-report stale check PASS.
+- Full suite: `621 passed`, `77 failed`; the unchanged failure groups remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No new safety-rule failure remains.
+- Frozen evaluation: `256` cases; all seven tracked metric deltas are exactly `0` against `artifacts/reports/op029_op030_frozen_eval/eval_report.json`.
+- Integration boundary: the current WellnessBox stored profile still exposes one combined `pregnantOrBreastfeeding` field. This loop implements distinct R&D inputs and rules but does not claim that the service can identify which state produced the combined source value.
+- Recommended next loops: OP-035/036 evidence-linked drug interactions and cross-product aggregate dose; OP-037/038 normalized unit/upper-limit comparison and rule version/application time; OP-039/040 high-risk false-negative evaluation and production final-blocking authority.
+
 ## 2026-07-16 deterministic session replay and service UI loop
 
 - Chosen stage: `original plan / Data Lake evidence lineage`

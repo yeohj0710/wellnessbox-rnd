@@ -59,14 +59,33 @@ def evaluate_safety(
         findings.append(
             _finding("SAFE-EMERGENCY-001", "emergency", "STOP_AND_ESCALATE", "emergency_symptom")
         )
-    if payload.get("pregnant") or payload.get("lactating"):
+    if payload.get("pregnant"):
         findings.append(
-            _finding("SAFE-PREG-001", "pregnancy_lactation", "BLOCK", "special_population")
+            _finding("SAFE-PREG-001", "pregnancy", "BLOCK", "pregnancy_restriction")
+        )
+    if payload.get("lactating"):
+        findings.append(
+            _finding("SAFE-LACT-001", "lactation", "BLOCK", "lactation_restriction")
         )
     if age < 14 or age > 85:
         findings.append(_finding("SAFE-AGE-001", "age", "BLOCK", "age_outside_validated_range"))
-    if conditions & {"kidney failure", "liver failure", "dialysis", "cirrhosis"}:
-        findings.append(_finding("SAFE-ORGAN-001", "kidney_liver", "BLOCK", "organ_impairment"))
+    if conditions & {"kidney failure", "dialysis"}:
+        findings.append(
+            _finding("SAFE-RENAL-001", "kidney", "BLOCK", "severe_renal_impairment")
+        )
+    elif conditions & {"kidney disease", "chronic kidney disease"}:
+        findings.append(
+            _finding(
+                "SAFE-RENAL-REVIEW-001",
+                "kidney",
+                "WARN",
+                "renal_review_required",
+            )
+        )
+    if conditions & {"liver failure", "cirrhosis"}:
+        findings.append(
+            _finding("SAFE-HEPATIC-001", "liver", "BLOCK", "hepatic_impairment")
+        )
     if allergies & ingredients:
         findings.append(
             _finding("SAFE-ALLERGY-001", "allergy", "STOP_AND_ESCALATE", "allergen_match")
@@ -77,9 +96,9 @@ def evaluate_safety(
         findings.append(
             _finding("SAFE-DDI-001", "drug_interaction", "BLOCK", "anticoagulant_interaction")
         )
-    if "hemochromatosis" in conditions and "iron" in ingredients:
+    if "hemochromatosis" in conditions and ingredients & {"iron", "vitamin c", "vitamin_c"}:
         findings.append(
-            _finding("SAFE-CONDITION-001", "condition_caution", "BLOCK", "condition_conflict")
+            _finding("SAFE-HEMO-001", "condition_caution", "BLOCK", "hemochromatosis_conflict")
         )
     if duplicates:
         findings.append(_finding("SAFE-DUP-001", "duplicate", "BLOCK", "duplicate_ingredient"))

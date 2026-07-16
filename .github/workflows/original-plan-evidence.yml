@@ -27,6 +27,7 @@ on:
       - "scripts/run_log_separation_identity_smoke.py"
       - "scripts/run_event_idempotency_data_mutation_smoke.py"
       - "scripts/run_session_replay_service_ui_smoke.py"
+      - "scripts/run_special_population_condition_safety_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -66,6 +67,7 @@ on:
       - "tests/test_session_replay.py"
       - "tests/test_reference_ingestion.py"
       - "tests/test_runtime_knowledge_db.py"
+      - "tests/test_special_population_condition_safety.py"
   push:
     branches: [main]
     paths:
@@ -93,6 +95,7 @@ on:
       - "scripts/run_log_separation_identity_smoke.py"
       - "scripts/run_event_idempotency_data_mutation_smoke.py"
       - "scripts/run_session_replay_service_ui_smoke.py"
+      - "scripts/run_special_population_condition_safety_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/ingestion/reference_ingestion.py"
@@ -132,6 +135,7 @@ on:
       - "tests/test_session_replay.py"
       - "tests/test_reference_ingestion.py"
       - "tests/test_runtime_knowledge_db.py"
+      - "tests/test_special_population_condition_safety.py"
   workflow_dispatch:
 
 permissions:
@@ -183,6 +187,7 @@ jobs:
           tests/test_session_replay.py
           tests/test_reference_ingestion.py
           tests/test_runtime_knowledge_db.py
+          tests/test_special_population_condition_safety.py
       - name: Lint requirement audit
         run: >-
           python -m ruff check
@@ -222,6 +227,7 @@ jobs:
           scripts/run_log_separation_identity_smoke.py
           scripts/run_event_idempotency_data_mutation_smoke.py
           scripts/run_session_replay_service_ui_smoke.py
+          scripts/run_special_population_condition_safety_smoke.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py
@@ -234,3 +240,4 @@ jobs:
           tests/test_session_replay.py
           tests/test_reference_ingestion.py
           tests/test_runtime_knowledge_db.py
+          tests/test_special_population_condition_safety.py

@@ -567,8 +567,51 @@
             "test_files": ["wellnessbox-rnd/tests/test_inference_api.py"]
           }
         },
-        {"requirement_id": "OP-033", "title": "임신·수유 상태별 제한 규칙을 분리한다."},
-        {"requirement_id": "OP-034", "title": "질환별 금기와 검토 필요 규칙을 확대한다."},
+        {
+          "requirement_id": "OP-033",
+          "title": "임신·수유 상태별 제한 규칙을 분리한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/pyproject.toml",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/models.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/safety.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/runtime_db.py",
+              "wellnessbox-rnd/data/rules/safety_rules.json",
+              "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_special_population_condition_safety.py",
+              "wellnessbox-rnd/tests/test_consent_and_input_hash_contracts.py",
+              "wellnessbox-rnd/tests/test_interim_safety.py",
+              "wellnessbox-rnd/scripts/run_special_population_condition_safety_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op033_op034_special_population_condition_safety_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-034",
+          "title": "질환별 금기와 검토 필요 규칙을 확대한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/models.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/safety.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/runtime_db.py",
+              "wellnessbox-rnd/data/rules/safety_rules.json",
+              "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_special_population_condition_safety.py",
+              "wellnessbox-rnd/tests/test_interim_safety.py",
+              "wellnessbox-rnd/scripts/run_special_population_condition_safety_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op033_op034_special_population_condition_safety_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-035", "title": "약물-성분 상호작용 규칙을 근거 ID와 연결한다."},
         {"requirement_id": "OP-036", "title": "성분 중복과 제품 간 합산 용량을 계산한다."},
         {"requirement_id": "OP-037", "title": "단위 변환 후 상한을 비교하고 불명확하면 보수적으로 차단한다."},

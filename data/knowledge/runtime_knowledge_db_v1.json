@@ -27,6 +27,10 @@
       "display_name": "Glucosamine"
     },
     {
+      "ingredient_key": "iron",
+      "display_name": "Iron"
+    },
+    {
       "ingredient_key": "l_theanine",
       "display_name": "L-Theanine"
     },
@@ -123,6 +127,11 @@
       "ingredient_key": "glucosamine",
       "alias": "glucosamine",
       "source_kind": "knowledge_artifact"
+    },
+    {
+      "ingredient_key": "iron",
+      "alias": "iron",
+      "source_kind": "deterministic_policy"
     },
     {
       "ingredient_key": "l_theanine",
@@ -313,7 +322,25 @@
       "condition_key": "chronic kidney disease"
     },
     {
+      "condition_key": "cirrhosis"
+    },
+    {
+      "condition_key": "dialysis"
+    },
+    {
+      "condition_key": "hemochromatosis"
+    },
+    {
       "condition_key": "kidney disease"
+    },
+    {
+      "condition_key": "kidney failure"
+    },
+    {
+      "condition_key": "lactation"
+    },
+    {
+      "condition_key": "liver failure"
     },
     {
       "condition_key": "pregnancy"
@@ -367,6 +394,7 @@
       "rule_id": "SAFETY-PREG-001",
       "source_kind": "deterministic_policy",
       "severity": "warning",
+      "effect": "contraindication",
       "condition_keys": [
         "pregnancy"
       ],
@@ -377,6 +405,26 @@
       "message": "Pregnancy input requires conservative exclusion and human review.",
       "warning_text": "Pregnancy input was detected, so restricted ingredients were excluded conservatively.",
       "applies_when_pregnant": true,
+      "applies_when_lactating": false,
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "SAFETY-LACT-001",
+      "source_kind": "deterministic_policy",
+      "severity": "warning",
+      "effect": "contraindication",
+      "condition_keys": [
+        "lactation"
+      ],
+      "excluded_ingredients": [
+        "ashwagandha",
+        "berberine"
+      ],
+      "message": "Lactation input requires conservative exclusion and human review.",
+      "warning_text": "Lactation input was detected, so restricted ingredients were excluded conservatively.",
+      "applies_when_pregnant": false,
+      "applies_when_lactating": true,
       "reference_ids": [],
       "claim_ids": []
     },
@@ -384,6 +432,7 @@
       "rule_id": "SAFETY-RENAL-001",
       "source_kind": "deterministic_policy",
       "severity": "warning",
+      "effect": "review_required",
       "condition_keys": [
         "chronic kidney disease",
         "kidney disease"
@@ -394,6 +443,62 @@
       "message": "Condition-specific exclusion was applied conservatively.",
       "warning_text": "Kidney disease input requires a conservative mineral review.",
       "applies_when_pregnant": false,
+      "applies_when_lactating": false,
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "SAFETY-RENAL-SEVERE-001",
+      "source_kind": "deterministic_policy",
+      "severity": "blocker",
+      "effect": "contraindication",
+      "condition_keys": [
+        "dialysis",
+        "kidney failure"
+      ],
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "message": "Severe renal impairment is outside the automated recommendation range.",
+      "warning_text": "Kidney failure or dialysis input was detected, so automated supplement recommendation stopped for clinical review.",
+      "applies_when_pregnant": false,
+      "applies_when_lactating": false,
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "SAFETY-HEPATIC-001",
+      "source_kind": "deterministic_policy",
+      "severity": "blocker",
+      "effect": "review_required",
+      "condition_keys": [
+        "cirrhosis",
+        "liver failure"
+      ],
+      "excluded_ingredients": [],
+      "message": "Hepatic impairment requires human review before recommendation.",
+      "warning_text": "Liver failure or cirrhosis input was detected, so automated supplement recommendation requires clinical review.",
+      "applies_when_pregnant": false,
+      "applies_when_lactating": false,
+      "reference_ids": [],
+      "claim_ids": []
+    },
+    {
+      "rule_id": "SAFETY-HEMO-001",
+      "source_kind": "deterministic_policy",
+      "severity": "warning",
+      "effect": "contraindication",
+      "condition_keys": [
+        "hemochromatosis"
+      ],
+      "excluded_ingredients": [
+        "iron",
+        "vitamin_c"
+      ],
+      "message": "Hemochromatosis input contraindicates iron and vitamin C supplements in the automated recommendation range.",
+      "warning_text": "Hemochromatosis input was detected, so iron and vitamin C supplements were excluded and clinical review is required.",
+      "applies_when_pregnant": false,
+      "applies_when_lactating": false,
       "reference_ids": [],
       "claim_ids": []
     }

@@ -16,6 +16,36 @@ def test_emergency_and_hard_blocks_are_not_overridden() -> None:
     assert result.hard_failure is True
 
 
+def test_pregnancy_and_lactation_have_separate_replay_rule_ids() -> None:
+    pregnancy = evaluate_safety({"pregnant": True})
+    lactation = evaluate_safety({"lactating": True})
+
+    assert {finding.rule_id for finding in pregnancy.findings} == {"SAFE-PREG-001"}
+    assert {finding.rule_id for finding in lactation.findings} == {"SAFE-LACT-001"}
+
+
+def test_condition_replay_separates_renal_hepatic_and_hemochromatosis_rules() -> None:
+    result = evaluate_safety(
+        {
+            "conditions": ["kidney failure", "cirrhosis", "hemochromatosis"],
+            "ingredients": ["iron"],
+        }
+    )
+
+    assert {finding.rule_id for finding in result.findings} == {
+        "SAFE-RENAL-001",
+        "SAFE-HEPATIC-001",
+        "SAFE-HEMO-001",
+    }
+    assert result.action == "BLOCK"
+
+    renal_review = evaluate_safety({"conditions": ["chronic kidney disease"]})
+    assert renal_review.action == "WARN"
+    assert {finding.rule_id for finding in renal_review.findings} == {
+        "SAFE-RENAL-REVIEW-001"
+    }
+
+
 def test_all_fourteen_safety_categories_are_exercised() -> None:
     result = evaluate_safety(
         {
