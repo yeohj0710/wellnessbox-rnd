@@ -95,7 +95,7 @@ def _source_sha256(root: Path, paths: list[str]) -> str:
     for relative_path in sorted(paths):
         digest.update(relative_path.encode("utf-8"))
         digest.update(b"\0")
-        digest.update((root / relative_path).read_bytes())
+        digest.update((root / relative_path).read_bytes().replace(b"\r\n", b"\n"))
         digest.update(b"\0")
     return digest.hexdigest()
 
@@ -247,7 +247,34 @@ def main() -> int:
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "schema_version": report["schema_version"],
+                "requirement_stages": report["requirement_stages"],
+                "paired_replay_summary": {
+                    key: report["paired_replay"][key]
+                    for key in (
+                        "case_count",
+                        "learned_applied_case_count",
+                        "deterministic_baseline_case_count",
+                        "fallback_case_count",
+                        "decision_status_counts",
+                        "selection_changed_case_count",
+                        "rank_or_score_changed_case_count",
+                        "response_status_changed_case_count",
+                        "next_action_changed_case_count",
+                        "safety_changed_case_count",
+                    )
+                },
+                "service_product_observation": product_conversion["observed"],
+                "integration_boundary": report["integration_boundary"],
+                "source_identity": report["source_identity"],
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+    )
     return 0
 
 
