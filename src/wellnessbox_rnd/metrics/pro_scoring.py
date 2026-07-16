@@ -1,11 +1,21 @@
 from __future__ import annotations
 
+import hashlib
 import json
+import statistics
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, Field, ValidationError, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StrictInt,
+    ValidationError,
+    model_validator,
+)
 
+from wellnessbox_rnd.interim.contracts import DataClass
 from wellnessbox_rnd.metrics.calculators import percentile_improvement_pp
 from wellnessbox_rnd.schemas.pro_events import (
     BASELINE_FOLLOWUP_PRO_EVENT_SCHEMA_VERSION_V1,
@@ -25,6 +35,522 @@ PRO_DEFAULT_PROBLEM_SCORE_MEAN_V1 = 2.0
 PRO_DEFAULT_PROBLEM_SCORE_STD_V1 = 1.0
 PRO_Z_SCORE_STD_FLOOR = 1e-6
 PRO_IMPROVEMENT_DELTA_TOLERANCE = 1e-6
+PRO_INSTRUMENT_RESPONSE_SCHEMA_VERSION_V1 = "pro_instrument_response_v1"
+PRO_INSTRUMENT_SCORE_SCHEMA_VERSION_V1 = "pro_instrument_score_v1"
+PRO_BASELINE_SCORE_OBSERVATION_SCHEMA_VERSION_V1 = (
+    "pro_baseline_score_observation_v1"
+)
+PRO_INSTRUMENT_CONTRACT_SCHEMA_VERSION_V1 = "pro_instrument_scoring_contract_v1"
+PRO_INSTRUMENT_CONTRACT_VERSION_V1 = "2026-07-17.1"
+PRO_BASELINE_DISTRIBUTION_SCHEMA_VERSION_V1 = "pro_baseline_distribution_v1"
+PRO_BASELINE_STANDARDIZATION_VERSION_V1 = "pro_baseline_health_percentile_v1"
+PRO_STANDARDIZED_SCORE_SCHEMA_VERSION_V1 = "pro_standardized_score_v1"
+DEFAULT_PRO_INSTRUMENT_CONTRACT_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "data/contracts/pro_instrument_scoring_v1.json"
+)
+
+PROInstrumentIdV1 = Literal["PSQI", "ISI", "PSS10"]
+PROInstrumentInputKindV1 = Literal["component_scores", "item_scores"]
+
+
+class PROInstrumentDefinitionV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", revalidate_instances="always")
+
+    instrument: PROInstrumentIdV1
+    input_kind: PROInstrumentInputKindV1
+    item_count: int = Field(strict=True, ge=1)
+    item_score_range: tuple[StrictInt, StrictInt]
+    reverse_scored_positions: tuple[StrictInt, ...]
+    raw_score_range: tuple[StrictInt, StrictInt]
+    lower_is_better: Literal[True]
+    scoring_version: str = Field(min_length=1)
+    source_ids: list[str] = Field(min_length=1)
+    source_urls: list[str] = Field(min_length=1)
+    limitation: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_definition(self) -> PROInstrumentDefinitionV1:
+        item_min, item_max = self.item_score_range
+        if item_min < 0 or item_max <= item_min:
+            raise ValueError("invalid item score range")
+        if self.raw_score_range != (
+            self.item_count * item_min,
+            self.item_count * item_max,
+        ):
+            raise ValueError("raw score range does not match item contract")
+        if len(set(self.reverse_scored_positions)) != len(
+            self.reverse_scored_positions
+        ) or any(
+            position < 1 or position > self.item_count
+            for position in self.reverse_scored_positions
+        ):
+            raise ValueError("invalid reverse-scored positions")
+        if len(set(self.source_ids)) != len(self.source_ids) or len(
+            set(self.source_urls)
+        ) != len(self.source_urls):
+            raise ValueError("duplicate instrument source metadata")
+        if any(not value.strip() for value in self.source_ids) or any(
+            not value.startswith("https://") for value in self.source_urls
+        ):
+            raise ValueError("invalid instrument source metadata")
+        return self
+
+
+class PROBaselineStandardizationContractV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", revalidate_instances="always")
+
+    version: Literal["pro_baseline_health_percentile_v1"]
+    baseline_only: Literal[True]
+    minimum_sample_count: Literal[2]
+    mean_method: Literal["arithmetic_mean"]
+    standard_deviation_method: Literal["sample_standard_deviation_ddof_1"]
+    z_score_orientation: Literal["higher_is_better_health_score"]
+    percentile_method: Literal["standard_normal_cdf_times_100"]
+    rounding_method: Literal["python_round_half_to_even"]
+    mean_precision_decimal_places: Literal[6]
+    standard_deviation_precision_decimal_places: Literal[6]
+    z_score_precision_decimal_places: Literal[6]
+    percentile_precision_decimal_places: Literal[6]
+    operation_order: Literal[
+        "raw_scores->mean_and_sample_std->round_statistics->health_z->round_z->"
+        "normal_cdf_times_100->round_percentile"
+    ]
+    formula: Literal[
+        "health_z=(baseline_mean-raw_problem_score)/baseline_sample_std"
+    ]
+
+
+class PROInstrumentScoringContractV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", revalidate_instances="always")
+
+    schema_version: Literal["pro_instrument_scoring_contract_v1"]
+    contract_version: Literal["2026-07-17.1"]
+    instruments: list[PROInstrumentDefinitionV1] = Field(min_length=3, max_length=3)
+    standardization: PROBaselineStandardizationContractV1
+
+
+class PROInstrumentResponseV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", revalidate_instances="always")
+
+    schema_version: Literal["pro_instrument_response_v1"]
+    instrument: PROInstrumentIdV1
+    item_scores: list[StrictInt]
+
+
+class PROInstrumentScoreV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", revalidate_instances="always")
+
+    schema_version: Literal["pro_instrument_score_v1"] = (
+        PRO_INSTRUMENT_SCORE_SCHEMA_VERSION_V1
+    )
+    contract_version: Literal["2026-07-17.1"]
+    instrument: PROInstrumentIdV1
+    input_kind: PROInstrumentInputKindV1
+    scoring_version: str = Field(min_length=1)
+    original_item_values: list[StrictInt]
+    scored_item_values: list[StrictInt]
+    item_score_range: tuple[StrictInt, StrictInt]
+    reverse_scored_positions: list[StrictInt]
+    raw_score: int = Field(strict=True, ge=0)
+    raw_score_range: tuple[StrictInt, StrictInt]
+    lower_is_better: Literal[True]
+    source_ids: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_score_trace(self) -> PROInstrumentScoreV1:
+        if len(self.original_item_values) != len(self.scored_item_values):
+            raise ValueError("original and scored item counts differ")
+        item_min, item_max = self.item_score_range
+        if any(
+            value < item_min or value > item_max
+            for value in [*self.original_item_values, *self.scored_item_values]
+        ):
+            raise ValueError("score trace contains an out-of-range item")
+        reverse_positions = set(self.reverse_scored_positions)
+        expected_scored = [
+            item_min + item_max - value if index in reverse_positions else value
+            for index, value in enumerate(self.original_item_values, start=1)
+        ]
+        if self.scored_item_values != expected_scored:
+            raise ValueError("scored item values do not match reverse-scoring trace")
+        if self.raw_score != sum(self.scored_item_values):
+            raise ValueError("raw score does not match scored item values")
+        if not self.raw_score_range[0] <= self.raw_score <= self.raw_score_range[1]:
+            raise ValueError("raw score is outside the instrument range")
+        expected = _EXPECTED_PRO_INSTRUMENT_CONTRACT_V1[self.instrument]
+        canonical_values = {
+            "input_kind": expected["input_kind"],
+            "item_score_range": expected["item_score_range"],
+            "reverse_scored_positions": list(expected["reverse_scored_positions"]),
+            "raw_score_range": expected["raw_score_range"],
+            "lower_is_better": expected["lower_is_better"],
+            "scoring_version": expected["scoring_version"],
+            "source_ids": expected["source_ids"],
+        }
+        if any(
+            getattr(self, field_name) != expected_value
+            for field_name, expected_value in canonical_values.items()
+        ) or len(self.original_item_values) != expected["item_count"]:
+            raise ValueError("score trace does not match the canonical instrument contract")
+        return self
+
+
+class PROBaselineScoreObservationV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", revalidate_instances="always")
+
+    schema_version: Literal["pro_baseline_score_observation_v1"]
+    observation_role: Literal["BASELINE"]
+    score: PROInstrumentScoreV1
+
+
+class PROBaselineDistributionV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", revalidate_instances="always")
+
+    schema_version: Literal["pro_baseline_distribution_v1"] = (
+        PRO_BASELINE_DISTRIBUTION_SCHEMA_VERSION_V1
+    )
+    standardization_version: Literal["pro_baseline_health_percentile_v1"] = (
+        PRO_BASELINE_STANDARDIZATION_VERSION_V1
+    )
+    cohort_role: Literal["BASELINE"] = "BASELINE"
+    contract_version: Literal["2026-07-17.1"]
+    instrument: PROInstrumentIdV1
+    instrument_scoring_version: str = Field(min_length=1)
+    cohort_id: str = Field(min_length=1, pattern=r".*\S.*")
+    data_class: DataClass
+    sample_count: int = Field(strict=True, ge=2)
+    sorted_baseline_raw_scores: list[StrictInt] = Field(min_length=2)
+    baseline_mean: float = Field(allow_inf_nan=False)
+    baseline_sample_std: float = Field(gt=0.0, allow_inf_nan=False)
+    source_scores_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+
+    @model_validator(mode="after")
+    def validate_distribution(self) -> PROBaselineDistributionV1:
+        expected_instrument = _EXPECTED_PRO_INSTRUMENT_CONTRACT_V1[self.instrument]
+        if self.instrument_scoring_version != expected_instrument["scoring_version"]:
+            raise ValueError("baseline distribution uses a noncanonical scoring version")
+        if self.sorted_baseline_raw_scores != sorted(
+            self.sorted_baseline_raw_scores
+        ):
+            raise ValueError("baseline scores must be sorted")
+        if self.sample_count != len(self.sorted_baseline_raw_scores):
+            raise ValueError("sample_count does not match baseline scores")
+        raw_min, raw_max = expected_instrument["raw_score_range"]
+        if any(
+            value < raw_min or value > raw_max
+            for value in self.sorted_baseline_raw_scores
+        ):
+            raise ValueError("baseline score is outside the instrument range")
+        expected_mean = round(statistics.fmean(self.sorted_baseline_raw_scores), 6)
+        expected_std = round(statistics.stdev(self.sorted_baseline_raw_scores), 6)
+        if abs(self.baseline_mean - expected_mean) > 1e-6:
+            raise ValueError("baseline_mean does not match source scores")
+        if abs(self.baseline_sample_std - expected_std) > 1e-6:
+            raise ValueError("baseline_sample_std does not match source scores")
+        expected_hash = _baseline_source_sha256(
+            contract_version=self.contract_version,
+            instrument=self.instrument,
+            instrument_scoring_version=self.instrument_scoring_version,
+            cohort_id=self.cohort_id,
+            data_class=self.data_class,
+            sorted_raw_scores=self.sorted_baseline_raw_scores,
+        )
+        if self.source_scores_sha256 != expected_hash:
+            raise ValueError("source_scores_sha256 does not match distribution identity")
+        return self
+
+
+class PROStandardizedScoreV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", revalidate_instances="always")
+
+    schema_version: Literal["pro_standardized_score_v1"] = (
+        PRO_STANDARDIZED_SCORE_SCHEMA_VERSION_V1
+    )
+    standardization_version: Literal["pro_baseline_health_percentile_v1"] = (
+        PRO_BASELINE_STANDARDIZATION_VERSION_V1
+    )
+    contract_version: Literal["2026-07-17.1"]
+    instrument: PROInstrumentIdV1
+    instrument_scoring_version: str = Field(min_length=1)
+    raw_score: int = Field(strict=True, ge=0)
+    baseline_distribution: PROBaselineDistributionV1
+    health_z_score: float = Field(allow_inf_nan=False)
+    health_percentile: float = Field(ge=0.0, le=100.0, allow_inf_nan=False)
+
+    @model_validator(mode="after")
+    def validate_standardized_score(self) -> PROStandardizedScoreV1:
+        expected = _EXPECTED_PRO_INSTRUMENT_CONTRACT_V1[self.instrument]
+        if self.instrument_scoring_version != expected["scoring_version"]:
+            raise ValueError("standardized score uses a noncanonical scoring version")
+        raw_min, raw_max = expected["raw_score_range"]
+        if not raw_min <= self.raw_score <= raw_max:
+            raise ValueError("standardized raw score is outside the instrument range")
+        distribution = self.baseline_distribution
+        if distribution.instrument != self.instrument:
+            raise ValueError("standardized score instrument does not match distribution")
+        if distribution.instrument_scoring_version != self.instrument_scoring_version:
+            raise ValueError("standardized score version does not match distribution")
+        expected_z = round(
+            (distribution.baseline_mean - self.raw_score)
+            / distribution.baseline_sample_std,
+            6,
+        )
+        if abs(self.health_z_score - expected_z) > 1e-6:
+            raise ValueError("health_z_score does not match baseline formula")
+        if abs(self.health_percentile - _z_to_percentile(expected_z)) > 1e-6:
+            raise ValueError("health_percentile does not match standard normal CDF")
+        return self
+
+
+_EXPECTED_PRO_INSTRUMENT_CONTRACT_V1 = {
+    "PSQI": {
+        "input_kind": "component_scores",
+        "item_count": 7,
+        "item_score_range": (0, 3),
+        "reverse_scored_positions": (),
+        "raw_score_range": (0, 21),
+        "lower_is_better": True,
+        "scoring_version": "psqi_component_sum_v1",
+        "source_ids": ["PSQI-BUYSSE-1989"],
+        "source_urls": [
+            "https://www.sleep.pitt.edu/sites/default/files/assets/"
+            "Instrument%20Materials/PSQI-Article.pdf"
+        ],
+        "limitation": (
+            "Input is the seven derived PSQI component scores. This contract does not "
+            "reproduce or derive the licensed 19 self-rated items."
+        ),
+    },
+    "ISI": {
+        "input_kind": "item_scores",
+        "item_count": 7,
+        "item_score_range": (0, 4),
+        "reverse_scored_positions": (),
+        "raw_score_range": (0, 28),
+        "lower_is_better": True,
+        "scoring_version": "isi_item_sum_v1",
+        "source_ids": ["ISI-MORIN-BASTIEN-2001"],
+        "source_urls": [
+            "https://eprovide.mapi-trust.org/instruments/insomnia-severity-index"
+        ],
+        "limitation": (
+            "The instrument text is not reproduced. Use only an authorized "
+            "questionnaire version and supply seven scored item values."
+        ),
+    },
+    "PSS10": {
+        "input_kind": "item_scores",
+        "item_count": 10,
+        "item_score_range": (0, 4),
+        "reverse_scored_positions": (4, 5, 7, 8),
+        "raw_score_range": (0, 40),
+        "lower_is_better": True,
+        "scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+        "source_ids": ["PSS-COHEN-1983-1988"],
+        "source_urls": [
+            "https://www.cmu.edu/dietrich/psychology/stress-immunity-disease-lab/"
+            "scales/html/pss.html"
+        ],
+        "limitation": (
+            "The item text is not reproduced. Supply ten scored responses in official "
+            "item order."
+        ),
+    },
+}
+
+
+def load_pro_instrument_scoring_contract_v1(
+    path: str | Path = DEFAULT_PRO_INSTRUMENT_CONTRACT_PATH,
+) -> PROInstrumentScoringContractV1:
+    try:
+        contract = PROInstrumentScoringContractV1.model_validate_json(
+            Path(path).read_text(encoding="utf-8")
+        )
+    except (OSError, ValidationError, json.JSONDecodeError) as exc:
+        raise ValueError(f"invalid_pro_instrument_contract::{exc}") from exc
+    if [item.instrument for item in contract.instruments] != ["PSQI", "ISI", "PSS10"]:
+        raise ValueError("invalid_pro_instrument_contract::instrument_order_or_coverage")
+    for definition in contract.instruments:
+        expected = _EXPECTED_PRO_INSTRUMENT_CONTRACT_V1[definition.instrument]
+        actual = {
+            field_name: getattr(definition, field_name) for field_name in expected
+        }
+        if actual != expected:
+            raise ValueError(
+                f"invalid_pro_instrument_contract::{definition.instrument}::scoring_drift"
+            )
+    return contract
+
+
+def score_pro_instrument_response_v1(
+    response: PROInstrumentResponseV1 | dict[str, object],
+    *,
+    contract_path: str | Path = DEFAULT_PRO_INSTRUMENT_CONTRACT_PATH,
+) -> PROInstrumentScoreV1:
+    response_model = PROInstrumentResponseV1.model_validate(response)
+    contract = load_pro_instrument_scoring_contract_v1(contract_path)
+    definition = next(
+        item for item in contract.instruments if item.instrument == response_model.instrument
+    )
+    if len(response_model.item_scores) != definition.item_count:
+        raise ValueError(
+            "invalid_pro_instrument_response::item_count::"
+            f"{response_model.instrument}::{len(response_model.item_scores)}"
+        )
+    item_min, item_max = definition.item_score_range
+    if any(
+        value < item_min or value > item_max for value in response_model.item_scores
+    ):
+        raise ValueError(
+            f"invalid_pro_instrument_response::item_range::{response_model.instrument}"
+        )
+    reverse_positions = set(definition.reverse_scored_positions)
+    scored_values = [
+        item_min + item_max - value if index in reverse_positions else value
+        for index, value in enumerate(response_model.item_scores, start=1)
+    ]
+    return PROInstrumentScoreV1(
+        contract_version=contract.contract_version,
+        instrument=definition.instrument,
+        input_kind=definition.input_kind,
+        scoring_version=definition.scoring_version,
+        original_item_values=response_model.item_scores,
+        scored_item_values=scored_values,
+        item_score_range=definition.item_score_range,
+        reverse_scored_positions=list(definition.reverse_scored_positions),
+        raw_score=sum(scored_values),
+        raw_score_range=definition.raw_score_range,
+        lower_is_better=definition.lower_is_better,
+        source_ids=definition.source_ids,
+    )
+
+
+def build_pro_baseline_distribution_v1(
+    observations: list[PROBaselineScoreObservationV1 | dict[str, object]],
+    *,
+    cohort_id: str,
+    data_class: DataClass | str,
+) -> PROBaselineDistributionV1:
+    if len(observations) < 2:
+        raise ValueError("baseline_distribution_requires_at_least_two_scores")
+    contract = load_pro_instrument_scoring_contract_v1()
+    observation_models = [
+        PROBaselineScoreObservationV1.model_validate(observation)
+        for observation in observations
+    ]
+    score_models = [observation.score for observation in observation_models]
+    for score in score_models:
+        _validate_instrument_score_against_contract(score, contract)
+    identities = {
+        (score.contract_version, score.instrument, score.scoring_version)
+        for score in score_models
+    }
+    if len(identities) != 1:
+        raise ValueError("baseline_distribution_requires_one_instrument_and_version")
+    sorted_scores = sorted(score.raw_score for score in score_models)
+    sample_std = round(statistics.stdev(sorted_scores), 6)
+    if sample_std <= PRO_Z_SCORE_STD_FLOOR:
+        raise ValueError("baseline_distribution_requires_nonzero_spread")
+    contract_version, instrument, scoring_version = identities.pop()
+    source_hash = _baseline_source_sha256(
+        contract_version=contract_version,
+        instrument=instrument,
+        instrument_scoring_version=scoring_version,
+        cohort_id=cohort_id,
+        data_class=data_class,
+        sorted_raw_scores=sorted_scores,
+    )
+    return PROBaselineDistributionV1(
+        contract_version=contract_version,
+        instrument=instrument,
+        instrument_scoring_version=scoring_version,
+        cohort_id=cohort_id,
+        data_class=data_class,
+        sample_count=len(sorted_scores),
+        sorted_baseline_raw_scores=sorted_scores,
+        baseline_mean=round(statistics.fmean(sorted_scores), 6),
+        baseline_sample_std=sample_std,
+        source_scores_sha256=source_hash,
+    )
+
+
+def standardize_pro_instrument_score_v1(
+    score: PROInstrumentScoreV1 | dict[str, object],
+    distribution: PROBaselineDistributionV1 | dict[str, object],
+) -> PROStandardizedScoreV1:
+    score_model = PROInstrumentScoreV1.model_validate(score)
+    distribution_model = PROBaselineDistributionV1.model_validate(distribution)
+    contract = load_pro_instrument_scoring_contract_v1()
+    _validate_instrument_score_against_contract(score_model, contract)
+    if score_model.instrument != distribution_model.instrument:
+        raise ValueError("pro_standardization_instrument_mismatch")
+    if (
+        score_model.contract_version != distribution_model.contract_version
+        or score_model.scoring_version
+        != distribution_model.instrument_scoring_version
+    ):
+        raise ValueError("pro_standardization_scoring_version_mismatch")
+    health_z = round(
+        (distribution_model.baseline_mean - score_model.raw_score)
+        / distribution_model.baseline_sample_std,
+        6,
+    )
+    return PROStandardizedScoreV1(
+        contract_version=score_model.contract_version,
+        instrument=score_model.instrument,
+        instrument_scoring_version=score_model.scoring_version,
+        raw_score=score_model.raw_score,
+        baseline_distribution=distribution_model,
+        health_z_score=health_z,
+        health_percentile=_z_to_percentile(health_z),
+    )
+
+
+def _validate_instrument_score_against_contract(
+    score: PROInstrumentScoreV1,
+    contract: PROInstrumentScoringContractV1,
+) -> None:
+    definition = next(
+        item for item in contract.instruments if item.instrument == score.instrument
+    )
+    expected = {
+        "contract_version": contract.contract_version,
+        "input_kind": definition.input_kind,
+        "scoring_version": definition.scoring_version,
+        "item_score_range": definition.item_score_range,
+        "reverse_scored_positions": list(definition.reverse_scored_positions),
+        "raw_score_range": definition.raw_score_range,
+        "lower_is_better": definition.lower_is_better,
+        "source_ids": definition.source_ids,
+    }
+    actual = {field_name: getattr(score, field_name) for field_name in expected}
+    if actual != expected or len(score.original_item_values) != definition.item_count:
+        raise ValueError("pro_instrument_score_contract_mismatch")
+
+
+def _baseline_source_sha256(
+    *,
+    contract_version: str,
+    instrument: str,
+    instrument_scoring_version: str,
+    cohort_id: str,
+    data_class: DataClass | str,
+    sorted_raw_scores: list[int],
+) -> str:
+    payload = {
+        "cohort_id": cohort_id,
+        "cohort_role": "BASELINE",
+        "contract_version": contract_version,
+        "data_class": data_class,
+        "instrument": instrument,
+        "instrument_scoring_version": instrument_scoring_version,
+        "sorted_baseline_raw_scores": sorted_raw_scores,
+        "standardization_version": PRO_BASELINE_STANDARDIZATION_VERSION_V1,
+    }
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
 
 
 class PROItemSchemaV1(BaseModel):
@@ -1174,13 +1700,29 @@ def _looks_like_record_payload(payload: object) -> bool:
 
 
 __all__ = [
+    "PRO_BASELINE_DISTRIBUTION_SCHEMA_VERSION_V1",
+    "PRO_BASELINE_SCORE_OBSERVATION_SCHEMA_VERSION_V1",
+    "PRO_BASELINE_STANDARDIZATION_VERSION_V1",
     "PRO_IMPROVEMENT_SUMMARY_VERSION_V1",
+    "PRO_INSTRUMENT_CONTRACT_SCHEMA_VERSION_V1",
+    "PRO_INSTRUMENT_CONTRACT_VERSION_V1",
+    "PRO_INSTRUMENT_RESPONSE_SCHEMA_VERSION_V1",
+    "PRO_INSTRUMENT_SCORE_SCHEMA_VERSION_V1",
+    "PRO_STANDARDIZED_SCORE_SCHEMA_VERSION_V1",
+    "PROBaselineDistributionV1",
+    "PROBaselineScoreObservationV1",
+    "PROBaselineStandardizationContractV1",
     "PRODomainNormV1",
     "PRODomainFormSchemaV1",
     "PROFormResponseV1",
     "PROFormSchemaV1",
     "PROImprovementSummaryV1",
+    "PROInstrumentDefinitionV1",
+    "PROInstrumentResponseV1",
+    "PROInstrumentScoreV1",
+    "PROInstrumentScoringContractV1",
     "PROItemSchemaV1",
+    "PROStandardizedScoreV1",
     "PROZScoreSnapshotV1",
     "PRO_FORM_SCHEMA_VERSION_V1",
     "PRO_SCORE_ORIENTATION_V1",
@@ -1188,9 +1730,13 @@ __all__ = [
     "PRO_Z_SCORE_TRANSFORM_VERSION_V1",
     "build_default_pro_domain_norms_v1",
     "build_default_pro_form_schema_v1",
+    "build_pro_baseline_distribution_v1",
     "coerce_baseline_followup_pro_event_v1",
+    "load_pro_instrument_scoring_contract_v1",
     "render_pro_improvement_summary_contract_markdown_v1",
     "render_pro_form_contract_markdown_v1",
+    "score_pro_instrument_response_v1",
+    "standardize_pro_instrument_score_v1",
     "summarize_pro_form_contract_v1",
     "summarize_pro_improvement_summary_contract_v1",
     "summarize_pro_improvement_from_event_v1",

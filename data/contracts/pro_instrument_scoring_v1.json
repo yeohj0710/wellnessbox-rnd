@@ -1,0 +1,67 @@
+{
+  "schema_version": "pro_instrument_scoring_contract_v1",
+  "contract_version": "2026-07-17.1",
+  "instruments": [
+    {
+      "instrument": "PSQI",
+      "input_kind": "component_scores",
+      "item_count": 7,
+      "item_score_range": [0, 3],
+      "reverse_scored_positions": [],
+      "raw_score_range": [0, 21],
+      "lower_is_better": true,
+      "scoring_version": "psqi_component_sum_v1",
+      "source_ids": ["PSQI-BUYSSE-1989"],
+      "source_urls": [
+        "https://www.sleep.pitt.edu/sites/default/files/assets/Instrument%20Materials/PSQI-Article.pdf"
+      ],
+      "limitation": "Input is the seven derived PSQI component scores. This contract does not reproduce or derive the licensed 19 self-rated items."
+    },
+    {
+      "instrument": "ISI",
+      "input_kind": "item_scores",
+      "item_count": 7,
+      "item_score_range": [0, 4],
+      "reverse_scored_positions": [],
+      "raw_score_range": [0, 28],
+      "lower_is_better": true,
+      "scoring_version": "isi_item_sum_v1",
+      "source_ids": ["ISI-MORIN-BASTIEN-2001"],
+      "source_urls": [
+        "https://eprovide.mapi-trust.org/instruments/insomnia-severity-index"
+      ],
+      "limitation": "The instrument text is not reproduced. Use only an authorized questionnaire version and supply seven scored item values."
+    },
+    {
+      "instrument": "PSS10",
+      "input_kind": "item_scores",
+      "item_count": 10,
+      "item_score_range": [0, 4],
+      "reverse_scored_positions": [4, 5, 7, 8],
+      "raw_score_range": [0, 40],
+      "lower_is_better": true,
+      "scoring_version": "pss10_reverse_4_5_7_8_sum_v1",
+      "source_ids": ["PSS-COHEN-1983-1988"],
+      "source_urls": [
+        "https://www.cmu.edu/dietrich/psychology/stress-immunity-disease-lab/scales/html/pss.html"
+      ],
+      "limitation": "The item text is not reproduced. Supply ten scored responses in official item order."
+    }
+  ],
+  "standardization": {
+    "version": "pro_baseline_health_percentile_v1",
+    "baseline_only": true,
+    "minimum_sample_count": 2,
+    "mean_method": "arithmetic_mean",
+    "standard_deviation_method": "sample_standard_deviation_ddof_1",
+    "z_score_orientation": "higher_is_better_health_score",
+    "percentile_method": "standard_normal_cdf_times_100",
+    "rounding_method": "python_round_half_to_even",
+    "mean_precision_decimal_places": 6,
+    "standard_deviation_precision_decimal_places": 6,
+    "z_score_precision_decimal_places": 6,
+    "percentile_precision_decimal_places": 6,
+    "operation_order": "raw_scores->mean_and_sample_std->round_statistics->health_z->round_z->normal_cdf_times_100->round_percentile",
+    "formula": "health_z=(baseline_mean-raw_problem_score)/baseline_sample_std"
+  }
+}

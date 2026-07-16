@@ -77,6 +77,18 @@ def test_original_plan_audit_workflow_runs_cli_and_contract_tests() -> None:
     assert "scripts/run_event_idempotency_data_mutation_smoke.py" in workflow
     assert "python scripts/run_interaction_dose_aggregation_smoke.py" in workflow
     assert workflow.count('"scripts/run_interaction_dose_aggregation_smoke.py"') == 2
+    assert (
+        "python scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py"
+        in workflow
+    )
+    assert (
+        workflow.count(
+            '"scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py"'
+        )
+        == 2
+    )
+    assert "tests/test_versioned_pro_instrument_scoring.py" in workflow
+    assert workflow.count('"src/wellnessbox_rnd/metrics/calculators.py"') == 2
     assert "yeohj0710/wellnessbox" in workflow
     assert "WELLNESSBOX_EVIDENCE_ROOT" in workflow
     assert workflow.count(

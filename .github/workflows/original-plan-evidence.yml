@@ -9,6 +9,7 @@ on:
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/contracts/wellnessbox_ingredient_identifier_map_v1.json"
+      - "data/contracts/pro_instrument_scoring_v1.json"
       - "data/knowledge/goal_ingredient_priors_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
       - "data/knowledge/reference_knowledge_base_v1.json"
@@ -40,6 +41,7 @@ on:
       - "scripts/run_candidate_pool_structured_reasons_smoke.py"
       - "scripts/run_decision_uncertainty_learned_fallback_smoke.py"
       - "scripts/run_learned_replay_product_candidates_smoke.py"
+      - "scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -73,6 +75,9 @@ on:
       - "src/wellnessbox_rnd/evals/external_high_risk_safety.py"
       - "src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py"
       - "src/wellnessbox_rnd/evals/recommendation_replay_compare.py"
+      - "src/wellnessbox_rnd/metrics/__init__.py"
+      - "src/wellnessbox_rnd/metrics/calculators.py"
+      - "src/wellnessbox_rnd/metrics/pro_scoring.py"
       - "tests/test_original_plan_audit*.py"
       - "tests/test_original_plan_completion_report.py"
       - "tests/test_original_plan_manifest.py"
@@ -105,6 +110,8 @@ on:
       - "tests/test_learned_optimizer_integration.py"
       - "tests/test_decision_uncertainty_learned_fallback.py"
       - "tests/test_recommendation_replay_product_candidates.py"
+      - "tests/test_pro_scoring.py"
+      - "tests/test_versioned_pro_instrument_scoring.py"
   push:
     branches: [main]
     paths:
@@ -114,6 +121,7 @@ on:
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/contracts/wellnessbox_ingredient_identifier_map_v1.json"
+      - "data/contracts/pro_instrument_scoring_v1.json"
       - "data/knowledge/goal_ingredient_priors_v1.json"
       - "data/knowledge/runtime_knowledge_db_v1.json"
       - "data/knowledge/reference_knowledge_base_v1.json"
@@ -145,6 +153,7 @@ on:
       - "scripts/run_candidate_pool_structured_reasons_smoke.py"
       - "scripts/run_decision_uncertainty_learned_fallback_smoke.py"
       - "scripts/run_learned_replay_product_candidates_smoke.py"
+      - "scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -178,6 +187,9 @@ on:
       - "src/wellnessbox_rnd/evals/external_high_risk_safety.py"
       - "src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py"
       - "src/wellnessbox_rnd/evals/recommendation_replay_compare.py"
+      - "src/wellnessbox_rnd/metrics/__init__.py"
+      - "src/wellnessbox_rnd/metrics/calculators.py"
+      - "src/wellnessbox_rnd/metrics/pro_scoring.py"
       - "tests/test_original_plan_audit*.py"
       - "tests/test_original_plan_completion_report.py"
       - "tests/test_original_plan_manifest.py"
@@ -210,6 +222,8 @@ on:
       - "tests/test_learned_optimizer_integration.py"
       - "tests/test_decision_uncertainty_learned_fallback.py"
       - "tests/test_recommendation_replay_product_candidates.py"
+      - "tests/test_pro_scoring.py"
+      - "tests/test_versioned_pro_instrument_scoring.py"
   workflow_dispatch:
 
 permissions:
@@ -289,6 +303,11 @@ jobs:
           python scripts/run_learned_replay_product_candidates_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json
+      - name: Check versioned PRO scoring and baseline-percentile evidence
+        run: >-
+          python scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -325,6 +344,8 @@ jobs:
           tests/test_learned_optimizer_integration.py
           tests/test_decision_uncertainty_learned_fallback.py
           tests/test_recommendation_replay_product_candidates.py
+          tests/test_pro_scoring.py
+          tests/test_versioned_pro_instrument_scoring.py
       - name: Lint requirement audit
         run: >-
           python -m ruff check
@@ -381,6 +402,7 @@ jobs:
           scripts/run_candidate_pool_structured_reasons_smoke.py
           scripts/run_decision_uncertainty_learned_fallback_smoke.py
           scripts/run_learned_replay_product_candidates_smoke.py
+          scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
           src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py
           src/wellnessbox_rnd/evals/recommendation_replay_compare.py
@@ -397,6 +419,11 @@ jobs:
           tests/test_learned_optimizer_integration.py
           tests/test_decision_uncertainty_learned_fallback.py
           tests/test_recommendation_replay_product_candidates.py
+          src/wellnessbox_rnd/metrics/__init__.py
+          src/wellnessbox_rnd/metrics/calculators.py
+          src/wellnessbox_rnd/metrics/pro_scoring.py
+          tests/test_pro_scoring.py
+          tests/test_versioned_pro_instrument_scoring.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py
