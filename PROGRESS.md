@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-17 learned replay and service product-candidate loop
+
+- Chosen stage: `original plan / candidate generation and efficacy scoring`
+- Chosen tasks: OP-049 compare the learned reranker with the deterministic baseline on identical replay cases; OP-050 convert R&D recommendations through the existing service ingredient map into existing service product candidates
+- Primary evidence: `data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json`; deterministic SHA-256 `ff3b58d106ac4d8678df1ed6925b01232387880c8d5e6b4064a93d5ef4cdc2e1`; R&D source `584c6c7ca3d053c9ae3430b214eae23f35009b15`; WellnessBox source `a6b8ab1e92a112f6d2e904436bfe44ba688fc4e8`
+- Reused `recommend()`, the frozen-eval runner, learned-artifact validator, `/api/tips`, versioned ingredient map, and existing `product.catalog` Prisma query. No parallel recommendation engine, route, ingredient catalog, or product catalog was added.
+- The paired replay covers all `256` frozen cases. Learned reranking applies in `12`; `244` are ineligible and use the deterministic baseline; true fallback cases are `0`. Selection changes in `4` cases and rank or score changes in `5`. Response status, next action, and the complete safety payload have zero changes. The report rejects unknown decision states, incomplete status totals, forged deltas, and schema-version changes.
+- The product contract is pinned to the ingredient-map version and covers all `8` mapped service ingredients. A snapshot captured from the configured in-stock Prisma catalog resolves them to existing product IDs `29`, `30`, `31`, `35`, `42`, and `44`; the runtime route queries the existing catalog path, returns bounded `MATCHED`/`NO_MATCH` candidates, and fails closed on invalid catalogs or unmapped identifiers.
+- Integration boundary: the actual localhost R&D HTTP process proved only the `BLOCKED` safety path with zero recommendations. READY ingredient/product conversion and fail-closed cases used the existing test-only route dependency seam plus the captured catalog snapshot. `ready_two_process_product_conversion_proven=false` and `production_operation_proven=false`; no deployment was performed.
+- Evidence status: OP-049 is complete at `IMPLEMENTED`; OP-050 is complete at `INTEGRATED`. Generated status: complete `38`, partial `11`, pending `70`, external `1`, contradicted `0`.
+- Validation: focused replay tests `5 passed`; service ingredient/product QA covers all `8` mappings; exact CI-equivalent selection `350 passed`; full Ruff PASS; manifest audit PASS with `49` claims, `155` checked evidence files, and zero issues; completion report check PASS; independent final review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `751 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No OP-049/050 failure remains.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, and the overall and metric-specific weakest-slice categories are unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
+- Publication: WellnessBox commits `39a0d0f274f5e1b0c61db8aade903c64f413aafe` and `a6b8ab1e92a112f6d2e904436bfe44ba688fc4e8` passed Encoding Guard runs `29511317388` and `29511798649`. R&D source/evidence commits through `3ed17debdbfc0646c819066d4f7a8cbfec36a159` are on `origin/main`; Original plan evidence run `29513104957` passed.
+- Recommended next loops: OP-051/052 versioned PRO scoring and percentile conversion; OP-053/054 follow-up events and adherence interpretation; OP-055/056 personal/group effects and uncertainty.
+
 ## 2026-07-16 decision uncertainty and learned-fallback loop
 
 - Chosen stage: `original plan / candidate generation and efficacy scoring`

@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-17 learned replay and product-candidate handoff
+
+- Chosen stage: `original plan / candidate generation and efficacy scoring`
+- Chosen tasks: OP-049 and OP-050
+- Primary evidence: `data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json`; deterministic SHA-256 `ff3b58d106ac4d8678df1ed6925b01232387880c8d5e6b4064a93d5ef4cdc2e1`; R&D source `584c6c7ca3d053c9ae3430b214eae23f35009b15`; WellnessBox source `a6b8ab1e92a112f6d2e904436bfe44ba688fc4e8`
+- Replay result: all `256` frozen requests use paired baseline/learned execution. Learned applies to `12`; `244` are `not_eligible`; true fallback count is `0`; selection changes `4`; rank/score changes `5`; response status, next action, and full safety payload changes are all `0`.
+- Service result: the existing ingredient map and `product.catalog` in-stock Prisma path resolve all `8` mapped service ingredients against the captured live-catalog snapshot. The route returns explicit candidates or `NO_MATCH` and fails closed for invalid catalogs and unmapped identifiers. Product and ingredient contract versions must match exactly.
+- Boundary: actual R&D HTTP observation is the safety-blocked path only. READY product conversion uses the test-only route seam and captured catalog snapshot. No READY two-process proof, production operation, or deployment is claimed.
+- Evidence stage: OP-049 `IMPLEMENTED`; OP-050 `INTEGRATED`. Generated counts: complete `38`, partial `11`, pending `70`, external `1`, contradicted `0`.
+- Validation: focused `5 passed`; service QA covers `8/8` mappings; CI-equivalent `350 passed`; full Ruff PASS; audit PASS with `49` claims and `155` evidence files; full suite `751 passed`, `77 failed` with only the known `73` absent-report and `4` CGM-geometry groups; frozen eval has seven zero deltas and no weakest-slice changes; independent review Critical `0`, Important `0`, Minor `0`.
+- Publication: WellnessBox Encoding Guard runs `29511317388` and `29511798649` passed. R&D commits through `3ed17debdbfc0646c819066d4f7a8cbfec36a159` are on `origin/main`; Original plan evidence run `29513104957` passed.
+- Protected files: do not modify or stage `docs/plans/2026-07-14-tips-evaluator-ui-overhaul.md` or `docs/plans/2026-07-15-tips-full-implementation-roadmap.md`. The unrelated dirty WellnessBox UI files remain user-owned and unstaged.
+- Next three loops: OP-051/052 version PSQI, ISI, and PSS-10 scoring plus percentile conversion; OP-053/054 add follow-up events and adherence/adverse-event interpretation; OP-055/056 separate personal/group effects and return uncertainty.
+
 ## 2026-07-16 decision uncertainty and learned-fallback handoff
 
 - Chosen stage: `original plan / candidate generation and efficacy scoring`
