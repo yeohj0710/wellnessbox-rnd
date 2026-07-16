@@ -66,6 +66,45 @@ CASES: tuple[dict[str, Any], ...] = (
     },
 )
 
+POLICY_BASES: tuple[dict[str, Any], ...] = (
+    {
+        "basis_id": "NIH-NCCIH-ASHWAGANDHA",
+        "basis_kind": "authoritative_external_source",
+        "rule_ids": ["SAFETY-PREG-001", "SAFETY-LACT-001"],
+        "ingredient_keys": ["ashwagandha"],
+        "url": "https://www.nccih.nih.gov/health/ashwagandha",
+    },
+    {
+        "basis_id": "NCBI-MOTHERTOBABY-BERBERINE",
+        "basis_kind": "authoritative_external_source",
+        "rule_ids": ["SAFETY-PREG-001", "SAFETY-LACT-001"],
+        "ingredient_keys": ["berberine"],
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK600384/",
+    },
+    {
+        "basis_id": "NIH-ODS-MAGNESIUM-HP",
+        "basis_kind": "authoritative_external_source",
+        "rule_ids": ["SAFETY-RENAL-001", "SAFETY-RENAL-SEVERE-001"],
+        "ingredient_keys": ["magnesium_glycinate"],
+        "url": "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/",
+    },
+    {
+        "basis_id": "NIH-ODS-IRON-HP",
+        "basis_kind": "authoritative_external_source",
+        "rule_ids": ["SAFETY-HEMO-001"],
+        "ingredient_keys": ["iron", "vitamin_c"],
+        "url": "https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/",
+    },
+    {
+        "basis_id": "RND-SCOPE-HIGH-RISK-001",
+        "basis_kind": "research_scope_policy",
+        "rule_ids": ["SAFETY-HEPATIC-001"],
+        "ingredient_keys": [],
+        "path": "wellnessbox-rnd/docs/context/master_context.md",
+        "section": "21.1 초기 범위 제한",
+    },
+)
+
 
 def _recommendation_result(case: dict[str, Any]) -> dict[str, Any]:
     payload = case["input"]
@@ -105,35 +144,38 @@ def _interim_result(case: dict[str, Any]) -> dict[str, Any]:
 
 
 def build_evidence() -> dict[str, Any]:
+    cases = [
+        {
+            "case_id": case["case_id"],
+            "recommendation_path": _recommendation_result(case),
+            "interim_replay_path": _interim_result(case),
+        }
+        for case in CASES
+    ]
+    ingredient_coverage: dict[str, set[str]] = {}
+    rule_coverage: set[str] = set()
+    for basis in POLICY_BASES:
+        for rule_id in basis["rule_ids"]:
+            rule_coverage.add(rule_id)
+            ingredient_coverage.setdefault(rule_id, set()).update(basis["ingredient_keys"])
+    for case, result in zip(CASES, cases, strict=True):
+        for rule_id in case["expected_rule_ids"]:
+            if rule_id not in rule_coverage:
+                raise AssertionError(f"missing policy basis for {rule_id}")
+            if len(case["expected_rule_ids"]) == 1:
+                uncovered = set(result["recommendation_path"]["excluded_ingredients"]) - (
+                    ingredient_coverage[rule_id]
+                )
+                if uncovered:
+                    raise AssertionError(
+                        f"policy basis does not cover {rule_id} ingredients: {sorted(uncovered)}"
+                    )
     return {
         "schema_version": "op033_op034_special_population_condition_safety_smoke_v1",
         "requirements": ["OP-033", "OP-034"],
         "contains_health_identifiers": False,
-        "policy_sources": [
-            {
-                "source_id": "NIH-NCCIH-ASHWAGANDHA",
-                "url": "https://www.nccih.nih.gov/health/ashwagandha",
-                "supports": ["pregnancy", "lactation"],
-            },
-            {
-                "source_id": "NIH-ODS-MAGNESIUM-HP",
-                "url": "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/",
-                "supports": ["renal_impairment"],
-            },
-            {
-                "source_id": "NIH-ODS-IRON-HP",
-                "url": "https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/",
-                "supports": ["hemochromatosis"],
-            },
-        ],
-        "cases": [
-            {
-                "case_id": case["case_id"],
-                "recommendation_path": _recommendation_result(case),
-                "interim_replay_path": _interim_result(case),
-            }
-            for case in CASES
-        ],
+        "policy_bases": list(POLICY_BASES),
+        "cases": cases,
     }
 
 

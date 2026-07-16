@@ -144,28 +144,64 @@
     }
   ],
   "contains_health_identifiers": false,
-  "policy_sources": [
+  "policy_bases": [
     {
-      "source_id": "NIH-NCCIH-ASHWAGANDHA",
-      "supports": [
-        "pregnancy",
-        "lactation"
+      "basis_id": "NIH-NCCIH-ASHWAGANDHA",
+      "basis_kind": "authoritative_external_source",
+      "ingredient_keys": [
+        "ashwagandha"
+      ],
+      "rule_ids": [
+        "SAFETY-PREG-001",
+        "SAFETY-LACT-001"
       ],
       "url": "https://www.nccih.nih.gov/health/ashwagandha"
     },
     {
-      "source_id": "NIH-ODS-MAGNESIUM-HP",
-      "supports": [
-        "renal_impairment"
+      "basis_id": "NCBI-MOTHERTOBABY-BERBERINE",
+      "basis_kind": "authoritative_external_source",
+      "ingredient_keys": [
+        "berberine"
+      ],
+      "rule_ids": [
+        "SAFETY-PREG-001",
+        "SAFETY-LACT-001"
+      ],
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK600384/"
+    },
+    {
+      "basis_id": "NIH-ODS-MAGNESIUM-HP",
+      "basis_kind": "authoritative_external_source",
+      "ingredient_keys": [
+        "magnesium_glycinate"
+      ],
+      "rule_ids": [
+        "SAFETY-RENAL-001",
+        "SAFETY-RENAL-SEVERE-001"
       ],
       "url": "https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/"
     },
     {
-      "source_id": "NIH-ODS-IRON-HP",
-      "supports": [
-        "hemochromatosis"
+      "basis_id": "NIH-ODS-IRON-HP",
+      "basis_kind": "authoritative_external_source",
+      "ingredient_keys": [
+        "iron",
+        "vitamin_c"
+      ],
+      "rule_ids": [
+        "SAFETY-HEMO-001"
       ],
       "url": "https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/"
+    },
+    {
+      "basis_id": "RND-SCOPE-HIGH-RISK-001",
+      "basis_kind": "research_scope_policy",
+      "ingredient_keys": [],
+      "path": "wellnessbox-rnd/docs/context/master_context.md",
+      "rule_ids": [
+        "SAFETY-HEPATIC-001"
+      ],
+      "section": "21.1 초기 범위 제한"
     }
   ],
   "requirements": [
