@@ -53,6 +53,7 @@ def evaluate_safety(
     *,
     as_of: date | None = None,
     store: InterimStore | None = None,
+    predicate_payloads: tuple[dict[str, Any], ...] = (),
 ) -> SafetyDecision:
     """Deterministic, non-overridable safety decision for interim and replay paths."""
 
@@ -157,7 +158,11 @@ def evaluate_safety(
             (instant, instant),
         ):
             predicate = json.loads(row["predicate_json"])
-            if predicate and all(payload.get(key) == value for key, value in predicate.items()):
+            predicate_sources = (payload, *predicate_payloads)
+            if predicate and all(
+                any(source.get(key) == value for source in predicate_sources)
+                for key, value in predicate.items()
+            ):
                 findings.append(
                     _finding(
                         str(row["rule_id"]), "versioned_rule", str(row["action"]), "active_rule"

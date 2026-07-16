@@ -30,7 +30,7 @@ from wellnessbox_rnd.interim.data_mutation import (
 )
 from wellnessbox_rnd.interim.inference import recommend_with_registered_model
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
-from wellnessbox_rnd.interim.safety import evaluate_safety
+from wellnessbox_rnd.interim.safety import SafetyDecision, SafetyRank, evaluate_safety
 from wellnessbox_rnd.interim.session_replay import (
     SessionReplayIntegrityError,
     SessionReplayLedger,
@@ -129,6 +129,111 @@ class BehaviorEventRequest(BaseModel):
     payload: dict[str, Any] = Field(default_factory=dict)
 
 
+_CONSERVATIVE_LIST_FIELDS = (
+    "symptoms",
+    "conditions",
+    "medications",
+    "allergies",
+    "risk_flags",
+    "duplicate_ingredients",
+)
+_CONSERVATIVE_RISK_FLAGS = (
+    "pregnant",
+    "lactating",
+    "above_ul",
+    "requires_test",
+    "timing_conflict",
+    "label_constraint_violation",
+)
+
+
+def _stable_union(*values: object) -> list[Any]:
+    merged: list[Any] = []
+    seen: set[str] = set()
+    for value in values:
+        if not isinstance(value, list):
+            continue
+        for item in value:
+            key = json.dumps(item, ensure_ascii=False, sort_keys=True, default=str)
+            if key not in seen:
+                seen.add(key)
+                merged.append(item)
+    return merged
+
+
+def _merge_safety_input(
+    profile: dict[str, Any],
+    current: dict[str, Any],
+    ingredients: list[str],
+) -> dict[str, Any]:
+    merged = dict(profile)
+    merged.update(current)
+    for field in _CONSERVATIVE_LIST_FIELDS:
+        merged[field] = _stable_union(profile.get(field), current.get(field))
+    merged["ingredients"] = _stable_union(
+        profile.get("ingredients"), current.get("ingredients"), ingredients
+    )
+    for field in _CONSERVATIVE_RISK_FLAGS:
+        merged[field] = bool(profile.get(field)) or bool(current.get(field))
+    if "age" in profile:
+        merged["age"] = profile["age"]
+    surgery_windows = [
+        value
+        for value in (
+            profile.get("surgery_within_days"),
+            current.get("surgery_within_days"),
+        )
+        if isinstance(value, (int, float)) and not isinstance(value, bool)
+    ]
+    if surgery_windows:
+        merged["surgery_within_days"] = min(surgery_windows)
+    test_availability = [
+        bool(source["test_available"])
+        for source in (profile, current)
+        if "test_available" in source
+    ]
+    if test_availability:
+        merged["test_available"] = all(test_availability)
+    evidence_expiry = [
+        str(source["evidence_valid_until"])
+        for source in (profile, current)
+        if source.get("evidence_valid_until")
+    ]
+    if evidence_expiry:
+        merged["evidence_valid_until"] = min(evidence_expiry)
+    merged["medications"] = [
+        item.get("name", "") if isinstance(item, dict) else str(item)
+        for item in merged["medications"]
+    ]
+    return merged
+
+
+def _source_safety_input(source: dict[str, Any], ingredients: list[str]) -> dict[str, Any]:
+    payload = dict(source)
+    payload["ingredients"] = _stable_union(source.get("ingredients"), ingredients)
+    payload["medications"] = [
+        item.get("name", "") if isinstance(item, dict) else str(item)
+        for item in _stable_union(source.get("medications"))
+    ]
+    return payload
+
+
+def _combine_safety_decisions(*decisions: SafetyDecision) -> SafetyDecision:
+    findings = []
+    seen = set()
+    for decision in decisions:
+        for finding in decision.findings:
+            if finding not in seen:
+                seen.add(finding)
+                findings.append(finding)
+    action = max(
+        (decision.action for decision in decisions),
+        key=lambda value: SafetyRank[value],
+        default="PASS",
+    )
+    return SafetyDecision(action=action, findings=tuple(findings))
+
+
 class EventMutationRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -206,15 +311,45 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
     if not profile_rows:
         raise HTTPException(status_code=404, detail="profile_not_found")
     profile = json.loads(profile_rows[0][0])
-    prediction = recommend_with_registered_model(store, profile=profile, goals=payload.goals)
-    safety_payload = dict(payload.safety)
-    safety_payload.update(profile)
-    safety_payload["ingredients"] = list(prediction.ingredients)
-    safety_payload["medications"] = [
-        item.get("name", "") if isinstance(item, dict) else str(item)
-        for item in profile.get("medications", [])
-    ]
-    decision = evaluate_safety(safety_payload, store=store)
+    profile_safety_payload = _source_safety_input(profile, payload.ingredients)
+    current_safety_payload = _source_safety_input(payload.safety, payload.ingredients)
+    pre_safety_payload = _merge_safety_input(
+        profile,
+        payload.safety,
+        payload.ingredients,
+    )
+    decision = _combine_safety_decisions(
+        evaluate_safety(
+            profile_safety_payload,
+            store=store,
+        ),
+        evaluate_safety(
+            current_safety_payload,
+            store=store,
+        ),
+        evaluate_safety(
+            pre_safety_payload,
+            store=store,
+            predicate_payloads=(profile_safety_payload, current_safety_payload),
+        ),
+    )
+    prediction = None
+    if not decision.hard_failure:
+        prediction = recommend_with_registered_model(
+            store,
+            profile=profile,
+            goals=payload.goals,
+        )
+        post_safety_payload = dict(pre_safety_payload)
+        post_safety_payload["ingredients"] = list(prediction.ingredients)
+        decision = _combine_safety_decisions(
+            decision,
+            evaluate_safety(
+                post_safety_payload,
+                store=store,
+                predicate_payloads=(profile_safety_payload, current_safety_payload),
+            ),
+        )
     run_id = f"rec_{uuid4().hex}"
     status_value = "BLOCKED" if decision.hard_failure else "READY"
     ranked = (
@@ -236,7 +371,7 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
         "status": status_value,
         "mode": DataClass.PROXY_GOLD_SIMULATION,
         "simulation": True,
-        "model_id": prediction.model_id,
+        "model_id": prediction.model_id if prediction is not None else None,
         "safety_action": decision.action,
         "findings": [finding.__dict__ for finding in decision.findings],
         "recommendations": ranked,
@@ -248,7 +383,7 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
             (
                 run_id,
                 payload.profile_id,
-                prediction.model_id,
+                prediction.model_id if prediction is not None else None,
                 status_value,
                 request_hash,
                 json.dumps(response, ensure_ascii=False),

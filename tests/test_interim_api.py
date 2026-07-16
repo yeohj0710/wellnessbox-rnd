@@ -1,10 +1,13 @@
 import hashlib
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
+from wellnessbox_rnd.interim.bootstrap import bootstrap_operational_evidence
+from wellnessbox_rnd.interim.evidence import EvidenceRegistry
 from wellnessbox_rnd.interim.importer import register_retrained_package
 from wellnessbox_rnd.interim.store import InterimStore
 
@@ -13,6 +16,210 @@ RETRAINED_PACKAGE_ROOT = Path("artifacts/tips/interim/retrained")
 
 def _headers() -> dict[str, str]:
     return {"x-wb-rnd-token": "test-token"}
+
+
+def test_interim_api_blocks_emergency_before_registered_model(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "api.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: pytest.fail("model must not run before emergency block"),
+    )
+    client = TestClient(app)
+    profile_id = "usr_1234567890abcdef"
+    profile = client.post(
+        "/v1/interim/profiles",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "consent_scopes": ["recommendation:read"],
+            "profile": {"age": 52, "symptoms": []},
+        },
+    )
+    assert profile.status_code == 200
+
+    response = client.post(
+        "/v1/interim/recommendations",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "goals": ["heart_health"],
+            "ingredients": [],
+            "safety": {"symptoms": ["chest pain"]},
+        },
+    )
+    body = response.json()
+
+    assert response.status_code == 200
+    assert body["status"] == "BLOCKED"
+    assert body["safety_action"] == "STOP_AND_ESCALATE"
+    assert body["model_id"] is None
+    assert body["recommendations"] == []
+    assert any(
+        finding["rule_id"] == "SAFE-EMERGENCY-001"
+        for finding in body["findings"]
+    )
+
+
+def test_current_safety_input_cannot_remove_stored_high_risk_facts(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "api.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: pytest.fail("model must not run after stored risk block"),
+    )
+    client = TestClient(app)
+    profile_id = "usr_abcdef1234567890"
+    profile = client.post(
+        "/v1/interim/profiles",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "consent_scopes": ["recommendation:read"],
+            "profile": {
+                "age": 41,
+                "pregnant": True,
+                "medications": [{"name": "warfarin"}],
+                "symptoms": [],
+            },
+        },
+    )
+    assert profile.status_code == 200
+
+    response = client.post(
+        "/v1/interim/recommendations",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "goals": ["heart_health"],
+            "ingredients": ["omega3"],
+            "safety": {
+                "pregnant": False,
+                "medications": [],
+                "symptoms": [],
+            },
+        },
+    )
+    body = response.json()
+    rule_ids = {finding["rule_id"] for finding in body["findings"]}
+
+    assert response.status_code == 200
+    assert body["status"] == "BLOCKED"
+    assert body["recommendations"] == []
+    assert {"SAFE-PREG-001", "SAFE-DDI-001"} <= rule_ids
+
+
+def test_current_safety_input_cannot_remove_stored_dynamic_rule_predicate(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "api.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: pytest.fail("model must not run after dynamic rule block"),
+    )
+    store = InterimStore(database)
+    store.migrate()
+    bootstrap_operational_evidence(store)
+    client = TestClient(app)
+    profile_id = "usr_fedcba0987654321"
+    profile = client.post(
+        "/v1/interim/profiles",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "consent_scopes": ["recommendation:read"],
+            "profile": {"age": 41, "hard_false_negative": True},
+        },
+    )
+    assert profile.status_code == 200
+
+    response = client.post(
+        "/v1/interim/recommendations",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "goals": ["heart_health"],
+            "ingredients": [],
+            "safety": {"hard_false_negative": False},
+        },
+    )
+    body = response.json()
+
+    assert response.status_code == 200
+    assert body["status"] == "BLOCKED"
+    assert body["recommendations"] == []
+    assert any(finding["rule_id"] == "SAFE-GATE-001" for finding in body["findings"])
+
+
+def test_dynamic_rule_predicate_combines_risk_facts_across_sources(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "api.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: pytest.fail("model must not run after split predicate block"),
+    )
+    store = InterimStore(database)
+    store.migrate()
+    bootstrap_operational_evidence(store)
+    evidence_id = str(
+        store.scalar(
+            "select evidence_id from evidence_passages "
+            "where approved_for_safety=1 order by evidence_id limit 1"
+        )
+    )
+    EvidenceRegistry(store).activate_rule(
+        rule_id="SAFE-SPLIT-RISK-001",
+        version=1,
+        severity="CRITICAL",
+        action="BLOCK",
+        predicate={"hard_false_negative": True, "above_ul": True},
+        evidence_ids=[evidence_id],
+        valid_from=datetime.now(UTC).isoformat(),
+    )
+    client = TestClient(app)
+    profile_id = "usr_0011223344556677"
+    profile = client.post(
+        "/v1/interim/profiles",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "consent_scopes": ["recommendation:read"],
+            "profile": {"age": 41, "hard_false_negative": True},
+        },
+    )
+    assert profile.status_code == 200
+
+    response = client.post(
+        "/v1/interim/recommendations",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "goals": ["heart_health"],
+            "ingredients": [],
+            "safety": {"hard_false_negative": False, "above_ul": True},
+        },
+    )
+    body = response.json()
+
+    assert response.status_code == 200
+    assert body["status"] == "BLOCKED"
+    assert body["model_id"] is None
+    assert body["recommendations"] == []
+    assert any(
+        finding["rule_id"] == "SAFE-SPLIT-RISK-001"
+        for finding in body["findings"]
+    )
 
 
 @pytest.mark.skipif(
