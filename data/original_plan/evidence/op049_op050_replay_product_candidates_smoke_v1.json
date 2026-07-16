@@ -8547,8 +8547,8 @@
   },
   "source_identity": {
     "wellnessbox_commit": "a6b8ab1e92a112f6d2e904436bfe44ba688fc4e8",
-    "wellnessbox_rnd_commit": "eac41e69b75aee4efb84998b1ac45240784b4c8b",
-    "wellnessbox_rnd_source_sha256": "8e15cd0231c230ecc64693de10393cc411741c62face83d05beb2a0084b35f60",
+    "wellnessbox_rnd_commit": "584c6c7ca3d053c9ae3430b214eae23f35009b15",
+    "wellnessbox_rnd_source_sha256": "5f67f1bb59922869f6607456f639c80a6c7727357a14b3a3e407dc711061c727",
     "wellnessbox_source_sha256": "7881185ab661f4853e739cc6a6e8181b1c295e1623f7b816b1ffdbc2a5e9d0a9"
   }
 }
