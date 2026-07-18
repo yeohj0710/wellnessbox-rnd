@@ -20,6 +20,12 @@ from wellnessbox_rnd.interim.execution_identity import (
 )
 from wellnessbox_rnd.interim.knowledge_lineage import persist_execution_knowledge_lineage
 from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.metrics.pro_followup import (
+    PROFollowUpEventV1,
+    is_versioned_pro_followup_payload_v1,
+    normalize_pro_followup_event_v1,
+    validate_pro_followup_sequence_v1,
+)
 from wellnessbox_rnd.schemas.recommendation import (
     DataSource,
     RecommendationRequest,
@@ -563,7 +569,7 @@ class ExecutionLedger:
         event_type: str | ExecutionEventType,
         source: str | ExecutionEventSource,
         idempotency_key: str,
-        payload: dict[str, Any],
+        payload: dict[str, Any] | PROFollowUpEventV1,
     ) -> AppendEventResult:
         resolved_type = ExecutionEventType(event_type)
         if resolved_type not in {
@@ -583,7 +589,20 @@ class ExecutionLedger:
             raise ValueError("idempotency_key_required")
         if len(idempotency_key) > 128:
             raise ValueError("idempotency_key_too_long")
-        payload_sha256 = _sha256(payload)
+        versioned_pro_event = None
+        if (
+            resolved_type == ExecutionEventType.FOLLOWUP_EVALUATION
+            and is_versioned_pro_followup_payload_v1(payload)
+        ):
+            versioned_pro_event = normalize_pro_followup_event_v1(payload)
+            if resolved_source != ExecutionEventSource.SURVEY:
+                raise ValueError("versioned_pro_followup_source_must_be_survey")
+            resolved_payload = versioned_pro_event.model_dump(mode="json")
+        elif isinstance(payload, dict):
+            resolved_payload = payload
+        else:
+            raise TypeError("delayed event payload must be a dictionary")
+        payload_sha256 = _sha256(resolved_payload)
         now = _now()
 
         with self.store.transaction(immediate=True) as connection:
@@ -635,6 +654,30 @@ class ExecutionLedger:
                     deduplicated=True,
                 )
 
+            if versioned_pro_event is not None:
+                prior_pro_events = []
+                for row in connection.execute(
+                    """
+                    select payload_json from execution_events
+                    where execution_id=? and event_type=?
+                    order by event_index
+                    """,
+                    (execution_id, ExecutionEventType.FOLLOWUP_EVALUATION.value),
+                ):
+                    prior_payload = json.loads(row["payload_json"])
+                    if is_versioned_pro_followup_payload_v1(prior_payload):
+                        prior_pro_events.append(
+                            normalize_pro_followup_event_v1(prior_payload)
+                        )
+                sequence_issues = validate_pro_followup_sequence_v1(
+                    prior_pro_events,
+                    versioned_pro_event,
+                )
+                if sequence_issues:
+                    raise ValueError(
+                        "invalid_pro_followup_sequence::" + "|".join(sequence_issues)
+                    )
+
             event_index = int(
                 connection.execute(
                     """
@@ -652,7 +695,7 @@ class ExecutionLedger:
                 event_type=resolved_type,
                 source=resolved_source,
                 idempotency_key=idempotency_key,
-                payload=payload,
+                payload=resolved_payload,
                 created_at=now,
             )
             status = (

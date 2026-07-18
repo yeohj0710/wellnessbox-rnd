@@ -16,6 +16,10 @@ from wellnessbox_rnd.interim.data_lake import (
     IdempotencyConflictError,
 )
 from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.metrics.pro_followup import (
+    is_versioned_pro_followup_payload_v1,
+    normalize_pro_followup_event_v1,
+)
 
 
 class EventMutationTargetType(StrEnum):
@@ -182,6 +186,72 @@ class DataMutationLedger:
                         "event_payload_already_deleted:"
                         f"{resolved_target_type.value}:{target_event_id}"
                     )
+                if (
+                    resolved_operation == EventMutationOperation.CORRECTION
+                    and resolved_target_type == EventMutationTargetType.EXECUTION_EVENT
+                ):
+                    assert replacement_payload is not None
+                    current_payload = json.loads(target["payload_json"])
+                    current_is_pro = is_versioned_pro_followup_payload_v1(
+                        current_payload
+                    )
+                    replacement_is_pro = is_versioned_pro_followup_payload_v1(
+                        replacement_payload
+                    )
+                    if current_is_pro != replacement_is_pro:
+                        raise ValueError(
+                            "pro_followup_correction_cannot_change_contract_kind"
+                        )
+                    if not current_is_pro:
+                        replacement_pro_event = None
+                    else:
+                        current_pro_event = normalize_pro_followup_event_v1(
+                            current_payload
+                        )
+                        replacement_pro_event = normalize_pro_followup_event_v1(
+                            replacement_payload
+                        )
+                    if replacement_pro_event is not None:
+                        immutable_identity_fields = (
+                            "assessment_id",
+                            "plan_id",
+                            "data_class",
+                            "timepoint",
+                            "scheduled_day_index",
+                            "actual_day_index",
+                            "observed_at",
+                        )
+                        if any(
+                            getattr(current_pro_event, field_name)
+                            != getattr(replacement_pro_event, field_name)
+                            for field_name in immutable_identity_fields
+                        ):
+                            raise ValueError(
+                                "pro_followup_correction_cannot_change_event_identity"
+                            )
+                        current_score_identity = {
+                            item.instrument: (
+                                item.contract_version,
+                                item.instrument_scoring_version,
+                                item.baseline_distribution.source_scores_sha256,
+                            )
+                            for item in current_pro_event.standardized_scores
+                        }
+                        replacement_score_identity = {
+                            item.instrument: (
+                                item.contract_version,
+                                item.instrument_scoring_version,
+                                item.baseline_distribution.source_scores_sha256,
+                            )
+                            for item in replacement_pro_event.standardized_scores
+                        }
+                        if current_score_identity != replacement_score_identity:
+                            raise ValueError(
+                                "pro_followup_correction_cannot_change_score_identity"
+                            )
+                        replacement_payload = replacement_pro_event.model_dump(
+                            mode="json"
+                        )
 
                 latest = connection.execute(
                     """

@@ -1,0 +1,39 @@
+{
+  "schema_version": "pro_followup_interpretation_contract_v1",
+  "contract_version": "2026-07-17.1",
+  "event_schema_version": "versioned_pro_followup_event_v1",
+  "policy_kind": "conservative_internal_interpretation_policy",
+  "source_refs": [
+    "data/original_plan/requirements_manifest_v1.json#OP-053",
+    "data/original_plan/requirements_manifest_v1.json#OP-054",
+    "docs/context/master_context.md#19.3",
+    "docs/context/master_context.md#21.2"
+  ],
+  "limitation": "The 0.8 threshold limits interpretation only. It is not a clinical cutoff and does not prove causal efficacy.",
+  "timepoint_order": ["pre_intake", "week_2", "week_4", "discontinuation"],
+  "scheduled_day_index_by_timepoint": {
+    "pre_intake": 0,
+    "week_2": 14,
+    "week_4": 28,
+    "discontinuation": null
+  },
+  "adherence": {
+    "minimum_interpretable_rate": 0.8,
+    "rate_precision_decimal_places": 6,
+    "count_reconciliation": "planned_dose_count=taken_dose_count+missed_dose_count"
+  },
+  "interpretation_priority": [
+    "serious_adverse_event_present",
+    "adverse_event_present",
+    "adherence_below_80_percent",
+    "missed_doses_present",
+    "observed_change_interpretable"
+  ],
+  "effect_claim_scope": "observed_association_not_causal",
+  "causal_effect_claim_allowed": false,
+  "persistence": {
+    "table": "execution_events",
+    "event_type": "followup_evaluation",
+    "versioned_payload_required_for_pro_claim": true
+  }
+}

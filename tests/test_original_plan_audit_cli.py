@@ -89,6 +89,18 @@ def test_original_plan_audit_workflow_runs_cli_and_contract_tests() -> None:
     )
     assert "tests/test_versioned_pro_instrument_scoring.py" in workflow
     assert workflow.count('"src/wellnessbox_rnd/metrics/calculators.py"') == 2
+    assert (
+        "python scripts/run_pro_followup_adherence_interpretation_smoke.py"
+        in workflow
+    )
+    assert (
+        workflow.count(
+            '"scripts/run_pro_followup_adherence_interpretation_smoke.py"'
+        )
+        == 2
+    )
+    assert workflow.count('"src/wellnessbox_rnd/metrics/pro_followup.py"') == 2
+    assert "tests/test_pro_followup_effects.py" in workflow
     assert "yeohj0710/wellnessbox" in workflow
     assert "WELLNESSBOX_EVIDENCE_ROOT" in workflow
     assert workflow.count(
