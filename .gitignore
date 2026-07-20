@@ -28,6 +28,7 @@ dist/
 # Local artifacts
 artifacts/
 logs/
+tmp/
 
 # Preserved source packages (local provenance archives)
 etc/source_packages/

@@ -174,7 +174,7 @@ python scripts/run_interim_pipeline.py evaluate
 CUDA에서 비교한다. 새 학습, runtime 승격, deterministic safety 변경은 없다.
 
 ```powershell
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-gpu.txt
 python -m pytest tests/test_gpu_inference_testbed.py -q
 python scripts/run_gpu_inference_testbed.py --devices cpu,cuda --require-cuda --output artifacts/gpu_testbed/local
 ```

@@ -1,2 +1,2 @@
---extra-index-url https://download.pytorch.org/whl/cu124
--e .[dev,interim,gpu]
+# Default install (no CUDA torch). For GPU work use requirements-gpu.txt.
+-e .[dev,interim]

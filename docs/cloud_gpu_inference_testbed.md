@@ -37,14 +37,15 @@ Python 3.11 이상 환경에서 실행해요.
 cd C:\dev\wellnessbox-rnd
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-gpu.txt
 python -m pytest tests/test_gpu_inference_testbed.py -q
 python -m ruff check src/wellnessbox_rnd/gpu_testbed scripts/run_gpu_inference_testbed.py tests/test_gpu_inference_testbed.py
 ```
 
-`requirements.txt`는 PyTorch `2.6.0+cu124` wheel 인덱스를 함께 지정해요. Cloud NVIDIA 이미지의
+`requirements-gpu.txt`는 PyTorch `2.6.0+cu124` wheel 인덱스를 함께 지정해요. Cloud NVIDIA 이미지의
 CUDA 12.4 드라이버와 맞추기 위한 고정값이에요. 최신 PyPI wheel을 무조건 받으면 CUDA 13 wheel이
-선택되어 GPU 초기화가 실패할 수 있어요.
+선택되어 GPU 초기화가 실패할 수 있어요. 기본 `requirements.txt`는 torch 없이 `-e .[dev,interim]`만
+설치하므로 GPU 작업에는 반드시 `requirements-gpu.txt`를 사용해요.
 
 ## 로컬에서 CPU와 CUDA 비교하기
 
@@ -82,7 +83,7 @@ powershell -NoProfile -ExecutionPolicy Bypass `
 `tmp/`를 보내지 않기 위한 경계예요. 입력은 프로젝트 내부 비민감 합성 데이터만 별도 전달해요.
 
 ```powershell
-$command = 'apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common && add-apt-repository -y ppa:deadsnakes/ppa && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11 python3.11-venv && python3.11 -m venv /opt/cgr-venv && /opt/cgr-venv/bin/pip install --upgrade pip && /opt/cgr-venv/bin/pip install -r requirements.txt && /opt/cgr-venv/bin/python scripts/run_gpu_inference_testbed.py --data "$CGR_DATA_FILE" --artifact artifacts/models/effect_model_v3.json --output "$CGR_OUTPUT_DIR" --devices cpu,cuda --require-cuda --batch-size 262144 --iterations 40 --warmup 3 --provider kakao --estimated-max-cost-krw 666.31'
+$command = 'apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common && add-apt-repository -y ppa:deadsnakes/ppa && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11 python3.11-venv && python3.11 -m venv /opt/cgr-venv && /opt/cgr-venv/bin/pip install --upgrade pip && /opt/cgr-venv/bin/pip install -r requirements-gpu.txt && /opt/cgr-venv/bin/python scripts/run_gpu_inference_testbed.py --data "$CGR_DATA_FILE" --artifact artifacts/models/effect_model_v3.json --output "$CGR_OUTPUT_DIR" --devices cpu,cuda --require-cuda --batch-size 262144 --iterations 40 --warmup 3 --provider kakao --estimated-max-cost-krw 666.31'
 
 powershell -NoProfile -ExecutionPolicy Bypass `
   -File C:\dev\cloud-gpu-runner\scripts\cloud-gpu.ps1 `
