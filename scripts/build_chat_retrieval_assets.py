@@ -23,6 +23,11 @@ def build_parser() -> ArgumentParser:
         help="Parsed reference claims JSONL path",
     )
     parser.add_argument(
+        "--reference-knowledge-json",
+        default="data/knowledge/reference_knowledge_base_v1.json",
+        help="Reference registry with source/effective-date lineage",
+    )
+    parser.add_argument(
         "--corpus-manifest-json",
         default="artifacts/retrieval/chat_retrieval_corpus_manifest_v1.json",
         help="Retrieval corpus manifest JSON path",
@@ -48,7 +53,8 @@ def build_parser() -> ArgumentParser:
 def main() -> int:
     args = build_parser().parse_args()
     claims = _load_claim_rows(args.claims_jsonl)
-    chunks = [_build_chunk_from_claim(claim) for claim in claims]
+    references = _load_reference_rows(args.reference_knowledge_json)
+    chunks = [_build_chunk_from_claim(claim, references) for claim in claims]
     manifest = RetrievalCorpusManifest(
         manifest_version="chat_retrieval_corpus_manifest_v1",
         chunk_count=len(chunks),
@@ -113,7 +119,32 @@ def _load_claim_rows(path: str | Path) -> list[dict[str, object]]:
     return rows
 
 
-def _build_chunk_from_claim(claim: dict[str, object]) -> RetrievalChunk:
+def _load_reference_rows(path: str | Path) -> dict[str, dict[str, object]]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    rows = payload.get("references")
+    if not isinstance(rows, list):
+        raise ValueError("reference_registry_rows_required")
+    references: dict[str, dict[str, object]] = {}
+    for row in rows:
+        reference_id = str(row.get("reference_id", ""))
+        if not reference_id:
+            raise ValueError("reference_registry_id_required")
+        if reference_id in references:
+            raise ValueError(f"duplicate_reference_registry_id:{reference_id}")
+        references[reference_id] = row
+    return references
+
+
+def _build_chunk_from_claim(
+    claim: dict[str, object], references: dict[str, dict[str, object]]
+) -> RetrievalChunk:
+    reference_id = str(claim["reference_id"])
+    reference = references.get(reference_id)
+    if reference is None:
+        raise ValueError(f"claim_reference_not_registered:{reference_id}")
+    identity_fields = ("source_title", "source_type", "page_or_section", "reference_uri")
+    if any(claim[field] != reference[field] for field in identity_fields):
+        raise ValueError(f"claim_reference_identity_mismatch:{reference_id}")
     excerpt = claim["citation_span"]["excerpt"]
     keywords = sorted(
         {
@@ -125,12 +156,17 @@ def _build_chunk_from_claim(claim: dict[str, object]) -> RetrievalChunk:
     )
     return RetrievalChunk(
         chunk_id=f"chunk::{claim['claim_id']}",
-        reference_id=claim["reference_id"],
+        reference_id=reference_id,
         claim_id=claim["claim_id"],
         source_title=claim["source_title"],
         source_type=claim["source_type"],
         page_or_section=claim["page_or_section"],
         reference_uri=claim["reference_uri"],
+        license_status=reference["license_status"],
+        effective_at=reference["effective_at"],
+        retired_at=reference.get("retired_at"),
+        line_start=claim["citation_span"]["line_start"],
+        line_end=claim["citation_span"]["line_end"],
         normalized_claim_type=claim["normalized_claim_type"],
         text=claim["claim_text"],
         excerpt=excerpt,
