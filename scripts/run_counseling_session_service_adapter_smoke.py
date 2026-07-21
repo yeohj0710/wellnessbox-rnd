@@ -79,7 +79,7 @@ def _one_run(database: Path) -> dict[str, object]:
     )
     process = subprocess.Popen(
         [
-            str(RND_ROOT / ".venv-interim/Scripts/python.exe"),
+            sys.executable,
             "-m",
             "uvicorn",
             "apps.inference_api.main:app",
@@ -118,7 +118,7 @@ def _one_run(database: Path) -> dict[str, object]:
         payload = json.loads(completed.stdout.strip().splitlines()[-1])
         store_check = subprocess.run(
             [
-                str(RND_ROOT / ".venv-interim/Scripts/python.exe"),
+                sys.executable,
                 "-c",
                 (
                     "import sqlite3,sys,json; c=sqlite3.connect(sys.argv[1]); "
