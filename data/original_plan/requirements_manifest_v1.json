@@ -1677,7 +1677,8 @@
             "implementation_files": [
               "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py",
               "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
-              "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py"
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py",
+              "wellnessbox-rnd/data/knowledge/counseling_knowledge_scope_registry_v1.json"
             ],
             "test_files": [
               "wellnessbox-rnd/tests/test_chat_retrieval.py",
@@ -1695,7 +1696,8 @@
             "implementation_files": [
               "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
               "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py",
-              "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py"
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py",
+              "wellnessbox-rnd/data/knowledge/counseling_knowledge_scope_registry_v1.json"
             ],
             "test_files": [
               "wellnessbox-rnd/tests/test_chat_retrieval.py",

@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "ecd8c35d3f386c6c0cd3dd1e4b66aa8e654ae18a16954b42a28c268476ae47ba",
+  "audited_manifest_sha256": "df8684776dcb382300524cd13611d23ec2fd987ee4073c54df06a42e47210a8e",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -2876,7 +2876,8 @@
         "implementation_files": [
           "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py",
           "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
-          "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py"
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py",
+          "wellnessbox-rnd/data/knowledge/counseling_knowledge_scope_registry_v1.json"
         ],
         "test_files": [
           "wellnessbox-rnd/tests/test_chat_retrieval.py",
@@ -2908,7 +2909,8 @@
         "implementation_files": [
           "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
           "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py",
-          "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py"
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py",
+          "wellnessbox-rnd/data/knowledge/counseling_knowledge_scope_registry_v1.json"
         ],
         "test_files": [
           "wellnessbox-rnd/tests/test_chat_retrieval.py",
