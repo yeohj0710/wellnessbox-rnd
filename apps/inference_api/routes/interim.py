@@ -702,15 +702,17 @@ def _counseling_turn_lock(payload: CounselingTurnRequest) -> Any:
         process_lock = _acquire_process_lock(lock_file, offset)
         yield
     finally:
-        if process_lock is not None:
-            _release_process_lock(process_lock, offset)
-        local_lock.release()
-        with _COUNSELING_TURN_LOCKS_GUARD:
-            current_lock, references = _COUNSELING_TURN_LOCKS[key]
-            if references == 1:
-                del _COUNSELING_TURN_LOCKS[key]
-            else:
-                _COUNSELING_TURN_LOCKS[key] = (current_lock, references - 1)
+        try:
+            if process_lock is not None:
+                _release_process_lock(process_lock, offset)
+        finally:
+            local_lock.release()
+            with _COUNSELING_TURN_LOCKS_GUARD:
+                current_lock, references = _COUNSELING_TURN_LOCKS[key]
+                if references == 1:
+                    del _COUNSELING_TURN_LOCKS[key]
+                else:
+                    _COUNSELING_TURN_LOCKS[key] = (current_lock, references - 1)
 
 
 def _execute_counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:

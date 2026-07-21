@@ -28,6 +28,7 @@ RND_SOURCE_PATHS = (
     RND_ROOT / "src/wellnessbox_rnd/chat/retrieval.py",
     RND_ROOT / "src/wellnessbox_rnd/chat/verifier.py",
     RND_ROOT / "src/wellnessbox_rnd/knowledge/runtime_db.py",
+    RND_ROOT / "src/wellnessbox_rnd/interim/data_lake.py",
     RND_ROOT / "src/wellnessbox_rnd/interim/store.py",
     RND_ROOT / "data/knowledge/counseling_retrieval_corpus_manifest_v1.json",
     RND_ROOT / "data/knowledge/counseling_knowledge_scope_registry_v1.json",
