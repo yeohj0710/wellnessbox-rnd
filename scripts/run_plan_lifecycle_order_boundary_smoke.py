@@ -31,8 +31,10 @@ ACTIONS = ("maintain", "adjust", "replace", "stop", "monitor")
 RND_SOURCE_PATHS = (
     "apps/inference_api/routes/interim.py",
     "scripts/run_plan_lifecycle_order_boundary_smoke.py",
+    "src/wellnessbox_rnd/interim/data_mutation.py",
     "src/wellnessbox_rnd/interim/jobs.py",
     "src/wellnessbox_rnd/interim/plan_lifecycle.py",
+    "src/wellnessbox_rnd/interim/store.py",
     "tests/test_interim_api.py",
     "tests/test_plan_lifecycle.py",
 )
