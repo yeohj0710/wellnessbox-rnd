@@ -1,0 +1,46 @@
+{
+  "checks": {
+    "agent_run_id_valid": true,
+    "answer_sha256": "1facb9f624b7e48b0b03fdcfb5f87826f1766c41fde9fd80f1047f0ec854299a",
+    "answer_status": "supported",
+    "binding_sha256_valid": true,
+    "persisted_counts": {
+      "agent_runs": 1,
+      "agent_steps": 1,
+      "recommendation_runs": 1
+    },
+    "recommendation_run_id_valid": true,
+    "recommendation_status": "BLOCKED",
+    "service_session_id": "op088-live-session",
+    "simulation": true,
+    "turn_id": "op088-live-turn",
+    "verified": true
+  },
+  "local_two_process_integration": true,
+  "normalized_runs_byte_identical": true,
+  "production_operation_observed": false,
+  "requirements": [
+    "OP-087",
+    "OP-088"
+  ],
+  "result": "PASS",
+  "schema_version": "op087_op088_counseling_session_service_adapter_smoke_v1",
+  "service_database_persistence_observed": false,
+  "source_identity": {
+    "files": {
+      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "12075aaeb07f4ea2b11fa1f758bf1938ba2af7836f4e92393df2f6e25e7200c6",
+      "wellnessbox-rnd/data/knowledge/counseling_retrieval_corpus_manifest_v1.json": "4147c37dcff9b397cb1b4cebac96d92014b2afa47d5d2ef6b7ae95e52c1fad02",
+      "wellnessbox-rnd/scripts/run_counseling_session_service_adapter_smoke.py": "4bb97ff55172cf5ac8587d396acf9e081763274eb11c4d560280b1bbb63dffc5",
+      "wellnessbox/app/api/chat/route-service.ts": "29d3a17e5ce55d695ee3c14d9f3d12885b357f8b59c403758006c7b962d14f02",
+      "wellnessbox/app/api/chat/save/route-service.ts": "4c5c8540aeb077ce8273367866dc24198d16af6342c2a17cef7865576efc609c",
+      "wellnessbox/lib/server/wb-rnd-interim-client.ts": "6500a9d3cfb88a3953273e8ce797869110fdda061970a48c2103e10d1db6e974",
+      "wellnessbox/scripts/qa/run-rnd-counseling-live-smoke.cts": "bb4d8ce0bf8385061699d79955ef9034ff4d0d377173a5d377d738e40432150f"
+    },
+    "wellnessbox_rnd_commit": "2af2a2cb4c7e6baad055f38b2387aaf030b0c0d7",
+    "wellnessbox_service_commit": "e2001de8ea440cc6c425d3690fcb2d7e07e91553"
+  },
+  "stage_boundary": {
+    "OP-087": "Local integration does not prove required OPERATED production use.",
+    "OP-088": "The real service TypeScript adapter called the real localhost R&D API."
+  }
+}

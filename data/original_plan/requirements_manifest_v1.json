@@ -1746,8 +1746,52 @@
             ]
           }
         },
-        {"requirement_id": "OP-087", "title": "상담 답변과 추천 실행을 같은 세션에 저장한다.", "required_stage": "OPERATED"},
-        {"requirement_id": "OP-088", "title": "서비스 채팅이 R&D 상담 API를 호출하는 얇은 어댑터를 사용한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"},
+        {
+          "requirement_id": "OP-087",
+          "title": "상담 답변과 추천 실행을 같은 세션에 저장한다.",
+          "required_stage": "OPERATED",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox-rnd/data/knowledge/counseling_retrieval_corpus_manifest_v1.json",
+              "wellnessbox/app/api/chat/save/route-service.ts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox-rnd/scripts/run_counseling_session_service_adapter_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-088",
+          "title": "서비스 채팅이 R&D 상담 API를 호출하는 얇은 어댑터를 사용한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox/app/api/chat/route-service.ts",
+              "wellnessbox/app/api/chat/save/route-service.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-client.ts"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-counseling-adapter.cts",
+              "wellnessbox/scripts/qa/run-rnd-counseling-live-smoke.cts",
+              "wellnessbox-rnd/scripts/run_counseling_session_service_adapter_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-089", "title": "provider 장애 시 구조화된 deterministic 답변으로 복귀한다."},
         {"requirement_id": "OP-090", "title": "질문 유형별 frozen QA와 실제 API E2E를 통과한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"}
       ]

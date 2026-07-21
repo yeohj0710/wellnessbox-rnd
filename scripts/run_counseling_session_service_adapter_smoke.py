@@ -184,7 +184,10 @@ def main() -> int:
         },
         "stage_boundary": {
             "OP-087": "Local integration does not prove required OPERATED production use.",
-            "OP-088": "The real service TypeScript adapter called the real localhost R&D API.",
+            "OP-088": (
+                "The real service TypeScript adapter called the real localhost R&D API; "
+                "the /api/chat route and service database were not exercised."
+            ),
         },
     }
     report_path.parent.mkdir(parents=True, exist_ok=True)
