@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-21 bounded RAG answer provenance loop
+
+- Chosen stage/tasks: `original plan / counseling RAG`, OP-083 and OP-084.
+- Dataset/cases: the approved counseling scope covers `24` passages from `19` sources. The canonical smoke contains `4` answer cases and `8` independent rejection probes. Frozen evaluation remains `256` cases. Canonical evidence SHA-256 is `cfb10b0bdb9d02fbd1851cddde8b32c914a1ac00929b47f60e514c343fffb04d`; source SHA-256 is `03c86d65261517c360e4120a9d2f3039cc30fa8db568c9bebe431e558e026f5f`.
+- Reuse/integration: the implementation reuses the existing counseling passage index, reference registry, runtime knowledge records, and chat adapter. It does not create a second retrieval store, evidence registry, or answer service.
+- Implementation: retrieval accepts only the repository-approved scope and filters source type, claim type, reference identifier, effective time, retirement time, and result limit. The server reconstructs citations and uncertainty from approved passages rather than trusting provider-supplied provenance. Contract verification rejects forged scopes, invalid dates, missing or duplicate citations, and mismatches between cited and used passages.
+- Evidence stage: OP-083 and OP-084 are `IMPLEMENTED` and COMPLETE at their required `IMPLEMENTED` stage. No WellnessBox service change, deployment, production operation, external validation, live language-model inference, model training, or frozen-data change is claimed.
+- Research reports: separate long-form prose reports now exist for OP-079 through OP-084. Coverage is only `6/120`, or 5 percent; `114` reports remain. The six files contain `35,006` UTF-8 characters in total. This count is an explicit incomplete-report backlog, not evidence that 120 reports exist.
+- Research-log standard: every OP must end with its own human-readable report. Each report must explain the requirement, prior system, investigation, decision grounds, implementation, failures and corrections, verification, limitations, and operation/external-validation boundary in full prose. A manifest row, test log, evidence JSON, terse bullet list, or abbreviated handoff does not substitute for the report.
+- Generated status: complete `60`, partial `23`, pending `36`, external `1`, contradicted `0`; audit PASS with `83` claims and `238` checked evidence files.
+- Validation: focused regression `39 passed`; workflow-equivalent selection `596 passed`; `27` canonical smokes reproduced; full Ruff PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `975 passed`, `77 failed`; failures remain exactly `73` absent-report and `4` CGM cases, with no other failure group.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: implementation/evidence HEAD `67d65c3160a004c0ec1f6030a645c3ef9dbda8ee` was pushed; GitHub Actions `Original plan evidence` run `29838281957` passed.
+- Next loops: OP-085/086, OP-087/088, and OP-089/090. Each new requirement receives one full prose report, while OP-001 through OP-078 are backfilled from verified evidence rather than reconstructed from summaries.
+
 ## 2026-07-21 counseling passage and question-entity loop
 
 - Chosen stage/tasks: `original plan / counseling RAG`, OP-081 and OP-082.

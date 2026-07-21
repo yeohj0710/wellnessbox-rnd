@@ -1,5 +1,21 @@
 # SESSION_HANDOFF
 
+## 2026-07-21 OP-083/084 handoff
+
+- Chosen stage/tasks: `original plan / counseling RAG`; OP-083 repository-bounded retrieval and OP-084 answer provenance, validity dates, and explicit uncertainty.
+- Primary dataset and cases: `24` passages from `19` sources, `4` answer cases, `8` rejection probes, and frozen evaluation `256` cases. Canonical evidence is `data/original_plan/evidence/op083_op084_bounded_rag_answer_provenance_smoke_v1.json`, SHA-256 `cfb10b0bdb9d02fbd1851cddde8b32c914a1ac00929b47f60e514c343fffb04d`; source SHA-256 `03c86d65261517c360e4120a9d2f3039cc30fa8db568c9bebe431e558e026f5f`.
+- Main files: bounded retrieval and answer contracts, the existing OpenAI adapter, the repository scope registry, focused tests, canonical smoke, manifest, generated completion reports, CI workflow, and `docs/original_plan/research_reports/OP-083.md` plus `OP-084.md`.
+- Code/data/training/simulation: retrieval and answer validation now use repository-pinned knowledge identity and reconstruct provenance on the server. No model training, frozen-data change, service code change, deployment, production operation, external validation, or live language-model inference occurred.
+- Stage/result: OP-083 and OP-084 are COMPLETE at required stage `IMPLEMENTED`. Completion counts are `60/23/36/1/0` for complete/partial/pending/external/contradicted.
+- Research-report result: only OP-079 through OP-084 have individual long-form reports. Coverage is `6/120`, not 120/120; `114` reports remain. The six files total `35,006` UTF-8 characters. Final completion requires 120 separate reports, one for every OP.
+- Writing requirement: a research report is a continuous, explanatory human document, not a compact activity log. Every report must spell out the requirement, existing implementation path, evidence examined, reasoning, work performed, failed approaches and corrections, reproducible verification, unresolved limitations, and the distinction among implementation, integration, operation, and external validation. Abbreviations must be expanded on first use, and bullets or machine evidence may support but cannot replace the prose.
+- Validation: focused regression `39 passed`; workflow-equivalent `596 passed`; full Ruff PASS; audit PASS (`83` claims, `238` evidence files); completion check PASS; `27` smokes reproduced; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `975 passed`, `77 failed`; known split `73` absent-report + `3` CGM geometry + `1` CGM closed-loop; other failures `0`.
+- Frozen/replay/slice: `256` cases, seven zero metric deltas, unchanged overall weakest category `safety_blocked`, and no metric-specific weakest-category change.
+- Publication: implementation/evidence HEAD `67d65c3160a004c0ec1f6030a645c3ef9dbda8ee` was pushed; GitHub Actions `Original plan evidence` run `29838281957` passed.
+- Five current bottlenecks: `114/120` reports are still missing; OP-085/086 are not implemented; no deployed R&D counseling process exists; no authenticated production service-to-R&D counseling call exists; no external counseling validation or production telemetry exists.
+- Next three loops: OP-085/086, OP-087/088, and OP-089/090, with one full prose report per newly verified requirement and evidence-grounded backfill for OP-001 through OP-078.
+
 ## 2026-07-21 OP-081/082 handoff
 
 - Chosen stage/tasks: `original plan / counseling RAG`; OP-081 passage-level evidence collection with source/effective dates and OP-082 extraction of health goals, ingredients, drugs, and risk signals.

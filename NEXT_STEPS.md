@@ -2,13 +2,15 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-081/082 now validate source-backed passage spans and extract traceable question entities with bounded negation and subtype handling. Both are complete at required stage `IMPLEMENTED`. Generated status is complete `58`, partial `23`, pending `38`, external `1`, contradicted `0`. Long-form research-report coverage is only `4/120`; the remaining 116 reports still require separate evidence-grounded prose. The current four reports total `27,023` characters, so manifest completion must never be presented as 120 finished reports.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-083/084 now restrict retrieval to the repository-approved knowledge scope and return server-verified evidence identifiers, validity dates, and uncertainty. Both are complete at required stage `IMPLEMENTED`. Generated status is complete `60`, partial `23`, pending `36`, external `1`, contradicted `0`. Long-form research-report coverage is only `6/120`; the remaining 114 reports still require separate evidence-grounded prose. The current six reports total `35,006` UTF-8 characters, so manifest completion must never be presented as 120 finished reports.
+
+Every OP requires one independent research report. Write the report as full, connected prose for a human reader rather than as an abbreviated log or a list of results. Explain the original requirement, existing system, sources inspected, decisions and reasons, implementation sequence, failures and corrections, reproducible tests, limitations, and the exact evidence stage. Expand unfamiliar abbreviations on first use. Machine-readable evidence, test output, manifest entries, and handoff bullets are supporting material only and never replace the report. Backfill OP-001 through OP-078 from source commits and canonical evidence; do not invent missing history from short summaries.
 
 Next three loops:
 
-1. Implement OP-083 and OP-084: restrict bounded RAG to allowed knowledge and include evidence IDs, validity dates, and uncertainty in answers.
-2. Implement OP-085 and OP-086, with one full prose research report for each requirement.
-3. Implement OP-087 and OP-088, while continuing evidence-grounded report backfill for OP-001~078.
+1. Implement OP-085 and OP-086, with one full prose research report for each requirement.
+2. Implement OP-087 and OP-088, with one full prose research report for each requirement.
+3. Implement OP-089 and OP-090, while continuing evidence-grounded report backfill for OP-001 through OP-078.
 
 Continue through the closed-loop execution group, then the RAG group, in two-requirement slices. Reuse the current `agent_runs`, `agent_steps`, follow-up tables, knowledge tables, and service paths; do not add a parallel scheduler, event store, or knowledge store. Production has no deployed R&D endpoint or `WB_RND_*` settings, so OP-071 through OP-080 remain below `OPERATED`, and OP-101 through OP-105 remain separate deployment and production-integration requirements.
 
