@@ -27,12 +27,23 @@ TOOL_NAMES = (
     "check_safety",
     "rank_ingredients",
     "optimize_regimen",
+    "start_plan",
     "create_followup",
     "ingest_pro",
     "ingest_wearable",
     "escalate_pharmacist",
     "log_adverse_event",
 )
+
+_TOOL_OPERATIONS: dict[str, ClosedLoopOperation] = {
+    "get_user_profile": ClosedLoopOperation.LOAD_PROFILE,
+    "check_safety": ClosedLoopOperation.CHECK_SAFETY,
+    "rank_ingredients": ClosedLoopOperation.GENERATE_CANDIDATES,
+    "retrieve_evidence": ClosedLoopOperation.LOOKUP_EVIDENCE,
+    "optimize_regimen": ClosedLoopOperation.OPTIMIZE,
+    "start_plan": ClosedLoopOperation.START_PLAN,
+    "create_followup": ClosedLoopOperation.SCHEDULE_FOLLOWUP,
+}
 
 
 def transition(current: AgentState, target: AgentState) -> AgentState:
@@ -118,12 +129,35 @@ class BoundedAgent:
             )
         return {"run_id": run_id, "state_after": AgentState.INTAKE, "deduplicated": False}
 
-    def move(self, run_id: str, target: AgentState) -> AgentState:
+    def move(
+        self,
+        run_id: str,
+        target: AgentState,
+        *,
+        operation: ClosedLoopOperation,
+    ) -> AgentState:
+        return self._move_with_operation(
+            run_id=run_id,
+            operation=operation,
+            target=target,
+        )
+
+    def _move_with_operation(
+        self,
+        *,
+        run_id: str,
+        operation: ClosedLoopOperation,
+        target: AgentState,
+    ) -> AgentState:
         row = self.store.rows("select state_after from agent_runs where run_id=?", (run_id,))
         if not row:
             raise ValueError("unknown_agent_run")
         current = AgentState(row[0][0])
-        next_state = transition(current, target)
+        next_state = apply_closed_loop_transition_v1(
+            current=current,
+            operation=operation,
+            target=target,
+        )
         terminal = next_state in {AgentState.STOPPED, AgentState.COMPLETED}
         with self.store.transaction() as connection:
             connection.execute(
@@ -157,6 +191,16 @@ class BoundedAgent:
         run = run_rows[0]
         if run["status"] != "ACTIVE":
             raise ValueError("agent_run_not_active")
+        operation = _TOOL_OPERATIONS.get(tool_name)
+        current_state = AgentState(run["state_after"])
+        if (
+            operation is not None
+            and operation not in CLOSED_LOOP_ALLOWED_OPERATIONS_V1[current_state]
+        ):
+            raise ValueError(
+                "workflow_operation_not_allowed:"
+                f"{current_state.value}:{operation.value}"
+            )
         profile_id = str(run["profile_id"])
         supplied_profile = str(arguments.get("profile_id", profile_id))
         if supplied_profile != profile_id:
@@ -195,7 +239,168 @@ class BoundedAgent:
                     datetime.now(UTC).isoformat(),
                 ),
             )
+            if operation is not None:
+                target = _transition_target(current_state, operation)
+                if target is None:
+                    raise ValueError(
+                        "workflow_transition_target_missing:"
+                        f"{current_state.value}:{operation.value}"
+                    )
+                connection.execute(
+                    """
+                    update agent_runs set state_before=?, state_after=?
+                    where run_id=? and status='ACTIVE'
+                    """,
+                    (current_state, target, run_id),
+                )
         return result
+
+    def execute_recommendation_workflow(
+        self,
+        *,
+        profile_id: str,
+        idempotency_key: str,
+        safety_arguments: dict[str, Any],
+        ingredients: list[str],
+        evidence_query: str,
+        max_items: int,
+    ) -> dict[str, Any]:
+        run = self.create_run(profile_id=profile_id, idempotency_key=idempotency_key)
+        run_id = str(run["run_id"])
+        steps: list[dict[str, str]] = []
+
+        def execute(operation: ClosedLoopOperation, tool_name: str, arguments: dict[str, Any]):
+            before = self._state(run_id)
+            result = self.execute_tool(
+                run_id=run_id,
+                tool_name=tool_name,
+                arguments=arguments,
+            )
+            after = self._state(run_id)
+            steps.append(
+                {
+                    "operation": operation.value,
+                    "state_before": before.value,
+                    "state_after": after.value,
+                }
+            )
+            return result
+
+        execute(
+            ClosedLoopOperation.LOAD_PROFILE,
+            "get_user_profile",
+            {"profile_id": profile_id},
+        )
+        before_consent = self._state(run_id)
+        self._move_with_operation(
+            run_id=run_id,
+            operation=ClosedLoopOperation.VERIFY_CONSENT,
+            target=AgentState.PROFILE_READY,
+        )
+        steps.append(
+            {
+                "operation": ClosedLoopOperation.VERIFY_CONSENT.value,
+                "state_before": before_consent.value,
+                "state_after": AgentState.PROFILE_READY.value,
+            }
+        )
+        safety = execute(
+            ClosedLoopOperation.CHECK_SAFETY,
+            "check_safety",
+            safety_arguments,
+        )
+        if safety["action"] in {"BLOCK", "STOP_AND_ESCALATE"}:
+            self._stop_workflow(run_id, steps)
+            return self._workflow_trace(run_id, steps, plan_start_recorded=False)
+
+        ranked = execute(
+            ClosedLoopOperation.GENERATE_CANDIDATES,
+            "rank_ingredients",
+            {"ingredients": ingredients},
+        )
+        if not ranked["ranked"]:
+            self._stop_workflow(run_id, steps)
+            return self._workflow_trace(run_id, steps, plan_start_recorded=False)
+
+        evidence = execute(
+            ClosedLoopOperation.LOOKUP_EVIDENCE,
+            "retrieve_evidence",
+            {"query": evidence_query},
+        )
+        evidence_ids = sorted(
+            str(item["evidence_id"])
+            for item in evidence["passages"]
+            if item.get("evidence_id")
+        )
+        if not evidence_ids:
+            self._stop_workflow(run_id, steps)
+            return self._workflow_trace(run_id, steps, plan_start_recorded=False)
+        supported_ranked = [
+            item
+            for item in ranked["ranked"]
+            if any(
+                str(item["ingredient"]).lower() in str(passage["passage_text"]).lower()
+                for passage in evidence["passages"]
+            )
+        ]
+        if not supported_ranked:
+            self._stop_workflow(run_id, steps)
+            return self._workflow_trace(run_id, steps, plan_start_recorded=False)
+
+        optimized = execute(
+            ClosedLoopOperation.OPTIMIZE,
+            "optimize_regimen",
+            {
+                "ranked": supported_ranked,
+                "max_items": max_items,
+                "evidence_ids": evidence_ids,
+            },
+        )
+        execute(
+            ClosedLoopOperation.START_PLAN,
+            "start_plan",
+            {
+                "regimen": optimized["regimen"],
+                "evidence_ids": evidence_ids,
+            },
+        )
+        return self._workflow_trace(run_id, steps, plan_start_recorded=True)
+
+    def _state(self, run_id: str) -> AgentState:
+        value = self.store.scalar("select state_after from agent_runs where run_id=?", (run_id,))
+        if value is None:
+            raise ValueError("unknown_agent_run")
+        return AgentState(value)
+
+    def _stop_workflow(self, run_id: str, steps: list[dict[str, str]]) -> None:
+        before = self._state(run_id)
+        self._move_with_operation(
+            run_id=run_id,
+            operation=ClosedLoopOperation.STOP,
+            target=AgentState.STOPPED,
+        )
+        steps.append(
+            {
+                "operation": ClosedLoopOperation.STOP.value,
+                "state_before": before.value,
+                "state_after": AgentState.STOPPED.value,
+            }
+        )
+
+    def _workflow_trace(
+        self,
+        run_id: str,
+        steps: list[dict[str, str]],
+        *,
+        plan_start_recorded: bool,
+    ) -> dict[str, Any]:
+        return {
+            "schema_version": "closed_loop_ordered_execution_trace_v1",
+            "run_id": run_id,
+            "status": self._state(run_id).value,
+            "steps": steps,
+            "plan_start_recorded": plan_start_recorded,
+        }
 
     def _dispatch(
         self, run_id: str, tool_name: str, arguments: dict[str, Any], scopes: set[str]
@@ -243,6 +448,13 @@ class BoundedAgent:
         if tool_name == "optimize_regimen":
             ranked = list(arguments.get("ranked", []))[: int(arguments.get("max_items", 3))]
             return {"regimen": ranked, "postcondition_success": bool(ranked)}
+        if tool_name == "start_plan":
+            regimen = list(arguments.get("regimen", []))
+            evidence_ids = list(arguments.get("evidence_ids", []))
+            return {
+                "plan_start_recorded": bool(regimen) and bool(evidence_ids),
+                "postcondition_success": bool(regimen) and bool(evidence_ids),
+            }
         if tool_name == "create_followup":
             if "followup:write" not in scopes:
                 raise PermissionError("missing_followup_consent")

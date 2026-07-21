@@ -4,6 +4,7 @@ import pytest
 
 from wellnessbox_rnd.interim.agent import TOOL_NAMES, AgentState, BoundedAgent, transition
 from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.interim.workflow_contract import ClosedLoopOperation
 
 
 def _agent(tmp_path: Path) -> BoundedAgent:
@@ -29,7 +30,8 @@ def test_state_machine_uses_authoritative_states_and_rejects_unknown_transition(
 
 
 def test_exact_ten_typed_tool_names() -> None:
-    assert len(TOOL_NAMES) == 10
+    assert len(TOOL_NAMES) == 11
+    assert "start_plan" in TOOL_NAMES
     assert "log_adverse_event" in TOOL_NAMES
 
 
@@ -39,6 +41,16 @@ def test_run_creation_is_idempotent_and_tool_is_audited(tmp_path: Path) -> None:
     second = agent.create_run(profile_id="usr_1234567890abcdef", idempotency_key="request-1")
     assert first["run_id"] == second["run_id"]
     assert second["deduplicated"] is True
+    agent.move(
+        first["run_id"],
+        AgentState.CONSENT_CHECK,
+        operation=ClosedLoopOperation.LOAD_PROFILE,
+    )
+    agent.move(
+        first["run_id"],
+        AgentState.PROFILE_READY,
+        operation=ClosedLoopOperation.VERIFY_CONSENT,
+    )
     result = agent.execute_tool(
         run_id=first["run_id"],
         tool_name="check_safety",
@@ -58,6 +70,16 @@ def test_missing_consent_blocks_side_effect_tool(tmp_path: Path) -> None:
             """
         )
     run = agent.create_run(profile_id="usr_1234567890abcdef", idempotency_key="request-2")
+    for operation, state in (
+        (ClosedLoopOperation.LOAD_PROFILE, AgentState.CONSENT_CHECK),
+        (ClosedLoopOperation.VERIFY_CONSENT, AgentState.PROFILE_READY),
+        (ClosedLoopOperation.CHECK_SAFETY, AgentState.SAFETY_CHECK),
+        (ClosedLoopOperation.GENERATE_CANDIDATES, AgentState.RANKING),
+        (ClosedLoopOperation.LOOKUP_EVIDENCE, AgentState.EVIDENCE_RETRIEVAL),
+        (ClosedLoopOperation.OPTIMIZE, AgentState.REGIMEN_OPTIMIZATION),
+        (ClosedLoopOperation.START_PLAN, AgentState.PLAN_READY),
+    ):
+        agent.move(run["run_id"], state, operation=operation)
     with pytest.raises(PermissionError, match="missing_followup_consent"):
         agent.execute_tool(
             run_id=run["run_id"],

@@ -131,6 +131,17 @@ class ToolRequest(BaseModel):
     consent_scopes: list[str] = Field(default_factory=list)
 
 
+class OrderedWorkflowRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    profile_id: str = Field(pattern=r"^usr_[a-f0-9]{16,64}$")
+    idempotency_key: str = Field(min_length=1, max_length=128)
+    safety: dict[str, Any]
+    ingredients: list[str] = Field(min_length=1, max_length=20)
+    evidence_query: str = Field(min_length=1, max_length=200)
+    max_items: int = Field(ge=1, le=20)
+
+
 class DeviceRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -522,6 +533,23 @@ def execute_tool(payload: ToolRequest) -> dict[str, Any]:
             tool_name=payload.tool_name,
             arguments=payload.arguments,
             consent_scopes=set(payload.consent_scopes),
+        )
+    except PermissionError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
+    except (ValueError, RuntimeError) as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.post("/agent/workflow")
+def execute_ordered_workflow(payload: OrderedWorkflowRequest) -> dict[str, Any]:
+    try:
+        return BoundedAgent(_store()).execute_recommendation_workflow(
+            profile_id=payload.profile_id,
+            idempotency_key=payload.idempotency_key,
+            safety_arguments=payload.safety,
+            ingredients=payload.ingredients,
+            evidence_query=payload.evidence_query,
+            max_items=payload.max_items,
         )
     except PermissionError as error:
         raise HTTPException(status_code=403, detail=str(error)) from error

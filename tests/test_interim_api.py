@@ -373,6 +373,59 @@ def test_interim_api_requires_token_and_runs_recommendation(tmp_path, monkeypatc
     assert len(body["recommendations"]) >= 1
 
 
+def test_ordered_agent_workflow_endpoint_enforces_safety_to_plan_sequence(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "ordered-workflow-api.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    client = TestClient(app)
+    profile_id = "usr_1234567890abcdef"
+    assert client.post(
+        "/v1/interim/profiles",
+        headers=_headers(),
+        json={"profile_id": profile_id, "consent_scopes": [], "profile": {"age": 41}},
+    ).status_code == 200
+    registry = EvidenceRegistry(InterimStore(database))
+    registry.register_source(
+        source_id="workflow-api-source",
+        source_tier="official",
+        title="Workflow API source",
+        canonical_uri="https://example.test/workflow-api",
+        license_status="OPEN",
+    )
+    registry.add_passage(
+        source_id="workflow-api-source",
+        passage_text="magnesium sleep support evidence",
+        approved_for_safety=True,
+    )
+
+    response = client.post(
+        "/v1/interim/agent/workflow",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "idempotency_key": "api-ordered-workflow",
+            "safety": {"age": 41, "ingredients": ["magnesium"]},
+            "ingredients": ["magnesium"],
+            "evidence_query": "magnesium",
+            "max_items": 1,
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "PLAN_READY"
+    assert body["plan_start_recorded"] is True
+    assert [step["operation"] for step in body["steps"]][-5:] == [
+        "check_safety",
+        "generate_candidates",
+        "lookup_evidence",
+        "optimize",
+        "start_plan",
+    ]
+
+
 def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
     tmp_path, monkeypatch
 ) -> None:
