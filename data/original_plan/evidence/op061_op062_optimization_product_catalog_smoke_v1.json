@@ -304,7 +304,11 @@
         "catalog_version_covers_offer_option_and_capacity",
         "duplicate_offer_identity_fails_closed",
         "top_k_ranks_all_eligible_combinations_before_output_limit",
-        "truncated_search_fails_closed_without_top_k"
+        "truncated_search_fails_closed_without_top_k",
+        "stock_change_recomputes_safe_substitute_with_existing_optimizer",
+        "inventory_context_is_not_forwarded_to_rnd",
+        "rank_one_combination_is_existing_cart_contract_compatible",
+        "cart_candidate_requires_approval_and_creates_no_order"
       ],
       "observed": {
         "ambiguous_amount_http_status": 502,
@@ -344,6 +348,7 @@
         "invalid_catalog_http_status": 502,
         "invalid_facts_http_status": 502,
         "invalid_offer_http_status": 502,
+        "inventory_context_forwarded_to_rnd": false,
         "mapping_coverage_count": 8,
         "max_ranked_product_combinations": 3,
         "missing_matched_amount_http_status": 200,
@@ -357,6 +362,14 @@
           }
         ],
         "optimization_constraints_contract_version": "product_optimization_constraints_v1",
+        "order_created": false,
+        "preapproval_side_effect_forbidden_symbols": [
+          "prisma Order/OrderItem/Payment mutations",
+          "create/authorize/capture order or payment functions",
+          "writeClientCartItems",
+          "localStorage setItem/removeItem/clear"
+        ],
+        "preapproval_side_effect_source_scan_passed": true,
         "product_candidate_mapping_version": "2026-07-16.1",
         "product_ids": [
           29,
@@ -759,6 +772,50 @@
         "service_route": "POST /api/tips",
         "shared_product_combination_id": "combo_39b190324c7b00ff",
         "shared_product_combination_product_count": 5,
+        "stock_substitution": {
+          "current_catalog_version": "catalog_de89bca0ceac4eb99ca8085ae6359a1304cc03912a3f8cf4147b883055fea82d",
+          "current_combination_id": "combo_da17182d16b21e1c",
+          "missing_pharmacy_product_ids": [
+            30004
+          ],
+          "optimization_input_unchanged": true,
+          "previous_catalog_version": "catalog_ad1290334d0e8e74ebe8c220d39e65880c178370e9fe0e070dd3881399625a1c",
+          "previous_combination_id": "combo_a9af0169dbf9de70",
+          "safety_constraints_preserved": true,
+          "schema_version": "product_combination_stock_substitution_v1",
+          "status": "SUBSTITUTED"
+        },
+        "substituted_cart_candidate": {
+          "approval_required": true,
+          "approval_status": "NOT_APPROVED",
+          "cart_storage_written": false,
+          "items": [
+            {
+              "optionType": "30 days",
+              "productId": 20000,
+              "productName": "calcium 0",
+              "quantity": 1
+            },
+            {
+              "optionType": "30 days",
+              "productId": 20014,
+              "productName": "coq10 4",
+              "quantity": 1
+            },
+            {
+              "optionType": "30 days",
+              "productId": 20024,
+              "productName": "magnesium 4",
+              "quantity": 1
+            }
+          ],
+          "order_created": false,
+          "order_id": null,
+          "schema_version": "product_combination_cart_candidate_v1",
+          "source_combination_id": "combo_da17182d16b21e1c",
+          "status": "READY",
+          "unavailable_reason": null
+        },
         "top_k": [
           {
             "combination_id": "combo_39b190324c7b00ff",
@@ -842,8 +899,8 @@
   },
   "schema_version": "op061_op062_optimization_product_catalog_smoke_v1",
   "source": {
-    "combined_sha256": "bb21d88443b4f9404286200821391fe135ea8f799ca5922754253cbf05d5e140",
-    "wellnessbox_commit": "a27de7c0beee507114641e24a058827d46ad2ef0",
+    "combined_sha256": "fc2551623c03e95fba8c40fcf7722457debf052f4787883b138c1eb13fd0806b",
+    "wellnessbox_commit": "62b4824c4d7a9dde68d2eee68548a34f51df8684",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",
@@ -858,7 +915,7 @@
       "lib/server/wb-rnd-tips-route-test-hook.ts",
       "scripts/qa/check-rnd-product-candidates.cts"
     ],
-    "wellnessbox_rnd_commit": "0476ac5f90d120aa61edd862c726082472e21b9a",
+    "wellnessbox_rnd_commit": "7d4da4b56167b651254d17bcd2a56b8095984569",
     "wellnessbox_rnd_paths": [
       "data/contracts/optimization_constraints_v1.json",
       "scripts/run_optimization_constraints_product_catalog_smoke.py",

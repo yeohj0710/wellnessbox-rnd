@@ -37,8 +37,8 @@
   },
   "schema_version": "op057_op058_pro_correction_plan_lineage_smoke_v1",
   "source": {
-    "combined_sha256": "2370336481f299243fe33d8b40bb32a3b2441200d5079e59e45eb4a00b3a4860",
-    "wellnessbox_commit": "7f248485f522fd85ca09a71a9252cf1ec8dc5896",
+    "combined_sha256": "223e082a08657176d910addde2eae9706f8bd4d14226233dfc33be3a1188e048",
+    "wellnessbox_commit": "a55119408661dbe5c625f9b92c69c80847501624",
     "wellnessbox_paths": [
       "app/api/tips/pro/effects/route.ts",
       "app/api/tips/pro/plans/route.ts",
