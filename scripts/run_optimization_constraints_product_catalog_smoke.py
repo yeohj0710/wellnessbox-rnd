@@ -151,7 +151,7 @@ def run_smoke() -> dict[str, object]:
     assert service_report["ok"] is True
     assert (
         service_report["schema_version"]
-        == "op062_service_selling_product_catalog_contract_v1"
+        == "op063_op064_service_product_combination_contract_v1"
     )
 
     return {
