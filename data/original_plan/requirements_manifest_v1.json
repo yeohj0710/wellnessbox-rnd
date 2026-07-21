@@ -1016,8 +1016,43 @@
             ]
           }
         },
-        {"requirement_id": "OP-053", "title": "복용 전, 2주, 4주, 중단 시점 PRO 이벤트를 저장한다.", "required_stage": "OPERATED"},
-        {"requirement_id": "OP-054", "title": "순응도, 누락 복용, 이상사례를 효과 해석에 반영한다."},
+        {
+          "requirement_id": "OP-053",
+          "title": "복용 전, 2주, 4주, 중단 시점 PRO 이벤트를 저장한다.",
+          "required_stage": "OPERATED",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/contracts/pro_followup_interpretation_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_followup.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_mutation.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+              "wellnessbox-rnd/tests/test_data_lake_lineage.py",
+              "wellnessbox-rnd/tests/test_event_idempotency_data_mutation.py",
+              "wellnessbox-rnd/scripts/run_pro_followup_adherence_interpretation_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op053_op054_pro_followup_interpretation_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-054",
+          "title": "순응도, 누락 복용, 이상사례를 효과 해석에 반영한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/contracts/pro_followup_interpretation_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_followup.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+              "wellnessbox-rnd/scripts/run_pro_followup_adherence_interpretation_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op053_op054_pro_followup_interpretation_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-055", "title": "개인 개선도와 집단 평균 개선도를 분리한다."},
         {"requirement_id": "OP-056", "title": "효과 추정에 표본 수, 신뢰구간, 불확실성 사유를 포함한다."},
         {"requirement_id": "OP-057", "title": "실제 사용자 입력으로 PRO 점수를 수정하고 즉시 재계산한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"},

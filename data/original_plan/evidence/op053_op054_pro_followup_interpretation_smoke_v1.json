@@ -1,0 +1,201 @@
+{
+  "contract": {
+    "contract_sha256": "388039bbf710de029386c8c9c27c8151366bd2e89056dd71b8eb035c9fd0b6ba",
+    "contract_version": "2026-07-17.1",
+    "effect_claim_scope": "observed_association_not_causal",
+    "event_schema_version": "versioned_pro_followup_event_v1",
+    "interpretation_priority": [
+      "serious_adverse_event_present",
+      "adverse_event_present",
+      "adherence_below_80_percent",
+      "missed_doses_present",
+      "observed_change_interpretable"
+    ],
+    "limitation": "The 0.8 threshold limits interpretation only. It is not a clinical cutoff and does not prove causal efficacy.",
+    "minimum_interpretable_adherence_rate": 0.8,
+    "policy_kind": "conservative_internal_interpretation_policy",
+    "scheduled_day_index_by_timepoint": {
+      "discontinuation": null,
+      "pre_intake": 0,
+      "week_2": 14,
+      "week_4": 28
+    },
+    "schema_version": "pro_followup_interpretation_contract_v1",
+    "source_refs": [
+      "data/original_plan/requirements_manifest_v1.json#OP-053",
+      "data/original_plan/requirements_manifest_v1.json#OP-054",
+      "docs/context/master_context.md#19.3",
+      "docs/context/master_context.md#21.2"
+    ],
+    "timepoint_order": [
+      "pre_intake",
+      "week_2",
+      "week_4",
+      "discontinuation"
+    ]
+  },
+  "evidence_boundary": {
+    "causal_effect_claim_allowed": false,
+    "clinical_interpretation_proven": false,
+    "event_data_class": "SYNTHETIC_OUTCOME_PROXY",
+    "local_persistence_proven": true,
+    "op053_operated_stage_proven": false,
+    "production_data_used": false,
+    "production_operation_proven": false,
+    "score_distribution_data_class": "SYNTHETIC_OUTCOME_PROXY",
+    "service_integration_proven": false
+  },
+  "fail_closed_checks": {
+    "contract_drift_rejected": true,
+    "cross_distribution_rejected": true,
+    "cross_plan_rejected": true,
+    "duplicate_assessment_rejected": true,
+    "generic_followup_preserved": true,
+    "generic_to_pro_correction_rejected": true,
+    "invalid_correction_rejected": true,
+    "missing_schema_rejected": true,
+    "out_of_order_rejected": true,
+    "output_mutation_rejected": true,
+    "reversed_observation_time_rejected": true,
+    "strict_payload_wrong_event_type_rejected": true
+  },
+  "interpretation_cases": {
+    "fully_adherent": {
+      "adherence_rate": 1.0,
+      "adverse_event_count": 0,
+      "benefit_interpretation_allowed": true,
+      "causal_effect_claim_allowed": false,
+      "effect_claim_scope": "observed_association_not_causal",
+      "interpretation_reason_codes": [],
+      "interpretation_status": "observed_change_interpretable",
+      "mean_health_z_change": 1.0,
+      "missed_dose_count": 0,
+      "observed_change_status": "improved",
+      "serious_adverse_event_present": false
+    },
+    "low_adherence": {
+      "adherence_rate": 0.714286,
+      "adverse_event_count": 0,
+      "benefit_interpretation_allowed": false,
+      "causal_effect_claim_allowed": false,
+      "effect_claim_scope": "observed_association_not_causal",
+      "interpretation_reason_codes": [
+        "missed_doses_present",
+        "adherence_below_80_percent"
+      ],
+      "interpretation_status": "limited_by_low_adherence",
+      "mean_health_z_change": 1.0,
+      "missed_dose_count": 4,
+      "observed_change_status": "improved",
+      "serious_adverse_event_present": false
+    },
+    "missed_doses": {
+      "adherence_rate": 0.857143,
+      "adverse_event_count": 0,
+      "benefit_interpretation_allowed": false,
+      "causal_effect_claim_allowed": false,
+      "effect_claim_scope": "observed_association_not_causal",
+      "interpretation_reason_codes": [
+        "missed_doses_present"
+      ],
+      "interpretation_status": "limited_by_missed_doses",
+      "mean_health_z_change": 1.0,
+      "missed_dose_count": 2,
+      "observed_change_status": "improved",
+      "serious_adverse_event_present": false
+    },
+    "nonserious_adverse_event": {
+      "adherence_rate": 1.0,
+      "adverse_event_count": 1,
+      "benefit_interpretation_allowed": false,
+      "causal_effect_claim_allowed": false,
+      "effect_claim_scope": "observed_association_not_causal",
+      "interpretation_reason_codes": [
+        "adverse_event_present"
+      ],
+      "interpretation_status": "safety_context_required",
+      "mean_health_z_change": 1.0,
+      "missed_dose_count": 0,
+      "observed_change_status": "improved",
+      "serious_adverse_event_present": false
+    },
+    "serious_adverse_event": {
+      "adherence_rate": 1.0,
+      "adverse_event_count": 1,
+      "benefit_interpretation_allowed": false,
+      "causal_effect_claim_allowed": false,
+      "effect_claim_scope": "observed_association_not_causal",
+      "interpretation_reason_codes": [
+        "adverse_event_present",
+        "serious_adverse_event_present"
+      ],
+      "interpretation_status": "safety_escalation_required",
+      "mean_health_z_change": 1.0,
+      "missed_dose_count": 0,
+      "observed_change_status": "improved",
+      "serious_adverse_event_present": true
+    }
+  },
+  "local_persistence": {
+    "database": "temporary_local_sqlite",
+    "event_type": "followup_evaluation",
+    "existing_table": "execution_events",
+    "ordered_timepoints": [
+      "pre_intake",
+      "week_2",
+      "week_4",
+      "discontinuation"
+    ],
+    "persisted_event_count": 4,
+    "persisted_events": [
+      {
+        "payload_sha256": "7bc74e7196b7a75590e64005da0f1eb6115407a157ee95f708eadd35d38bda2e",
+        "payload_state": "ACTIVE",
+        "timepoint": "pre_intake"
+      },
+      {
+        "payload_sha256": "1f8666dcb934ad3dcea6b583332c5becf85585353afe9411e2db9d14e5c38a62",
+        "payload_state": "ACTIVE",
+        "timepoint": "week_2"
+      },
+      {
+        "payload_sha256": "f4bb04a641b9cf20b857c0742b0d6c2177dd005152425dce0acad9fa1e0adf98",
+        "payload_state": "ACTIVE",
+        "timepoint": "week_4"
+      },
+      {
+        "payload_sha256": "8261e051014f49d17c5afbcb51369d5f878270633578de3a2b352d94a1d09b4f",
+        "payload_state": "ACTIVE",
+        "timepoint": "discontinuation"
+      }
+    ]
+  },
+  "required_stage_boundary": {
+    "OP-053": "OPERATED",
+    "OP-054": "IMPLEMENTED"
+  },
+  "requirement_stages": {
+    "OP-053": "IMPLEMENTED",
+    "OP-054": "IMPLEMENTED"
+  },
+  "schema_version": "op053_op054_pro_followup_interpretation_smoke_v1",
+  "source_identity": {
+    "commit": "83997c11684fc482462668865afc843f7cf211ff",
+    "source_paths": [
+      "data/contracts/pro_followup_interpretation_v1.json",
+      "data/contracts/pro_instrument_scoring_v1.json",
+      "scripts/run_pro_followup_adherence_interpretation_smoke.py",
+      "src/wellnessbox_rnd/interim/contracts.py",
+      "src/wellnessbox_rnd/interim/data_lake.py",
+      "src/wellnessbox_rnd/interim/data_mutation.py",
+      "src/wellnessbox_rnd/interim/store.py",
+      "src/wellnessbox_rnd/metrics/__init__.py",
+      "src/wellnessbox_rnd/metrics/calculators.py",
+      "src/wellnessbox_rnd/metrics/pro_followup.py",
+      "src/wellnessbox_rnd/metrics/pro_scoring.py",
+      "src/wellnessbox_rnd/orchestration/recommendation_service.py",
+      "src/wellnessbox_rnd/schemas/recommendation.py"
+    ],
+    "source_sha256": "6d5829f753148e2c879c4dd546d2a0e5b58fd105f6129653f75147c4cea64e34"
+  }
+}
