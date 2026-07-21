@@ -28,18 +28,18 @@
   "service_database_persistence_observed": false,
   "source_identity": {
     "files": {
-      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "e1e2767710a8530dcda6743919504f146893c7b0937036184360c585b3a5dc34",
+      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "04789d1e25dc0b22973b6e9284d276ac342d0ba8021ef53c7a49d24d283999ce",
       "wellnessbox-rnd/data/knowledge/counseling_retrieval_corpus_manifest_v1.json": "ab8703d02c2e30db8c8a6f83835da9be055aaccc4425cc8aea121e636754a1b7",
       "wellnessbox-rnd/scripts/run_counseling_session_service_adapter_smoke.py": "4ec3bbd7a20cdbe4f80ae7693b7ef0cce3758b27644cffcd0db029eef073c2ce",
       "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py": "c127c3d8f87f59ae3d41dada8d5b1915ba6fda96c3f729b4632f76e2cee13bf2",
       "wellnessbox/app/api/chat/route-service.ts": "ecb86f0db7984ea76d474303976656e75632b9275d10b14280540283ea1d8828",
       "wellnessbox/app/api/chat/save/route-service.ts": "8195d0733ee106605daedcfc324a9575143c66250958c93d8a1a7f7e4af34941",
-      "wellnessbox/lib/server/wb-rnd-interim-client.ts": "6500a9d3cfb88a3953273e8ce797869110fdda061970a48c2103e10d1db6e974",
-      "wellnessbox/scripts/qa/check-rnd-counseling-adapter.cts": "f937ce65f3f75fb02643a863a8463bfb2f73bb18a69a5b16b203949519c45cdb",
+      "wellnessbox/lib/server/wb-rnd-interim-client.ts": "03f061ee67083ca3dd938551fc8d1fe5c2943e6cdfec93505e5b12deea75d836",
+      "wellnessbox/scripts/qa/check-rnd-counseling-adapter.cts": "e017903bca6e659dda8c601febfa668e28e642e782f9b4d6366372360d5e9cd0",
       "wellnessbox/scripts/qa/run-rnd-counseling-live-smoke.cts": "bb4d8ce0bf8385061699d79955ef9034ff4d0d377173a5d377d738e40432150f"
     },
-    "wellnessbox_rnd_commit": "8c5f1f0fdf9f62acd3f7f94dc45ce1f5d3e9d8c2",
-    "wellnessbox_service_commit": "f78604c74795c127a004a7be64cb67c7fe112803"
+    "wellnessbox_rnd_commit": "d1273da965da098f8689434e9b140a83bb285cd7",
+    "wellnessbox_service_commit": "2875c299403a99dbea2df79205c0fcb764e6b20e"
   },
   "stage_boundary": {
     "OP-087": "Local integration does not prove required OPERATED production use.",
