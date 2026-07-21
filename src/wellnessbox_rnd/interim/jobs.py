@@ -651,7 +651,8 @@ class WorkflowJobQueue:
             return False
         events = connection.execute(
             """
-            select event_type, payload_json from execution_events
+            select event_id, event_type, payload_json, effective_payload_sha256
+            from execution_events
             where execution_id=? and payload_state='ACTIVE' order by event_index
             """,
             (execution_id,),

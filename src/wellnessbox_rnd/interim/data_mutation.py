@@ -192,6 +192,21 @@ class DataMutationLedger:
                         raise EventMutationStateError(
                             f"plan_lifecycle_event_immutable:{target_event_id}"
                         )
+                    consumed = connection.execute(
+                        """
+                        select 1 from execution_events
+                        where payload_state='ACTIVE'
+                          and json_extract(payload_json, '$.schema_version')=
+                            'plan_lifecycle_transition_v1'
+                          and json_extract(payload_json, '$.replacement_candidate_event_id')=?
+                        limit 1
+                        """,
+                        (target_event_id,),
+                    ).fetchone()
+                    if consumed is not None:
+                        raise EventMutationStateError(
+                            f"consumed_replacement_candidate_immutable:{target_event_id}"
+                        )
                 if (
                     resolved_operation == EventMutationOperation.CORRECTION
                     and resolved_target_type == EventMutationTargetType.EXECUTION_EVENT

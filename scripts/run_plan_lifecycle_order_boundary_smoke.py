@@ -120,6 +120,12 @@ def _seed(database: Path) -> InterimStore:
                     "lifecycle_role": "replacement_candidate",
                     "replaces_plan_id": plan_id,
                 }
+                replacement_payload_json = json.dumps(
+                    replacement_payload, sort_keys=True, separators=(",", ":")
+                )
+                replacement_payload_sha256 = hashlib.sha256(
+                    replacement_payload_json.encode()
+                ).hexdigest()
                 connection.execute(
                     """
                     insert into execution_events(
@@ -133,9 +139,9 @@ def _seed(database: Path) -> InterimStore:
                         execution_id,
                         CONSENT_ID,
                         "replacement-candidate",
-                        json.dumps(replacement_payload, sort_keys=True),
-                        "replacement-candidate-hash",
-                        "replacement-candidate-hash",
+                        replacement_payload_json,
+                        replacement_payload_sha256,
+                        replacement_payload_sha256,
                         NOW.isoformat(),
                     ),
                 )

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
@@ -67,6 +68,9 @@ def _service(
                 "lifecycle_role": "replacement_candidate",
                 "replaces_plan_id": plan_id,
             }
+            candidate_hash = hashlib.sha256(
+                json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+            ).hexdigest()
             connection.execute(
                 """
                 insert into execution_events(
@@ -75,9 +79,14 @@ def _service(
                   effective_payload_sha256, created_at
                 ) values ('event_replacement_candidate', 'execution_lifecycle',
                   'consent_lifecycle', 1, 'optimization', 'system',
-                  'replacement-candidate', ?, 'candidate-hash', 'candidate-hash', ?)
+                  'replacement-candidate', ?, ?, ?, ?)
                 """,
-                (json.dumps(payload, sort_keys=True), NOW.isoformat()),
+                (
+                    json.dumps(payload, sort_keys=True),
+                    candidate_hash,
+                    candidate_hash,
+                    NOW.isoformat(),
+                ),
             )
     return PlanLifecycleService(store)
 
@@ -167,7 +176,7 @@ def test_replace_deactivates_old_plan_and_activates_replacement(tmp_path) -> Non
         )
     )
     assert stored["replacement_candidate_event_id"] == "event_replacement_candidate"
-    assert stored["replacement_candidate_payload_sha256"] == "candidate-hash"
+    assert len(stored["replacement_candidate_payload_sha256"]) == 64
     followup = service.transition(
         _request(
             action="monitor",
@@ -247,6 +256,25 @@ def test_lifecycle_event_rejects_ledger_and_direct_database_mutation(tmp_path) -
             )
         with pytest.raises(sqlite3.IntegrityError, match="plan_lifecycle_event_immutable"):
             connection.execute("delete from execution_events where event_id=?", (result.event_id,))
+
+
+def test_consumed_replacement_candidate_is_immutable(tmp_path) -> None:
+    service = _service(tmp_path, replacement_plan_id="plan_replacement")
+    service.transition(_request(action="replace", replacement_plan_id="plan_replacement"))
+    ledger = DataMutationLedger(service.store)
+    with pytest.raises(EventMutationStateError, match="consumed_replacement_candidate_immutable"):
+        ledger.apply(
+            profile_id="usr_lifecycle",
+            target_type="execution_event",
+            target_event_id="event_replacement_candidate",
+            operation="deletion",
+            idempotency_key="delete-consumed-candidate",
+        )
+    with service.store.transaction() as connection:
+        with pytest.raises(sqlite3.IntegrityError, match="plan_lifecycle_event_immutable"):
+            connection.execute(
+                "delete from execution_events where event_id='event_replacement_candidate'"
+            )
 
 
 def test_transition_rejects_time_before_existing_lineage(tmp_path) -> None:

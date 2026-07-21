@@ -100,6 +100,7 @@ class PlanLifecycleTransitionResultV1(BaseModel):
 
 def resolve_plan_lifecycle_states(rows: list[object]) -> dict[str, PlanLifecycleState]:
     states: dict[str, PlanLifecycleState] = {}
+    candidate_identity: dict[str, tuple[str, str]] = {}
     for row in rows:
         event_type = str(row["event_type"])
         payload = json.loads(str(row["payload_json"]))
@@ -111,6 +112,11 @@ def resolve_plan_lifecycle_states(rows: list[object]) -> dict[str, PlanLifecycle
                 else PlanLifecycleState.ACTIVE
             )
             states.setdefault(plan_id, initial)
+            if initial == PlanLifecycleState.CANDIDATE:
+                candidate_identity[plan_id] = (
+                    str(row["event_id"]),
+                    str(row["effective_payload_sha256"]),
+                )
         if event_type != "followup_evaluation" or not plan_id:
             continue
         if payload.get("schema_version") == "plan_lifecycle_transition_v1":
@@ -123,6 +129,11 @@ def resolve_plan_lifecycle_states(rows: list[object]) -> dict[str, PlanLifecycle
             if replacement:
                 if states.get(str(replacement)) != PlanLifecycleState.CANDIDATE:
                     raise ValueError("replacement_plan_candidate_discontinuity")
+                if candidate_identity.get(str(replacement)) != (
+                    str(payload.get("replacement_candidate_event_id")),
+                    str(payload.get("replacement_candidate_payload_sha256")),
+                ):
+                    raise ValueError("replacement_plan_candidate_identity_mismatch")
                 states[str(replacement)] = PlanLifecycleState.ACTIVE
         elif payload.get("timepoint") == "discontinuation":
             states[plan_id] = PlanLifecycleState.STOPPED

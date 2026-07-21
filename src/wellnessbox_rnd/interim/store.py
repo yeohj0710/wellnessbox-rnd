@@ -910,6 +910,15 @@ class InterimStore:
                 BEFORE UPDATE ON execution_events
                 WHEN json_extract(OLD.payload_json, '$.schema_version') =
                   'plan_lifecycle_transition_v1'
+                  OR EXISTS (
+                    SELECT 1 FROM execution_events AS lifecycle
+                    WHERE lifecycle.payload_state='ACTIVE'
+                      AND json_extract(lifecycle.payload_json, '$.schema_version')=
+                        'plan_lifecycle_transition_v1'
+                      AND json_extract(
+                        lifecycle.payload_json, '$.replacement_candidate_event_id'
+                      )=OLD.event_id
+                  )
                 BEGIN
                   SELECT RAISE(ABORT, 'plan_lifecycle_event_immutable');
                 END
@@ -921,6 +930,15 @@ class InterimStore:
                 BEFORE DELETE ON execution_events
                 WHEN json_extract(OLD.payload_json, '$.schema_version') =
                   'plan_lifecycle_transition_v1'
+                  OR EXISTS (
+                    SELECT 1 FROM execution_events AS lifecycle
+                    WHERE lifecycle.payload_state='ACTIVE'
+                      AND json_extract(lifecycle.payload_json, '$.schema_version')=
+                        'plan_lifecycle_transition_v1'
+                      AND json_extract(
+                        lifecycle.payload_json, '$.replacement_candidate_event_id'
+                      )=OLD.event_id
+                  )
                 BEGIN
                   SELECT RAISE(ABORT, 'plan_lifecycle_event_immutable');
                 END
