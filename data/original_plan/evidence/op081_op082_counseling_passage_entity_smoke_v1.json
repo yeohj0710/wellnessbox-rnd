@@ -9,6 +9,8 @@
     "all_effective_dates_timezone_aware": true,
     "all_license_statuses_present": true,
     "all_line_ranges_valid": true,
+    "all_parsed_source_uris_present": true,
+    "all_source_spans_identity_verified": true,
     "all_source_titles_present": true,
     "all_source_uris_present": true,
     "dated_retrieval_chunk_ids": [
@@ -21,7 +23,7 @@
     "unique_source_count": 19
   },
   "op082_question_entities": {
-    "case_count": 6,
+    "case_count": 9,
     "cases": [
       {
         "health_goals": [
@@ -37,6 +39,7 @@
             "end": 2,
             "kind": "health_goal",
             "matched_text": "수면",
+            "negated": false,
             "start": 0
           },
           {
@@ -44,6 +47,7 @@
             "end": 6,
             "kind": "health_goal",
             "matched_text": "혈당",
+            "negated": false,
             "start": 4
           },
           {
@@ -51,6 +55,7 @@
             "end": 19,
             "kind": "ingredient",
             "matched_text": "오메가3",
+            "negated": false,
             "start": 15
           },
           {
@@ -58,6 +63,7 @@
             "end": 24,
             "kind": "medication",
             "matched_text": "와파린",
+            "negated": false,
             "start": 21
           },
           {
@@ -65,6 +71,7 @@
             "end": 35,
             "kind": "risk_signal",
             "matched_text": "출혈",
+            "negated": false,
             "start": 33
           }
         ],
@@ -91,6 +98,7 @@
             "end": 21,
             "kind": "ingredient",
             "matched_text": "glucosamine",
+            "negated": false,
             "start": 10
           },
           {
@@ -98,6 +106,7 @@
             "end": 35,
             "kind": "medication",
             "matched_text": "Coumadin",
+            "negated": false,
             "start": 27
           },
           {
@@ -105,6 +114,7 @@
             "end": 45,
             "kind": "health_goal",
             "matched_text": "joint",
+            "negated": false,
             "start": 40
           }
         ],
@@ -128,25 +138,28 @@
             "end": 5,
             "kind": "risk_signal",
             "matched_text": "신장 질환",
+            "negated": false,
             "start": 0
           },
           {
             "canonical_key": "vitamin_d3",
-            "end": 15,
+            "end": 16,
             "kind": "ingredient",
-            "matched_text": "비타민D",
+            "matched_text": "비타민D3",
+            "negated": false,
             "start": 11
           },
           {
             "canonical_key": "magnesium_glycinate",
-            "end": 21,
+            "end": 29,
             "kind": "ingredient",
-            "matched_text": "마그네슘",
-            "start": 17
+            "matched_text": "마그네슘 글리시네이트",
+            "negated": false,
+            "start": 18
           }
         ],
         "medication_keys": [],
-        "question": "신장 질환이 있는데 비타민D와 마그네슘을 같이 먹어도 되나요?",
+        "question": "신장 질환이 있는데 비타민D3와 마그네슘 글리시네이트를 같이 먹어도 되나요?",
         "risk_signal_keys": [
           "kidney disease"
         ],
@@ -164,6 +177,7 @@
             "end": 17,
             "kind": "risk_signal",
             "matched_text": "chest pain",
+            "negated": false,
             "start": 7
           },
           {
@@ -171,6 +185,7 @@
             "end": 42,
             "kind": "risk_signal",
             "matched_text": "difficulty breathing",
+            "negated": false,
             "start": 22
           },
           {
@@ -178,6 +193,7 @@
             "end": 60,
             "kind": "ingredient",
             "matched_text": "zinc",
+            "negated": false,
             "start": 56
           }
         ],
@@ -204,6 +220,7 @@
             "end": 7,
             "kind": "ingredient",
             "matched_text": "프로바이오틱스",
+            "negated": false,
             "start": 0
           },
           {
@@ -211,6 +228,7 @@
             "end": 13,
             "kind": "health_goal",
             "matched_text": "장 건강",
+            "negated": false,
             "start": 9
           },
           {
@@ -218,6 +236,7 @@
             "end": 21,
             "kind": "health_goal",
             "matched_text": "전반적 건강",
+            "negated": false,
             "start": 15
           }
         ],
@@ -226,6 +245,78 @@
         "risk_signal_keys": [],
         "schema_version": "question_entity_extraction_v1",
         "urgent_risk_detected": false
+      },
+      {
+        "health_goals": [],
+        "ingredient_keys": [],
+        "matches": [
+          {
+            "canonical_key": "chest_pain",
+            "end": 2,
+            "kind": "risk_signal",
+            "matched_text": "흉통",
+            "negated": true,
+            "start": 0
+          }
+        ],
+        "medication_keys": [],
+        "question": "흉통은 없습니다.",
+        "risk_signal_keys": [
+          "chest_pain"
+        ],
+        "schema_version": "question_entity_extraction_v1",
+        "urgent_risk_detected": false
+      },
+      {
+        "health_goals": [],
+        "ingredient_keys": [],
+        "matches": [
+          {
+            "canonical_key": "chest_pain",
+            "end": 34,
+            "kind": "risk_signal",
+            "matched_text": "chest pain",
+            "negated": false,
+            "start": 24
+          }
+        ],
+        "medication_keys": [],
+        "question": "No bleeding, but I have chest pain.",
+        "risk_signal_keys": [
+          "chest_pain"
+        ],
+        "schema_version": "question_entity_extraction_v1",
+        "urgent_risk_detected": true
+      },
+      {
+        "health_goals": [],
+        "ingredient_keys": [],
+        "matches": [
+          {
+            "canonical_key": "difficulty_breathing",
+            "end": 4,
+            "kind": "risk_signal",
+            "matched_text": "숨이 차",
+            "negated": false,
+            "start": 0
+          },
+          {
+            "canonical_key": "anaphylaxis",
+            "end": 10,
+            "kind": "risk_signal",
+            "matched_text": "혀가 붓",
+            "negated": false,
+            "start": 6
+          }
+        ],
+        "medication_keys": [],
+        "question": "숨이 차고 혀가 붓습니다.",
+        "risk_signal_keys": [
+          "anaphylaxis",
+          "difficulty_breathing"
+        ],
+        "schema_version": "question_entity_extraction_v1",
+        "urgent_risk_detected": true
       },
       {
         "health_goals": [],
@@ -239,11 +330,11 @@
       }
     ],
     "false_positive_case_is_empty": true,
-    "urgent_case_count": 2
+    "urgent_case_count": 4
   },
   "schema_version": "op081_op082_counseling_passage_entity_smoke_v1",
   "source_identity": {
-    "commit": "59fe25375fa329d3718cc1aaf4f13f5f944e7f89",
+    "commit": "bf89c0e59bed1fa64dd9ceaf4b4fe32a0369f26f",
     "data_paths": [
       "data/knowledge/reference_knowledge_base_v1.json",
       "data/knowledge/runtime_knowledge_db_v1.json",
@@ -256,9 +347,12 @@
       "src/wellnessbox_rnd/chat/__init__.py",
       "src/wellnessbox_rnd/chat/retrieval.py",
       "src/wellnessbox_rnd/knowledge/runtime_db.py",
-      "tests/test_chat_retrieval.py"
+      "src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py",
+      "tests/test_chat_retrieval.py",
+      "tests/test_chat_openai_adapter.py",
+      "tests/test_learned_runtime_boundary_audit.py"
     ],
-    "source_sha256": "39db817b91f7b12b212fd2c456931443785f126cd25e449ae5197e9825a2b872"
+    "source_sha256": "ab6ffef24a9d936a9374d82a3a385943ad7a8b2600999b909ce7bc413d918d68"
   },
   "stage_boundary": {
     "claimed_stage": "IMPLEMENTED",
