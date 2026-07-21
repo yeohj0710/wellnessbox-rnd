@@ -31,11 +31,17 @@ from wellnessbox_rnd.chat.retrieval import (
     retrieve_bounded_chunks,
     retrieve_relevant_chunks,
 )
+from wellnessbox_rnd.chat.verifier import (
+    CounselingAnswerVerifierPolicy,
+    load_counseling_answer_verifier_policy,
+    require_repository_approved_policy,
+)
 
 __all__ = [
     "ChatQaEvalCase",
     "BoundedKnowledgeScope",
     "CounselingKnowledgeScopeRegistry",
+    "CounselingAnswerVerifierPolicy",
     "ChatAdapterLiveFailure",
     "ChatAdapterRequest",
     "ChatAdapterResponse",
@@ -54,10 +60,12 @@ __all__ = [
     "generate_bounded_template_answer",
     "generate_chat_answer_with_openai_fallback",
     "load_chat_qa_eval_cases",
+    "load_counseling_answer_verifier_policy",
     "load_approved_counseling_scope",
     "load_openai_chat_adapter_config_from_env",
     "load_retrieval_corpus_manifest",
     "retrieve_relevant_chunks",
     "retrieve_bounded_chunks",
+    "require_repository_approved_policy",
     "verify_bounded_template_answer",
 ]

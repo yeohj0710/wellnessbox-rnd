@@ -1,0 +1,32 @@
+{
+  "policy_id": "counseling-answer-verifier-v1",
+  "urgent_risk_keys": [
+    "active_bleeding",
+    "anaphylaxis",
+    "chest_pain",
+    "difficulty_breathing"
+  ],
+  "emergency_guidance_sentences": [
+    "Call local emergency services now or go to the nearest emergency department.",
+    "Stop taking the supplement until an emergency clinician evaluates you.",
+    "Do not wait for a chat response or supplement recommendation."
+  ],
+  "forbidden_expressions": [
+    "definitely safe",
+    "diagnose you",
+    "guaranteed cure",
+    "guaranteed to work",
+    "ignore emergency symptoms",
+    "wait and see before seeking emergency care"
+  ],
+  "recommendation_expressions": [
+    "i recommend",
+    "take this supplement",
+    "try this supplement",
+    "you should take"
+  ],
+  "interaction_risk_terms": [
+    "bleeding risk",
+    "drug interaction"
+  ]
+}

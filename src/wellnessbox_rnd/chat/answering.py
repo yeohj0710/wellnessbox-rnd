@@ -11,9 +11,16 @@ from wellnessbox_rnd.chat.retrieval import (
     RetrievalChunk,
     RetrievalCorpusManifest,
     RetrievalResult,
+    extract_question_entities,
     load_approved_counseling_scope,
     retrieve_bounded_chunks,
 )
+from wellnessbox_rnd.chat.verifier import (
+    CounselingAnswerVerifierPolicy,
+    load_counseling_answer_verifier_policy,
+    require_repository_approved_policy,
+)
+from wellnessbox_rnd.knowledge.runtime_db import RuntimeKnowledgeDB, load_runtime_knowledge_db
 
 
 class AnswerCitation(BaseModel):
@@ -48,7 +55,7 @@ class ChatTemplateAnswer(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     query: str
-    status: Literal["supported", "unsupported", "out_of_scope"]
+    status: Literal["supported", "unsupported", "out_of_scope", "safety_escalation"]
     answer_template_key: str
     answer_text: str
     citations: list[AnswerCitation] = Field(default_factory=list)
@@ -59,6 +66,8 @@ class ChatTemplateAnswer(BaseModel):
     knowledge_scope_id: str
     answered_at: datetime
     uncertainty: AnswerUncertainty
+    safety_policy_id: str | None = None
+    detected_urgent_risk_keys: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_answer_time(self) -> ChatTemplateAnswer:
@@ -71,6 +80,15 @@ class ChatTemplateAnswer(BaseModel):
             raise ValueError("chat_answer_duplicate_citation_chunk_id")
         if set(citation_ids) != set(self.used_chunk_ids):
             raise ValueError("chat_answer_citation_used_chunk_bijection_required")
+        if self.detected_urgent_risk_keys != sorted(set(self.detected_urgent_risk_keys)):
+            raise ValueError("chat_answer_urgent_risk_keys_must_be_sorted_unique")
+        if self.status == "safety_escalation":
+            if not self.safety_policy_id or not self.detected_urgent_risk_keys:
+                raise ValueError("chat_answer_safety_escalation_trace_required")
+            if self.citations or self.used_chunk_ids:
+                raise ValueError("chat_answer_safety_escalation_must_not_cite")
+        elif self.safety_policy_id is not None or self.detected_urgent_risk_keys:
+            raise ValueError("chat_answer_safety_trace_only_for_escalation")
         return self
 
 
@@ -83,6 +101,11 @@ class ChatAnswerVerification(BaseModel):
     out_of_scope_handled_ok: bool
     unsupported_claim_suppressed_ok: bool
     safety_boundary_ok: bool
+    answer_grounding_ok: bool
+    required_risk_coverage_ok: bool
+    forbidden_expression_ok: bool
+    emergency_precedence_ok: bool
+    verifier_policy_ok: bool
     knowledge_scope_ok: bool
     evidence_validity_ok: bool
     uncertainty_ok: bool
@@ -99,10 +122,35 @@ def generate_bounded_template_answer(
     answer_template_key: str | None = None,
     top_k: int = 5,
     min_score: float = 2.0,
+    runtime_db: RuntimeKnowledgeDB | None = None,
+    verifier_policy: CounselingAnswerVerifierPolicy | None = None,
 ) -> ChatTemplateAnswer:
-    results = retrieve_bounded_chunks(
-        manifest, scope=scope, query=query, top_k=top_k, as_of=as_of
+    runtime_db = runtime_db or load_runtime_knowledge_db()
+    policy = require_repository_approved_policy(
+        verifier_policy or load_counseling_answer_verifier_policy()
     )
+    entities = extract_question_entities(query, runtime_db)
+    urgent_keys = sorted(
+        set(entities.risk_signal_keys) & set(policy.urgent_risk_keys)
+        if entities.urgent_risk_detected
+        else set()
+    )
+    if urgent_keys:
+        return ChatTemplateAnswer(
+            query=query,
+            status="safety_escalation",
+            answer_template_key="urgent_safety_guidance",
+            answer_text=policy.emergency_guidance_text,
+            rationale="urgent_risk_precedes_retrieval_and_recommendation",
+            knowledge_scope_id=scope.scope_id,
+            answered_at=as_of,
+            uncertainty=AnswerUncertainty(
+                level="high", reasons=["urgent_symptom_requires_emergency_evaluation"]
+            ),
+            safety_policy_id=policy.policy_id,
+            detected_urgent_risk_keys=urgent_keys,
+        )
+    results = retrieve_bounded_chunks(manifest, scope=scope, query=query, top_k=top_k, as_of=as_of)
     query_tokens = _tokenize(query)
     if not results:
         return ChatTemplateAnswer(
@@ -132,9 +180,7 @@ def generate_bounded_template_answer(
     if selected_result is None or selected_chunk is None:
         status = "unsupported" if _looks_in_scope(query_tokens, manifest) else "out_of_scope"
         rationale = (
-            "in_scope_but_not_supported"
-            if status == "unsupported"
-            else "out_of_scope_query"
+            "in_scope_but_not_supported" if status == "unsupported" else "out_of_scope_query"
         )
         return ChatTemplateAnswer(
             query=query,
@@ -183,12 +229,25 @@ def verify_bounded_template_answer(
     expected_claim_ids: list[str] | None = None,
     expected_terms: list[str] | None = None,
     expected_status: str | None = None,
+    runtime_db: RuntimeKnowledgeDB | None = None,
+    verifier_policy: CounselingAnswerVerifierPolicy | None = None,
 ) -> ChatAnswerVerification:
     issues: list[str] = []
     normalized_text = answer.answer_text.lower()
     expected_reference_ids = expected_reference_ids or []
     expected_claim_ids = expected_claim_ids or []
     expected_terms = expected_terms or []
+    runtime_db = runtime_db or load_runtime_knowledge_db()
+    try:
+        policy = require_repository_approved_policy(
+            verifier_policy or load_counseling_answer_verifier_policy()
+        )
+        verifier_policy_ok = answer.safety_policy_id in {None, policy.policy_id}
+    except ValueError:
+        policy = load_counseling_answer_verifier_policy()
+        verifier_policy_ok = False
+    if not verifier_policy_ok:
+        issues.append("verifier_policy_mismatch")
 
     status_ok = expected_status is None or answer.status == expected_status
     if not status_ok:
@@ -235,9 +294,37 @@ def verify_bounded_template_answer(
     if not safety_boundary_ok:
         issues.append("safety_boundary_violated")
 
-    knowledge_scope_ok = (
-        answer.knowledge_scope_id == scope.scope_id and answer.answered_at == as_of
+    entities = extract_question_entities(answer.query, runtime_db)
+    urgent_keys = sorted(
+        set(entities.risk_signal_keys) & set(policy.urgent_risk_keys)
+        if entities.urgent_risk_detected
+        else set()
     )
+    forbidden_expression_ok = not any(
+        expression in normalized_text for expression in policy.forbidden_expressions
+    )
+    if not forbidden_expression_ok:
+        issues.append("forbidden_expression_detected")
+
+    emergency_precedence_ok = True
+    if urgent_keys:
+        emergency_precedence_ok = (
+            answer.status == "safety_escalation"
+            and answer.answer_text == policy.emergency_guidance_text
+            and answer.detected_urgent_risk_keys == urgent_keys
+            and answer.safety_policy_id == policy.policy_id
+            and not answer.citations
+            and not answer.used_chunk_ids
+            and not any(
+                expression in normalized_text for expression in policy.recommendation_expressions
+            )
+        )
+    elif answer.status == "safety_escalation":
+        emergency_precedence_ok = False
+    if not emergency_precedence_ok:
+        issues.append("emergency_safety_precedence_failed")
+
+    knowledge_scope_ok = answer.knowledge_scope_id == scope.scope_id and answer.answered_at == as_of
     try:
         knowledge_scope_ok = knowledge_scope_ok and (
             scope == load_approved_counseling_scope(scope.scope_id)
@@ -266,6 +353,49 @@ def verify_bounded_template_answer(
     if not knowledge_scope_ok:
         issues.append("knowledge_scope_mismatch")
 
+    answer_grounding_ok = True
+    if answer.status == "supported":
+        answer_grounding_ok = len(
+            selected_chunks
+        ) == 1 and answer.answer_text == _render_template_answer(
+            answer.answer_template_key, selected_chunks[0]
+        )
+    elif answer.status == "unsupported":
+        answer_grounding_ok = (
+            not answer.citations
+            and not answer.used_chunk_ids
+            and answer.answer_text
+            == (
+                "I do not have citation-backed evidence in the local counseling corpus "
+                "to support that claim, so I cannot state it as true."
+            )
+        )
+    elif answer.status == "out_of_scope":
+        answer_grounding_ok = (
+            not answer.citations
+            and not answer.used_chunk_ids
+            and answer.answer_text
+            == (
+                "I do not have in-scope evidence for that counseling question. "
+                "I can only answer bounded supplement counseling questions "
+                "grounded in local references."
+            )
+        )
+    elif answer.status == "safety_escalation":
+        answer_grounding_ok = answer.answer_text == policy.emergency_guidance_text
+    if not answer_grounding_ok:
+        issues.append("unsupported_or_unapproved_answer_text")
+
+    required_risk_coverage_ok = True
+    if answer.status == "supported" and any(
+        chunk.normalized_claim_type == "drug_interaction" for chunk in selected_chunks
+    ):
+        required_risk_coverage_ok = all(
+            term in normalized_text for term in policy.interaction_risk_terms
+        )
+    if not required_risk_coverage_ok:
+        issues.append("required_risk_omitted")
+
     evidence_validity_ok = True
     citations_by_chunk = {citation.chunk_id: citation for citation in answer.citations}
     if len(citations_by_chunk) != len(answer.citations):
@@ -275,17 +405,21 @@ def verify_bounded_template_answer(
         expected_active = chunk.effective_at <= as_of and (
             chunk.retired_at is None or chunk.retired_at > as_of
         )
-        if citation is None or citation.model_dump() != _build_citation(
-            chunk, as_of=as_of
-        ).model_dump() or not expected_active:
+        if (
+            citation is None
+            or citation.model_dump() != _build_citation(chunk, as_of=as_of).model_dump()
+            or not expected_active
+        ):
             evidence_validity_ok = False
     if answer.status != "supported" and (answer.citations or answer.used_chunk_ids):
         evidence_validity_ok = False
     if not evidence_validity_ok:
         issues.append("answer_evidence_validity_mismatch")
 
-    expected_uncertainty = _build_uncertainty(
-        status=answer.status, chunks=selected_chunks
+    expected_uncertainty = (
+        AnswerUncertainty(level="high", reasons=["urgent_symptom_requires_emergency_evaluation"])
+        if answer.status == "safety_escalation"
+        else _build_uncertainty(status=answer.status, chunks=selected_chunks)
     )
     uncertainty_ok = answer.uncertainty == expected_uncertainty
     if not uncertainty_ok:
@@ -301,6 +435,11 @@ def verify_bounded_template_answer(
             out_of_scope_handled_ok,
             unsupported_claim_suppressed_ok,
             safety_boundary_ok,
+            answer_grounding_ok,
+            required_risk_coverage_ok,
+            forbidden_expression_ok,
+            emergency_precedence_ok,
+            verifier_policy_ok,
             knowledge_scope_ok,
             evidence_validity_ok,
             uncertainty_ok,
@@ -316,6 +455,11 @@ def verify_bounded_template_answer(
         out_of_scope_handled_ok=out_of_scope_handled_ok,
         unsupported_claim_suppressed_ok=unsupported_claim_suppressed_ok,
         safety_boundary_ok=safety_boundary_ok,
+        answer_grounding_ok=answer_grounding_ok,
+        required_risk_coverage_ok=required_risk_coverage_ok,
+        forbidden_expression_ok=forbidden_expression_ok,
+        emergency_precedence_ok=emergency_precedence_ok,
+        verifier_policy_ok=verifier_policy_ok,
         knowledge_scope_ok=knowledge_scope_ok,
         evidence_validity_ok=evidence_validity_ok,
         uncertainty_ok=uncertainty_ok,
@@ -430,9 +574,7 @@ def _build_uncertainty(
     chunks: list[RetrievalChunk],
 ) -> AnswerUncertainty:
     if status == "out_of_scope":
-        return AnswerUncertainty(
-            level="high", reasons=["no_allowed_in_scope_evidence_retrieved"]
-        )
+        return AnswerUncertainty(level="high", reasons=["no_allowed_in_scope_evidence_retrieved"])
     if status == "unsupported":
         return AnswerUncertainty(
             level="high", reasons=["allowed_corpus_does_not_support_requested_claim"]
@@ -537,11 +679,7 @@ def _tokenize(text: str) -> set[str]:
         "why",
         "with",
     }
-    return {
-        token
-        for token in normalized.split()
-        if len(token) >= 2 and token not in stopwords
-    }
+    return {token for token in normalized.split() if len(token) >= 2 and token not in stopwords}
 
 
 __all__ = [

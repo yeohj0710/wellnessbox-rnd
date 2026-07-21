@@ -13,6 +13,7 @@ from wellnessbox_rnd.chat.answering import (
     ChatTemplateAnswer,
     _build_citation,
     _build_uncertainty,
+    _render_template_answer,
     generate_bounded_template_answer,
     verify_bounded_template_answer,
 )
@@ -104,6 +105,15 @@ def generate_chat_answer_with_openai_fallback(
 ) -> ChatAdapterResponse:
     config = load_openai_chat_adapter_config_from_env()
     fallback = _build_deterministic_fallback(manifest, adapter_request)
+    if fallback.answer.status == "safety_escalation":
+        return ChatAdapterResponse(
+            provider="deterministic_template_fallback",
+            fallback_reason="urgent_safety_precedence",
+            attempted_live_call=False,
+            model=None,
+            answer=fallback.answer,
+            verification=fallback.verification,
+        )
     evidence_results = retrieve_bounded_chunks(
         manifest,
         scope=adapter_request.knowledge_scope,
@@ -294,13 +304,12 @@ def _call_openai_responses_api(
                             "type": "string",
                             "enum": ["supported", "unsupported", "out_of_scope"],
                         },
-                        "answer_text": {"type": "string"},
                         "used_chunk_ids": {
                             "type": "array",
                             "items": {"type": "string"},
                         },
                     },
-                    "required": ["status", "answer_text", "used_chunk_ids"],
+                    "required": ["status", "used_chunk_ids"],
                 },
             }
         },
@@ -329,26 +338,48 @@ def _parse_openai_answer(
         raise ValueError("missing_output_text")
     payload = json.loads(output_text)
     status = payload["status"]
-    answer_text = payload["answer_text"]
     used_chunk_ids = payload["used_chunk_ids"]
     if status not in {"supported", "unsupported", "out_of_scope"}:
         raise ValueError("invalid_status")
+    if not isinstance(used_chunk_ids, list) or any(
+        not isinstance(chunk_id, str) for chunk_id in used_chunk_ids
+    ):
+        raise ValueError("invalid_used_chunk_ids")
+    if len(used_chunk_ids) != len(set(used_chunk_ids)):
+        raise ValueError("duplicate_used_chunk_ids")
     allowed_chunks = {chunk.chunk_id: chunk for chunk in evidence_chunks}
-    valid_chunk_ids = [chunk_id for chunk_id in used_chunk_ids if chunk_id in allowed_chunks]
+    if any(chunk_id not in allowed_chunks for chunk_id in used_chunk_ids):
+        raise ValueError("unapproved_used_chunk_id")
+    valid_chunk_ids = list(used_chunk_ids)
     citations = []
     if status == "supported":
-        if not valid_chunk_ids:
+        if len(valid_chunk_ids) != 1:
             raise ValueError("supported_without_evidence")
         citations = [
-            _build_citation(
-                allowed_chunks[chunk_id], as_of=adapter_request.as_of
-            ).model_dump()
+            _build_citation(allowed_chunks[chunk_id], as_of=adapter_request.as_of).model_dump()
             for chunk_id in valid_chunk_ids
         ]
+        selected_chunk = allowed_chunks[valid_chunk_ids[0]]
+        template_key = adapter_request.answer_template_key or "evidence_summary"
+        answer_text = _render_template_answer(template_key, selected_chunk)
+    elif valid_chunk_ids:
+        raise ValueError("non_supported_answer_must_not_use_evidence")
+    elif status == "unsupported":
+        answer_text = (
+            "I do not have citation-backed evidence in the local counseling corpus "
+            "to support that claim, so I cannot state it as true."
+        )
+    else:
+        answer_text = (
+            "I do not have in-scope evidence for that counseling question. "
+            "I can only answer bounded supplement counseling questions "
+            "grounded in local references."
+        )
     return ChatTemplateAnswer(
         query=adapter_request.query,
         status=status,
-        answer_template_key=adapter_request.answer_template_key or "openai_adapter",
+        answer_template_key=adapter_request.answer_template_key
+        or ("unsupported" if status == "unsupported" else "out_of_scope"),
         answer_text=answer_text,
         citations=citations,
         used_chunk_ids=valid_chunk_ids,

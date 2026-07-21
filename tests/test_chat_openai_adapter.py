@@ -45,8 +45,7 @@ def _build_manifest() -> RetrievalCorpusManifest:
                     "increase anticoagulant effect and bleeding risk."
                 ),
                 excerpt=(
-                    "Glucosamine and chondroitin should be treated as a "
-                    "bleeding-risk interaction."
+                    "Glucosamine and chondroitin should be treated as a bleeding-risk interaction."
                 ),
                 keywords=["drug_interaction", "bleeding_risk", "glucosamine", "warfarin"],
                 ingredient_keys=["glucosamine", "chondroitin"],
@@ -101,9 +100,7 @@ def test_openai_adapter_returns_mocked_verified_answer(monkeypatch) -> None:
     def _mock_call_openai_responses_api(**_kwargs) -> dict[str, object]:
         return {
             "output_text": (
-                '{"status":"supported","answer_text":"Glucosamine with warfarin '
-                'should be treated as a drug interaction.","used_chunk_ids":'
-                '["chunk::CLM-KNOWLEDGE-ANTICOAG-001"]}'
+                '{"status":"supported","used_chunk_ids":["chunk::CLM-KNOWLEDGE-ANTICOAG-001"]}'
             )
         }
 
@@ -137,12 +134,7 @@ def test_openai_adapter_falls_back_when_mocked_answer_fails_verification(monkeyp
     )
 
     def _mock_call_openai_responses_api(**_kwargs) -> dict[str, object]:
-        return {
-            "output_text": (
-                '{"status":"supported","answer_text":"Unsupported freeform text.",'
-                '"used_chunk_ids":[]}'
-            )
-        }
+        return {"output_text": ('{"status":"supported","used_chunk_ids":[]}')}
 
     monkeypatch.setattr(
         "wellnessbox_rnd.chat.openai_adapter._call_openai_responses_api",
@@ -217,3 +209,34 @@ def test_openai_adapter_config_uses_defaults_and_missing_key_state(monkeypatch) 
     assert config.model == "gpt-5-mini"
     assert config.base_url == "https://api.openai.com/v1"
     assert config.timeout_seconds == 20.0
+
+
+def test_openai_adapter_never_calls_provider_for_urgent_question(monkeypatch) -> None:
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    called = False
+
+    def _unexpected_provider_call(**_kwargs) -> dict[str, object]:
+        nonlocal called
+        called = True
+        raise AssertionError("provider must not be called for urgent questions")
+
+    monkeypatch.setattr(
+        "wellnessbox_rnd.chat.openai_adapter._call_openai_responses_api",
+        _unexpected_provider_call,
+    )
+    response = generate_chat_answer_with_openai_fallback(
+        _build_manifest(),
+        ChatAdapterRequest(
+            query="I have chest pain after taking a supplement. What should I take?",
+            knowledge_scope=_build_scope(),
+            as_of=ANSWER_TIME,
+        ),
+        allow_live_api=True,
+    )
+
+    assert called is False
+    assert response.answer.status == "safety_escalation"
+    assert response.fallback_reason == "urgent_safety_precedence"
+    assert response.attempted_live_call is False
+    assert response.model is None
+    assert response.evidence_chunk_ids == []

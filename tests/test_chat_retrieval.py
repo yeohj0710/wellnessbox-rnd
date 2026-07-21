@@ -22,6 +22,7 @@ from wellnessbox_rnd.chat.retrieval import (
     retrieve_bounded_chunks,
     retrieve_relevant_chunks,
 )
+from wellnessbox_rnd.chat.verifier import load_counseling_answer_verifier_policy
 from wellnessbox_rnd.knowledge.runtime_db import load_runtime_knowledge_db
 
 ANSWER_TIME = datetime(2026, 7, 21, tzinfo=UTC)
@@ -40,9 +41,7 @@ def _build_single_interaction_manifest() -> RetrievalCorpusManifest:
         .splitlines()
         if line.strip()
     ]
-    claim = next(
-        item for item in claims if item["claim_id"] == "CLM-KNOWLEDGE-ANTICOAG-001"
-    )
+    claim = next(item for item in claims if item["claim_id"] == "CLM-KNOWLEDGE-ANTICOAG-001")
     references = _load_reference_rows("data/knowledge/reference_knowledge_base_v1.json")
     chunk = _build_chunk_from_claim(claim, references)
     return RetrievalCorpusManifest(
@@ -74,8 +73,7 @@ def test_retrieve_relevant_chunks_hits_anticoagulant_claim() -> None:
                     "increase anticoagulant effect and bleeding risk."
                 ),
                 excerpt=(
-                    "Glucosamine and chondroitin should be treated as a "
-                    "bleeding-risk interaction."
+                    "Glucosamine and chondroitin should be treated as a bleeding-risk interaction."
                 ),
                 keywords=["drug_interaction", "bleeding_risk", "glucosamine", "warfarin"],
                 ingredient_keys=["glucosamine", "chondroitin"],
@@ -199,8 +197,7 @@ def test_generate_bounded_template_answer_preserves_citation_linkage() -> None:
                     "increase anticoagulant effect and bleeding risk."
                 ),
                 excerpt=(
-                    "Glucosamine and chondroitin should be treated as a "
-                    "bleeding-risk interaction."
+                    "Glucosamine and chondroitin should be treated as a bleeding-risk interaction."
                 ),
                 keywords=["drug_interaction", "bleeding_risk", "glucosamine", "warfarin"],
                 ingredient_keys=["glucosamine", "chondroitin"],
@@ -252,10 +249,7 @@ def test_generate_bounded_template_answer_handles_out_of_scope_query() -> None:
                 line_start=20,
                 line_end=22,
                 normalized_claim_type="action_space_constraint",
-                text=(
-                    "Runtime next_action must stay inside the system-owned "
-                    "action space."
-                ),
+                text=("Runtime next_action must stay inside the system-owned action space."),
                 excerpt="The action space remains system-owned.",
                 keywords=["action_space", "policy"],
                 ingredient_keys=[],
@@ -308,8 +302,7 @@ def test_generate_bounded_template_answer_suppresses_unsupported_claim() -> None
                     "increase anticoagulant effect and bleeding risk."
                 ),
                 excerpt=(
-                    "Glucosamine and chondroitin should be treated as a "
-                    "bleeding-risk interaction."
+                    "Glucosamine and chondroitin should be treated as a bleeding-risk interaction."
                 ),
                 keywords=["drug_interaction", "bleeding_risk", "glucosamine", "warfarin"],
                 ingredient_keys=["glucosamine", "chondroitin"],
@@ -413,9 +406,7 @@ def test_answer_verifier_rejects_forged_validity_and_uncertainty() -> None:
     )
     forged = answer.model_copy(
         update={
-            "citations": [
-                answer.citations[0].model_copy(update={"active_at_answer_time": False})
-            ],
+            "citations": [answer.citations[0].model_copy(update={"active_at_answer_time": False})],
             "uncertainty": answer.uncertainty.model_copy(update={"level": "high"}),
         }
     )
@@ -536,9 +527,7 @@ def test_retrieval_filters_retired_passage_at_query_time() -> None:
         text="magnesium sleep evidence",
         excerpt="magnesium sleep",
     )
-    manifest = RetrievalCorpusManifest(
-        manifest_version="test", chunk_count=1, chunks=[chunk]
-    )
+    manifest = RetrievalCorpusManifest(manifest_version="test", chunk_count=1, chunks=[chunk])
     assert retrieve_relevant_chunks(
         manifest,
         query="magnesium sleep",
@@ -732,6 +721,71 @@ def test_question_entity_contract_rejects_forged_urgent_summary() -> None:
         QuestionEntityExtraction.model_validate(
             valid.model_dump() | {"urgent_risk_detected": False}
         )
+
+
+def test_verifier_blocks_unsupported_claim_risk_omission_and_forbidden_expression() -> None:
+    manifest = _build_single_interaction_manifest()
+    scope = _scope_for(manifest)
+    answer = generate_bounded_template_answer(
+        manifest,
+        query="What should counseling say about glucosamine with warfarin?",
+        scope=scope,
+        as_of=ANSWER_TIME,
+        answer_template_key="interaction_warning",
+    )
+
+    unsupported = answer.model_copy(
+        update={"answer_text": answer.answer_text + " It is guaranteed to work."}
+    )
+    unsupported_result = verify_bounded_template_answer(
+        unsupported, manifest=manifest, scope=scope, as_of=ANSWER_TIME
+    )
+    assert unsupported_result.passed is False
+    assert "unsupported_or_unapproved_answer_text" in unsupported_result.issues
+    assert "forbidden_expression_detected" in unsupported_result.issues
+
+    omitted_risk = answer.model_copy(
+        update={"answer_text": "Glucosamine with warfarin should be treated cautiously."}
+    )
+    omitted_result = verify_bounded_template_answer(
+        omitted_risk, manifest=manifest, scope=scope, as_of=ANSWER_TIME
+    )
+    assert omitted_result.passed is False
+    assert "required_risk_omitted" in omitted_result.issues
+
+
+def test_urgent_question_returns_safety_guidance_before_any_recommendation() -> None:
+    manifest = _build_single_interaction_manifest()
+    scope = _scope_for(manifest)
+    policy = load_counseling_answer_verifier_policy()
+
+    answer = generate_bounded_template_answer(
+        manifest,
+        query="I have chest pain after taking this supplement. What should I take?",
+        scope=scope,
+        as_of=ANSWER_TIME,
+    )
+    verification = verify_bounded_template_answer(
+        answer, manifest=manifest, scope=scope, as_of=ANSWER_TIME
+    )
+
+    assert answer.status == "safety_escalation"
+    assert answer.answer_text == policy.emergency_guidance_text
+    assert answer.answer_text.startswith(policy.emergency_guidance_sentences[0])
+    assert answer.detected_urgent_risk_keys == ["chest_pain"]
+    assert answer.citations == []
+    assert verification.passed is True
+
+
+def test_explicitly_negated_urgent_wording_does_not_force_escalation() -> None:
+    manifest = _build_single_interaction_manifest()
+    answer = generate_bounded_template_answer(
+        manifest,
+        query="No chest pain is present. What does the citation policy require?",
+        scope=_scope_for(manifest),
+        as_of=ANSWER_TIME,
+    )
+    assert answer.status != "safety_escalation"
 
 
 def test_build_chunk_rejects_tampered_claim_lineage() -> None:
