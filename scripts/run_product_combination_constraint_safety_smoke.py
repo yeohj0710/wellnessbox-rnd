@@ -8,13 +8,13 @@ import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from run_wellnessbox_final_safety_authority_smoke import (
+    run_smoke as run_final_safety_authority_smoke,
+)
 from wellnessbox_rnd.optimizer.product_combinations import (
     ProductCombinationEvidenceV1,
     ProductCombinationFilterPolicyV1,
     evaluate_product_combination_filters_v1,
-)
-from run_wellnessbox_final_safety_authority_smoke import (
-    run_smoke as run_final_safety_authority_smoke,
 )
 
 RND_ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +41,7 @@ SERVICE_SOURCE_PATHS = [
     "lib/product/product-detail-facts.ts",
     "lib/product/product.catalog.ts",
     "lib/server/wb-rnd-ingredient-map.ts",
+    "lib/server/wb-rnd-interim-client.ts",
     "lib/server/wb-rnd-interim-route.ts",
     "lib/server/wb-rnd-interim-safety-authority.ts",
     "lib/server/wb-rnd-product-candidates.ts",

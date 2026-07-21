@@ -77,10 +77,6 @@ def _stop_process(process: subprocess.Popen[str]) -> None:
         process.wait(timeout=5)
 
 
-def _npm_command() -> str:
-    return "npm.cmd" if os.name == "nt" else "npm"
-
-
 def _api_python() -> str:
     if os.name == "nt":
         project_python = PROJECT_ROOT / ".venv-interim" / "Scripts" / "python.exe"
@@ -178,7 +174,13 @@ def run_smoke(*, wellnessbox_root: Path, output_path: Path) -> dict[str, object]
                 }
             )
             result = subprocess.run(
-                [_npm_command(), "run", "qa:rnd:final-safety-authority"],
+                [
+                    "node",
+                    "--conditions=react-server",
+                    "--import",
+                    "tsx",
+                    "scripts/qa/check-rnd-final-safety-authority.cts",
+                ],
                 cwd=wellnessbox_root,
                 env=service_environment,
                 check=False,
@@ -211,7 +213,6 @@ def run_smoke(*, wellnessbox_root: Path, output_path: Path) -> dict[str, object]
         "lib/server/wb-rnd-interim-safety-authority.ts",
         "lib/server/wb-rnd-ingredient-map.ts",
         "lib/server/wb-rnd-tips-route-test-hook.ts",
-        "package.json",
         "scripts/qa/check-rnd-final-safety-authority.cts",
         "scripts/qa/check-rnd-ingredient-map.cts",
     ]
