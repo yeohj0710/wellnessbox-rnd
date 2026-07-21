@@ -14,6 +14,7 @@ from wellnessbox_rnd.interim.bootstrap import (
 )
 from wellnessbox_rnd.interim.evidence import EvidenceRegistry
 from wellnessbox_rnd.interim.importer import register_retrained_package
+from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.store import InterimStore
 
 RETRAINED_PACKAGE_ROOT = Path("artifacts/tips/interim/retrained")
@@ -481,6 +482,41 @@ def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
     )
     assert first.status_code == 200
     assert second.status_code == 409
+
+
+def test_due_plan_cron_endpoint_enqueues_shared_reevaluation_job(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "cron-api.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    client = TestClient(app)
+    profile_id = "usr_1234567890abcdef"
+    client.post(
+        "/v1/interim/profiles",
+        headers=_headers(),
+        json={"profile_id": profile_id, "consent_scopes": [], "profile": {}},
+    )
+    queue = WorkflowJobQueue(InterimStore(database))
+    queue.schedule_followup_with_reminder(
+        followup_id="fu_cron_api",
+        profile_id=profile_id,
+        plan_id="plan_cron_api",
+        due_at=datetime(2026, 7, 21, 12, 0, tzinfo=UTC),
+        reminder_at=datetime(2026, 7, 20, 12, 0, tzinfo=UTC),
+        requested_data=["PRO"],
+        now=datetime(2026, 7, 1, 12, 0, tzinfo=UTC),
+    )
+
+    response = client.post(
+        "/v1/interim/agent/cron/due-plans",
+        headers=_headers(),
+        json={"as_of": "2026-07-21T12:00:00Z"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["created_job_count"] == 1
+    assert response.json()["jobs"][0]["job_type"] == "PLAN_REEVALUATION"
 
 
 def test_execution_event_api_connects_conversation_and_followup_to_recommendation(

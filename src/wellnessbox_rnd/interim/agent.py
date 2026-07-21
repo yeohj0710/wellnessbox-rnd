@@ -9,6 +9,7 @@ from uuid import uuid4
 
 from wellnessbox_rnd.interim.connectors import ingest_device_session
 from wellnessbox_rnd.interim.contracts import DataClass
+from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.safety import evaluate_safety
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.interim.workflow_contract import (
@@ -644,20 +645,27 @@ class BoundedAgent:
         if tool_name == "create_followup":
             if "followup:write" not in scopes:
                 raise PermissionError("missing_followup_consent")
-            followup_id = f"fu_{uuid4().hex}"
-            due_at = datetime.now(UTC) + timedelta(days=int(arguments.get("days", 14)))
-            with self.store.transaction() as connection:
-                connection.execute(
-                    "insert into followups values (?, ?, ?, ?, 'OPEN', ?)",
-                    (
-                        followup_id,
-                        profile_id,
-                        due_at.isoformat(),
-                        _json(arguments.get("requested_data", [])),
-                        datetime.now(UTC).isoformat(),
-                    ),
-                )
-            return {"followup_id": followup_id, "postcondition_success": True}
+            plan_id = str(arguments.get("plan_id", "")).strip()
+            now = datetime.now(UTC)
+            due_at_raw = arguments.get("due_at")
+            due_at = (
+                datetime.fromisoformat(str(due_at_raw))
+                if due_at_raw
+                else now + timedelta(days=int(arguments.get("days", 14)))
+            )
+            reminder_at = due_at - timedelta(
+                days=int(arguments.get("reminder_days_before", 1))
+            )
+            scheduled = WorkflowJobQueue(self.store).schedule_followup_with_reminder(
+                followup_id=str(arguments.get("followup_id") or f"fu_{uuid4().hex}"),
+                profile_id=profile_id,
+                plan_id=plan_id,
+                due_at=due_at,
+                reminder_at=reminder_at,
+                requested_data=[str(item) for item in arguments.get("requested_data", [])],
+                now=now,
+            )
+            return scheduled | {"postcondition_success": True}
         if tool_name == "ingest_pro":
             if "pro:write" not in scopes:
                 raise PermissionError("missing_pro_consent")

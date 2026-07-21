@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 9
+SCHEMA_VERSION = 10
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -423,11 +423,34 @@ CREATE TABLE IF NOT EXISTS agent_steps (
 CREATE TABLE IF NOT EXISTS followups (
   followup_id TEXT PRIMARY KEY,
   profile_id TEXT NOT NULL REFERENCES user_profiles(profile_id),
+  plan_id TEXT,
   due_at TEXT NOT NULL,
   requested_data_json TEXT NOT NULL,
   status TEXT NOT NULL,
   created_at TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS workflow_jobs (
+  job_id TEXT PRIMARY KEY,
+  job_type TEXT NOT NULL CHECK(job_type IN ('FOLLOWUP_REMINDER', 'PLAN_REEVALUATION')),
+  status TEXT NOT NULL CHECK(status IN ('READY', 'CLAIMED', 'COMPLETED', 'CANCELLED')),
+  idempotency_key TEXT NOT NULL UNIQUE,
+  profile_id TEXT NOT NULL REFERENCES user_profiles(profile_id),
+  plan_id TEXT NOT NULL,
+  followup_id TEXT NOT NULL REFERENCES followups(followup_id),
+  scheduled_at TEXT NOT NULL,
+  payload_json TEXT NOT NULL,
+  payload_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  claimed_at TEXT,
+  completed_at TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_workflow_jobs_ready_schedule
+ON workflow_jobs(status, scheduled_at, job_type);
+
+CREATE INDEX IF NOT EXISTS idx_workflow_jobs_followup
+ON workflow_jobs(followup_id, job_type);
 
 CREATE TABLE IF NOT EXISTS pro_observations (
   observation_id TEXT PRIMARY KEY,
@@ -565,6 +588,11 @@ class InterimStore:
             columns = {str(row[1]) for row in connection.execute("pragma table_info(review_tasks)")}
             if "pharmacy_id" not in columns:
                 connection.execute("alter table review_tasks add column pharmacy_id integer")
+            followup_columns = {
+                str(row[1]) for row in connection.execute("pragma table_info(followups)")
+            }
+            if "plan_id" not in followup_columns:
+                connection.execute("alter table followups add column plan_id text")
             event_columns = {
                 str(row[1])
                 for row in connection.execute("pragma table_info(execution_events)")

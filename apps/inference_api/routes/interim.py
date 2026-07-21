@@ -29,6 +29,7 @@ from wellnessbox_rnd.interim.data_mutation import (
     EventMutationStateError,
 )
 from wellnessbox_rnd.interim.inference import recommend_with_registered_model
+from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
 from wellnessbox_rnd.interim.safety import SafetyDecision, SafetyRank, evaluate_safety
 from wellnessbox_rnd.interim.session_replay import (
@@ -140,6 +141,12 @@ class OrderedWorkflowRequest(BaseModel):
     ingredients: list[str] = Field(min_length=1, max_length=20)
     evidence_query: str = Field(min_length=1, max_length=200)
     max_items: int = Field(ge=1, le=20)
+
+
+class DuePlanCronRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    as_of: datetime
 
 
 class DeviceRequest(BaseModel):
@@ -554,6 +561,16 @@ def execute_ordered_workflow(payload: OrderedWorkflowRequest) -> dict[str, Any]:
     except PermissionError as error:
         raise HTTPException(status_code=403, detail=str(error)) from error
     except (ValueError, RuntimeError) as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.post("/agent/cron/due-plans")
+def enqueue_due_plan_reevaluations(payload: DuePlanCronRequest) -> dict[str, object]:
+    try:
+        return WorkflowJobQueue(_store()).enqueue_due_plan_reevaluations(
+            as_of=payload.as_of
+        )
+    except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
 
 

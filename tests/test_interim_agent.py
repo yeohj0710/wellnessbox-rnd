@@ -74,6 +74,28 @@ def test_missing_consent_blocks_side_effect_tool(tmp_path: Path) -> None:
         )
 
 
+def test_create_followup_stores_reminder_in_shared_workflow_queue(tmp_path: Path) -> None:
+    agent = _agent(tmp_path)
+    run = agent.create_run(profile_id="usr_1234567890abcdef", idempotency_key="followup-job")
+    _seed_run_state(agent, run["run_id"], AgentState.PLAN_READY)
+
+    result = agent.execute_tool(
+        run_id=run["run_id"],
+        tool_name="create_followup",
+        arguments={
+            "plan_id": "plan_agent_job",
+            "followup_id": "fu_agent_job",
+            "due_at": "2026-08-04T12:00:00+00:00",
+            "requested_data": ["PRO", "ADHERENCE"],
+        },
+        consent_scopes={"followup:write"},
+    )
+
+    assert result["reminder_job"]["job_type"] == "FOLLOWUP_REMINDER"
+    assert agent.store.scalar("select plan_id from followups") == "plan_agent_job"
+    assert agent.store.scalar("select count(*) from workflow_jobs") == 1
+
+
 def test_unknown_run_cannot_commit_side_effect(tmp_path: Path) -> None:
     agent = _agent(tmp_path)
     with pytest.raises(ValueError, match="unknown_agent_run"):
