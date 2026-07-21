@@ -151,11 +151,14 @@ def _run_once(database: Path) -> dict[str, object]:
             text=True,
         )
         payload = json.loads(completed.stdout.strip().splitlines()[-1])
-        with sqlite3.connect(database) as connection:
+        connection = sqlite3.connect(database)
+        try:
             persisted_counts = {
                 table: int(connection.execute(f"select count(*) from {table}").fetchone()[0])
                 for table in ("agent_runs", "agent_steps", "recommendation_runs")
             }
+        finally:
+            connection.close()
         first = payload["first"]
         repeated = payload["repeated"]
         cases = [
