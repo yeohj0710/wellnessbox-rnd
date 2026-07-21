@@ -27,6 +27,8 @@ __all__ = [
     "PROGroupEffectContractV1",
     "PROGroupEffectSummaryV1",
     "PROGroupEstimateV1",
+    "PROCorrectionRecalculationResultV1",
+    "PRORecommendationEffectLineageV1",
     "PROImprovementSummaryV1",
     "PROInstrumentResponseV1",
     "PROInstrumentScoreV1",
@@ -38,6 +40,7 @@ __all__ = [
     "build_default_pro_form_schema_v1",
     "build_pro_baseline_distribution_v1",
     "build_pro_group_effect_summary_v1",
+    "correct_and_recalculate_pro_followup_v1",
     "coerce_baseline_followup_pro_event_v1",
     "interpret_pro_followup_effect_v1",
     "is_versioned_pro_followup_payload_v1",
@@ -85,11 +88,19 @@ _PRO_GROUP_EFFECT_EXPORTS = {
     "load_pro_group_effect_contract_v1",
 }
 
+_PRO_CORRECTION_EXPORTS = {
+    "PROCorrectionRecalculationResultV1",
+    "PRORecommendationEffectLineageV1",
+    "correct_and_recalculate_pro_followup_v1",
+}
+
 
 def __getattr__(name: str):
     if name in __all__:
         module_name = (
-            "wellnessbox_rnd.metrics.pro_group_effects"
+            "wellnessbox_rnd.metrics.pro_correction"
+            if name in _PRO_CORRECTION_EXPORTS
+            else "wellnessbox_rnd.metrics.pro_group_effects"
             if name in _PRO_GROUP_EFFECT_EXPORTS
             else (
                 "wellnessbox_rnd.metrics.pro_followup"

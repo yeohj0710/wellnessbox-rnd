@@ -5,11 +5,17 @@ from copy import deepcopy
 from pathlib import Path
 
 import pytest
+from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
+from apps.inference_api.main import app
 from wellnessbox_rnd.interim.data_lake import ExecutionLedger
 from wellnessbox_rnd.interim.data_mutation import DataMutationLedger
 from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.metrics.pro_correction import (
+    PROCorrectionRecalculationResultV1,
+    correct_and_recalculate_pro_followup_v1,
+)
 from wellnessbox_rnd.metrics.pro_followup import (
     PROFollowUpEventV1,
     interpret_pro_followup_effect_v1,
@@ -474,6 +480,103 @@ def test_execution_event_correction_preserves_identity_and_revalidates_scores(
     corrected = ledger.get_trace(trace.execution_id).events[-1]
     assert corrected.payload_state == "CORRECTED"
     assert corrected.payload["instrument_scores"][0]["raw_score"] == 7
+
+
+def test_user_correction_recalculates_effect_and_links_recommendation_plan(tmp_path) -> None:
+    store, trace = _store_with_execution(tmp_path)
+    ledger = ExecutionLedger(store)
+    baseline = ledger.append_event(
+        execution_id=trace.execution_id,
+        event_type="followup_evaluation",
+        source="survey",
+        idempotency_key="pro-pre-intake",
+        payload=_event_payload("pre_intake", 10),
+    )
+    week_2 = ledger.append_event(
+        execution_id=trace.execution_id,
+        event_type="followup_evaluation",
+        source="survey",
+        idempotency_key="pro-week-2",
+        payload=_event_payload("week_2", 8),
+    )
+
+    result = correct_and_recalculate_pro_followup_v1(
+        store,
+        execution_id=trace.execution_id,
+        profile_id=SUBJECT_ID,
+        target_event_id=week_2.event.event_id,
+        idempotency_key="user-correct-week-2",
+        replacement_payload=_event_payload("week_2", 7),
+    )
+    replay = correct_and_recalculate_pro_followup_v1(
+        store,
+        execution_id=trace.execution_id,
+        profile_id=SUBJECT_ID,
+        target_event_id=week_2.event.event_id,
+        idempotency_key="user-correct-week-2",
+        replacement_payload=_event_payload("week_2", 7),
+    )
+
+    assert result.recalculated_immediately is True
+    assert result.interpretation.follow_up_event.instrument_scores[0].raw_score == 7
+    assert result.interpretation.mean_health_z_change != interpret_pro_followup_effect_v1(
+        _event_payload("pre_intake", 10), _event_payload("week_2", 8)
+    ).mean_health_z_change
+    assert result.lineage.plan_id == "plan_op053_001"
+    assert result.lineage.baseline_event_id == baseline.event.event_id
+    assert result.lineage.follow_up_event_id == week_2.event.event_id
+    assert result.lineage.selected_ingredient_keys
+    assert result.lineage.causal_effect_claim_allowed is False
+    assert replay.mutation.deduplicated is True
+    assert replay.interpretation == result.interpretation
+
+    forged = result.model_dump(mode="json")
+    forged["lineage"]["plan_id"] = "plan_forged"
+    with pytest.raises(ValidationError):
+        PROCorrectionRecalculationResultV1.model_validate(forged)
+
+
+def test_pro_correction_api_returns_immediate_recalculation(
+    tmp_path, monkeypatch
+) -> None:
+    store, trace = _store_with_execution(tmp_path)
+    ledger = ExecutionLedger(store)
+    ledger.append_event(
+        execution_id=trace.execution_id,
+        event_type="followup_evaluation",
+        source="survey",
+        idempotency_key="api-pre-intake",
+        payload=_event_payload("pre_intake", 10),
+    )
+    week_2 = ledger.append_event(
+        execution_id=trace.execution_id,
+        event_type="followup_evaluation",
+        source="survey",
+        idempotency_key="api-week-2",
+        payload=_event_payload("week_2", 8),
+    )
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr("apps.inference_api.routes.interim._store", lambda: store)
+
+    response = TestClient(app).post(
+        "/v1/interim/pro/followups/correct-and-recalculate",
+        headers={"x-wb-rnd-token": "test-token"},
+        json={
+            "execution_id": trace.execution_id,
+            "profile_id": SUBJECT_ID,
+            "target_event_id": week_2.event.event_id,
+            "idempotency_key": "api-user-correction",
+            "replacement_payload": _event_payload("week_2", 7),
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["recalculated_immediately"] is True
+    assert body["interpretation"]["follow_up_event"]["instrument_scores"][0][
+        "raw_score"
+    ] == 7
+    assert body["lineage"]["selected_ingredient_keys"]
 
 
 def test_effect_interpretation_reflects_adherence_missed_doses_and_adverse_events() -> None:

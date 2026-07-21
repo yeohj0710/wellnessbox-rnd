@@ -37,6 +37,7 @@ from wellnessbox_rnd.interim.session_replay import (
     SessionReplayUnavailableError,
 )
 from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.metrics.pro_correction import correct_and_recalculate_pro_followup_v1
 from wellnessbox_rnd.schemas.recommendation import DataSource
 
 
@@ -243,6 +244,16 @@ class EventMutationRequest(BaseModel):
     operation: Literal["correction", "deletion"]
     idempotency_key: str = Field(min_length=1, max_length=128)
     replacement_payload: dict[str, Any] | None = None
+
+
+class PROCorrectionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    execution_id: str = Field(pattern=r"^exec_[a-f0-9]{32}$")
+    profile_id: str = Field(pattern=r"^usr_[a-f0-9]{16,64}$")
+    target_event_id: str = Field(min_length=1, max_length=128)
+    idempotency_key: str = Field(min_length=1, max_length=128)
+    replacement_payload: dict[str, Any]
 
 
 @router.get("/status")
@@ -549,6 +560,24 @@ def event_mutation(mutation_id: str) -> dict[str, Any]:
         return DataMutationLedger(_store()).get(mutation_id).model_dump(mode="json")
     except EventMutationNotFoundError as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
+
+
+@router.post(
+    "/pro/followups/correct-and-recalculate",
+    dependencies=[Depends(require_event_mutation_token)],
+)
+def correct_pro_followup(payload: PROCorrectionRequest) -> dict[str, Any]:
+    try:
+        return correct_and_recalculate_pro_followup_v1(
+            _store(),
+            **payload.model_dump(),
+        ).model_dump(mode="json")
+    except ExecutionNotFoundError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except IdempotencyConflictError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except (EventMutationStateError, ValueError) as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
 
 
 @router.get("/log-classes")
