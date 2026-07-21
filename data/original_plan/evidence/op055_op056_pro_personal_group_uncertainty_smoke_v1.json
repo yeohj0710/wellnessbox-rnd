@@ -70,7 +70,7 @@
   },
   "schema_version": "op055_op056_pro_personal_group_uncertainty_smoke_v1",
   "source_identity": {
-    "commit": "ea073ada81d549e5df6fcd96ba40ab15866b5dd7",
+    "commit": "8448cec7b3741ebc0c61ad87afd759bab27d78b7",
     "source_paths": [
       "data/contracts/pro_followup_interpretation_v1.json",
       "data/contracts/pro_group_effect_summary_v1.json",
@@ -84,7 +84,7 @@
       "src/wellnessbox_rnd/metrics/pro_scoring.py",
       "src/wellnessbox_rnd/metrics/statistics.py"
     ],
-    "source_sha256": "d2036fd04f47021b6c9dad50cb325a166a8e33fa96e2d8978041e16d1d82674f"
+    "source_sha256": "6c4f5a5bf59d5134c06b5eb28dfecc5b0a40a3a640f36bb5e0dbfe626883f456"
   },
   "uncertainty_reason_codes": [
     "observational_association_not_causal",

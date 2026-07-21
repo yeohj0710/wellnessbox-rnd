@@ -44,6 +44,10 @@
         "reason_code": "interpretable_worsening_re_optimize"
       }
     },
+    "data_class_pair_semantic_input_sha256": {
+      "REAL_WORLD_OUTCOME": "b9d15422fbce9fa3457e35f217705bd5441c050142b8b4272c14d360a77cbe55",
+      "SYNTHETIC_OUTCOME_PROXY": "b9d15422fbce9fa3457e35f217705bd5441c050142b8b4272c14d360a77cbe55"
+    },
     "exact_action_count": 4
   },
   "checks": {
@@ -52,7 +56,7 @@
     "causal_effect_claim_allowed": false,
     "existing_rnd_plan_api_used": true,
     "existing_service_helper_used": true,
-    "same_api_changed_only_data_class": true
+    "same_semantic_payload_except_transport_id_and_data_class": true
   },
   "evidence_boundary": {
     "causal_effect_proven": false,
@@ -68,7 +72,7 @@
   },
   "schema_version": "op059_op060_pro_action_real_outcome_smoke_v1",
   "source": {
-    "combined_sha256": "6f41977677d1a21d149618ba01d23d743ae62255b986b579f20bfc9d827ed860",
+    "combined_sha256": "8e6969aac2e5e4d17bc9dfbb5176207874f697bd111955ea9fca6d06d107f7eb",
     "wellnessbox_commit": "5ec3adf1f3948e910c1f4498083b43c701eaf557",
     "wellnessbox_paths": [
       "app/api/tips/pro/effects/route.ts",
@@ -77,24 +81,31 @@
       "lib/server/wb-rnd-interim-client.ts",
       "lib/server/wb-rnd-interim-route.ts",
       "lib/server/wb-rnd-profile-adapter.ts",
+      "lib/server/route-auth.ts",
+      "lib/server/wb-rnd-interim-safety-authority.ts",
+      "lib/server/wb-rnd-product-candidates.ts",
       "lib/tips/pro-study-engine.ts",
       "lib/tips/pro-study-rnd-client.ts",
       "scripts/qa/check-tips-pro-correction-route.cts",
       "scripts/qa/check-tips-pro-study-rnd-client.cts",
       "scripts/qa/run-tips-pro-correction-client.cts"
     ],
-    "wellnessbox_rnd_commit": "b07608267c87b41f18f8673eabc98a087107ac02",
+    "wellnessbox_rnd_commit": "a580d813abfc1bed0292477c9ba6dc88ec4f8f4f",
     "wellnessbox_rnd_paths": [
       "apps/inference_api/routes/interim.py",
       "data/contracts/pro_runtime_reference_baselines_v1.json",
       "scripts/run_pro_worsening_action_real_outcome_smoke.py",
       "src/wellnessbox_rnd/interim/data_lake.py",
+      "src/wellnessbox_rnd/interim/contracts.py",
+      "src/wellnessbox_rnd/metrics/__init__.py",
       "src/wellnessbox_rnd/metrics/pro_actions.py",
       "src/wellnessbox_rnd/metrics/pro_followup.py",
       "src/wellnessbox_rnd/metrics/pro_runtime.py",
       "src/wellnessbox_rnd/metrics/pro_scoring.py",
       "src/wellnessbox_rnd/orchestration/pro_plan_service.py",
-      "src/wellnessbox_rnd/orchestration/recommendation_service.py"
+      "src/wellnessbox_rnd/orchestration/recommendation_service.py",
+      "src/wellnessbox_rnd/schemas/next_action_state_machine.py",
+      "src/wellnessbox_rnd/schemas/recommendation.py"
     ]
   }
 }

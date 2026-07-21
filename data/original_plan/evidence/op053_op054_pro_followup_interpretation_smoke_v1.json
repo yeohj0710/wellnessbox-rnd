@@ -180,7 +180,7 @@
   },
   "schema_version": "op053_op054_pro_followup_interpretation_smoke_v1",
   "source_identity": {
-    "commit": "b305868d618ef441e4b57b2e79016d27589535e5",
+    "commit": "8448cec7b3741ebc0c61ad87afd759bab27d78b7",
     "source_paths": [
       "data/contracts/pro_followup_interpretation_v1.json",
       "data/contracts/pro_instrument_scoring_v1.json",
@@ -196,6 +196,6 @@
       "src/wellnessbox_rnd/orchestration/recommendation_service.py",
       "src/wellnessbox_rnd/schemas/recommendation.py"
     ],
-    "source_sha256": "6505eba3ba903b599d04f2dab84bf4c19c7b65d1521a3bd61c2949cfee7404f2"
+    "source_sha256": "298a89e1a51140ab7feeb8c388a680bdef12c7b8dee381014a6fa8b329ae08a1"
   }
 }

@@ -1148,8 +1148,57 @@
             ]
           }
         },
-        {"requirement_id": "OP-059", "title": "효과 악화 시 상태기계가 유지, 감량, 중단, 재최적화를 선택한다.", "required_stage": "INTEGRATED"},
-        {"requirement_id": "OP-060", "title": "data_class 교체만으로 실제 결과 데이터를 같은 API에서 처리한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"}
+        {
+          "requirement_id": "OP-059",
+          "title": "효과 악화 시 상태기계가 유지, 감량, 중단, 재최적화를 선택한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_actions.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/pro_plan_service.py",
+              "wellnessbox/components/tips/ProStudySimulation.tsx"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_pro_actions.py",
+              "wellnessbox-rnd/tests/test_pro_plan_service.py",
+              "wellnessbox-rnd/scripts/run_pro_worsening_action_real_outcome_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op059_op060_pro_action_real_outcome_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/lib/tips/pro-study-rnd-client.ts",
+              "wellnessbox/components/tips/ProStudySimulation.tsx",
+              "wellnessbox-rnd/data/original_plan/evidence/op059_op060_pro_action_real_outcome_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-060",
+          "title": "data_class 교체만으로 실제 결과 데이터를 같은 API에서 처리한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/pro_plan_service.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox/lib/tips/pro-study-rnd-client.ts",
+              "wellnessbox/components/tips/ProStudySimulation.tsx"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_pro_plan_service.py",
+              "wellnessbox/scripts/qa/check-tips-pro-study-rnd-client.cts",
+              "wellnessbox-rnd/scripts/run_pro_worsening_action_real_outcome_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op059_op060_pro_action_real_outcome_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/scripts/qa/run-tips-pro-correction-client.cts",
+              "wellnessbox-rnd/data/original_plan/evidence/op059_op060_pro_action_real_outcome_smoke_v1.json"
+            ]
+          }
+        }
       ]
     },
     {
