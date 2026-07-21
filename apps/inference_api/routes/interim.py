@@ -450,7 +450,10 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
                 sorted(
                     {
                         item.strip().lower()
-                        for item in payload.ingredients
+                        for item in (
+                            *payload.ingredients,
+                            *(prediction.ingredients if prediction is not None else ()),
+                        )
                         if item.strip()
                     }
                 )

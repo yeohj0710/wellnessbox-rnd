@@ -13,6 +13,9 @@ from wellnessbox_rnd.optimizer.product_combinations import (
     ProductCombinationFilterPolicyV1,
     evaluate_product_combination_filters_v1,
 )
+from run_wellnessbox_final_safety_authority_smoke import (
+    run_smoke as run_final_safety_authority_smoke,
+)
 
 RND_ROOT = Path(__file__).resolve().parents[1]
 SERVICE_ROOT = Path(os.getenv("WELLNESSBOX_EVIDENCE_ROOT", r"C:\dev\wellnessbox")).resolve()
@@ -22,7 +25,9 @@ DEFAULT_OUTPUT = RND_ROOT / (
 )
 RND_SOURCE_PATHS = [
     "apps/inference_api/routes/interim.py",
+    "scripts/run_wellnessbox_final_safety_authority_smoke.py",
     "scripts/run_product_combination_constraint_safety_smoke.py",
+    "src/wellnessbox_rnd/interim/safety.py",
     "src/wellnessbox_rnd/optimizer/__init__.py",
     "src/wellnessbox_rnd/optimizer/product_combinations.py",
     "tests/test_interim_api.py",
@@ -37,9 +42,11 @@ SERVICE_SOURCE_PATHS = [
     "lib/product/product.catalog.ts",
     "lib/server/wb-rnd-ingredient-map.ts",
     "lib/server/wb-rnd-interim-route.ts",
+    "lib/server/wb-rnd-interim-safety-authority.ts",
     "lib/server/wb-rnd-product-candidates.ts",
     "lib/server/wb-rnd-tips-route-test-hook.ts",
     "scripts/qa/check-rnd-product-candidates.cts",
+    "scripts/qa/check-rnd-final-safety-authority.cts",
 ]
 
 
@@ -108,7 +115,22 @@ def _combination_set(raw: list[dict[str, object]]):
 
 def run_smoke() -> dict[str, object]:
     with TemporaryDirectory(prefix="op065-op066-") as directory:
-        service_report = _service_report(Path(directory))
+        temporary_root = Path(directory)
+        authority_report = run_final_safety_authority_smoke(
+            wellnessbox_root=SERVICE_ROOT,
+            output_path=temporary_root / "actual-rnd-service-authority.json",
+        )
+        service_report = _service_report(temporary_root)
+    actual_constraints = authority_report["observed"][
+        "product_optimization_constraints"
+    ]
+    assert actual_constraints == {
+        "schema_version": "product_optimization_constraints_v1",
+        "max_total_cost_krw": 54_321,
+        "max_products": 3,
+        "excluded_ingredient_keys": ["magnesium_glycinate"],
+        "safety_rule_ids": ["SAFE-EMERGENCY-001"],
+    }
     if (
         service_report["schema_version"]
         != "op065_op066_service_product_combination_filter_contract_v1"
@@ -183,6 +205,7 @@ def run_smoke() -> dict[str, object]:
             "wellnessbox_paths": SERVICE_SOURCE_PATHS,
         },
         "cases": {
+            "actual_rnd_service_constraints": actual_constraints,
             "constraint_filter_input_combination_count": len(filter_inputs),
             "eligible_combination_count": len(eligible),
             "budget_excluded_combination_count": len(
@@ -199,12 +222,12 @@ def run_smoke() -> dict[str, object]:
             "safety_evaluation": safety_evaluation.model_dump(mode="json"),
         },
         "checks": {
-            "limits_validated_by_rnd_before_service_consumption": True,
+            "actual_rnd_constraints_validated_at_service_boundary": True,
             "over_budget_combinations_absent_from_output": True,
             "over_product_count_combinations_absent_from_output": True,
             "safety_excluded_product_ingredient_absent_from_output": True,
             "safety_excluded_recommendation_fails_closed": True,
-            "filter_counts_independently_recomputed": True,
+            "manual_fixture_filter_counts_independently_recomputed": True,
             "order_or_payment_created": False,
         },
         "evidence_boundary": {
@@ -213,7 +236,8 @@ def run_smoke() -> dict[str, object]:
             "op066_proven_stage": "INTEGRATED",
             "op066_required_stage": "INTEGRATED",
             "service_route_function_integration_proven": True,
-            "deterministic_rnd_safety_contract_proven": True,
+            "actual_rnd_safety_contract_consumed_by_service": True,
+            "actual_ready_filter_path_proven": False,
             "configured_prisma_query_source_bound": True,
             "actual_prisma_query_executed": False,
             "production_catalog_operation_proven": False,
