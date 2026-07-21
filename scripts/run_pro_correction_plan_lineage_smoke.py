@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import hmac
 import json
 import os
 import subprocess
@@ -13,37 +12,37 @@ from tempfile import TemporaryDirectory
 
 import httpx
 
-from wellnessbox_rnd.metrics.pro_scoring import (
-    PROBaselineScoreObservationV1,
-    build_pro_baseline_distribution_v1,
-    score_pro_instrument_response_v1,
-    standardize_pro_instrument_score_v1,
-)
-
 RND_ROOT = Path(__file__).resolve().parents[1]
-SERVICE_ROOT = Path(
-    os.getenv("WELLNESSBOX_EVIDENCE_ROOT", r"C:\dev\wellnessbox")
-).resolve()
-DEFAULT_OUTPUT = (
-    RND_ROOT
-    / "data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+SERVICE_ROOT = Path(os.getenv("WELLNESSBOX_EVIDENCE_ROOT", r"C:\dev\wellnessbox")).resolve()
+DEFAULT_OUTPUT = RND_ROOT / (
+    "data/original_plan/evidence/"
+    "op057_op058_pro_correction_plan_lineage_smoke_v1.json"
 )
 TOKEN = "op057-op058-local-token"
-SALT = "op057-op058-local-pseudonym-salt"
-APP_USER_ID = "op057-service-user"
 RND_SOURCE_PATHS = [
     "apps/inference_api/routes/interim.py",
+    "data/contracts/pro_runtime_reference_baselines_v1.json",
     "scripts/run_pro_correction_plan_lineage_smoke.py",
     "src/wellnessbox_rnd/interim/data_lake.py",
     "src/wellnessbox_rnd/interim/data_mutation.py",
     "src/wellnessbox_rnd/metrics/pro_correction.py",
     "src/wellnessbox_rnd/metrics/pro_followup.py",
+    "src/wellnessbox_rnd/metrics/pro_runtime.py",
     "src/wellnessbox_rnd/metrics/pro_scoring.py",
+    "src/wellnessbox_rnd/orchestration/pro_plan_service.py",
+    "src/wellnessbox_rnd/orchestration/recommendation_service.py",
+    "src/wellnessbox_rnd/schemas/recommendation.py",
 ]
 SERVICE_SOURCE_PATHS = [
     "app/api/tips/pro/effects/route.ts",
+    "app/api/tips/pro/plans/route.ts",
+    "components/tips/ProStudySimulation.tsx",
     "lib/server/wb-rnd-interim-client.ts",
     "lib/server/wb-rnd-interim-route.ts",
+    "lib/server/wb-rnd-profile-adapter.ts",
+    "lib/tips/pro-study-engine.ts",
+    "lib/tips/pro-study-rnd-client.ts",
+    "scripts/qa/check-tips-pro-study-rnd-client.cts",
     "scripts/qa/run-tips-pro-correction-client.cts",
 ]
 
@@ -61,8 +60,7 @@ def _source_sha256() -> str:
         ("wellnessbox", SERVICE_ROOT, SERVICE_SOURCE_PATHS),
     ):
         for relative in sorted(paths):
-            identity = f"{root_name}/{relative}"
-            digest.update(identity.encode())
+            digest.update(f"{root_name}/{relative}".encode())
             digest.update(b"\0")
             digest.update((root / relative).read_bytes().replace(b"\r\n", b"\n"))
             digest.update(b"\0")
@@ -80,117 +78,6 @@ def _source_commit(root: Path, paths: list[str]) -> str:
     ).stdout.strip()
 
 
-def _profile_id() -> str:
-    digest = hmac.new(SALT.encode(), APP_USER_ID.encode(), hashlib.sha256).hexdigest()
-    return f"usr_{digest[:32]}"
-
-
-def _recommendation_payload() -> dict[str, object]:
-    sources = ("survey", "nhis", "wearable", "cgm", "genetic")
-    return {
-        "request_id": "op057-op058-smoke-request",
-        "source_profile": {
-            "schema_version": "wellnessbox.chat.UserProfile.v1",
-            "subject_id": _profile_id(),
-            "profile": {"age": 41, "sex": "female", "goals": ["sleep"]},
-        },
-        "user_profile": {"age": 41, "biological_sex": "female", "pregnant": False},
-        "goals": ["sleep_support"],
-        "symptoms": ["difficulty_falling_asleep"],
-        "conditions": [],
-        "allergies": [],
-        "risk_flags": [],
-        "medications": [],
-        "current_supplements": [],
-        "dietary_patterns": [],
-        "laboratory_observations": [],
-        "lifestyle": {
-            "sleep_hours": 5.5,
-            "stress_level": 3,
-            "activity_level": "lightly_active",
-            "smoker": False,
-            "alcohol_per_week": 0,
-        },
-        "input_availability": {
-            "survey": True,
-            "nhis": False,
-            "wearable": False,
-            "cgm": False,
-            "genetic": False,
-        },
-        "data_source_consents": {
-            source: {
-                "use_for_recommendation": source == "survey",
-                "allow_persistent_storage": source == "survey",
-            }
-            for source in sources
-        },
-        "preferences": {
-            "budget_level": "medium",
-            "max_products": 2,
-            "avoid_ingredients": [],
-        },
-    }
-
-
-def _score(raw_score: int):
-    remaining = raw_score
-    items = []
-    for _ in range(7):
-        item = min(3, remaining)
-        items.append(item)
-        remaining -= item
-    return score_pro_instrument_response_v1(
-        {
-            "schema_version": "pro_instrument_response_v1",
-            "instrument": "PSQI",
-            "item_scores": items,
-        }
-    )
-
-
-def _event(timepoint: str, raw_score: int) -> dict[str, object]:
-    score = _score(raw_score)
-    distribution = build_pro_baseline_distribution_v1(
-        [
-            PROBaselineScoreObservationV1(
-                schema_version="pro_baseline_score_observation_v1",
-                observation_role="BASELINE",
-                score=_score(value),
-            )
-            for value in (6, 9, 12)
-        ],
-        cohort_id="op057-psqi-baseline",
-        data_class="SYNTHETIC_OUTCOME_PROXY",
-    )
-    standardized = standardize_pro_instrument_score_v1(score, distribution)
-    baseline = timepoint == "pre_intake"
-    return {
-        "schema_version": "versioned_pro_followup_event_v1",
-        "assessment_id": f"assessment_op057_{timepoint}",
-        "plan_id": "plan_op057_service_001",
-        "data_class": "SYNTHETIC_OUTCOME_PROXY",
-        "timepoint": timepoint,
-        "scheduled_day_index": 0 if baseline else 14,
-        "actual_day_index": 0 if baseline else 14,
-        "observed_at": "2026-01-01T00:00:00Z" if baseline else "2026-01-15T00:00:00Z",
-        "instrument_scores": [score.model_dump(mode="json")],
-        "standardized_scores": [standardized.model_dump(mode="json")],
-        "adherence": (
-            None
-            if baseline
-            else {
-                "planned_dose_count": 14,
-                "taken_dose_count": 13,
-                "missed_dose_count": 1,
-                "adherence_rate": 0.928571,
-            }
-        ),
-        "adverse_events": [],
-        "discontinuation_reason": None,
-    }
-
-
 def _wait_for_server(base_url: str, process: subprocess.Popen[str]) -> None:
     for _ in range(100):
         if process.poll() is not None:
@@ -202,6 +89,40 @@ def _wait_for_server(base_url: str, process: subprocess.Popen[str]) -> None:
             pass
         time.sleep(0.05)
     raise RuntimeError("local_rnd_server_not_ready")
+
+
+def _psqi_items(raw_score: int) -> list[int]:
+    remaining = raw_score
+    values: list[int] = []
+    for _ in range(7):
+        value = min(3, remaining)
+        values.append(value)
+        remaining -= value
+    if remaining:
+        raise ValueError("raw_score_out_of_psqi_range")
+    return values
+
+
+def _service_call(temp: Path, environment: dict[str, str], action: str, body: dict) -> dict:
+    input_path = temp / f"service-{action}-{len(list(temp.glob('service-*.json')))}.json"
+    input_path.write_text(json.dumps({"action": action, "body": body}), encoding="utf-8")
+    result = subprocess.run(
+        [
+            "node",
+            "--conditions=react-server",
+            "--import",
+            "tsx",
+            "scripts/qa/run-tips-pro-correction-client.cts",
+            str(input_path),
+        ],
+        cwd=SERVICE_ROOT,
+        env=environment,
+        check=True,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    return json.loads(result.stdout)
 
 
 def run_smoke() -> dict[str, object]:
@@ -217,7 +138,7 @@ def run_smoke() -> dict[str, object]:
                 "WB_RND_INTERIM_ENABLED": "1",
                 "WB_RND_INTERIM_BASE_URL": base_url,
                 "WB_RND_INTERIM_TOKEN": TOKEN,
-                "WB_RND_INTERIM_PSEUDONYM_SALT": SALT,
+                "WB_RND_INTERIM_PSEUDONYM_SALT": "op057-op058-local-pseudonym-salt",
                 "WB_RND_CODE_COMMIT": "op057-op058-smoke",
             }
         )
@@ -240,90 +161,71 @@ def run_smoke() -> dict[str, object]:
         )
         try:
             _wait_for_server(base_url, server)
-            headers = {"x-wb-rnd-token": TOKEN}
-            with httpx.Client(base_url=base_url, timeout=20.0) as client:
-                recommendation = client.post("/v1/recommend", json=_recommendation_payload())
-                recommendation.raise_for_status()
-                execution_id = recommendation.json()["execution_id"]
-                baseline = client.post(
-                    f"/v1/interim/executions/{execution_id}/events",
-                    headers=headers,
-                    json={
-                        "event_type": "followup_evaluation",
-                        "source": "survey",
-                        "idempotency_key": "op057-baseline",
-                        "payload": _event("pre_intake", 10),
+            enrolled = _service_call(
+                temp,
+                environment,
+                "enroll",
+                {
+                    "profile": {
+                        "name": "통합 테스터",
+                        "age": 41,
+                        "sex": "female",
+                        "goals": ["sleep quality"],
                     },
-                )
-                baseline.raise_for_status()
-                original_follow_up = client.post(
-                    f"/v1/interim/executions/{execution_id}/events",
-                    headers=headers,
-                    json={
-                        "event_type": "followup_evaluation",
-                        "source": "survey",
-                        "idempotency_key": "op057-week-2",
-                        "payload": _event("week_2", 8),
-                    },
-                )
-                original_follow_up.raise_for_status()
-                request_path = temp / "service-request.json"
-                request_path.write_text(
-                    json.dumps(
-                        {
-                            "execution_id": execution_id,
-                            "target_event_id": original_follow_up.json()["event"]["event_id"],
-                            "idempotency_key": "op057-user-correction",
-                            "replacement_payload": _event("week_2", 7),
-                        }
-                    ),
-                    encoding="utf-8",
-                )
-                service = subprocess.run(
-                    [
-                        "node",
-                        "--conditions=react-server",
-                        "--import",
-                        "tsx",
-                        "scripts/qa/run-tips-pro-correction-client.cts",
-                        str(request_path),
-                    ],
-                    cwd=SERVICE_ROOT,
-                    env=environment,
-                    check=True,
-                    capture_output=True,
-                    text=True,
-                    encoding="utf-8",
-                )
-                corrected = json.loads(service.stdout)
-                trace = client.get(
-                    f"/v1/interim/executions/{execution_id}", headers=headers
-                )
-                trace.raise_for_status()
+                    "baseline": {"instrument": "PSQI", "item_scores": _psqi_items(10)},
+                    "observedAt": "2026-01-01T00:00:00Z",
+                    "consentAccepted": True,
+                },
+            )
+            followup_body = {
+                "executionId": enrolled["execution_id"],
+                "planId": enrolled["plan_id"],
+                "timepoint": "week_2",
+                "answers": {"instrument": "PSQI", "item_scores": _psqi_items(8)},
+                "observedAt": "2026-01-15T00:00:00Z",
+                "actualDayIndex": 14,
+                "plannedDoseCount": 14,
+                "takenDoseCount": 13,
+                "adverseEvents": [],
+            }
+            original = _service_call(temp, environment, "followup", followup_body)
+            followup_body["answers"] = {"instrument": "PSQI", "item_scores": _psqi_items(7)}
+            corrected = _service_call(temp, environment, "correction", followup_body)
+            subprocess.run(
+                ["npm", "run", "qa:tips:pro-study-rnd"],
+                cwd=SERVICE_ROOT,
+                env=environment,
+                check=True,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            trace_response = httpx.get(
+                f"{base_url}/v1/interim/executions/{enrolled['execution_id']}",
+                headers={"x-wb-rnd-token": TOKEN},
+                timeout=20.0,
+            )
+            trace_response.raise_for_status()
+            trace = trace_response.json()
         finally:
             server.terminate()
             server.wait(timeout=10)
 
-    followups = [
-        event
-        for event in trace.json()["events"]
-        if event["event_type"] == "followup_evaluation"
-    ]
-    optimization = next(
-        event for event in trace.json()["events"] if event["event_type"] == "optimization"
-    )
-    assert corrected["recalculated_immediately"] is True
-    assert corrected["interpretation"]["follow_up_event"]["instrument_scores"][0][
-        "raw_score"
-    ] == 7
-    assert corrected["lineage"]["plan_id"] == "plan_op057_service_001"
-    assert corrected["lineage"]["selected_ingredient_keys"]
-    assert (
-        corrected["lineage"]["selected_ingredient_keys"]
-        == optimization["payload"]["selected_ingredient_keys"]
-    )
-    assert corrected["lineage"]["plan_id"] == followups[-1]["payload"]["plan_id"]
+    events = trace["events"]
+    recommendation = next(item for item in events if item["event_type"] == "recommendation")
+    optimization = next(item for item in events if item["event_type"] == "optimization")
+    followups = [item for item in events if item["event_type"] == "followup_evaluation"]
+    plan_id = enrolled["plan_id"]
+    assert original["operation"] == "created"
+    assert corrected["operation"] == "corrected"
+    assert original["raw_score"] == 8 and corrected["raw_score"] == 7
+    assert recommendation["payload"]["plan_id"] == plan_id
+    assert optimization["payload"]["plan_id"] == plan_id
+    assert all(item["payload"]["plan_id"] == plan_id for item in followups)
     assert followups[-1]["payload_state"] == "CORRECTED"
+    assert corrected["lineage"]["selected_ingredient_keys"] == optimization[
+        "payload"
+    ]["selected_ingredient_keys"]
     return {
         "schema_version": "op057_op058_pro_correction_plan_lineage_smoke_v1",
         "source": {
@@ -334,33 +236,36 @@ def run_smoke() -> dict[str, object]:
             "wellnessbox_paths": SERVICE_SOURCE_PATHS,
         },
         "cases": {
-            "authenticated_service_correction": 1,
+            "authenticated_service_enrollment": 1,
+            "authenticated_service_followup_create": 1,
+            "authenticated_service_followup_correction": 1,
             "stored_strict_pro_events": len(followups),
+            "baseline_raw_score": 10,
             "original_raw_score": 8,
             "corrected_raw_score": 7,
-            "recalculated_immediately": True,
-            "mutation_audit_recorded": corrected["mutation"]["deduplicated"] is False,
+            "recalculated_immediately": corrected["recalculated_immediately"],
             "stored_payload_state": followups[-1]["payload_state"],
         },
         "lineage": {
-            "plan_id": corrected["lineage"]["plan_id"],
+            "plan_id": plan_id,
             "selected_ingredient_keys": corrected["lineage"]["selected_ingredient_keys"],
+            "recommendation_event_has_plan_id": True,
+            "optimization_event_has_plan_id": True,
+            "all_pro_events_share_plan_id": True,
             "recommendation_and_effect_share_execution": True,
-            "lineage_response_matches_stored_events": True,
-            "recommendation_event_has_plan_id": False,
             "causal_effect_claim_allowed": False,
         },
         "evidence_boundary": {
             "service_to_rnd_local_http_proven": True,
-            "authenticated_service_helper_proven": True,
-            "actual_ui_call_proven": False,
-            "service_user_input_contract_proven": True,
+            "authenticated_service_helpers_proven": True,
+            "actual_ui_client_binding_proven": True,
+            "browser_render_proven": False,
             "production_deployment_proven": False,
             "production_operation_proven": False,
             "real_world_outcome_used": False,
-            "op057_proven_stage": "IMPLEMENTED",
+            "op057_proven_stage": "INTEGRATED",
             "op057_required_stage": "INTEGRATED",
-            "op058_proven_stage": "IMPLEMENTED",
+            "op058_proven_stage": "INTEGRATED",
             "op058_required_stage": "OPERATED",
         },
     }
