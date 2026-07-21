@@ -1550,8 +1550,44 @@
             ]
           }
         },
-        {"requirement_id": "OP-077", "title": "중복 작업, 오래된 근거, timeout, 동의 누락을 fail-closed로 처리한다."},
-        {"requirement_id": "OP-078", "title": "약사 검토 작업 생성과 완료 사후조건을 저장한다."},
+        {
+          "requirement_id": "OP-077",
+          "title": "중복 작업, 오래된 근거, timeout, 동의 누락을 fail-closed로 처리한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/jobs.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/reviews.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_jobs.py",
+              "wellnessbox-rnd/tests/test_interim_reviews.py",
+              "wellnessbox-rnd/scripts/run_fail_closed_job_pharmacist_review_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op077_op078_fail_closed_job_review_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-078",
+          "title": "약사 검토 작업 생성과 완료 사후조건을 저장한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/reviews.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/agent.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_reviews.py",
+              "wellnessbox-rnd/tests/test_interim_agent.py",
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox-rnd/scripts/run_fail_closed_job_pharmacist_review_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op077_op078_fail_closed_job_review_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-079", "title": "유지, 조정, 교체, 중단, 모니터링 상태 전이를 E2E로 검증한다."},
         {"requirement_id": "OP-080", "title": "상태기계 실행과 실제 주문 상태 변경을 명시적으로 분리한다."}
       ]
