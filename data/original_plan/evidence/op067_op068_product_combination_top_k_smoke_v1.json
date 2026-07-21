@@ -3,6 +3,275 @@
     "evaluated_combination_count": 4,
     "non_selected_combination_count": 1,
     "ranking": {
+      "catalog_identity": [
+        {
+          "categories": [
+            "마그네슘",
+            "비타민D",
+            "아연",
+            "칼슘"
+          ],
+          "formulation": "캡슐",
+          "formulation_kind": "capsule",
+          "id": 29,
+          "ingredient_amounts": [
+            {
+              "normalized_amount": 100000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:CALCIUM",
+              "source_label": "ingredient amount",
+              "source_value": "칼슘 100 mg"
+            },
+            {
+              "normalized_amount": 102000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:MAGNESIUM",
+              "source_label": "ingredient amount",
+              "source_value": "마그네슘 102 mg"
+            },
+            {
+              "normalized_amount": 101000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:VITAMIN_D",
+              "source_label": "ingredient amount",
+              "source_value": "비타민D 101 mg"
+            },
+            {
+              "normalized_amount": 103000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:ZINC",
+              "source_label": "ingredient amount",
+              "source_value": "아연 103 mg"
+            }
+          ],
+          "ingredient_declarations": [
+            {
+              "label": "ingredient amount",
+              "value": "마그네슘 102 mg"
+            },
+            {
+              "label": "ingredient amount",
+              "value": "비타민D 101 mg"
+            },
+            {
+              "label": "ingredient amount",
+              "value": "아연 103 mg"
+            },
+            {
+              "label": "ingredient amount",
+              "value": "칼슘 100 mg"
+            }
+          ],
+          "name": "종근당 칼슘 앤 마그네슘 비타민D 아연",
+          "offers": [
+            {
+              "capacity": "30정",
+              "option_type": "30일분",
+              "pharmacy_product_id": 10029,
+              "price_krw": 10000,
+              "stock_count": 5
+            }
+          ]
+        },
+        {
+          "categories": [
+            "비타민C"
+          ],
+          "formulation": "정제",
+          "formulation_kind": "tablet",
+          "id": 30,
+          "ingredient_amounts": [
+            {
+              "normalized_amount": 110000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:VITAMIN_C",
+              "source_label": "ingredient amount",
+              "source_value": "비타민C 110 mg"
+            }
+          ],
+          "ingredient_declarations": [
+            {
+              "label": "ingredient amount",
+              "value": "비타민C 110 mg"
+            }
+          ],
+          "name": "고려은단 비타민C 1000",
+          "offers": [
+            {
+              "capacity": "30정",
+              "option_type": "30일분",
+              "pharmacy_product_id": 10030,
+              "price_krw": 11000,
+              "stock_count": 6
+            }
+          ]
+        },
+        {
+          "categories": [
+            "오메가3"
+          ],
+          "formulation": "캡슐",
+          "formulation_kind": "capsule",
+          "id": 31,
+          "ingredient_amounts": [
+            {
+              "normalized_amount": 120000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:OMEGA3",
+              "source_label": "ingredient amount",
+              "source_value": "오메가3 120 mg"
+            }
+          ],
+          "ingredient_declarations": [
+            {
+              "label": "ingredient amount",
+              "value": "오메가3 120 mg"
+            }
+          ],
+          "name": "프로메가 오메가3 트리플 장용성",
+          "offers": [
+            {
+              "capacity": "30정",
+              "option_type": "30일분",
+              "pharmacy_product_id": 10031,
+              "price_krw": 12000,
+              "stock_count": 7
+            }
+          ]
+        },
+        {
+          "categories": [
+            "비타민D"
+          ],
+          "formulation": "정제",
+          "formulation_kind": "tablet",
+          "id": 33,
+          "ingredient_amounts": [
+            {
+              "normalized_amount": 130000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:VITAMIN_D",
+              "source_label": "ingredient amount",
+              "source_value": "비타민D 130 mg"
+            }
+          ],
+          "ingredient_declarations": [
+            {
+              "label": "ingredient amount",
+              "value": "비타민D 130 mg"
+            }
+          ],
+          "name": "종근당건강 비타민D 2000IU",
+          "offers": [
+            {
+              "capacity": "30정",
+              "option_type": "30일분",
+              "pharmacy_product_id": 10033,
+              "price_krw": 13000,
+              "stock_count": 8
+            }
+          ]
+        },
+        {
+          "categories": [
+            "프로바이오틱스(유산균)"
+          ],
+          "formulation": "캡슐",
+          "formulation_kind": "capsule",
+          "id": 35,
+          "ingredient_amounts": [
+            {
+              "normalized_amount": 140000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:PROBIOTIC",
+              "source_label": "ingredient amount",
+              "source_value": "프로바이오틱스(유산균) 140 mg"
+            }
+          ],
+          "ingredient_declarations": [
+            {
+              "label": "ingredient amount",
+              "value": "프로바이오틱스(유산균) 140 mg"
+            }
+          ],
+          "name": "크리스찬한센 덴마크 유산균 이야기",
+          "offers": [
+            {
+              "capacity": "30정",
+              "option_type": "30일분",
+              "pharmacy_product_id": 10035,
+              "price_krw": 14000,
+              "stock_count": 9
+            }
+          ]
+        },
+        {
+          "categories": [
+            "아연"
+          ],
+          "formulation": "정제",
+          "formulation_kind": "tablet",
+          "id": 42,
+          "ingredient_amounts": [
+            {
+              "normalized_amount": 150000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:ZINC",
+              "source_label": "ingredient amount",
+              "source_value": "아연 150 mg"
+            }
+          ],
+          "ingredient_declarations": [
+            {
+              "label": "ingredient amount",
+              "value": "아연 150 mg"
+            }
+          ],
+          "name": "나우푸드 아연",
+          "offers": [
+            {
+              "capacity": "30정",
+              "option_type": "30일분",
+              "pharmacy_product_id": 10042,
+              "price_krw": 15000,
+              "stock_count": 10
+            }
+          ]
+        },
+        {
+          "categories": [
+            "코엔자임Q10"
+          ],
+          "formulation": "캡슐",
+          "formulation_kind": "capsule",
+          "id": 44,
+          "ingredient_amounts": [
+            {
+              "normalized_amount": 160000000,
+              "normalized_unit": "ng",
+              "service_ingredient_id": "ING:COQ10",
+              "source_label": "ingredient amount",
+              "source_value": "코엔자임Q10 160 mg"
+            }
+          ],
+          "ingredient_declarations": [
+            {
+              "label": "ingredient amount",
+              "value": "코엔자임Q10 160 mg"
+            }
+          ],
+          "name": "GNM자연의품격 코큐텐11 코엔자임Q10 11",
+          "offers": [
+            {
+              "capacity": "30정",
+              "option_type": "30일분",
+              "pharmacy_product_id": 10044,
+              "price_krw": 16000,
+              "stock_count": 11
+            }
+          ]
+        }
+      ],
       "combinations": [
         {
           "combination_id": "combo_39b190324c7b00ff",
@@ -981,7 +1250,7 @@
         {
           "combination_id": "combo_b0b285099554b28d",
           "reason_codes": [
-            "LOWER_RANKED"
+            "HIGHER_COST"
           ]
         }
       ],
@@ -993,10 +1262,92 @@
         "schema_version": "product_optimization_constraints_v1"
       },
       "replay_identity": {
-        "catalog_version": "catalog_0f23c5860279e407efc49c5605b3d8a39d9151cce7c4a59fd2e26bff2e94982f",
+        "catalog_version": "catalog_1a7aefae72413f07ca27d119ebd04cccdcf2f5e800ef5fd0b210f486da6794a6",
         "catalog_version_contract": "product_catalog_content_sha256_v1",
         "input_sha256": "b31e0443f317822ad134d4c55f64dacacefc0ab296b4b2b6d863bf554b246eba",
-        "result_sha256": "1eb26321791cebce5385dcd89717838f233b3361c32bdabdde4357711574f2d5",
+        "optimization_input": {
+          "constraints": {
+            "excluded_ingredient_keys": [],
+            "max_products": 20,
+            "max_total_cost_krw": 1000000000,
+            "safety_rule_ids": []
+          },
+          "recommendations": [
+            {
+              "evidence_ids": [
+                "EV-OP050-1"
+              ],
+              "ingredient": "calcium_citrate",
+              "rank": 1,
+              "score": 0.91,
+              "service_ingredient_id": "ING:CALCIUM"
+            },
+            {
+              "evidence_ids": [
+                "EV-OP050-2"
+              ],
+              "ingredient": "coq10",
+              "rank": 2,
+              "score": 0.9,
+              "service_ingredient_id": "ING:COQ10"
+            },
+            {
+              "evidence_ids": [
+                "EV-OP050-3"
+              ],
+              "ingredient": "magnesium_glycinate",
+              "rank": 3,
+              "score": 0.89,
+              "service_ingredient_id": "ING:MAGNESIUM"
+            },
+            {
+              "evidence_ids": [
+                "EV-OP050-4"
+              ],
+              "ingredient": "omega3",
+              "rank": 4,
+              "score": 0.88,
+              "service_ingredient_id": "ING:OMEGA3"
+            },
+            {
+              "evidence_ids": [
+                "EV-OP050-5"
+              ],
+              "ingredient": "probiotics",
+              "rank": 5,
+              "score": 0.87,
+              "service_ingredient_id": "ING:PROBIOTIC"
+            },
+            {
+              "evidence_ids": [
+                "EV-OP050-6"
+              ],
+              "ingredient": "vitamin_c",
+              "rank": 6,
+              "score": 0.86,
+              "service_ingredient_id": "ING:VITAMIN_C"
+            },
+            {
+              "evidence_ids": [
+                "EV-OP050-7"
+              ],
+              "ingredient": "vitamin_d3",
+              "rank": 7,
+              "score": 0.8500000000000001,
+              "service_ingredient_id": "ING:VITAMIN_D"
+            },
+            {
+              "evidence_ids": [
+                "EV-OP050-8"
+              ],
+              "ingredient": "zinc",
+              "rank": 8,
+              "score": 0.8400000000000001,
+              "service_ingredient_id": "ING:ZINC"
+            }
+          ]
+        },
+        "result_sha256": "f54e2aa26d1241b7e908b3c2c2ae3c388f97b161172d2e4de435851adff7f09b",
         "schema_version": "product_combination_replay_identity_v1"
       },
       "schema_version": "product_combination_ranking_evidence_v1",
@@ -1058,8 +1409,8 @@
   },
   "schema_version": "op067_op068_product_combination_top_k_smoke_v1",
   "source": {
-    "combined_sha256": "871597ff21eafe14ebc13ed07241cd004a4a4162e7da2e875f5dfa3569a9c11a",
-    "wellnessbox_commit": "b237219f68ec5ffd1b1ad811cf290b24e66c6fd3",
+    "combined_sha256": "c5c9aef85c63c5ee95ecd763f17f1b90943b45dfe0ad526fec143522f44ad1ee",
+    "wellnessbox_commit": "1e5fe205f8d37ca783c895b856ea23ffd8a31a91",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",
@@ -1073,7 +1424,7 @@
       "lib/server/wb-rnd-tips-route-test-hook.ts",
       "scripts/qa/check-rnd-product-candidates.cts"
     ],
-    "wellnessbox_rnd_commit": "aad92fd3e5e934b8c7c301a2f8912c0c0d9027b9",
+    "wellnessbox_rnd_commit": "0476ac5f90d120aa61edd862c726082472e21b9a",
     "wellnessbox_rnd_paths": [
       "scripts/run_product_combination_top_k_reproducibility_smoke.py",
       "src/wellnessbox_rnd/optimizer/__init__.py",
