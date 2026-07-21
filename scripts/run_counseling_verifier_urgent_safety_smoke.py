@@ -157,8 +157,13 @@ def _build() -> dict[str, object]:
         raise RuntimeError("common_urgent_expression_not_escalated")
 
     original_cwd = Path.cwd()
+    service_evidence_root = Path(
+        os.environ.get("WELLNESSBOX_EVIDENCE_ROOT", str(ROOT.parent / "wellnessbox"))
+    )
+    if not service_evidence_root.is_dir():
+        raise RuntimeError("wellnessbox_evidence_root_missing")
     try:
-        os.chdir(ROOT.parent / "wellnessbox")
+        os.chdir(service_evidence_root)
         outside_cwd_policy = load_counseling_answer_verifier_policy()
     finally:
         os.chdir(original_cwd)
