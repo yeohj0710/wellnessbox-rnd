@@ -1477,8 +1477,41 @@
             ]
           }
         },
-        {"requirement_id": "OP-073", "title": "후속 일정과 알림 예약을 실제 업무 큐에 저장한다."},
-        {"requirement_id": "OP-074", "title": "CronJob이 만기 계획을 찾아 재평가 작업을 생성한다."},
+        {
+          "requirement_id": "OP-073",
+          "title": "후속 일정과 알림 예약을 실제 업무 큐에 저장한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/jobs.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/agent.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_jobs.py",
+              "wellnessbox-rnd/tests/test_interim_agent.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op073_op074_followup_job_queue_cron_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-074",
+          "title": "CronJob이 만기 계획을 찾아 재평가 작업을 생성한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/jobs.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox-rnd/scripts/run_due_plan_reevaluation_cron.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_jobs.py",
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox-rnd/scripts/run_followup_job_queue_cron_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op073_op074_followup_job_queue_cron_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-075", "title": "PRO와 기기 데이터 수신 후 다음 작업을 다시 결정한다."},
         {"requirement_id": "OP-076", "title": "중대한 이상사례 발생 시 계획과 추가 추천을 즉시 중단한다."},
         {"requirement_id": "OP-077", "title": "중복 작업, 오래된 근거, timeout, 동의 누락을 fail-closed로 처리한다."},

@@ -1,0 +1,294 @@
+{
+  "cases": {
+    "cron_runs": [
+      {
+        "as_of": "2026-07-21T11:59:59+00:00",
+        "created_job_count": 0,
+        "deduplicated_job_count": 0,
+        "due_followup_count": 0,
+        "jobs": [],
+        "schema_version": "due_plan_reevaluation_cron_result_v1"
+      },
+      {
+        "as_of": "2026-07-21T12:00:00+00:00",
+        "created_job_count": 1,
+        "deduplicated_job_count": 0,
+        "due_followup_count": 1,
+        "jobs": [
+          {
+            "followup_id": "fu_due_first",
+            "idempotency_key": "plan-reevaluation:fu_due_first",
+            "job_type": "PLAN_REEVALUATION",
+            "payload": {
+              "due_at": "2026-07-21T12:00:00+00:00",
+              "requested_data": [
+                "ADHERENCE",
+                "PRO"
+              ],
+              "schema_version": "plan_reevaluation_job_payload_v1"
+            },
+            "payload_sha256": "7ea330f6b7b706f3c8928b3ae4a93181bc35edd85afe22f83b8f2452a251fcad",
+            "plan_id": "plan_due_first",
+            "profile_id": "usr_cron_smoke",
+            "scheduled_at": "2026-07-21T12:00:00Z",
+            "schema_version": "workflow_job_v1",
+            "status": "READY"
+          }
+        ],
+        "schema_version": "due_plan_reevaluation_cron_result_v1"
+      },
+      {
+        "as_of": "2026-07-21T13:00:00+00:00",
+        "created_job_count": 1,
+        "deduplicated_job_count": 1,
+        "due_followup_count": 2,
+        "jobs": [
+          {
+            "followup_id": "fu_due_first",
+            "idempotency_key": "plan-reevaluation:fu_due_first",
+            "job_type": "PLAN_REEVALUATION",
+            "payload": {
+              "due_at": "2026-07-21T12:00:00+00:00",
+              "requested_data": [
+                "ADHERENCE",
+                "PRO"
+              ],
+              "schema_version": "plan_reevaluation_job_payload_v1"
+            },
+            "payload_sha256": "7ea330f6b7b706f3c8928b3ae4a93181bc35edd85afe22f83b8f2452a251fcad",
+            "plan_id": "plan_due_first",
+            "profile_id": "usr_cron_smoke",
+            "scheduled_at": "2026-07-21T12:00:00Z",
+            "schema_version": "workflow_job_v1",
+            "status": "READY"
+          },
+          {
+            "followup_id": "fu_due_second",
+            "idempotency_key": "plan-reevaluation:fu_due_second",
+            "job_type": "PLAN_REEVALUATION",
+            "payload": {
+              "due_at": "2026-07-21T13:00:00+00:00",
+              "requested_data": [
+                "ADHERENCE",
+                "PRO"
+              ],
+              "schema_version": "plan_reevaluation_job_payload_v1"
+            },
+            "payload_sha256": "a8d9ea713bd41b5b490202ba318ac0745b649d830299afac035f48bbe55f98e6",
+            "plan_id": "plan_due_second",
+            "profile_id": "usr_cron_smoke",
+            "scheduled_at": "2026-07-21T13:00:00Z",
+            "schema_version": "workflow_job_v1",
+            "status": "READY"
+          }
+        ],
+        "schema_version": "due_plan_reevaluation_cron_result_v1"
+      },
+      {
+        "as_of": "2026-07-22T12:00:00+00:00",
+        "created_job_count": 0,
+        "deduplicated_job_count": 2,
+        "due_followup_count": 2,
+        "jobs": [
+          {
+            "followup_id": "fu_due_first",
+            "idempotency_key": "plan-reevaluation:fu_due_first",
+            "job_type": "PLAN_REEVALUATION",
+            "payload": {
+              "due_at": "2026-07-21T12:00:00+00:00",
+              "requested_data": [
+                "ADHERENCE",
+                "PRO"
+              ],
+              "schema_version": "plan_reevaluation_job_payload_v1"
+            },
+            "payload_sha256": "7ea330f6b7b706f3c8928b3ae4a93181bc35edd85afe22f83b8f2452a251fcad",
+            "plan_id": "plan_due_first",
+            "profile_id": "usr_cron_smoke",
+            "scheduled_at": "2026-07-21T12:00:00Z",
+            "schema_version": "workflow_job_v1",
+            "status": "READY"
+          },
+          {
+            "followup_id": "fu_due_second",
+            "idempotency_key": "plan-reevaluation:fu_due_second",
+            "job_type": "PLAN_REEVALUATION",
+            "payload": {
+              "due_at": "2026-07-21T13:00:00+00:00",
+              "requested_data": [
+                "ADHERENCE",
+                "PRO"
+              ],
+              "schema_version": "plan_reevaluation_job_payload_v1"
+            },
+            "payload_sha256": "a8d9ea713bd41b5b490202ba318ac0745b649d830299afac035f48bbe55f98e6",
+            "plan_id": "plan_due_second",
+            "profile_id": "usr_cron_smoke",
+            "scheduled_at": "2026-07-21T13:00:00Z",
+            "schema_version": "workflow_job_v1",
+            "status": "READY"
+          }
+        ],
+        "schema_version": "due_plan_reevaluation_cron_result_v1"
+      }
+    ],
+    "scheduled_followups": [
+      {
+        "deduplicated": false,
+        "followup_id": "fu_due_first",
+        "reminder_job": {
+          "followup_id": "fu_due_first",
+          "idempotency_key": "followup-reminder:fu_due_first",
+          "job_type": "FOLLOWUP_REMINDER",
+          "payload": {
+            "due_at": "2026-07-21T12:00:00+00:00",
+            "requested_data": [
+              "ADHERENCE",
+              "PRO"
+            ],
+            "schema_version": "followup_reminder_job_payload_v1"
+          },
+          "payload_sha256": "cfd92988acddbe8a33ef8aefb683da8e4176283c1350a323e4d161b071bcc680",
+          "plan_id": "plan_due_first",
+          "profile_id": "usr_cron_smoke",
+          "scheduled_at": "2026-07-20T12:00:00Z",
+          "schema_version": "workflow_job_v1",
+          "status": "READY"
+        }
+      },
+      {
+        "deduplicated": false,
+        "followup_id": "fu_due_second",
+        "reminder_job": {
+          "followup_id": "fu_due_second",
+          "idempotency_key": "followup-reminder:fu_due_second",
+          "job_type": "FOLLOWUP_REMINDER",
+          "payload": {
+            "due_at": "2026-07-21T13:00:00+00:00",
+            "requested_data": [
+              "ADHERENCE",
+              "PRO"
+            ],
+            "schema_version": "followup_reminder_job_payload_v1"
+          },
+          "payload_sha256": "3ffeaf8065ebd4037fb7259a273fe8a124ad5cbfc246431422a9c350de4918dd",
+          "plan_id": "plan_due_second",
+          "profile_id": "usr_cron_smoke",
+          "scheduled_at": "2026-07-20T13:00:00Z",
+          "schema_version": "workflow_job_v1",
+          "status": "READY"
+        }
+      }
+    ],
+    "stored_jobs": [
+      {
+        "followup_id": "fu_due_first",
+        "idempotency_key": "followup-reminder:fu_due_first",
+        "job_type": "FOLLOWUP_REMINDER",
+        "payload_json": {
+          "due_at": "2026-07-21T12:00:00+00:00",
+          "requested_data": [
+            "ADHERENCE",
+            "PRO"
+          ],
+          "schema_version": "followup_reminder_job_payload_v1"
+        },
+        "payload_sha256": "cfd92988acddbe8a33ef8aefb683da8e4176283c1350a323e4d161b071bcc680",
+        "plan_id": "plan_due_first",
+        "profile_id": "usr_cron_smoke",
+        "scheduled_at": "2026-07-20T12:00:00+00:00",
+        "status": "READY"
+      },
+      {
+        "followup_id": "fu_due_second",
+        "idempotency_key": "followup-reminder:fu_due_second",
+        "job_type": "FOLLOWUP_REMINDER",
+        "payload_json": {
+          "due_at": "2026-07-21T13:00:00+00:00",
+          "requested_data": [
+            "ADHERENCE",
+            "PRO"
+          ],
+          "schema_version": "followup_reminder_job_payload_v1"
+        },
+        "payload_sha256": "3ffeaf8065ebd4037fb7259a273fe8a124ad5cbfc246431422a9c350de4918dd",
+        "plan_id": "plan_due_second",
+        "profile_id": "usr_cron_smoke",
+        "scheduled_at": "2026-07-20T13:00:00+00:00",
+        "status": "READY"
+      },
+      {
+        "followup_id": "fu_due_first",
+        "idempotency_key": "plan-reevaluation:fu_due_first",
+        "job_type": "PLAN_REEVALUATION",
+        "payload_json": {
+          "due_at": "2026-07-21T12:00:00+00:00",
+          "requested_data": [
+            "ADHERENCE",
+            "PRO"
+          ],
+          "schema_version": "plan_reevaluation_job_payload_v1"
+        },
+        "payload_sha256": "7ea330f6b7b706f3c8928b3ae4a93181bc35edd85afe22f83b8f2452a251fcad",
+        "plan_id": "plan_due_first",
+        "profile_id": "usr_cron_smoke",
+        "scheduled_at": "2026-07-21T12:00:00+00:00",
+        "status": "READY"
+      },
+      {
+        "followup_id": "fu_due_second",
+        "idempotency_key": "plan-reevaluation:fu_due_second",
+        "job_type": "PLAN_REEVALUATION",
+        "payload_json": {
+          "due_at": "2026-07-21T13:00:00+00:00",
+          "requested_data": [
+            "ADHERENCE",
+            "PRO"
+          ],
+          "schema_version": "plan_reevaluation_job_payload_v1"
+        },
+        "payload_sha256": "a8d9ea713bd41b5b490202ba318ac0745b649d830299afac035f48bbe55f98e6",
+        "plan_id": "plan_due_second",
+        "profile_id": "usr_cron_smoke",
+        "scheduled_at": "2026-07-21T13:00:00+00:00",
+        "status": "READY"
+      }
+    ],
+    "stored_reevaluation_job_count": 2,
+    "stored_reminder_job_count": 2
+  },
+  "checks": {
+    "before_due_creates_no_reevaluation": true,
+    "cron_cli_uses_same_queue_service": true,
+    "due_followups_create_one_job_each": true,
+    "followup_and_reminder_atomic": true,
+    "later_cron_retry_is_idempotent": true,
+    "reminders_use_shared_workflow_queue": true
+  },
+  "evidence_boundary": {
+    "deployed_cronjob_proven": false,
+    "op073_proven_stage": "IMPLEMENTED",
+    "op073_required_stage": "OPERATED",
+    "op074_proven_stage": "IMPLEMENTED",
+    "op074_required_stage": "OPERATED",
+    "production_deployment_proven": false,
+    "production_queue_operation_proven": false,
+    "service_integration_proven": false
+  },
+  "schema_version": "op073_op074_followup_job_queue_cron_smoke_v1",
+  "source": {
+    "commit": "1964c44b7f3c0d301b16ba6f6a7edb463190d947",
+    "paths": [
+      "apps/inference_api/routes/interim.py",
+      "scripts/run_due_plan_reevaluation_cron.py",
+      "scripts/run_followup_job_queue_cron_smoke.py",
+      "src/wellnessbox_rnd/interim/agent.py",
+      "src/wellnessbox_rnd/interim/jobs.py",
+      "src/wellnessbox_rnd/interim/store.py",
+      "tests/test_interim_agent.py",
+      "tests/test_interim_api.py",
+      "tests/test_interim_jobs.py"
+    ],
+    "sha256": "18af954730b09bba9ac3d9fb90a43801347f3350495ece6c8a535a74ad2a8b03"
+  }
+}
