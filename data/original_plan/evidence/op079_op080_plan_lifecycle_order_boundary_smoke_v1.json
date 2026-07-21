@@ -1,0 +1,108 @@
+{
+  "case_count": 5,
+  "cases": {
+    "adjust": {
+      "event_id": "event_plan_a72469196f4d8f15bbae78c9",
+      "exact_retry_deduplicated": true,
+      "exact_retry_same_event": true,
+      "followup_status": "OPEN",
+      "job_status": "READY",
+      "order_state_effect": "NONE",
+      "order_state_mutation_allowed": false,
+      "replacement_plan_id": null,
+      "replacement_state": null,
+      "state_after": "ADJUSTED",
+      "state_before": "ACTIVE"
+    },
+    "maintain": {
+      "event_id": "event_plan_ca7cacd33cc44ef3d7d8b7c8",
+      "exact_retry_deduplicated": true,
+      "exact_retry_same_event": true,
+      "followup_status": "OPEN",
+      "job_status": "READY",
+      "order_state_effect": "NONE",
+      "order_state_mutation_allowed": false,
+      "replacement_plan_id": null,
+      "replacement_state": null,
+      "state_after": "MAINTAINED",
+      "state_before": "ACTIVE"
+    },
+    "monitor": {
+      "event_id": "event_plan_031caba3c17614d2ea6746b2",
+      "exact_retry_deduplicated": true,
+      "exact_retry_same_event": true,
+      "followup_status": "OPEN",
+      "job_status": "READY",
+      "order_state_effect": "NONE",
+      "order_state_mutation_allowed": false,
+      "replacement_plan_id": null,
+      "replacement_state": null,
+      "state_after": "MONITORING",
+      "state_before": "ACTIVE"
+    },
+    "replace": {
+      "event_id": "event_plan_38fe6d1f89bbcb061bfe8380",
+      "exact_retry_deduplicated": true,
+      "exact_retry_same_event": true,
+      "followup_status": "CLOSED",
+      "job_status": "CANCELLED",
+      "order_state_effect": "NONE",
+      "order_state_mutation_allowed": false,
+      "replacement_plan_id": "plan_op079_replacement_active",
+      "replacement_state": "ACTIVE",
+      "state_after": "REPLACED",
+      "state_before": "ACTIVE"
+    },
+    "stop": {
+      "event_id": "event_plan_ddb6f6434f21fe08d81f6517",
+      "exact_retry_deduplicated": true,
+      "exact_retry_same_event": true,
+      "followup_status": "CLOSED",
+      "job_status": "CANCELLED",
+      "order_state_effect": "NONE",
+      "order_state_mutation_allowed": false,
+      "replacement_plan_id": null,
+      "replacement_state": null,
+      "state_after": "STOPPED",
+      "state_before": "ACTIVE"
+    }
+  },
+  "checks": {
+    "actual_order_mutation_executed": false,
+    "all_required_actions_executed_through_fastapi": true,
+    "all_transitions_stored_in_execution_events": true,
+    "nonterminal_work_preserved": true,
+    "order_field_http_status": 422,
+    "order_field_rejected_before_event_write": true,
+    "production_operation_proven": false,
+    "replaced_plan_deactivated": true,
+    "replacement_plan_activated": true,
+    "rnd_lifecycle_has_no_service_order_mutation_symbols": true,
+    "service_retains_separate_order_status_mutator": true,
+    "terminal_work_closed": true
+  },
+  "requirement_stages": {
+    "OP-079": "IMPLEMENTED",
+    "OP-080": "IMPLEMENTED"
+  },
+  "schema_version": "op079_op080_plan_lifecycle_order_boundary_smoke_v1",
+  "source_identity": {
+    "wellnessbox_commit": "4d904f43b028a35524a29206aaf7c6b99f58a97b",
+    "wellnessbox_paths": [
+      "app/api/tips/route.ts",
+      "lib/order/mutations.ts",
+      "lib/order/orderStatus.ts"
+    ],
+    "wellnessbox_rnd_commit": "e76a5816f35a1309737f33dbeccd46a35e19bd75",
+    "wellnessbox_rnd_paths": [
+      "apps/inference_api/routes/interim.py",
+      "scripts/run_plan_lifecycle_order_boundary_smoke.py",
+      "src/wellnessbox_rnd/interim/jobs.py",
+      "src/wellnessbox_rnd/interim/plan_lifecycle.py",
+      "tests/test_interim_api.py",
+      "tests/test_plan_lifecycle.py"
+    ],
+    "wellnessbox_rnd_sha256": "0c74f4aa3b5e1db25820067f85d985b74007277abf9e141d0e8ead79e396564d",
+    "wellnessbox_sha256": "eaf5a2a022f010fe807a29c9e3f896a0c9e2fc5eeb9b3107b2d98734539eb7be"
+  }
+}

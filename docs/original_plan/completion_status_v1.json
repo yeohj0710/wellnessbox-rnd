@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "cdcd3980a6577062247ed1a4a7657c73a4bf629fbd5fc47b6a578c3c9b717286",
+  "audited_manifest_sha256": "4d71b2939ecbdd24d9a4a5074ef56fc9035184b79e0428b2620bb35b3870e98c",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -9,8 +9,8 @@
   "requirement_count": 120,
   "disposition_counts": {
     "COMPLETE": 56,
-    "PARTIAL": 21,
-    "PENDING": 42,
+    "PARTIAL": 23,
+    "PENDING": 40,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -105,8 +105,8 @@
       "requirement_count": 10,
       "disposition_counts": {
         "COMPLETE": 0,
-        "PARTIAL": 8,
-        "PENDING": 2,
+        "PARTIAL": 10,
+        "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -2739,14 +2739,23 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/plan_lifecycle.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/jobs.py",
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_plan_lifecycle.py",
+          "wellnessbox-rnd/tests/test_interim_api.py",
+          "wellnessbox-rnd/scripts/run_plan_lifecycle_order_boundary_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op079_op080_plan_lifecycle_order_boundary_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -2762,14 +2771,24 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/plan_lifecycle.py",
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+          "wellnessbox/lib/order/mutations.ts",
+          "wellnessbox/lib/order/orderStatus.ts"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_plan_lifecycle.py",
+          "wellnessbox-rnd/tests/test_interim_api.py",
+          "wellnessbox-rnd/scripts/run_plan_lifecycle_order_boundary_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op079_op080_plan_lifecycle_order_boundary_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
