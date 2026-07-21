@@ -1,0 +1,15 @@
+{
+  "schema_version": "optimization_constraints_v1",
+  "policy_version": "2026-07-21.1",
+  "minimum_effect_score": 5.0,
+  "excluded_ingredient_keys": [
+    "unsafe_ingredient"
+  ],
+  "max_total_cost_krw": 50000,
+  "max_products": 2,
+  "max_daily_units": 4,
+  "preferred_formulations": [
+    "capsule",
+    "tablet"
+  ]
+}
