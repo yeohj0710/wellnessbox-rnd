@@ -1,0 +1,1978 @@
+{
+  "cases": {
+    "cart_item_count": 3,
+    "current_combination_count": 4,
+    "missing_offer_count": 1,
+    "previous_combination_count": 8,
+    "stock_cart_evidence": {
+      "cart_candidate": {
+        "approval_required": true,
+        "approval_status": "NOT_APPROVED",
+        "cart_storage_written": false,
+        "items": [
+          {
+            "optionType": "30 days",
+            "productId": 20000,
+            "productName": "calcium 0",
+            "quantity": 1
+          },
+          {
+            "optionType": "30 days",
+            "productId": 20014,
+            "productName": "coq10 4",
+            "quantity": 1
+          },
+          {
+            "optionType": "30 days",
+            "productId": 20024,
+            "productName": "magnesium 4",
+            "quantity": 1
+          }
+        ],
+        "order_created": false,
+        "order_id": null,
+        "schema_version": "product_combination_cart_candidate_v1",
+        "source_combination_id": "combo_da17182d16b21e1c",
+        "status": "READY",
+        "unavailable_reason": null
+      },
+      "current_ranking": {
+        "catalog_identity": [
+          {
+            "categories": [
+              "calcium"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20000,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 100000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:CALCIUM",
+                "source_label": "ingredient amount",
+                "source_value": "calcium 100 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "calcium 100 mg"
+              }
+            ],
+            "name": "calcium 0",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30000,
+                "price_krw": 10000,
+                "stock_count": 10
+              }
+            ]
+          },
+          {
+            "categories": [
+              "coq10"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20010,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 100000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:COQ10",
+                "source_label": "ingredient amount",
+                "source_value": "coq10 100 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "coq10 100 mg"
+              }
+            ],
+            "name": "coq10 0",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30010,
+                "price_krw": 10000,
+                "stock_count": 10
+              }
+            ]
+          },
+          {
+            "categories": [
+              "coq10"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20014,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 104000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:COQ10",
+                "source_label": "ingredient amount",
+                "source_value": "coq10 104 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "coq10 104 mg"
+              }
+            ],
+            "name": "coq10 4",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30014,
+                "price_krw": 1000,
+                "stock_count": 10
+              }
+            ]
+          },
+          {
+            "categories": [
+              "magnesium"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20020,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 100000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "source_label": "ingredient amount",
+                "source_value": "magnesium 100 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "magnesium 100 mg"
+              }
+            ],
+            "name": "magnesium 0",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30020,
+                "price_krw": 10000,
+                "stock_count": 10
+              }
+            ]
+          },
+          {
+            "categories": [
+              "magnesium"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20024,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 104000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "source_label": "ingredient amount",
+                "source_value": "magnesium 104 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "magnesium 104 mg"
+              }
+            ],
+            "name": "magnesium 4",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30024,
+                "price_krw": 1000,
+                "stock_count": 10
+              }
+            ]
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "combo_330f0f7664b7e43e",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20000
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20010
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20020
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30000,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20000,
+                "product_name": "calcium 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30010,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20010,
+                "product_name": "coq10 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30020,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20020,
+                "product_name": "magnesium 0"
+              }
+            ],
+            "total_cost_krw": 30000
+          },
+          {
+            "combination_id": "combo_cb983ca869440013",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20000
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20010
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20024
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30000,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20000,
+                "product_name": "calcium 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30010,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20010,
+                "product_name": "coq10 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30024,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20024,
+                "product_name": "magnesium 4"
+              }
+            ],
+            "total_cost_krw": 21000
+          },
+          {
+            "combination_id": "combo_da17182d16b21e1c",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20000
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20014
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20024
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30000,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20000,
+                "product_name": "calcium 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30014,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20014,
+                "product_name": "coq10 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30024,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20024,
+                "product_name": "magnesium 4"
+              }
+            ],
+            "total_cost_krw": 12000
+          },
+          {
+            "combination_id": "combo_dc015d5676173bdf",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20000
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20014
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20020
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30000,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20000,
+                "product_name": "calcium 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30014,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20014,
+                "product_name": "coq10 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30020,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20020,
+                "product_name": "magnesium 0"
+              }
+            ],
+            "total_cost_krw": 21000
+          }
+        ],
+        "max_ranked_combinations": 3,
+        "non_selection": [
+          {
+            "combination_id": "combo_330f0f7664b7e43e",
+            "reason_codes": [
+              "HIGHER_COST"
+            ]
+          }
+        ],
+        "policy": {
+          "excluded_service_ingredient_ids": [],
+          "max_products": 20,
+          "max_total_cost_krw": 1000000000,
+          "safety_rule_ids": [],
+          "schema_version": "product_optimization_constraints_v1"
+        },
+        "replay_identity": {
+          "catalog_version": "catalog_de89bca0ceac4eb99ca8085ae6359a1304cc03912a3f8cf4147b883055fea82d",
+          "catalog_version_contract": "product_catalog_content_sha256_v1",
+          "input_sha256": "0154f1a750f56294182e33c32d95166f3198462e3655750e264a05e273df813c",
+          "optimization_input": {
+            "constraints": {
+              "excluded_ingredient_keys": [],
+              "excluded_service_ingredient_ids": [],
+              "max_products": 20,
+              "max_total_cost_krw": 1000000000,
+              "safety_rule_ids": []
+            },
+            "recommendations": [
+              {
+                "evidence_ids": [
+                  "EV-OP050-1"
+                ],
+                "ingredient": "calcium_citrate",
+                "rank": 1,
+                "score": 0.91,
+                "service_ingredient_id": "ING:CALCIUM"
+              },
+              {
+                "evidence_ids": [
+                  "EV-OP050-2"
+                ],
+                "ingredient": "coq10",
+                "rank": 2,
+                "score": 0.9,
+                "service_ingredient_id": "ING:COQ10"
+              },
+              {
+                "evidence_ids": [
+                  "EV-OP050-3"
+                ],
+                "ingredient": "magnesium_glycinate",
+                "rank": 3,
+                "score": 0.89,
+                "service_ingredient_id": "ING:MAGNESIUM"
+              }
+            ]
+          },
+          "result_sha256": "7a5e9558d56ea989c2be9d4ecb49c3655663b39721a5f63f302f6f3bba24b02c",
+          "schema_version": "product_combination_replay_identity_v1"
+        },
+        "schema_version": "product_combination_ranking_evidence_v1",
+        "top_k": [
+          {
+            "combination_id": "combo_da17182d16b21e1c",
+            "rank": 1,
+            "ranking_tuple": [
+              12000,
+              3,
+              "combo_da17182d16b21e1c"
+            ],
+            "schema_version": "product_combination_ranking_v1"
+          },
+          {
+            "combination_id": "combo_cb983ca869440013",
+            "rank": 2,
+            "ranking_tuple": [
+              21000,
+              3,
+              "combo_cb983ca869440013"
+            ],
+            "schema_version": "product_combination_ranking_v1"
+          },
+          {
+            "combination_id": "combo_dc015d5676173bdf",
+            "rank": 3,
+            "ranking_tuple": [
+              21000,
+              3,
+              "combo_dc015d5676173bdf"
+            ],
+            "schema_version": "product_combination_ranking_v1"
+          }
+        ]
+      },
+      "inventory_context": {
+        "previous_catalog_version": "catalog_ad1290334d0e8e74ebe8c220d39e65880c178370e9fe0e070dd3881399625a1c",
+        "previous_combination_id": "combo_a9af0169dbf9de70",
+        "previous_selections": [
+          {
+            "pharmacy_product_id": 30004,
+            "product_id": 20004
+          },
+          {
+            "pharmacy_product_id": 30014,
+            "product_id": 20014
+          },
+          {
+            "pharmacy_product_id": 30024,
+            "product_id": 20024
+          }
+        ],
+        "schema_version": "product_combination_inventory_context_v1"
+      },
+      "previous_ranking": {
+        "catalog_identity": [
+          {
+            "categories": [
+              "calcium"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20000,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 100000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:CALCIUM",
+                "source_label": "ingredient amount",
+                "source_value": "calcium 100 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "calcium 100 mg"
+              }
+            ],
+            "name": "calcium 0",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30000,
+                "price_krw": 10000,
+                "stock_count": 10
+              }
+            ]
+          },
+          {
+            "categories": [
+              "calcium"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20004,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 104000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:CALCIUM",
+                "source_label": "ingredient amount",
+                "source_value": "calcium 104 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "calcium 104 mg"
+              }
+            ],
+            "name": "calcium 4",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30004,
+                "price_krw": 1000,
+                "stock_count": 10
+              }
+            ]
+          },
+          {
+            "categories": [
+              "coq10"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20010,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 100000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:COQ10",
+                "source_label": "ingredient amount",
+                "source_value": "coq10 100 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "coq10 100 mg"
+              }
+            ],
+            "name": "coq10 0",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30010,
+                "price_krw": 10000,
+                "stock_count": 10
+              }
+            ]
+          },
+          {
+            "categories": [
+              "coq10"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20014,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 104000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:COQ10",
+                "source_label": "ingredient amount",
+                "source_value": "coq10 104 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "coq10 104 mg"
+              }
+            ],
+            "name": "coq10 4",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30014,
+                "price_krw": 1000,
+                "stock_count": 10
+              }
+            ]
+          },
+          {
+            "categories": [
+              "magnesium"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20020,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 100000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "source_label": "ingredient amount",
+                "source_value": "magnesium 100 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "magnesium 100 mg"
+              }
+            ],
+            "name": "magnesium 0",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30020,
+                "price_krw": 10000,
+                "stock_count": 10
+              }
+            ]
+          },
+          {
+            "categories": [
+              "magnesium"
+            ],
+            "formulation": "tablet",
+            "formulation_kind": "tablet",
+            "id": 20024,
+            "ingredient_amounts": [
+              {
+                "normalized_amount": 104000000,
+                "normalized_unit": "ng",
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "source_label": "ingredient amount",
+                "source_value": "magnesium 104 mg"
+              }
+            ],
+            "ingredient_declarations": [
+              {
+                "label": "ingredient amount",
+                "value": "magnesium 104 mg"
+              }
+            ],
+            "name": "magnesium 4",
+            "offers": [
+              {
+                "capacity": "30 tablets",
+                "option_type": "30 days",
+                "pharmacy_product_id": 30024,
+                "price_krw": 1000,
+                "stock_count": 10
+              }
+            ]
+          }
+        ],
+        "combinations": [
+          {
+            "combination_id": "combo_185ee4f774c0a72a",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20004
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20014
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20020
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30004,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20004,
+                "product_name": "calcium 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30014,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20014,
+                "product_name": "coq10 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30020,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20020,
+                "product_name": "magnesium 0"
+              }
+            ],
+            "total_cost_krw": 12000
+          },
+          {
+            "combination_id": "combo_330f0f7664b7e43e",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20000
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20010
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20020
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30000,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20000,
+                "product_name": "calcium 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30010,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20010,
+                "product_name": "coq10 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30020,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20020,
+                "product_name": "magnesium 0"
+              }
+            ],
+            "total_cost_krw": 30000
+          },
+          {
+            "combination_id": "combo_84871cb6efe6f6b2",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20004
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20010
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20020
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30004,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20004,
+                "product_name": "calcium 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30010,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20010,
+                "product_name": "coq10 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30020,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20020,
+                "product_name": "magnesium 0"
+              }
+            ],
+            "total_cost_krw": 21000
+          },
+          {
+            "combination_id": "combo_a9af0169dbf9de70",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20004
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20014
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20024
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30004,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20004,
+                "product_name": "calcium 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30014,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20014,
+                "product_name": "coq10 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30024,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20024,
+                "product_name": "magnesium 4"
+              }
+            ],
+            "total_cost_krw": 3000
+          },
+          {
+            "combination_id": "combo_cb983ca869440013",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20000
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20010
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20024
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30000,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20000,
+                "product_name": "calcium 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30010,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20010,
+                "product_name": "coq10 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30024,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20024,
+                "product_name": "magnesium 4"
+              }
+            ],
+            "total_cost_krw": 21000
+          },
+          {
+            "combination_id": "combo_da17182d16b21e1c",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20000
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20014
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20024
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30000,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20000,
+                "product_name": "calcium 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30014,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20014,
+                "product_name": "coq10 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30024,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20024,
+                "product_name": "magnesium 4"
+              }
+            ],
+            "total_cost_krw": 12000
+          },
+          {
+            "combination_id": "combo_dc015d5676173bdf",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20000
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20014
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20020
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30000,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20000,
+                "product_name": "calcium 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30014,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20014,
+                "product_name": "coq10 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30020,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20020,
+                "product_name": "magnesium 0"
+              }
+            ],
+            "total_cost_krw": 21000
+          },
+          {
+            "combination_id": "combo_e55eb528c8711788",
+            "duplicate_ingredient_ids": [],
+            "ingredient_totals": [
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20004
+                ],
+                "service_ingredient_id": "ING:CALCIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20010
+                ],
+                "service_ingredient_id": "ING:COQ10",
+                "total_declared_amount": 100000000,
+                "unit": "ng"
+              },
+              {
+                "duplicate_across_products": false,
+                "product_ids": [
+                  20024
+                ],
+                "service_ingredient_id": "ING:MAGNESIUM",
+                "total_declared_amount": 104000000,
+                "unit": "ng"
+              }
+            ],
+            "product_count": 3,
+            "recommendation_service_ingredient_ids": [
+              "ING:CALCIUM",
+              "ING:COQ10",
+              "ING:MAGNESIUM"
+            ],
+            "schema_version": "wb_rnd_product_combination_v1",
+            "selected_products": [
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:CALCIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "calcium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30004,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20004,
+                "product_name": "calcium 4"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:COQ10",
+                    "source_label": "ingredient amount",
+                    "source_value": "coq10 100 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30010,
+                  "price_krw": 10000,
+                  "stock_count": 10
+                },
+                "product_id": 20010,
+                "product_name": "coq10 0"
+              },
+              {
+                "formulation_kind": "tablet",
+                "ingredient_amounts": [
+                  {
+                    "normalized_amount": 104000000,
+                    "normalized_unit": "ng",
+                    "service_ingredient_id": "ING:MAGNESIUM",
+                    "source_label": "ingredient amount",
+                    "source_value": "magnesium 104 mg"
+                  }
+                ],
+                "offer": {
+                  "capacity": "30 tablets",
+                  "option_type": "30 days",
+                  "pharmacy_product_id": 30024,
+                  "price_krw": 1000,
+                  "stock_count": 10
+                },
+                "product_id": 20024,
+                "product_name": "magnesium 4"
+              }
+            ],
+            "total_cost_krw": 12000
+          }
+        ],
+        "max_ranked_combinations": 3,
+        "non_selection": [
+          {
+            "combination_id": "combo_330f0f7664b7e43e",
+            "reason_codes": [
+              "HIGHER_COST"
+            ]
+          },
+          {
+            "combination_id": "combo_84871cb6efe6f6b2",
+            "reason_codes": [
+              "HIGHER_COST"
+            ]
+          },
+          {
+            "combination_id": "combo_cb983ca869440013",
+            "reason_codes": [
+              "HIGHER_COST"
+            ]
+          },
+          {
+            "combination_id": "combo_dc015d5676173bdf",
+            "reason_codes": [
+              "HIGHER_COST"
+            ]
+          },
+          {
+            "combination_id": "combo_e55eb528c8711788",
+            "reason_codes": [
+              "DETERMINISTIC_ID_TIE_BREAK"
+            ]
+          }
+        ],
+        "policy": {
+          "excluded_service_ingredient_ids": [],
+          "max_products": 20,
+          "max_total_cost_krw": 1000000000,
+          "safety_rule_ids": [],
+          "schema_version": "product_optimization_constraints_v1"
+        },
+        "replay_identity": {
+          "catalog_version": "catalog_ad1290334d0e8e74ebe8c220d39e65880c178370e9fe0e070dd3881399625a1c",
+          "catalog_version_contract": "product_catalog_content_sha256_v1",
+          "input_sha256": "0154f1a750f56294182e33c32d95166f3198462e3655750e264a05e273df813c",
+          "optimization_input": {
+            "constraints": {
+              "excluded_ingredient_keys": [],
+              "excluded_service_ingredient_ids": [],
+              "max_products": 20,
+              "max_total_cost_krw": 1000000000,
+              "safety_rule_ids": []
+            },
+            "recommendations": [
+              {
+                "evidence_ids": [
+                  "EV-OP050-1"
+                ],
+                "ingredient": "calcium_citrate",
+                "rank": 1,
+                "score": 0.91,
+                "service_ingredient_id": "ING:CALCIUM"
+              },
+              {
+                "evidence_ids": [
+                  "EV-OP050-2"
+                ],
+                "ingredient": "coq10",
+                "rank": 2,
+                "score": 0.9,
+                "service_ingredient_id": "ING:COQ10"
+              },
+              {
+                "evidence_ids": [
+                  "EV-OP050-3"
+                ],
+                "ingredient": "magnesium_glycinate",
+                "rank": 3,
+                "score": 0.89,
+                "service_ingredient_id": "ING:MAGNESIUM"
+              }
+            ]
+          },
+          "result_sha256": "5dcdee4da6d5906df802db670ce1e79645cfb12429cf5ab9db88bc49b44aae7e",
+          "schema_version": "product_combination_replay_identity_v1"
+        },
+        "schema_version": "product_combination_ranking_evidence_v1",
+        "top_k": [
+          {
+            "combination_id": "combo_a9af0169dbf9de70",
+            "rank": 1,
+            "ranking_tuple": [
+              3000,
+              3,
+              "combo_a9af0169dbf9de70"
+            ],
+            "schema_version": "product_combination_ranking_v1"
+          },
+          {
+            "combination_id": "combo_185ee4f774c0a72a",
+            "rank": 2,
+            "ranking_tuple": [
+              12000,
+              3,
+              "combo_185ee4f774c0a72a"
+            ],
+            "schema_version": "product_combination_ranking_v1"
+          },
+          {
+            "combination_id": "combo_da17182d16b21e1c",
+            "rank": 3,
+            "ranking_tuple": [
+              12000,
+              3,
+              "combo_da17182d16b21e1c"
+            ],
+            "schema_version": "product_combination_ranking_v1"
+          }
+        ]
+      },
+      "schema_version": "product_combination_stock_cart_evidence_v1",
+      "substitution": {
+        "current_catalog_version": "catalog_de89bca0ceac4eb99ca8085ae6359a1304cc03912a3f8cf4147b883055fea82d",
+        "current_combination_id": "combo_da17182d16b21e1c",
+        "missing_pharmacy_product_ids": [
+          30004
+        ],
+        "previous_catalog_version": "catalog_ad1290334d0e8e74ebe8c220d39e65880c178370e9fe0e070dd3881399625a1c",
+        "previous_combination_id": "combo_a9af0169dbf9de70",
+        "safety_constraints_preserved": true,
+        "schema_version": "product_combination_stock_substitution_v1",
+        "status": "SUBSTITUTED"
+      }
+    }
+  },
+  "checks": {
+    "approval_required": true,
+    "cart_storage_written": false,
+    "current_safe_top_combination_independently_recomputed": true,
+    "existing_cart_item_contract_preserved": true,
+    "missing_inventory_independently_verified": true,
+    "order_created": false,
+    "previous_context_combination_id": "combo_a9af0169dbf9de70",
+    "previous_top_combination_identity_verified": true,
+    "service_only_context_not_forwarded_to_rnd": true
+  },
+  "evidence_boundary": {
+    "actual_prisma_query_executed": false,
+    "cart_storage_mutated": false,
+    "op069_proven_stage": "INTEGRATED",
+    "op069_required_stage": "INTEGRATED",
+    "op070_proven_stage": "INTEGRATED",
+    "op070_required_stage": "INTEGRATED",
+    "order_or_order_item_created": false,
+    "payment_created": false,
+    "production_deployment_proven": false,
+    "production_operation_proven": false,
+    "service_route_function_integration_proven": true,
+    "user_approval_obtained": false
+  },
+  "schema_version": "op069_op070_product_combination_stock_cart_smoke_v1",
+  "source": {
+    "combined_sha256": "ee30ecdc366102a5c66703c04de70b3f2605ccdd4379046d4b62c6d96b26cd8c",
+    "wellnessbox_commit": "12bbba6a469157967e088d8adf245c8064bbfa01",
+    "wellnessbox_paths": [
+      "app/api/tips/route.ts",
+      "contracts/wb-rnd/ingredient-identifier-map-v1.json",
+      "contracts/wb-rnd/product-candidate-match-v1.json",
+      "lib/client/cart-storage.ts",
+      "lib/server/wb-rnd-interim-route.ts",
+      "lib/server/wb-rnd-product-candidates.ts",
+      "scripts/qa/check-rnd-product-candidates.cts"
+    ],
+    "wellnessbox_rnd_commit": "7d4da4b56167b651254d17bcd2a56b8095984569",
+    "wellnessbox_rnd_paths": [
+      "scripts/run_product_combination_stock_cart_smoke.py",
+      "src/wellnessbox_rnd/optimizer/__init__.py",
+      "src/wellnessbox_rnd/optimizer/product_combinations.py",
+      "tests/test_product_combinations.py"
+    ]
+  }
+}
