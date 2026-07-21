@@ -25,7 +25,12 @@ RND_SOURCE_PATHS = (
     RND_ROOT / "apps/inference_api/routes/interim.py",
     RND_ROOT / "src/wellnessbox_rnd/chat/answering.py",
     RND_ROOT / "src/wellnessbox_rnd/chat/openai_adapter.py",
+    RND_ROOT / "src/wellnessbox_rnd/chat/retrieval.py",
+    RND_ROOT / "src/wellnessbox_rnd/chat/verifier.py",
     RND_ROOT / "src/wellnessbox_rnd/interim/store.py",
+    RND_ROOT / "data/knowledge/counseling_retrieval_corpus_manifest_v1.json",
+    RND_ROOT / "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+    RND_ROOT / "data/knowledge/counseling_answer_verifier_policy_v1.json",
 )
 SERVICE_SOURCE_PATHS = (
     SERVICE_ROOT / "lib/server/wb-rnd-interim-client.ts",
@@ -166,6 +171,18 @@ def _run_once(database: Path) -> dict[str, object]:
                 "case_id": item["service_session_id"].removeprefix("op090-"),
                 "status": item["answer"]["status"],
                 "used_chunk_ids": item["answer"]["used_chunk_ids"],
+                "answer_sha256": hashlib.sha256(
+                    json.dumps(
+                        item["answer"],
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ).encode("utf-8")
+                ).hexdigest(),
+                "answer_text": item["answer"]["answer_text"],
+                "verification": item["verification"],
+                "answer_execution": item["answer_execution"],
+                "recommendation_execution": item["recommendation_execution"],
                 "fallback_reason": item["answer_execution"]["fallback_reason"],
                 "attempted_live_call": item["answer_execution"]["attempted_live_call"],
                 "deduplicated_on_repeat": repeated[index]["deduplicated"],

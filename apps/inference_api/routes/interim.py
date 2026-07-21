@@ -5,6 +5,7 @@ import hmac
 import json
 import os
 import sqlite3
+import threading
 from datetime import UTC, datetime
 from typing import Annotated, Any, Literal
 from uuid import uuid4
@@ -93,6 +94,9 @@ router = APIRouter(
     tags=["interim-proxy"],
     dependencies=[Depends(require_internal_token)],
 )
+
+_COUNSELING_TURN_LOCKS_GUARD = threading.Lock()
+_COUNSELING_TURN_LOCKS: dict[tuple[str, str, str], threading.Lock] = {}
 
 
 def _store() -> InterimStore:
@@ -629,8 +633,13 @@ def _counseling_live_provider_enabled() -> bool:
     }
 
 
-@router.post("/counseling/turns")
-def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
+def _counseling_turn_lock(payload: CounselingTurnRequest) -> threading.Lock:
+    key = (payload.profile_id, payload.service_session_id, payload.turn_id)
+    with _COUNSELING_TURN_LOCKS_GUARD:
+        return _COUNSELING_TURN_LOCKS.setdefault(key, threading.Lock())
+
+
+def _execute_counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
     """Compose verified counseling and an existing recommendation run for one chat session."""
     store = _store()
     request_identity = _canonical_sha256(payload.model_dump(mode="json"))
@@ -691,7 +700,10 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
             knowledge_scope=load_approved_counseling_scope(),
             as_of=payload.answered_at,
         ),
-        allow_live_api=_counseling_live_provider_enabled(),
+        allow_live_api=(
+            _counseling_live_provider_enabled()
+            and "counseling:external-provider" in payload.consent_scopes
+        ),
     )
     if not adapter_response.verification.passed:
         raise HTTPException(status_code=422, detail="counseling_answer_verification_failed")
@@ -782,7 +794,7 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
     binding_sha256 = _canonical_sha256(binding_payload)
     with store.transaction(immediate=True) as connection:
         duplicate = connection.execute(
-            "select arguments_sha256 from agent_steps "
+            "select arguments_sha256, binding_json, binding_sha256 from agent_steps "
             "where run_id=? and tool_name='counseling_answer' "
             "and json_extract(binding_json, '$.service_session_id')=? "
             "and json_extract(binding_json, '$.turn_id')=?",
@@ -829,6 +841,20 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
                     binding_sha256,
                 ),
             )
+        else:
+            stored_binding = json.loads(str(duplicate["binding_json"]))
+            return {
+                "schema_version": "counseling_turn_response_v1",
+                "service_session_id": payload.service_session_id,
+                "turn_id": payload.turn_id,
+                "agent_run_id": stored_binding["agent_run_id"],
+                "answer": stored_binding["answer"],
+                "verification": stored_binding["verification"],
+                "answer_execution": stored_binding["answer_execution"],
+                "recommendation_execution": stored_binding["recommendation_execution"],
+                "session_binding_sha256": str(duplicate["binding_sha256"]),
+                "deduplicated": True,
+            }
 
     return {
         "schema_version": "counseling_turn_response_v1",
@@ -842,6 +868,13 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
         "session_binding_sha256": binding_sha256,
         "deduplicated": bool(agent_run.get("deduplicated")),
     }
+
+
+@router.post("/counseling/turns")
+def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
+    """Serialize one session turn and return its durable verified snapshot."""
+    with _counseling_turn_lock(payload):
+        return _execute_counseling_turn(payload)
 
 
 @router.post("/agent/runs")

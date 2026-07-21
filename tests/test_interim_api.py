@@ -203,11 +203,17 @@ def test_counseling_turn_persists_deterministic_provider_failure_snapshot(
     )
     client = TestClient(app)
 
+    provider_payload = _counseling_payload()
+    provider_payload["consent_scopes"] = [
+        "counseling:write",
+        "recommendation:write",
+        "counseling:external-provider",
+    ]
     first = client.post(
-        "/v1/interim/counseling/turns", headers=_headers(), json=_counseling_payload()
+        "/v1/interim/counseling/turns", headers=_headers(), json=provider_payload
     )
     repeated = client.post(
-        "/v1/interim/counseling/turns", headers=_headers(), json=_counseling_payload()
+        "/v1/interim/counseling/turns", headers=_headers(), json=provider_payload
     )
 
     assert first.status_code == 200, first.text
@@ -221,6 +227,88 @@ def test_counseling_turn_persists_deterministic_provider_failure_snapshot(
     assert first.json()["answer_execution"] == repeated.json()["answer_execution"]
     assert repeated.json()["deduplicated"] is True
     assert provider_calls == 1
+
+
+def test_counseling_turn_requires_explicit_consent_before_live_provider(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "counseling-provider-consent.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setenv("WELLNESSBOX_CHAT_ALLOW_LIVE_API", "1")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-provider-key")
+    monkeypatch.setattr(
+        "wellnessbox_rnd.chat.openai_adapter._call_openai_responses_api",
+        lambda **_kwargs: pytest.fail("provider must not receive an unconsented query"),
+    )
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            ingredients=("glucosamine",),
+            scores=(0.91,),
+            evidence_ids=("EV-OP089",),
+            model_id=None,
+        ),
+    )
+
+    response = TestClient(app).post(
+        "/v1/interim/counseling/turns", headers=_headers(), json=_counseling_payload()
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["answer_execution"]["attempted_live_call"] is False
+    assert response.json()["answer_execution"]["fallback_reason"] == "live_api_disabled"
+
+
+def test_counseling_turn_serializes_concurrent_identical_retries(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "counseling-concurrent-retry.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setenv("WELLNESSBOX_CHAT_ALLOW_LIVE_API", "1")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-provider-key")
+    provider_calls = 0
+
+    def fail_provider(**_kwargs):
+        nonlocal provider_calls
+        provider_calls += 1
+        raise error.URLError("injected_provider_outage")
+
+    monkeypatch.setattr(
+        "wellnessbox_rnd.chat.openai_adapter._call_openai_responses_api",
+        fail_provider,
+    )
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            ingredients=("glucosamine",),
+            scores=(0.91,),
+            evidence_ids=("EV-OP089",),
+            model_id=None,
+        ),
+    )
+    payload = _counseling_payload()
+    payload["consent_scopes"] = [
+        "counseling:write",
+        "recommendation:write",
+        "counseling:external-provider",
+    ]
+
+    def request() -> dict[str, object]:
+        response = TestClient(app).post(
+            "/v1/interim/counseling/turns", headers=_headers(), json=payload
+        )
+        assert response.status_code == 200, response.text
+        return response.json()
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        responses = list(executor.map(lambda _index: request(), range(2)))
+
+    assert provider_calls == 1
+    assert responses[0]["answer"] == responses[1]["answer"]
+    assert responses[0]["session_binding_sha256"] == responses[1]["session_binding_sha256"]
+    assert sorted(bool(item["deduplicated"]) for item in responses) == [False, True]
 
 
 def test_counseling_turn_rejects_changed_payload_for_existing_turn(
