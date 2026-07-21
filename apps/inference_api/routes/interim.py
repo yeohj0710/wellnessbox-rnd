@@ -557,7 +557,7 @@ def _recommendation(
         "product_optimization_constraints": product_constraints.model_dump(mode="json"),
         "uncertainty": "실제 약사 골드 라벨로 교체 전인 시뮬레이션 결과입니다.",
     }
-    with store.transaction() as connection:
+    with store.transaction(immediate=True) as connection:
         if BoundedAgent._recommendation_hold_exists(
             connection, profile_id=payload.profile_id
         ):
