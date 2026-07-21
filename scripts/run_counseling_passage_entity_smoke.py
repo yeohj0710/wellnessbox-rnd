@@ -37,6 +37,7 @@ SOURCE_PATHS = (
     "src/wellnessbox_rnd/chat/retrieval.py",
     "src/wellnessbox_rnd/knowledge/runtime_db.py",
     "tests/test_chat_retrieval.py",
+    "tests/test_chat_openai_adapter.py",
 )
 DATA_PATHS = (
     "data/knowledge/reference_knowledge_base_v1.json",
