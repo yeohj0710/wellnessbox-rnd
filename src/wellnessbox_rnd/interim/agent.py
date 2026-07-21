@@ -250,6 +250,8 @@ class BoundedAgent:
             raise ValueError("agent_run_concurrent_operation")
         try:
             result = self._dispatch(run_id, tool_name, safe_arguments, scopes)
+            if not isinstance(result, dict) or result.get("postcondition_success") is False:
+                raise RuntimeError("tool_postcondition_failed")
         except Exception:
             with self.store.transaction(immediate=True) as connection:
                 connection.execute(
@@ -257,8 +259,6 @@ class BoundedAgent:
                     (run_id,),
                 )
             raise
-        if not isinstance(result, dict) or result.get("postcondition_success") is False:
-            raise RuntimeError("tool_postcondition_failed")
         with self.store.transaction() as connection:
             step_index = connection.execute(
                 "select count(*) from agent_steps where run_id=?", (run_id,)
@@ -346,16 +346,10 @@ class BoundedAgent:
                 "max_items": max_items,
             }
         )
-        existing_keys = self.store.rows(
-            "select idempotency_key from agent_runs where profile_id=? and idempotency_key like ?",
-            (profile_id, f"{profile_id}:{idempotency_key}:%"),
-        )
-        expected_key = f"{profile_id}:{idempotency_key}:{request_identity}"
-        if existing_keys and any(str(row[0]) != expected_key for row in existing_keys):
-            raise ValueError("workflow_idempotency_payload_conflict")
-        run = self.create_run(
+        run = self._create_workflow_run(
             profile_id=profile_id,
-            idempotency_key=f"{idempotency_key}:{request_identity}",
+            base_idempotency_key=idempotency_key,
+            request_identity=request_identity,
         )
         run_id = str(run["run_id"])
         if run["deduplicated"]:
@@ -550,6 +544,49 @@ class BoundedAgent:
         return self._workflow_trace(
             run_id, steps, plan_start_recorded=ClosedLoopOperation.START_PLAN in operations
         )
+
+    def _create_workflow_run(
+        self,
+        *,
+        profile_id: str,
+        base_idempotency_key: str,
+        request_identity: str,
+    ) -> dict[str, Any]:
+        scoped_prefix = f"{profile_id}:{base_idempotency_key}:"
+        expected_key = f"{scoped_prefix}{request_identity}"
+        with self.store.transaction(immediate=True) as connection:
+            if connection.execute(
+                "select count(*) from user_profiles where profile_id=?", (profile_id,)
+            ).fetchone()[0] == 0:
+                raise ValueError("unknown_profile")
+            existing = connection.execute(
+                "select * from agent_runs where profile_id=? and idempotency_key like ?",
+                (profile_id, f"{scoped_prefix}%"),
+            ).fetchall()
+            if existing:
+                exact = [row for row in existing if str(row["idempotency_key"]) == expected_key]
+                if exact:
+                    return dict(exact[0]) | {"deduplicated": True}
+                raise ValueError("workflow_idempotency_payload_conflict")
+            run_id = f"run_{uuid4().hex}"
+            now = datetime.now(UTC).isoformat()
+            connection.execute(
+                """
+                insert into agent_runs(
+                  run_id, profile_id, idempotency_key, state_before, state_after,
+                  risk_tier, status, created_at, completed_at
+                ) values (?, ?, ?, ?, ?, 1, 'ACTIVE', ?, null)
+                """,
+                (
+                    run_id,
+                    profile_id,
+                    expected_key,
+                    AgentState.INTAKE,
+                    AgentState.INTAKE,
+                    now,
+                ),
+            )
+        return {"run_id": run_id, "state_after": AgentState.INTAKE, "deduplicated": False}
 
     def _dispatch(
         self, run_id: str, tool_name: str, arguments: dict[str, Any], scopes: set[str]

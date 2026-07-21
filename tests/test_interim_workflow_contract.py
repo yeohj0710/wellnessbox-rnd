@@ -268,3 +268,22 @@ def test_same_idempotency_key_rejects_changed_payload(tmp_path) -> None:
     agent.execute_recommendation_workflow(**base)
     with pytest.raises(ValueError, match="workflow_idempotency_payload_conflict"):
         agent.execute_recommendation_workflow(**(base | {"max_items": 2}))
+
+
+def test_failed_tool_postcondition_releases_execution_claim(tmp_path) -> None:
+    agent = _workflow_agent(tmp_path)
+    run = agent.create_run(profile_id="usr_workflow0001", idempotency_key="failed-tool")
+    with agent.store.transaction() as connection:
+        connection.execute(
+            "update agent_runs set state_after='SAFETY_CHECK' where run_id=?",
+            (run["run_id"],),
+        )
+    with pytest.raises(RuntimeError, match="tool_postcondition_failed"):
+        agent.execute_tool(
+            run_id=run["run_id"],
+            tool_name="rank_ingredients",
+            arguments={"ingredients": []},
+        )
+    assert agent.store.scalar(
+        "select status from agent_runs where run_id=?", (run["run_id"],)
+    ) == "ACTIVE"
