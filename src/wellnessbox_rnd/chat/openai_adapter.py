@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime
 from typing import Literal
 from urllib import error, request
 
@@ -10,13 +11,16 @@ from pydantic import BaseModel, Field
 from wellnessbox_rnd.chat.answering import (
     ChatAnswerVerification,
     ChatTemplateAnswer,
+    _build_citation,
+    _build_uncertainty,
     generate_bounded_template_answer,
     verify_bounded_template_answer,
 )
 from wellnessbox_rnd.chat.retrieval import (
+    BoundedKnowledgeScope,
     RetrievalChunk,
     RetrievalCorpusManifest,
-    retrieve_relevant_chunks,
+    retrieve_bounded_chunks,
 )
 
 OPENAI_API_KEY_ENV_VAR = "OPENAI_API_KEY"
@@ -31,6 +35,8 @@ DEFAULT_CHAT_OPENAI_TIMEOUT_SECONDS = 20.0
 
 class ChatAdapterRequest(BaseModel):
     query: str
+    knowledge_scope: BoundedKnowledgeScope
+    as_of: datetime
     answer_template_key: str | None = None
     expected_reference_ids: list[str] = Field(default_factory=list)
     expected_claim_ids: list[str] = Field(default_factory=list)
@@ -98,10 +104,12 @@ def generate_chat_answer_with_openai_fallback(
 ) -> ChatAdapterResponse:
     config = load_openai_chat_adapter_config_from_env()
     fallback = _build_deterministic_fallback(manifest, adapter_request)
-    evidence_results = retrieve_relevant_chunks(
+    evidence_results = retrieve_bounded_chunks(
         manifest,
+        scope=adapter_request.knowledge_scope,
         query=adapter_request.query,
         top_k=adapter_request.top_k,
+        as_of=adapter_request.as_of,
     )
     evidence_chunks = [
         next(chunk for chunk in manifest.chunks if chunk.chunk_id == result.chunk_id)
@@ -172,6 +180,9 @@ def generate_chat_answer_with_openai_fallback(
         )
         verification = verify_bounded_template_answer(
             answer,
+            manifest=manifest,
+            scope=adapter_request.knowledge_scope,
+            as_of=adapter_request.as_of,
             expected_reference_ids=adapter_request.expected_reference_ids,
             expected_claim_ids=adapter_request.expected_claim_ids,
             expected_terms=adapter_request.expected_terms,
@@ -217,12 +228,17 @@ def _build_deterministic_fallback(
     answer = generate_bounded_template_answer(
         manifest,
         query=adapter_request.query,
+        scope=adapter_request.knowledge_scope,
+        as_of=adapter_request.as_of,
         answer_template_key=adapter_request.answer_template_key,
         top_k=adapter_request.top_k,
         min_score=adapter_request.min_score,
     )
     verification = verify_bounded_template_answer(
         answer,
+        manifest=manifest,
+        scope=adapter_request.knowledge_scope,
+        as_of=adapter_request.as_of,
         expected_reference_ids=adapter_request.expected_reference_ids,
         expected_claim_ids=adapter_request.expected_claim_ids,
         expected_terms=adapter_request.expected_terms,
@@ -324,15 +340,9 @@ def _parse_openai_answer(
         if not valid_chunk_ids:
             raise ValueError("supported_without_evidence")
         citations = [
-            {
-                "chunk_id": allowed_chunks[chunk_id].chunk_id,
-                "reference_id": allowed_chunks[chunk_id].reference_id,
-                "claim_id": allowed_chunks[chunk_id].claim_id,
-                "source_title": allowed_chunks[chunk_id].source_title,
-                "source_type": allowed_chunks[chunk_id].source_type,
-                "page_or_section": allowed_chunks[chunk_id].page_or_section,
-                "reference_uri": allowed_chunks[chunk_id].reference_uri,
-            }
+            _build_citation(
+                allowed_chunks[chunk_id], as_of=adapter_request.as_of
+            ).model_dump()
             for chunk_id in valid_chunk_ids
         ]
     return ChatTemplateAnswer(
@@ -344,6 +354,12 @@ def _parse_openai_answer(
         used_chunk_ids=valid_chunk_ids,
         evidence_only=True,
         rationale="openai_responses_api",
+        knowledge_scope_id=adapter_request.knowledge_scope.scope_id,
+        answered_at=adapter_request.as_of,
+        uncertainty=_build_uncertainty(
+            status=status,
+            chunks=[allowed_chunks[chunk_id] for chunk_id in valid_chunk_ids],
+        ),
     )
 
 

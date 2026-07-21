@@ -1,3 +1,4 @@
+from datetime import UTC, datetime
 from io import BytesIO
 from urllib import error
 
@@ -10,7 +11,13 @@ from wellnessbox_rnd.chat.openai_adapter import (
     generate_chat_answer_with_openai_fallback,
     load_openai_chat_adapter_config_from_env,
 )
-from wellnessbox_rnd.chat.retrieval import RetrievalChunk, RetrievalCorpusManifest
+from wellnessbox_rnd.chat.retrieval import (
+    BoundedKnowledgeScope,
+    RetrievalChunk,
+    RetrievalCorpusManifest,
+)
+
+ANSWER_TIME = datetime(2026, 7, 21, tzinfo=UTC)
 
 
 def _build_manifest() -> RetrievalCorpusManifest:
@@ -49,11 +56,22 @@ def _build_manifest() -> RetrievalCorpusManifest:
     )
 
 
+def _build_scope() -> BoundedKnowledgeScope:
+    return BoundedKnowledgeScope(
+        scope_id="test-counseling-v1",
+        allowed_source_types=["interaction_reference"],
+        allowed_claim_types=["drug_interaction"],
+        allowed_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
+    )
+
+
 def test_openai_adapter_uses_deterministic_fallback_without_key(monkeypatch) -> None:
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     manifest = _build_manifest()
     adapter_request = ChatAdapterRequest(
         query="What should counseling say about glucosamine with warfarin?",
+        knowledge_scope=_build_scope(),
+        as_of=ANSWER_TIME,
         answer_template_key="interaction_warning",
         expected_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
         expected_claim_ids=["CLM-KNOWLEDGE-ANTICOAG-001"],
@@ -76,6 +94,8 @@ def test_openai_adapter_returns_mocked_verified_answer(monkeypatch) -> None:
     manifest = _build_manifest()
     adapter_request = ChatAdapterRequest(
         query="What should counseling say about glucosamine with warfarin?",
+        knowledge_scope=_build_scope(),
+        as_of=ANSWER_TIME,
         answer_template_key="interaction_warning",
         expected_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
         expected_claim_ids=["CLM-KNOWLEDGE-ANTICOAG-001"],
@@ -112,6 +132,8 @@ def test_openai_adapter_falls_back_when_mocked_answer_fails_verification(monkeyp
     manifest = _build_manifest()
     adapter_request = ChatAdapterRequest(
         query="What should counseling say about glucosamine with warfarin?",
+        knowledge_scope=_build_scope(),
+        as_of=ANSWER_TIME,
         answer_template_key="interaction_warning",
         expected_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
         expected_claim_ids=["CLM-KNOWLEDGE-ANTICOAG-001"],
@@ -150,6 +172,8 @@ def test_openai_adapter_captures_http_error_details(monkeypatch) -> None:
     manifest = _build_manifest()
     adapter_request = ChatAdapterRequest(
         query="What should counseling say about glucosamine with warfarin?",
+        knowledge_scope=_build_scope(),
+        as_of=ANSWER_TIME,
         answer_template_key="interaction_warning",
         expected_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
         expected_claim_ids=["CLM-KNOWLEDGE-ANTICOAG-001"],

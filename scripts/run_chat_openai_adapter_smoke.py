@@ -1,9 +1,11 @@
 import json
 from argparse import ArgumentParser
+from datetime import UTC, datetime
 from pathlib import Path
 from sys import exit as sys_exit
 
 from wellnessbox_rnd.chat import (
+    BoundedKnowledgeScope,
     ChatAdapterRequest,
     generate_chat_answer_with_openai_fallback,
     load_chat_qa_eval_cases,
@@ -53,9 +55,20 @@ def build_parser() -> ArgumentParser:
 def main() -> int:
     args = build_parser().parse_args()
     manifest = load_retrieval_corpus_manifest(args.corpus_manifest_json)
+    scope = BoundedKnowledgeScope(
+        scope_id="chat-openai-adapter-smoke-v1",
+        allowed_source_types=sorted({chunk.source_type for chunk in manifest.chunks}),
+        allowed_claim_types=sorted(
+            {chunk.normalized_claim_type for chunk in manifest.chunks}
+        ),
+        allowed_reference_ids=sorted({chunk.reference_id for chunk in manifest.chunks}),
+        max_results=5,
+    )
     qa_case = load_chat_qa_eval_cases(args.qa_dataset_jsonl)[0]
     adapter_request = ChatAdapterRequest(
         query=qa_case.question,
+        knowledge_scope=scope,
+        as_of=datetime(2026, 7, 21, tzinfo=UTC),
         answer_template_key=qa_case.answer_template_key,
         expected_reference_ids=qa_case.expected_reference_ids,
         expected_claim_ids=qa_case.expected_claim_ids,

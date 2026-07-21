@@ -1,5 +1,6 @@
 from wellnessbox_rnd.chat.answering import (
     AnswerCitation,
+    AnswerUncertainty,
     ChatAnswerVerification,
     ChatTemplateAnswer,
     generate_bounded_template_answer,
@@ -36,6 +37,7 @@ __all__ = [
     "ChatAdapterRequest",
     "ChatAdapterResponse",
     "AnswerCitation",
+    "AnswerUncertainty",
     "ChatAnswerVerification",
     "ChatTemplateAnswer",
     "OpenAIChatAdapterConfig",

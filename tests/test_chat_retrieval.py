@@ -23,6 +23,19 @@ from wellnessbox_rnd.chat.retrieval import (
 )
 from wellnessbox_rnd.knowledge.runtime_db import load_runtime_knowledge_db
 
+ANSWER_TIME = datetime(2026, 7, 21, tzinfo=UTC)
+
+
+def _scope_for(manifest: RetrievalCorpusManifest) -> BoundedKnowledgeScope:
+    return BoundedKnowledgeScope(
+        scope_id="test-counseling-v1",
+        allowed_source_types=sorted({chunk.source_type for chunk in manifest.chunks}),
+        allowed_claim_types=sorted(
+            {chunk.normalized_claim_type for chunk in manifest.chunks}
+        ),
+        allowed_reference_ids=sorted({chunk.reference_id for chunk in manifest.chunks}),
+    )
+
 
 def test_retrieve_relevant_chunks_hits_anticoagulant_claim() -> None:
     manifest = RetrievalCorpusManifest(
@@ -187,10 +200,15 @@ def test_generate_bounded_template_answer_preserves_citation_linkage() -> None:
     answer = generate_bounded_template_answer(
         manifest,
         query="What should counseling say about glucosamine with warfarin?",
+        scope=_scope_for(manifest),
+        as_of=ANSWER_TIME,
         answer_template_key="interaction_warning",
     )
     verification = verify_bounded_template_answer(
         answer,
+        manifest=manifest,
+        scope=_scope_for(manifest),
+        as_of=ANSWER_TIME,
         expected_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
         expected_claim_ids=["CLM-KNOWLEDGE-ANTICOAG-001"],
         expected_terms=["glucosamine", "warfarin"],
@@ -237,9 +255,14 @@ def test_generate_bounded_template_answer_handles_out_of_scope_query() -> None:
     answer = generate_bounded_template_answer(
         manifest,
         query="What is the weather in Seoul today?",
+        scope=_scope_for(manifest),
+        as_of=ANSWER_TIME,
     )
     verification = verify_bounded_template_answer(
         answer,
+        manifest=manifest,
+        scope=_scope_for(manifest),
+        as_of=ANSWER_TIME,
         expected_status="out_of_scope",
     )
 
@@ -286,15 +309,111 @@ def test_generate_bounded_template_answer_suppresses_unsupported_claim() -> None
     answer = generate_bounded_template_answer(
         manifest,
         query="Does glucosamine cure diabetes?",
+        scope=_scope_for(manifest),
+        as_of=ANSWER_TIME,
     )
     verification = verify_bounded_template_answer(
         answer,
+        manifest=manifest,
+        scope=_scope_for(manifest),
+        as_of=ANSWER_TIME,
         expected_status="unsupported",
     )
 
     assert answer.status == "unsupported"
     assert answer.citations == []
     assert verification.passed is True
+
+
+def test_supported_answer_exposes_reconciled_validity_and_uncertainty() -> None:
+    manifest = RetrievalCorpusManifest(
+        manifest_version="test",
+        chunk_count=1,
+        chunks=[
+            RetrievalChunk(
+                chunk_id="chunk::limited",
+                reference_id="reference::limited",
+                claim_id="claim::limited",
+                source_title="Limited evidence",
+                source_type="peer_reviewed_trial",
+                page_or_section="results",
+                reference_uri="https://example.test/limited",
+                parsed_source_uri="data/raw_references/limited.md",
+                license_status="OPEN",
+                effective_at="2026-01-01T00:00:00Z",
+                line_start=1,
+                line_end=2,
+                normalized_claim_type="limited_goal_evidence",
+                text="magnesium sleep evidence is limited",
+                excerpt="limited evidence",
+                keywords=["magnesium", "sleep"],
+            )
+        ],
+    )
+    scope = _scope_for(manifest)
+    answer = generate_bounded_template_answer(
+        manifest,
+        query="magnesium sleep evidence",
+        scope=scope,
+        as_of=ANSWER_TIME,
+    )
+
+    assert answer.knowledge_scope_id == scope.scope_id
+    assert answer.answered_at == ANSWER_TIME
+    assert answer.citations[0].effective_at.isoformat() == "2026-01-01T00:00:00+00:00"
+    assert answer.citations[0].active_at_answer_time is True
+    assert answer.uncertainty.level == "moderate"
+    assert "limited" in " ".join(answer.uncertainty.reasons)
+    assert verify_bounded_template_answer(
+        answer, manifest=manifest, scope=scope, as_of=ANSWER_TIME
+    ).passed
+
+
+def test_answer_verifier_rejects_forged_validity_and_uncertainty() -> None:
+    manifest = RetrievalCorpusManifest(
+        manifest_version="test",
+        chunk_count=1,
+        chunks=[
+            RetrievalChunk(
+                chunk_id="chunk::claim",
+                reference_id="reference::claim",
+                claim_id="claim::claim",
+                source_title="Evidence",
+                source_type="clinical_guideline",
+                page_or_section="section",
+                reference_uri="https://example.test/claim",
+                parsed_source_uri="data/raw_references/claim.md",
+                license_status="OPEN",
+                effective_at="2026-01-01T00:00:00Z",
+                line_start=1,
+                line_end=2,
+                normalized_claim_type="moderate_goal_evidence",
+                text="zinc immunity evidence",
+                excerpt="evidence",
+                keywords=["zinc", "immunity"],
+            )
+        ],
+    )
+    scope = _scope_for(manifest)
+    answer = generate_bounded_template_answer(
+        manifest, query="zinc immunity", scope=scope, as_of=ANSWER_TIME
+    )
+    forged = answer.model_copy(
+        update={
+            "citations": [
+                answer.citations[0].model_copy(update={"active_at_answer_time": False})
+            ],
+            "uncertainty": answer.uncertainty.model_copy(update={"level": "high"}),
+        }
+    )
+
+    verification = verify_bounded_template_answer(
+        forged, manifest=manifest, scope=scope, as_of=ANSWER_TIME
+    )
+
+    assert verification.passed is False
+    assert "answer_evidence_validity_mismatch" in verification.issues
+    assert "answer_uncertainty_mismatch" in verification.issues
 
 
 def test_retrieval_chunk_requires_valid_source_date_and_line_range() -> None:

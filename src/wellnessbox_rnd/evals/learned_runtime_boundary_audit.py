@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import inspect
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -13,7 +14,11 @@ from wellnessbox_rnd.chat.openai_adapter import (
     ChatAdapterRequest,
     generate_chat_answer_with_openai_fallback,
 )
-from wellnessbox_rnd.chat.retrieval import RetrievalChunk, RetrievalCorpusManifest
+from wellnessbox_rnd.chat.retrieval import (
+    BoundedKnowledgeScope,
+    RetrievalChunk,
+    RetrievalCorpusManifest,
+)
 from wellnessbox_rnd.domain.intake import normalize_request
 from wellnessbox_rnd.optimizer.service import select_recommendations
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
@@ -64,6 +69,13 @@ def build_learned_runtime_boundary_audit(
         _build_minimal_chat_manifest(),
         ChatAdapterRequest(
             query="What counseling applies to glucosamine with warfarin?",
+            knowledge_scope=BoundedKnowledgeScope(
+                scope_id="learned-runtime-audit-chat-v1",
+                allowed_source_types=["interaction_reference"],
+                allowed_claim_types=["drug_interaction"],
+                allowed_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
+            ),
+            as_of=datetime(2026, 7, 21, tzinfo=UTC),
             answer_template_key="interaction_warning",
             expected_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
             expected_claim_ids=["CLM-KNOWLEDGE-ANTICOAG-001"],

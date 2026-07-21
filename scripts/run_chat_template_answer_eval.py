@@ -1,14 +1,30 @@
 import json
 from argparse import ArgumentParser
+from datetime import UTC, datetime
 from pathlib import Path
 from sys import exit as sys_exit
 
 from wellnessbox_rnd.chat import (
+    BoundedKnowledgeScope,
     generate_bounded_template_answer,
     load_chat_qa_eval_cases,
     load_retrieval_corpus_manifest,
     verify_bounded_template_answer,
 )
+
+ANSWER_TIME = datetime(2026, 7, 21, tzinfo=UTC)
+
+
+def _build_scope(manifest) -> BoundedKnowledgeScope:
+    return BoundedKnowledgeScope(
+        scope_id="chat-template-eval-v1",
+        allowed_source_types=sorted({chunk.source_type for chunk in manifest.chunks}),
+        allowed_claim_types=sorted(
+            {chunk.normalized_claim_type for chunk in manifest.chunks}
+        ),
+        allowed_reference_ids=sorted({chunk.reference_id for chunk in manifest.chunks}),
+        max_results=5,
+    )
 
 
 def build_parser() -> ArgumentParser:
@@ -41,6 +57,7 @@ def build_parser() -> ArgumentParser:
 def main() -> int:
     args = build_parser().parse_args()
     manifest = load_retrieval_corpus_manifest(args.corpus_manifest_json)
+    scope = _build_scope(manifest)
     qa_cases = load_chat_qa_eval_cases(args.qa_dataset_jsonl)
 
     supported_reports: list[dict[str, object]] = []
@@ -51,10 +68,15 @@ def main() -> int:
         answer = generate_bounded_template_answer(
             manifest,
             query=case.question,
+            scope=scope,
+            as_of=ANSWER_TIME,
             answer_template_key=case.answer_template_key,
         )
         verification = verify_bounded_template_answer(
             answer,
+            manifest=manifest,
+            scope=scope,
+            as_of=ANSWER_TIME,
             expected_reference_ids=case.expected_reference_ids,
             expected_claim_ids=case.expected_claim_ids,
             expected_terms=case.expected_terms,
@@ -92,9 +114,14 @@ def main() -> int:
     out_of_scope_probe_passed = False
     unsupported_probe_passed = False
     for probe in probes:
-        answer = generate_bounded_template_answer(manifest, query=probe["query"])
+        answer = generate_bounded_template_answer(
+            manifest, query=probe["query"], scope=scope, as_of=ANSWER_TIME
+        )
         verification = verify_bounded_template_answer(
             answer,
+            manifest=manifest,
+            scope=scope,
+            as_of=ANSWER_TIME,
             expected_status=probe["expected_status"],
         )
         if probe["probe_id"] == "probe::out_of_scope":
