@@ -28,7 +28,7 @@
   "service_database_persistence_observed": false,
   "source_identity": {
     "files": {
-      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "ab5f72882d473543fb3a4c6163a2144eb34e9120e50d4be3b3ba97fa76358f83",
+      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "e1e2767710a8530dcda6743919504f146893c7b0937036184360c585b3a5dc34",
       "wellnessbox-rnd/data/knowledge/counseling_retrieval_corpus_manifest_v1.json": "ab8703d02c2e30db8c8a6f83835da9be055aaccc4425cc8aea121e636754a1b7",
       "wellnessbox-rnd/scripts/run_counseling_session_service_adapter_smoke.py": "4ec3bbd7a20cdbe4f80ae7693b7ef0cce3758b27644cffcd0db029eef073c2ce",
       "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py": "c127c3d8f87f59ae3d41dada8d5b1915ba6fda96c3f729b4632f76e2cee13bf2",
@@ -38,7 +38,7 @@
       "wellnessbox/scripts/qa/check-rnd-counseling-adapter.cts": "f937ce65f3f75fb02643a863a8463bfb2f73bb18a69a5b16b203949519c45cdb",
       "wellnessbox/scripts/qa/run-rnd-counseling-live-smoke.cts": "bb4d8ce0bf8385061699d79955ef9034ff4d0d377173a5d377d738e40432150f"
     },
-    "wellnessbox_rnd_commit": "51d6d96a4baf1eb9c8d42c269db813946e36eff7",
+    "wellnessbox_rnd_commit": "8c5f1f0fdf9f62acd3f7f94dc45ce1f5d3e9d8c2",
     "wellnessbox_service_commit": "f78604c74795c127a004a7be64cb67c7fe112803"
   },
   "stage_boundary": {

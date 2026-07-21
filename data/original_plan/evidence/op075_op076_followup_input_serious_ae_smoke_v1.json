@@ -138,7 +138,7 @@
   },
   "schema_version": "op075_op076_followup_input_serious_ae_smoke_v1",
   "source": {
-    "commit": "86b82ca030e351d36b4ce54eb9106c09cfefe366",
+    "commit": "8c5f1f0fdf9f62acd3f7f94dc45ce1f5d3e9d8c2",
     "paths": [
       "apps/inference_api/routes/interim.py",
       "scripts/run_followup_input_serious_ae_smoke.py",
@@ -149,6 +149,6 @@
       "tests/test_interim_jobs.py",
       "tests/test_pro_plan_service.py"
     ],
-    "sha256": "459db20e594405a1c3de4784cab8bdfa44995e45d77ba71662f8d5ec34fa1394"
+    "sha256": "704bc9141a1134e8bd9dac74960246c44930a6cffab6b0180a082dd7e991be9e"
   }
 }
