@@ -517,6 +517,20 @@ CREATE TABLE IF NOT EXISTS review_tasks (
   completion_postcondition_sha256 TEXT
 );
 
+CREATE TRIGGER IF NOT EXISTS trg_completed_review_immutable_update
+BEFORE UPDATE ON review_tasks
+WHEN OLD.status = 'COMPLETED'
+BEGIN
+  SELECT RAISE(ABORT, 'completed_review_immutable');
+END;
+
+CREATE TRIGGER IF NOT EXISTS trg_completed_review_immutable_delete
+BEFORE DELETE ON review_tasks
+WHEN OLD.status = 'COMPLETED'
+BEGIN
+  SELECT RAISE(ABORT, 'completed_review_immutable');
+END;
+
 CREATE TABLE IF NOT EXISTS kpi_results (
   kpi_id TEXT PRIMARY KEY,
   proxy_value REAL NOT NULL,

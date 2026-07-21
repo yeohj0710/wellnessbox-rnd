@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sqlite3
 from datetime import UTC, datetime
 
 import pytest
@@ -115,6 +116,17 @@ def test_job_failure_review_is_deterministic_and_completion_is_immutable(tmp_pat
     ).hexdigest()
     assert store.scalar("select pharmacy_id from review_tasks") == 7
     assert store.scalar("select status from review_tasks") == "COMPLETED"
+    with pytest.raises(sqlite3.IntegrityError, match="completed_review_immutable"):
+        with store.transaction(immediate=True) as connection:
+            connection.execute(
+                "update review_tasks set decision_json='{}' where review_id=?",
+                (created["review_id"],),
+            )
+    with pytest.raises(sqlite3.IntegrityError, match="completed_review_immutable"):
+        with store.transaction(immediate=True) as connection:
+            connection.execute(
+                "delete from review_tasks where review_id=?", (created["review_id"],)
+            )
     with pytest.raises(ValueError, match="review_already_completed"):
         service.complete_review(
             review_id=created["review_id"],
@@ -152,4 +164,30 @@ def test_review_completion_rejects_source_job_that_is_not_cancelled(tmp_path) ->
                 decision="acknowledged",
             ),
             completed_at=NOW,
+        )
+
+
+def test_review_completion_rejects_time_before_creation(tmp_path) -> None:
+    store = _store_with_cancelled_job(tmp_path)
+    service = PharmacistReviewService(store)
+    with store.transaction(immediate=True) as connection:
+        review = service.create_in_transaction(
+            connection,
+            profile_id="usr_review",
+            reason_codes=["WORKFLOW_JOB_FAIL_CLOSED", "WORKFLOW_JOB_TIMEOUT"],
+            created_at=NOW,
+            data_class="INTERIM_RUNTIME_EVENT",
+            simulation_badge=True,
+            urgency="HIGH",
+            source_job_id="job_review",
+        )
+
+    with pytest.raises(ValueError, match="review_completion_before_creation"):
+        service.complete_review(
+            review_id=review["review_id"],
+            decision=PharmacistReviewDecisionV1(
+                pharmacy_id=7,
+                decision="acknowledged",
+            ),
+            completed_at=datetime(2026, 7, 20, 12, 0, tzinfo=UTC),
         )

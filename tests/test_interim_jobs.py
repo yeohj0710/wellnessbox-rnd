@@ -249,6 +249,24 @@ def test_stale_evidence_and_consent_loss_fail_closed(tmp_path) -> None:
     assert consent_queue.store.scalar("select count(*) from review_tasks") == 1
 
 
+def test_exact_schedule_retry_keeps_original_guard_for_fail_closed_claim(tmp_path) -> None:
+    queue = _queue(tmp_path)
+    first = _schedule(queue, due_at=NOW, reminder_at=NOW)
+    with queue.store.transaction() as connection:
+        connection.execute(
+            "update execution_events set effective_payload_sha256='changed-before-retry'"
+        )
+
+    retry = _schedule(queue, due_at=NOW, reminder_at=NOW)
+
+    assert retry["deduplicated"] is True
+    assert retry["reminder_job"]["job_id"] == first["reminder_job"]["job_id"]
+    assert queue.claim_ready_jobs(worker_id="one", as_of=NOW) == []
+    assert queue.store.scalar("select last_error from workflow_jobs limit 1") == (
+        "STALE_EXECUTION_EVIDENCE"
+    )
+
+
 def test_acknowledgement_rechecks_evidence_and_commits_cancellation(tmp_path) -> None:
     queue = _queue(tmp_path)
     _schedule(queue, due_at=NOW, reminder_at=NOW)

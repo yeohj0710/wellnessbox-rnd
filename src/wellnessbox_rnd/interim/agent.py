@@ -800,7 +800,7 @@ class BoundedAgent:
                     raise ValueError("adverse_event_idempotency_payload_conflict")
                 existing_review = connection.execute(
                     "select review_id from review_tasks where profile_id=? and reason_codes_json=?",
-                    (profile_id, _json(["SERIOUS_ADVERSE_EVENT", case_id])),
+                    (profile_id, _json(sorted(["SERIOUS_ADVERSE_EVENT", case_id]))),
                 ).fetchone()
                 return {
                     "case_id": case_id,

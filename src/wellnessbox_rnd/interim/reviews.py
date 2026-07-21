@@ -134,6 +134,14 @@ class PharmacistReviewService:
                 raise ValueError("review_missing")
             if str(row["status"]) != "OPEN":
                 raise ValueError("review_already_completed")
+            try:
+                created_at = datetime.fromisoformat(str(row["created_at"]))
+            except ValueError as error:
+                raise ValueError("review_created_at_invalid") from error
+            if created_at.tzinfo is None or created_at.utcoffset() is None:
+                raise ValueError("review_created_at_invalid")
+            if completed < created_at.astimezone(UTC):
+                raise ValueError("review_completion_before_creation")
             assigned = row["pharmacy_id"]
             if assigned is not None and int(assigned) != decision.pharmacy_id:
                 raise PermissionError("review_pharmacy_mismatch")

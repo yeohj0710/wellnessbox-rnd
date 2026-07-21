@@ -698,7 +698,18 @@ class WorkflowJobQueue:
         ).fetchone()
         if existing:
             if str(existing["payload_sha256"]) != payload_sha256:
-                raise ValueError("workflow_job_idempotency_payload_conflict")
+                existing_payload = json.loads(str(existing["payload_json"]))
+                guard_fields = {"consent_snapshot_id", "execution_evidence_sha256"}
+                existing_request = {
+                    key: value
+                    for key, value in existing_payload.items()
+                    if key not in guard_fields
+                }
+                current_request = {
+                    key: value for key, value in payload.items() if key not in guard_fields
+                }
+                if existing_request != current_request:
+                    raise ValueError("workflow_job_idempotency_payload_conflict")
             return _job_from_row(existing), True
         job_id = f"job_{uuid4().hex}"
         connection.execute(

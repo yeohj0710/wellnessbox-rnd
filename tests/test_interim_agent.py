@@ -138,6 +138,25 @@ def test_serious_event_cannot_race_with_run_creation(tmp_path: Path, monkeypatch
     assert stopped[0]["plan_stopped"] is True
 
 
+def test_serious_event_retry_keeps_review_link_for_uppercase_case_id(tmp_path: Path) -> None:
+    agent = _agent(tmp_path)
+    arguments = {
+        "case_id": "AE_UPPER",
+        "profile_id": "usr_1234567890abcdef",
+        "execution_id": "execution_agent",
+        "plan_id": "plan_agent_job",
+        "serious": True,
+        "observed_at": "2026-07-21T12:00:00Z",
+    }
+
+    first = agent.record_adverse_event(run_id=None, arguments=arguments)
+    retry = agent.record_adverse_event(run_id=None, arguments=arguments)
+
+    assert first["review_id"] is not None
+    assert retry["review_id"] == first["review_id"]
+    assert retry["deduplicated"] is True
+
+
 def test_missing_consent_blocks_side_effect_tool(tmp_path: Path) -> None:
     agent = _agent(tmp_path)
     with agent.store.transaction() as connection:
