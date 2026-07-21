@@ -334,7 +334,7 @@
   },
   "schema_version": "op081_op082_counseling_passage_entity_smoke_v1",
   "source_identity": {
-    "commit": "6528c50d9d453bf397389746b7889ad489cc1b92",
+    "commit": "0631f0e89bb2b88e5b86ffeea105d4ee5f2af636",
     "data_paths": [
       "data/knowledge/reference_knowledge_base_v1.json",
       "data/knowledge/runtime_knowledge_db_v1.json",
@@ -352,7 +352,7 @@
       "tests/test_chat_openai_adapter.py",
       "tests/test_learned_runtime_boundary_audit.py"
     ],
-    "source_sha256": "836f48385eb4720d144e00b5283e99ee5d8737406676ad41f7f6ece0392ef447"
+    "source_sha256": "893409103592376c4b9a9bc4bf3923df1211efe14c31552005e96bda0e341cb4"
   },
   "stage_boundary": {
     "claimed_stage": "IMPLEMENTED",
