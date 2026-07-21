@@ -87,13 +87,13 @@
   },
   "schema_version": "op079_op080_plan_lifecycle_order_boundary_smoke_v1",
   "source_identity": {
-    "wellnessbox_commit": "4d904f43b028a35524a29206aaf7c6b99f58a97b",
+    "wellnessbox_commit": "f78604c74795c127a004a7be64cb67c7fe112803",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "lib/order/mutations.ts",
       "lib/order/orderStatus.ts"
     ],
-    "wellnessbox_rnd_commit": "f0b52e330a0545ea5b4013f38d28a6f543abf782",
+    "wellnessbox_rnd_commit": "892cab7152642b81255b81316d6ea4e01a7bc7a5",
     "wellnessbox_rnd_paths": [
       "apps/inference_api/routes/interim.py",
       "scripts/run_plan_lifecycle_order_boundary_smoke.py",
@@ -104,7 +104,7 @@
       "tests/test_interim_api.py",
       "tests/test_plan_lifecycle.py"
     ],
-    "wellnessbox_rnd_sha256": "53f79c6cabb636782b9be23b5797ae42861890319a642b9848100096883d5a4f",
+    "wellnessbox_rnd_sha256": "f881e44dafe4f721c376fdbb19d7923121a401f329ddbef724b09ef2c8849e4c",
     "wellnessbox_sha256": "eaf5a2a022f010fe807a29c9e3f896a0c9e2fc5eeb9b3107b2d98734539eb7be"
   }
 }

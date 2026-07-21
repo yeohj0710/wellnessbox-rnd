@@ -53,7 +53,7 @@
   },
   "schema_version": "op077_op078_fail_closed_job_review_smoke_v1",
   "source": {
-    "commit": "f0b52e330a0545ea5b4013f38d28a6f543abf782",
+    "commit": "892cab7152642b81255b81316d6ea4e01a7bc7a5",
     "paths": [
       "apps/inference_api/routes/interim.py",
       "scripts/run_fail_closed_job_pharmacist_review_smoke.py",
@@ -67,6 +67,6 @@
       "tests/test_interim_reviews.py",
       "tests/test_interim_store.py"
     ],
-    "sha256": "29e930551994e607dc88c00fa3c0cd36c05d333c360b948502fac88800f074a5"
+    "sha256": "7631b7466bef0604cc8d7df646c6145ba9d62e0b9c53969d30389dbc8fcb18af"
   }
 }

@@ -246,7 +246,7 @@
   },
   "schema_version": "op071_op072_closed_loop_state_order_smoke_v1",
   "source": {
-    "commit": "dd1687118f537b96900883774915a892afd26506",
+    "commit": "892cab7152642b81255b81316d6ea4e01a7bc7a5",
     "paths": [
       "apps/inference_api/routes/interim.py",
       "scripts/run_closed_loop_state_order_smoke.py",
@@ -257,6 +257,6 @@
       "tests/test_interim_security.py",
       "tests/test_interim_workflow_contract.py"
     ],
-    "sha256": "3d7f63f6c290429c64a87590428ab66b390c79cc3e81b147b584edf604813965"
+    "sha256": "0fbe9b6356deb38c44035a2cd8cab6d95e5f6ae002bc4da12107d2cdffe03f57"
   }
 }
