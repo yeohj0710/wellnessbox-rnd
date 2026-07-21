@@ -182,7 +182,14 @@ def _run_once(database: Path) -> dict[str, object]:
                 "answer_text": item["answer"]["answer_text"],
                 "verification": item["verification"],
                 "answer_execution": item["answer_execution"],
-                "recommendation_execution": item["recommendation_execution"],
+                "recommendation_execution": (
+                    None
+                    if item["recommendation_execution"] is None
+                    else {
+                        "status": item["recommendation_execution"]["status"],
+                        "simulation": item["recommendation_execution"]["simulation"],
+                    }
+                ),
                 "fallback_reason": item["answer_execution"]["fallback_reason"],
                 "attempted_live_call": item["answer_execution"]["attempted_live_call"],
                 "deduplicated_on_repeat": repeated[index]["deduplicated"],
