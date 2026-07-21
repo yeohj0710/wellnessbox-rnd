@@ -2,11 +2,27 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 PRO follow-up persistence and interpretation loop
+
+- Chosen stage: `original plan / pre-post outcome quantification and PRO`
+- Chosen tasks: OP-053 persist strict PRO events for pre-intake, week 2, week 4, and discontinuation; OP-054 interpret observed change with adherence, missed-dose, and adverse-event context
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. The persistence smoke separately writes `4` synthetic PRO events to a temporary local SQLite database.
+- Primary evidence: `data/original_plan/evidence/op053_op054_pro_followup_interpretation_smoke_v1.json`; deterministic SHA-256 `b57a6ef61310fc70727cb6bca9e3c4addc117d163bf627a72d0fb263d82392fc`; source commit `83997c11684fc482462668865afc843f7cf211ff`; source bundle SHA-256 `6d5829f753148e2c879c4dd546d2a0e5b58fd105f6129653f75147c4cea64e34`
+- Reused the existing `execution_events`, `ExecutionLedger.append_event`, mutation ledger, recommendation execution, and versioned PRO scoring paths. No second event store or WellnessBox service implementation was added.
+- Strict events require the fixed schema, plan and assessment identities, timezone-aware observation time, exact schedule, versioned scores, matching baseline distribution, reconciled adherence counts, and bounded adverse-event values. Strict payloads cannot use the conversation event type or cross the generic/strict correction boundary. Public interpretation rejects duplicate assessments and reversed observation time.
+- Numeric raw-score, health-Z, percentile, and mean health-Z changes remain observed values. Adherence, missed doses, and adverse events change only interpretation status and reason codes. The contract forbids causal-effect claims.
+- Evidence status: OP-053 is `IMPLEMENTED` and remains partial below required `OPERATED`; OP-054 is complete at required `IMPLEMENTED`. Generated status: complete `41`, partial `12`, pending `66`, external `1`, contradicted `0`.
+- Validation: focused selection `90 passed`; exact GitHub workflow pytest selection `407 passed`; full Ruff PASS; audit PASS with `53` claims and `165` checked evidence files; completion report check PASS; deterministic smoke byte-identical across reruns; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `788 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No OP-053/054 failure remains.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, and the overall and metric-specific weakest-slice categories are unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
+- Publication: source fix commit `83997c11684fc482462668865afc843f7cf211ff`, OP-053/054 evidence commit `706fb4ad22710ab0c5f6d5364ecd5aa3e694fe39`, and OP-051/052 source-identity refresh commit `0e7ea31bdf240cab0f4b7a34d35e7722e0a09e2e` are on `origin/main`; Original plan evidence run `29797963682` passed.
+- Recommended next loops: OP-055/056 personal/group effect separation and uncertainty; OP-057/058 user correction and plan-linked outcome lineage; OP-059/060 effect-driven action and real-data-class compatibility.
+
 ## 2026-07-17 versioned PRO scoring and baseline-percentile loop
 
 - Chosen stage: `original plan / pre-post outcome quantification and PRO`
 - Chosen tasks: OP-051 fix PSQI, ISI, and PSS-10 raw-score algorithms to a versioned contract; OP-052 fix health-oriented Z scores and percentiles to a declared baseline distribution
-- Primary evidence: `data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json`; deterministic SHA-256 `17f554025cae2a3410f07b3cd81d27dee7a41b2e1dcd31e370c74a8d8d377bd3`; source commit `fd7e4a3d1d6edb630d6c25cdb0fde11129d98975`; source bundle SHA-256 `7edc4cee9cd2a6dbd8d74be8fc10417d0959e27ddc03fb350218ce143e8a60bf`
+- Primary evidence: `data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json`; current deterministic SHA-256 `b14d8a69e7e62ca40837dab30552482c638de31452030168afecaf24eb7c5ddf`; source commit `334bd706f72593b7c948785ad2b8630fb65b8911`; source bundle SHA-256 `b9d49513fffb58d6f0a1bcda58741e637fca79c14ab09697492be771b9ba9169`
 - Reused the existing `src/wellnessbox_rnd/metrics/pro_scoring.py` path and package exports. No parallel metrics system or WellnessBox service implementation was added.
 - Raw-score contract: PSQI accepts seven already-derived component scores from `0..3` and sums to `0..21`; it does not reproduce or derive the licensed 19 self-rated items. ISI accepts seven item scores from `0..4` and sums to `0..28`. PSS-10 accepts ten item scores from `0..4`, reverses one-based positions `4, 5, 7, 8`, and sums to `0..40`. Floats, booleans, wrong counts/ranges, unknown instruments, metadata drift, and modified model instances fail closed.
 - Baseline contract: every source observation declares the versioned `BASELINE` role. A cohort requires one instrument/scoring version, at least two observations, and nonzero spread. The distribution uses arithmetic mean and sample standard deviation (`ddof=1`), then computes `health_z=(baseline_mean-raw_problem_score)/baseline_sample_std` and `100*Phi(health_z)`. Six-decimal half-even rounding and operation order are fixed. The transformed output embeds the validated distribution and rejects source-score, statistic, hash, instrument, version, or role changes.

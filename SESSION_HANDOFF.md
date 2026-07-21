@@ -2,11 +2,27 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 PRO follow-up persistence and interpretation handoff
+
+- Chosen stage: `original plan / pre-post outcome quantification and PRO`
+- Chosen tasks: OP-053 and OP-054
+- Primary dataset and evidence: `data/frozen_eval/frozen_eval_v1.jsonl` has `256` cases; `data/original_plan/evidence/op053_op054_pro_followup_interpretation_smoke_v1.json` has `4` ordered synthetic PRO persistence events and SHA-256 `b57a6ef61310fc70727cb6bca9e3c4addc117d163bf627a72d0fb263d82392fc`.
+- Source identity: commit `83997c11684fc482462668865afc843f7cf211ff`; source bundle SHA-256 `6d5829f753148e2c879c4dd546d2a0e5b58fd105f6129653f75147c4cea64e34`.
+- Implementation: the existing execution ledger persists strict pre-intake, week-2, week-4, and discontinuation events in order. The interpretation API returns unchanged observed score deltas plus explicit adherence, missed-dose, and adverse-event limitations. It never claims causal effect.
+- Fail-closed fixes: strict PRO payloads cannot be stored as conversation events; generic and strict payloads cannot be interconverted by correction; interpretation rejects duplicate assessment IDs, reversed observation time, cross-plan pairs, and cross-distribution pairs.
+- Files changed: `src/wellnessbox_rnd/interim/data_lake.py`, `src/wellnessbox_rnd/metrics/pro_followup.py`, `scripts/run_pro_followup_adherence_interpretation_smoke.py`, `tests/test_pro_followup_effects.py`, manifest/evidence/generated completion files, and governance expectation tests. The WellnessBox service was unchanged.
+- Evidence stage: OP-053 `IMPLEMENTED` below required `OPERATED`, so it is PARTIAL. OP-054 `IMPLEMENTED`, so it is COMPLETE. Counts are complete `41`, partial `12`, pending `66`, external `1`, contradicted `0`.
+- Validation: focused `90 passed`; workflow-equivalent `407 passed`; full Ruff PASS; audit PASS with `53` claims and `165` evidence files; report check PASS; full suite `788 passed`, `77 failed` with only the known `73` absent-report and `4` CGM-geometry groups; frozen eval has seven zero deltas and unchanged weakest slices; independent review Critical `0`, Important `0`, Minor `0`.
+- Publication: commits `83997c11684fc482462668865afc843f7cf211ff`, `706fb4ad22710ab0c5f6d5364ecd5aa3e694fe39`, and `0e7ea31bdf240cab0f4b7a34d35e7722e0a09e2e` are on `origin/main`; Original plan evidence run `29797963682` passed.
+- Biggest remaining bottlenecks: OP-053 lacks production operation; OP-021 through OP-030 and OP-040 remain below `OPERATED`; OP-039 lacks qualifying external labels; the trusted archive for `73` report-dependent tests is absent; `4` CGM geometry assertions remain unresolved.
+- Protected files remain untouched: `docs/plans/2026-07-14-tips-evaluator-ui-overhaul.md` and `docs/plans/2026-07-15-tips-full-implementation-roadmap.md`.
+- Next three loops: OP-055/056 separate personal and group effects with uncertainty; OP-057/058 recalculate corrected PRO and link outcome lineage; OP-059/060 connect observed worsening to actions and real outcome data classes.
+
 ## 2026-07-17 versioned PRO scoring and baseline-percentile handoff
 
 - Chosen stage: `original plan / pre-post outcome quantification and PRO`
 - Chosen tasks: OP-051 and OP-052
-- Primary evidence: `data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json`; deterministic SHA-256 `17f554025cae2a3410f07b3cd81d27dee7a41b2e1dcd31e370c74a8d8d377bd3`; source commit `fd7e4a3d1d6edb630d6c25cdb0fde11129d98975`; source bundle SHA-256 `7edc4cee9cd2a6dbd8d74be8fc10417d0959e27ddc03fb350218ce143e8a60bf`
+- Primary evidence: `data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json`; current deterministic SHA-256 `b14d8a69e7e62ca40837dab30552482c638de31452030168afecaf24eb7c5ddf`; source commit `334bd706f72593b7c948785ad2b8630fb65b8911`; source bundle SHA-256 `b9d49513fffb58d6f0a1bcda58741e637fca79c14ab09697492be771b9ba9169`
 - Raw scores: the existing R&D PRO module now applies one strict contract to PSQI seven-component sums (`0..21`), ISI seven-item sums (`0..28`), and PSS-10 ten-item sums with items `4, 5, 7, 8` reversed (`0..40`). PSQI 19-item derivation and questionnaire text are intentionally outside this contract.
 - Standardization: versioned `BASELINE` observations of one instrument/version produce an order-independent mean and sample standard deviation. Lower problem scores map to higher health Z scores and percentiles. The smoke fixes Z scores `1, 0, -1` to percentiles `84.134475, 50, 15.865525` for all three instruments.
 - Fail-closed boundary: public functions revalidate supplied model instances; output models enforce canonical score metadata and ranges; distributions verify source scores, statistics, role, version, and SHA-256; standardized outputs embed the validated distribution. Rounding method and operation order are part of the committed contract.
