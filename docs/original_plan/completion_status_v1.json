@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "579873a47d62ef146d50e27918a2f212bdfed6411d8d45ad4bcfe6d420f7b714",
+  "audited_manifest_sha256": "b953895e38037292b1763cfce69408b6d3bb9686317e77e258b435335dd733a5",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 62,
-    "PARTIAL": 25,
-    "PENDING": 32,
+    "COMPLETE": 63,
+    "PARTIAL": 26,
+    "PENDING": 30,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -116,9 +116,9 @@
       "title": "상담과 근거 검색",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 6,
-        "PARTIAL": 2,
-        "PENDING": 2,
+        "COMPLETE": 7,
+        "PARTIAL": 3,
+        "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -3069,14 +3069,23 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_interim_api.py",
+          "wellnessbox-rnd/tests/test_chat_retrieval.py",
+          "wellnessbox-rnd/scripts/run_counseling_fallback_frozen_api_e2e_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -3092,15 +3101,26 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+          "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+          "wellnessbox/scripts/qa/run-rnd-counseling-frozen-api-e2e.cts",
+          "wellnessbox-rnd/data/original_plan/op089_op090_counseling_frozen_qa_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_interim_api.py",
+          "wellnessbox-rnd/scripts/run_counseling_fallback_frozen_api_e2e_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []

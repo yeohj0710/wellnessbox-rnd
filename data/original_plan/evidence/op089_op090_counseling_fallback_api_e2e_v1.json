@@ -1,0 +1,531 @@
+{
+  "checks": {
+    "case_count": 8,
+    "cases": [
+      {
+        "answer_execution": {
+          "attempted_live_call": true,
+          "evidence_chunk_ids": [
+            "chunk::CLM-KNOWLEDGE-ANTICOAG-001",
+            "chunk::CLM-NIH-ODS-OMEGA3-WARFARIN-001",
+            "chunk::CLM-MC-CITATION-002"
+          ],
+          "evidence_reference_ids": [
+            "REF-KNOWLEDGE-ANTICOAG-001",
+            "REF-NIH-ODS-OMEGA3-001",
+            "REF-MC-CITATION-001"
+          ],
+          "fallback_reason": "openai_call_failed",
+          "live_failure": {
+            "exception_class": "HTTPError",
+            "exception_message": "HTTP Error 503: Service Unavailable",
+            "failure_stage": "http_request",
+            "response_body_excerpt": "{\"error\":\"injected_provider_outage\"}",
+            "status_code": 503
+          },
+          "model": "gpt-5-mini",
+          "provider": "deterministic_template_fallback",
+          "schema_version": "counseling_answer_execution_v1"
+        },
+        "answer_sha256": "6ea2a43abcd5df2e1618357f9c2d9cb14f4b365cc0b317f3c22a2cdd076e54a6",
+        "answer_text": "Chondroitin Or Glucosamine with Coumadin Or Warfarin should be treated as a drug interaction. The bounded counseling answer should say this combination can increase anticoagulant effect and bleeding risk.",
+        "attempted_live_call": true,
+        "binding_stable": true,
+        "case_id": "interaction_glucosamine_warfarin",
+        "deduplicated_on_repeat": true,
+        "fallback_reason": "openai_call_failed",
+        "recommendation_execution": {
+          "simulation": true,
+          "status": "BLOCKED"
+        },
+        "status": "supported",
+        "used_chunk_ids": [
+          "chunk::CLM-KNOWLEDGE-ANTICOAG-001"
+        ],
+        "verification": {
+          "answer_grounding_ok": true,
+          "citation_linkage_ok": true,
+          "emergency_precedence_ok": true,
+          "evidence_validity_ok": true,
+          "expected_claim_ids_ok": true,
+          "expected_reference_ids_ok": true,
+          "expected_terms_ok": true,
+          "forbidden_expression_ok": true,
+          "issues": [],
+          "knowledge_scope_ok": true,
+          "out_of_scope_handled_ok": true,
+          "passed": true,
+          "query_evidence_relevance_ok": true,
+          "required_risk_coverage_ok": true,
+          "safety_boundary_ok": true,
+          "status_ok": true,
+          "uncertainty_ok": true,
+          "unsupported_claim_suppressed_ok": true,
+          "verifier_policy_ok": true
+        }
+      },
+      {
+        "answer_execution": {
+          "attempted_live_call": true,
+          "evidence_chunk_ids": [
+            "chunk::CLM-NIH-ODS-OMEGA3-WARFARIN-001",
+            "chunk::CLM-KNOWLEDGE-ANTICOAG-001",
+            "chunk::CLM-NIH-ODS-OMEGA3-HEART-001"
+          ],
+          "evidence_reference_ids": [
+            "REF-NIH-ODS-OMEGA3-001",
+            "REF-KNOWLEDGE-ANTICOAG-001",
+            "REF-NIH-ODS-OMEGA3-HEART-001"
+          ],
+          "fallback_reason": "openai_call_failed",
+          "live_failure": {
+            "exception_class": "HTTPError",
+            "exception_message": "HTTP Error 503: Service Unavailable",
+            "failure_stage": "http_request",
+            "response_body_excerpt": "{\"error\":\"injected_provider_outage\"}",
+            "status_code": 503
+          },
+          "model": "gpt-5-mini",
+          "provider": "deterministic_template_fallback",
+          "schema_version": "counseling_answer_execution_v1"
+        },
+        "answer_sha256": "1151fdfec628b358a1346c94ec11e724a8f979680af906bd7b57696362daf3e9",
+        "answer_text": "Omega3 with Coumadin Or Warfarin should be treated as a drug interaction. The bounded counseling answer should say this combination can increase anticoagulant effect and bleeding risk.",
+        "attempted_live_call": true,
+        "binding_stable": true,
+        "case_id": "interaction_omega3_warfarin",
+        "deduplicated_on_repeat": true,
+        "fallback_reason": "openai_call_failed",
+        "recommendation_execution": {
+          "simulation": true,
+          "status": "BLOCKED"
+        },
+        "status": "supported",
+        "used_chunk_ids": [
+          "chunk::CLM-NIH-ODS-OMEGA3-WARFARIN-001"
+        ],
+        "verification": {
+          "answer_grounding_ok": true,
+          "citation_linkage_ok": true,
+          "emergency_precedence_ok": true,
+          "evidence_validity_ok": true,
+          "expected_claim_ids_ok": true,
+          "expected_reference_ids_ok": true,
+          "expected_terms_ok": true,
+          "forbidden_expression_ok": true,
+          "issues": [],
+          "knowledge_scope_ok": true,
+          "out_of_scope_handled_ok": true,
+          "passed": true,
+          "query_evidence_relevance_ok": true,
+          "required_risk_coverage_ok": true,
+          "safety_boundary_ok": true,
+          "status_ok": true,
+          "uncertainty_ok": true,
+          "unsupported_claim_suppressed_ok": true,
+          "verifier_policy_ok": true
+        }
+      },
+      {
+        "answer_execution": {
+          "attempted_live_call": true,
+          "evidence_chunk_ids": [
+            "chunk::CLM-NIH-ODS-VITD-BONE-001",
+            "chunk::CLM-NIH-ODS-CALCIUM-BONE-001",
+            "chunk::CLM-NIH-ODS-IMMUNE-ADEQUACY-001"
+          ],
+          "evidence_reference_ids": [
+            "REF-NIH-ODS-VITD-BONE-001",
+            "REF-NIH-ODS-CALCIUM-BONE-001",
+            "REF-NIH-ODS-IMMUNE-001"
+          ],
+          "fallback_reason": "openai_call_failed",
+          "live_failure": {
+            "exception_class": "HTTPError",
+            "exception_message": "HTTP Error 503: Service Unavailable",
+            "failure_stage": "http_request",
+            "response_body_excerpt": "{\"error\":\"injected_provider_outage\"}",
+            "status_code": 503
+          },
+          "model": "gpt-5-mini",
+          "provider": "deterministic_template_fallback",
+          "schema_version": "counseling_answer_execution_v1"
+        },
+        "answer_sha256": "327711b020343deee159e1a5ee9c4c2191da71102bd9fce79f72c005905995ca",
+        "answer_text": "Vitamin D is required for calcium absorption and normal bone mineralization, while supplementation outcomes for fractures and falls vary by population and remain inconsistent.",
+        "attempted_live_call": true,
+        "binding_stable": true,
+        "case_id": "goal_vitamin_d_bone",
+        "deduplicated_on_repeat": true,
+        "fallback_reason": "openai_call_failed",
+        "recommendation_execution": {
+          "simulation": true,
+          "status": "BLOCKED"
+        },
+        "status": "supported",
+        "used_chunk_ids": [
+          "chunk::CLM-NIH-ODS-VITD-BONE-001"
+        ],
+        "verification": {
+          "answer_grounding_ok": true,
+          "citation_linkage_ok": true,
+          "emergency_precedence_ok": true,
+          "evidence_validity_ok": true,
+          "expected_claim_ids_ok": true,
+          "expected_reference_ids_ok": true,
+          "expected_terms_ok": true,
+          "forbidden_expression_ok": true,
+          "issues": [],
+          "knowledge_scope_ok": true,
+          "out_of_scope_handled_ok": true,
+          "passed": true,
+          "query_evidence_relevance_ok": true,
+          "required_risk_coverage_ok": true,
+          "safety_boundary_ok": true,
+          "status_ok": true,
+          "uncertainty_ok": true,
+          "unsupported_claim_suppressed_ok": true,
+          "verifier_policy_ok": true
+        }
+      },
+      {
+        "answer_execution": {
+          "attempted_live_call": true,
+          "evidence_chunk_ids": [
+            "chunk::CLM-NCCIH-PROBIOTICS-GUT-001",
+            "chunk::CLM-CDC-SOLUBLE-FIBER-001",
+            "chunk::CLM-NCCIH-MAGNESIUM-SLEEP-001"
+          ],
+          "evidence_reference_ids": [
+            "REF-NCCIH-PROBIOTICS-GUT-001",
+            "REF-CDC-SOLUBLE-FIBER-001",
+            "REF-NCCIH-MAGNESIUM-SLEEP-001"
+          ],
+          "fallback_reason": "openai_call_failed",
+          "live_failure": {
+            "exception_class": "HTTPError",
+            "exception_message": "HTTP Error 503: Service Unavailable",
+            "failure_stage": "http_request",
+            "response_body_excerpt": "{\"error\":\"injected_provider_outage\"}",
+            "status_code": 503
+          },
+          "model": "gpt-5-mini",
+          "provider": "deterministic_template_fallback",
+          "schema_version": "counseling_answer_execution_v1"
+        },
+        "answer_sha256": "62367a9ab1ec8d4dae9e18a832b4a9d6e9536e1a011b0bb81488955d21721407",
+        "answer_text": "Some probiotics show promise for selected gastrointestinal outcomes, but effects are strain- and condition-specific and the effective product, dose, and beneficiary groups are often uncertain.",
+        "attempted_live_call": true,
+        "binding_stable": true,
+        "case_id": "goal_probiotics_gut",
+        "deduplicated_on_repeat": true,
+        "fallback_reason": "openai_call_failed",
+        "recommendation_execution": {
+          "simulation": true,
+          "status": "BLOCKED"
+        },
+        "status": "supported",
+        "used_chunk_ids": [
+          "chunk::CLM-NCCIH-PROBIOTICS-GUT-001"
+        ],
+        "verification": {
+          "answer_grounding_ok": true,
+          "citation_linkage_ok": true,
+          "emergency_precedence_ok": true,
+          "evidence_validity_ok": true,
+          "expected_claim_ids_ok": true,
+          "expected_reference_ids_ok": true,
+          "expected_terms_ok": true,
+          "forbidden_expression_ok": true,
+          "issues": [],
+          "knowledge_scope_ok": true,
+          "out_of_scope_handled_ok": true,
+          "passed": true,
+          "query_evidence_relevance_ok": true,
+          "required_risk_coverage_ok": true,
+          "safety_boundary_ok": true,
+          "status_ok": true,
+          "uncertainty_ok": true,
+          "unsupported_claim_suppressed_ok": true,
+          "verifier_policy_ok": true
+        }
+      },
+      {
+        "answer_execution": {
+          "attempted_live_call": true,
+          "evidence_chunk_ids": [
+            "chunk::CLM-MC-CITATION-002",
+            "chunk::CLM-MC-CITATION-001",
+            "chunk::CLM-MC-ACTION-001"
+          ],
+          "evidence_reference_ids": [
+            "REF-MC-CITATION-001",
+            "REF-MC-CITATION-001",
+            "REF-MC-ACTION-001"
+          ],
+          "fallback_reason": "openai_call_failed",
+          "live_failure": {
+            "exception_class": "HTTPError",
+            "exception_message": "HTTP Error 503: Service Unavailable",
+            "failure_stage": "http_request",
+            "response_body_excerpt": "{\"error\":\"injected_provider_outage\"}",
+            "status_code": 503
+          },
+          "model": "gpt-5-mini",
+          "provider": "deterministic_template_fallback",
+          "schema_version": "counseling_answer_execution_v1"
+        },
+        "answer_sha256": "063791b298ea8e8cfdfe0dfd6b864b64a236c769d769fa0fb501cbcafd75d118",
+        "answer_text": "The citation payload should preserve ref_id, source_title, source_type, page_or_section, claim_text, and normalized_claim_type.",
+        "attempted_live_call": true,
+        "binding_stable": true,
+        "case_id": "citation_schema",
+        "deduplicated_on_repeat": true,
+        "fallback_reason": "openai_call_failed",
+        "recommendation_execution": {
+          "simulation": true,
+          "status": "BLOCKED"
+        },
+        "status": "supported",
+        "used_chunk_ids": [
+          "chunk::CLM-MC-CITATION-002"
+        ],
+        "verification": {
+          "answer_grounding_ok": true,
+          "citation_linkage_ok": true,
+          "emergency_precedence_ok": true,
+          "evidence_validity_ok": true,
+          "expected_claim_ids_ok": true,
+          "expected_reference_ids_ok": true,
+          "expected_terms_ok": true,
+          "forbidden_expression_ok": true,
+          "issues": [],
+          "knowledge_scope_ok": true,
+          "out_of_scope_handled_ok": true,
+          "passed": true,
+          "query_evidence_relevance_ok": true,
+          "required_risk_coverage_ok": true,
+          "safety_boundary_ok": true,
+          "status_ok": true,
+          "uncertainty_ok": true,
+          "unsupported_claim_suppressed_ok": true,
+          "verifier_policy_ok": true
+        }
+      },
+      {
+        "answer_execution": {
+          "attempted_live_call": true,
+          "evidence_chunk_ids": [
+            "chunk::CLM-KNOWLEDGE-ANTICOAG-001",
+            "chunk::CLM-ADA-CGM-TIR-001",
+            "chunk::CLM-CDC-ADULT-SLEEP-001"
+          ],
+          "evidence_reference_ids": [
+            "REF-KNOWLEDGE-ANTICOAG-001",
+            "REF-ADA-CGM-TIR-001",
+            "REF-CDC-ADULT-SLEEP-001"
+          ],
+          "fallback_reason": "openai_call_failed",
+          "live_failure": {
+            "exception_class": "HTTPError",
+            "exception_message": "HTTP Error 503: Service Unavailable",
+            "failure_stage": "http_request",
+            "response_body_excerpt": "{\"error\":\"injected_provider_outage\"}",
+            "status_code": 503
+          },
+          "model": "gpt-5-mini",
+          "provider": "deterministic_template_fallback",
+          "schema_version": "counseling_answer_execution_v1"
+        },
+        "answer_sha256": "4038f281c5953cb8a4dbec09ed78cb00d628d464d3b62cbbb82d74bd16d5a51b",
+        "answer_text": "I do not have citation-backed evidence in the local counseling corpus to support that claim, so I cannot state it as true.",
+        "attempted_live_call": true,
+        "binding_stable": true,
+        "case_id": "unsupported_cure_claim",
+        "deduplicated_on_repeat": true,
+        "fallback_reason": "openai_call_failed",
+        "recommendation_execution": {
+          "simulation": true,
+          "status": "BLOCKED"
+        },
+        "status": "unsupported",
+        "used_chunk_ids": [],
+        "verification": {
+          "answer_grounding_ok": true,
+          "citation_linkage_ok": true,
+          "emergency_precedence_ok": true,
+          "evidence_validity_ok": true,
+          "expected_claim_ids_ok": true,
+          "expected_reference_ids_ok": true,
+          "expected_terms_ok": true,
+          "forbidden_expression_ok": true,
+          "issues": [],
+          "knowledge_scope_ok": true,
+          "out_of_scope_handled_ok": true,
+          "passed": true,
+          "query_evidence_relevance_ok": true,
+          "required_risk_coverage_ok": true,
+          "safety_boundary_ok": true,
+          "status_ok": true,
+          "uncertainty_ok": true,
+          "unsupported_claim_suppressed_ok": true,
+          "verifier_policy_ok": true
+        }
+      },
+      {
+        "answer_execution": {
+          "attempted_live_call": true,
+          "evidence_chunk_ids": [
+            "chunk::CLM-KNOWLEDGE-ANTICOAG-001",
+            "chunk::CLM-MC-CITATION-002",
+            "chunk::CLM-NIH-ODS-OMEGA3-WARFARIN-001"
+          ],
+          "evidence_reference_ids": [
+            "REF-KNOWLEDGE-ANTICOAG-001",
+            "REF-MC-CITATION-001",
+            "REF-NIH-ODS-OMEGA3-001"
+          ],
+          "fallback_reason": "openai_call_failed",
+          "live_failure": {
+            "exception_class": "HTTPError",
+            "exception_message": "HTTP Error 503: Service Unavailable",
+            "failure_stage": "http_request",
+            "response_body_excerpt": "{\"error\":\"injected_provider_outage\"}",
+            "status_code": 503
+          },
+          "model": "gpt-5-mini",
+          "provider": "deterministic_template_fallback",
+          "schema_version": "counseling_answer_execution_v1"
+        },
+        "answer_sha256": "7b3d87fc5978da8ba15ed90b1bd39fdf364654ead2207d2af78bf5608c99b13f",
+        "answer_text": "I do not have in-scope evidence for that counseling question. I can only answer bounded supplement counseling questions grounded in local references.",
+        "attempted_live_call": true,
+        "binding_stable": true,
+        "case_id": "out_of_scope_weather",
+        "deduplicated_on_repeat": true,
+        "fallback_reason": "openai_call_failed",
+        "recommendation_execution": {
+          "simulation": true,
+          "status": "BLOCKED"
+        },
+        "status": "out_of_scope",
+        "used_chunk_ids": [],
+        "verification": {
+          "answer_grounding_ok": true,
+          "citation_linkage_ok": true,
+          "emergency_precedence_ok": true,
+          "evidence_validity_ok": true,
+          "expected_claim_ids_ok": true,
+          "expected_reference_ids_ok": true,
+          "expected_terms_ok": true,
+          "forbidden_expression_ok": true,
+          "issues": [],
+          "knowledge_scope_ok": true,
+          "out_of_scope_handled_ok": true,
+          "passed": true,
+          "query_evidence_relevance_ok": true,
+          "required_risk_coverage_ok": true,
+          "safety_boundary_ok": true,
+          "status_ok": true,
+          "uncertainty_ok": true,
+          "unsupported_claim_suppressed_ok": true,
+          "verifier_policy_ok": true
+        }
+      },
+      {
+        "answer_execution": {
+          "attempted_live_call": false,
+          "evidence_chunk_ids": [],
+          "evidence_reference_ids": [],
+          "fallback_reason": "urgent_safety_precedence",
+          "live_failure": null,
+          "model": null,
+          "provider": "deterministic_template_fallback",
+          "schema_version": "counseling_answer_execution_v1"
+        },
+        "answer_sha256": "8f82438b4dad972f977b35eacd4132f75a3a958c8a6f849bccca89c3c07c1618",
+        "answer_text": "Call local emergency services now or go to the nearest emergency department. Stop taking the supplement until an emergency clinician evaluates you. Do not wait for a chat response or supplement recommendation.",
+        "attempted_live_call": false,
+        "binding_stable": true,
+        "case_id": "urgent_chest_pain_breathing",
+        "deduplicated_on_repeat": true,
+        "fallback_reason": "urgent_safety_precedence",
+        "recommendation_execution": null,
+        "status": "safety_escalation",
+        "used_chunk_ids": [],
+        "verification": {
+          "answer_grounding_ok": true,
+          "citation_linkage_ok": true,
+          "emergency_precedence_ok": true,
+          "evidence_validity_ok": true,
+          "expected_claim_ids_ok": true,
+          "expected_reference_ids_ok": true,
+          "expected_terms_ok": true,
+          "forbidden_expression_ok": true,
+          "issues": [],
+          "knowledge_scope_ok": true,
+          "out_of_scope_handled_ok": true,
+          "passed": true,
+          "query_evidence_relevance_ok": true,
+          "required_risk_coverage_ok": true,
+          "safety_boundary_ok": true,
+          "status_ok": true,
+          "uncertainty_ok": true,
+          "unsupported_claim_suppressed_ok": true,
+          "verifier_policy_ok": true
+        }
+      }
+    ],
+    "persisted_counts": {
+      "agent_runs": 8,
+      "agent_steps": 8,
+      "recommendation_runs": 7
+    },
+    "provider_request_count": 7
+  },
+  "dataset": {
+    "case_count": 8,
+    "path": "data/original_plan/op089_op090_counseling_frozen_qa_v1.json",
+    "schema_version": "op089_op090_counseling_frozen_qa_v1",
+    "sha256": "5b078087603ffc71849e75f0fd345740738ca91f7bc062b4afb9290476dc50d1"
+  },
+  "local_provider_failure_injected": true,
+  "normalized_runs_byte_identical": true,
+  "production_operation_observed": false,
+  "real_rnd_http_api_observed": true,
+  "real_service_typescript_client_observed": true,
+  "requirements": [
+    "OP-089",
+    "OP-090"
+  ],
+  "result": "PASS",
+  "schema_version": "op089_op090_counseling_fallback_api_e2e_v1",
+  "service_chat_route_observed": false,
+  "service_database_persistence_observed": false,
+  "source_identity": {
+    "files": {
+      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "04789d1e25dc0b22973b6e9284d276ac342d0ba8021ef53c7a49d24d283999ce",
+      "wellnessbox-rnd/data/knowledge/counseling_answer_verifier_policy_v1.json": "12d71723887094714241425b5cfdc88621cf6a21ffdb1bd66d4d89a5e4c927de",
+      "wellnessbox-rnd/data/knowledge/counseling_knowledge_scope_registry_v1.json": "a4bbfc0e2bdc85befe5d7ae6e4383cecd2ce942ade90b02eeeec94e86cb43d19",
+      "wellnessbox-rnd/data/knowledge/counseling_retrieval_corpus_manifest_v1.json": "ab8703d02c2e30db8c8a6f83835da9be055aaccc4425cc8aea121e636754a1b7",
+      "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json": "337b6a7f978bf7eb87b1e15557fa4fea68a31d112c498483b59929cd63280888",
+      "wellnessbox-rnd/data/original_plan/op089_op090_counseling_frozen_qa_v1.json": "5b078087603ffc71849e75f0fd345740738ca91f7bc062b4afb9290476dc50d1",
+      "wellnessbox-rnd/scripts/run_counseling_fallback_frozen_api_e2e_smoke.py": "aaa387850d32eb07a8f69584e6758667637e62e07c47947b611ee57a0b09f10e",
+      "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py": "11bfa1de83191fe2e374349f5e6e7eee7459fefbafe89f0d53c948c36bfdc8f0",
+      "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py": "399ed9fb1ef7eed7ec164f229eecf5d8d611f98231efbf311bbaa11eded7530b",
+      "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py": "6209f229766a8aa24d39093433861763f2410c5b5291574ef359bd084cda32f6",
+      "wellnessbox-rnd/src/wellnessbox_rnd/chat/verifier.py": "7e93321aab942c97394d29248547d150a1390a1cb03c0b59026182e7bf0ba685",
+      "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py": "2e25791600d38a93bfd42ec8dfd1ee0c6b313bd525fae0d3324d8f7a059b064d",
+      "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py": "c127c3d8f87f59ae3d41dada8d5b1915ba6fda96c3f729b4632f76e2cee13bf2",
+      "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/runtime_db.py": "70d4226539e88152ae2923e733540cc47d39ae26fa919f0f6cf8285d668b0b62",
+      "wellnessbox/lib/server/wb-rnd-interim-client.ts": "03f061ee67083ca3dd938551fc8d1fe5c2943e6cdfec93505e5b12deea75d836",
+      "wellnessbox/scripts/qa/run-rnd-counseling-frozen-api-e2e.cts": "e00d6d8fd82e1875d3f28e0a6bc206bf396c1348d03bbc5e29e7edbc0f241046"
+    },
+    "wellnessbox_rnd_commit": "d1273da965da098f8689434e9b140a83bb285cd7",
+    "wellnessbox_service_commit": "a24b6c3308cc76627c3ca29807db1705e32c2178"
+  },
+  "stage_boundary": {
+    "OP-089": "Local injected failure proves deterministic fallback implementation, not production operation.",
+    "OP-090": "The real service client and R&D HTTP API ran, but /api/chat and the service database were not exercised."
+  }
+}

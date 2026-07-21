@@ -1793,8 +1793,47 @@
             ]
           }
         },
-        {"requirement_id": "OP-089", "title": "provider 장애 시 구조화된 deterministic 답변으로 복귀한다."},
-        {"requirement_id": "OP-090", "title": "질문 유형별 frozen QA와 실제 API E2E를 통과한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"}
+        {
+          "requirement_id": "OP-089",
+          "title": "provider 장애 시 구조화된 deterministic 답변으로 복귀한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox-rnd/tests/test_chat_retrieval.py",
+              "wellnessbox-rnd/scripts/run_counseling_fallback_frozen_api_e2e_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-090",
+          "title": "질문 유형별 frozen QA와 실제 API E2E를 통과한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+              "wellnessbox/scripts/qa/run-rnd-counseling-frozen-api-e2e.cts",
+              "wellnessbox-rnd/data/original_plan/op089_op090_counseling_frozen_qa_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox-rnd/scripts/run_counseling_fallback_frozen_api_e2e_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
+            ]
+          }
+        }
       ]
     },
     {

@@ -26,7 +26,7 @@ def test_original_plan_audit_cli_returns_zero_for_current_manifest() -> None:
     assert result.returncode == 0
     assert report["status"] == "PASS"
     assert report["requirement_count"] == 120
-    assert report["claimed_requirement_count"] == 87
+    assert report["claimed_requirement_count"] == 89
     assert report["issues"] == []
 
 
@@ -111,6 +111,12 @@ def test_original_plan_audit_workflow_runs_cli_and_contract_tests() -> None:
     assert workflow.count('"src/wellnessbox_rnd/metrics/pro_group_effects.py"') == 2
     assert workflow.count('"src/wellnessbox_rnd/metrics/statistics.py"') == 2
     assert "tests/test_pro_group_effects.py" in workflow
+    assert "python scripts/run_counseling_fallback_frozen_api_e2e_smoke.py" in workflow
+    assert (
+        workflow.count('"scripts/run_counseling_fallback_frozen_api_e2e_smoke.py"')
+        == 2
+    )
+    assert "a24b6c3308cc76627c3ca29807db1705e32c2178" in workflow
     assert "yeohj0710/wellnessbox" in workflow
     assert "WELLNESSBOX_EVIDENCE_ROOT" in workflow
     assert workflow.count(
