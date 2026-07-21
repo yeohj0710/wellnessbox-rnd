@@ -2,19 +2,19 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031 through OP-038, OP-041 through OP-052, and OP-054 through OP-057 are complete. OP-021 through OP-030, OP-040, OP-053, and OP-058 are partial below their required stages. OP-039 remains external. The OP-057/058 loop connected the actual TIPS PRO UI and existing authenticated service adapters to the R&D plan/follow-up API and persisted recommendation, optimization, and observed-effect lineage under one validated plan ID. OP-058 remains below `OPERATED` because production operation is not proven. Generated status is complete `44`, partial `13`, pending `62`, external `1`, contradicted `0`.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031 through OP-038, OP-041 through OP-052, OP-054 through OP-057, and OP-059 through OP-060 are complete. OP-021 through OP-030, OP-040, OP-053, and OP-058 are partial below their required stages. OP-039 remains external. The OP-059/060 loop connected observed worsening to maintain, reduce, stop, or re-optimize decisions through the existing TIPS and R&D plan/follow-up path. The same API accepts synthetic or real-world outcome classes, but the real-world class is only a validated contract; production data and operation are not proven. Generated status is complete `46`, partial `13`, pending `60`, external `1`, contradicted `0`.
 
 Next three loops:
 
-1. Implement OP-059 and OP-060: connect observed worsening to maintain, reduce, stop, or re-optimize actions and accept real outcome data through the same versioned API contract.
-2. Implement OP-061 and OP-062: define efficacy, safety, cost, dose-count, and formulation constraints and connect them to the existing service product contract.
-3. Implement OP-063 and OP-064: incorporate adherence into effectiveness interpretation and connect the optimization cycle to the existing plan/event lineage.
+1. Implement OP-061 and OP-062: define efficacy, safety, cost, dose-count, and formulation constraints and connect them to the existing service product contract.
+2. Implement OP-063 and OP-064: incorporate adherence into effectiveness interpretation and connect the optimization cycle to the existing plan/event lineage.
+3. Implement OP-065 and OP-066: detect duplicate ingredients and calculate total dose through the existing ingredient and dose aggregation paths.
 
 Continue through the safety-engine group in two-requirement slices. The current service adapter accepts the existing stored `UserProfile` shape, forwards a stable pseudonymous subject ID, and the R&D recommendation route persists authorized profile, consent, knowledge lineage, and replay snapshots. The service UI can query and replay saved sessions through the existing internal client, but production has no deployed R&D endpoint or `WB_RND_*` settings. OP-029 and OP-030 therefore remain below `OPERATED`, and OP-101 through OP-105 remain separate deployment and production-integration requirements.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 
-The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. The current environment reports `827 passed, 77 failed`; the 77 failures are the same `73 + 4` groups. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
+The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. The current environment reports `837 passed, 77 failed`; the 77 failures are the same `73 + 4` groups. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
 
 ## 2026-07-14 verified restoration path
 

@@ -2,6 +2,20 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 PRO worsening actions and outcome-class integration handoff
+
+- Chosen stage and tasks: `original plan / pre-post outcome quantification and PRO`; OP-059 and OP-060.
+- Primary dataset/evidence: frozen eval `256` cases; four authenticated real-world-class enrollment/follow-up pairs and one synthetic paired case. Canonical evidence SHA-256 `ec14bf87025c9b1651462a936092cc3e2089956df2a72cfb826fa3594f22318d`; combined source SHA-256 `8e6969aac2e5e4d17bc9dfbb5176207874f697bd111955ea9fca6d06d107f7eb`.
+- Source identity: R&D `a580d813abfc1bed0292477c9ba6dc88ec4f8f4f`; WellnessBox `5ec3adf1f3948e910c1f4498083b43c701eaf557`.
+- Implementation: `metrics/pro_actions.py` validates the exact four decisions and rejects mutated derived output. The existing plan service, interim route, strict execution events, service proxy/client, TIPS PRO state, and UI carry the decision and selected outcome class. No second recommendation engine, event store, API, or product system was added.
+- Result: serious adverse events select stop; other adverse events select reduce; low adherence or missed doses select maintain; interpretable worsening selects re-optimize. Observed numeric change is not adjusted and no causal effect is claimed. `REAL_WORLD_OUTCOME` is a contract class only; no production or real patient data was used.
+- Honest stage: OP-059 and OP-060 are `INTEGRATED` and COMPLETE at their required stage. Production deployment, operation, real-data provenance, and action execution remain unproven.
+- Validation: focused `54 passed`; workflow-equivalent `456 passed`; full suite `837 passed`, `77 failed` in the known `73 + 4` groups; frozen 256 evaluation has seven zero deltas and identical weakest slices; full Ruff and service build/lint/typecheck/QA PASS; 13 workflow smokes are stable; independent review Critical `0`, Important `0`, Minor `0`.
+- Publication: R&D is published through `b068edac16e889dc6d18e004cf87726eb39e214d`; service through `5ec3adf1f3948e910c1f4498083b43c701eaf557`; R&D Original plan evidence run `29807082270` and service Encoding Guard run `29807015490` succeeded.
+- Biggest remaining bottlenecks: required operation evidence for OP-021~030, OP-040, OP-053, and OP-058; qualifying external labels for OP-039; OP-061~120 implementation; missing trusted report archive for 73 tests; four CGM geometry failures.
+- Protected user files remain untouched. Existing `etc/` files remain untracked and were not used as canonical evidence.
+- Next three loops: OP-061/062; OP-063/064; OP-065/066.
+
 ## 2026-07-21 corrected PRO service contract and lineage handoff
 
 - Chosen stage and tasks: `original plan / pre-post outcome quantification and PRO`; OP-057 and OP-058.

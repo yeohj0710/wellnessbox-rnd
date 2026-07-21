@@ -2,6 +2,19 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 PRO worsening actions and outcome-class integration loop
+
+- Chosen stage: `original plan / pre-post outcome quantification and PRO`; tasks OP-059 and OP-060.
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. The integration smoke performs four authenticated real-world-class enrollments/follow-ups plus one synthetic paired case through the existing service and R&D APIs.
+- Primary evidence: `data/original_plan/evidence/op059_op060_pro_action_real_outcome_smoke_v1.json`; deterministic SHA-256 `ec14bf87025c9b1651462a936092cc3e2089956df2a72cfb826fa3594f22318d`; combined source SHA-256 `8e6969aac2e5e4d17bc9dfbb5176207874f697bd111955ea9fca6d06d107f7eb`; R&D source `a580d813abfc1bed0292477c9ba6dc88ec4f8f4f`; service source `5ec3adf1f3948e910c1f4498083b43c701eaf557`.
+- Implementation: the existing plan/follow-up API now derives `maintain`, `reduce`, `stop`, or `re_optimize` from observed worsening, adherence, missed doses, and adverse events. It maps the decision to the existing `NextAction` and projected workflow state. The same API accepts `SYNTHETIC_OUTCOME_PROXY` or `REAL_WORLD_OUTCOME`, preserves the class in strict events, and keeps synthetic as the backward-compatible default. The TIPS PRO UI uses the existing authenticated adapter and shows the four actions in Korean.
+- Evidence boundary: the paired cases have identical semantic-input SHA-256 after excluding the required transport request ID and `dataClass`. The smoke proves localhost two-process integration and contract handling, not production data, production operation, deployment, or causal effect. OP-059 and OP-060 are `INTEGRATED` and COMPLETE at their required stages.
+- Generated status: complete `46`, partial `13`, pending `60`, external `1`, contradicted `0`. Audit PASS with `59` claims and `187` checked evidence files.
+- Validation: focused `54 passed`; exact workflow selection `456 passed`; full Ruff PASS; service PRO QA, typecheck, lint, encoding audit, and production build PASS; all 13 workflow smoke runners reproduce without file changes; independent review after fixes Critical `0`, Important `0`, Minor `0`.
+- Full suite: `837 passed`, `77 failed`; failures remain the known `73` absent report artifacts and `4` CGM geometry assertions. Frozen eval has `256` cases, seven zero metric deltas, and no weakest-slice changes.
+- Publication: service through `5ec3adf1f3948e910c1f4498083b43c701eaf557`, R&D through `b068edac16e889dc6d18e004cf87726eb39e214d`; service Encoding Guard run `29807015490` and R&D Original plan evidence run `29807082270` passed.
+- Recommended next loops: OP-061/062 optimization constraints and existing product contract; OP-063/064 adherence and ingredient combination; OP-065/066 duplicate ingredients and dose calculation.
+
 ## 2026-07-21 corrected PRO service contract and lineage loop
 
 - Chosen stage: `original plan / pre-post outcome quantification and PRO`; tasks OP-057 and OP-058.
