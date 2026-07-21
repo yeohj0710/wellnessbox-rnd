@@ -182,7 +182,7 @@ def run_smoke() -> dict[str, object]:
             "op061_required_stage": "IMPLEMENTED",
             "op062_proven_stage": "INTEGRATED",
             "op062_required_stage": "INTEGRATED",
-            "localhost_service_route_integration_proven": True,
+            "service_route_function_integration_proven": True,
             "configured_prisma_query_implementation_proven": True,
             "production_catalog_operation_proven": False,
             "production_data_freshness_proven": False,
