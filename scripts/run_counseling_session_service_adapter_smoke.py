@@ -109,9 +109,13 @@ def _one_run(database: Path) -> dict[str, object]:
                 "-c",
                 (
                     "import sqlite3,sys,json; c=sqlite3.connect(sys.argv[1]); "
-                    "print(json.dumps({'agent_runs':c.execute('select count(*) from agent_runs').fetchone()[0],"
-                    "'agent_steps':c.execute('select count(*) from agent_steps').fetchone()[0],"
-                    "'recommendation_runs':c.execute('select count(*) from recommendation_runs').fetchone()[0]}))"
+                    "print(json.dumps({"
+                    "'agent_runs':c.execute('select count(*) from agent_runs')"
+                    ".fetchone()[0],"
+                    "'agent_steps':c.execute('select count(*) from agent_steps')"
+                    ".fetchone()[0],"
+                    "'recommendation_runs':c.execute("
+                    "'select count(*) from recommendation_runs').fetchone()[0]}))"
                 ),
                 str(database),
             ],
@@ -152,7 +156,10 @@ def main() -> int:
     report_path = Path(
         sys.argv[1]
         if len(sys.argv) > 1
-        else "data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
+        else (
+            "data/original_plan/evidence/"
+            "op087_op088_counseling_session_service_adapter_smoke_v1.json"
+        )
     )
     report_path = report_path if report_path.is_absolute() else RND_ROOT / report_path
     with tempfile.TemporaryDirectory(dir=RND_ROOT / "etc") as directory:
