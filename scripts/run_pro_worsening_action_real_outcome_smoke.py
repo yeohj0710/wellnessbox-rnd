@@ -24,12 +24,16 @@ RND_SOURCE_PATHS = [
     "data/contracts/pro_runtime_reference_baselines_v1.json",
     "scripts/run_pro_worsening_action_real_outcome_smoke.py",
     "src/wellnessbox_rnd/interim/data_lake.py",
+    "src/wellnessbox_rnd/interim/contracts.py",
+    "src/wellnessbox_rnd/metrics/__init__.py",
     "src/wellnessbox_rnd/metrics/pro_actions.py",
     "src/wellnessbox_rnd/metrics/pro_followup.py",
     "src/wellnessbox_rnd/metrics/pro_runtime.py",
     "src/wellnessbox_rnd/metrics/pro_scoring.py",
     "src/wellnessbox_rnd/orchestration/pro_plan_service.py",
     "src/wellnessbox_rnd/orchestration/recommendation_service.py",
+    "src/wellnessbox_rnd/schemas/next_action_state_machine.py",
+    "src/wellnessbox_rnd/schemas/recommendation.py",
 ]
 SERVICE_SOURCE_PATHS = [
     "app/api/tips/pro/effects/route.ts",
@@ -38,6 +42,9 @@ SERVICE_SOURCE_PATHS = [
     "lib/server/wb-rnd-interim-client.ts",
     "lib/server/wb-rnd-interim-route.ts",
     "lib/server/wb-rnd-profile-adapter.ts",
+    "lib/server/route-auth.ts",
+    "lib/server/wb-rnd-interim-safety-authority.ts",
+    "lib/server/wb-rnd-product-candidates.ts",
     "lib/tips/pro-study-engine.ts",
     "lib/tips/pro-study-rnd-client.ts",
     "scripts/qa/check-tips-pro-correction-route.cts",
@@ -176,6 +183,7 @@ def run_smoke() -> dict[str, object]:
         ),
     ]
     observed: dict[str, dict[str, object]] = {}
+    paired_semantic_sha256: dict[str, str] = {}
     with TemporaryDirectory(prefix="op059-op060-") as directory:
         temp = Path(directory)
         port = 18759
@@ -219,19 +227,41 @@ def run_smoke() -> dict[str, object]:
                 adverse_events,
                 expected_reason,
             ) in enumerate(cases):
+                enrollment_semantic = {
+                    "profile": {
+                        "age": 41,
+                        "sex": "female",
+                        "goals": ["sleep quality"],
+                    },
+                    "baseline": {
+                        "instrument": "PSQI",
+                        "item_scores": _psqi_items(10),
+                    },
+                    "observedAt": "2026-01-01T00:00:00Z",
+                    "consentAccepted": True,
+                }
                 enrolled = _service_call(
                     temp,
                     environment,
                     "enroll",
                     {
                         "requestId": f"pro_{index + 1:032x}",
-                        "profile": {"age": 41, "sex": "female", "goals": ["sleep quality"]},
-                        "baseline": {"instrument": "PSQI", "item_scores": _psqi_items(10)},
-                        "observedAt": "2026-01-01T00:00:00Z",
-                        "consentAccepted": True,
+                        **enrollment_semantic,
                         "dataClass": data_class,
                     },
                 )
+                followup_semantic = {
+                    "timepoint": "week_2",
+                    "answers": {
+                        "instrument": "PSQI",
+                        "item_scores": _psqi_items(12),
+                    },
+                    "observedAt": "2026-01-15T00:00:00Z",
+                    "actualDayIndex": 14,
+                    "plannedDoseCount": 14,
+                    "takenDoseCount": taken,
+                    "adverseEvents": adverse_events,
+                }
                 followed = _service_call(
                     temp,
                     environment,
@@ -239,13 +269,7 @@ def run_smoke() -> dict[str, object]:
                     {
                         "executionId": enrolled["execution_id"],
                         "planId": enrolled["plan_id"],
-                        "timepoint": "week_2",
-                        "answers": {"instrument": "PSQI", "item_scores": _psqi_items(12)},
-                        "observedAt": "2026-01-15T00:00:00Z",
-                        "actualDayIndex": 14,
-                        "plannedDoseCount": 14,
-                        "takenDoseCount": taken,
-                        "adverseEvents": adverse_events,
+                        **followup_semantic,
                     },
                 )
                 decision = followed["action_decision"]
@@ -261,6 +285,16 @@ def run_smoke() -> dict[str, object]:
                 }
                 if expected_action == "re_optimize":
                     paired_results[data_class] = result
+                    paired_semantic_sha256[data_class] = hashlib.sha256(
+                        json.dumps(
+                            {
+                                "enrollment": enrollment_semantic,
+                                "followup": followup_semantic,
+                            },
+                            sort_keys=True,
+                            separators=(",", ":"),
+                        ).encode()
+                    ).hexdigest()
                 if data_class == "REAL_WORLD_OUTCOME":
                     observed[expected_action] = result
         finally:
@@ -284,12 +318,14 @@ def run_smoke() -> dict[str, object]:
             "exact_action_count": len(observed),
             "actions": observed,
             "data_class_pair": paired_results,
+            "data_class_pair_semantic_input_sha256": paired_semantic_sha256,
         },
         "checks": {
             "existing_service_helper_used": True,
             "existing_rnd_plan_api_used": True,
-            "same_api_changed_only_data_class": (
+            "same_semantic_payload_except_transport_id_and_data_class": (
                 set(paired_results) == {"REAL_WORLD_OUTCOME", "SYNTHETIC_OUTCOME_PROXY"}
+                and len(set(paired_semantic_sha256.values())) == 1
                 and {
                     key: value
                     for key, value in paired_results["REAL_WORLD_OUTCOME"].items()
