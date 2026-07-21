@@ -309,12 +309,20 @@ def run_smoke() -> dict[str, object]:
         for event in trace.json()["events"]
         if event["event_type"] == "followup_evaluation"
     ]
+    optimization = next(
+        event for event in trace.json()["events"] if event["event_type"] == "optimization"
+    )
     assert corrected["recalculated_immediately"] is True
     assert corrected["interpretation"]["follow_up_event"]["instrument_scores"][0][
         "raw_score"
     ] == 7
     assert corrected["lineage"]["plan_id"] == "plan_op057_service_001"
     assert corrected["lineage"]["selected_ingredient_keys"]
+    assert (
+        corrected["lineage"]["selected_ingredient_keys"]
+        == optimization["payload"]["selected_ingredient_keys"]
+    )
+    assert corrected["lineage"]["plan_id"] == followups[-1]["payload"]["plan_id"]
     assert followups[-1]["payload_state"] == "CORRECTED"
     return {
         "schema_version": "op057_op058_pro_correction_plan_lineage_smoke_v1",
@@ -338,18 +346,21 @@ def run_smoke() -> dict[str, object]:
             "plan_id": corrected["lineage"]["plan_id"],
             "selected_ingredient_keys": corrected["lineage"]["selected_ingredient_keys"],
             "recommendation_and_effect_share_execution": True,
-            "recommendation_and_effect_share_plan_id": True,
+            "lineage_response_matches_stored_events": True,
+            "recommendation_event_has_plan_id": False,
             "causal_effect_claim_allowed": False,
         },
         "evidence_boundary": {
             "service_to_rnd_local_http_proven": True,
-            "authenticated_service_route_proven": True,
-            "real_user_input_contract_proven": True,
+            "authenticated_service_helper_proven": True,
+            "actual_ui_call_proven": False,
+            "service_user_input_contract_proven": True,
             "production_deployment_proven": False,
             "production_operation_proven": False,
             "real_world_outcome_used": False,
-            "op057_proven_stage": "INTEGRATED",
-            "op058_proven_stage": "INTEGRATED",
+            "op057_proven_stage": "IMPLEMENTED",
+            "op057_required_stage": "INTEGRATED",
+            "op058_proven_stage": "IMPLEMENTED",
             "op058_required_stage": "OPERATED",
         },
     }

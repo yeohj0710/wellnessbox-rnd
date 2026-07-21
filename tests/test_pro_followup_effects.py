@@ -579,6 +579,49 @@ def test_pro_correction_api_returns_immediate_recalculation(
     assert body["lineage"]["selected_ingredient_keys"]
 
 
+def test_failed_recalculation_does_not_commit_correction(tmp_path) -> None:
+    store, trace = _store_with_execution(tmp_path)
+    ledger = ExecutionLedger(store)
+    ledger.append_event(
+        execution_id=trace.execution_id,
+        event_type="followup_evaluation",
+        source="survey",
+        idempotency_key="atomic-baseline",
+        payload=_event_payload("pre_intake", 10),
+    )
+    week_2 = ledger.append_event(
+        execution_id=trace.execution_id,
+        event_type="followup_evaluation",
+        source="survey",
+        idempotency_key="atomic-week-2",
+        payload=_event_payload("week_2", 8),
+    )
+    with store.transaction() as connection:
+        connection.execute(
+            "delete from execution_events where execution_id=? and event_type='optimization'",
+            (trace.execution_id,),
+        )
+
+    with pytest.raises(ValueError, match="recommendation_lineage_events"):
+        correct_and_recalculate_pro_followup_v1(
+            store,
+            execution_id=trace.execution_id,
+            profile_id=SUBJECT_ID,
+            target_event_id=week_2.event.event_id,
+            idempotency_key="must-not-commit",
+            replacement_payload=_event_payload("week_2", 7),
+        )
+
+    unchanged = next(
+        event
+        for event in ExecutionLedger(store).get_trace(trace.execution_id).events
+        if event.event_id == week_2.event.event_id
+    )
+    assert unchanged.payload_state == "ACTIVE"
+    assert unchanged.payload["instrument_scores"][0]["raw_score"] == 8
+    assert store.scalar("select count(*) from event_mutations") == 0
+
+
 def test_effect_interpretation_reflects_adherence_missed_doses_and_adverse_events() -> None:
     baseline = _event_payload("pre_intake", 10)
     clean = interpret_pro_followup_effect_v1(

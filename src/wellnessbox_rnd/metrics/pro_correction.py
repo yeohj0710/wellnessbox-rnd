@@ -81,45 +81,28 @@ def correct_and_recalculate_pro_followup_v1(
         raise ValueError("pro_followup_target_must_be_versioned_event")
 
     replacement = normalize_pro_followup_event_v1(replacement_payload)
-    mutation = DataMutationLedger(store).apply(
-        profile_id=profile_id,
-        target_type="execution_event",
-        target_event_id=target_event_id,
-        operation="correction",
-        idempotency_key=idempotency_key,
-        replacement_payload=replacement.model_dump(mode="json"),
-    )
-
-    effective = ledger.get_trace(execution_id)
     strict_events = [
         (event, normalize_pro_followup_event_v1(event.payload))
-        for event in effective.events
+        for event in trace.events
         if event.event_type == "followup_evaluation"
         and is_versioned_pro_followup_payload_v1(event.payload)
     ]
-    corrected_pair = next(
-        ((event, payload) for event, payload in strict_events if event.event_id == target_event_id),
-        None,
-    )
-    if corrected_pair is None:
-        raise ValueError("corrected_pro_followup_event_missing")
-    corrected_event, corrected_payload = corrected_pair
-    if corrected_payload.timepoint == "pre_intake":
+    if replacement.timepoint == "pre_intake":
         raise ValueError("follow_up_target_cannot_be_pre_intake")
     baselines = [
         (event, payload)
         for event, payload in strict_events
-        if payload.timepoint == "pre_intake" and payload.plan_id == corrected_payload.plan_id
+        if payload.timepoint == "pre_intake" and payload.plan_id == replacement.plan_id
     ]
     if len(baselines) != 1:
         raise ValueError("exactly_one_matching_pro_baseline_required")
     baseline_event, baseline_payload = baselines[0]
 
     recommendation_events = [
-        event for event in effective.events if event.event_type == "recommendation"
+        event for event in trace.events if event.event_type == "recommendation"
     ]
     optimization_events = [
-        event for event in effective.events if event.event_type == "optimization"
+        event for event in trace.events if event.event_type == "optimization"
     ]
     if len(recommendation_events) != 1 or len(optimization_events) != 1:
         raise ValueError("recommendation_lineage_events_required")
@@ -129,24 +112,30 @@ def correct_and_recalculate_pro_followup_v1(
     ):
         raise ValueError("selected_ingredient_lineage_required")
 
-    interpretation = interpret_pro_followup_effect_v1(
-        baseline_payload,
-        corrected_payload,
+    interpretation = interpret_pro_followup_effect_v1(baseline_payload, replacement)
+    prospective_lineage = PRORecommendationEffectLineageV1(
+        schema_version="pro_recommendation_effect_lineage_v1",
+        execution_id=execution_id,
+        plan_id=replacement.plan_id,
+        recommendation_event_id=recommendation_events[0].event_id,
+        optimization_event_id=optimization_events[0].event_id,
+        selected_ingredient_keys=ingredient_keys,
+        baseline_event_id=baseline_event.event_id,
+        follow_up_event_id=target.event_id,
+        causal_effect_claim_allowed=False,
+    )
+    mutation = DataMutationLedger(store).apply(
+        profile_id=profile_id,
+        target_type="execution_event",
+        target_event_id=target_event_id,
+        operation="correction",
+        idempotency_key=idempotency_key,
+        replacement_payload=replacement.model_dump(mode="json"),
     )
     return PROCorrectionRecalculationResultV1(
         schema_version="pro_correction_recalculation_result_v1",
         mutation=mutation,
         interpretation=interpretation,
-        lineage=PRORecommendationEffectLineageV1(
-            schema_version="pro_recommendation_effect_lineage_v1",
-            execution_id=execution_id,
-            plan_id=corrected_payload.plan_id,
-            recommendation_event_id=recommendation_events[0].event_id,
-            optimization_event_id=optimization_events[0].event_id,
-            selected_ingredient_keys=ingredient_keys,
-            baseline_event_id=baseline_event.event_id,
-            follow_up_event_id=corrected_event.event_id,
-            causal_effect_claim_allowed=False,
-        ),
+        lineage=prospective_lineage,
         recalculated_immediately=True,
     )
