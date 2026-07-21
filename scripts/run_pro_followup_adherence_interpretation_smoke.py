@@ -108,6 +108,7 @@ def _request(request_id: str) -> RecommendationRequest:
     return RecommendationRequest.model_validate(
         {
             "request_id": request_id,
+            "plan_id": "plan_op053_001",
             "source_profile": {
                 "schema_version": "wellnessbox.chat.UserProfile.v1",
                 "subject_id": SUBJECT_ID,
