@@ -112,6 +112,31 @@ def _seed(database: Path) -> InterimStore:
                     NOW.isoformat(),
                 ),
             )
+            if action == "replace":
+                replacement_payload = {
+                    "plan_id": "plan_op079_replacement_active",
+                    "lifecycle_role": "replacement_candidate",
+                    "replaces_plan_id": plan_id,
+                }
+                connection.execute(
+                    """
+                    insert into execution_events(
+                      event_id, execution_id, consent_snapshot_id, event_index,
+                      event_type, source, idempotency_key, payload_json,
+                      payload_sha256, effective_payload_sha256, created_at
+                    ) values (?, ?, ?, 1, 'optimization', 'system', ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        "event_op079_replacement_candidate",
+                        execution_id,
+                        CONSENT_ID,
+                        "replacement-candidate",
+                        json.dumps(replacement_payload, sort_keys=True),
+                        "replacement-candidate-hash",
+                        "replacement-candidate-hash",
+                        NOW.isoformat(),
+                    ),
+                )
             connection.execute(
                 """
                 insert into execution_events(

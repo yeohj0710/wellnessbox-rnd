@@ -186,6 +186,12 @@ class DataMutationLedger:
                         "event_payload_already_deleted:"
                         f"{resolved_target_type.value}:{target_event_id}"
                     )
+                if resolved_target_type == EventMutationTargetType.EXECUTION_EVENT:
+                    current_payload = json.loads(target["payload_json"])
+                    if current_payload.get("schema_version") == "plan_lifecycle_transition_v1":
+                        raise EventMutationStateError(
+                            f"plan_lifecycle_event_immutable:{target_event_id}"
+                        )
                 if (
                     resolved_operation == EventMutationOperation.CORRECTION
                     and resolved_target_type == EventMutationTargetType.EXECUTION_EVENT

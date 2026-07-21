@@ -20,6 +20,7 @@ def _sha(value: object) -> str:
 
 
 class PlanLifecycleState(StrEnum):
+    CANDIDATE = "CANDIDATE"
     ACTIVE = "ACTIVE"
     MAINTAINED = "MAINTAINED"
     ADJUSTED = "ADJUSTED"
@@ -104,7 +105,12 @@ def resolve_plan_lifecycle_states(rows: list[object]) -> dict[str, PlanLifecycle
         payload = json.loads(str(row["payload_json"]))
         plan_id = str(payload.get("plan_id", ""))
         if event_type in {"recommendation", "optimization"} and plan_id:
-            states.setdefault(plan_id, PlanLifecycleState.ACTIVE)
+            initial = (
+                PlanLifecycleState.CANDIDATE
+                if payload.get("lifecycle_role") == "replacement_candidate"
+                else PlanLifecycleState.ACTIVE
+            )
+            states.setdefault(plan_id, initial)
         if event_type != "followup_evaluation" or not plan_id:
             continue
         if payload.get("schema_version") == "plan_lifecycle_transition_v1":
@@ -115,8 +121,8 @@ def resolve_plan_lifecycle_states(rows: list[object]) -> dict[str, PlanLifecycle
             states[plan_id] = after
             replacement = payload.get("replacement_plan_id")
             if replacement:
-                if replacement in states:
-                    raise ValueError("replacement_plan_already_exists")
+                if states.get(str(replacement)) != PlanLifecycleState.CANDIDATE:
+                    raise ValueError("replacement_plan_candidate_discontinuity")
                 states[str(replacement)] = PlanLifecycleState.ACTIVE
         elif payload.get("timepoint") == "discontinuation":
             states[plan_id] = PlanLifecycleState.STOPPED
@@ -134,22 +140,7 @@ class PlanLifecycleService:
         target = _TARGETS[request.action]
         request_payload = request.model_dump(mode="json")
         request_payload["occurred_at"] = occurred.isoformat()
-        event_payload = {
-            "schema_version": "plan_lifecycle_transition_v1",
-            "profile_id": request.profile_id,
-            "plan_id": request.plan_id,
-            "action": request.action.value,
-            "state_before": request.expected_state.value,
-            "state_after": target.value,
-            "reason_code": request.reason_code,
-            "replacement_plan_id": request.replacement_plan_id,
-            "replacement_state": (
-                PlanLifecycleState.ACTIVE.value if request.replacement_plan_id else None
-            ),
-            "occurred_at": occurred.isoformat(),
-            "request_sha256": _sha(request_payload),
-        }
-        payload_sha256 = _sha(event_payload)
+        request_sha256 = _sha(request_payload)
         with self.store.transaction(immediate=True) as connection:
             execution = connection.execute(
                 "select * from executions where execution_id=?", (request.execution_id,)
@@ -175,12 +166,14 @@ class PlanLifecycleService:
                 (request.execution_id, request.idempotency_key),
             ).fetchone()
             if existing is not None:
-                if str(existing["payload_sha256"]) != payload_sha256:
+                existing_payload = json.loads(str(existing["payload_json"]))
+                if existing_payload.get("request_sha256") != request_sha256:
                     raise ValueError("plan_lifecycle_idempotency_conflict")
                 return self._result(connection, existing, deduplicated=True)
             rows = connection.execute(
                 """
-                select event_type, payload_json from execution_events
+                select event_id, event_type, payload_json, effective_payload_sha256, created_at
+                from execution_events
                 where execution_id=? and payload_state='ACTIVE' order by event_index
                 """,
                 (request.execution_id,),
@@ -195,8 +188,54 @@ class PlanLifecycleService:
                 raise ValueError(
                     f"plan_lifecycle_stale_state:{request.expected_state.value}:{current.value}"
                 )
-            if request.replacement_plan_id and request.replacement_plan_id in states:
-                raise ValueError("replacement_plan_already_exists")
+            latest_created_at = max(
+                datetime.fromisoformat(str(row["created_at"])).astimezone(UTC) for row in rows
+            )
+            if occurred < latest_created_at:
+                raise ValueError("plan_lifecycle_occurred_at_before_lineage")
+            candidate_event_id = None
+            candidate_payload_sha256 = None
+            if request.replacement_plan_id:
+                candidates = []
+                for row in rows:
+                    payload = json.loads(str(row["payload_json"]))
+                    if (
+                        str(row["event_type"]) in {"recommendation", "optimization"}
+                        and payload.get("plan_id") == request.replacement_plan_id
+                        and payload.get("lifecycle_role") == "replacement_candidate"
+                        and payload.get("replaces_plan_id") == request.plan_id
+                    ):
+                        candidates.append(row)
+                if len(candidates) != 1:
+                    raise ValueError("replacement_plan_candidate_required")
+                candidate = candidates[0]
+                candidate_created = datetime.fromisoformat(
+                    str(candidate["created_at"])
+                ).astimezone(UTC)
+                if candidate_created > occurred:
+                    raise ValueError("replacement_plan_candidate_created_after_transition")
+                if states.get(request.replacement_plan_id) != PlanLifecycleState.CANDIDATE:
+                    raise ValueError("replacement_plan_candidate_not_available")
+                candidate_event_id = str(candidate["event_id"])
+                candidate_payload_sha256 = str(candidate["effective_payload_sha256"])
+            event_payload = {
+                "schema_version": "plan_lifecycle_transition_v1",
+                "profile_id": request.profile_id,
+                "plan_id": request.plan_id,
+                "action": request.action.value,
+                "state_before": request.expected_state.value,
+                "state_after": target.value,
+                "reason_code": request.reason_code,
+                "replacement_plan_id": request.replacement_plan_id,
+                "replacement_state": (
+                    PlanLifecycleState.ACTIVE.value if request.replacement_plan_id else None
+                ),
+                "replacement_candidate_event_id": candidate_event_id,
+                "replacement_candidate_payload_sha256": candidate_payload_sha256,
+                "occurred_at": occurred.isoformat(),
+                "request_sha256": request_sha256,
+            }
+            payload_sha256 = _sha(event_payload)
             event_index = int(
                 connection.execute(
                     "select coalesce(max(event_index), -1) + 1 from execution_events "

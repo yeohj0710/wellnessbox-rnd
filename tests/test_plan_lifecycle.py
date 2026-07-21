@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import json
+import sqlite3
 from concurrent.futures import ThreadPoolExecutor
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from pydantic import ValidationError
 
+from wellnessbox_rnd.interim.data_mutation import DataMutationLedger, EventMutationStateError
 from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.plan_lifecycle import (
     PlanLifecycleAction,
@@ -18,7 +21,9 @@ from wellnessbox_rnd.interim.store import InterimStore
 NOW = datetime(2026, 7, 21, 12, 0, tzinfo=UTC)
 
 
-def _service(tmp_path, *, plan_id: str = "plan_lifecycle") -> PlanLifecycleService:
+def _service(
+    tmp_path, *, plan_id: str = "plan_lifecycle", replacement_plan_id: str | None = None
+) -> PlanLifecycleService:
     store = InterimStore(tmp_path / "lifecycle.sqlite3")
     store.migrate()
     with store.transaction() as connection:
@@ -56,6 +61,24 @@ def _service(tmp_path, *, plan_id: str = "plan_lifecycle") -> PlanLifecycleServi
             """,
             (f'{{"plan_id":"{plan_id}"}}', NOW.isoformat()),
         )
+        if replacement_plan_id:
+            payload = {
+                "plan_id": replacement_plan_id,
+                "lifecycle_role": "replacement_candidate",
+                "replaces_plan_id": plan_id,
+            }
+            connection.execute(
+                """
+                insert into execution_events(
+                  event_id, execution_id, consent_snapshot_id, event_index, event_type,
+                  source, idempotency_key, payload_json, payload_sha256,
+                  effective_payload_sha256, created_at
+                ) values ('event_replacement_candidate', 'execution_lifecycle',
+                  'consent_lifecycle', 1, 'optimization', 'system',
+                  'replacement-candidate', ?, 'candidate-hash', 'candidate-hash', ?)
+                """,
+                (json.dumps(payload, sort_keys=True), NOW.isoformat()),
+            )
     return PlanLifecycleService(store)
 
 
@@ -118,22 +141,33 @@ def test_transition_persists_in_existing_execution_events(tmp_path, action, targ
     assert result.state_after == PlanLifecycleState(target)
     assert result.order_state_effect == "NONE"
     assert result.order_state_mutation_allowed is False
-    assert service.store.scalar(
-        "select count(*) from execution_events where event_type='followup_evaluation'"
-    ) == 1
-    assert service.store.scalar(
-        "select count(*) from sqlite_master where type='table' and name like '%lifecycle%'"
-    ) == 0
+    assert (
+        service.store.scalar(
+            "select count(*) from execution_events where event_type='followup_evaluation'"
+        )
+        == 1
+    )
+    assert (
+        service.store.scalar(
+            "select count(*) from sqlite_master where type='table' and name like '%lifecycle%'"
+        )
+        == 0
+    )
 
 
 def test_replace_deactivates_old_plan_and_activates_replacement(tmp_path) -> None:
-    service = _service(tmp_path)
-    result = service.transition(
-        _request(action="replace", replacement_plan_id="plan_replacement")
-    )
+    service = _service(tmp_path, replacement_plan_id="plan_replacement")
+    result = service.transition(_request(action="replace", replacement_plan_id="plan_replacement"))
 
     assert result.state_after == PlanLifecycleState.REPLACED
     assert result.replacement_state == PlanLifecycleState.ACTIVE
+    stored = json.loads(
+        service.store.scalar(
+            "select payload_json from execution_events where event_id=?", (result.event_id,)
+        )
+    )
+    assert stored["replacement_candidate_event_id"] == "event_replacement_candidate"
+    assert stored["replacement_candidate_payload_sha256"] == "candidate-hash"
     followup = service.transition(
         _request(
             action="monitor",
@@ -155,6 +189,71 @@ def test_replace_deactivates_old_plan_and_activates_replacement(tmp_path) -> Non
             profile_id="usr_lifecycle",
             plan_id="plan_replacement",
         )
+
+
+def test_replace_rejects_phantom_or_wrong_lineage_candidate(tmp_path) -> None:
+    phantom = _service(tmp_path / "phantom")
+    with pytest.raises(ValueError, match="replacement_plan_candidate_required"):
+        phantom.transition(_request(action="replace", replacement_plan_id="plan_replacement"))
+
+    wrong = _service(tmp_path / "wrong", replacement_plan_id="plan_replacement")
+    with wrong.store.transaction() as connection:
+        payload = json.loads(
+            connection.execute(
+                "select payload_json from execution_events "
+                "where event_id='event_replacement_candidate'"
+            ).fetchone()[0]
+        )
+        payload["replaces_plan_id"] = "another_plan"
+        connection.execute(
+            "update execution_events set payload_json=? "
+            "where event_id='event_replacement_candidate'",
+            (json.dumps(payload, sort_keys=True),),
+        )
+    with pytest.raises(ValueError, match="replacement_plan_candidate_required"):
+        wrong.transition(_request(action="replace", replacement_plan_id="plan_replacement"))
+
+
+def test_replacement_candidate_is_inactive_before_transition(tmp_path) -> None:
+    service = _service(tmp_path, replacement_plan_id="plan_replacement")
+    with service.store.transaction() as connection:
+        assert not WorkflowJobQueue._execution_plan_is_active(
+            connection,
+            execution_id="execution_lifecycle",
+            profile_id="usr_lifecycle",
+            plan_id="plan_replacement",
+        )
+
+
+def test_lifecycle_event_rejects_ledger_and_direct_database_mutation(tmp_path) -> None:
+    service = _service(tmp_path)
+    result = service.transition(_request(action="stop"))
+    ledger = DataMutationLedger(service.store)
+    for operation, replacement in (("correction", {"changed": True}), ("deletion", None)):
+        with pytest.raises(EventMutationStateError, match="plan_lifecycle_event_immutable"):
+            ledger.apply(
+                profile_id="usr_lifecycle",
+                target_type="execution_event",
+                target_event_id=result.event_id,
+                operation=operation,
+                idempotency_key=f"immutable-{operation}",
+                replacement_payload=replacement,
+            )
+    with service.store.transaction() as connection:
+        with pytest.raises(sqlite3.IntegrityError, match="plan_lifecycle_event_immutable"):
+            connection.execute(
+                "update execution_events set payload_state='DELETED' where event_id=?",
+                (result.event_id,),
+            )
+        with pytest.raises(sqlite3.IntegrityError, match="plan_lifecycle_event_immutable"):
+            connection.execute("delete from execution_events where event_id=?", (result.event_id,))
+
+
+def test_transition_rejects_time_before_existing_lineage(tmp_path) -> None:
+    service = _service(tmp_path)
+    request = _request().model_copy(update={"occurred_at": NOW - timedelta(seconds=1)})
+    with pytest.raises(ValueError, match="plan_lifecycle_occurred_at_before_lineage"):
+        service.transition(request)
 
 
 def test_terminal_transition_closes_followup_and_jobs_without_order_table(tmp_path) -> None:
@@ -191,9 +290,12 @@ def test_terminal_transition_closes_followup_and_jobs_without_order_table(tmp_pa
     assert service.store.scalar("select last_error from workflow_jobs") == (
         "PLAN_LIFECYCLE_STOPPED"
     )
-    assert service.store.scalar(
-        "select count(*) from sqlite_master where type='table' and name like '%order%'"
-    ) == 0
+    assert (
+        service.store.scalar(
+            "select count(*) from sqlite_master where type='table' and name like '%order%'"
+        )
+        == 0
+    )
 
 
 def test_exact_retry_deduplicates_and_changed_payload_conflicts(tmp_path) -> None:
@@ -205,9 +307,7 @@ def test_exact_retry_deduplicates_and_changed_payload_conflicts(tmp_path) -> Non
     assert retry.event_id == first.event_id
     assert retry.deduplicated is True
     with pytest.raises(ValueError, match="plan_lifecycle_idempotency_conflict"):
-        service.transition(
-            _request(action="adjust", idempotency_key=request.idempotency_key)
-        )
+        service.transition(_request(action="adjust", idempotency_key=request.idempotency_key))
 
 
 def test_stale_state_terminal_state_and_missing_consent_fail_closed(tmp_path) -> None:

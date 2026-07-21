@@ -750,6 +750,8 @@ class InterimStore:
             "event_mutations_no_delete",
             "data_mutation_audits_no_update",
             "data_mutation_audits_no_delete",
+            "plan_lifecycle_events_no_update",
+            "plan_lifecycle_events_no_delete",
         }
         index_names = {
             str(row[0])
@@ -899,6 +901,28 @@ class InterimStore:
                 WHEN OLD.event_type IN ('data_correction', 'data_deletion')
                 BEGIN
                   SELECT RAISE(ABORT, 'data_mutation_audits_append_only');
+                END
+                """
+            )
+            connection.execute(
+                """
+                CREATE TRIGGER IF NOT EXISTS plan_lifecycle_events_no_update
+                BEFORE UPDATE ON execution_events
+                WHEN json_extract(OLD.payload_json, '$.schema_version') =
+                  'plan_lifecycle_transition_v1'
+                BEGIN
+                  SELECT RAISE(ABORT, 'plan_lifecycle_event_immutable');
+                END
+                """
+            )
+            connection.execute(
+                """
+                CREATE TRIGGER IF NOT EXISTS plan_lifecycle_events_no_delete
+                BEFORE DELETE ON execution_events
+                WHEN json_extract(OLD.payload_json, '$.schema_version') =
+                  'plan_lifecycle_transition_v1'
+                BEGIN
+                  SELECT RAISE(ABORT, 'plan_lifecycle_event_immutable');
                 END
                 """
             )
