@@ -5,16 +5,16 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 ## 2026-07-21 corrected PRO service contract and lineage handoff
 
 - Chosen stage and tasks: `original plan / pre-post outcome quantification and PRO`; OP-057 and OP-058.
-- Primary dataset/evidence: frozen eval `256` cases; one synthetic authenticated service correction over two strict PRO events. Canonical evidence SHA-256 `d1f72dd209650097184f97b406573758f642ed331877f0e47a2c2f5786a60dbe`; combined source SHA-256 `bf05dd7ba5ca72d405463fb254387990168216e6473be6fc52702ab2801dfdbf`.
-- Source identity: R&D `c8c07679aa1a311a3831859c8c82f35aacc855c3`; WellnessBox `b0a7af921ddce08fb51323f4f6f10ad666f9a372`.
-- Changed paths: R&D correction service, interim endpoint, metric exports, focused tests, deterministic smoke/workflow, manifest/evidence/report/governance tests; service authenticated route helper, `/api/tips/pro/effects`, QA/client scripts, and package command. No new database or duplicate event store was added.
-- Result: user-contract raw score `8 -> 7`; immediate recalculation true; mutation audit recorded; recommendation selected ingredient keys retained in the response lineage. Precondition failures commit no correction.
-- Honest stage: OP-057 and OP-058 are `IMPLEMENTED` and PARTIAL. The actual UI still uses local PRO calculation, and recommendation events do not persist `plan_id`; production operation and real-world outcomes are not proven.
-- Validation: focused `48 passed`; workflow-equivalent `428 passed`; full suite `809 passed`, `77 failed` in the known `73 + 4` groups; frozen 256 evaluation has seven zero deltas and unchanged weakest slices; full Ruff and service build/lint/typecheck/encoding checks PASS; independent review Critical `0`, Important `0`, Minor `0`.
-- Publication: R&D is published through `dc0febec22a717e85fc6ca34c91436cfc1d2636e`; service commit `b0a7af921ddce08fb51323f4f6f10ad666f9a372`; Original plan evidence run `29801874180` succeeded.
-- Biggest remaining bottlenecks: actual UI integration for OP-057; persisted recommendation `plan_id` for OP-058; required operation evidence for OP-021~030, OP-040, OP-053, and OP-058; qualifying external labels for OP-039; missing trusted report archive plus four CGM geometry failures.
+- Primary dataset/evidence: frozen eval `256` cases; one synthetic authenticated enrollment, one follow-up creation, and one correction over two strict PRO events. Canonical evidence SHA-256 `67ffac5637d9281cd5b99ae4e435049669842ad2e4abdc54f69b71cbdd90a711`; combined source SHA-256 `10662658664b0ba08112a61582e1a0d22e0d2e3eada875c44bffcf314a016092`.
+- Source identity: R&D `86823c364094b275e0e9d41a2b78ed22833b383e`; WellnessBox `9dfc1d0b2034ed15777385802b7283a3ffc78c02`.
+- Changed paths: R&D recommendation schema/service, execution ledger, PRO runtime/correction/follow-up services, interim endpoints, contracts, tests, smoke/workflow, manifest/evidence/report; service TIPS PRO UI, authenticated plan/effect routes, existing R&D client/profile adapter, and QA scripts. No new database or duplicate event store was added.
+- Result: the service UI persists the R&D execution, plan, and baseline identities. Recommendation and optimization events plus the observed effect share one plan ID; the corrected raw score is `10 -> 8 -> 7`. Duplicate retries are idempotent, while changed baseline or ownership conflicts return HTTP 409 or fail closed.
+- Honest stage: OP-057 is `INTEGRATED` and COMPLETE. OP-058 is `INTEGRATED` and PARTIAL below `OPERATED`. Browser rendering behind authenticated login, production operation, real-world outcomes, deployment, and causal effects are not proven.
+- Validation: focused `127 passed`; workflow-equivalent `446 passed`; full suite `827 passed`, `77 failed` in the known `73 + 4` groups; frozen 256 evaluation has seven zero deltas and identical weakest slices; full Ruff and service build/lint/typecheck/encoding checks PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Publication: R&D is published through `a431cc448e26155ded2bd694715fa3b541009c53`; service through `9dfc1d0b2034ed15777385802b7283a3ffc78c02`; R&D Original plan evidence run `29805184034` and service Encoding Guard run `29804815958` succeeded.
+- Biggest remaining bottlenecks: required operation evidence for OP-021~030, OP-040, OP-053, and OP-058; qualifying external labels for OP-039; OP-059~120 implementation; missing trusted report archive for 73 tests; four CGM geometry failures.
 - Protected user files remain untouched. Existing `etc/` files remain untracked and were not used as canonical evidence.
-- Next three loops: complete OP-057/058 integration; OP-059/060; OP-061/062.
+- Next three loops: OP-059/060; OP-061/062; OP-063/064.
 
 ## 2026-07-21 personal and group PRO uncertainty handoff
 
