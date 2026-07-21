@@ -17,7 +17,9 @@ from wellnessbox_rnd.interim.workflow_contract import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = ROOT / "data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json"
+DEFAULT_OUTPUT = ROOT / (
+    "data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json"
+)
 SOURCE_PATHS = [
     "apps/inference_api/routes/interim.py",
     "scripts/run_closed_loop_state_order_smoke.py",
@@ -95,9 +97,16 @@ def run_smoke() -> dict[str, object]:
         success = success_agent.execute_recommendation_workflow(**arguments)
         retry = success_agent.execute_recommendation_workflow(**arguments)
         blocked = _agent(root / "blocked.sqlite3").execute_recommendation_workflow(
-            **(arguments | {"idempotency_key": "blocked", "safety_arguments": {"age": 40, "pregnant": True}})
+            **(
+                arguments
+                | {
+                    "idempotency_key": "blocked",
+                    "safety_arguments": {"age": 40, "pregnant": True},
+                }
+            )
         )
-        missing = _agent(root / "missing.sqlite3", include_evidence=False).execute_recommendation_workflow(
+        missing_agent = _agent(root / "missing.sqlite3", include_evidence=False)
+        missing = missing_agent.execute_recommendation_workflow(
             **(arguments | {"idempotency_key": "missing"})
         )
         bypass_agent = _agent(root / "bypass.sqlite3")
@@ -155,7 +164,10 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     output = parser.parse_args().output
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(run_smoke(), ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    output.write_text(
+        json.dumps(run_smoke(), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
 
 if __name__ == "__main__":
