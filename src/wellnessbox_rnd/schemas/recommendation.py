@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from enum import StrEnum
 from hashlib import sha256
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 from unicodedata import normalize as normalize_unicode
 from uuid import uuid4
 
@@ -10,11 +10,13 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    PrivateAttr,
     StrictBool,
     StrictFloat,
     StrictInt,
     StringConstraints,
     field_validator,
+    model_serializer,
     model_validator,
 )
 
@@ -520,6 +522,8 @@ def _supplement_signature(value: SupplementInput) -> tuple[object, ...]:
 
 
 class RecommendationRequest(_StrictRequestInput):
+    _plan_id_was_supplied: bool = PrivateAttr(default=False)
+
     request_id: str = Field(default_factory=lambda: str(uuid4()))
     plan_id: str | None = Field(default=None, min_length=1, max_length=128)
     source_profile: SourceProfileInput | None = Field(default=None, exclude=True)
@@ -544,9 +548,17 @@ class RecommendationRequest(_StrictRequestInput):
 
     @model_validator(mode="after")
     def resolve_plan_id(self) -> "RecommendationRequest":
+        self._plan_id_was_supplied = "plan_id" in self.model_fields_set
         if self.plan_id is None:
             self.plan_id = f"plan_{sha256(self.request_id.encode('utf-8')).hexdigest()[:32]}"
         return self
+
+    @model_serializer(mode="wrap")
+    def serialize_without_implicit_plan_id(self, handler: Any) -> dict[str, Any]:
+        payload = handler(self)
+        if not self._plan_id_was_supplied:
+            payload.pop("plan_id", None)
+        return payload
 
     @model_validator(mode="after")
     def require_survey_recommendation_consent(self) -> "RecommendationRequest":
