@@ -56,7 +56,7 @@ def _source_sha256() -> str:
         ("wellnessbox", SERVICE_ROOT, SERVICE_SOURCE_PATHS),
     ):
         for relative in sorted(paths):
-            digest.update(f"{root_name}/{relative}".encode("utf-8"))
+            digest.update(f"{root_name}/{relative}".encode())
             digest.update(b"\0")
             digest.update((root / relative).read_bytes().replace(b"\r\n", b"\n"))
             digest.update(b"\0")
