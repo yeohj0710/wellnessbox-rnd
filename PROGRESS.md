@@ -1,5 +1,20 @@
 # PROGRESS
 
+## 2026-07-21 plan lifecycle and order boundary loop
+
+- Chosen stage/tasks: `original plan / closed-loop execution`, OP-079 and OP-080.
+- Dataset/cases: frozen eval `256` cases; canonical smoke `5` API cases. Evidence SHA-256 is `2d51305ff69306061528a7ac0f6becabb6351d6a7025e439885dc73282246308`; source SHA-256 is `53f79c6cabb636782b9be23b5797ae42861890319a642b9848100096883d5a4f`.
+- Reuse/integration: reused `execution_events`, `followups`, `workflow_jobs`, active consent snapshots, and the existing interim FastAPI route. No parallel lifecycle store, scheduler, order system, or WellnessBox service route was added.
+- Implementation: lifecycle transitions replay from immutable events. Replacement requires one stored recommendation/optimization candidate and pins its event ID and actual payload SHA-256. The transition and consumed candidate resist ledger and direct SQLite mutation, including an existing-database migration path. Lifecycle requests reject order fields and never mutate order state.
+- Evidence stage: OP-079 and OP-080 are `IMPLEMENTED`, below required `OPERATED`, so both remain PARTIAL. No deployed R&D process, service call, actual order mutation, or production operation is claimed.
+- Research reports: canonical long-form prose reports exist for OP-079 and OP-080. Overall report coverage is `2/120`; the other 118 reports remain to be written from verified evidence.
+- Generated status: complete `56`, partial `23`, pending `40`, external `1`, contradicted `0`; audit PASS with `79` claims and `226` checked evidence files.
+- Validation: focused lifecycle regression `45 passed`; workflow-equivalent selection `559 passed`; 23 canonical smokes reproduced; full Ruff PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `948 passed`, `77 failed`; failures remain exactly `73` absent-report and `4` CGM geometry cases, with no new failure group.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: implementation/evidence HEAD `fadf80fc68f6bc93817b8111a8f01cd9d7aa8060` was pushed; GitHub Actions `Original plan evidence` run `29832628539` passed.
+- Next loops: OP-081/082, OP-083/084, OP-085/086, while continuing evidence-grounded long-form report backfill.
+
 ## 2026-07-21 fail-closed jobs and pharmacist-review loop
 
 - Chosen stage/tasks: `original plan / closed-loop execution`, OP-077 and OP-078.

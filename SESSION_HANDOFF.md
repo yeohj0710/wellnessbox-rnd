@@ -1,5 +1,20 @@
 # SESSION_HANDOFF
 
+## 2026-07-21 OP-079/080 handoff
+
+- Chosen stage/tasks: `original plan / closed-loop execution`; OP-079 lifecycle transition E2E and OP-080 strict separation between plan state and order state.
+- Primary dataset and cases: frozen eval `256` cases; canonical smoke `5` authenticated API cases. Evidence SHA-256 is `2d51305ff69306061528a7ac0f6becabb6351d6a7025e439885dc73282246308`; source SHA-256 is `53f79c6cabb636782b9be23b5797ae42861890319a642b9848100096883d5a4f`.
+- Main files: `src/wellnessbox_rnd/interim/plan_lifecycle.py`, `jobs.py`, `data_mutation.py`, `store.py`, the existing interim API route, OP-079/080 smoke, focused tests, manifest, completion reports, and both long-form reports.
+- Code/data/training/simulation: existing execution lineage now stores and replays guarded transitions and real replacement candidates. No model training, frozen dataset change, service code change, deployment, production operation, or order mutation occurred.
+- Stage/result: both requirements are proven only to `IMPLEMENTED` and remain PARTIAL because both require `OPERATED`. Completion counts are `56/23/40/1/0` for complete/partial/pending/external/contradicted.
+- Research-report result: two full prose reports exist, so overall coverage is `2/120`, not 120/120. The remaining 118 reports require evidence-by-evidence backfill.
+- Validation: focused lifecycle regression `45 passed`; workflow-equivalent `559 passed`; full Ruff PASS; audit PASS (`79` claims, `226` evidence files); completion check PASS; 23 smokes reproduced; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `948 passed`, `77 failed`; known failure split `73` absent-report + `4` CGM geometry; other failures `0`.
+- Frozen/replay/slice: `256` cases, seven zero metric deltas, unchanged overall weakest category `safety_blocked`, and no metric-specific weakest-category change.
+- Publication: implementation/evidence HEAD `fadf80fc68f6bc93817b8111a8f01cd9d7aa8060` was pushed; GitHub Actions `Original plan evidence` run `29832628539` passed.
+- Five current bottlenecks: only `2/120` long-form reports exist; no deployed R&D process; no durable production R&D database/queue; no authenticated production service-to-R&D lifecycle call; no observed production lifecycle or order-boundary telemetry.
+- Next three loops: OP-081/082 passage indexing and entity extraction; OP-083/084 bounded RAG with evidence validity and uncertainty; OP-085/086, with report backfill included in each loop.
+
 ## 2026-07-21 OP-077/078 handoff
 
 - Chosen stage/tasks: `original plan / closed-loop execution`; OP-077 fail-closed job guards and OP-078 pharmacist-review creation/completion postconditions.
