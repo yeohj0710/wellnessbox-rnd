@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import json
-import math
-import random
 import statistics
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass, replace
@@ -11,6 +9,7 @@ from datetime import UTC, datetime
 from wellnessbox_rnd.interim.contracts import ReplacementStatus
 from wellnessbox_rnd.interim.manifest import canonical_json
 from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.metrics.statistics import deterministic_bootstrap_mean_ci
 
 KPI_NAMES = {
     "KPI-1": "추천 정확도",
@@ -97,25 +96,6 @@ def linkage_macro_rate(rows: Iterable[dict[str, object]]) -> LinkageResult:
     )
 
 
-def _percentile(values: list[float], quantile: float) -> float:
-    ordered = sorted(values)
-    if len(ordered) == 1:
-        return ordered[0]
-    position = (len(ordered) - 1) * quantile
-    lower = math.floor(position)
-    upper = math.ceil(position)
-    if lower == upper:
-        return ordered[lower]
-    weight = position - lower
-    return ordered[lower] * (1 - weight) + ordered[upper] * weight
-
-
-def _bootstrap_ci(values: list[float], *, iterations: int = 3_000) -> tuple[float, float]:
-    rng = random.Random(20260710)
-    estimates = [statistics.mean(rng.choice(values) for _ in values) for _ in range(iterations)]
-    return _percentile(estimates, 0.025), _percentile(estimates, 0.975)
-
-
 def _payloads(store: InterimStore, kind: str) -> list[dict[str, object]]:
     return [
         json.loads(row[0])
@@ -136,7 +116,7 @@ def evaluate_proxy_kpis(store: InterimStore) -> KpiReport:
         for row in recommendation_rows
     ]
     rec_value = statistics.mean(recommendation_values)
-    rec_ci = _bootstrap_ci(recommendation_values)
+    rec_ci = deterministic_bootstrap_mean_ci(recommendation_values)
 
     effect_values = [
         float(row[0])
@@ -148,7 +128,7 @@ def evaluate_proxy_kpis(store: InterimStore) -> KpiReport:
         )
     ]
     effect_value = statistics.mean(effect_values)
-    effect_ci = _bootstrap_ci(effect_values)
+    effect_ci = deterministic_bootstrap_mean_ci(effect_values)
 
     action_rows = _payloads(store, "action")
     action_values = [
@@ -160,7 +140,7 @@ def evaluate_proxy_kpis(store: InterimStore) -> KpiReport:
         for row in action_rows
     ]
     action_value = statistics.mean(action_values)
-    action_ci = _bootstrap_ci(action_values)
+    action_ci = deterministic_bootstrap_mean_ci(action_values)
     high_risk_wrong = sum(
         1
         for row, value in zip(action_rows, action_values, strict=True)
@@ -173,7 +153,7 @@ def evaluate_proxy_kpis(store: InterimStore) -> KpiReport:
         for row in answer_rows
     ]
     answer_value = statistics.mean(answer_values)
-    answer_ci = _bootstrap_ci(answer_values)
+    answer_ci = deterministic_bootstrap_mean_ci(answer_values)
     answer_hard = sum(bool(row.get("critical_safety_error")) for row in answer_rows)
 
     safety_rows = _payloads(store, "safety")
@@ -186,7 +166,7 @@ def evaluate_proxy_kpis(store: InterimStore) -> KpiReport:
         for row in safety_rows
     ]
     safety_value = statistics.mean(safety_values)
-    safety_ci = _bootstrap_ci(safety_values)
+    safety_ci = deterministic_bootstrap_mean_ci(safety_values)
     hard_false_negatives = sum(
         1
         for row in safety_rows

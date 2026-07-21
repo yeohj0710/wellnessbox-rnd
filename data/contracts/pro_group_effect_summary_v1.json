@@ -1,0 +1,33 @@
+{
+  "schema_version": "pro_group_effect_summary_contract_v1",
+  "contract_version": "2026-07-21.1",
+  "personal_effect_schema_version": "pro_followup_effect_interpretation_v1",
+  "group_summary_schema_version": "pro_group_effect_summary_v1",
+  "aggregation_unit": "plan_linked_baseline_followup_pair",
+  "group_mean_method": "arithmetic_mean_of_personal_observed_changes",
+  "minimum_group_sample_size": 2,
+  "kpi_target_sample_size": 100,
+  "confidence_interval": {
+    "confidence_level": 0.95,
+    "method": "deterministic_percentile_bootstrap_mean",
+    "iterations": 3000,
+    "seed": 20260710
+  },
+  "uncertainty_reason_priority": [
+    "observational_association_not_causal",
+    "non_real_world_outcome_data",
+    "sample_size_below_100",
+    "limited_personal_interpretations_present",
+    "confidence_interval_not_entirely_above_zero"
+  ],
+  "effect_claim_scope": "group_observed_association_not_causal",
+  "causal_effect_claim_allowed": false,
+  "source_refs": [
+    "data/original_plan/requirements_manifest_v1.json#OP-055",
+    "data/original_plan/requirements_manifest_v1.json#OP-056",
+    "docs/context/master_context.md#14.3",
+    "docs/context/master_context.md#15.6",
+    "docs/context/original_plan.pdf#page=26"
+  ],
+  "limitation": "The summary reports observed personal changes and their group average separately. Its sample size and confidence intervals quantify the supplied cohort only and do not establish causal efficacy."
+}
