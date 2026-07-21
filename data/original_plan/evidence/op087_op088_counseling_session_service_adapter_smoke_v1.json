@@ -30,7 +30,7 @@
     "files": {
       "wellnessbox-rnd/apps/inference_api/routes/interim.py": "ab5f72882d473543fb3a4c6163a2144eb34e9120e50d4be3b3ba97fa76358f83",
       "wellnessbox-rnd/data/knowledge/counseling_retrieval_corpus_manifest_v1.json": "4147c37dcff9b397cb1b4cebac96d92014b2afa47d5d2ef6b7ae95e52c1fad02",
-      "wellnessbox-rnd/scripts/run_counseling_session_service_adapter_smoke.py": "8bbd1ae4899fc1aeda01db80c01467ffc7326595e8ce34dcbfd2ee0efed27276",
+      "wellnessbox-rnd/scripts/run_counseling_session_service_adapter_smoke.py": "8ad32dd378a858ae2c1a13bf0014d1a241b296a99193ea6ea4aaad9f005e7644",
       "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py": "c127c3d8f87f59ae3d41dada8d5b1915ba6fda96c3f729b4632f76e2cee13bf2",
       "wellnessbox/app/api/chat/route-service.ts": "ecb86f0db7984ea76d474303976656e75632b9275d10b14280540283ea1d8828",
       "wellnessbox/app/api/chat/save/route-service.ts": "8195d0733ee106605daedcfc324a9575143c66250958c93d8a1a7f7e4af34941",
@@ -38,7 +38,7 @@
       "wellnessbox/scripts/qa/check-rnd-counseling-adapter.cts": "f937ce65f3f75fb02643a863a8463bfb2f73bb18a69a5b16b203949519c45cdb",
       "wellnessbox/scripts/qa/run-rnd-counseling-live-smoke.cts": "bb4d8ce0bf8385061699d79955ef9034ff4d0d377173a5d377d738e40432150f"
     },
-    "wellnessbox_rnd_commit": "86b82ca030e351d36b4ce54eb9106c09cfefe366",
+    "wellnessbox_rnd_commit": "29b047c18b767e5843c3b1723fedde8f49108e21",
     "wellnessbox_service_commit": "f78604c74795c127a004a7be64cb67c7fe112803"
   },
   "stage_boundary": {
