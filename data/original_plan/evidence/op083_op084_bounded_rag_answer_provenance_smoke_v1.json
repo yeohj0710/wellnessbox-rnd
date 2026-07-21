@@ -1,0 +1,231 @@
+{
+  "schema_version": "op083_op084_bounded_rag_answer_provenance_smoke_v1",
+  "generated_from": {
+    "claims_path": "data/parsed_references/reference_claims_v1.jsonl",
+    "references_path": "data/knowledge/reference_knowledge_base_v1.json",
+    "as_of": "2026-07-21T13:00:00+00:00"
+  },
+  "knowledge_scope": {
+    "scope_id": "wellnessbox-counseling-knowledge-v1",
+    "allowed_source_types": [
+      "clinical_guideline",
+      "government_health_reference",
+      "interaction_reference",
+      "master_context",
+      "peer_reviewed_trial"
+    ],
+    "allowed_claim_types": [
+      "action_space_constraint",
+      "candidate_prior_policy",
+      "candidate_signal_policy",
+      "candidate_signal_threshold",
+      "citation_requirement",
+      "citation_schema",
+      "dietary_pattern_candidate_signal",
+      "drug_interaction",
+      "genetic_candidate_signal_policy",
+      "inconclusive_goal_evidence",
+      "limited_goal_evidence",
+      "mixed_goal_evidence",
+      "moderate_goal_evidence",
+      "null_goal_evidence_without_deficiency",
+      "nutrient_adequacy_goal_evidence",
+      "safety_recheck_policy"
+    ],
+    "allowed_reference_ids": [
+      "REF-ADA-CGM-TIR-001",
+      "REF-CDC-ADULT-SLEEP-001",
+      "REF-CDC-SOLUBLE-FIBER-001",
+      "REF-KNOWLEDGE-ANTICOAG-001",
+      "REF-MC-ACTION-001",
+      "REF-MC-CANDIDATE-SIGNAL-001",
+      "REF-MC-CITATION-001",
+      "REF-MC-GOAL-PRIOR-001",
+      "REF-NCCIH-BERBERINE-GLUCOSE-001",
+      "REF-NCCIH-COQ10-HEART-001",
+      "REF-NCCIH-MAGNESIUM-SLEEP-001",
+      "REF-NCCIH-PROBIOTICS-GUT-001",
+      "REF-NIH-ODS-B12-ENERGY-001",
+      "REF-NIH-ODS-CALCIUM-BONE-001",
+      "REF-NIH-ODS-IMMUNE-001",
+      "REF-NIH-ODS-OMEGA3-001",
+      "REF-NIH-ODS-OMEGA3-HEART-001",
+      "REF-NIH-ODS-VITD-BONE-001",
+      "REF-PUBMED-LTHEANINE-001"
+    ],
+    "max_results": 5
+  },
+  "corpus": {
+    "passage_count": 24,
+    "source_count": 19
+  },
+  "answer_cases": [
+    {
+      "case_id": "supported_interaction",
+      "query": "What should counseling say about glucosamine with warfarin?",
+      "status": "supported",
+      "knowledge_scope_id": "wellnessbox-counseling-knowledge-v1",
+      "answered_at": "2026-07-21T13:00:00+00:00",
+      "used_chunk_ids": [
+        "chunk::CLM-KNOWLEDGE-ANTICOAG-001"
+      ],
+      "citation_reference_ids": [
+        "REF-KNOWLEDGE-ANTICOAG-001"
+      ],
+      "citation_claim_ids": [
+        "CLM-KNOWLEDGE-ANTICOAG-001"
+      ],
+      "citation_effective_dates": [
+        "2026-03-10T00:00:00+00:00"
+      ],
+      "all_citations_active_at_answer_time": true,
+      "uncertainty": {
+        "level": "low",
+        "reasons": [
+          "bounded_to_cited_passages_not_individualized_clinical_certainty"
+        ]
+      },
+      "verification": {
+        "status_ok": true,
+        "citation_linkage_ok": true,
+        "expected_reference_ids_ok": true,
+        "expected_claim_ids_ok": true,
+        "expected_terms_ok": true,
+        "out_of_scope_handled_ok": true,
+        "unsupported_claim_suppressed_ok": true,
+        "safety_boundary_ok": true,
+        "knowledge_scope_ok": true,
+        "evidence_validity_ok": true,
+        "uncertainty_ok": true,
+        "passed": true,
+        "issues": []
+      }
+    },
+    {
+      "case_id": "mixed_evidence_uncertainty",
+      "query": "What does the evidence say about magnesium and insomnia?",
+      "status": "supported",
+      "knowledge_scope_id": "wellnessbox-counseling-knowledge-v1",
+      "answered_at": "2026-07-21T13:00:00+00:00",
+      "used_chunk_ids": [
+        "chunk::CLM-NCCIH-MAGNESIUM-SLEEP-001"
+      ],
+      "citation_reference_ids": [
+        "REF-NCCIH-MAGNESIUM-SLEEP-001"
+      ],
+      "citation_claim_ids": [
+        "CLM-NCCIH-MAGNESIUM-SLEEP-001"
+      ],
+      "citation_effective_dates": [
+        "2026-07-16T00:00:00+00:00"
+      ],
+      "all_citations_active_at_answer_time": true,
+      "uncertainty": {
+        "level": "moderate",
+        "reasons": [
+          "bounded_to_cited_passages_not_individualized_clinical_certainty",
+          "cited_claim_is_limited_mixed_or_policy_scoped"
+        ]
+      },
+      "verification": {
+        "status_ok": true,
+        "citation_linkage_ok": true,
+        "expected_reference_ids_ok": true,
+        "expected_claim_ids_ok": true,
+        "expected_terms_ok": true,
+        "out_of_scope_handled_ok": true,
+        "unsupported_claim_suppressed_ok": true,
+        "safety_boundary_ok": true,
+        "knowledge_scope_ok": true,
+        "evidence_validity_ok": true,
+        "uncertainty_ok": true,
+        "passed": true,
+        "issues": []
+      }
+    },
+    {
+      "case_id": "unsupported_cure_claim",
+      "query": "Does glucosamine cure diabetes?",
+      "status": "unsupported",
+      "knowledge_scope_id": "wellnessbox-counseling-knowledge-v1",
+      "answered_at": "2026-07-21T13:00:00+00:00",
+      "used_chunk_ids": [],
+      "citation_reference_ids": [],
+      "citation_claim_ids": [],
+      "citation_effective_dates": [],
+      "all_citations_active_at_answer_time": true,
+      "uncertainty": {
+        "level": "high",
+        "reasons": [
+          "allowed_corpus_does_not_support_requested_claim"
+        ]
+      },
+      "verification": {
+        "status_ok": true,
+        "citation_linkage_ok": true,
+        "expected_reference_ids_ok": true,
+        "expected_claim_ids_ok": true,
+        "expected_terms_ok": true,
+        "out_of_scope_handled_ok": true,
+        "unsupported_claim_suppressed_ok": true,
+        "safety_boundary_ok": true,
+        "knowledge_scope_ok": true,
+        "evidence_validity_ok": true,
+        "uncertainty_ok": true,
+        "passed": true,
+        "issues": []
+      }
+    },
+    {
+      "case_id": "out_of_scope_weather",
+      "query": "Explain a quadratic topology theorem.",
+      "status": "out_of_scope",
+      "knowledge_scope_id": "wellnessbox-counseling-knowledge-v1",
+      "answered_at": "2026-07-21T13:00:00+00:00",
+      "used_chunk_ids": [],
+      "citation_reference_ids": [],
+      "citation_claim_ids": [],
+      "citation_effective_dates": [],
+      "all_citations_active_at_answer_time": true,
+      "uncertainty": {
+        "level": "high",
+        "reasons": [
+          "no_allowed_in_scope_evidence_retrieved"
+        ]
+      },
+      "verification": {
+        "status_ok": true,
+        "citation_linkage_ok": true,
+        "expected_reference_ids_ok": true,
+        "expected_claim_ids_ok": true,
+        "expected_terms_ok": true,
+        "out_of_scope_handled_ok": true,
+        "unsupported_claim_suppressed_ok": true,
+        "safety_boundary_ok": true,
+        "knowledge_scope_ok": true,
+        "evidence_validity_ok": true,
+        "uncertainty_ok": true,
+        "passed": true,
+        "issues": []
+      }
+    }
+  ],
+  "negative_probes": {
+    "disallowed_source_blocked": true,
+    "retired_passage_blocked": true,
+    "tampered_validity_blocked": true
+  },
+  "stage_boundaries": {
+    "claimed_stage": "IMPLEMENTED",
+    "wellnessbox_service_integration_proven": false,
+    "deployment_proven": false,
+    "production_operation_proven": false,
+    "external_validation_proven": false,
+    "live_llm_inference_used": false
+  },
+  "source_identity": {
+    "source_commit": "12b477ba7f798b475ad8d3b83363c1ec210361d1",
+    "source_sha256": "f122be02e985ad31268caaf2f92f9bf46dcd214588215528cc4380de88461f33",
+    "data_sha256": "74bdf10ff14d838e6fa9261603abaa5923bef011cc07a18e8aa0de47263637d0"
+  }
+}
