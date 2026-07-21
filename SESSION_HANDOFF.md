@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-21 OP-073/074 handoff
+
+- Chosen stage/tasks: `original plan / closed-loop execution`; OP-073 shared follow-up/reminder queue and OP-074 due-plan reevaluation Cron.
+- Primary dataset and cases: `data/original_plan/evidence/op073_op074_followup_job_queue_cron_smoke_v1.json`; two follow-ups and four Cron runs; SHA-256 `5399806ac1e2af79d8390b4456bf54a6bea8de7b5ca8cf7b0b07b2cc099b3ea2`.
+- Main files: `src/wellnessbox_rnd/interim/jobs.py`, `store.py`, `agent.py`, `apps/inference_api/routes/interim.py`, both queue/Cron scripts, focused tests, manifest, completion reports, and shared canonical evidence files.
+- Code/data/training/simulation: schema v10 links follow-ups/jobs to the existing execution ledger and adds claim/lease/ack/retry state. No model training, frozen dataset change, service code change, deployment, or production operation occurred. Simulation evidence remains explicitly local.
+- Stage/result: both requirements are proven only to `IMPLEMENTED` and remain PARTIAL because both require `OPERATED`. Completion counts are `56/17/46/1/0` for complete/partial/pending/external/contradicted.
+- Validation: focused `46 passed`; workflow-equivalent `504 passed`; full Ruff PASS; audit PASS (`73` claims, `214` evidence files); completion check PASS; 20 smokes reproduced; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `914 passed`, `77 failed`; known failure split `73` absent-report + `4` CGM geometry; other failures `0`.
+- Frozen/replay/slice: `256` cases, seven zero metric deltas, unchanged overall weakest category `safety_blocked`, and no metric-specific weakest-category change.
+- Publication: pushed HEAD `97a124b035cda1b525a709b2c2bb0d9a1d8da04a`; GitHub Actions Original plan evidence run `29824602501` succeeded.
+- Five current bottlenecks: no deployed R&D process; no durable production R&D database/queue; no deployed CronJob observation; no authenticated production service-to-R&D round trip; no production worker lease/ack/retry telemetry.
+- Next three loops: OP-075/076 next-job selection and serious-AE stop; OP-077/078 fail-closed execution and pharmacist-review lifecycle; OP-079/080 lifecycle E2E and separate order state.
+
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
 ## 2026-07-21 closed-loop state and ordered execution handoff

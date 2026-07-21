@@ -1,5 +1,19 @@
 # PROGRESS
 
+## 2026-07-21 follow-up queue and due-plan Cron loop
+
+- Chosen stage/tasks: `original plan / closed-loop execution`, OP-073 and OP-074.
+- Dataset/cases: `data/original_plan/evidence/op073_op074_followup_job_queue_cron_smoke_v1.json`; two scheduled follow-ups and four deterministic Cron invocations; SHA-256 `5399806ac1e2af79d8390b4456bf54a6bea8de7b5ca8cf7b0b07b2cc099b3ea2`.
+- Reused the existing `followups`, `executions`, `execution_events`, `BoundedAgent`, FastAPI route, and SQLite store. No parallel scheduler, plan registry, event store, or WellnessBox service route was added.
+- Implementation: reminders and reevaluations share `workflow_jobs`; each follow-up is linked to a matching active execution-plan event. Workers use atomic claim tokens, leases, expiry recovery, acknowledgement, retry scheduling, and attempt counts. Scheduling, Cron enqueue, and worker claim all reject inactive plans. Closing or discontinuing a follow-up cancels READY/CLAIMED work. Legacy unlinked v9 work is quarantined during schema-v10 migration.
+- Evidence stage: OP-073 and OP-074 are `IMPLEMENTED`, below required `OPERATED`, so both remain PARTIAL. No service change, deployment, production queue operation, or deployed CronJob is claimed.
+- Generated status: complete `56`, partial `17`, pending `46`, external `1`, contradicted `0`; audit PASS with `73` claims and `214` checked evidence files.
+- Validation: focused store/jobs/agent/API `46 passed`; GitHub workflow-equivalent selection `504 passed`; 20 canonical smokes reproduced without diff; full Ruff PASS; deterministic OP-073/074 smoke PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `914 passed`, `77 failed`; failures remain exactly `73` absent-report and `4` CGM geometry cases, with no new failure group.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall and metric-specific weakest-slice categories are unchanged.
+- Publication: final source fix `948aca8`, final OP-073/074 evidence `f661211`, shared-source evidence refresh and pushed HEAD `97a124b035cda1b525a709b2c2bb0d9a1d8da04a`; Original plan evidence run `29824602501` passed.
+- Next loops: OP-075/076, OP-077/078, OP-079/080.
+
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
 ## 2026-07-21 closed-loop state and ordered execution loop
