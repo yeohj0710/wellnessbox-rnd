@@ -111,7 +111,7 @@ def run_smoke() -> dict[str, object]:
         item
         for item in duplicated.ingredient_totals
         if item.service_ingredient_id == "ING:ZINC"
-    ).total_daily_amount == 253_000
+    ).total_declared_amount == 253_000_000
 
     return {
         "schema_version": "op063_op064_product_combination_dose_smoke_v1",
@@ -133,8 +133,8 @@ def run_smoke() -> dict[str, object]:
         "checks": {
             "existing_tips_route_and_product_adapter_used": True,
             "same_product_deduplicated_across_recommendations": True,
-            "mass_units_normalized_to_integer_micrograms": True,
-            "iu_kept_as_separate_unit": True,
+            "mass_units_normalized_to_integer_nanograms": True,
+            "iu_normalized_to_integer_milli_iu": True,
             "duplicate_requires_distinct_product_ids": True,
             "aggregate_doses_recomputed_by_rnd_contract": True,
             "ambiguous_amounts_fail_closed": True,

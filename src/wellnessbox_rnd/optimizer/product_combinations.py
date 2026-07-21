@@ -7,7 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
 
-NormalizedDoseUnitV1 = Literal["mcg", "IU"]
+NormalizedDoseUnitV1 = Literal["ng", "milli_IU"]
 ProductFormulationV1 = Literal["capsule", "tablet", "powder", "liquid", "gummy", "other"]
 
 
@@ -26,7 +26,7 @@ class ProductIngredientAmountV1(BaseModel):
 
     service_ingredient_id: str = Field(pattern=r"^ING:[A-Z0-9_]+$")
     normalized_amount: StrictInt = Field(gt=0)
-    normalized_unit: Literal["mcg", "IU"]
+    normalized_unit: NormalizedDoseUnitV1
     source_label: str = Field(min_length=1)
     source_value: str = Field(min_length=1)
 
@@ -52,8 +52,8 @@ class IngredientDoseTotalV1(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     service_ingredient_id: str = Field(pattern=r"^ING:[A-Z0-9_]+$")
-    total_daily_amount: StrictInt = Field(gt=0)
-    unit: Literal["mcg", "IU"]
+    total_declared_amount: StrictInt = Field(gt=0)
+    unit: NormalizedDoseUnitV1
     product_ids: tuple[StrictInt, ...] = Field(min_length=1)
     duplicate_across_products: bool
 
@@ -85,27 +85,33 @@ class ProductCombinationV1(BaseModel):
 
         amounts: defaultdict[tuple[str, str], int] = defaultdict(int)
         amount_product_ids: defaultdict[tuple[str, str], set[int]] = defaultdict(set)
+        ingredient_product_ids: defaultdict[str, set[int]] = defaultdict(set)
         for product in self.selected_products:
             for item in product.ingredient_amounts:
                 key = (item.service_ingredient_id, item.normalized_unit)
                 amounts[key] += item.normalized_amount
                 amount_product_ids[key].add(product.product_id)
+                ingredient_product_ids[item.service_ingredient_id].add(product.product_id)
         expected_totals = tuple(
             IngredientDoseTotalV1(
                 service_ingredient_id=ingredient_id,
-                total_daily_amount=amounts[(ingredient_id, unit)],
+                total_declared_amount=amounts[(ingredient_id, unit)],
                 unit=unit,
                 product_ids=tuple(sorted(amount_product_ids[(ingredient_id, unit)])),
-                duplicate_across_products=len(amount_product_ids[(ingredient_id, unit)]) > 1,
+                duplicate_across_products=len(ingredient_product_ids[ingredient_id]) > 1,
             )
             for ingredient_id, unit in sorted(amounts)
         )
         if self.ingredient_totals != expected_totals:
             raise ValueError("ingredient totals do not match selected products")
         expected_duplicates = tuple(
-            item.service_ingredient_id
-            for item in expected_totals
-            if item.duplicate_across_products
+            sorted(
+                {
+                    item.service_ingredient_id
+                    for item in expected_totals
+                    if item.duplicate_across_products
+                }
+            )
         )
         if self.duplicate_ingredient_ids != expected_duplicates:
             raise ValueError("duplicate ingredient identities do not match totals")

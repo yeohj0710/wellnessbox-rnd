@@ -23,15 +23,15 @@ def _combination_payload() -> dict[str, object]:
             "ingredient_amounts": [
                 {
                     "service_ingredient_id": "ING:MAGNESIUM",
-                    "normalized_amount": 100000,
-                    "normalized_unit": "mcg",
+                    "normalized_amount": 100000000,
+                    "normalized_unit": "ng",
                     "source_label": "ingredient amount",
                     "source_value": "magnesium 100 mg",
                 },
                 {
                     "service_ingredient_id": "ING:ZINC",
-                    "normalized_amount": 10000,
-                    "normalized_unit": "mcg",
+                    "normalized_amount": 10000000,
+                    "normalized_unit": "ng",
                     "source_label": "ingredient amount",
                     "source_value": "zinc 10 mg",
                 },
@@ -51,8 +51,8 @@ def _combination_payload() -> dict[str, object]:
             "ingredient_amounts": [
                 {
                     "service_ingredient_id": "ING:ZINC",
-                    "normalized_amount": 15000,
-                    "normalized_unit": "mcg",
+                    "normalized_amount": 15000000,
+                    "normalized_unit": "ng",
                     "source_label": "ingredient amount",
                     "source_value": "zinc 15 mg",
                 }
@@ -79,15 +79,15 @@ def _combination_payload() -> dict[str, object]:
         "ingredient_totals": [
             {
                 "service_ingredient_id": "ING:MAGNESIUM",
-                "total_daily_amount": 100000,
-                "unit": "mcg",
+                "total_declared_amount": 100000000,
+                "unit": "ng",
                 "product_ids": [29],
                 "duplicate_across_products": False,
             },
             {
                 "service_ingredient_id": "ING:ZINC",
-                "total_daily_amount": 25000,
-                "unit": "mcg",
+                "total_declared_amount": 25000000,
+                "unit": "ng",
                 "product_ids": [29, 42],
                 "duplicate_across_products": True,
             },
@@ -101,7 +101,7 @@ def test_combination_validates_duplicate_and_total_dose() -> None:
     assert result.product_count == 2
     assert result.total_cost_krw == 19000
     assert result.duplicate_ingredient_ids == ("ING:ZINC",)
-    assert result.ingredient_totals[1].total_daily_amount == 25000
+    assert result.ingredient_totals[1].total_declared_amount == 25000000
 
 
 @pytest.mark.parametrize(
@@ -124,7 +124,11 @@ def test_combination_rejects_forged_total_and_product_ids() -> None:
     payload = _combination_payload()
     totals = payload["ingredient_totals"]
     assert isinstance(totals, list)
-    totals[1] = {**totals[1], "total_daily_amount": 26000, "product_ids": [42]}
+    totals[1] = {
+        **totals[1],
+        "total_declared_amount": 26000000,
+        "product_ids": [42],
+    }
     with pytest.raises(ValidationError):
         ProductCombinationV1.model_validate(payload)
 
@@ -160,8 +164,8 @@ def test_mass_and_iu_totals_remain_separate() -> None:
     products[0]["ingredient_amounts"].append(
         {
             "service_ingredient_id": "ING:VITAMIN_D",
-            "normalized_amount": 2000,
-            "normalized_unit": "IU",
+            "normalized_amount": 2000000,
+            "normalized_unit": "milli_IU",
             "source_label": "ingredient amount",
             "source_value": "vitamin d 2000 IU",
         }
@@ -170,11 +174,43 @@ def test_mass_and_iu_totals_remain_separate() -> None:
         1,
         {
             "service_ingredient_id": "ING:VITAMIN_D",
-            "total_daily_amount": 2000,
-            "unit": "IU",
+            "total_declared_amount": 2000000,
+            "unit": "milli_IU",
             "product_ids": [29],
             "duplicate_across_products": False,
         },
     )
     result = ProductCombinationV1.model_validate(payload)
-    assert result.ingredient_totals[1].unit == "IU"
+    assert result.ingredient_totals[1].unit == "milli_IU"
+
+
+def test_duplicate_identity_spans_separate_mass_and_iu_totals() -> None:
+    payload = _combination_payload()
+    products = payload["selected_products"]
+    assert isinstance(products, list)
+    products[1]["ingredient_amounts"][0]["normalized_unit"] = "milli_IU"
+    totals = payload["ingredient_totals"]
+    assert isinstance(totals, list)
+    totals[1:] = [
+        {
+            "service_ingredient_id": "ING:ZINC",
+            "total_declared_amount": 15000000,
+            "unit": "milli_IU",
+            "product_ids": [42],
+            "duplicate_across_products": True,
+        },
+        {
+            "service_ingredient_id": "ING:ZINC",
+            "total_declared_amount": 10000000,
+            "unit": "ng",
+            "product_ids": [29],
+            "duplicate_across_products": True,
+        },
+    ]
+
+    result = ProductCombinationV1.model_validate(payload)
+    assert result.duplicate_ingredient_ids == ("ING:ZINC",)
+    assert [item.unit for item in result.ingredient_totals[1:]] == [
+        "milli_IU",
+        "ng",
+    ]
