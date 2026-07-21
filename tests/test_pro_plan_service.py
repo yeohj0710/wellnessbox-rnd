@@ -281,6 +281,25 @@ def test_pro_plan_and_followup_api_require_token_and_persist(tmp_path, monkeypat
     assert followup_response.json()["operation"] == "created"
     assert followup_response.json()["action_decision"]["action"] == "maintain"
     assert followup_response.json()["next_job_decision"]["decision"] == "REEVALUATE_PLAN"
+    corrected_payload = {
+        "execution_id": enrolled["execution_id"],
+        "profile_id": enrolled["profile_id"],
+        "plan_id": enrolled["plan_id"],
+        "timepoint": "week_2",
+        "answers": {"instrument": "PSQI", "item_scores": [0, 1, 1, 1, 1, 1, 1]},
+        "observed_at": "2026-01-15T00:00:00Z",
+        "actual_day_index": 14,
+        "planned_dose_count": 14,
+        "taken_dose_count": 13,
+    }
+    corrected_response = client.post(
+        "/v1/interim/pro/followups",
+        headers={"x-wb-rnd-token": "test-token"},
+        json=corrected_payload,
+    )
+    assert corrected_response.status_code == 200
+    assert corrected_response.json()["operation"] == "corrected"
+    assert corrected_response.json()["next_job_decision"]["deduplicated"] is False
 
     device_payload = {
         "session_id": "device_pro_plan_1",
@@ -318,7 +337,7 @@ def test_pro_plan_and_followup_api_require_token_and_persist(tmp_path, monkeypat
     assert invalid_response.status_code == 200
     assert invalid_response.json()["success"] is False
     assert "next_job_decision" not in invalid_response.json()
-    assert store.scalar("select count(*) from workflow_jobs") == 2
+    assert store.scalar("select count(*) from workflow_jobs") == 3
 
 
 def test_same_plan_api_accepts_real_world_outcome_data_class(tmp_path) -> None:

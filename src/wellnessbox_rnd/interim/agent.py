@@ -698,10 +698,16 @@ class BoundedAgent:
                 )
             result = {"observation_id": observation_id, "postcondition_success": True}
             if all(plan_context):
+                stored = self.store.rows(
+                    "select row_sha256, payload_json from pro_observations "
+                    "where observation_id=?",
+                    (observation_id,),
+                )[0]
+                stored_payload = json.loads(stored["payload_json"])
                 received_at = datetime.fromisoformat(
-                    str(arguments.get("observed_at", datetime.now(UTC).isoformat())).replace(
-                        "Z", "+00:00"
-                    )
+                    str(
+                        stored_payload.get("observed_at", datetime.now(UTC).isoformat())
+                    ).replace("Z", "+00:00")
                 )
                 result["next_job_decision"] = WorkflowJobQueue(
                     self.store
@@ -711,7 +717,7 @@ class BoundedAgent:
                     execution_id=str(arguments["execution_id"]),
                     input_kind="PRO",
                     input_id=observation_id,
-                    input_sha256=_sha(arguments),
+                    input_sha256=str(stored["row_sha256"]),
                     received_at=received_at,
                 )
             return result
@@ -729,14 +735,13 @@ class BoundedAgent:
                 environment=str(arguments.get("environment", "simulation")),
             )
             if result["success"] and all(plan_context):
-                stored_hash = str(
-                    self.store.scalar(
-                        "select row_sha256 from connector_sessions where session_id=?",
-                        (str(arguments["session_id"]),),
-                    )
-                )
+                stored = self.store.rows(
+                    "select row_sha256, payload_json from connector_sessions where session_id=?",
+                    (str(arguments["session_id"]),),
+                )[0]
+                stored_payload = json.loads(stored["payload_json"])
                 received_at = datetime.fromisoformat(
-                    str(arguments["payload"]["observed_at"]).replace("Z", "+00:00")
+                    str(stored_payload["observed_at"]).replace("Z", "+00:00")
                 )
                 result["next_job_decision"] = WorkflowJobQueue(
                     self.store
@@ -746,7 +751,7 @@ class BoundedAgent:
                     execution_id=str(arguments["execution_id"]),
                     input_kind="DEVICE",
                     input_id=str(arguments["session_id"]),
-                    input_sha256=stored_hash,
+                    input_sha256=str(stored["row_sha256"]),
                     received_at=received_at,
                 )
             return result | {"postcondition_success": bool(result["success"])}

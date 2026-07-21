@@ -621,11 +621,12 @@ def connector(payload: DeviceRequest) -> dict[str, Any]:
         )
         if result["success"] and payload.execution_id and payload.plan_id:
             row = store.rows(
-                "select row_sha256 from connector_sessions where session_id=?",
+                "select row_sha256, payload_json from connector_sessions where session_id=?",
                 (payload.session_id,),
             )[0]
+            stored_payload = json.loads(row["payload_json"])
             observed_at = datetime.fromisoformat(
-                str(payload.payload["observed_at"]).replace("Z", "+00:00")
+                str(stored_payload["observed_at"]).replace("Z", "+00:00")
             )
             result["next_job_decision"] = WorkflowJobQueue(
                 store
@@ -862,7 +863,7 @@ def record_pro_followup(payload: PROFollowUpRecordRequest) -> dict[str, Any]:
                 plan_id=payload.plan_id,
                 execution_id=payload.execution_id,
                 input_kind="PRO",
-                input_id=result["event_id"],
+                input_id=f"{result['event_id']}:{input_sha256[:16]}",
                 input_sha256=input_sha256,
                 received_at=payload.observed_at,
             )
