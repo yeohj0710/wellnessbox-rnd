@@ -50,7 +50,7 @@ AS_OF = datetime(2026, 7, 21, 12, 0, tzinfo=UTC)
 QUESTIONS = (
     "수면과 혈당이 걱정됩니다. 오메가3를 와파린과 먹는데 지금 출혈이 있어요.",
     "Can I use glucosamine with Coumadin for joint health?",
-    "신장 질환이 있는데 비타민D와 마그네슘을 같이 먹어도 되나요?",
+    "신장 질환이 있는데 비타민D3와 마그네슘 글리시네이트를 같이 먹어도 되나요?",
     "I have chest pain and difficulty breathing after taking zinc.",
     "프로바이오틱스가 장 건강과 전반적 건강에 도움이 되나요?",
     "흉통은 없습니다.",

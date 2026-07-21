@@ -388,6 +388,13 @@ def test_extract_question_entities_avoids_substring_false_positive() -> None:
     assert result.matches == []
 
 
+def test_extract_question_entities_does_not_infer_specific_ingredient_subtype() -> None:
+    result = extract_question_entities(
+        "비타민 D와 마그네슘에 대해 알려주세요.", load_runtime_knowledge_db()
+    )
+    assert result.ingredient_keys == []
+
+
 @pytest.mark.parametrize(
     ("question", "expected_key"),
     [

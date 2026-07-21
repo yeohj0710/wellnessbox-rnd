@@ -144,9 +144,9 @@ _GOAL_ALIASES = {
 }
 _INGREDIENT_ALIASES = {
     "omega3": ("오메가3", "오메가-3"),
-    "vitamin_d3": ("비타민 d", "비타민d"),
+    "vitamin_d3": ("비타민 d3", "비타민d3", "콜레칼시페롤"),
     "vitamin_c": ("비타민 c", "비타민c"),
-    "magnesium_glycinate": ("마그네슘",),
+    "magnesium_glycinate": ("마그네슘 글리시네이트", "마그네슘 비스글리시네이트"),
     "probiotics": ("프로바이오틱스", "유산균"),
     "zinc": ("아연",),
     "iron": ("철분",),
