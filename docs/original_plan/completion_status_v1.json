@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "b700680ca55636164a65ad73b31208cd61bccf6083be05879eaf8f0ece6d3277",
+  "audited_manifest_sha256": "43de45954165ebac04b0dcda26db33f89337dbe07023d36ccad616726f2711ab",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -9,8 +9,8 @@
   "requirement_count": 120,
   "disposition_counts": {
     "COMPLETE": 43,
-    "PARTIAL": 12,
-    "PENDING": 64,
+    "PARTIAL": 14,
+    "PENDING": 62,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -81,8 +81,8 @@
       "requirement_count": 10,
       "disposition_counts": {
         "COMPLETE": 5,
-        "PARTIAL": 1,
-        "PENDING": 4,
+        "PARTIAL": 3,
+        "PENDING": 2,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -1980,15 +1980,29 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_correction.py",
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+          "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+          "wellnessbox/app/api/tips/pro/effects/route.ts"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+          "wellnessbox/scripts/qa/check-tips-pro-correction-route.cts",
+          "wellnessbox-rnd/scripts/run_pro_correction_plan_lineage_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+          "wellnessbox/scripts/qa/run-tips-pro-correction-client.cts",
+          "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []
@@ -2003,15 +2017,25 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_correction.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+          "wellnessbox-rnd/scripts/run_pro_correction_plan_lineage_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+          "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []

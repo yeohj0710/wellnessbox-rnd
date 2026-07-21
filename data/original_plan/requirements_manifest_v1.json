@@ -1086,8 +1086,54 @@
             ]
           }
         },
-        {"requirement_id": "OP-057", "title": "실제 사용자 입력으로 PRO 점수를 수정하고 즉시 재계산한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"},
-        {"requirement_id": "OP-058", "title": "추천 성분과 관찰 효과 계보를 같은 계획 ID로 연결한다.", "required_stage": "OPERATED"},
+        {
+          "requirement_id": "OP-057",
+          "title": "실제 사용자 입력으로 PRO 점수를 수정하고 즉시 재계산한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_correction.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox/app/api/tips/pro/effects/route.ts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+              "wellnessbox/scripts/qa/check-tips-pro-correction-route.cts",
+              "wellnessbox-rnd/scripts/run_pro_correction_plan_lineage_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+              "wellnessbox/scripts/qa/run-tips-pro-correction-client.cts",
+              "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-058",
+          "title": "추천 성분과 관찰 효과 계보를 같은 계획 ID로 연결한다.",
+          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "required_stage": "OPERATED",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_correction.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+              "wellnessbox-rnd/scripts/run_pro_correction_plan_lineage_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-059", "title": "효과 악화 시 상태기계가 유지, 감량, 중단, 재최적화를 선택한다.", "required_stage": "INTEGRATED"},
         {"requirement_id": "OP-060", "title": "data_class 교체만으로 실제 결과 데이터를 같은 API에서 처리한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"}
       ]

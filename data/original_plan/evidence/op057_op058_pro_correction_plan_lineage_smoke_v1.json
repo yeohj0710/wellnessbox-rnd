@@ -1,0 +1,56 @@
+{
+  "cases": {
+    "authenticated_service_correction": 1,
+    "corrected_raw_score": 7,
+    "mutation_audit_recorded": true,
+    "original_raw_score": 8,
+    "recalculated_immediately": true,
+    "stored_payload_state": "CORRECTED",
+    "stored_strict_pro_events": 2
+  },
+  "evidence_boundary": {
+    "actual_ui_call_proven": false,
+    "authenticated_service_helper_proven": true,
+    "op057_proven_stage": "IMPLEMENTED",
+    "op057_required_stage": "INTEGRATED",
+    "op058_proven_stage": "IMPLEMENTED",
+    "op058_required_stage": "OPERATED",
+    "production_deployment_proven": false,
+    "production_operation_proven": false,
+    "real_world_outcome_used": false,
+    "service_to_rnd_local_http_proven": true,
+    "service_user_input_contract_proven": true
+  },
+  "lineage": {
+    "causal_effect_claim_allowed": false,
+    "lineage_response_matches_stored_events": true,
+    "plan_id": "plan_op057_service_001",
+    "recommendation_and_effect_share_execution": true,
+    "recommendation_event_has_plan_id": false,
+    "selected_ingredient_keys": [
+      "magnesium_glycinate",
+      "l_theanine"
+    ]
+  },
+  "schema_version": "op057_op058_pro_correction_plan_lineage_smoke_v1",
+  "source": {
+    "combined_sha256": "bf05dd7ba5ca72d405463fb254387990168216e6473be6fc52702ab2801dfdbf",
+    "wellnessbox_commit": "b0a7af921ddce08fb51323f4f6f10ad666f9a372",
+    "wellnessbox_paths": [
+      "app/api/tips/pro/effects/route.ts",
+      "lib/server/wb-rnd-interim-client.ts",
+      "lib/server/wb-rnd-interim-route.ts",
+      "scripts/qa/run-tips-pro-correction-client.cts"
+    ],
+    "wellnessbox_rnd_commit": "c8c07679aa1a311a3831859c8c82f35aacc855c3",
+    "wellnessbox_rnd_paths": [
+      "apps/inference_api/routes/interim.py",
+      "scripts/run_pro_correction_plan_lineage_smoke.py",
+      "src/wellnessbox_rnd/interim/data_lake.py",
+      "src/wellnessbox_rnd/interim/data_mutation.py",
+      "src/wellnessbox_rnd/metrics/pro_correction.py",
+      "src/wellnessbox_rnd/metrics/pro_followup.py",
+      "src/wellnessbox_rnd/metrics/pro_scoring.py"
+    ]
+  }
+}
