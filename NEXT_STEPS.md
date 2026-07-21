@@ -2,11 +2,11 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031 through OP-038, OP-041 through OP-052, and OP-054 through OP-056 are complete. OP-021 through OP-030 and OP-053 are `IMPLEMENTED` and remain partial at their required `OPERATED` stage. OP-039 remains external because no qualifying independent labels or approvals exist. OP-040 is integrated across the actual WellnessBox `/api/tips` route and localhost R&D process, but it remains below `OPERATED` because production operation was not observed. OP-055/056 retain personal observed PRO changes separately from the group mean and report deterministic sample size, 95% confidence intervals, and uncertainty reasons. Their evidence uses `SYNTHETIC_OUTCOME_PROXY`; it does not prove real-world outcomes, service integration, production operation, or causal effect. Generated status is complete `43`, partial `12`, pending `64`, external `1`, contradicted `0`.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031 through OP-038, OP-041 through OP-052, and OP-054 through OP-056 are complete. OP-021 through OP-030, OP-053, OP-057, and OP-058 are partial below their required stages. OP-039 remains external. OP-040 remains integrated below `OPERATED`. The OP-057/058 loop added an atomic correction/recalculation service and a pseudonymized service adapter, but the actual user UI is not connected and recommendation events do not persist `plan_id`. Generated status is complete `43`, partial `14`, pending `62`, external `1`, contradicted `0`.
 
 Next three loops:
 
-1. Implement OP-057 and OP-058: recalculate corrected user PRO inputs and connect recommendation/outcome lineage through the same plan ID.
+1. Complete OP-057 and OP-058: connect the actual user UI to the correction endpoint and persist a validated recommendation `plan_id` before claiming integration.
 2. Implement OP-059 and OP-060: connect observed worsening to the next action and accept real outcome data through the same versioned API contract.
 3. Implement OP-061 and OP-062: define efficacy, safety, cost, dose-count, and formulation constraints and connect them to the existing service product contract.
 

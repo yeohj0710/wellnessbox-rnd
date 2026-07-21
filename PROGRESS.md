@@ -2,6 +2,19 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 corrected PRO service contract and lineage loop
+
+- Chosen stage: `original plan / pre-post outcome quantification and PRO`; tasks OP-057 and OP-058.
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. The integration smoke uses one synthetic authenticated service input, two strict PRO events, and one local R&D SQLite database.
+- Primary evidence: `data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json`; deterministic SHA-256 `d1f72dd209650097184f97b406573758f642ed331877f0e47a2c2f5786a60dbe`; combined source SHA-256 `bf05dd7ba5ca72d405463fb254387990168216e6473be6fc52702ab2801dfdbf`; R&D source `c8c07679aa1a311a3831859c8c82f35aacc855c3`; service source `b0a7af921ddce08fb51323f4f6f10ad666f9a372`.
+- Implementation: the existing mutation ledger now validates execution ownership, strict target, baseline, recommendation/optimization lineage, and the prospective interpretation before committing a correction. A failed recalculation leaves the original payload and mutation table unchanged. The service adds an authenticated, pseudonymized `/api/tips/pro/effects` adapter through the existing R&D client.
+- Evidence boundary: the local service helper reaches the real localhost R&D HTTP endpoint and returns score `8 -> 7`, an immediate observed-effect recalculation, mutation audit, and selected ingredient keys. The current user UI does not call the endpoint, and the persisted recommendation event has no `plan_id`. OP-057 and OP-058 therefore remain `IMPLEMENTED` and PARTIAL below required `INTEGRATED` and `OPERATED`; no production operation, real-world outcome, deployment, or causal effect is claimed.
+- Generated status: complete `43`, partial `14`, pending `62`, external `1`, contradicted `0`. Audit PASS with `57` claims and `177` checked evidence files.
+- Validation: focused `48 passed`; exact workflow selection `428 passed`; full Ruff PASS; service QA, typecheck, lint, encoding audit, and production build PASS; smoke is byte-identical across reruns; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `809 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions. Frozen eval has `256` cases, seven zero metric deltas, and no weakest-slice category changes.
+- Publication: service commit `b0a7af921ddce08fb51323f4f6f10ad666f9a372`; R&D source/evidence commits through `dc0febec22a717e85fc6ca34c91436cfc1d2636e`; Original plan evidence run `29801874180` passed.
+- Recommended next loops: finish OP-057/058 by connecting the actual user UI and persisting a validated recommendation `plan_id`; then OP-059/060 worsening actions and real-outcome data classes; then OP-061/062 optimization constraints and the existing product contract.
+
 ## 2026-07-21 personal and group PRO uncertainty loop
 
 - Chosen stage: `original plan / pre-post outcome quantification and PRO`

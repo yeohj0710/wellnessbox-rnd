@@ -2,6 +2,20 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 corrected PRO service contract and lineage handoff
+
+- Chosen stage and tasks: `original plan / pre-post outcome quantification and PRO`; OP-057 and OP-058.
+- Primary dataset/evidence: frozen eval `256` cases; one synthetic authenticated service correction over two strict PRO events. Canonical evidence SHA-256 `d1f72dd209650097184f97b406573758f642ed331877f0e47a2c2f5786a60dbe`; combined source SHA-256 `bf05dd7ba5ca72d405463fb254387990168216e6473be6fc52702ab2801dfdbf`.
+- Source identity: R&D `c8c07679aa1a311a3831859c8c82f35aacc855c3`; WellnessBox `b0a7af921ddce08fb51323f4f6f10ad666f9a372`.
+- Changed paths: R&D correction service, interim endpoint, metric exports, focused tests, deterministic smoke/workflow, manifest/evidence/report/governance tests; service authenticated route helper, `/api/tips/pro/effects`, QA/client scripts, and package command. No new database or duplicate event store was added.
+- Result: user-contract raw score `8 -> 7`; immediate recalculation true; mutation audit recorded; recommendation selected ingredient keys retained in the response lineage. Precondition failures commit no correction.
+- Honest stage: OP-057 and OP-058 are `IMPLEMENTED` and PARTIAL. The actual UI still uses local PRO calculation, and recommendation events do not persist `plan_id`; production operation and real-world outcomes are not proven.
+- Validation: focused `48 passed`; workflow-equivalent `428 passed`; full suite `809 passed`, `77 failed` in the known `73 + 4` groups; frozen 256 evaluation has seven zero deltas and unchanged weakest slices; full Ruff and service build/lint/typecheck/encoding checks PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Publication: R&D is published through `dc0febec22a717e85fc6ca34c91436cfc1d2636e`; service commit `b0a7af921ddce08fb51323f4f6f10ad666f9a372`; Original plan evidence run `29801874180` succeeded.
+- Biggest remaining bottlenecks: actual UI integration for OP-057; persisted recommendation `plan_id` for OP-058; required operation evidence for OP-021~030, OP-040, OP-053, and OP-058; qualifying external labels for OP-039; missing trusted report archive plus four CGM geometry failures.
+- Protected user files remain untouched. Existing `etc/` files remain untracked and were not used as canonical evidence.
+- Next three loops: complete OP-057/058 integration; OP-059/060; OP-061/062.
+
 ## 2026-07-21 personal and group PRO uncertainty handoff
 
 - Chosen stage and tasks: `original plan / pre-post outcome quantification and PRO`; OP-055 and OP-056
