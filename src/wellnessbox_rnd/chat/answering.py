@@ -106,6 +106,7 @@ class ChatAnswerVerification(BaseModel):
     forbidden_expression_ok: bool
     emergency_precedence_ok: bool
     verifier_policy_ok: bool
+    query_evidence_relevance_ok: bool
     knowledge_scope_ok: bool
     evidence_validity_ok: bool
     uncertainty_ok: bool
@@ -353,6 +354,40 @@ def verify_bounded_template_answer(
     if not knowledge_scope_ok:
         issues.append("knowledge_scope_mismatch")
 
+    query_tokens = _tokenize(answer.query)
+    if knowledge_scope_ok:
+        query_results = retrieve_bounded_chunks(
+            manifest,
+            scope=scope,
+            query=answer.query,
+            top_k=scope.max_results,
+            as_of=as_of,
+        )
+        expected_result, expected_chunk = _select_supported_candidate(
+            results=query_results,
+            chunk_by_id=chunk_by_id,
+            query_tokens=query_tokens,
+            answer_template_key=answer.answer_template_key,
+            min_score=2.0,
+        )
+        if urgent_keys:
+            expected_query_status = "safety_escalation"
+        elif expected_result is not None and expected_chunk is not None:
+            expected_query_status = "supported"
+        else:
+            expected_query_status = (
+                "unsupported" if _looks_in_scope(query_tokens, manifest) else "out_of_scope"
+            )
+        query_evidence_relevance_ok = answer.status == expected_query_status
+        if answer.status == "supported":
+            query_evidence_relevance_ok = query_evidence_relevance_ok and (
+                expected_chunk is not None and answer.used_chunk_ids == [expected_chunk.chunk_id]
+            )
+    else:
+        query_evidence_relevance_ok = False
+    if not query_evidence_relevance_ok:
+        issues.append("query_evidence_relevance_failed")
+
     answer_grounding_ok = True
     if answer.status == "supported":
         answer_grounding_ok = len(
@@ -440,6 +475,7 @@ def verify_bounded_template_answer(
             forbidden_expression_ok,
             emergency_precedence_ok,
             verifier_policy_ok,
+            query_evidence_relevance_ok,
             knowledge_scope_ok,
             evidence_validity_ok,
             uncertainty_ok,
@@ -460,6 +496,7 @@ def verify_bounded_template_answer(
         forbidden_expression_ok=forbidden_expression_ok,
         emergency_precedence_ok=emergency_precedence_ok,
         verifier_policy_ok=verifier_policy_ok,
+        query_evidence_relevance_ok=query_evidence_relevance_ok,
         knowledge_scope_ok=knowledge_scope_ok,
         evidence_validity_ok=evidence_validity_ok,
         uncertainty_ok=uncertainty_ok,
@@ -527,7 +564,19 @@ def _candidate_is_supported(
         return "safety" in query_tokens or "risk" in query_tokens or "high" in query_tokens
     if template_key == "action_space_summary":
         return "action" in query_tokens or "space" in query_tokens or "autonomous" in query_tokens
-    return True
+    chunk_tokens = _tokenize(
+        " ".join(
+            [
+                chunk.text,
+                chunk.excerpt,
+                " ".join(chunk.keywords),
+                " ".join(chunk.ingredient_keys),
+                " ".join(chunk.medication_keys),
+                " ".join(chunk.domain_keys),
+            ]
+        )
+    )
+    return len(query_tokens & chunk_tokens) >= 2
 
 
 def _preferred_claim_types_for_template(answer_template_key: str | None) -> set[str]:

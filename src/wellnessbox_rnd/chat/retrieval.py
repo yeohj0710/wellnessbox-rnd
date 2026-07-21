@@ -143,9 +143,7 @@ class QuestionEntityMatch(BaseModel):
 class QuestionEntityExtraction(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["question_entity_extraction_v1"] = (
-        "question_entity_extraction_v1"
-    )
+    schema_version: Literal["question_entity_extraction_v1"] = "question_entity_extraction_v1"
     question: str = Field(min_length=1, max_length=2000)
     health_goals: list[str]
     ingredient_keys: list[str]
@@ -157,9 +155,7 @@ class QuestionEntityExtraction(BaseModel):
     @model_validator(mode="after")
     def validate_trace_reconciliation(self) -> QuestionEntityExtraction:
         expected = {
-            kind: sorted(
-                {match.canonical_key for match in self.matches if match.kind == kind}
-            )
+            kind: sorted({match.canonical_key for match in self.matches if match.kind == kind})
             for kind in QuestionEntityKind
         }
         supplied = {
@@ -210,11 +206,28 @@ _INGREDIENT_ALIASES = {
 _MEDICATION_ALIASES = {"warfarin": ("와파린",), "coumadin": ("쿠마딘",)}
 _CONDITION_ALIASES = {
     "kidney disease": ("kidney disease", "신장질환", "신장 질환", "콩팥병"),
-    "kidney failure": ("kidney failure", "신부전",),
-    "liver failure": ("liver failure", "간부전",),
-    "cirrhosis": ("cirrhosis", "간경변",),
-    "pregnancy": ("pregnancy", "pregnant", "임신",),
-    "lactation": ("lactation", "breastfeeding", "수유",),
+    "kidney failure": (
+        "kidney failure",
+        "신부전",
+    ),
+    "liver failure": (
+        "liver failure",
+        "간부전",
+    ),
+    "cirrhosis": (
+        "cirrhosis",
+        "간경변",
+    ),
+    "pregnancy": (
+        "pregnancy",
+        "pregnant",
+        "임신",
+    ),
+    "lactation": (
+        "lactation",
+        "breastfeeding",
+        "수유",
+    ),
 }
 _URGENT_RISK_ALIASES = {
     "active_bleeding": (
@@ -241,6 +254,25 @@ _URGENT_RISK_ALIASES = {
         "아나필락시스",
         "목이 붓",
         "혀가 붓",
+    ),
+}
+
+_ADDITIONAL_URGENT_RISK_ALIASES = {
+    "chest_pain": (
+        "chest hurts",
+        "pain in my chest",
+        "pressure in my chest",
+        "chest discomfort",
+        "chest tightness",
+        "tightness in my chest",
+    ),
+    "difficulty_breathing": (
+        "trouble breathing",
+        "having trouble breathing",
+        "hard to breathe",
+        "struggling to breathe",
+        "breathing is difficult",
+        "breathless",
     ),
 }
 
@@ -380,6 +412,8 @@ def extract_question_entities(
         aliases = {key, *_CONDITION_ALIASES.get(key, ())}
         alias_records.extend((QuestionEntityKind.RISK_SIGNAL, key, alias) for alias in aliases)
     for key, aliases in _URGENT_RISK_ALIASES.items():
+        alias_records.extend((QuestionEntityKind.RISK_SIGNAL, key, alias) for alias in aliases)
+    for key, aliases in _ADDITIONAL_URGENT_RISK_ALIASES.items():
         alias_records.extend((QuestionEntityKind.RISK_SIGNAL, key, alias) for alias in aliases)
 
     matches: list[QuestionEntityMatch] = []

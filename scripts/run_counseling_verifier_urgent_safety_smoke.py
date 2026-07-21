@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from datetime import UTC, datetime
@@ -33,8 +34,7 @@ from wellnessbox_rnd.chat.verifier import (  # noqa: E402
 )
 
 DEFAULT_OUTPUT = ROOT / (
-    "data/original_plan/evidence/"
-    "op085_op086_counseling_verifier_urgent_safety_smoke_v1.json"
+    "data/original_plan/evidence/op085_op086_counseling_verifier_urgent_safety_smoke_v1.json"
 )
 CLAIMS_PATH = ROOT / "data/parsed_references/reference_claims_v1.jsonl"
 REFERENCES_PATH = ROOT / "data/knowledge/reference_knowledge_base_v1.json"
@@ -142,6 +142,28 @@ def _build() -> dict[str, object]:
     )
     if negated.status == "safety_escalation" or contrast.status != "safety_escalation":
         raise RuntimeError("urgent_negation_or_clause_boundary_failed")
+    common_urgent_questions = [
+        "My chest hurts after taking this supplement. What should I take?",
+        "I feel pressure in my chest after taking this supplement.",
+        "I have severe chest discomfort after taking this supplement.",
+        "I am having trouble breathing after taking this supplement.",
+        "It is hard to breathe after taking this supplement.",
+    ]
+    common_urgent_statuses = [
+        generate_bounded_template_answer(manifest, query=question, scope=scope, as_of=AS_OF).status
+        for question in common_urgent_questions
+    ]
+    if any(status != "safety_escalation" for status in common_urgent_statuses):
+        raise RuntimeError("common_urgent_expression_not_escalated")
+
+    original_cwd = Path.cwd()
+    try:
+        os.chdir(ROOT.parent / "wellnessbox")
+        outside_cwd_policy = load_counseling_answer_verifier_policy()
+    finally:
+        os.chdir(original_cwd)
+    if outside_cwd_policy != policy:
+        raise RuntimeError("verifier_policy_cwd_identity_mismatch")
 
     mutations = {
         "unsupported_claim": supported.model_copy(
@@ -159,12 +181,11 @@ def _build() -> dict[str, object]:
         "urgent_recommendation": urgent.model_copy(
             update={"answer_text": policy.emergency_guidance_text + " I recommend magnesium."}
         ),
+        "unrelated_query": supported.model_copy(update={"query": "Does glucosamine cure cancer?"}),
     }
     mutation_results: dict[str, object] = {}
     for name, answer in mutations.items():
-        result = verify_bounded_template_answer(
-            answer, manifest=manifest, scope=scope, as_of=AS_OF
-        )
+        result = verify_bounded_template_answer(answer, manifest=manifest, scope=scope, as_of=AS_OF)
         if result.passed:
             raise RuntimeError(f"tampered_answer_not_blocked::{name}")
         mutation_results[name] = {"blocked": True, "issues": result.issues}
@@ -197,6 +218,13 @@ def _build() -> dict[str, object]:
             },
             "negated_urgent_not_escalated": negated.status != "safety_escalation",
             "contrast_clause_escalated": contrast.status == "safety_escalation",
+            "common_urgent_phrasings": [
+                {"question": question, "status": status}
+                for question, status in zip(
+                    common_urgent_questions, common_urgent_statuses, strict=True
+                )
+            ],
+            "policy_loaded_from_service_cwd": outside_cwd_policy == policy,
         },
         "negative_probes": mutation_results
         | {"forged_policy": {"blocked": True, "issues": forged_result.issues}},

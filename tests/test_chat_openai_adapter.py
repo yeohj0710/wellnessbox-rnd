@@ -240,3 +240,35 @@ def test_openai_adapter_never_calls_provider_for_urgent_question(monkeypatch) ->
     assert response.attempted_live_call is False
     assert response.model is None
     assert response.evidence_chunk_ids == []
+
+
+def test_openai_adapter_rejects_provider_selected_chunk_unrelated_to_query(
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+
+    def _mock_call_openai_responses_api(**_kwargs) -> dict[str, object]:
+        return {
+            "output_text": (
+                '{"status":"supported","used_chunk_ids":["chunk::CLM-KNOWLEDGE-ANTICOAG-001"]}'
+            )
+        }
+
+    monkeypatch.setattr(
+        "wellnessbox_rnd.chat.openai_adapter._call_openai_responses_api",
+        _mock_call_openai_responses_api,
+    )
+    response = generate_chat_answer_with_openai_fallback(
+        _build_manifest(),
+        ChatAdapterRequest(
+            query="Does glucosamine cure cancer?",
+            knowledge_scope=_build_scope(),
+            as_of=ANSWER_TIME,
+        ),
+        allow_live_api=True,
+    )
+
+    assert response.provider == "deterministic_template_fallback"
+    assert response.fallback_reason == "verification_failed"
+    assert response.answer.status == "unsupported"
+    assert response.verification.passed is True

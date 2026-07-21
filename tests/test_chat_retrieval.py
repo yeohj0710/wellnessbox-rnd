@@ -777,6 +777,54 @@ def test_urgent_question_returns_safety_guidance_before_any_recommendation() -> 
     assert verification.passed is True
 
 
+@pytest.mark.parametrize(
+    "question",
+    [
+        "My chest hurts after taking this supplement. What should I take?",
+        "I feel pressure in my chest after taking this supplement.",
+        "I have severe chest discomfort after taking this supplement.",
+        "I am having trouble breathing after taking this supplement.",
+        "It is hard to breathe after taking this supplement.",
+    ],
+)
+def test_common_urgent_phrasings_precede_retrieval_and_recommendation(
+    question: str,
+) -> None:
+    manifest = _build_single_interaction_manifest()
+    answer = generate_bounded_template_answer(
+        manifest, query=question, scope=_scope_for(manifest), as_of=ANSWER_TIME
+    )
+    assert answer.status == "safety_escalation"
+
+
+def test_verifier_rejects_supported_answer_when_query_no_longer_supports_chunk() -> None:
+    manifest = _build_single_interaction_manifest()
+    scope = _scope_for(manifest)
+    answer = generate_bounded_template_answer(
+        manifest,
+        query="What should counseling say about glucosamine with warfarin?",
+        scope=scope,
+        as_of=ANSWER_TIME,
+        answer_template_key="interaction_warning",
+    )
+    forged = answer.model_copy(update={"query": "Does glucosamine cure cancer?"})
+
+    result = verify_bounded_template_answer(
+        forged, manifest=manifest, scope=scope, as_of=ANSWER_TIME
+    )
+
+    assert result.passed is False
+    assert "query_evidence_relevance_failed" in result.issues
+
+
+def test_verifier_policy_loads_outside_repository_working_directory(
+    monkeypatch, tmp_path: Path
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    policy = load_counseling_answer_verifier_policy()
+    assert policy.policy_id == "counseling-answer-verifier-v1"
+
+
 def test_explicitly_negated_urgent_wording_does_not_force_escalation() -> None:
     manifest = _build_single_interaction_manifest()
     answer = generate_bounded_template_answer(

@@ -4,8 +4,9 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-DEFAULT_COUNSELING_VERIFIER_POLICY_PATH = Path(
-    "data/knowledge/counseling_answer_verifier_policy_v1.json"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+DEFAULT_COUNSELING_VERIFIER_POLICY_PATH = (
+    REPOSITORY_ROOT / "data/knowledge/counseling_answer_verifier_policy_v1.json"
 )
 
 
