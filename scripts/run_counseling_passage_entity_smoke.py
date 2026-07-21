@@ -36,8 +36,10 @@ SOURCE_PATHS = (
     "src/wellnessbox_rnd/chat/__init__.py",
     "src/wellnessbox_rnd/chat/retrieval.py",
     "src/wellnessbox_rnd/knowledge/runtime_db.py",
+    "src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py",
     "tests/test_chat_retrieval.py",
     "tests/test_chat_openai_adapter.py",
+    "tests/test_learned_runtime_boundary_audit.py",
 )
 DATA_PATHS = (
     "data/knowledge/reference_knowledge_base_v1.json",
@@ -51,6 +53,9 @@ QUESTIONS = (
     "신장 질환이 있는데 비타민D와 마그네슘을 같이 먹어도 되나요?",
     "I have chest pain and difficulty breathing after taking zinc.",
     "프로바이오틱스가 장 건강과 전반적 건강에 도움이 되나요?",
+    "흉통은 없습니다.",
+    "No bleeding, but I have chest pain.",
+    "숨이 차고 혀가 붓습니다.",
     "The zincography article is unrelated to supplements.",
 )
 
@@ -116,6 +121,12 @@ def _build() -> dict[str, object]:
         raise RuntimeError("korean_entity_contract_failed")
     if first["urgent_risk_detected"] is not True:
         raise RuntimeError("urgent_risk_signal_not_detected")
+    if entity_cases[5]["urgent_risk_detected"] is not False:
+        raise RuntimeError("negated_urgent_signal_escalated")
+    if entity_cases[6]["urgent_risk_detected"] is not True:
+        raise RuntimeError("contrast_clause_urgent_signal_suppressed")
+    if entity_cases[7]["urgent_risk_detected"] is not True:
+        raise RuntimeError("korean_urgent_variant_not_detected")
     if entity_cases[-1]["ingredient_keys"]:
         raise RuntimeError("entity_substring_false_positive")
 
@@ -134,6 +145,10 @@ def _build() -> dict[str, object]:
             "unique_source_count": len(reference_ids),
             "all_source_titles_present": all(bool(chunk.source_title) for chunk in chunks),
             "all_source_uris_present": all(bool(chunk.reference_uri) for chunk in chunks),
+            "all_parsed_source_uris_present": all(
+                bool(chunk.parsed_source_uri) for chunk in chunks
+            ),
+            "all_source_spans_identity_verified": True,
             "all_license_statuses_present": all(bool(chunk.license_status) for chunk in chunks),
             "all_effective_dates_timezone_aware": all(
                 chunk.effective_at.tzinfo is not None for chunk in chunks

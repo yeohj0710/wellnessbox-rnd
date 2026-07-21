@@ -21,6 +21,7 @@ class RetrievalChunk(BaseModel):
     source_type: str
     page_or_section: str
     reference_uri: str
+    parsed_source_uri: str
     license_status: str = Field(min_length=2)
     effective_at: datetime
     retired_at: datetime | None = None
@@ -80,6 +81,7 @@ class QuestionEntityMatch(BaseModel):
     matched_text: str
     start: int = Field(ge=0)
     end: int = Field(gt=0)
+    negated: bool = False
 
 
 class QuestionEntityExtraction(BaseModel):
@@ -95,6 +97,38 @@ class QuestionEntityExtraction(BaseModel):
     risk_signal_keys: list[str]
     urgent_risk_detected: bool
     matches: list[QuestionEntityMatch]
+
+    @model_validator(mode="after")
+    def validate_trace_reconciliation(self) -> QuestionEntityExtraction:
+        expected = {
+            kind: sorted(
+                {match.canonical_key for match in self.matches if match.kind == kind}
+            )
+            for kind in QuestionEntityKind
+        }
+        supplied = {
+            QuestionEntityKind.HEALTH_GOAL: self.health_goals,
+            QuestionEntityKind.INGREDIENT: self.ingredient_keys,
+            QuestionEntityKind.MEDICATION: self.medication_keys,
+            QuestionEntityKind.RISK_SIGNAL: self.risk_signal_keys,
+        }
+        if supplied != expected:
+            raise ValueError("question_entity_aggregate_trace_mismatch")
+        urgent_keys = set(_URGENT_RISK_ALIASES)
+        expected_urgent = any(
+            match.kind == QuestionEntityKind.RISK_SIGNAL
+            and match.canonical_key in urgent_keys
+            and not match.negated
+            for match in self.matches
+        )
+        if self.urgent_risk_detected != expected_urgent:
+            raise ValueError("question_entity_urgent_trace_mismatch")
+        for match in self.matches:
+            if match.end > len(self.question):
+                raise ValueError("question_entity_match_range_invalid")
+            if self.question[match.start : match.end] != match.matched_text:
+                raise ValueError("question_entity_match_text_mismatch")
+        return self
 
 
 _GOAL_ALIASES = {
@@ -127,10 +161,31 @@ _CONDITION_ALIASES = {
     "lactation": ("lactation", "breastfeeding", "수유",),
 }
 _URGENT_RISK_ALIASES = {
-    "active_bleeding": ("active bleeding", "bleeding now", "출혈", "피가 멈추지"),
-    "chest_pain": ("chest pain", "가슴 통증", "흉통"),
-    "difficulty_breathing": ("difficulty breathing", "shortness of breath", "호흡곤란"),
-    "anaphylaxis": ("anaphylaxis", "throat swelling", "아나필락시스", "목이 붓"),
+    "active_bleeding": (
+        "active bleeding",
+        "bleeding now",
+        "출혈",
+        "피가 멈추지",
+        "피가 나",
+        "피를 토",
+    ),
+    "chest_pain": ("chest pain", "chest pressure", "가슴 통증", "가슴 압박", "흉통"),
+    "difficulty_breathing": (
+        "difficulty breathing",
+        "shortness of breath",
+        "cannot breathe",
+        "can't breathe",
+        "호흡곤란",
+        "숨이 차",
+        "숨을 못 쉬",
+    ),
+    "anaphylaxis": (
+        "anaphylaxis",
+        "throat swelling",
+        "아나필락시스",
+        "목이 붓",
+        "혀가 붓",
+    ),
 }
 
 
@@ -258,6 +313,7 @@ def extract_question_entities(
                     matched_text=question[found.start() : found.end()],
                     start=found.start(),
                     end=found.end(),
+                    negated=_is_negated(question, found.start(), found.end()),
                 )
             )
     matches.sort(key=lambda item: (item.start, item.end, item.kind.value, item.canonical_key))
@@ -272,9 +328,31 @@ def extract_question_entities(
         ingredient_keys=values[QuestionEntityKind.INGREDIENT],
         medication_keys=values[QuestionEntityKind.MEDICATION],
         risk_signal_keys=values[QuestionEntityKind.RISK_SIGNAL],
-        urgent_risk_detected=bool(urgent_keys & set(values[QuestionEntityKind.RISK_SIGNAL])),
+        urgent_risk_detected=any(
+            match.kind == QuestionEntityKind.RISK_SIGNAL
+            and match.canonical_key in urgent_keys
+            and not match.negated
+            for match in matches
+        ),
         matches=matches,
     )
+
+
+def _is_negated(question: str, start: int, end: int) -> bool:
+    before = question[max(0, start - 32) : start].casefold()
+    after = question[end : min(len(question), end + 32)].casefold()
+    before_negation = re.search(
+        r"(?:\bno\b|\bwithout\b|\bden(?:y|ies|ied)\b)\s+"
+        r"(?:(?:current|any|active)\s+)?$",
+        before,
+    )
+    after_negation = re.search(
+        r"^\s*(?:(?:is|are|was|were)\s+)?"
+        r"(?:absent|denied|negative|not\s+present)\b"
+        r"|^\s*(?:은|는|이|가)?\s*(?:없(?:습니다|어요|다|음|고|지만)?|아닙니다)",
+        after,
+    )
+    return before_negation is not None or after_negation is not None
 
 
 def evaluate_retrieval_hit_rate(

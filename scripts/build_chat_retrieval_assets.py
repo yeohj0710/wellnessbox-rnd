@@ -145,6 +145,19 @@ def _build_chunk_from_claim(
     identity_fields = ("source_title", "source_type", "page_or_section", "reference_uri")
     if any(claim[field] != reference[field] for field in identity_fields):
         raise ValueError(f"claim_reference_identity_mismatch:{reference_id}")
+    parsed_source_uri = str(reference.get("parsed_source_uri", ""))
+    parsed_source_path = (Path(__file__).resolve().parents[1] / parsed_source_uri).resolve()
+    repository_root = Path(__file__).resolve().parents[1]
+    if not parsed_source_uri or repository_root not in parsed_source_path.parents:
+        raise ValueError(f"reference_parsed_source_path_invalid:{reference_id}")
+    source_lines = parsed_source_path.read_text(encoding="utf-8").splitlines()
+    line_start = int(claim["citation_span"]["line_start"])
+    line_end = int(claim["citation_span"]["line_end"])
+    if line_start < 1 or line_end < line_start or line_end > len(source_lines):
+        raise ValueError(f"claim_source_line_range_invalid:{claim['claim_id']}")
+    source_span = "\n".join(source_lines[line_start - 1 : line_end])
+    if str(claim["claim_id"]) not in source_span or str(claim["claim_text"]) not in source_span:
+        raise ValueError(f"claim_source_span_identity_mismatch:{claim['claim_id']}")
     excerpt = claim["citation_span"]["excerpt"]
     keywords = sorted(
         {
@@ -162,11 +175,12 @@ def _build_chunk_from_claim(
         source_type=claim["source_type"],
         page_or_section=claim["page_or_section"],
         reference_uri=claim["reference_uri"],
+        parsed_source_uri=parsed_source_uri,
         license_status=reference["license_status"],
         effective_at=reference["effective_at"],
         retired_at=reference.get("retired_at"),
-        line_start=claim["citation_span"]["line_start"],
-        line_end=claim["citation_span"]["line_end"],
+        line_start=line_start,
+        line_end=line_end,
         normalized_claim_type=claim["normalized_claim_type"],
         text=claim["claim_text"],
         excerpt=excerpt,

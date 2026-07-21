@@ -1,14 +1,18 @@
+import json
 from datetime import UTC, datetime
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
 
+from scripts.build_chat_retrieval_assets import _build_chunk_from_claim, _load_reference_rows
 from wellnessbox_rnd.chat.answering import (
     generate_bounded_template_answer,
     verify_bounded_template_answer,
 )
 from wellnessbox_rnd.chat.retrieval import (
     ChatQaEvalCase,
+    QuestionEntityExtraction,
     RetrievalChunk,
     RetrievalCorpusManifest,
     evaluate_retrieval_hit_rate,
@@ -31,6 +35,7 @@ def test_retrieve_relevant_chunks_hits_anticoagulant_claim() -> None:
                 source_type="interaction_reference",
                 page_or_section="glucosamine chondroitin and anticoagulants",
                 reference_uri="data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md",
+                parsed_source_uri="data/raw_references/supplement_overdose_and_drug_interactions_expert.md",
                 license_status="APPROVED_INTERNAL",
                 effective_at="2026-01-01T00:00:00Z",
                 line_start=10,
@@ -57,6 +62,7 @@ def test_retrieve_relevant_chunks_hits_anticoagulant_claim() -> None:
                 source_type="master_context",
                 page_or_section="17.4 citation structure",
                 reference_uri="docs/context/master_context.md",
+                parsed_source_uri="data/raw_references/master_context_citation_structure.md",
                 license_status="APPROVED_INTERNAL",
                 effective_at="2026-01-01T00:00:00Z",
                 line_start=20,
@@ -99,6 +105,7 @@ def test_evaluate_retrieval_hit_rate_reports_top_hits() -> None:
                 source_type="master_context",
                 page_or_section="17.4 citation structure",
                 reference_uri="docs/context/master_context.md",
+                parsed_source_uri="data/raw_references/master_context_citation_structure.md",
                 license_status="APPROVED_INTERNAL",
                 effective_at="2026-01-01T00:00:00Z",
                 line_start=20,
@@ -153,6 +160,7 @@ def test_generate_bounded_template_answer_preserves_citation_linkage() -> None:
                 source_type="interaction_reference",
                 page_or_section="glucosamine chondroitin and anticoagulants",
                 reference_uri="data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md",
+                parsed_source_uri="data/raw_references/supplement_overdose_and_drug_interactions_expert.md",
                 license_status="APPROVED_INTERNAL",
                 effective_at="2026-01-01T00:00:00Z",
                 line_start=10,
@@ -205,6 +213,7 @@ def test_generate_bounded_template_answer_handles_out_of_scope_query() -> None:
                 source_type="master_context",
                 page_or_section="autonomous closed-loop action policy",
                 reference_uri="docs/context/master_context.md",
+                parsed_source_uri="data/raw_references/master_context_action_space.md",
                 license_status="APPROVED_INTERNAL",
                 effective_at="2026-01-01T00:00:00Z",
                 line_start=20,
@@ -250,6 +259,7 @@ def test_generate_bounded_template_answer_suppresses_unsupported_claim() -> None
                 source_type="interaction_reference",
                 page_or_section="glucosamine chondroitin and anticoagulants",
                 reference_uri="data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md",
+                parsed_source_uri="data/raw_references/supplement_overdose_and_drug_interactions_expert.md",
                 license_status="APPROVED_INTERNAL",
                 effective_at="2026-01-01T00:00:00Z",
                 line_start=10,
@@ -294,6 +304,7 @@ def test_retrieval_chunk_requires_valid_source_date_and_line_range() -> None:
         "source_type": "official",
         "page_or_section": "section",
         "reference_uri": "https://example.test/source",
+        "parsed_source_uri": "data/raw_references/example.md",
         "license_status": "OPEN",
         "effective_at": "2026-01-01T00:00:00",
         "line_start": 3,
@@ -323,6 +334,7 @@ def test_retrieval_filters_retired_passage_at_query_time() -> None:
         source_type="official",
         page_or_section="section",
         reference_uri="https://example.test/source",
+        parsed_source_uri="data/raw_references/example.md",
         license_status="OPEN",
         effective_at="2025-01-01T00:00:00Z",
         retired_at="2026-01-01T00:00:00Z",
@@ -374,3 +386,85 @@ def test_extract_question_entities_avoids_substring_false_positive() -> None:
     )
     assert result.ingredient_keys == []
     assert result.matches == []
+
+
+@pytest.mark.parametrize(
+    ("question", "expected_key"),
+    [
+        ("I cannot breathe after taking this.", "difficulty_breathing"),
+        ("숨이 차고 가슴 압박이 있습니다.", "difficulty_breathing"),
+        ("피가 멈추지 않고 계속 납니다.", "active_bleeding"),
+        ("혀가 붓고 호흡곤란이 있습니다.", "anaphylaxis"),
+    ],
+)
+def test_extract_question_entities_covers_urgent_expression_variants(
+    question: str, expected_key: str
+) -> None:
+    result = extract_question_entities(question, load_runtime_knowledge_db())
+    assert expected_key in result.risk_signal_keys
+    assert result.urgent_risk_detected is True
+
+
+@pytest.mark.parametrize(
+    "question",
+    [
+        "No chest pain is present.",
+        "No difficulty breathing is present.",
+        "흉통은 없습니다.",
+        "출혈은 없고 숨도 차지 않습니다.",
+    ],
+)
+def test_extract_question_entities_does_not_escalate_explicit_negation(
+    question: str,
+) -> None:
+    result = extract_question_entities(question, load_runtime_knowledge_db())
+    assert result.risk_signal_keys
+    assert result.urgent_risk_detected is False
+    assert all(match.negated for match in result.matches if match.kind == "risk_signal")
+
+
+@pytest.mark.parametrize(
+    "question",
+    [
+        "No bleeding, but I have chest pain.",
+        "I deny bleeding but have chest pain.",
+        "출혈은 없지만 흉통이 있습니다.",
+    ],
+)
+def test_negation_does_not_cross_contrast_clause_into_urgent_signal(
+    question: str,
+) -> None:
+    result = extract_question_entities(question, load_runtime_knowledge_db())
+    chest = [match for match in result.matches if match.canonical_key == "chest_pain"]
+    assert chest and chest[0].negated is False
+    assert result.urgent_risk_detected is True
+
+
+def test_negation_does_not_cross_coordinated_proposition() -> None:
+    result = extract_question_entities(
+        "No bleeding and I have chest pain.", load_runtime_knowledge_db()
+    )
+    chest = [match for match in result.matches if match.canonical_key == "chest_pain"]
+    assert chest and chest[0].negated is False
+    assert result.urgent_risk_detected is True
+
+
+def test_question_entity_contract_rejects_forged_urgent_summary() -> None:
+    valid = extract_question_entities("I have chest pain.", load_runtime_knowledge_db())
+    with pytest.raises(ValidationError, match="question_entity_urgent_trace_mismatch"):
+        QuestionEntityExtraction.model_validate(
+            valid.model_dump() | {"urgent_risk_detected": False}
+        )
+
+
+def test_build_chunk_rejects_tampered_claim_lineage() -> None:
+    references = _load_reference_rows("data/knowledge/reference_knowledge_base_v1.json")
+    claim = json.loads(
+        Path("data/parsed_references/reference_claims_v1.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()[0]
+    )
+    claim["citation_span"]["line_start"] = 1
+    claim["citation_span"]["line_end"] = 2
+    with pytest.raises(ValueError, match="claim_source_span_identity_mismatch"):
+        _build_chunk_from_claim(claim, references)

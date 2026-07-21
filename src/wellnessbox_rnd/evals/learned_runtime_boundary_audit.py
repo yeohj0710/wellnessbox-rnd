@@ -511,6 +511,11 @@ def _build_minimal_chat_manifest() -> RetrievalCorpusManifest:
                 source_type="interaction_reference",
                 page_or_section="glucosamine chondroitin and anticoagulants",
                 reference_uri="data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md",
+                parsed_source_uri="data/raw_references/supplement_overdose_and_drug_interactions_expert.md",
+                license_status="APPROVED_INTERNAL",
+                effective_at="2026-01-01T00:00:00Z",
+                line_start=10,
+                line_end=12,
                 normalized_claim_type="drug_interaction",
                 text=(
                     "Glucosamine or chondroitin used with warfarin or Coumadin can "
