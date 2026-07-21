@@ -1,0 +1,270 @@
+{
+  "generated_from": {
+    "as_of": "2026-07-21T12:00:00+00:00",
+    "claims_path": "data/parsed_references/reference_claims_v1.jsonl",
+    "references_path": "data/knowledge/reference_knowledge_base_v1.json",
+    "runtime_db_path": "data/knowledge/runtime_knowledge_db_v1.json"
+  },
+  "op081_passage_index": {
+    "all_effective_dates_timezone_aware": true,
+    "all_license_statuses_present": true,
+    "all_line_ranges_valid": true,
+    "all_source_titles_present": true,
+    "all_source_uris_present": true,
+    "dated_retrieval_chunk_ids": [
+      "chunk::CLM-KNOWLEDGE-ANTICOAG-001",
+      "chunk::CLM-NIH-ODS-OMEGA3-WARFARIN-001",
+      "chunk::CLM-MC-ACTION-002"
+    ],
+    "passage_count": 24,
+    "retired_passage_count": 0,
+    "unique_source_count": 19
+  },
+  "op082_question_entities": {
+    "case_count": 6,
+    "cases": [
+      {
+        "health_goals": [
+          "blood_glucose",
+          "sleep_support"
+        ],
+        "ingredient_keys": [
+          "omega3"
+        ],
+        "matches": [
+          {
+            "canonical_key": "sleep_support",
+            "end": 2,
+            "kind": "health_goal",
+            "matched_text": "수면",
+            "start": 0
+          },
+          {
+            "canonical_key": "blood_glucose",
+            "end": 6,
+            "kind": "health_goal",
+            "matched_text": "혈당",
+            "start": 4
+          },
+          {
+            "canonical_key": "omega3",
+            "end": 19,
+            "kind": "ingredient",
+            "matched_text": "오메가3",
+            "start": 15
+          },
+          {
+            "canonical_key": "warfarin",
+            "end": 24,
+            "kind": "medication",
+            "matched_text": "와파린",
+            "start": 21
+          },
+          {
+            "canonical_key": "active_bleeding",
+            "end": 35,
+            "kind": "risk_signal",
+            "matched_text": "출혈",
+            "start": 33
+          }
+        ],
+        "medication_keys": [
+          "warfarin"
+        ],
+        "question": "수면과 혈당이 걱정됩니다. 오메가3를 와파린과 먹는데 지금 출혈이 있어요.",
+        "risk_signal_keys": [
+          "active_bleeding"
+        ],
+        "schema_version": "question_entity_extraction_v1",
+        "urgent_risk_detected": true
+      },
+      {
+        "health_goals": [
+          "bone_joint"
+        ],
+        "ingredient_keys": [
+          "glucosamine"
+        ],
+        "matches": [
+          {
+            "canonical_key": "glucosamine",
+            "end": 21,
+            "kind": "ingredient",
+            "matched_text": "glucosamine",
+            "start": 10
+          },
+          {
+            "canonical_key": "coumadin",
+            "end": 35,
+            "kind": "medication",
+            "matched_text": "Coumadin",
+            "start": 27
+          },
+          {
+            "canonical_key": "bone_joint",
+            "end": 45,
+            "kind": "health_goal",
+            "matched_text": "joint",
+            "start": 40
+          }
+        ],
+        "medication_keys": [
+          "coumadin"
+        ],
+        "question": "Can I use glucosamine with Coumadin for joint health?",
+        "risk_signal_keys": [],
+        "schema_version": "question_entity_extraction_v1",
+        "urgent_risk_detected": false
+      },
+      {
+        "health_goals": [],
+        "ingredient_keys": [
+          "magnesium_glycinate",
+          "vitamin_d3"
+        ],
+        "matches": [
+          {
+            "canonical_key": "kidney disease",
+            "end": 5,
+            "kind": "risk_signal",
+            "matched_text": "신장 질환",
+            "start": 0
+          },
+          {
+            "canonical_key": "vitamin_d3",
+            "end": 15,
+            "kind": "ingredient",
+            "matched_text": "비타민D",
+            "start": 11
+          },
+          {
+            "canonical_key": "magnesium_glycinate",
+            "end": 21,
+            "kind": "ingredient",
+            "matched_text": "마그네슘",
+            "start": 17
+          }
+        ],
+        "medication_keys": [],
+        "question": "신장 질환이 있는데 비타민D와 마그네슘을 같이 먹어도 되나요?",
+        "risk_signal_keys": [
+          "kidney disease"
+        ],
+        "schema_version": "question_entity_extraction_v1",
+        "urgent_risk_detected": false
+      },
+      {
+        "health_goals": [],
+        "ingredient_keys": [
+          "zinc"
+        ],
+        "matches": [
+          {
+            "canonical_key": "chest_pain",
+            "end": 17,
+            "kind": "risk_signal",
+            "matched_text": "chest pain",
+            "start": 7
+          },
+          {
+            "canonical_key": "difficulty_breathing",
+            "end": 42,
+            "kind": "risk_signal",
+            "matched_text": "difficulty breathing",
+            "start": 22
+          },
+          {
+            "canonical_key": "zinc",
+            "end": 60,
+            "kind": "ingredient",
+            "matched_text": "zinc",
+            "start": 56
+          }
+        ],
+        "medication_keys": [],
+        "question": "I have chest pain and difficulty breathing after taking zinc.",
+        "risk_signal_keys": [
+          "chest_pain",
+          "difficulty_breathing"
+        ],
+        "schema_version": "question_entity_extraction_v1",
+        "urgent_risk_detected": true
+      },
+      {
+        "health_goals": [
+          "general_wellness",
+          "gut_health"
+        ],
+        "ingredient_keys": [
+          "probiotics"
+        ],
+        "matches": [
+          {
+            "canonical_key": "probiotics",
+            "end": 7,
+            "kind": "ingredient",
+            "matched_text": "프로바이오틱스",
+            "start": 0
+          },
+          {
+            "canonical_key": "gut_health",
+            "end": 13,
+            "kind": "health_goal",
+            "matched_text": "장 건강",
+            "start": 9
+          },
+          {
+            "canonical_key": "general_wellness",
+            "end": 21,
+            "kind": "health_goal",
+            "matched_text": "전반적 건강",
+            "start": 15
+          }
+        ],
+        "medication_keys": [],
+        "question": "프로바이오틱스가 장 건강과 전반적 건강에 도움이 되나요?",
+        "risk_signal_keys": [],
+        "schema_version": "question_entity_extraction_v1",
+        "urgent_risk_detected": false
+      },
+      {
+        "health_goals": [],
+        "ingredient_keys": [],
+        "matches": [],
+        "medication_keys": [],
+        "question": "The zincography article is unrelated to supplements.",
+        "risk_signal_keys": [],
+        "schema_version": "question_entity_extraction_v1",
+        "urgent_risk_detected": false
+      }
+    ],
+    "false_positive_case_is_empty": true,
+    "urgent_case_count": 2
+  },
+  "schema_version": "op081_op082_counseling_passage_entity_smoke_v1",
+  "source_identity": {
+    "commit": "59fe25375fa329d3718cc1aaf4f13f5f944e7f89",
+    "data_paths": [
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/parsed_references/reference_claims_v1.jsonl"
+    ],
+    "data_sha256": "24630e2575608a9d4868fd6b6680346e15701f19e8fc72eb40bb79d4a692323b",
+    "source_paths": [
+      "scripts/build_chat_retrieval_assets.py",
+      "scripts/run_counseling_passage_entity_smoke.py",
+      "src/wellnessbox_rnd/chat/__init__.py",
+      "src/wellnessbox_rnd/chat/retrieval.py",
+      "src/wellnessbox_rnd/knowledge/runtime_db.py",
+      "tests/test_chat_retrieval.py"
+    ],
+    "source_sha256": "39db817b91f7b12b212fd2c456931443785f126cd25e449ae5197e9825a2b872"
+  },
+  "stage_boundary": {
+    "claimed_stage": "IMPLEMENTED",
+    "external_validation_proven": false,
+    "llm_entity_inference_used": false,
+    "production_operation_proven": false,
+    "wellnessbox_service_integration_proven": false
+  }
+}

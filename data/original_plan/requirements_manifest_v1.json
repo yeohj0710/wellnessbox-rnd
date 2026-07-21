@@ -1634,8 +1634,41 @@
       "owners": ["wellnessbox-rnd"],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
-        {"requirement_id": "OP-081", "title": "근거 문서를 passage 단위로 수집하고 출처와 시행일을 보존한다."},
-        {"requirement_id": "OP-082", "title": "질문에서 건강 목표, 성분, 약물, 위험 신호를 추출한다."},
+        {
+          "requirement_id": "OP-081",
+          "title": "근거 문서를 passage 단위로 수집하고 출처와 시행일을 보존한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py",
+              "wellnessbox-rnd/scripts/build_chat_retrieval_assets.py",
+              "wellnessbox-rnd/data/knowledge/reference_knowledge_base_v1.json",
+              "wellnessbox-rnd/data/parsed_references/reference_claims_v1.jsonl"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_chat_retrieval.py",
+              "wellnessbox-rnd/scripts/run_counseling_passage_entity_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op081_op082_counseling_passage_entity_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-082",
+          "title": "질문에서 건강 목표, 성분, 약물, 위험 신호를 추출한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/runtime_db.py",
+              "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_chat_retrieval.py",
+              "wellnessbox-rnd/scripts/run_counseling_passage_entity_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op081_op082_counseling_passage_entity_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-083", "title": "bounded RAG가 허용된 지식 범위만 검색하게 한다."},
         {"requirement_id": "OP-084", "title": "답변에 근거 ID, 유효일, 불확실성을 포함한다."},
         {"requirement_id": "OP-085", "title": "verifier가 근거 없는 주장, 위험 누락, 금지 표현을 차단한다."},
