@@ -1,5 +1,18 @@
 # PROGRESS
 
+## 2026-07-21 fail-closed jobs and pharmacist-review loop
+
+- Chosen stage/tasks: `original plan / closed-loop execution`, OP-077 and OP-078.
+- Dataset/cases: frozen eval `256` cases; canonical smoke `5` cases covering exact duplicate execution, stale evidence, missing consent, worker timeout, and pharmacist-review completion. Evidence SHA-256 is `df67af2cf7ecd9f99edc7a98dcf6a607d633983da8a6f9cd65630973b6a0b2d4`; source SHA-256 is `58746132ddc4d840a479a9fe4075423fff45c4cd4cf9c78a10d431ed74fae978`.
+- Reuse/integration: reused `workflow_jobs`, `followups`, `execution_events`, active consent snapshots, `review_tasks`, and the existing FastAPI/admin-review path. No parallel event store, scheduler, review subsystem, or WellnessBox service route was added.
+- Implementation: jobs pin active consent and effective execution evidence. Claim and acknowledgement cancel stale, consentless, or timed-out work, close related follow-ups/jobs, and create one deterministic review. Review completion stores a typed decision and hashed postcondition; backdated completion and later UPDATE/DELETE are rejected. Serious-AE exact retries retain the original review ID.
+- Evidence stage: OP-077 and OP-078 are `IMPLEMENTED`, below required `OPERATED`, so both remain PARTIAL. No service change, deployment, production worker execution, or pharmacist operation is claimed.
+- Generated status: complete `56`, partial `21`, pending `42`, external `1`, contradicted `0`; audit PASS with `77` claims and `220` checked evidence files.
+- Validation: focused `59 passed`; workflow-equivalent selection `541 passed`; 22 canonical smokes regenerated; full Ruff PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `930 passed`, `77 failed`; failures remain exactly `73` absent-report and `4` CGM geometry cases, with no new failure group.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Next loops: OP-079/080, OP-081/082, OP-083/084.
+
 ## 2026-07-21 follow-up input decision and serious-AE stop loop
 
 - Chosen stage/tasks: `original plan / closed-loop execution`, OP-075 and OP-076.

@@ -1,5 +1,18 @@
 # SESSION_HANDOFF
 
+## 2026-07-21 OP-077/078 handoff
+
+- Chosen stage/tasks: `original plan / closed-loop execution`; OP-077 fail-closed job guards and OP-078 pharmacist-review creation/completion postconditions.
+- Primary dataset and cases: frozen eval `256` cases; canonical smoke `5` cases. Evidence SHA-256 is `df67af2cf7ecd9f99edc7a98dcf6a607d633983da8a6f9cd65630973b6a0b2d4`; source SHA-256 is `58746132ddc4d840a479a9fe4075423fff45c4cd4cf9c78a10d431ed74fae978`.
+- Main files: `src/wellnessbox_rnd/interim/jobs.py`, `reviews.py`, `store.py`, `agent.py`, the existing interim API route, OP-077/078 smoke, focused tests, manifest, completion reports, and affected shared canonical evidence.
+- Code/data/training/simulation: existing ledgers, jobs, consent records, and review tasks now enforce pinned guards and immutable review completion. No model training, frozen dataset change, service code change, deployment, or production operation occurred.
+- Stage/result: both requirements are proven only to `IMPLEMENTED` and remain PARTIAL because both require `OPERATED`. Completion counts are `56/21/42/1/0` for complete/partial/pending/external/contradicted.
+- Validation: focused `59 passed`; workflow-equivalent `541 passed`; full Ruff PASS; audit PASS (`77` claims, `220` evidence files); completion check PASS; 22 smokes regenerated; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `930 passed`, `77 failed`; known failure split `73` absent-report + `4` CGM geometry; other failures `0`.
+- Frozen/replay/slice: `256` cases, seven zero metric deltas, unchanged overall weakest category `safety_blocked`, and no metric-specific weakest-category change.
+- Five current bottlenecks: no deployed R&D process; no durable production R&D database/queue; no production worker timeout/stale-evidence telemetry; no authenticated production service-to-R&D round trip; no observed pharmacist review operation.
+- Next three loops: OP-079/080 lifecycle E2E and separate order state; OP-081/082 passage/source indexing and question entity extraction; OP-083/084 bounded RAG and answer evidence/validity/uncertainty.
+
 ## 2026-07-21 OP-075/076 handoff
 
 - Chosen stage/tasks: `original plan / closed-loop execution`; OP-075 follow-up input next-job selection and OP-076 serious-adverse-event plan/recommendation stop.
