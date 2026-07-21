@@ -11,6 +11,7 @@ from tempfile import TemporaryDirectory
 from run_wellnessbox_final_safety_authority_smoke import (
     run_smoke as run_final_safety_authority_smoke,
 )
+
 from wellnessbox_rnd.optimizer.product_combinations import (
     ProductCombinationEvidenceV1,
     ProductCombinationFilterPolicyV1,
