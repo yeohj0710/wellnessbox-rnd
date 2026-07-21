@@ -25,14 +25,16 @@
             "last_error": null,
             "lease_until": null,
             "payload": {
+              "consent_snapshot_id": "consent_plan_due_first",
               "due_at": "2026-07-21T12:00:00+00:00",
+              "execution_evidence_sha256": "dd7f0254934c83d13d6085fc8e3e6735e8ae7ae736c3e8174cd1ff15a8f9e942",
               "requested_data": [
                 "ADHERENCE",
                 "PRO"
               ],
               "schema_version": "plan_reevaluation_job_payload_v1"
             },
-            "payload_sha256": "7ea330f6b7b706f3c8928b3ae4a93181bc35edd85afe22f83b8f2452a251fcad",
+            "payload_sha256": "7f7e90f1103118d059e45484d28fd8ae1ca03a1637882c7d2fe58e44f000627e",
             "plan_id": "plan_due_first",
             "profile_id": "usr_cron_smoke",
             "scheduled_at": "2026-07-21T12:00:00Z",
@@ -58,14 +60,16 @@
             "last_error": null,
             "lease_until": null,
             "payload": {
+              "consent_snapshot_id": "consent_plan_due_first",
               "due_at": "2026-07-21T12:00:00+00:00",
+              "execution_evidence_sha256": "dd7f0254934c83d13d6085fc8e3e6735e8ae7ae736c3e8174cd1ff15a8f9e942",
               "requested_data": [
                 "ADHERENCE",
                 "PRO"
               ],
               "schema_version": "plan_reevaluation_job_payload_v1"
             },
-            "payload_sha256": "7ea330f6b7b706f3c8928b3ae4a93181bc35edd85afe22f83b8f2452a251fcad",
+            "payload_sha256": "7f7e90f1103118d059e45484d28fd8ae1ca03a1637882c7d2fe58e44f000627e",
             "plan_id": "plan_due_first",
             "profile_id": "usr_cron_smoke",
             "scheduled_at": "2026-07-21T12:00:00Z",
@@ -82,14 +86,16 @@
             "last_error": null,
             "lease_until": null,
             "payload": {
+              "consent_snapshot_id": "consent_plan_due_second",
               "due_at": "2026-07-21T13:00:00+00:00",
+              "execution_evidence_sha256": "7cf659b01052b8c0ccb3a1d6c4b2cb3152224ef41d9ca75fca4478228038418f",
               "requested_data": [
                 "ADHERENCE",
                 "PRO"
               ],
               "schema_version": "plan_reevaluation_job_payload_v1"
             },
-            "payload_sha256": "a8d9ea713bd41b5b490202ba318ac0745b649d830299afac035f48bbe55f98e6",
+            "payload_sha256": "1bea4dc7dad7683437fd75791a92da4c83c34a913ce4597df7c3b1398668bbc2",
             "plan_id": "plan_due_second",
             "profile_id": "usr_cron_smoke",
             "scheduled_at": "2026-07-21T13:00:00Z",
@@ -115,14 +121,16 @@
             "last_error": null,
             "lease_until": null,
             "payload": {
+              "consent_snapshot_id": "consent_plan_due_first",
               "due_at": "2026-07-21T12:00:00+00:00",
+              "execution_evidence_sha256": "dd7f0254934c83d13d6085fc8e3e6735e8ae7ae736c3e8174cd1ff15a8f9e942",
               "requested_data": [
                 "ADHERENCE",
                 "PRO"
               ],
               "schema_version": "plan_reevaluation_job_payload_v1"
             },
-            "payload_sha256": "7ea330f6b7b706f3c8928b3ae4a93181bc35edd85afe22f83b8f2452a251fcad",
+            "payload_sha256": "7f7e90f1103118d059e45484d28fd8ae1ca03a1637882c7d2fe58e44f000627e",
             "plan_id": "plan_due_first",
             "profile_id": "usr_cron_smoke",
             "scheduled_at": "2026-07-21T12:00:00Z",
@@ -139,14 +147,16 @@
             "last_error": null,
             "lease_until": null,
             "payload": {
+              "consent_snapshot_id": "consent_plan_due_second",
               "due_at": "2026-07-21T13:00:00+00:00",
+              "execution_evidence_sha256": "7cf659b01052b8c0ccb3a1d6c4b2cb3152224ef41d9ca75fca4478228038418f",
               "requested_data": [
                 "ADHERENCE",
                 "PRO"
               ],
               "schema_version": "plan_reevaluation_job_payload_v1"
             },
-            "payload_sha256": "a8d9ea713bd41b5b490202ba318ac0745b649d830299afac035f48bbe55f98e6",
+            "payload_sha256": "1bea4dc7dad7683437fd75791a92da4c83c34a913ce4597df7c3b1398668bbc2",
             "plan_id": "plan_due_second",
             "profile_id": "usr_cron_smoke",
             "scheduled_at": "2026-07-21T13:00:00Z",
@@ -171,7 +181,9 @@
           "last_error": null,
           "lease_until": null,
           "payload": {
+            "consent_snapshot_id": "consent_plan_due_first",
             "due_at": "2026-07-21T12:00:00+00:00",
+            "execution_evidence_sha256": "dd7f0254934c83d13d6085fc8e3e6735e8ae7ae736c3e8174cd1ff15a8f9e942",
             "reminder_at": "2026-07-20T12:00:00+00:00",
             "requested_data": [
               "ADHERENCE",
@@ -179,7 +191,7 @@
             ],
             "schema_version": "followup_reminder_job_payload_v1"
           },
-          "payload_sha256": "dba954213c7b8e956ea53e4565850dc62b71f158faea6440bff8d1348974e3ec",
+          "payload_sha256": "3f96dd9494b5d78c210cf5076457cc870a5fbc7be9c275000dc36ebc9a4f2767",
           "plan_id": "plan_due_first",
           "profile_id": "usr_cron_smoke",
           "scheduled_at": "2026-07-20T12:00:00Z",
@@ -200,7 +212,9 @@
           "last_error": null,
           "lease_until": null,
           "payload": {
+            "consent_snapshot_id": "consent_plan_due_second",
             "due_at": "2026-07-21T13:00:00+00:00",
+            "execution_evidence_sha256": "7cf659b01052b8c0ccb3a1d6c4b2cb3152224ef41d9ca75fca4478228038418f",
             "reminder_at": "2026-07-20T13:00:00+00:00",
             "requested_data": [
               "ADHERENCE",
@@ -208,7 +222,7 @@
             ],
             "schema_version": "followup_reminder_job_payload_v1"
           },
-          "payload_sha256": "2bdb4133c32f6135f05f0d78b25625dd310183d0fe0ace9a0f7694523771206c",
+          "payload_sha256": "28b36b6e5b65f2308c6e1bceac9d2544ca8f6eb4081915616103f12adf5c294c",
           "plan_id": "plan_due_second",
           "profile_id": "usr_cron_smoke",
           "scheduled_at": "2026-07-20T13:00:00Z",
@@ -223,7 +237,9 @@
         "idempotency_key": "followup-reminder:fu_due_first",
         "job_type": "FOLLOWUP_REMINDER",
         "payload_json": {
+          "consent_snapshot_id": "consent_plan_due_first",
           "due_at": "2026-07-21T12:00:00+00:00",
+          "execution_evidence_sha256": "dd7f0254934c83d13d6085fc8e3e6735e8ae7ae736c3e8174cd1ff15a8f9e942",
           "reminder_at": "2026-07-20T12:00:00+00:00",
           "requested_data": [
             "ADHERENCE",
@@ -231,7 +247,7 @@
           ],
           "schema_version": "followup_reminder_job_payload_v1"
         },
-        "payload_sha256": "dba954213c7b8e956ea53e4565850dc62b71f158faea6440bff8d1348974e3ec",
+        "payload_sha256": "3f96dd9494b5d78c210cf5076457cc870a5fbc7be9c275000dc36ebc9a4f2767",
         "plan_id": "plan_due_first",
         "profile_id": "usr_cron_smoke",
         "scheduled_at": "2026-07-20T12:00:00+00:00",
@@ -242,7 +258,9 @@
         "idempotency_key": "followup-reminder:fu_due_second",
         "job_type": "FOLLOWUP_REMINDER",
         "payload_json": {
+          "consent_snapshot_id": "consent_plan_due_second",
           "due_at": "2026-07-21T13:00:00+00:00",
+          "execution_evidence_sha256": "7cf659b01052b8c0ccb3a1d6c4b2cb3152224ef41d9ca75fca4478228038418f",
           "reminder_at": "2026-07-20T13:00:00+00:00",
           "requested_data": [
             "ADHERENCE",
@@ -250,7 +268,7 @@
           ],
           "schema_version": "followup_reminder_job_payload_v1"
         },
-        "payload_sha256": "2bdb4133c32f6135f05f0d78b25625dd310183d0fe0ace9a0f7694523771206c",
+        "payload_sha256": "28b36b6e5b65f2308c6e1bceac9d2544ca8f6eb4081915616103f12adf5c294c",
         "plan_id": "plan_due_second",
         "profile_id": "usr_cron_smoke",
         "scheduled_at": "2026-07-20T13:00:00+00:00",
@@ -261,14 +279,16 @@
         "idempotency_key": "plan-reevaluation:fu_due_first",
         "job_type": "PLAN_REEVALUATION",
         "payload_json": {
+          "consent_snapshot_id": "consent_plan_due_first",
           "due_at": "2026-07-21T12:00:00+00:00",
+          "execution_evidence_sha256": "dd7f0254934c83d13d6085fc8e3e6735e8ae7ae736c3e8174cd1ff15a8f9e942",
           "requested_data": [
             "ADHERENCE",
             "PRO"
           ],
           "schema_version": "plan_reevaluation_job_payload_v1"
         },
-        "payload_sha256": "7ea330f6b7b706f3c8928b3ae4a93181bc35edd85afe22f83b8f2452a251fcad",
+        "payload_sha256": "7f7e90f1103118d059e45484d28fd8ae1ca03a1637882c7d2fe58e44f000627e",
         "plan_id": "plan_due_first",
         "profile_id": "usr_cron_smoke",
         "scheduled_at": "2026-07-21T12:00:00+00:00",
@@ -279,14 +299,16 @@
         "idempotency_key": "plan-reevaluation:fu_due_second",
         "job_type": "PLAN_REEVALUATION",
         "payload_json": {
+          "consent_snapshot_id": "consent_plan_due_second",
           "due_at": "2026-07-21T13:00:00+00:00",
+          "execution_evidence_sha256": "7cf659b01052b8c0ccb3a1d6c4b2cb3152224ef41d9ca75fca4478228038418f",
           "requested_data": [
             "ADHERENCE",
             "PRO"
           ],
           "schema_version": "plan_reevaluation_job_payload_v1"
         },
-        "payload_sha256": "a8d9ea713bd41b5b490202ba318ac0745b649d830299afac035f48bbe55f98e6",
+        "payload_sha256": "1bea4dc7dad7683437fd75791a92da4c83c34a913ce4597df7c3b1398668bbc2",
         "plan_id": "plan_due_second",
         "profile_id": "usr_cron_smoke",
         "scheduled_at": "2026-07-21T13:00:00+00:00",
@@ -316,7 +338,7 @@
   },
   "schema_version": "op073_op074_followup_job_queue_cron_smoke_v1",
   "source": {
-    "commit": "617d7f30974456e1c3060d29da43499e98d96fc4",
+    "commit": "932358c8019b69023405725565656fc7cbbae39c",
     "paths": [
       "apps/inference_api/routes/interim.py",
       "scripts/run_due_plan_reevaluation_cron.py",
@@ -328,6 +350,6 @@
       "tests/test_interim_api.py",
       "tests/test_interim_jobs.py"
     ],
-    "sha256": "553eb2c25b39fa692129741df1eceb032df64d2f15a46c3caf80acfecb9c9ec6"
+    "sha256": "ef35ea843ba99f53be52eb6d0ff3d1cfba4da6d14a72c608a09578bd56efdf71"
   }
 }

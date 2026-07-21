@@ -9,6 +9,8 @@
       "job_type": "PLAN_REEVALUATION",
       "last_error": null,
       "payload": {
+        "consent_snapshot_id": "consent_op075_op076",
+        "execution_evidence_sha256": "e0c2ef3b849e3d22d226c9c8e9a3abf4f62c46942349a1050dd5884576902296",
         "input_id": "device_smoke_1",
         "input_kind": "DEVICE",
         "input_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
@@ -16,7 +18,7 @@
         "received_at": "2026-07-21T12:01:00+00:00",
         "schema_version": "followup_input_reevaluation_job_payload_v1"
       },
-      "payload_sha256": "fd95d0c16804fd24052ea19ef9aa01679db67a8ac4077bb06f2e4640547980af",
+      "payload_sha256": "b67709fe1babfdd9949045d8dca8a4086dabb37ca2300370e1e222e216e0fb07",
       "plan_id": "plan_op075_op076",
       "profile_id": "usr_1234567890abcdef",
       "scheduled_at": "2026-07-21T12:01:00Z",
@@ -43,6 +45,8 @@
       "job_type": "PLAN_REEVALUATION",
       "last_error": null,
       "payload": {
+        "consent_snapshot_id": "consent_op075_op076",
+        "execution_evidence_sha256": "e0c2ef3b849e3d22d226c9c8e9a3abf4f62c46942349a1050dd5884576902296",
         "input_id": "pro_smoke_1",
         "input_kind": "PRO",
         "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -50,7 +54,7 @@
         "received_at": "2026-07-21T12:00:00+00:00",
         "schema_version": "followup_input_reevaluation_job_payload_v1"
       },
-      "payload_sha256": "f6d73ee914b7b0559a7eaea686f81ef2d05064c0229fa57bbc8e206f5300a2b6",
+      "payload_sha256": "d54b013cc15aa537053a062e7915aefe2b320232892f1317afcce8c426d8670f",
       "plan_id": "plan_op075_op076",
       "profile_id": "usr_1234567890abcdef",
       "scheduled_at": "2026-07-21T12:00:00Z",
@@ -65,7 +69,7 @@
       "deduplicated": false,
       "plan_stopped": true,
       "postcondition_success": true,
-      "review_id": "review_503d533c825012e234fadd52"
+      "review_id": "review_7b9433e6df6aadd1ff71c9aa"
     },
     "stored_followup_statuses": [
       "CLOSED",
@@ -78,6 +82,8 @@
         "job_type": "PLAN_REEVALUATION",
         "last_error": "SERIOUS_ADVERSE_EVENT_STOP",
         "payload": {
+          "consent_snapshot_id": "consent_op075_op076",
+          "execution_evidence_sha256": "e0c2ef3b849e3d22d226c9c8e9a3abf4f62c46942349a1050dd5884576902296",
           "input_id": "pro_smoke_1",
           "input_kind": "PRO",
           "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -95,6 +101,8 @@
         "job_type": "PLAN_REEVALUATION",
         "last_error": "SERIOUS_ADVERSE_EVENT_STOP",
         "payload": {
+          "consent_snapshot_id": "consent_op075_op076",
+          "execution_evidence_sha256": "e0c2ef3b849e3d22d226c9c8e9a3abf4f62c46942349a1050dd5884576902296",
           "input_id": "device_smoke_1",
           "input_kind": "DEVICE",
           "input_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
@@ -130,7 +138,7 @@
   },
   "schema_version": "op075_op076_followup_input_serious_ae_smoke_v1",
   "source": {
-    "commit": "617d7f30974456e1c3060d29da43499e98d96fc4",
+    "commit": "932358c8019b69023405725565656fc7cbbae39c",
     "paths": [
       "apps/inference_api/routes/interim.py",
       "scripts/run_followup_input_serious_ae_smoke.py",
@@ -141,6 +149,6 @@
       "tests/test_interim_jobs.py",
       "tests/test_pro_plan_service.py"
     ],
-    "sha256": "4e33d0f4560699ceb9e06eb894671f4312be9fcfd734a85ce60dbce73b4c7a28"
+    "sha256": "54bd5850893986d175b21cda26e736f4f59326a5bad98cc83e10fc7c892431ee"
   }
 }
