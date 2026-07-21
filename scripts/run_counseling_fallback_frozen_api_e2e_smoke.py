@@ -185,9 +185,11 @@ def _run_once(database: Path) -> dict[str, object]:
             process.wait(timeout=5)
         except subprocess.TimeoutExpired:
             process.kill()
+            process.wait(timeout=5)
         provider_server.shutdown()
         provider_server.server_close()
         provider_thread.join(timeout=5)
+        time.sleep(0.25)
 
 
 def main() -> int:
