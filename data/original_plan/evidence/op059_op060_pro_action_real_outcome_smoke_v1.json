@@ -72,7 +72,7 @@
   },
   "schema_version": "op059_op060_pro_action_real_outcome_smoke_v1",
   "source": {
-    "combined_sha256": "0cd75427dc54da0156ac40515b5595c51f51dadd595cce4c8abe2ad132c1c975",
+    "combined_sha256": "d96d6598b0a9c7f30d61036c3f4e3677124c689e37b6b2dd5f468041c24c1a5f",
     "wellnessbox_commit": "4d904f43b028a35524a29206aaf7c6b99f58a97b",
     "wellnessbox_paths": [
       "app/api/tips/pro/effects/route.ts",
@@ -90,7 +90,7 @@
       "scripts/qa/check-tips-pro-study-rnd-client.cts",
       "scripts/qa/run-tips-pro-correction-client.cts"
     ],
-    "wellnessbox_rnd_commit": "21dade1eb86f39662416271fef81ec0fb9282d3d",
+    "wellnessbox_rnd_commit": "617d7f30974456e1c3060d29da43499e98d96fc4",
     "wellnessbox_rnd_paths": [
       "apps/inference_api/routes/interim.py",
       "data/contracts/pro_runtime_reference_baselines_v1.json",
