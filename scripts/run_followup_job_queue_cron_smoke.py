@@ -84,6 +84,49 @@ def run_smoke() -> dict[str, object]:
                 "insert into user_profiles values (?, ?, ?, ?, ?, ?)",
                 ("usr_cron_smoke", "PROXY_GOLD_SIMULATION", "[]", "{}", "hash", "now"),
             )
+            for index, plan_id in enumerate(("plan_due_first", "plan_due_second")):
+                execution_id = f"execution_{plan_id}"
+                consent_id = f"consent_{plan_id}"
+                connection.execute(
+                    "insert into consent_snapshots values (?, 'usr_cron_smoke', ?, 'v1', ?, ?, ?)",
+                    (
+                        consent_id,
+                        index + 1,
+                        f'{{"plan_id":"{plan_id}"}}',
+                        consent_id,
+                        NOW.isoformat(),
+                    ),
+                )
+                connection.execute(
+                    "insert into executions values "
+                    "(?, ?, 'usr_cron_smoke', null, ?, ?, 'COMPLETE', ?, ?)",
+                    (
+                        execution_id,
+                        execution_id,
+                        consent_id,
+                        execution_id,
+                        NOW.isoformat(),
+                        NOW.isoformat(),
+                    ),
+                )
+                connection.execute(
+                    """
+                    insert into execution_events(
+                      event_id, execution_id, consent_snapshot_id, event_index,
+                      event_type, source, idempotency_key, payload_json,
+                      payload_sha256, effective_payload_sha256, created_at
+                    ) values (?, ?, ?, 0, 'recommendation', 'system', 'plan', ?, ?, ?, ?)
+                    """,
+                    (
+                        f"event_{plan_id}",
+                        execution_id,
+                        consent_id,
+                        f'{{"plan_id":"{plan_id}"}}',
+                        plan_id,
+                        plan_id,
+                        NOW.isoformat(),
+                    ),
+                )
         queue = WorkflowJobQueue(store)
         schedules = []
         for followup_id, plan_id, due_at in (
@@ -94,6 +137,7 @@ def run_smoke() -> dict[str, object]:
                 followup_id=followup_id,
                 profile_id="usr_cron_smoke",
                 plan_id=plan_id,
+                execution_id=f"execution_{plan_id}",
                 due_at=due_at,
                 reminder_at=due_at - timedelta(days=1),
                 requested_data=["PRO", "ADHERENCE"],
@@ -119,10 +163,7 @@ def run_smoke() -> dict[str, object]:
         )
     normalized_cron = []
     for result in (before_due, first_due, all_due, retry):
-        normalized_cron.append(
-            result
-            | {"jobs": [_normalize_job(job) for job in result["jobs"]]}
-        )
+        normalized_cron.append(result | {"jobs": [_normalize_job(job) for job in result["jobs"]]})
     assert [item["created_job_count"] for item in normalized_cron] == [0, 1, 1, 0]
     assert normalized_cron[-1]["deduplicated_job_count"] == 2
     return {
@@ -136,8 +177,7 @@ def run_smoke() -> dict[str, object]:
             "scheduled_followups": schedules,
             "cron_runs": normalized_cron,
             "stored_jobs": [
-                dict(row) | {"payload_json": json.loads(row["payload_json"])}
-                for row in rows
+                dict(row) | {"payload_json": json.loads(row["payload_json"])} for row in rows
             ],
             "stored_reminder_job_count": 2,
             "stored_reevaluation_job_count": 2,

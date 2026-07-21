@@ -51,9 +51,7 @@ def test_interim_recommendation_rejects_invalid_product_constraints(
     assert response.status_code == 422
 
 
-def test_interim_recommendation_emits_validated_product_constraints(
-    tmp_path, monkeypatch
-) -> None:
+def test_interim_recommendation_emits_validated_product_constraints(tmp_path, monkeypatch) -> None:
     monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(tmp_path / "api.sqlite3"))
     monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
     monkeypatch.setattr(
@@ -67,15 +65,18 @@ def test_interim_recommendation_emits_validated_product_constraints(
     )
     client = TestClient(app)
     profile_id = "usr_1234567890abcdef"
-    assert client.post(
-        "/v1/interim/profiles",
-        headers=_headers(),
-        json={
-            "profile_id": profile_id,
-            "consent_scopes": ["recommendation:read"],
-            "profile": {"age": 41},
-        },
-    ).status_code == 200
+    assert (
+        client.post(
+            "/v1/interim/profiles",
+            headers=_headers(),
+            json={
+                "profile_id": profile_id,
+                "consent_scopes": ["recommendation:read"],
+                "profile": {"age": 41},
+            },
+        ).status_code
+        == 200
+    )
 
     response = client.post(
         "/v1/interim/recommendations",
@@ -102,9 +103,7 @@ def test_interim_recommendation_emits_validated_product_constraints(
     }
 
 
-def test_interim_api_blocks_emergency_before_registered_model(
-    tmp_path, monkeypatch
-) -> None:
+def test_interim_api_blocks_emergency_before_registered_model(tmp_path, monkeypatch) -> None:
     database = tmp_path / "api.sqlite3"
     monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
     monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
@@ -142,15 +141,10 @@ def test_interim_api_blocks_emergency_before_registered_model(
     assert body["safety_action"] == "STOP_AND_ESCALATE"
     assert body["model_id"] is None
     assert body["recommendations"] == []
-    assert any(
-        finding["rule_id"] == "SAFE-EMERGENCY-001"
-        for finding in body["findings"]
-    )
+    assert any(finding["rule_id"] == "SAFE-EMERGENCY-001" for finding in body["findings"])
 
 
-def test_current_safety_input_cannot_remove_stored_high_risk_facts(
-    tmp_path, monkeypatch
-) -> None:
+def test_current_safety_input_cannot_remove_stored_high_risk_facts(tmp_path, monkeypatch) -> None:
     database = tmp_path / "api.sqlite3"
     monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
     monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
@@ -225,8 +219,7 @@ def test_current_safety_input_cannot_remove_stored_dynamic_rule_predicate(
     bootstrap_operational_evidence(store)
     assert (
         store.scalar(
-            "select canonical_uri from source_registry "
-            "where source_id='tips-original-plan-p26'"
+            "select canonical_uri from source_registry where source_id='tips-original-plan-p26'"
         )
         == ORIGINAL_PLAN_PAGE_26_URI
     )
@@ -261,9 +254,7 @@ def test_current_safety_input_cannot_remove_stored_dynamic_rule_predicate(
     assert any(finding["rule_id"] == "SAFE-GATE-001" for finding in body["findings"])
 
 
-def test_dynamic_rule_predicate_combines_risk_facts_across_sources(
-    tmp_path, monkeypatch
-) -> None:
+def test_dynamic_rule_predicate_combines_risk_facts_across_sources(tmp_path, monkeypatch) -> None:
     database = tmp_path / "api.sqlite3"
     monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
     monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
@@ -318,10 +309,7 @@ def test_dynamic_rule_predicate_combines_risk_facts_across_sources(
     assert body["status"] == "BLOCKED"
     assert body["model_id"] is None
     assert body["recommendations"] == []
-    assert any(
-        finding["rule_id"] == "SAFE-SPLIT-RISK-001"
-        for finding in body["findings"]
-    )
+    assert any(finding["rule_id"] == "SAFE-SPLIT-RISK-001" for finding in body["findings"])
 
 
 @pytest.mark.skipif(
@@ -383,11 +371,14 @@ def test_ordered_agent_workflow_endpoint_enforces_safety_to_plan_sequence(
     monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
     client = TestClient(app)
     profile_id = "usr_1234567890abcdef"
-    assert client.post(
-        "/v1/interim/profiles",
-        headers=_headers(),
-        json={"profile_id": profile_id, "consent_scopes": [], "profile": {"age": 41}},
-    ).status_code == 200
+    assert (
+        client.post(
+            "/v1/interim/profiles",
+            headers=_headers(),
+            json={"profile_id": profile_id, "consent_scopes": [], "profile": {"age": 41}},
+        ).status_code
+        == 200
+    )
     registry = EvidenceRegistry(InterimStore(database))
     registry.register_source(
         source_id="workflow-api-source",
@@ -484,12 +475,11 @@ def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
     assert second.status_code == 409
 
 
-def test_due_plan_cron_endpoint_enqueues_shared_reevaluation_job(
-    tmp_path, monkeypatch
-) -> None:
+def test_due_plan_cron_endpoint_enqueues_shared_reevaluation_job(tmp_path, monkeypatch) -> None:
     database = tmp_path / "cron-api.sqlite3"
     monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
     monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setenv("WB_RND_ALLOW_CRON_AS_OF_OVERRIDE", "1")
     client = TestClient(app)
     profile_id = "usr_1234567890abcdef"
     client.post(
@@ -498,10 +488,36 @@ def test_due_plan_cron_endpoint_enqueues_shared_reevaluation_job(
         json={"profile_id": profile_id, "consent_scopes": [], "profile": {}},
     )
     queue = WorkflowJobQueue(InterimStore(database))
+    with queue.store.transaction() as connection:
+        connection.execute(
+            "insert into consent_snapshots values "
+            "('consent_cron_api', ?, 1, 'v1', '{}', 'consent-cron-api', 'now')",
+            (profile_id,),
+        )
+        connection.execute(
+            "insert into executions values "
+            "('execution_cron_api', 'request_cron_api', ?, null, "
+            "'consent_cron_api', 'request-cron-api', 'COMPLETE', 'now', 'now')",
+            (profile_id,),
+        )
+        connection.execute(
+            """
+            insert into execution_events(
+              event_id, execution_id, consent_snapshot_id, event_index, event_type,
+              source, idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values (
+              'event_cron_api', 'execution_cron_api', 'consent_cron_api', 0,
+              'recommendation', 'system', 'plan', '{"plan_id":"plan_cron_api"}',
+              'plan-cron-api', 'plan-cron-api', 'now'
+            )
+            """
+        )
     queue.schedule_followup_with_reminder(
         followup_id="fu_cron_api",
         profile_id=profile_id,
         plan_id="plan_cron_api",
+        execution_id="execution_cron_api",
         due_at=datetime(2026, 7, 21, 12, 0, tzinfo=UTC),
         reminder_at=datetime(2026, 7, 20, 12, 0, tzinfo=UTC),
         requested_data=["PRO"],
@@ -601,6 +617,4 @@ def test_execution_event_api_connects_conversation_and_followup_to_recommendatio
         "conversation",
         "followup_evaluation",
     ]
-    assert {event["execution_id"] for event in trace.json()["events"]} == {
-        execution_id
-    }
+    assert {event["execution_id"] for event in trace.json()["events"]} == {execution_id}

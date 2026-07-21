@@ -222,8 +222,7 @@ class BoundedAgent:
             and operation not in CLOSED_LOOP_ALLOWED_OPERATIONS_V1[current_state]
         ):
             raise ValueError(
-                "workflow_operation_not_allowed:"
-                f"{current_state.value}:{operation.value}"
+                f"workflow_operation_not_allowed:{current_state.value}:{operation.value}"
             )
         profile_id = str(run["profile_id"])
         supplied_profile = str(arguments.get("profile_id", profile_id))
@@ -417,9 +416,7 @@ class BoundedAgent:
             {"query": evidence_query},
         )
         evidence_ids = sorted(
-            str(item["evidence_id"])
-            for item in evidence["passages"]
-            if item.get("evidence_id")
+            str(item["evidence_id"]) for item in evidence["passages"] if item.get("evidence_id")
         )
         if not evidence_ids:
             self._stop_workflow(run_id, steps)
@@ -493,9 +490,7 @@ class BoundedAgent:
             }
         ).model_dump(mode="json")
 
-    def _record_internal_operation(
-        self, run_id: str, operation: ClosedLoopOperation
-    ) -> None:
+    def _record_internal_operation(self, run_id: str, operation: ClosedLoopOperation) -> None:
         payload = {"operation": operation.value, "postcondition_success": True}
         with self.store.transaction() as connection:
             step_index = connection.execute(
@@ -556,9 +551,12 @@ class BoundedAgent:
         scoped_prefix = f"{profile_id}:{base_idempotency_key}:"
         expected_key = f"{scoped_prefix}{request_identity}"
         with self.store.transaction(immediate=True) as connection:
-            if connection.execute(
-                "select count(*) from user_profiles where profile_id=?", (profile_id,)
-            ).fetchone()[0] == 0:
+            if (
+                connection.execute(
+                    "select count(*) from user_profiles where profile_id=?", (profile_id,)
+                ).fetchone()[0]
+                == 0
+            ):
                 raise ValueError("unknown_profile")
             existing = connection.execute(
                 "select * from agent_runs where profile_id=? and idempotency_key like ?",
@@ -653,13 +651,12 @@ class BoundedAgent:
                 if due_at_raw
                 else now + timedelta(days=int(arguments.get("days", 14)))
             )
-            reminder_at = due_at - timedelta(
-                days=int(arguments.get("reminder_days_before", 1))
-            )
+            reminder_at = due_at - timedelta(days=int(arguments.get("reminder_days_before", 1)))
             scheduled = WorkflowJobQueue(self.store).schedule_followup_with_reminder(
                 followup_id=str(arguments.get("followup_id") or f"fu_{uuid4().hex}"),
                 profile_id=profile_id,
                 plan_id=plan_id,
+                execution_id=str(arguments.get("execution_id", "")),
                 due_at=due_at,
                 reminder_at=reminder_at,
                 requested_data=[str(item) for item in arguments.get("requested_data", [])],

@@ -424,6 +424,7 @@ CREATE TABLE IF NOT EXISTS followups (
   followup_id TEXT PRIMARY KEY,
   profile_id TEXT NOT NULL REFERENCES user_profiles(profile_id),
   plan_id TEXT,
+  execution_id TEXT REFERENCES executions(execution_id),
   due_at TEXT NOT NULL,
   requested_data_json TEXT NOT NULL,
   status TEXT NOT NULL,
@@ -438,12 +439,17 @@ CREATE TABLE IF NOT EXISTS workflow_jobs (
   profile_id TEXT NOT NULL REFERENCES user_profiles(profile_id),
   plan_id TEXT NOT NULL,
   followup_id TEXT NOT NULL REFERENCES followups(followup_id),
+  execution_id TEXT NOT NULL REFERENCES executions(execution_id),
   scheduled_at TEXT NOT NULL,
   payload_json TEXT NOT NULL,
   payload_sha256 TEXT NOT NULL,
   created_at TEXT NOT NULL,
   claimed_at TEXT,
-  completed_at TEXT
+  completed_at TEXT,
+  lease_until TEXT,
+  claim_token TEXT,
+  attempt_count INTEGER NOT NULL DEFAULT 0,
+  last_error TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_workflow_jobs_ready_schedule
@@ -593,9 +599,28 @@ class InterimStore:
             }
             if "plan_id" not in followup_columns:
                 connection.execute("alter table followups add column plan_id text")
+            if "execution_id" not in followup_columns:
+                connection.execute(
+                    "alter table followups add column execution_id text "
+                    "references executions(execution_id)"
+                )
+            job_columns = {
+                str(row[1]) for row in connection.execute("pragma table_info(workflow_jobs)")
+            }
+            job_column_migrations = {
+                "execution_id": "text references executions(execution_id)",
+                "lease_until": "text",
+                "claim_token": "text",
+                "attempt_count": "integer not null default 0",
+                "last_error": "text",
+            }
+            for column_name, column_type in job_column_migrations.items():
+                if column_name not in job_columns:
+                    connection.execute(
+                        f"alter table workflow_jobs add column {column_name} {column_type}"
+                    )
             event_columns = {
-                str(row[1])
-                for row in connection.execute("pragma table_info(execution_events)")
+                str(row[1]) for row in connection.execute("pragma table_info(execution_events)")
             }
             if "consent_snapshot_id" not in event_columns:
                 connection.execute(
@@ -616,8 +641,7 @@ class InterimStore:
             connection.commit()
             self._migrate_event_mutation_schema_v8(connection)
             passage_columns = {
-                str(row[1])
-                for row in connection.execute("pragma table_info(evidence_passages)")
+                str(row[1]) for row in connection.execute("pragma table_info(evidence_passages)")
             }
             passage_column_migrations = {
                 "page_or_section": "text",
@@ -663,16 +687,13 @@ class InterimStore:
         connection: sqlite3.Connection,
     ) -> None:
         event_columns = {
-            str(row[1])
-            for row in connection.execute("pragma table_info(execution_events)")
+            str(row[1]) for row in connection.execute("pragma table_info(execution_events)")
         }
         behavior_columns = {
-            str(row[1])
-            for row in connection.execute("pragma table_info(behavior_events)")
+            str(row[1]) for row in connection.execute("pragma table_info(behavior_events)")
         }
         mutation_columns = {
-            str(row[1])
-            for row in connection.execute("pragma table_info(event_mutations)")
+            str(row[1]) for row in connection.execute("pragma table_info(event_mutations)")
         }
         required_mutation_columns = {
             "previous_mutation_id",
@@ -682,9 +703,7 @@ class InterimStore:
         }
         trigger_names = {
             str(row[0])
-            for row in connection.execute(
-                "select name from sqlite_master where type='trigger'"
-            )
+            for row in connection.execute("select name from sqlite_master where type='trigger'")
         }
         required_trigger_names = {
             "event_mutations_no_update",
@@ -694,9 +713,7 @@ class InterimStore:
         }
         index_names = {
             str(row[0])
-            for row in connection.execute(
-                "select name from sqlite_master where type='index'"
-            )
+            for row in connection.execute("select name from sqlite_master where type='index'")
         }
         required_index_names = {
             "idx_event_mutations_target_created",
@@ -704,15 +721,11 @@ class InterimStore:
         }
         table_names = {
             str(row[0])
-            for row in connection.execute(
-                "select name from sqlite_master where type='table'"
-            )
+            for row in connection.execute("select name from sqlite_master where type='table'")
         }
         if (
             {"payload_state", "effective_payload_sha256"}.issubset(event_columns)
-            and {"payload_state", "effective_payload_sha256"}.issubset(
-                behavior_columns
-            )
+            and {"payload_state", "effective_payload_sha256"}.issubset(behavior_columns)
             and required_mutation_columns.issubset(mutation_columns)
             and required_trigger_names.issubset(trigger_names)
             and required_index_names.issubset(index_names)
@@ -735,8 +748,7 @@ class InterimStore:
                     "'0000000000000000000000000000000000000000000000000000000000000000'"
                 )
                 connection.execute(
-                    "update execution_events set effective_payload_sha256="
-                    "payload_sha256"
+                    "update execution_events set effective_payload_sha256=payload_sha256"
                 )
             if "payload_state" not in behavior_columns:
                 connection.execute(
@@ -751,8 +763,7 @@ class InterimStore:
                     "'0000000000000000000000000000000000000000000000000000000000000000'"
                 )
                 connection.execute(
-                    "update behavior_events set effective_payload_sha256="
-                    "payload_sha256"
+                    "update behavior_events set effective_payload_sha256=payload_sha256"
                 )
             connection.execute(
                 """
@@ -779,16 +790,11 @@ class InterimStore:
                 """
             )
             mutation_columns = {
-                str(row[1])
-                for row in connection.execute("pragma table_info(event_mutations)")
+                str(row[1]) for row in connection.execute("pragma table_info(event_mutations)")
             }
             if not required_mutation_columns.issubset(mutation_columns):
-                if connection.execute(
-                    "select count(*) from event_mutations"
-                ).fetchone()[0]:
-                    raise sqlite3.IntegrityError(
-                        "legacy_event_mutations_require_chain_rebuild"
-                    )
+                if connection.execute("select count(*) from event_mutations").fetchone()[0]:
+                    raise sqlite3.IntegrityError("legacy_event_mutations_require_chain_rebuild")
                 for column_name, column_type in {
                     "previous_mutation_id": "text",
                     "previous_mutation_sha256": "text",
@@ -797,8 +803,7 @@ class InterimStore:
                 }.items():
                     if column_name not in mutation_columns:
                         connection.execute(
-                            f"alter table event_mutations add column {column_name} "
-                            f"{column_type}"
+                            f"alter table event_mutations add column {column_name} {column_type}"
                         )
             connection.execute(
                 "create index if not exists idx_event_mutations_target_created "
@@ -858,8 +863,7 @@ class InterimStore:
                 """
             )
             connection.execute(
-                "INSERT OR IGNORE INTO schema_migrations(version, applied_at) "
-                "VALUES (?, ?)",
+                "INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (?, ?)",
                 (SCHEMA_VERSION, datetime.now(UTC).isoformat()),
             )
         except Exception:
@@ -872,15 +876,11 @@ class InterimStore:
         """Overwrite deleted payload pages and truncate the SQLite WAL."""
         connection = self.connect()
         try:
-            checkpoint = connection.execute(
-                "PRAGMA wal_checkpoint(TRUNCATE)"
-            ).fetchone()
+            checkpoint = connection.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchone()
             if checkpoint is not None and int(checkpoint[0]) != 0:
                 raise sqlite3.OperationalError("secure_checkpoint_busy")
             connection.execute("VACUUM")
-            checkpoint = connection.execute(
-                "PRAGMA wal_checkpoint(TRUNCATE)"
-            ).fetchone()
+            checkpoint = connection.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchone()
             if checkpoint is not None and int(checkpoint[0]) != 0:
                 raise sqlite3.OperationalError("secure_checkpoint_busy")
         finally:
@@ -921,9 +921,7 @@ class InterimStore:
         if table_row is None:
             return
         normalized_sql = "".join(str(table_row[0]).lower().split())
-        corrected_unique = (
-            "unique(execution_id,event_id,output_type,output_key,claim_id,rule_id)"
-        )
+        corrected_unique = "unique(execution_id,event_id,output_type,output_key,claim_id,rule_id)"
         if corrected_unique in normalized_sql:
             return
 
@@ -935,9 +933,7 @@ class InterimStore:
                     "ALTER TABLE execution_knowledge_lineage "
                     "RENAME TO execution_knowledge_lineage_v6"
                 )
-                connection.execute(
-                    "DROP INDEX IF EXISTS idx_execution_knowledge_lineage_execution"
-                )
+                connection.execute("DROP INDEX IF EXISTS idx_execution_knowledge_lineage_execution")
                 connection.execute(
                     """
                     CREATE TABLE execution_knowledge_lineage (
@@ -980,9 +976,7 @@ class InterimStore:
                     "CREATE INDEX idx_execution_knowledge_lineage_execution "
                     "ON execution_knowledge_lineage(execution_id, created_at)"
                 )
-                foreign_key_violation = connection.execute(
-                    "PRAGMA foreign_key_check"
-                ).fetchone()
+                foreign_key_violation = connection.execute("PRAGMA foreign_key_check").fetchone()
                 if foreign_key_violation is not None:
                     raise sqlite3.IntegrityError(
                         "execution_knowledge_lineage migration violated a foreign key"

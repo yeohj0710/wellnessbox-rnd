@@ -18,7 +18,47 @@ def _queue(tmp_path) -> WorkflowJobQueue:
             "insert into user_profiles values (?, ?, ?, ?, ?, ?)",
             ("usr_jobs", "PROXY_GOLD_SIMULATION", "[]", "{}", "hash", "now"),
         )
+        connection.execute(
+            "insert into consent_snapshots values "
+            "('consent_jobs', 'usr_jobs', 1, 'v1', '{}', 'consent-jobs', 'now')"
+        )
     return WorkflowJobQueue(store)
+
+
+def _register_plan(queue: WorkflowJobQueue, *, execution_id: str, plan_id: str) -> None:
+    consent_id = "consent_jobs"
+    with queue.store.transaction() as connection:
+        connection.execute(
+            "insert or ignore into executions values "
+            "(?, ?, 'usr_jobs', null, ?, ?, 'COMPLETE', ?, ?)",
+            (
+                execution_id,
+                execution_id,
+                consent_id,
+                execution_id,
+                NOW.isoformat(),
+                NOW.isoformat(),
+            ),
+        )
+        payload = f'{{"plan_id":"{plan_id}"}}'
+        connection.execute(
+            """
+            insert or ignore into execution_events(
+              event_id, execution_id, consent_snapshot_id, event_index, event_type,
+              source, idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values (?, ?, ?, 0, 'recommendation', 'system', 'plan', ?, ?, ?, ?)
+            """,
+            (
+                f"event_{execution_id}",
+                execution_id,
+                consent_id,
+                payload,
+                plan_id,
+                plan_id,
+                NOW.isoformat(),
+            ),
+        )
 
 
 def _schedule(
@@ -26,14 +66,19 @@ def _schedule(
     *,
     followup_id: str = "fu_jobs_1",
     plan_id: str = "plan_jobs_1",
+    execution_id: str | None = None,
     due_at: datetime = NOW + timedelta(days=14),
+    reminder_at: datetime | None = None,
 ):
+    execution_id = execution_id or f"execution_{plan_id}"
+    _register_plan(queue, execution_id=execution_id, plan_id=plan_id)
     return queue.schedule_followup_with_reminder(
         followup_id=followup_id,
         profile_id="usr_jobs",
         plan_id=plan_id,
+        execution_id=execution_id,
         due_at=due_at,
-        reminder_at=due_at - timedelta(days=1),
+        reminder_at=reminder_at or due_at - timedelta(days=1),
         requested_data=["PRO", "ADHERENCE", "PRO"],
         now=NOW,
     )
@@ -60,6 +105,8 @@ def test_followup_schedule_is_idempotent_and_conflicts_fail(tmp_path) -> None:
     assert second["reminder_job"]["job_id"] == first["reminder_job"]["job_id"]
     with pytest.raises(ValueError, match="followup_idempotency_payload_conflict"):
         _schedule(queue, plan_id="plan_changed")
+    with pytest.raises(ValueError, match="followup_idempotency_payload_conflict"):
+        _schedule(queue, reminder_at=NOW + timedelta(days=12))
     assert queue.store.scalar("select count(*) from workflow_jobs") == 1
 
 
@@ -76,9 +123,10 @@ def test_cron_creates_one_reevaluation_job_only_when_due(tmp_path) -> None:
     assert due["jobs"][0]["job_type"] == "PLAN_REEVALUATION"
     assert retry["created_job_count"] == 0
     assert retry["deduplicated_job_count"] == 1
-    assert queue.store.scalar(
-        "select count(*) from workflow_jobs where job_type='PLAN_REEVALUATION'"
-    ) == 1
+    assert (
+        queue.store.scalar("select count(*) from workflow_jobs where job_type='PLAN_REEVALUATION'")
+        == 1
+    )
 
 
 def test_cron_orders_multiple_due_followups_and_excludes_closed(tmp_path) -> None:
@@ -106,3 +154,78 @@ def test_schedule_requires_plan_and_timezone_aware_datetimes(tmp_path) -> None:
         _schedule(queue, plan_id="")
     with pytest.raises(ValueError, match="workflow_job_datetime_must_be_timezone_aware"):
         queue.enqueue_due_plan_reevaluations(as_of=datetime(2026, 7, 21, 12, 0))
+
+
+def test_schedule_rejects_plan_not_linked_to_execution(tmp_path) -> None:
+    queue = _queue(tmp_path)
+    _register_plan(queue, execution_id="execution_known", plan_id="plan_known")
+    with pytest.raises(ValueError, match="followup_active_execution_plan_required"):
+        queue.schedule_followup_with_reminder(
+            followup_id="fu_unlinked",
+            profile_id="usr_jobs",
+            plan_id="plan_other",
+            execution_id="execution_known",
+            due_at=NOW,
+            reminder_at=NOW,
+            requested_data=["PRO"],
+            now=NOW,
+        )
+
+
+def test_claim_ack_retry_and_lease_recovery(tmp_path) -> None:
+    queue = _queue(tmp_path)
+    _schedule(queue, due_at=NOW, reminder_at=NOW)
+    first = queue.claim_ready_jobs(worker_id="one", as_of=NOW, limit=1, lease_seconds=60)[0]
+    assert queue.claim_ready_jobs(worker_id="two", as_of=NOW, limit=1) == []
+    with pytest.raises(ValueError, match="workflow_job_claim_mismatch"):
+        queue.acknowledge_job(job_id=first["job_id"], claim_token="wrong", completed_at=NOW)
+    recovered = queue.claim_ready_jobs(worker_id="two", as_of=NOW + timedelta(seconds=61), limit=1)[
+        0
+    ]
+    assert recovered["attempt_count"] == 2
+    queue.retry_job(
+        job_id=recovered["job_id"],
+        claim_token=recovered["claim_token"],
+        retry_at=NOW + timedelta(minutes=5),
+        error="temporary",
+    )
+    assert queue.claim_ready_jobs(worker_id="three", as_of=NOW + timedelta(minutes=4)) == []
+    final = queue.claim_ready_jobs(worker_id="three", as_of=NOW + timedelta(minutes=5))[0]
+    queue.acknowledge_job(
+        job_id=final["job_id"],
+        claim_token=final["claim_token"],
+        completed_at=NOW,
+    )
+    assert queue.store.scalar("select status from workflow_jobs") == "COMPLETED"
+
+
+def test_closed_or_discontinued_followup_cancels_ready_jobs(tmp_path) -> None:
+    queue = _queue(tmp_path)
+    _schedule(queue, due_at=NOW, reminder_at=NOW)
+    queue.close_followup(followup_id="fu_jobs_1", reason="USER_STOPPED")
+    assert queue.store.scalar("select status from workflow_jobs") == "CANCELLED"
+
+    _schedule(queue, followup_id="fu_discontinued", plan_id="plan_stopped", due_at=NOW)
+    with queue.store.transaction() as connection:
+        connection.execute(
+            """
+            insert into execution_events(
+              event_id, execution_id, consent_snapshot_id, event_index, event_type,
+              source, idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values (?, ?, ?, 1, 'followup_evaluation', 'survey', 'stop', ?, 'stop', 'stop', ?)
+            """,
+            (
+                "event_stop",
+                "execution_plan_stopped",
+                "consent_jobs",
+                '{"plan_id":"plan_stopped","timepoint":"discontinuation"}',
+                NOW.isoformat(),
+            ),
+        )
+    result = queue.enqueue_due_plan_reevaluations(as_of=NOW)
+    assert result["created_job_count"] == 0
+    assert (
+        queue.store.scalar("select status from followups where followup_id='fu_discontinued'")
+        == "CLOSED"
+    )

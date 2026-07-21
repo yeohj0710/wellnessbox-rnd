@@ -146,7 +146,7 @@ class OrderedWorkflowRequest(BaseModel):
 class DuePlanCronRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    as_of: datetime
+    as_of: datetime | None = None
 
 
 class DeviceRequest(BaseModel):
@@ -318,9 +318,7 @@ class PROPlanEnrollmentRequest(BaseModel):
     recommendation_request: CoreRecommendationRequest
     baseline: PROAnswersRequest
     observed_at: datetime
-    data_class: Literal["SYNTHETIC_OUTCOME_PROXY", "REAL_WORLD_OUTCOME"] = (
-        "SYNTHETIC_OUTCOME_PROXY"
-    )
+    data_class: Literal["SYNTHETIC_OUTCOME_PROXY", "REAL_WORLD_OUTCOME"] = "SYNTHETIC_OUTCOME_PROXY"
 
 
 class PROFollowUpRecordRequest(BaseModel):
@@ -566,9 +564,11 @@ def execute_ordered_workflow(payload: OrderedWorkflowRequest) -> dict[str, Any]:
 
 @router.post("/agent/cron/due-plans")
 def enqueue_due_plan_reevaluations(payload: DuePlanCronRequest) -> dict[str, object]:
+    if payload.as_of is not None and os.environ.get("WB_RND_ALLOW_CRON_AS_OF_OVERRIDE") != "1":
+        raise HTTPException(status_code=403, detail="cron_as_of_override_forbidden")
     try:
         return WorkflowJobQueue(_store()).enqueue_due_plan_reevaluations(
-            as_of=payload.as_of
+            as_of=payload.as_of or datetime.now(UTC)
         )
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
@@ -670,11 +670,7 @@ def append_behavior_event(payload: BehaviorEventRequest) -> dict[str, Any]:
 )
 def mutate_event(payload: EventMutationRequest) -> dict[str, Any]:
     try:
-        return (
-            DataMutationLedger(_store())
-            .apply(**payload.model_dump())
-            .model_dump(mode="json")
-        )
+        return DataMutationLedger(_store()).apply(**payload.model_dump()).model_dump(mode="json")
     except EventMutationNotFoundError as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
     except (IdempotencyConflictError, EventMutationStateError) as error:

@@ -18,6 +18,29 @@ def _agent(tmp_path: Path) -> BoundedAgent:
             )
             """
         )
+        connection.execute(
+            "insert into consent_snapshots values "
+            "('consent_agent', 'usr_1234567890abcdef', 1, 'v1', '{}', "
+            "'consent-agent', 'now')"
+        )
+        connection.execute(
+            "insert into executions values "
+            "('execution_agent', 'request_agent', 'usr_1234567890abcdef', null, "
+            "'consent_agent', 'request-agent', 'COMPLETE', 'now', 'now')"
+        )
+        connection.execute(
+            """
+            insert into execution_events(
+              event_id, execution_id, consent_snapshot_id, event_index, event_type,
+              source, idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values (
+              'event_agent', 'execution_agent', 'consent_agent', 0, 'recommendation',
+              'system', 'plan', '{"plan_id":"plan_agent_job"}', 'plan-agent',
+              'plan-agent', 'now'
+            )
+            """
+        )
     return BoundedAgent(store)
 
 
@@ -84,6 +107,7 @@ def test_create_followup_stores_reminder_in_shared_workflow_queue(tmp_path: Path
         tool_name="create_followup",
         arguments={
             "plan_id": "plan_agent_job",
+            "execution_id": "execution_agent",
             "followup_id": "fu_agent_job",
             "due_at": "2026-08-04T12:00:00+00:00",
             "requested_data": ["PRO", "ADHERENCE"],
