@@ -29,11 +29,13 @@ SERVICE_SOURCE_PATHS = (
     SERVICE_ROOT / "scripts/qa/run-rnd-counseling-live-smoke.cts",
     SERVICE_ROOT / "scripts/qa/check-rnd-counseling-adapter.cts",
 )
-SOURCE_PATHS = RND_SOURCE_PATHS + SERVICE_SOURCE_PATHS
-
-
-def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+def _git_blob_sha256(root: Path, path: Path) -> str:
+    relative_path = path.relative_to(root).as_posix()
+    content = subprocess.check_output(
+        ["git", "show", f"HEAD:{relative_path}"],
+        cwd=root,
+    )
+    return hashlib.sha256(content).hexdigest()
 
 
 def _git_source_commit(root: Path, paths: tuple[Path, ...]) -> str:
@@ -199,7 +201,16 @@ def main() -> int:
                 SERVICE_ROOT,
                 SERVICE_SOURCE_PATHS,
             ),
-            "files": {_source_key(path): _sha256(path) for path in SOURCE_PATHS},
+            "files": {
+                **{
+                    _source_key(path): _git_blob_sha256(RND_ROOT, path)
+                    for path in RND_SOURCE_PATHS
+                },
+                **{
+                    _source_key(path): _git_blob_sha256(SERVICE_ROOT, path)
+                    for path in SERVICE_SOURCE_PATHS
+                },
+            },
         },
         "stage_boundary": {
             "OP-087": "Local integration does not prove required OPERATED production use.",
