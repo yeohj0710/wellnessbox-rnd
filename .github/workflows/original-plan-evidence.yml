@@ -266,7 +266,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 7f248485f522fd85ca09a71a9252cf1ec8dc5896
+          ref: a27de7c0beee507114641e24a058827d46ad2ef0
           fetch-depth: 0
           path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
@@ -367,6 +367,11 @@ jobs:
           python scripts/run_product_combination_constraint_safety_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op065_op066_product_combination_filter_smoke_v1.json
+      - name: Check product-combination ranking and reproducibility evidence
+        run: >-
+          python scripts/run_product_combination_top_k_reproducibility_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op067_op068_product_combination_top_k_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
