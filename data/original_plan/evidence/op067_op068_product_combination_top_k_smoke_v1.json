@@ -1264,10 +1264,11 @@
       "replay_identity": {
         "catalog_version": "catalog_1a7aefae72413f07ca27d119ebd04cccdcf2f5e800ef5fd0b210f486da6794a6",
         "catalog_version_contract": "product_catalog_content_sha256_v1",
-        "input_sha256": "b31e0443f317822ad134d4c55f64dacacefc0ab296b4b2b6d863bf554b246eba",
+        "input_sha256": "709f6bd9adb7b584624e3f672e4f6d3cc39de6953bdcc841299a2f0afd3bc768",
         "optimization_input": {
           "constraints": {
             "excluded_ingredient_keys": [],
+            "excluded_service_ingredient_ids": [],
             "max_products": 20,
             "max_total_cost_krw": 1000000000,
             "safety_rule_ids": []
@@ -1347,7 +1348,7 @@
             }
           ]
         },
-        "result_sha256": "f54e2aa26d1241b7e908b3c2c2ae3c388f97b161172d2e4de435851adff7f09b",
+        "result_sha256": "2413b3afd3ab40f4cba41f03f1914895a3103bf0842693f244155b2bd81baf1d",
         "schema_version": "product_combination_replay_identity_v1"
       },
       "schema_version": "product_combination_ranking_evidence_v1",
@@ -1409,8 +1410,8 @@
   },
   "schema_version": "op067_op068_product_combination_top_k_smoke_v1",
   "source": {
-    "combined_sha256": "c5c9aef85c63c5ee95ecd763f17f1b90943b45dfe0ad526fec143522f44ad1ee",
-    "wellnessbox_commit": "1e5fe205f8d37ca783c895b856ea23ffd8a31a91",
+    "combined_sha256": "b78acd6e01dc75eab4dfe18622c975ba810877d6ae3321a5d7847a5452482613",
+    "wellnessbox_commit": "a27de7c0beee507114641e24a058827d46ad2ef0",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",
@@ -1424,7 +1425,7 @@
       "lib/server/wb-rnd-tips-route-test-hook.ts",
       "scripts/qa/check-rnd-product-candidates.cts"
     ],
-    "wellnessbox_rnd_commit": "0476ac5f90d120aa61edd862c726082472e21b9a",
+    "wellnessbox_rnd_commit": "dc8e145b3a62897af6238f2c9b74dd35a75f4714",
     "wellnessbox_rnd_paths": [
       "scripts/run_product_combination_top_k_reproducibility_smoke.py",
       "src/wellnessbox_rnd/optimizer/__init__.py",
