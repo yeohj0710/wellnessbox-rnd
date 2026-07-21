@@ -2,6 +2,20 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 closed-loop state and ordered execution loop
+
+- Chosen stage: `original plan / closed-loop execution`; tasks OP-071 and OP-072.
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. Canonical smoke covers success, safety block, missing evidence, forbidden direct movement, and an identical idempotent retry.
+- Primary evidence: `data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json`; SHA-256 `6bb772f0448722ce8efc6f010160f356b9789f026b76be997cd59e3cd0f607e1`; source SHA-256 `021b82bc4ff11faeb23e79b934431d4af2205a42f96070de450c94c27fca8460`; source commit `26941e94554f21766823c043b635c865257e4646`.
+- Implementation: one strict R&D contract owns states, allowed operations, and forbidden transitions. Existing agent, ledger, safety, evidence, ranking, optimization, and interim API paths enforce the complete order. SQLite claims serialize workers, changed-payload idempotency conflicts fail closed, every transition is durable, and no manual-review operation is exposed. No training or simulation behavior changed.
+- Evidence boundary: OP-071 and OP-072 prove only `IMPLEMENTED`; both remain PARTIAL below required `OPERATED`. The local plan-start record is an audit marker, not service plan activation. Service integration, deployment, production operation, and real plan execution are not proven.
+- Generated status: complete `56`, partial `15`, pending `48`, external `1`, contradicted `0`. Audit PASS with `71` claims and `208` checked evidence files.
+- Validation: focused and governance tests `63 passed`; workflow selection `505 passed`, `1 skipped`; full Ruff PASS; all `19` canonical workflow smokes PASS; independent review Critical `0`, Important `0`.
+- Full suite: `902 passed`, `77 failed`; the unchanged failures are `73` absent report artifacts and `4` CGM geometry assertions.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: R&D HEAD `61b16929ebd2647438717e450fbceb954e92c140`; Original plan evidence run `29822306554` succeeded. The service repository was not changed.
+- Recommended next loops: OP-073/074 follow-up job queue and due-plan CronJob; OP-075/076 next-job decisions and serious-AE stop; OP-077/078 fail-closed jobs and pharmacist review lifecycle.
+
 ## 2026-07-21 stock substitution and approval-gated cart integration loop
 
 - Chosen stage: `original plan / product optimization`; tasks OP-069 and OP-070.

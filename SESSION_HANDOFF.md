@@ -2,6 +2,20 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 closed-loop state and ordered execution handoff
+
+- Chosen stage and tasks: `original plan / closed-loop execution`; OP-071 and OP-072.
+- Primary dataset and cases: frozen eval `256` cases; canonical smoke has `5` cases covering success, safety block, missing evidence, direct-move rejection, and idempotent retry.
+- Primary evidence: `data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json`; SHA-256 `6bb772f0448722ce8efc6f010160f356b9789f026b76be997cd59e3cd0f607e1`; source SHA-256 `021b82bc4ff11faeb23e79b934431d4af2205a42f96070de450c94c27fca8460`.
+- Source identity: R&D `26941e94554f21766823c043b635c865257e4646`; no service source is claimed for OP-071/072.
+- Main changes: authoritative state/operation contract; strict trace models; exact safety-to-plan order; candidate/safety binding; evidence-constrained optimization; durable steps; direct-state bypass rejection; cross-worker SQLite claims; changed-payload idempotency rejection; existing interim API reuse. No service, training, data-generation, or simulation behavior changed.
+- Honest stage: OP-071 and OP-072 are PARTIAL at `IMPLEMENTED`, below required `OPERATED`. Local SQLite behavior and API contract are proven. Service integration, deployment, production operation, and actual plan activation are not.
+- Validation: focused/governance `63 passed`; workflow-equivalent `505 passed`, `1 skipped`; full Ruff PASS; `19` workflow smokes PASS; audit PASS with `71` claims and `208` evidence files; independent review Critical `0`, Important `0`.
+- Full regression: `902 passed`, `77 failed`, exactly the known `73` absent-report plus `4` CGM-geometry groups. Frozen eval has `256` cases, seven zero metric deltas, unchanged overall `safety_blocked` weakest slice, and unchanged metric-specific weakest categories.
+- Publication: R&D HEAD `61b16929ebd2647438717e450fbceb954e92c140`; Original plan evidence run `29822306554` succeeded. The service repository retained all user changes and received no loop commit.
+- Five bottlenecks: production operation evidence for OP-071; production operation evidence for OP-072; actual follow-up job queue for OP-073; due-plan CronJob for OP-074; trusted restoration of `73` absent report artifacts plus separate CGM-geometry investigation.
+- Next three loops: OP-073/074, OP-075/076, OP-077/078.
+
 ## 2026-07-21 stock substitution and approval-gated cart integration handoff
 
 - Chosen stage and tasks: `original plan / product optimization`; OP-069 and OP-070.
