@@ -33,7 +33,6 @@ TOOL_NAMES = (
     "create_followup",
     "ingest_pro",
     "ingest_wearable",
-    "log_adverse_event",
 )
 
 _TOOL_OPERATIONS: dict[str, ClosedLoopOperation] = {
@@ -46,7 +45,6 @@ _TOOL_OPERATIONS: dict[str, ClosedLoopOperation] = {
     "create_followup": ClosedLoopOperation.SCHEDULE_FOLLOWUP,
     "ingest_pro": ClosedLoopOperation.INGEST_FOLLOWUP,
     "ingest_wearable": ClosedLoopOperation.INGEST_FOLLOWUP,
-    "log_adverse_event": ClosedLoopOperation.INGEST_FOLLOWUP,
 }
 
 _DATABASE_LOCKS: dict[str, threading.RLock] = {}
@@ -240,7 +238,25 @@ class BoundedAgent:
         requested_scopes = consent_scopes or stored_scopes
         scopes = stored_scopes & requested_scopes
         safe_arguments = dict(arguments) | {"profile_id": profile_id}
-        result = self._dispatch(run_id, tool_name, safe_arguments, scopes)
+        with self.store.transaction(immediate=True) as connection:
+            claimed = connection.execute(
+                """
+                update agent_runs set status='EXECUTING'
+                where run_id=? and status='ACTIVE' and state_after=?
+                """,
+                (run_id, current_state),
+            ).rowcount
+        if claimed != 1:
+            raise ValueError("agent_run_concurrent_operation")
+        try:
+            result = self._dispatch(run_id, tool_name, safe_arguments, scopes)
+        except Exception:
+            with self.store.transaction(immediate=True) as connection:
+                connection.execute(
+                    "update agent_runs set status='ACTIVE' where run_id=? and status='EXECUTING'",
+                    (run_id,),
+                )
+            raise
         if not isinstance(result, dict) or result.get("postcondition_success") is False:
             raise RuntimeError("tool_postcondition_failed")
         with self.store.transaction() as connection:
@@ -273,10 +289,15 @@ class BoundedAgent:
                     )
                 connection.execute(
                     """
-                    update agent_runs set state_before=?, state_after=?
-                    where run_id=? and status='ACTIVE'
+                    update agent_runs set state_before=?, state_after=?, status='ACTIVE'
+                    where run_id=? and status='EXECUTING'
                     """,
                     (current_state, target, run_id),
+                )
+            else:
+                connection.execute(
+                    "update agent_runs set status='ACTIVE' where run_id=? and status='EXECUTING'",
+                    (run_id,),
                 )
         return result
 
@@ -325,6 +346,13 @@ class BoundedAgent:
                 "max_items": max_items,
             }
         )
+        existing_keys = self.store.rows(
+            "select idempotency_key from agent_runs where profile_id=? and idempotency_key like ?",
+            (profile_id, f"{profile_id}:{idempotency_key}:%"),
+        )
+        expected_key = f"{profile_id}:{idempotency_key}:{request_identity}"
+        if existing_keys and any(str(row[0]) != expected_key for row in existing_keys):
+            raise ValueError("workflow_idempotency_payload_conflict")
         run = self.create_run(
             profile_id=profile_id,
             idempotency_key=f"{idempotency_key}:{request_identity}",

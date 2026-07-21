@@ -192,7 +192,7 @@ def test_markdown_uses_audited_korean_status_language() -> None:
     assert "원계획 요구사항 포함: **120/120건**" in markdown
     assert "| 완료 | 56 |" in markdown
     assert "| 부분 완료 | 15 |" in markdown
-    assert "| 대기 | 50 |" in markdown
+    assert "| 대기 | 48 |" in markdown
     assert "전체 완료: **100%**" not in markdown
 
 

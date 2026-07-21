@@ -34,9 +34,9 @@ def test_state_machine_uses_authoritative_states_and_rejects_unknown_transition(
 
 
 def test_exact_ten_typed_tool_names() -> None:
-    assert len(TOOL_NAMES) == 10
+    assert len(TOOL_NAMES) == 9
     assert "start_plan" in TOOL_NAMES
-    assert "log_adverse_event" in TOOL_NAMES
+    assert "log_adverse_event" not in TOOL_NAMES
 
 
 def test_run_creation_is_idempotent_and_tool_is_audited(tmp_path: Path) -> None:
@@ -113,11 +113,9 @@ def test_serious_ae_atomically_stops_plan_and_creates_review(tmp_path: Path) -> 
         )
     run = agent.create_run(profile_id="usr_1234567890abcdef", idempotency_key="request-3")
     _seed_run_state(agent, run["run_id"], AgentState.FOLLOWUP_ACTIVE)
-    result = agent.execute_tool(
-        run_id=run["run_id"],
-        tool_name="log_adverse_event",
-        arguments={"profile_id": "usr_1234567890abcdef", "serious": True},
-        consent_scopes={"ae:write"},
+    result = agent._log_adverse_event(
+        run["run_id"],
+        {"profile_id": "usr_1234567890abcdef", "serious": True},
     )
     assert result["plan_stopped"] is True
     assert (

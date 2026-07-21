@@ -253,3 +253,18 @@ def test_ordered_workflow_retry_returns_same_durable_trace(tmp_path) -> None:
     assert second == first
     assert agent.store.scalar("select count(*) from agent_runs") == 1
     assert agent.store.scalar("select count(*) from agent_steps") == 7
+
+
+def test_same_idempotency_key_rejects_changed_payload(tmp_path) -> None:
+    agent = _workflow_agent(tmp_path)
+    base = {
+        "profile_id": "usr_workflow0001",
+        "idempotency_key": "payload-conflict",
+        "safety_arguments": {"age": 40},
+        "ingredients": ["magnesium"],
+        "evidence_query": "magnesium",
+        "max_items": 1,
+    }
+    agent.execute_recommendation_workflow(**base)
+    with pytest.raises(ValueError, match="workflow_idempotency_payload_conflict"):
+        agent.execute_recommendation_workflow(**(base | {"max_items": 2}))

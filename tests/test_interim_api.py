@@ -7,6 +7,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
+from wellnessbox_rnd.interim.agent import BoundedAgent
 from wellnessbox_rnd.interim.bootstrap import (
     ORIGINAL_PLAN_PAGE_26_URI,
     bootstrap_operational_evidence,
@@ -459,8 +460,11 @@ def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
             "consent_scopes": ["ae:write"],
         },
     )
-    assert event.status_code == 200
-    review_id = event.json()["review_id"]
+    assert event.status_code == 422
+    result = BoundedAgent(store)._log_adverse_event(
+        run["run_id"], {"profile_id": profile_id, "serious": True}
+    )
+    review_id = result["review_id"]
     with InterimStore(tmp_path / "api.sqlite3").transaction() as connection:
         connection.execute("update review_tasks set pharmacy_id=1 where review_id=?", (review_id,))
     queue = client.get("/v1/interim/admin/reviews?pharmacy_id=1", headers=_headers()).json()
