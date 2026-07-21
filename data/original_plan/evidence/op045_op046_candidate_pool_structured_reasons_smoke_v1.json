@@ -213,7 +213,7 @@
   },
   "schema_version": "op045_op046_candidate_pool_structured_reasons_smoke_v1",
   "source_identity": {
-    "commit": "22aca5e9d64a493562f9d17b302bead2ca02c555",
-    "source_sha256": "bc9bc5af9d2b17fc0d3fc3a55fa48c5e51fd8145bf8c2d6cad6f5302fc35f359"
+    "commit": "e09831e29f5b0f767503ade029a5a103f9086d6a",
+    "source_sha256": "38db4ff09713955502e37bf62b76fe0a797a5ec9dc4ce139340f8405ad9fb0d0"
   }
 }
