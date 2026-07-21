@@ -1512,8 +1512,44 @@
             ]
           }
         },
-        {"requirement_id": "OP-075", "title": "PRO와 기기 데이터 수신 후 다음 작업을 다시 결정한다."},
-        {"requirement_id": "OP-076", "title": "중대한 이상사례 발생 시 계획과 추가 추천을 즉시 중단한다."},
+        {
+          "requirement_id": "OP-075",
+          "title": "PRO와 기기 데이터 수신 후 다음 작업을 다시 결정한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/jobs.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/agent.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_jobs.py",
+              "wellnessbox-rnd/tests/test_interim_agent.py",
+              "wellnessbox-rnd/tests/test_pro_plan_service.py",
+              "wellnessbox-rnd/scripts/run_followup_input_serious_ae_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op075_op076_followup_input_serious_ae_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-076",
+          "title": "중대한 이상사례 발생 시 계획과 추가 추천을 즉시 중단한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/agent.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/jobs.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_agent.py",
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox-rnd/tests/test_pro_plan_service.py",
+              "wellnessbox-rnd/scripts/run_followup_input_serious_ae_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op075_op076_followup_input_serious_ae_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-077", "title": "중복 작업, 오래된 근거, timeout, 동의 누락을 fail-closed로 처리한다."},
         {"requirement_id": "OP-078", "title": "약사 검토 작업 생성과 완료 사후조건을 저장한다."},
         {"requirement_id": "OP-079", "title": "유지, 조정, 교체, 중단, 모니터링 상태 전이를 E2E로 검증한다."},

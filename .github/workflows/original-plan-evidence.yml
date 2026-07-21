@@ -47,6 +47,7 @@ on:
       - "scripts/run_pro_followup_adherence_interpretation_smoke.py"
       - "scripts/run_pro_personal_group_uncertainty_smoke.py"
       - "scripts/run_pro_correction_plan_lineage_smoke.py"
+      - "scripts/run_followup_input_serious_ae_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -123,6 +124,8 @@ on:
       - "tests/test_versioned_pro_instrument_scoring.py"
       - "tests/test_pro_followup_effects.py"
       - "tests/test_pro_plan_service.py"
+      - "tests/test_interim_agent.py"
+      - "tests/test_interim_jobs.py"
       - "tests/test_pro_group_effects.py"
   push:
     branches: [main]
@@ -171,6 +174,7 @@ on:
       - "scripts/run_pro_followup_adherence_interpretation_smoke.py"
       - "scripts/run_pro_personal_group_uncertainty_smoke.py"
       - "scripts/run_pro_correction_plan_lineage_smoke.py"
+      - "scripts/run_followup_input_serious_ae_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -247,6 +251,8 @@ on:
       - "tests/test_versioned_pro_instrument_scoring.py"
       - "tests/test_pro_followup_effects.py"
       - "tests/test_pro_plan_service.py"
+      - "tests/test_interim_agent.py"
+      - "tests/test_interim_jobs.py"
       - "tests/test_pro_group_effects.py"
   workflow_dispatch:
 
@@ -387,6 +393,11 @@ jobs:
           python scripts/run_followup_job_queue_cron_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op073_op074_followup_job_queue_cron_smoke_v1.json
+      - name: Check follow-up input decisions and serious adverse-event stop evidence
+        run: >-
+          python scripts/run_followup_input_serious_ae_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op075_op076_followup_input_serious_ae_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -427,6 +438,8 @@ jobs:
           tests/test_versioned_pro_instrument_scoring.py
           tests/test_pro_followup_effects.py
           tests/test_pro_plan_service.py
+          tests/test_interim_agent.py
+          tests/test_interim_jobs.py
           tests/test_pro_group_effects.py
           tests/test_pro_actions.py
           tests/test_optimization_constraints.py
@@ -491,6 +504,7 @@ jobs:
           scripts/run_pro_followup_adherence_interpretation_smoke.py
           scripts/run_pro_personal_group_uncertainty_smoke.py
           scripts/run_pro_correction_plan_lineage_smoke.py
+          scripts/run_followup_input_serious_ae_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py
@@ -525,6 +539,8 @@ jobs:
           tests/test_versioned_pro_instrument_scoring.py
           tests/test_pro_followup_effects.py
           tests/test_pro_plan_service.py
+          tests/test_interim_agent.py
+          tests/test_interim_jobs.py
           tests/test_pro_actions.py
           tests/test_optimization_constraints.py
           tests/test_product_combinations.py

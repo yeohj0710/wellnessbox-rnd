@@ -1,0 +1,146 @@
+{
+  "cases": {
+    "case_count": 3,
+    "device_next_job": {
+      "attempt_count": 0,
+      "execution_id": "execution_op075_op076",
+      "followup_id": "fu_input_0008dc82b73d32dfed51fd31",
+      "idempotency_key": "input-reevaluation:0008dc82b73d32dfed51fd3143a99c2e8a1100cbc77177d9ea56c132aee85001",
+      "job_type": "PLAN_REEVALUATION",
+      "last_error": null,
+      "payload": {
+        "input_id": "device_smoke_1",
+        "input_kind": "DEVICE",
+        "input_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "reason_code": "DEVICE_INPUT_RECEIVED",
+        "received_at": "2026-07-21T12:01:00+00:00",
+        "schema_version": "followup_input_reevaluation_job_payload_v1"
+      },
+      "payload_sha256": "fd95d0c16804fd24052ea19ef9aa01679db67a8ac4077bb06f2e4640547980af",
+      "plan_id": "plan_op075_op076",
+      "profile_id": "usr_1234567890abcdef",
+      "scheduled_at": "2026-07-21T12:01:00Z",
+      "schema_version": "workflow_job_v1",
+      "status": "READY"
+    },
+    "execution_stop_event": {
+      "event_type": "followup_evaluation",
+      "idempotency_key": "serious-ae:ae_op075_op076_serious",
+      "payload_json": {
+        "observed_at": "2026-07-21T12:02:00+00:00",
+        "plan_id": "plan_op075_op076",
+        "reason_code": "SERIOUS_ADVERSE_EVENT_STOP",
+        "schema_version": "serious_adverse_event_plan_stop_v1",
+        "serious_adverse_event_id": "ae_op075_op076_serious",
+        "timepoint": "discontinuation"
+      }
+    },
+    "pro_next_job": {
+      "attempt_count": 0,
+      "execution_id": "execution_op075_op076",
+      "followup_id": "fu_input_f7ae3a0645356174639a60dd",
+      "idempotency_key": "input-reevaluation:f7ae3a0645356174639a60dd8654b8b9f8d0a06027310962a9aa57a6bfc0fa6a",
+      "job_type": "PLAN_REEVALUATION",
+      "last_error": null,
+      "payload": {
+        "input_id": "pro_smoke_1",
+        "input_kind": "PRO",
+        "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "reason_code": "PRO_INPUT_RECEIVED",
+        "received_at": "2026-07-21T12:00:00+00:00",
+        "schema_version": "followup_input_reevaluation_job_payload_v1"
+      },
+      "payload_sha256": "f6d73ee914b7b0559a7eaea686f81ef2d05064c0229fa57bbc8e206f5300a2b6",
+      "plan_id": "plan_op075_op076",
+      "profile_id": "usr_1234567890abcdef",
+      "scheduled_at": "2026-07-21T12:00:00Z",
+      "schema_version": "workflow_job_v1",
+      "status": "READY"
+    },
+    "recommendation_hold_error": "serious_adverse_event_recommendation_hold",
+    "recommendation_status": "STOPPED",
+    "review_count": 1,
+    "serious_adverse_event_stop": {
+      "case_id": "ae_op075_op076_serious",
+      "deduplicated": false,
+      "plan_stopped": true,
+      "postcondition_success": true,
+      "review_id": "review_503d533c825012e234fadd52"
+    },
+    "stored_followup_statuses": [
+      "CLOSED",
+      "CLOSED"
+    ],
+    "stored_jobs_after_stop": [
+      {
+        "execution_id": "execution_op075_op076",
+        "idempotency_key": "input-reevaluation:f7ae3a0645356174639a60dd8654b8b9f8d0a06027310962a9aa57a6bfc0fa6a",
+        "job_type": "PLAN_REEVALUATION",
+        "last_error": "SERIOUS_ADVERSE_EVENT_STOP",
+        "payload": {
+          "input_id": "pro_smoke_1",
+          "input_kind": "PRO",
+          "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "reason_code": "PRO_INPUT_RECEIVED",
+          "received_at": "2026-07-21T12:00:00+00:00",
+          "schema_version": "followup_input_reevaluation_job_payload_v1"
+        },
+        "plan_id": "plan_op075_op076",
+        "scheduled_at": "2026-07-21T12:00:00+00:00",
+        "status": "CANCELLED"
+      },
+      {
+        "execution_id": "execution_op075_op076",
+        "idempotency_key": "input-reevaluation:0008dc82b73d32dfed51fd3143a99c2e8a1100cbc77177d9ea56c132aee85001",
+        "job_type": "PLAN_REEVALUATION",
+        "last_error": "SERIOUS_ADVERSE_EVENT_STOP",
+        "payload": {
+          "input_id": "device_smoke_1",
+          "input_kind": "DEVICE",
+          "input_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "reason_code": "DEVICE_INPUT_RECEIVED",
+          "received_at": "2026-07-21T12:01:00+00:00",
+          "schema_version": "followup_input_reevaluation_job_payload_v1"
+        },
+        "plan_id": "plan_op075_op076",
+        "scheduled_at": "2026-07-21T12:01:00+00:00",
+        "status": "CANCELLED"
+      }
+    ]
+  },
+  "checks": {
+    "device_receipt_decides_immediate_next_job": true,
+    "jobs_use_existing_shared_queue": true,
+    "pro_receipt_decides_immediate_next_job": true,
+    "serious_event_appends_execution_discontinuation": true,
+    "serious_event_blocks_additional_recommendations": true,
+    "serious_event_cancels_linked_work": true,
+    "serious_event_stops_current_recommendations": true,
+    "urgent_review_created_once": true
+  },
+  "evidence_boundary": {
+    "deployed_worker_operation_proven": false,
+    "op075_proven_stage": "IMPLEMENTED",
+    "op075_required_stage": "OPERATED",
+    "op076_proven_stage": "IMPLEMENTED",
+    "op076_required_stage": "OPERATED",
+    "production_deployment_proven": false,
+    "production_serious_ae_stop_proven": false,
+    "service_integration_proven": false
+  },
+  "schema_version": "op075_op076_followup_input_serious_ae_smoke_v1",
+  "source": {
+    "commit": "acfc9d64fc3d79585ff805b167fb4fcf5bc6c1c7",
+    "paths": [
+      "apps/inference_api/routes/interim.py",
+      "scripts/run_followup_input_serious_ae_smoke.py",
+      "src/wellnessbox_rnd/interim/agent.py",
+      "src/wellnessbox_rnd/interim/jobs.py",
+      "tests/test_interim_agent.py",
+      "tests/test_interim_api.py",
+      "tests/test_interim_jobs.py",
+      "tests/test_pro_plan_service.py"
+    ],
+    "sha256": "aec928500a2166991025de3afc1c039aa246ecd1b42e31a2b8742b6a1e06c264"
+  }
+}
