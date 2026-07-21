@@ -1707,8 +1707,45 @@
             ]
           }
         },
-        {"requirement_id": "OP-085", "title": "verifier가 근거 없는 주장, 위험 누락, 금지 표현을 차단한다."},
-        {"requirement_id": "OP-086", "title": "응급 위험 질문은 추천보다 안전 안내를 우선한다."},
+        {
+          "requirement_id": "OP-085",
+          "title": "verifier가 근거 없는 주장, 위험 누락, 금지 표현을 차단한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/verifier.py",
+              "wellnessbox-rnd/data/knowledge/counseling_answer_verifier_policy_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_chat_retrieval.py",
+              "wellnessbox-rnd/tests/test_chat_openai_adapter.py",
+              "wellnessbox-rnd/scripts/run_counseling_verifier_urgent_safety_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op085_op086_counseling_verifier_urgent_safety_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-086",
+          "title": "응급 위험 질문은 추천보다 안전 안내를 우선한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/verifier.py",
+              "wellnessbox-rnd/data/knowledge/counseling_answer_verifier_policy_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_chat_retrieval.py",
+              "wellnessbox-rnd/tests/test_chat_openai_adapter.py",
+              "wellnessbox-rnd/scripts/run_counseling_verifier_urgent_safety_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op085_op086_counseling_verifier_urgent_safety_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-087", "title": "상담 답변과 추천 실행을 같은 세션에 저장한다.", "required_stage": "OPERATED"},
         {"requirement_id": "OP-088", "title": "서비스 채팅이 R&D 상담 API를 호출하는 얇은 어댑터를 사용한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"},
         {"requirement_id": "OP-089", "title": "provider 장애 시 구조화된 deterministic 답변으로 복귀한다."},

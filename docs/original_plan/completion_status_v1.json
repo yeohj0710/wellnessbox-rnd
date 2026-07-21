@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "df8684776dcb382300524cd13611d23ec2fd987ee4073c54df06a42e47210a8e",
+  "audited_manifest_sha256": "cd4684f05be076cb74d68ad528c33e86a608b2cd60a231498cdd5a19fcd8cb05",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 60,
+    "COMPLETE": 62,
     "PARTIAL": 23,
-    "PENDING": 36,
+    "PENDING": 34,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -116,9 +116,9 @@
       "title": "상담과 근거 검색",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 4,
+        "COMPLETE": 6,
         "PARTIAL": 0,
-        "PENDING": 6,
+        "PENDING": 4,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -2933,14 +2933,24 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/verifier.py",
+          "wellnessbox-rnd/data/knowledge/counseling_answer_verifier_policy_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_chat_retrieval.py",
+          "wellnessbox-rnd/tests/test_chat_openai_adapter.py",
+          "wellnessbox-rnd/scripts/run_counseling_verifier_urgent_safety_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op085_op086_counseling_verifier_urgent_safety_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -2956,14 +2966,25 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/chat/verifier.py",
+          "wellnessbox-rnd/data/knowledge/counseling_answer_verifier_policy_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_chat_retrieval.py",
+          "wellnessbox-rnd/tests/test_chat_openai_adapter.py",
+          "wellnessbox-rnd/scripts/run_counseling_verifier_urgent_safety_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op085_op086_counseling_verifier_urgent_safety_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
