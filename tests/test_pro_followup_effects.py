@@ -57,6 +57,7 @@ def _request() -> RecommendationRequest:
     return RecommendationRequest.model_validate(
         {
             "request_id": "op053-op054-followup",
+            "plan_id": "plan_op053_001",
             "source_profile": {
                 "schema_version": "wellnessbox.chat.UserProfile.v1",
                 "subject_id": SUBJECT_ID,
@@ -80,6 +81,19 @@ def _request() -> RecommendationRequest:
             },
         }
     )
+
+
+def test_strict_pro_event_rejects_plan_not_bound_to_recommendation(tmp_path) -> None:
+    store, trace = _store_with_execution(tmp_path)
+
+    with pytest.raises(ValueError, match="pro_followup_plan_id_mismatch"):
+        ExecutionLedger(store).append_event(
+            execution_id=trace.execution_id,
+            event_type="followup_evaluation",
+            source="survey",
+            idempotency_key="cross-plan-baseline",
+            payload=_event_payload("pre_intake", 9, plan_id="plan_other"),
+        )
 
 
 def _psqi_score(raw_score: int):

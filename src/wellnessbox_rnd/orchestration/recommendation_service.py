@@ -166,6 +166,7 @@ def recommend(
             return RecommendationResponse(
                 execution_id=execution_id,
                 request_id=request.request_id,
+                plan_id=request.plan_id,
                 decision_id=str(uuid4()),
                 status=RecommendationStatus.BLOCKED,
                 decision_summary=DecisionSummary(
@@ -254,6 +255,7 @@ def recommend(
     return RecommendationResponse(
         execution_id=execution_id,
         request_id=request.request_id,
+        plan_id=request.plan_id,
         decision_id=str(uuid4()),
         status=status,
         decision_summary=decision_summary,

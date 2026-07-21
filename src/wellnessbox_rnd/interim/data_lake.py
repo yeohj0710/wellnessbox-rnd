@@ -424,6 +424,8 @@ class ExecutionLedger:
         request: RecommendationRequest,
         response: RecommendationResponse,
     ) -> ExecutionTrace:
+        if response.plan_id != request.plan_id:
+            raise ValueError("recommendation_plan_id_mismatch")
         execution_id = response.execution_id
         profile_id = _profile_id(request)
         request_payload = _request_payload(request)
@@ -663,6 +665,20 @@ class ExecutionLedger:
                 )
 
             if versioned_pro_event is not None:
+                recommendation_row = connection.execute(
+                    """
+                    select payload_json from execution_events
+                    where execution_id=? and event_type=?
+                    order by event_index
+                    limit 1
+                    """,
+                    (execution_id, ExecutionEventType.RECOMMENDATION.value),
+                ).fetchone()
+                if recommendation_row is None:
+                    raise ValueError("pro_followup_recommendation_event_not_found")
+                recommendation_payload = json.loads(recommendation_row["payload_json"])
+                if recommendation_payload.get("plan_id") != versioned_pro_event.plan_id:
+                    raise ValueError("pro_followup_plan_id_mismatch")
                 prior_pro_events = []
                 for row in connection.execute(
                     """
@@ -929,6 +945,7 @@ class ExecutionLedger:
                 ExecutionEventType.RECOMMENDATION,
                 {
                     "request_id": response.request_id,
+                    "plan_id": response.plan_id,
                     "decision_id": response.decision_id,
                     "status": response.status.value,
                     "next_action": response.next_action.value,
@@ -953,6 +970,7 @@ class ExecutionLedger:
             (
                 ExecutionEventType.OPTIMIZATION,
                 {
+                    "plan_id": response.plan_id,
                     "status": (
                         "blocked"
                         if response.status.value == "blocked"

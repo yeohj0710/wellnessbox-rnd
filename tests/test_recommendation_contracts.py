@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
@@ -14,6 +15,25 @@ from wellnessbox_rnd.schemas.recommendation import (
     RecommendationStatus,
 )
 from wellnessbox_rnd.schemas.recommendation_contracts import RecommendationSetContractV1
+
+
+def test_recommendation_plan_id_accepts_explicit_value_and_derives_stable_default() -> None:
+    payload = json.loads(
+        Path("data/samples/api_recommend_start_plan_request_v1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    payload["plan_id"] = "plan_user_supplied_001"
+    explicit = RecommendationRequest.model_validate(payload)
+    assert explicit.plan_id == "plan_user_supplied_001"
+    assert recommend(explicit).plan_id == explicit.plan_id
+
+    payload.pop("plan_id")
+    payload["request_id"] = "stable-plan-request"
+    first = RecommendationRequest.model_validate(payload)
+    second = RecommendationRequest.model_validate(payload)
+    assert first.plan_id == second.plan_id
+    assert re.fullmatch(r"plan_[a-f0-9]{32}", first.plan_id)
 
 
 def test_recommendation_set_contract_validates_start_plan_fixture() -> None:

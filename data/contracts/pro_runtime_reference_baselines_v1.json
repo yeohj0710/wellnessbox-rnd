@@ -1,0 +1,23 @@
+{
+  "schema_version": "pro_runtime_reference_baselines_v1",
+  "contract_version": "2026-07-21.1",
+  "data_class": "SYNTHETIC_OUTCOME_PROXY",
+  "limitation": "Synthetic reference responses support deterministic runtime standardization only. They are not clinical norms, population estimates, or observed treatment outcomes.",
+  "instruments": [
+    {
+      "instrument": "PSQI",
+      "cohort_id": "runtime-proxy-psqi-v1",
+      "item_score_sets": [[1, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2], [3, 2, 2, 3, 2, 3, 2]]
+    },
+    {
+      "instrument": "ISI",
+      "cohort_id": "runtime-proxy-isi-v1",
+      "item_score_sets": [[1, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2], [3, 3, 2, 3, 2, 3, 2]]
+    },
+    {
+      "instrument": "PSS10",
+      "cohort_id": "runtime-proxy-pss10-v1",
+      "item_score_sets": [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [3, 3, 3, 1, 1, 3, 1, 1, 3, 3]]
+    }
+  ]
+}

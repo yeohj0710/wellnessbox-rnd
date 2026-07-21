@@ -132,6 +132,34 @@ def test_profile_and_consent_snapshots_are_versioned_and_deduplicated(tmp_path) 
     assert store.scalar("select count(*) from executions") == 3
 
 
+def test_recommendation_and_optimization_events_retain_plan_id(tmp_path) -> None:
+    store = _store(tmp_path)
+    request = _request()
+    response = recommend(request)
+
+    trace = ExecutionLedger(store).record_recommendation(
+        request=request,
+        response=response,
+    )
+
+    core = {
+        event.event_type.value: event.payload
+        for event in trace.events
+        if event.event_type.value in {"recommendation", "optimization"}
+    }
+    assert core["recommendation"]["plan_id"] == request.plan_id
+    assert core["optimization"]["plan_id"] == request.plan_id
+
+
+def test_record_recommendation_rejects_response_plan_mismatch(tmp_path) -> None:
+    store = _store(tmp_path)
+    request = _request()
+    response = recommend(request).model_copy(update={"plan_id": "plan_other"})
+
+    with pytest.raises(ValueError, match="recommendation_plan_id_mismatch"):
+        ExecutionLedger(store).record_recommendation(request=request, response=response)
+
+
 def test_consent_change_versions_without_rewriting_unchanged_profile(tmp_path) -> None:
     store = _store(tmp_path)
     first = _record(store, allow_survey_storage=True)

@@ -38,7 +38,16 @@ from wellnessbox_rnd.interim.session_replay import (
 )
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.metrics.pro_correction import correct_and_recalculate_pro_followup_v1
-from wellnessbox_rnd.schemas.recommendation import DataSource
+from wellnessbox_rnd.orchestration.pro_plan_service import (
+    enroll_pro_plan_v1,
+    record_or_correct_pro_followup_v1,
+)
+from wellnessbox_rnd.schemas.recommendation import (
+    DataSource,
+)
+from wellnessbox_rnd.schemas.recommendation import (
+    RecommendationRequest as CoreRecommendationRequest,
+)
 
 
 def require_internal_token(
@@ -254,6 +263,37 @@ class PROCorrectionRequest(BaseModel):
     target_event_id: str = Field(min_length=1, max_length=128)
     idempotency_key: str = Field(min_length=1, max_length=128)
     replacement_payload: dict[str, Any]
+
+
+class PROAnswersRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    instrument: Literal["PSQI", "ISI", "PSS10"]
+    item_scores: list[int] = Field(min_length=1, max_length=10)
+
+
+class PROPlanEnrollmentRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    recommendation_request: CoreRecommendationRequest
+    baseline: PROAnswersRequest
+    observed_at: datetime
+
+
+class PROFollowUpRecordRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    execution_id: str = Field(pattern=r"^exec_[a-f0-9]{32}$")
+    profile_id: str = Field(pattern=r"^usr_[a-f0-9]{16,64}$")
+    plan_id: str = Field(min_length=3, max_length=128)
+    timepoint: Literal["week_2", "week_4", "discontinuation"]
+    answers: PROAnswersRequest
+    observed_at: datetime
+    actual_day_index: int = Field(ge=0)
+    planned_dose_count: int = Field(ge=1)
+    taken_dose_count: int = Field(ge=0)
+    adverse_events: list[dict[str, Any]] = Field(default_factory=list, max_length=20)
+    discontinuation_reason: str | None = Field(default=None, min_length=1, max_length=128)
 
 
 @router.get("/status")
@@ -572,6 +612,54 @@ def correct_pro_followup(payload: PROCorrectionRequest) -> dict[str, Any]:
             _store(),
             **payload.model_dump(),
         ).model_dump(mode="json")
+    except ExecutionNotFoundError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except IdempotencyConflictError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except (EventMutationStateError, ValueError) as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.post(
+    "/pro/plans",
+    dependencies=[Depends(require_event_mutation_token)],
+)
+def enroll_pro_plan(payload: PROPlanEnrollmentRequest) -> dict[str, Any]:
+    try:
+        return enroll_pro_plan_v1(
+            _store(),
+            recommendation_request=payload.recommendation_request,
+            instrument=payload.baseline.instrument,
+            item_scores=payload.baseline.item_scores,
+            observed_at=payload.observed_at,
+        )
+    except ConsentStorageDeniedError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
+    except (ExecutionLedgerError, ValueError) as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.post(
+    "/pro/followups",
+    dependencies=[Depends(require_event_mutation_token)],
+)
+def record_pro_followup(payload: PROFollowUpRecordRequest) -> dict[str, Any]:
+    try:
+        return record_or_correct_pro_followup_v1(
+            _store(),
+            execution_id=payload.execution_id,
+            profile_id=payload.profile_id,
+            plan_id=payload.plan_id,
+            timepoint=payload.timepoint,
+            instrument=payload.answers.instrument,
+            item_scores=payload.answers.item_scores,
+            observed_at=payload.observed_at,
+            actual_day_index=payload.actual_day_index,
+            planned_dose_count=payload.planned_dose_count,
+            taken_dose_count=payload.taken_dose_count,
+            adverse_events=payload.adverse_events,
+            discontinuation_reason=payload.discontinuation_reason,
+        )
     except ExecutionNotFoundError as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
     except IdempotencyConflictError as error:

@@ -1,5 +1,6 @@
 from datetime import UTC, datetime
 from enum import StrEnum
+from hashlib import sha256
 from typing import Annotated, Literal
 from unicodedata import normalize as normalize_unicode
 from uuid import uuid4
@@ -520,6 +521,7 @@ def _supplement_signature(value: SupplementInput) -> tuple[object, ...]:
 
 class RecommendationRequest(_StrictRequestInput):
     request_id: str = Field(default_factory=lambda: str(uuid4()))
+    plan_id: str | None = Field(default=None, min_length=1, max_length=128)
     source_profile: SourceProfileInput | None = Field(default=None, exclude=True)
     user_profile: UserProfile
     goals: list[RecommendationGoal] = Field(min_length=1)
@@ -539,6 +541,12 @@ class RecommendationRequest(_StrictRequestInput):
     )
     data_source_consents: DataSourceConsents = Field(default_factory=_legacy_data_source_consents)
     preferences: RecommendationPreferences = Field(default_factory=RecommendationPreferences)
+
+    @model_validator(mode="after")
+    def resolve_plan_id(self) -> "RecommendationRequest":
+        if self.plan_id is None:
+            self.plan_id = f"plan_{sha256(self.request_id.encode('utf-8')).hexdigest()[:32]}"
+        return self
 
     @model_validator(mode="after")
     def require_survey_recommendation_consent(self) -> "RecommendationRequest":
@@ -1405,6 +1413,7 @@ class EngineMetadata(BaseModel):
 class RecommendationResponse(BaseModel):
     execution_id: str = Field(pattern=r"^exec_[a-f0-9]{32}$")
     request_id: str
+    plan_id: str = Field(min_length=1, max_length=128)
     decision_id: str
     status: RecommendationStatus
     decision_summary: DecisionSummary
