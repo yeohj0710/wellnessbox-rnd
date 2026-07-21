@@ -106,6 +106,8 @@ def test_original_plan_audit_workflow_runs_cli_and_contract_tests() -> None:
         workflow.count('"scripts/run_pro_personal_group_uncertainty_smoke.py"')
         == 2
     )
+    assert "python scripts/run_pro_correction_plan_lineage_smoke.py" in workflow
+    assert workflow.count('"scripts/run_pro_correction_plan_lineage_smoke.py"') == 2
     assert workflow.count('"src/wellnessbox_rnd/metrics/pro_group_effects.py"') == 2
     assert workflow.count('"src/wellnessbox_rnd/metrics/statistics.py"') == 2
     assert "tests/test_pro_group_effects.py" in workflow

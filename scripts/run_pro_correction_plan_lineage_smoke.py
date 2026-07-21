@@ -21,7 +21,9 @@ from wellnessbox_rnd.metrics.pro_scoring import (
 )
 
 RND_ROOT = Path(__file__).resolve().parents[1]
-SERVICE_ROOT = Path(r"C:\dev\wellnessbox")
+SERVICE_ROOT = Path(
+    os.getenv("WELLNESSBOX_EVIDENCE_ROOT", r"C:\dev\wellnessbox")
+).resolve()
 DEFAULT_OUTPUT = (
     RND_ROOT
     / "data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"

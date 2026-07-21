@@ -46,6 +46,7 @@ on:
       - "scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py"
       - "scripts/run_pro_followup_adherence_interpretation_smoke.py"
       - "scripts/run_pro_personal_group_uncertainty_smoke.py"
+      - "scripts/run_pro_correction_plan_lineage_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -85,6 +86,7 @@ on:
       - "src/wellnessbox_rnd/metrics/pro_followup.py"
       - "src/wellnessbox_rnd/metrics/pro_group_effects.py"
       - "src/wellnessbox_rnd/metrics/statistics.py"
+      - "src/wellnessbox_rnd/metrics/pro_correction.py"
       - "tests/test_original_plan_audit*.py"
       - "tests/test_original_plan_completion_report.py"
       - "tests/test_original_plan_manifest.py"
@@ -167,6 +169,7 @@ on:
       - "scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py"
       - "scripts/run_pro_followup_adherence_interpretation_smoke.py"
       - "scripts/run_pro_personal_group_uncertainty_smoke.py"
+      - "scripts/run_pro_correction_plan_lineage_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -206,6 +209,7 @@ on:
       - "src/wellnessbox_rnd/metrics/pro_followup.py"
       - "src/wellnessbox_rnd/metrics/pro_group_effects.py"
       - "src/wellnessbox_rnd/metrics/statistics.py"
+      - "src/wellnessbox_rnd/metrics/pro_correction.py"
       - "tests/test_original_plan_audit*.py"
       - "tests/test_original_plan_completion_report.py"
       - "tests/test_original_plan_manifest.py"
@@ -260,7 +264,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: a6b8ab1e92a112f6d2e904436bfe44ba688fc4e8
+          ref: b0a7af921ddce08fb51323f4f6f10ad666f9a372
           fetch-depth: 0
           path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
@@ -336,6 +340,11 @@ jobs:
           python scripts/run_pro_personal_group_uncertainty_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op055_op056_pro_personal_group_uncertainty_smoke_v1.json
+      - name: Check PRO correction and plan-lineage integration evidence
+        run: >-
+          python scripts/run_pro_correction_plan_lineage_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -435,6 +444,7 @@ jobs:
           scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py
           scripts/run_pro_followup_adherence_interpretation_smoke.py
           scripts/run_pro_personal_group_uncertainty_smoke.py
+          scripts/run_pro_correction_plan_lineage_smoke.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
           src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py
           src/wellnessbox_rnd/evals/recommendation_replay_compare.py
@@ -457,6 +467,7 @@ jobs:
           src/wellnessbox_rnd/metrics/pro_followup.py
           src/wellnessbox_rnd/metrics/pro_group_effects.py
           src/wellnessbox_rnd/metrics/statistics.py
+          src/wellnessbox_rnd/metrics/pro_correction.py
           tests/test_pro_scoring.py
           tests/test_versioned_pro_instrument_scoring.py
           tests/test_pro_followup_effects.py
