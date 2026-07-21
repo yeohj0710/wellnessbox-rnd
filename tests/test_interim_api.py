@@ -1,5 +1,8 @@
 import hashlib
 import json
+import os
+import subprocess
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from pathlib import Path
@@ -309,6 +312,45 @@ def test_counseling_turn_serializes_concurrent_identical_retries(
     assert responses[0]["answer"] == responses[1]["answer"]
     assert responses[0]["session_binding_sha256"] == responses[1]["session_binding_sha256"]
     assert sorted(bool(item["deduplicated"]) for item in responses) == [False, True]
+
+
+def test_counseling_turn_lock_serializes_across_processes(tmp_path) -> None:
+    database = tmp_path / "counseling-cross-process.sqlite3"
+    start_file = tmp_path / "start"
+    script = """
+import json, os, sys, time
+from apps.inference_api.routes.interim import CounselingTurnRequest, _counseling_turn_lock
+payload = CounselingTurnRequest.model_validate(json.loads(sys.argv[2]))
+while not os.path.exists(sys.argv[1]): time.sleep(0.01)
+with _counseling_turn_lock(payload):
+    entered = time.time_ns()
+    time.sleep(0.35)
+    exited = time.time_ns()
+print(json.dumps({'entered': entered, 'exited': exited}))
+"""
+    payload = _counseling_payload()
+    environment = os.environ | {"WB_RND_INTERIM_DATABASE": str(database)}
+    command = [sys.executable, "-c", script, str(start_file), json.dumps(payload)]
+    processes = [
+        subprocess.Popen(
+            command,
+            cwd=Path(__file__).resolve().parents[1],
+            env=environment,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        for _ in range(2)
+    ]
+    start_file.write_text("go", encoding="utf-8")
+    results = []
+    for process in processes:
+        stdout, stderr = process.communicate(timeout=20)
+        assert process.returncode == 0, stderr
+        results.append(json.loads(stdout.strip()))
+
+    results.sort(key=lambda item: item["entered"])
+    assert results[0]["exited"] <= results[1]["entered"]
 
 
 def test_counseling_turn_rejects_changed_payload_for_existing_turn(

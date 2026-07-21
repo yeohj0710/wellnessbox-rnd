@@ -6,7 +6,10 @@ import json
 import os
 import sqlite3
 import threading
+import time
+from contextlib import contextmanager
 from datetime import UTC, datetime
+from pathlib import Path
 from typing import Annotated, Any, Literal
 from uuid import uuid4
 
@@ -29,6 +32,7 @@ from wellnessbox_rnd.interim.data_lake import (
     ExecutionLedgerError,
     ExecutionNotFoundError,
     IdempotencyConflictError,
+    data_lake_database_path,
     open_data_lake_store,
 )
 from wellnessbox_rnd.interim.data_mutation import (
@@ -96,7 +100,9 @@ router = APIRouter(
 )
 
 _COUNSELING_TURN_LOCKS_GUARD = threading.Lock()
-_COUNSELING_TURN_LOCKS: dict[tuple[str, str, str], threading.Lock] = {}
+_COUNSELING_TURN_LOCKS: dict[
+    tuple[str, str, str], tuple[threading.Lock, int]
+] = {}
 
 
 def _store() -> InterimStore:
@@ -633,10 +639,78 @@ def _counseling_live_provider_enabled() -> bool:
     }
 
 
-def _counseling_turn_lock(payload: CounselingTurnRequest) -> threading.Lock:
+def _acquire_process_lock(lock_file: Path, offset: int) -> Any:
+    lock_file.parent.mkdir(parents=True, exist_ok=True)
+    handle = lock_file.open("a+b")
+    if handle.seek(0, os.SEEK_END) <= offset:
+        handle.seek(offset)
+        handle.write(b"\0")
+        handle.flush()
+    if os.name == "nt":
+        import msvcrt
+
+        deadline = time.monotonic() + 60
+        while True:
+            try:
+                handle.seek(offset)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+                break
+            except OSError as error:
+                if time.monotonic() >= deadline:
+                    handle.close()
+                    raise TimeoutError("counseling_turn_lock_timeout") from error
+                time.sleep(0.05)
+    else:
+        import fcntl
+
+        fcntl.lockf(handle.fileno(), fcntl.LOCK_EX, 1, offset)
+    return handle
+
+
+def _release_process_lock(handle: Any, offset: int) -> None:
+    try:
+        if os.name == "nt":
+            import msvcrt
+
+            handle.seek(offset)
+            msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+
+            fcntl.lockf(handle.fileno(), fcntl.LOCK_UN, 1, offset)
+    finally:
+        handle.close()
+
+
+@contextmanager
+def _counseling_turn_lock(payload: CounselingTurnRequest) -> Any:
     key = (payload.profile_id, payload.service_session_id, payload.turn_id)
     with _COUNSELING_TURN_LOCKS_GUARD:
-        return _COUNSELING_TURN_LOCKS.setdefault(key, threading.Lock())
+        state = _COUNSELING_TURN_LOCKS.get(key)
+        if state is None:
+            local_lock = threading.Lock()
+            _COUNSELING_TURN_LOCKS[key] = (local_lock, 1)
+        else:
+            local_lock, references = state
+            _COUNSELING_TURN_LOCKS[key] = (local_lock, references + 1)
+    local_lock.acquire()
+    identity = _canonical_sha256(key)
+    offset = int(identity[:4], 16)
+    lock_file = data_lake_database_path().resolve().with_suffix(".counseling-turns.lock")
+    process_lock = None
+    try:
+        process_lock = _acquire_process_lock(lock_file, offset)
+        yield
+    finally:
+        if process_lock is not None:
+            _release_process_lock(process_lock, offset)
+        local_lock.release()
+        with _COUNSELING_TURN_LOCKS_GUARD:
+            current_lock, references = _COUNSELING_TURN_LOCKS[key]
+            if references == 1:
+                del _COUNSELING_TURN_LOCKS[key]
+            else:
+                _COUNSELING_TURN_LOCKS[key] = (current_lock, references - 1)
 
 
 def _execute_counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
