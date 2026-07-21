@@ -10,6 +10,7 @@ from uuid import uuid4
 from wellnessbox_rnd.interim.connectors import ingest_device_session
 from wellnessbox_rnd.interim.contracts import DataClass
 from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
+from wellnessbox_rnd.interim.reviews import PharmacistReviewService
 from wellnessbox_rnd.interim.safety import evaluate_safety
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.interim.workflow_contract import (
@@ -786,11 +787,7 @@ class BoundedAgent:
         if observed.tzinfo is None or observed.utcoffset() is None:
             raise ValueError("adverse_event_observed_at_timezone_required")
         observed = observed.astimezone(UTC)
-        review_id = (
-            f"review_{hashlib.sha256(case_id.encode()).hexdigest()[:24]}"
-            if serious
-            else None
-        )
+        review_id = None
         payload = _json(arguments)
         payload_sha256 = _sha(arguments)
         now = observed.isoformat()
@@ -917,23 +914,17 @@ class BoundedAgent:
                     """,
                     (execution_id, plan_id),
                 )
-                connection.execute(
-                    """
-                    insert into review_tasks(
-                      review_id, run_id, profile_id, data_class, simulation_badge,
-                      urgency, reason_codes_json, status, decision_json, created_at, completed_at
-                    )
-                    values (?, ?, ?, ?, 1, 'URGENT', ?, 'OPEN', null, ?, null)
-                    """,
-                    (
-                        review_id,
-                        run_id,
-                        profile_id,
-                        DataClass.SYNTHETIC_SAFETY_PROXY,
-                        _json(["SERIOUS_ADVERSE_EVENT", case_id]),
-                        now,
-                    ),
+                review = PharmacistReviewService.create_in_transaction(
+                    connection,
+                    profile_id=profile_id,
+                    reason_codes=["SERIOUS_ADVERSE_EVENT", case_id],
+                    created_at=observed,
+                    data_class=DataClass.SYNTHETIC_SAFETY_PROXY,
+                    simulation_badge=True,
+                    urgency="URGENT",
+                    run_id=run_id,
                 )
+                review_id = str(review["review_id"])
         return {
             "case_id": case_id,
             "plan_stopped": serious,

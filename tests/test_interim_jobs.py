@@ -22,6 +22,10 @@ def _queue(tmp_path) -> WorkflowJobQueue:
             "insert into consent_snapshots values "
             "('consent_jobs', 'usr_jobs', 1, 'v1', '{}', 'consent-jobs', 'now')"
         )
+        connection.execute(
+            "insert into active_profile_consents values "
+            "('usr_jobs', 'consent_jobs', 'now')"
+        )
     return WorkflowJobQueue(store)
 
 
@@ -172,20 +176,16 @@ def test_schedule_rejects_plan_not_linked_to_execution(tmp_path) -> None:
         )
 
 
-def test_claim_ack_retry_and_lease_recovery(tmp_path) -> None:
+def test_claim_ack_and_explicit_retry(tmp_path) -> None:
     queue = _queue(tmp_path)
     _schedule(queue, due_at=NOW, reminder_at=NOW)
     first = queue.claim_ready_jobs(worker_id="one", as_of=NOW, limit=1, lease_seconds=60)[0]
     assert queue.claim_ready_jobs(worker_id="two", as_of=NOW, limit=1) == []
     with pytest.raises(ValueError, match="workflow_job_claim_mismatch"):
         queue.acknowledge_job(job_id=first["job_id"], claim_token="wrong", completed_at=NOW)
-    recovered = queue.claim_ready_jobs(worker_id="two", as_of=NOW + timedelta(seconds=61), limit=1)[
-        0
-    ]
-    assert recovered["attempt_count"] == 2
     queue.retry_job(
-        job_id=recovered["job_id"],
-        claim_token=recovered["claim_token"],
+        job_id=first["job_id"],
+        claim_token=first["claim_token"],
         retry_at=NOW + timedelta(minutes=5),
         error="temporary",
     )
@@ -197,6 +197,77 @@ def test_claim_ack_retry_and_lease_recovery(tmp_path) -> None:
         completed_at=NOW,
     )
     assert queue.store.scalar("select status from workflow_jobs") == "COMPLETED"
+
+
+def test_expired_claim_fails_closed_and_creates_one_review(tmp_path) -> None:
+    queue = _queue(tmp_path)
+    _schedule(queue, due_at=NOW, reminder_at=NOW)
+    claimed = queue.claim_ready_jobs(
+        worker_id="one", as_of=NOW, limit=1, lease_seconds=60
+    )[0]
+
+    assert queue.claim_ready_jobs(
+        worker_id="two", as_of=NOW + timedelta(seconds=61), limit=1
+    ) == []
+    assert queue.store.scalar("select status from workflow_jobs") == "CANCELLED"
+    assert queue.store.scalar("select last_error from workflow_jobs") == (
+        "WORKFLOW_JOB_TIMEOUT"
+    )
+    assert queue.store.scalar("select status from followups") == "CLOSED"
+    assert queue.store.scalar("select count(*) from review_tasks") == 1
+    with pytest.raises(ValueError, match="workflow_job_claim_mismatch"):
+        queue.acknowledge_job(
+            job_id=claimed["job_id"],
+            claim_token=claimed["claim_token"],
+            completed_at=NOW + timedelta(seconds=62),
+        )
+
+
+def test_stale_evidence_and_consent_loss_fail_closed(tmp_path) -> None:
+    stale_queue = _queue(tmp_path / "stale")
+    _schedule(stale_queue, due_at=NOW, reminder_at=NOW)
+    with stale_queue.store.transaction() as connection:
+        connection.execute(
+            "update execution_events set effective_payload_sha256='changed'"
+        )
+    assert stale_queue.claim_ready_jobs(worker_id="one", as_of=NOW) == []
+    assert stale_queue.store.scalar("select last_error from workflow_jobs") == (
+        "STALE_EXECUTION_EVIDENCE"
+    )
+    assert stale_queue.store.scalar("select count(*) from review_tasks") == 1
+
+    consent_queue = _queue(tmp_path / "consent")
+    _schedule(consent_queue, due_at=NOW, reminder_at=NOW)
+    with consent_queue.store.transaction() as connection:
+        connection.execute(
+            "delete from active_profile_consents where profile_id='usr_jobs'"
+        )
+    assert consent_queue.claim_ready_jobs(worker_id="one", as_of=NOW) == []
+    assert consent_queue.store.scalar("select last_error from workflow_jobs") == (
+        "CONSENT_NOT_ACTIVE"
+    )
+    assert consent_queue.store.scalar("select count(*) from review_tasks") == 1
+
+
+def test_acknowledgement_rechecks_evidence_and_commits_cancellation(tmp_path) -> None:
+    queue = _queue(tmp_path)
+    _schedule(queue, due_at=NOW, reminder_at=NOW)
+    claimed = queue.claim_ready_jobs(
+        worker_id="one", as_of=NOW, limit=1, lease_seconds=300
+    )[0]
+    with queue.store.transaction() as connection:
+        connection.execute(
+            "update execution_events set effective_payload_sha256='changed-after-claim'"
+        )
+
+    with pytest.raises(ValueError, match="stale_execution_evidence"):
+        queue.acknowledge_job(
+            job_id=claimed["job_id"],
+            claim_token=claimed["claim_token"],
+            completed_at=NOW + timedelta(seconds=1),
+        )
+    assert queue.store.scalar("select status from workflow_jobs") == "CANCELLED"
+    assert queue.store.scalar("select count(*) from review_tasks") == 1
 
 
 def test_closed_or_discontinued_followup_cancels_ready_jobs(tmp_path) -> None:

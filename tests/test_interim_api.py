@@ -515,8 +515,6 @@ def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
     assert held_workflow.status_code == 422
     assert held_workflow.json()["detail"] == "serious_adverse_event_recommendation_hold"
     review_id = result["review_id"]
-    with InterimStore(tmp_path / "api.sqlite3").transaction() as connection:
-        connection.execute("update review_tasks set pharmacy_id=1 where review_id=?", (review_id,))
     queue = client.get("/v1/interim/admin/reviews?pharmacy_id=1", headers=_headers()).json()
     assert queue["items"][0]["simulation_badge"] == 1
     first = client.post(
@@ -530,6 +528,9 @@ def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
         json={"decision": "changed", "pharmacy_id": 1},
     )
     assert first.status_code == 200
+    assert first.json()["postconditions"]["serious_hold_active"] is True
+    assert first.json()["postconditions"]["plan_stop_recorded"] is True
+    assert len(first.json()["completion_postcondition_sha256"]) == 64
     assert second.status_code == 409
 
 

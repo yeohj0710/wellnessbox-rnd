@@ -9,6 +9,7 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from wellnessbox_rnd.interim.reviews import PharmacistReviewService
 from wellnessbox_rnd.interim.store import InterimStore
 
 
@@ -82,7 +83,7 @@ class WorkflowJobQueue:
             raise ValueError("followup_plan_id_required")
         if reminder > due:
             raise ValueError("followup_reminder_after_due")
-        payload = {
+        payload: dict[str, object] = {
             "schema_version": "followup_reminder_job_payload_v1",
             "requested_data": sorted(set(requested_data)),
             "due_at": due.isoformat(),
@@ -95,6 +96,11 @@ class WorkflowJobQueue:
                 execution_id=execution_id,
                 profile_id=profile_id,
                 plan_id=plan_id,
+            )
+            payload.update(
+                self._execution_guard_payload(
+                    connection, execution_id=execution_id, profile_id=profile_id
+                )
             )
             self._ensure_user_profile_projection(connection, profile_id=profile_id)
             existing_followup = connection.execute(
@@ -226,6 +232,13 @@ class WorkflowJobQueue:
                     "due_at": str(row["due_at"]),
                     "requested_data": json.loads(row["requested_data_json"]),
                 }
+                payload.update(
+                    self._execution_guard_payload(
+                        connection,
+                        execution_id=str(row["execution_id"]),
+                        profile_id=str(row["profile_id"]),
+                    )
+                )
                 job, deduplicated = self._enqueue_in_transaction(
                     connection,
                     job_type=WorkflowJobType.PLAN_REEVALUATION,
@@ -285,7 +298,7 @@ class WorkflowJobQueue:
         )
         followup_id = f"fu_input_{identity[:24]}"
         idempotency_key = f"input-reevaluation:{identity}"
-        payload = {
+        payload: dict[str, object] = {
             "schema_version": "followup_input_reevaluation_job_payload_v1",
             "input_kind": kind,
             "input_id": input_id,
@@ -299,6 +312,11 @@ class WorkflowJobQueue:
                 execution_id=execution_id,
                 profile_id=profile_id,
                 plan_id=plan_id,
+            )
+            payload.update(
+                self._execution_guard_payload(
+                    connection, execution_id=execution_id, profile_id=profile_id
+                )
             )
             self._ensure_user_profile_projection(connection, profile_id=profile_id)
             existing_followup = connection.execute(
@@ -367,15 +385,20 @@ class WorkflowJobQueue:
             raise ValueError("workflow_job_claim_bounds_invalid")
         claimed: list[WorkflowJobV1] = []
         with self.store.transaction(immediate=True) as connection:
-            connection.execute(
+            expired = connection.execute(
                 """
-                update workflow_jobs
-                set status='READY', claimed_at=null, lease_until=null, claim_token=null,
-                    last_error='LEASE_EXPIRED'
+                select * from workflow_jobs
                 where status='CLAIMED' and lease_until <= ?
                 """,
                 (cutoff.isoformat(),),
-            )
+            ).fetchall()
+            for row in expired:
+                self._fail_closed_job_in_transaction(
+                    connection,
+                    row=row,
+                    reason="WORKFLOW_JOB_TIMEOUT",
+                    occurred_at=cutoff,
+                )
             rows = connection.execute(
                 """
                 select j.* from workflow_jobs j
@@ -399,6 +422,15 @@ class WorkflowJobQueue:
                         reason="PLAN_INACTIVE_AT_CLAIM",
                     )
                     continue
+                guard_failure = self._job_guard_failure_reason(connection, row=row)
+                if guard_failure is not None:
+                    self._fail_closed_job_in_transaction(
+                        connection,
+                        row=row,
+                        reason=guard_failure,
+                        occurred_at=cutoff,
+                    )
+                    continue
                 token = f"claim_{worker_id}_{uuid4().hex}"
                 lease_until = cutoff + timedelta(seconds=lease_seconds)
                 connection.execute(
@@ -418,17 +450,148 @@ class WorkflowJobQueue:
 
     def acknowledge_job(self, *, job_id: str, claim_token: str, completed_at: datetime) -> None:
         completed = _utc(completed_at)
+        failure_error: str | None = None
         with self.store.transaction(immediate=True) as connection:
-            updated = connection.execute(
+            row = connection.execute(
                 """
-                update workflow_jobs
-                set status='COMPLETED', completed_at=?, lease_until=null, claim_token=null
+                select * from workflow_jobs
                 where job_id=? and status='CLAIMED' and claim_token=?
                 """,
-                (completed.isoformat(), job_id, claim_token),
-            ).rowcount
-            if updated != 1:
+                (job_id, claim_token),
+            ).fetchone()
+            if row is None:
                 raise ValueError("workflow_job_claim_mismatch")
+            if datetime.fromisoformat(str(row["lease_until"])) <= completed:
+                self._fail_closed_job_in_transaction(
+                    connection,
+                    row=row,
+                    reason="WORKFLOW_JOB_TIMEOUT",
+                    occurred_at=completed,
+                )
+                failure_error = "workflow_job_timeout"
+            guard_failure = (
+                None
+                if failure_error is not None
+                else self._job_guard_failure_reason(connection, row=row)
+            )
+            if guard_failure is not None and failure_error is None:
+                self._fail_closed_job_in_transaction(
+                    connection,
+                    row=row,
+                    reason=guard_failure,
+                    occurred_at=completed,
+                )
+                failure_error = guard_failure.lower()
+            if failure_error is None:
+                updated = connection.execute(
+                    """
+                    update workflow_jobs
+                    set status='COMPLETED', completed_at=?, lease_until=null, claim_token=null
+                    where job_id=? and status='CLAIMED' and claim_token=?
+                    """,
+                    (completed.isoformat(), job_id, claim_token),
+                ).rowcount
+                if updated != 1:
+                    raise ValueError("workflow_job_claim_mismatch")
+        if failure_error is not None:
+            raise ValueError(failure_error)
+
+    @staticmethod
+    def _execution_guard_payload(
+        connection, *, execution_id: str, profile_id: str
+    ) -> dict[str, str]:
+        execution = connection.execute(
+            """
+            select profile_id, consent_snapshot_id from executions where execution_id=?
+            """,
+            (execution_id,),
+        ).fetchone()
+        if execution is None or str(execution["profile_id"]) != profile_id:
+            raise ValueError("followup_execution_identity_required")
+        events = connection.execute(
+            """
+            select event_id, effective_payload_sha256 from execution_events
+            where execution_id=? and payload_state='ACTIVE' order by event_index
+            """,
+            (execution_id,),
+        ).fetchall()
+        evidence_identity = [
+            {
+                "event_id": str(row["event_id"]),
+                "effective_payload_sha256": str(row["effective_payload_sha256"]),
+            }
+            for row in events
+        ]
+        return {
+            "consent_snapshot_id": str(execution["consent_snapshot_id"]),
+            "execution_evidence_sha256": _sha(evidence_identity),
+        }
+
+    @classmethod
+    def _job_guard_failure_reason(cls, connection, *, row) -> str | None:
+        payload = json.loads(str(row["payload_json"]))
+        active_consent = connection.execute(
+            """
+            select consent_snapshot_id from active_profile_consents where profile_id=?
+            """,
+            (row["profile_id"],),
+        ).fetchone()
+        if active_consent is None or str(active_consent["consent_snapshot_id"]) != str(
+            payload.get("consent_snapshot_id", "")
+        ):
+            return "CONSENT_NOT_ACTIVE"
+        current = cls._execution_guard_payload(
+            connection,
+            execution_id=str(row["execution_id"]),
+            profile_id=str(row["profile_id"]),
+        )
+        if current["execution_evidence_sha256"] != payload.get(
+            "execution_evidence_sha256"
+        ):
+            return "STALE_EXECUTION_EVIDENCE"
+        return None
+
+    @staticmethod
+    def _fail_closed_job_in_transaction(
+        connection, *, row, reason: str, occurred_at: datetime
+    ) -> None:
+        changed = connection.execute(
+            """
+            update workflow_jobs
+            set status='CANCELLED', claimed_at=null, lease_until=null, claim_token=null,
+                last_error=?
+            where job_id=? and status in ('READY', 'CLAIMED')
+            """,
+            (reason, row["job_id"]),
+        ).rowcount
+        if changed != 1:
+            return
+        connection.execute(
+            """
+            update followups set status='CLOSED'
+            where followup_id=? and status in ('OPEN', 'REEVALUATION_QUEUED')
+            """,
+            (row["followup_id"],),
+        )
+        connection.execute(
+            """
+            update workflow_jobs
+            set status='CANCELLED', claimed_at=null, lease_until=null, claim_token=null,
+                last_error=?
+            where followup_id=? and status in ('READY', 'CLAIMED')
+            """,
+            (f"RELATED_JOB_FAIL_CLOSED:{reason}"[:500], row["followup_id"]),
+        )
+        PharmacistReviewService.create_in_transaction(
+            connection,
+            profile_id=str(row["profile_id"]),
+            reason_codes=["WORKFLOW_JOB_FAIL_CLOSED", reason],
+            created_at=occurred_at,
+            data_class="INTERIM_RUNTIME_EVENT",
+            simulation_badge=True,
+            urgency="HIGH",
+            source_job_id=str(row["job_id"]),
+        )
 
     def retry_job(
         self,

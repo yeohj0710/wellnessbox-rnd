@@ -31,6 +31,10 @@ from wellnessbox_rnd.interim.data_mutation import (
 from wellnessbox_rnd.interim.inference import recommend_with_registered_model
 from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
+from wellnessbox_rnd.interim.reviews import (
+    PharmacistReviewDecisionV1,
+    PharmacistReviewService,
+)
 from wellnessbox_rnd.interim.safety import SafetyDecision, SafetyRank, evaluate_safety
 from wellnessbox_rnd.interim.session_replay import (
     SessionReplayIntegrityError,
@@ -899,33 +903,39 @@ def admin_sources() -> dict[str, Any]:
 @router.get("/admin/reviews")
 def review_queue(
     status_filter: Annotated[str, Query(alias="status")] = "OPEN",
-    pharmacy_id: Annotated[int, Query(ge=1)] = 1,
+    pharmacy_id: Annotated[int | None, Query(ge=1)] = None,
 ) -> dict[str, Any]:
-    rows = _store().rows(
-        "select * from review_tasks where status=? and pharmacy_id=? order by created_at",
-        (status_filter, pharmacy_id),
-    )
+    if pharmacy_id is None:
+        rows = _store().rows(
+            """
+            select * from review_tasks
+            where status=? and pharmacy_id is null order by created_at
+            """,
+            (status_filter,),
+        )
+    else:
+        rows = _store().rows(
+            """
+            select * from review_tasks
+            where status=? and (pharmacy_id=? or pharmacy_id is null) order by created_at
+            """,
+            (status_filter, pharmacy_id),
+        )
     return {"mode": DataClass.PROXY_GOLD_SIMULATION, "items": [dict(row) for row in rows]}
 
 
 @router.post("/admin/reviews/{review_id}/decision")
-def decide_review(review_id: str, decision: dict[str, Any]) -> dict[str, Any]:
-    pharmacy_id = decision.pop("pharmacy_id", None)
-    if not isinstance(pharmacy_id, int) or pharmacy_id < 1:
-        raise HTTPException(status_code=422, detail="pharmacy_id_required")
-    with _store().transaction() as connection:
-        changed = connection.execute(
-            """
-            update review_tasks set status='COMPLETED', decision_json=?, completed_at=?
-            where review_id=? and pharmacy_id=? and status='OPEN'
-            """,
-            (
-                json.dumps(decision, ensure_ascii=False),
-                datetime.now(UTC).isoformat(),
-                review_id,
-                pharmacy_id,
-            ),
-        ).rowcount
-    if changed != 1:
-        raise HTTPException(status_code=409, detail="review_already_decided_or_missing")
-    return {"review_id": review_id, "status": "COMPLETED", "immutable": True}
+def decide_review(
+    review_id: str, decision: PharmacistReviewDecisionV1
+) -> dict[str, Any]:
+    try:
+        return PharmacistReviewService(_store()).complete_review(
+            review_id=review_id,
+            decision=decision,
+            completed_at=datetime.now(UTC),
+        )
+    except PermissionError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
+    except ValueError as error:
+        status_code = 404 if str(error) == "review_missing" else 409
+        raise HTTPException(status_code=status_code, detail=str(error)) from error

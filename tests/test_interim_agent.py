@@ -27,6 +27,10 @@ def _agent(tmp_path: Path) -> BoundedAgent:
             "'consent-agent', 'now')"
         )
         connection.execute(
+            "insert into active_profile_consents values "
+            "('usr_1234567890abcdef', 'consent_agent', 'now')"
+        )
+        connection.execute(
             "insert into executions values "
             "('execution_agent', 'request_agent', 'usr_1234567890abcdef', null, "
             "'consent_agent', 'request-agent', 'COMPLETE', 'now', 'now')"

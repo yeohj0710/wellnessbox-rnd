@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 10
+SCHEMA_VERSION = 11
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -511,7 +511,10 @@ CREATE TABLE IF NOT EXISTS review_tasks (
   decision_json TEXT,
   created_at TEXT NOT NULL,
   completed_at TEXT,
-  pharmacy_id INTEGER
+  pharmacy_id INTEGER,
+  source_job_id TEXT REFERENCES workflow_jobs(job_id),
+  completion_postcondition_json TEXT,
+  completion_postcondition_sha256 TEXT
 );
 
 CREATE TABLE IF NOT EXISTS kpi_results (
@@ -594,6 +597,16 @@ class InterimStore:
             columns = {str(row[1]) for row in connection.execute("pragma table_info(review_tasks)")}
             if "pharmacy_id" not in columns:
                 connection.execute("alter table review_tasks add column pharmacy_id integer")
+            review_column_migrations = {
+                "source_job_id": "text references workflow_jobs(job_id)",
+                "completion_postcondition_json": "text",
+                "completion_postcondition_sha256": "text",
+            }
+            for column_name, column_type in review_column_migrations.items():
+                if column_name not in columns:
+                    connection.execute(
+                        f"alter table review_tasks add column {column_name} {column_type}"
+                    )
             followup_columns = {
                 str(row[1]) for row in connection.execute("pragma table_info(followups)")
             }
