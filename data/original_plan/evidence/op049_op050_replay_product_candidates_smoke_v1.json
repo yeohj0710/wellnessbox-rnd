@@ -8546,9 +8546,9 @@
     "schema_version": "op050_service_product_candidate_contract_v1"
   },
   "source_identity": {
-    "wellnessbox_commit": "a6b8ab1e92a112f6d2e904436bfe44ba688fc4e8",
+    "wellnessbox_commit": "b0a7af921ddce08fb51323f4f6f10ad666f9a372",
     "wellnessbox_rnd_commit": "584c6c7ca3d053c9ae3430b214eae23f35009b15",
     "wellnessbox_rnd_source_sha256": "5f67f1bb59922869f6607456f639c80a6c7727357a14b3a3e407dc711061c727",
-    "wellnessbox_source_sha256": "7881185ab661f4853e739cc6a6e8181b1c295e1623f7b816b1ffdbc2a5e9d0a9"
+    "wellnessbox_source_sha256": "88e1860535f23be1c8692e5bc176e0b379fddb1141464a0043453dbe46243a25"
   }
 }
