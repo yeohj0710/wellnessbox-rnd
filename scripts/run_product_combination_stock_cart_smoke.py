@@ -159,6 +159,8 @@ def run_smoke() -> dict[str, object]:
         }
     )
     context = ProductCombinationInventoryContextV1.model_validate(observed["inventory_context"])
+    side_effect_source_scan_passed = observed["preapproval_side_effect_source_scan_passed"]
+    assert side_effect_source_scan_passed is True
     return {
         "schema_version": "op069_op070_product_combination_stock_cart_smoke_v1",
         "source": {
@@ -186,6 +188,17 @@ def run_smoke() -> dict[str, object]:
             "approval_required": evidence.cart_candidate.approval_required,
             "cart_storage_written": evidence.cart_candidate.cart_storage_written,
             "order_created": evidence.cart_candidate.order_created,
+            "optimization_input_unchanged": evidence.substitution.optimization_input_unchanged,
+            "active_safety_rule_count": len(
+                context.previous_safety_constraints.safety_rule_ids
+            ),
+            "active_safety_exclusion_count": len(
+                context.previous_safety_constraints.excluded_ingredient_keys
+            ),
+            "preapproval_side_effect_source_scan_passed": side_effect_source_scan_passed,
+            "preapproval_side_effect_forbidden_symbols": observed[
+                "preapproval_side_effect_forbidden_symbols"
+            ],
             "previous_context_combination_id": context.previous_combination_id,
         },
         "evidence_boundary": {
@@ -195,10 +208,16 @@ def run_smoke() -> dict[str, object]:
             "op070_required_stage": "INTEGRATED",
             "service_route_function_integration_proven": True,
             "actual_prisma_query_executed": False,
-            "cart_storage_mutated": False,
+            "cart_storage_mutation_code_absent_from_route_and_adapter": (
+                side_effect_source_scan_passed
+            ),
             "user_approval_obtained": False,
-            "order_or_order_item_created": False,
-            "payment_created": False,
+            "order_or_order_item_mutation_code_absent_from_route_and_adapter": (
+                side_effect_source_scan_passed
+            ),
+            "payment_mutation_code_absent_from_route_and_adapter": (
+                side_effect_source_scan_passed
+            ),
             "production_deployment_proven": False,
             "production_operation_proven": False,
         },

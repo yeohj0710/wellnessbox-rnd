@@ -407,12 +407,21 @@ class ProductCombinationInventorySelectionV1(BaseModel):
     pharmacy_product_id: StrictInt = Field(ge=1)
 
 
+class ProductCombinationSafetyConstraintsV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    excluded_ingredient_keys: tuple[str, ...]
+    safety_rule_ids: tuple[str, ...]
+
+
 class ProductCombinationInventoryContextV1(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     schema_version: Literal["product_combination_inventory_context_v1"]
     previous_catalog_version: str = Field(pattern=r"^catalog_[a-f0-9]{64}$")
     previous_combination_id: str = Field(pattern=r"^combo_[a-f0-9]{16}$")
+    previous_replay_identity: ProductCombinationReplayIdentityV1
+    previous_safety_constraints: ProductCombinationSafetyConstraintsV1
     previous_selections: tuple[ProductCombinationInventorySelectionV1, ...] = Field(min_length=1)
 
     @model_validator(mode="after")
@@ -433,6 +442,20 @@ class ProductCombinationInventoryContextV1(BaseModel):
         expected = f"combo_{_canonical_sha256(identity_payload)[:16]}"
         if self.previous_combination_id != expected:
             raise ValueError("inventory combination identity does not match selections")
+        if self.previous_replay_identity.catalog_version != self.previous_catalog_version:
+            raise ValueError("inventory context replay does not match previous catalog")
+        expected_input_sha256 = _canonical_sha256(
+            self.previous_replay_identity.optimization_input.model_dump(mode="json")
+        )
+        if self.previous_replay_identity.input_sha256 != expected_input_sha256:
+            raise ValueError("inventory context replay input identity is invalid")
+        constraints = self.previous_replay_identity.optimization_input.constraints
+        if (
+            self.previous_safety_constraints.excluded_ingredient_keys
+            != constraints.excluded_ingredient_keys
+            or self.previous_safety_constraints.safety_rule_ids != constraints.safety_rule_ids
+        ):
+            raise ValueError("inventory safety constraints do not match replay input")
         return self
 
 
@@ -447,6 +470,8 @@ class ProductCombinationStockSubstitutionV1(BaseModel):
         "UNAVAILABLE",
         "SEARCH_TRUNCATED",
         "CATALOG_CHANGED",
+        "SAFETY_POLICY_CHANGED",
+        "OPTIMIZATION_INPUT_CHANGED",
     ]
     previous_catalog_version: str | None
     current_catalog_version: str = Field(pattern=r"^catalog_[a-f0-9]{64}$")
@@ -454,6 +479,7 @@ class ProductCombinationStockSubstitutionV1(BaseModel):
     current_combination_id: str | None
     missing_pharmacy_product_ids: tuple[StrictInt, ...]
     safety_constraints_preserved: bool | None
+    optimization_input_unchanged: bool | None
 
 
 class ProductCombinationCartItemV1(BaseModel):
@@ -471,7 +497,14 @@ class ProductCombinationCartCandidateV1(BaseModel):
     schema_version: Literal["product_combination_cart_candidate_v1"]
     status: Literal["READY", "UNAVAILABLE"]
     unavailable_reason: (
-        Literal["SEARCH_TRUNCATED", "NO_ELIGIBLE_COMBINATION", "OPTION_TYPE_MISSING"] | None
+        Literal[
+            "SEARCH_TRUNCATED",
+            "NO_ELIGIBLE_COMBINATION",
+            "OPTION_TYPE_MISSING",
+            "SAFETY_CONSTRAINTS_CHANGED",
+            "OPTIMIZATION_INPUT_CHANGED",
+        ]
+        | None
     )
     source_combination_id: str | None
     items: tuple[ProductCombinationCartItemV1, ...]
@@ -494,18 +527,28 @@ class ProductCombinationStockCartEvidenceV1(BaseModel):
 
     @model_validator(mode="after")
     def validate_stock_cart_evidence(self) -> ProductCombinationStockCartEvidenceV1:
+        if not self.previous_ranking.top_k or not self.current_ranking.top_k:
+            raise ValueError("stock substitution evidence requires previous and current top-k")
         previous_top = self.previous_ranking.top_k[0]
         current_top = self.current_ranking.top_k[0]
         previous_combination = next(
-            item
-            for item in self.previous_ranking.combinations
-            if item.combination_id == previous_top.combination_id
+            (
+                item
+                for item in self.previous_ranking.combinations
+                if item.combination_id == previous_top.combination_id
+            ),
+            None,
         )
         current_combination = next(
-            item
-            for item in self.current_ranking.combinations
-            if item.combination_id == current_top.combination_id
+            (
+                item
+                for item in self.current_ranking.combinations
+                if item.combination_id == current_top.combination_id
+            ),
+            None,
         )
+        if previous_combination is None or current_combination is None:
+            raise ValueError("stock substitution top-k must reference ranked combinations")
         expected_selections = tuple(
             ProductCombinationInventorySelectionV1(
                 product_id=item.product_id,
@@ -518,8 +561,20 @@ class ProductCombinationStockCartEvidenceV1(BaseModel):
         if (
             self.inventory_context.previous_catalog_version
             != self.previous_ranking.replay_identity.catalog_version
+            or self.inventory_context.previous_replay_identity
+            != self.previous_ranking.replay_identity
         ):
             raise ValueError("inventory context does not match previous catalog")
+        previous_constraints = self.previous_ranking.replay_identity.optimization_input.constraints
+        current_constraints = self.current_ranking.replay_identity.optimization_input.constraints
+        if (
+            self.previous_ranking.replay_identity.optimization_input
+            != self.current_ranking.replay_identity.optimization_input
+            or previous_constraints.excluded_ingredient_keys
+            != current_constraints.excluded_ingredient_keys
+            or previous_constraints.safety_rule_ids != current_constraints.safety_rule_ids
+        ):
+            raise ValueError("stock substitution may only change catalog inventory")
         current_offer_ids = {
             offer.pharmacy_product_id
             for product in self.current_ranking.catalog_identity
@@ -544,6 +599,7 @@ class ProductCombinationStockCartEvidenceV1(BaseModel):
             or substitution.missing_pharmacy_product_ids != expected_missing
             or not expected_missing
             or substitution.safety_constraints_preserved is not True
+            or substitution.optimization_input_unchanged is not True
         ):
             raise ValueError("stock substitution does not match ranked catalog evidence")
         expected_items = tuple(

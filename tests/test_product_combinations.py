@@ -481,12 +481,30 @@ def test_combination_ranking_rejects_policy_outside_hashed_input() -> None:
 
 
 def test_inventory_context_rejects_forged_combination_identity() -> None:
+    optimization_input, catalog_identity = _ranking_provenance()
+    combination = ProductCombinationV1.model_validate(_combination_payload())
+    replay = evaluate_product_combination_ranking_v1(
+        (combination,),
+        ProductCombinationFilterPolicyV1(
+            schema_version="product_optimization_constraints_v1",
+            max_total_cost_krw=35_000,
+            max_products=2,
+        ),
+        max_ranked_combinations=1,
+        optimization_input=optimization_input,
+        catalog_identity=catalog_identity,
+    ).replay_identity
     with pytest.raises(ValidationError, match="identity does not match"):
         ProductCombinationInventoryContextV1.model_validate(
             {
                 "schema_version": "product_combination_inventory_context_v1",
-                "previous_catalog_version": f"catalog_{'1' * 64}",
+                "previous_catalog_version": replay.catalog_version,
                 "previous_combination_id": f"combo_{'2' * 16}",
+                "previous_replay_identity": replay.model_dump(mode="json"),
+                "previous_safety_constraints": {
+                    "excluded_ingredient_keys": [],
+                    "safety_rule_ids": [],
+                },
                 "previous_selections": [{"product_id": 1, "pharmacy_product_id": 10}],
             }
         )
