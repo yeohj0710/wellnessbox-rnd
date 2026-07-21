@@ -175,7 +175,9 @@ def main() -> int:
         )
     )
     report_path = report_path if report_path.is_absolute() else RND_ROOT / report_path
-    with tempfile.TemporaryDirectory(dir=RND_ROOT / "etc") as directory:
+    temporary_root = RND_ROOT / "etc"
+    temporary_root.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=temporary_root) as directory:
         first = _one_run(Path(directory) / "first.sqlite3")
         second = _one_run(Path(directory) / "second.sqlite3")
     deterministic = first == second
