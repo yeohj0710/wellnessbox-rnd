@@ -1445,8 +1445,38 @@
       "owners": ["wellnessbox-rnd", "wellnessbox"],
       "default_required_stage": "OPERATED",
       "requirements": [
-        {"requirement_id": "OP-071", "title": "상태, 허용 작업, 금지 전이를 단일 R&D 계약으로 통합한다."},
-        {"requirement_id": "OP-072", "title": "안전검사, 후보 생성, 근거 조회, 최적화, 계획 시작 순서를 강제한다."},
+        {
+          "requirement_id": "OP-071",
+          "title": "상태, 허용 작업, 금지 전이를 단일 R&D 계약으로 통합한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/workflow_contract.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/agent.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_workflow_contract.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-072",
+          "title": "안전검사, 후보 생성, 근거 조회, 최적화, 계획 시작 순서를 강제한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/agent.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_workflow_contract.py",
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox-rnd/scripts/run_closed_loop_state_order_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-073", "title": "후속 일정과 알림 예약을 실제 업무 큐에 저장한다."},
         {"requirement_id": "OP-074", "title": "CronJob이 만기 계획을 찾아 재평가 작업을 생성한다."},
         {"requirement_id": "OP-075", "title": "PRO와 기기 데이터 수신 후 다음 작업을 다시 결정한다."},

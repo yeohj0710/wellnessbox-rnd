@@ -377,6 +377,11 @@ jobs:
           python scripts/run_product_combination_stock_cart_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op069_op070_product_combination_stock_cart_smoke_v1.json
+      - name: Check closed-loop state and ordered execution evidence
+        run: >-
+          python scripts/run_closed_loop_state_order_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest

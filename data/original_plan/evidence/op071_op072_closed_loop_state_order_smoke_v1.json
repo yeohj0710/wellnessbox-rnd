@@ -1,0 +1,262 @@
+{
+  "cases": {
+    "direct_move_error": "direct_agent_move_forbidden",
+    "missing_evidence": {
+      "plan_start_recorded": false,
+      "schema_version": "closed_loop_ordered_execution_trace_v1",
+      "status": "STOPPED",
+      "steps": [
+        {
+          "operation": "load_profile",
+          "state_after": "CONSENT_CHECK",
+          "state_before": "INTAKE"
+        },
+        {
+          "operation": "verify_consent",
+          "state_after": "PROFILE_READY",
+          "state_before": "CONSENT_CHECK"
+        },
+        {
+          "operation": "check_safety",
+          "state_after": "SAFETY_CHECK",
+          "state_before": "PROFILE_READY"
+        },
+        {
+          "operation": "generate_candidates",
+          "state_after": "RANKING",
+          "state_before": "SAFETY_CHECK"
+        },
+        {
+          "operation": "lookup_evidence",
+          "state_after": "EVIDENCE_RETRIEVAL",
+          "state_before": "RANKING"
+        },
+        {
+          "operation": "stop",
+          "state_after": "STOPPED",
+          "state_before": "EVIDENCE_RETRIEVAL"
+        }
+      ]
+    },
+    "retry_byte_equivalent_after_run_id_normalization": true,
+    "safety_block": {
+      "plan_start_recorded": false,
+      "schema_version": "closed_loop_ordered_execution_trace_v1",
+      "status": "STOPPED",
+      "steps": [
+        {
+          "operation": "load_profile",
+          "state_after": "CONSENT_CHECK",
+          "state_before": "INTAKE"
+        },
+        {
+          "operation": "verify_consent",
+          "state_after": "PROFILE_READY",
+          "state_before": "CONSENT_CHECK"
+        },
+        {
+          "operation": "check_safety",
+          "state_after": "SAFETY_CHECK",
+          "state_before": "PROFILE_READY"
+        },
+        {
+          "operation": "stop",
+          "state_after": "STOPPED",
+          "state_before": "SAFETY_CHECK"
+        }
+      ]
+    },
+    "success": {
+      "plan_start_recorded": true,
+      "schema_version": "closed_loop_ordered_execution_trace_v1",
+      "status": "PLAN_READY",
+      "steps": [
+        {
+          "operation": "load_profile",
+          "state_after": "CONSENT_CHECK",
+          "state_before": "INTAKE"
+        },
+        {
+          "operation": "verify_consent",
+          "state_after": "PROFILE_READY",
+          "state_before": "CONSENT_CHECK"
+        },
+        {
+          "operation": "check_safety",
+          "state_after": "SAFETY_CHECK",
+          "state_before": "PROFILE_READY"
+        },
+        {
+          "operation": "generate_candidates",
+          "state_after": "RANKING",
+          "state_before": "SAFETY_CHECK"
+        },
+        {
+          "operation": "lookup_evidence",
+          "state_after": "EVIDENCE_RETRIEVAL",
+          "state_before": "RANKING"
+        },
+        {
+          "operation": "optimize",
+          "state_after": "REGIMEN_OPTIMIZATION",
+          "state_before": "EVIDENCE_RETRIEVAL"
+        },
+        {
+          "operation": "start_plan",
+          "state_after": "PLAN_READY",
+          "state_before": "REGIMEN_OPTIMIZATION"
+        }
+      ]
+    }
+  },
+  "checks": {
+    "all_transitions_durably_audited": true,
+    "evidence_precedes_and_constrains_optimization": true,
+    "manual_handoff_operation_exposed": false,
+    "plan_start_requires_evidence": true,
+    "safety_precedes_candidates": true,
+    "single_state_operation_contract": true
+  },
+  "contract": {
+    "allowed_operations": {
+      "COMPLETED": [],
+      "CONSENT_CHECK": [
+        "stop",
+        "verify_consent"
+      ],
+      "EVIDENCE_RETRIEVAL": [
+        "optimize",
+        "stop"
+      ],
+      "FOLLOWUP_ACTIVE": [
+        "complete",
+        "ingest_followup",
+        "stop"
+      ],
+      "INTAKE": [
+        "load_profile",
+        "stop"
+      ],
+      "PLAN_READY": [
+        "complete",
+        "schedule_followup",
+        "stop"
+      ],
+      "PROFILE_READY": [
+        "check_safety",
+        "stop"
+      ],
+      "RANKING": [
+        "lookup_evidence",
+        "stop"
+      ],
+      "REGIMEN_OPTIMIZATION": [
+        "start_plan",
+        "stop"
+      ],
+      "SAFETY_CHECK": [
+        "generate_candidates",
+        "stop"
+      ],
+      "STOPPED": []
+    },
+    "allowed_transitions": {
+      "COMPLETED": [],
+      "CONSENT_CHECK": [
+        "PROFILE_READY",
+        "STOPPED"
+      ],
+      "EVIDENCE_RETRIEVAL": [
+        "REGIMEN_OPTIMIZATION",
+        "STOPPED"
+      ],
+      "FOLLOWUP_ACTIVE": [
+        "COMPLETED",
+        "FOLLOWUP_ACTIVE",
+        "STOPPED"
+      ],
+      "INTAKE": [
+        "CONSENT_CHECK",
+        "STOPPED"
+      ],
+      "PLAN_READY": [
+        "COMPLETED",
+        "FOLLOWUP_ACTIVE",
+        "STOPPED"
+      ],
+      "PROFILE_READY": [
+        "SAFETY_CHECK",
+        "STOPPED"
+      ],
+      "RANKING": [
+        "EVIDENCE_RETRIEVAL",
+        "STOPPED"
+      ],
+      "REGIMEN_OPTIMIZATION": [
+        "PLAN_READY",
+        "STOPPED"
+      ],
+      "SAFETY_CHECK": [
+        "RANKING",
+        "STOPPED"
+      ],
+      "STOPPED": []
+    },
+    "operations": [
+      "check_safety",
+      "complete",
+      "generate_candidates",
+      "ingest_followup",
+      "load_profile",
+      "lookup_evidence",
+      "optimize",
+      "schedule_followup",
+      "start_plan",
+      "stop",
+      "verify_consent"
+    ],
+    "schema_version": "closed_loop_state_operation_contract_v1",
+    "states": [
+      "COMPLETED",
+      "CONSENT_CHECK",
+      "EVIDENCE_RETRIEVAL",
+      "FOLLOWUP_ACTIVE",
+      "INTAKE",
+      "PLAN_READY",
+      "PROFILE_READY",
+      "RANKING",
+      "REGIMEN_OPTIMIZATION",
+      "SAFETY_CHECK",
+      "STOPPED"
+    ],
+    "terminal_states": [
+      "COMPLETED",
+      "STOPPED"
+    ]
+  },
+  "evidence_boundary": {
+    "deployment_proven": false,
+    "op071_proven_stage": "IMPLEMENTED",
+    "op071_required_stage": "OPERATED",
+    "op072_proven_stage": "IMPLEMENTED",
+    "op072_required_stage": "OPERATED",
+    "plan_start_recorded_meaning": "local system-owned ordered audit marker",
+    "production_operation_proven": false,
+    "service_integration_proven": false
+  },
+  "schema_version": "op071_op072_closed_loop_state_order_smoke_v1",
+  "source": {
+    "commit": "0daadedabfdf4c16ee66de5df83ae5774736be66",
+    "paths": [
+      "apps/inference_api/routes/interim.py",
+      "scripts/run_closed_loop_state_order_smoke.py",
+      "src/wellnessbox_rnd/interim/agent.py",
+      "src/wellnessbox_rnd/interim/workflow_contract.py",
+      "tests/test_interim_agent.py",
+      "tests/test_interim_api.py",
+      "tests/test_interim_security.py",
+      "tests/test_interim_workflow_contract.py"
+    ],
+    "sha256": "8c94bd31e9ea524fe008e41eb5b4252fd9a8040b47d5568f924f7bbeef72c52c"
+  }
+}
