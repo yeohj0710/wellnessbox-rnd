@@ -11,7 +11,7 @@
 - Validation: focused agent/PRO regression `30 passed`; workflow-equivalent selection `532 passed`; 21 canonical smokes reproduced; full Ruff PASS; independent review Critical `0`, Important `0`, Minor `0`.
 - Full suite: `921 passed`, `77 failed`; failures remain exactly `73` absent-report and `4` CGM geometry cases, with no new failure group.
 - Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
-- Publication: local commits prepared; push and GitHub Actions verification remain pending.
+- Publication: implementation/evidence/docs HEAD `b08cc0744b6f662ac23b5a6bc5fc01d419b2a650` was pushed; GitHub Actions `Original plan evidence` run `29827163566` passed.
 - Next loops: OP-077/078, OP-079/080, OP-081/082.
 
 ## 2026-07-21 follow-up queue and due-plan Cron loop
