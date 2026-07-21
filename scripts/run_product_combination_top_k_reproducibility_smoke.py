@@ -9,18 +9,17 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from wellnessbox_rnd.optimizer.product_combinations import (
+    CatalogProductIdentityV1,
     ProductCombinationFilterPolicyV1,
+    ProductCombinationOptimizationInputV1,
     ProductCombinationV1,
     evaluate_product_combination_ranking_v1,
 )
 
 RND_ROOT = Path(__file__).resolve().parents[1]
-SERVICE_ROOT = Path(
-    os.getenv("WELLNESSBOX_EVIDENCE_ROOT", r"C:\dev\wellnessbox")
-).resolve()
+SERVICE_ROOT = Path(os.getenv("WELLNESSBOX_EVIDENCE_ROOT", r"C:\dev\wellnessbox")).resolve()
 DEFAULT_OUTPUT = RND_ROOT / (
-    "data/original_plan/evidence/"
-    "op067_op068_product_combination_top_k_smoke_v1.json"
+    "data/original_plan/evidence/op067_op068_product_combination_top_k_smoke_v1.json"
 )
 RND_SOURCE_PATHS = [
     "scripts/run_product_combination_top_k_reproducibility_smoke.py",
@@ -81,6 +80,7 @@ def _service_report(output_path: Path) -> dict[str, object]:
             "WB_RND_PRODUCT_SMOKE_OUTPUT": str(output_path),
             "WB_RND_INCLUDE_PRODUCT_COMBINATION_EVIDENCE": "1",
             "WB_RND_INCLUDE_PRODUCT_COMBINATION_FILTER_EVIDENCE": "1",
+            "WB_RND_INCLUDE_PRODUCT_COMBINATION_RANKING_EVIDENCE": "1",
         }
     )
     subprocess.run(
@@ -127,19 +127,23 @@ def run_smoke() -> dict[str, object]:
         }
     )
     replay = observed["replay_identity"]
+    optimization_input = ProductCombinationOptimizationInputV1.model_validate(
+        replay["optimization_input"]
+    )
+    catalog_identity = tuple(
+        CatalogProductIdentityV1.model_validate(item) for item in observed["catalog_identity"]
+    )
     evaluation = evaluate_product_combination_ranking_v1(
         combinations,
         policy,
         max_ranked_combinations=observed["max_ranked_product_combinations"],
-        input_sha256=replay["input_sha256"],
-        catalog_version=replay["catalog_version"],
+        optimization_input=optimization_input,
+        catalog_identity=catalog_identity,
     )
-    assert [item.model_dump(mode="json") for item in evaluation.top_k] == observed[
-        "top_k"
+    assert [item.model_dump(mode="json") for item in evaluation.top_k] == observed["top_k"]
+    assert [item.model_dump(mode="json") for item in evaluation.non_selection] == observed[
+        "non_selection"
     ]
-    assert [
-        item.model_dump(mode="json") for item in evaluation.non_selection
-    ] == observed["non_selection"]
     assert evaluation.replay_identity.model_dump(mode="json") == replay
     assert observed["repeated_top_k"] == observed["top_k"]
     assert observed["repeated_non_selection"] == observed["non_selection"]
@@ -153,9 +157,7 @@ def run_smoke() -> dict[str, object]:
         "source": {
             "combined_sha256": _source_sha256(),
             "wellnessbox_rnd_commit": _source_commit(RND_ROOT, RND_SOURCE_PATHS),
-            "wellnessbox_commit": _source_commit(
-                SERVICE_ROOT, SERVICE_SOURCE_PATHS
-            ),
+            "wellnessbox_commit": _source_commit(SERVICE_ROOT, SERVICE_SOURCE_PATHS),
             "wellnessbox_rnd_paths": RND_SOURCE_PATHS,
             "wellnessbox_paths": SERVICE_SOURCE_PATHS,
         },

@@ -7,11 +7,13 @@ from wellnessbox_rnd.optimizer.constraints import (
     evaluate_optimization_candidate_v1,
 )
 from wellnessbox_rnd.optimizer.product_combinations import (
+    CatalogProductIdentityV1,
     IngredientDoseTotalV1,
     ProductCombinationEvidenceV1,
     ProductCombinationFilterEvaluationV1,
     ProductCombinationFilterPolicyV1,
     ProductCombinationNonSelectionV1,
+    ProductCombinationOptimizationInputV1,
     ProductCombinationRankingEvidenceV1,
     ProductCombinationReplayIdentityV1,
     ProductCombinationV1,
@@ -24,6 +26,7 @@ from wellnessbox_rnd.optimizer.product_combinations import (
 )
 
 __all__ = [
+    "CatalogProductIdentityV1",
     "OptimizationCandidateFactsV1",
     "OptimizationConstraintEvaluationV1",
     "OptimizationConstraintsV1",
@@ -33,6 +36,7 @@ __all__ = [
     "ProductCombinationFilterEvaluationV1",
     "ProductCombinationFilterPolicyV1",
     "ProductCombinationNonSelectionV1",
+    "ProductCombinationOptimizationInputV1",
     "ProductCombinationRankingEvidenceV1",
     "ProductCombinationReplayIdentityV1",
     "ProductCombinationV1",

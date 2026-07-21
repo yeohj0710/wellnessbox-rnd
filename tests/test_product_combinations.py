@@ -5,13 +5,68 @@ import pytest
 from pydantic import ValidationError
 
 from wellnessbox_rnd.optimizer.product_combinations import (
+    CatalogProductIdentityV1,
     ProductCombinationFilterEvaluationV1,
     ProductCombinationFilterPolicyV1,
+    ProductCombinationOptimizationInputV1,
     ProductCombinationRankingEvidenceV1,
     ProductCombinationV1,
     evaluate_product_combination_filters_v1,
     evaluate_product_combination_ranking_v1,
 )
+
+
+def _ranking_provenance():
+    optimization_input = ProductCombinationOptimizationInputV1.model_validate(
+        {
+            "recommendations": [
+                {
+                    "ingredient": "zinc",
+                    "service_ingredient_id": "ING:ZINC",
+                    "rank": 1,
+                    "score": 0.9,
+                    "evidence_ids": ["EV-1"],
+                }
+            ],
+            "constraints": {
+                "max_total_cost_krw": 35000,
+                "max_products": 2,
+                "excluded_ingredient_keys": [],
+                "safety_rule_ids": [],
+            },
+        }
+    )
+    catalog_identity = (
+        CatalogProductIdentityV1.model_validate(
+            {
+                "id": 1,
+                "name": "zinc",
+                "categories": ["zinc"],
+                "ingredient_declarations": [{"label": "ingredient", "value": "zinc 10 mg"}],
+                "ingredient_amounts": [
+                    {
+                        "service_ingredient_id": "ING:ZINC",
+                        "normalized_amount": 10000000,
+                        "normalized_unit": "ng",
+                        "source_label": "ingredient",
+                        "source_value": "zinc 10 mg",
+                    }
+                ],
+                "formulation": "tablet",
+                "formulation_kind": "tablet",
+                "offers": [
+                    {
+                        "pharmacy_product_id": 1,
+                        "price_krw": 10000,
+                        "stock_count": 1,
+                        "option_type": None,
+                        "capacity": None,
+                    }
+                ],
+            }
+        ),
+    )
+    return optimization_input, catalog_identity
 
 
 def _combination_payload() -> dict[str, object]:
@@ -337,22 +392,22 @@ def test_combination_ranking_recomputes_top_k_reasons_and_result_identity() -> N
         combinations,
         policy,
         max_ranked_combinations=1,
-        input_sha256="1" * 64,
-        catalog_version=f"catalog_{'2' * 64}",
+        optimization_input=_ranking_provenance()[0],
+        catalog_identity=_ranking_provenance()[1],
     )
     second = evaluate_product_combination_ranking_v1(
         combinations,
         policy,
         max_ranked_combinations=1,
-        input_sha256="1" * 64,
-        catalog_version=f"catalog_{'2' * 64}",
+        optimization_input=_ranking_provenance()[0],
+        catalog_identity=_ranking_provenance()[1],
     )
 
     assert first == second
     assert first.top_k[0].rank == 1
     assert first.top_k[0].ranking_tuple[:2] == (19_000, 2)
     reasons = {item.combination_id: item.reason_codes for item in first.non_selection}
-    assert sum("LOWER_RANKED" in item for item in reasons.values()) == 1
+    assert sum("HIGHER_COST" in item for item in reasons.values()) == 1
     assert sum("OVER_BUDGET" in item for item in reasons.values()) == 2
     assert first.replay_identity.result_sha256 == second.replay_identity.result_sha256
 
@@ -363,6 +418,8 @@ def test_combination_ranking_recomputes_top_k_reasons_and_result_identity() -> N
         (("top_k", 0, "rank"), 2),
         (("non_selection", 0, "reason_codes"), []),
         (("replay_identity", "result_sha256"), "0" * 64),
+        (("replay_identity", "optimization_input", "recommendations", 0, "score"), 0.8),
+        (("catalog_identity", 0, "name"), "forged catalog name"),
     ],
 )
 def test_combination_ranking_rejects_forged_outputs(
@@ -391,8 +448,8 @@ def test_combination_ranking_rejects_forged_outputs(
         combinations,
         policy,
         max_ranked_combinations=1,
-        input_sha256="3" * 64,
-        catalog_version=f"catalog_{'4' * 64}",
+        optimization_input=_ranking_provenance()[0],
+        catalog_identity=_ranking_provenance()[1],
     ).model_dump(mode="json")
     target: object = payload
     for key in path[:-1]:

@@ -5,16 +5,25 @@ import json
 from collections import defaultdict
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, model_validator
 
 NormalizedDoseUnitV1 = Literal["ng", "milli_IU"]
 ProductFormulationV1 = Literal["capsule", "tablet", "powder", "liquid", "gummy", "other"]
 ProductCombinationNonSelectionReasonV1 = Literal[
-    "LOWER_RANKED",
+    "DETERMINISTIC_ID_TIE_BREAK",
+    "HIGHER_COST",
+    "MORE_PRODUCTS",
     "OVER_BUDGET",
     "OVER_MAX_PRODUCTS",
     "SAFETY_EXCLUDED_INGREDIENT",
+    "SEARCH_TRUNCATED",
 ]
+
+
+def _canonical_sha256(value: object) -> str:
+    return hashlib.sha256(
+        json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
 
 
 class ProductOfferV1(BaseModel):
@@ -213,9 +222,7 @@ def evaluate_product_combination_filters_v1(
     combinations: tuple[ProductCombinationV1, ...],
     policy: ProductCombinationFilterPolicyV1,
 ) -> ProductCombinationFilterEvaluationV1:
-    eligible, budget, product_count, safety = _derive_filter_identities(
-        combinations, policy
-    )
+    eligible, budget, product_count, safety = _derive_filter_identities(combinations, policy)
     return ProductCombinationFilterEvaluationV1(
         schema_version="product_combination_filter_evaluation_v1",
         policy=policy,
@@ -237,9 +244,7 @@ def _derive_filter_identities(
         if item.total_cost_krw > policy.max_total_cost_krw
     }
     product_count = {
-        item.combination_id
-        for item in combinations
-        if item.product_count > policy.max_products
+        item.combination_id for item in combinations if item.product_count > policy.max_products
     }
     excluded = set(policy.excluded_service_ingredient_ids)
     safety = {
@@ -252,9 +257,12 @@ def _derive_filter_identities(
         for item in combinations
         if item.combination_id not in budget | product_count | safety
     }
-    return tuple(sorted(eligible)), tuple(sorted(budget)), tuple(
-        sorted(product_count)
-    ), tuple(sorted(safety))
+    return (
+        tuple(sorted(eligible)),
+        tuple(sorted(budget)),
+        tuple(sorted(product_count)),
+        tuple(sorted(safety)),
+    )
 
 
 class RankedProductCombinationV1(BaseModel):
@@ -270,9 +278,59 @@ class ProductCombinationNonSelectionV1(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     combination_id: str = Field(pattern=r"^combo_[a-f0-9]{16}$")
-    reason_codes: tuple[ProductCombinationNonSelectionReasonV1, ...] = Field(
+    reason_codes: tuple[ProductCombinationNonSelectionReasonV1, ...] = Field(min_length=1)
+
+
+class RankingRecommendationIdentityV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    ingredient: str = Field(min_length=1)
+    service_ingredient_id: str = Field(pattern=r"^ING:[A-Z0-9_]+$")
+    rank: StrictInt = Field(ge=1)
+    score: StrictFloat
+    evidence_ids: tuple[str, ...]
+
+
+class RankingConstraintIdentityV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    max_total_cost_krw: StrictInt = Field(ge=0)
+    max_products: StrictInt = Field(ge=1, le=20)
+    excluded_ingredient_keys: tuple[str, ...]
+    safety_rule_ids: tuple[str, ...]
+
+
+class ProductCombinationOptimizationInputV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    recommendations: tuple[RankingRecommendationIdentityV1, ...]
+    constraints: RankingConstraintIdentityV1
+
+
+class CatalogIngredientDeclarationIdentityV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    label: str = Field(min_length=1)
+    value: str = Field(min_length=1)
+
+
+class CatalogOfferIdentityV1(ProductOfferV1):
+    pass
+
+
+class CatalogProductIdentityV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    id: StrictInt = Field(ge=1)
+    name: str = Field(min_length=1)
+    categories: tuple[str, ...] = Field(min_length=1)
+    ingredient_declarations: tuple[CatalogIngredientDeclarationIdentityV1, ...] = Field(
         min_length=1
     )
+    ingredient_amounts: tuple[ProductIngredientAmountV1, ...] = Field(min_length=1)
+    formulation: str = Field(min_length=1)
+    formulation_kind: ProductFormulationV1
+    offers: tuple[CatalogOfferIdentityV1, ...] = Field(min_length=1)
 
 
 class ProductCombinationReplayIdentityV1(BaseModel):
@@ -283,6 +341,7 @@ class ProductCombinationReplayIdentityV1(BaseModel):
     catalog_version: str = Field(pattern=r"^catalog_[a-f0-9]{64}$")
     catalog_version_contract: Literal["product_catalog_content_sha256_v1"]
     result_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    optimization_input: ProductCombinationOptimizationInputV1
 
 
 class ProductCombinationRankingEvidenceV1(BaseModel):
@@ -294,14 +353,13 @@ class ProductCombinationRankingEvidenceV1(BaseModel):
     combinations: tuple[ProductCombinationV1, ...] = Field(min_length=1)
     top_k: tuple[RankedProductCombinationV1, ...]
     non_selection: tuple[ProductCombinationNonSelectionV1, ...]
+    catalog_identity: tuple[CatalogProductIdentityV1, ...] = Field(min_length=1)
     replay_identity: ProductCombinationReplayIdentityV1
 
     @model_validator(mode="after")
     def validate_ranking_evidence(self) -> ProductCombinationRankingEvidenceV1:
         identities = tuple(item.combination_id for item in self.combinations)
-        if identities != tuple(sorted(identities)) or len(set(identities)) != len(
-            identities
-        ):
+        if identities != tuple(sorted(identities)) or len(set(identities)) != len(identities):
             raise ValueError("ranking input combinations must be unique and sorted")
         expected_top, expected_non_selection = _derive_ranking(
             self.combinations,
@@ -312,6 +370,17 @@ class ProductCombinationRankingEvidenceV1(BaseModel):
             raise ValueError("top-k ranking does not match combinations and policy")
         if self.non_selection != expected_non_selection:
             raise ValueError("non-selection reasons do not match combinations and policy")
+        expected_input = _canonical_sha256(
+            self.replay_identity.optimization_input.model_dump(mode="json")
+        )
+        catalog_payload = [
+            item.model_dump(mode="json") for item in self.catalog_identity
+        ]
+        expected_catalog = f"catalog_{_canonical_sha256(catalog_payload)}"
+        if self.replay_identity.input_sha256 != expected_input:
+            raise ValueError("ranking input identity does not match canonical input")
+        if self.replay_identity.catalog_version != expected_catalog:
+            raise ValueError("catalog identity does not match canonical catalog")
         expected_result_sha256 = _ranking_result_sha256(
             input_sha256=self.replay_identity.input_sha256,
             catalog_version=self.replay_identity.catalog_version,
@@ -328,13 +397,17 @@ def evaluate_product_combination_ranking_v1(
     policy: ProductCombinationFilterPolicyV1,
     *,
     max_ranked_combinations: int,
-    input_sha256: str,
-    catalog_version: str,
+    optimization_input: ProductCombinationOptimizationInputV1,
+    catalog_identity: tuple[CatalogProductIdentityV1, ...],
 ) -> ProductCombinationRankingEvidenceV1:
     top_k, non_selection = _derive_ranking(
         combinations,
         policy,
         max_ranked_combinations,
+    )
+    input_sha256 = _canonical_sha256(optimization_input.model_dump(mode="json"))
+    catalog_version = (
+        f"catalog_{_canonical_sha256([item.model_dump(mode='json') for item in catalog_identity])}"
     )
     replay_identity = ProductCombinationReplayIdentityV1(
         schema_version="product_combination_replay_identity_v1",
@@ -347,6 +420,7 @@ def evaluate_product_combination_ranking_v1(
             top_k=top_k,
             non_selection=non_selection,
         ),
+        optimization_input=optimization_input,
     )
     return ProductCombinationRankingEvidenceV1(
         schema_version="product_combination_ranking_evidence_v1",
@@ -355,6 +429,7 @@ def evaluate_product_combination_ranking_v1(
         combinations=combinations,
         top_k=top_k,
         non_selection=non_selection,
+        catalog_identity=catalog_identity,
         replay_identity=replay_identity,
     )
 
@@ -367,9 +442,7 @@ def _derive_ranking(
     tuple[RankedProductCombinationV1, ...],
     tuple[ProductCombinationNonSelectionV1, ...],
 ]:
-    eligible, budget, product_count, safety = _derive_filter_identities(
-        combinations, policy
-    )
+    eligible, budget, product_count, safety = _derive_filter_identities(combinations, policy)
     combination_by_id = {item.combination_id: item for item in combinations}
     ranked = sorted(
         (combination_by_id[identity] for identity in eligible),
@@ -394,40 +467,35 @@ def _derive_ranking(
     )
     top_identities = {item.combination_id for item in top_k}
     eligible_identities = set(eligible)
+    ranking_cutoff = ranked[min(len(ranked), max_ranked_combinations) - 1] if ranked else None
     budget_identities = set(budget)
     product_count_identities = set(product_count)
     safety_identities = set(safety)
-    non_selection = tuple(
-        ProductCombinationNonSelectionV1(
-            combination_id=item.combination_id,
-            reason_codes=tuple(
-                sorted(
-                    reason
-                    for condition, reason in (
-                        (
-                            item.combination_id in budget_identities,
-                            "OVER_BUDGET",
-                        ),
-                        (
-                            item.combination_id in product_count_identities,
-                            "OVER_MAX_PRODUCTS",
-                        ),
-                        (
-                            item.combination_id in safety_identities,
-                            "SAFETY_EXCLUDED_INGREDIENT",
-                        ),
-                        (
-                            item.combination_id in eligible_identities,
-                            "LOWER_RANKED",
-                        ),
-                    )
-                    if condition
-                )
-            ),
+    non_selection_items: list[ProductCombinationNonSelectionV1] = []
+    for item in combinations:
+        if item.combination_id in top_identities:
+            continue
+        reasons: list[ProductCombinationNonSelectionReasonV1] = []
+        if item.combination_id in budget_identities:
+            reasons.append("OVER_BUDGET")
+        if item.combination_id in product_count_identities:
+            reasons.append("OVER_MAX_PRODUCTS")
+        if item.combination_id in safety_identities:
+            reasons.append("SAFETY_EXCLUDED_INGREDIENT")
+        if item.combination_id in eligible_identities:
+            if ranking_cutoff is not None and (item.total_cost_krw > ranking_cutoff.total_cost_krw):
+                reasons.append("HIGHER_COST")
+            elif ranking_cutoff is not None and (item.product_count > ranking_cutoff.product_count):
+                reasons.append("MORE_PRODUCTS")
+            else:
+                reasons.append("DETERMINISTIC_ID_TIE_BREAK")
+        non_selection_items.append(
+            ProductCombinationNonSelectionV1(
+                combination_id=item.combination_id,
+                reason_codes=tuple(sorted(reasons)),
+            )
         )
-        for item in combinations
-        if item.combination_id not in top_identities
-    )
+    non_selection = tuple(non_selection_items)
     return top_k, non_selection
 
 
@@ -443,21 +511,19 @@ def _ranking_result_sha256(
         "input_sha256": input_sha256,
         "catalog_version": catalog_version,
         "top_k": [item.model_dump(mode="json") for item in top_k],
-        "non_selection": [
-            item.model_dump(mode="json") for item in non_selection
-        ],
+        "non_selection": [item.model_dump(mode="json") for item in non_selection],
     }
-    return hashlib.sha256(
-        json.dumps(payload, separators=(",", ":")).encode("utf-8")
-    ).hexdigest()
+    return hashlib.sha256(json.dumps(payload, separators=(",", ":")).encode("utf-8")).hexdigest()
 
 
 __all__ = [
+    "CatalogProductIdentityV1",
     "IngredientDoseTotalV1",
     "ProductCombinationEvidenceV1",
     "ProductCombinationFilterEvaluationV1",
     "ProductCombinationFilterPolicyV1",
     "ProductCombinationNonSelectionV1",
+    "ProductCombinationOptimizationInputV1",
     "ProductCombinationRankingEvidenceV1",
     "ProductCombinationReplayIdentityV1",
     "ProductCombinationV1",
