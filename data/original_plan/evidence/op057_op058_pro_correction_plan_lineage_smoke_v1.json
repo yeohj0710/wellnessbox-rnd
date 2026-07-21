@@ -37,7 +37,7 @@
   },
   "schema_version": "op057_op058_pro_correction_plan_lineage_smoke_v1",
   "source": {
-    "combined_sha256": "90e23a2a70353e4c52efe1872d8edfbe416883182bd6cb07517e380f2de28bae",
+    "combined_sha256": "10662658664b0ba08112a61582e1a0d22e0d2e3eada875c44bffcf314a016092",
     "wellnessbox_commit": "9dfc1d0b2034ed15777385802b7283a3ffc78c02",
     "wellnessbox_paths": [
       "app/api/tips/pro/effects/route.ts",
@@ -51,7 +51,7 @@
       "scripts/qa/check-tips-pro-study-rnd-client.cts",
       "scripts/qa/run-tips-pro-correction-client.cts"
     ],
-    "wellnessbox_rnd_commit": "c1bb470fd753d2b642aeab25fa694149095b8b1d",
+    "wellnessbox_rnd_commit": "86823c364094b275e0e9d41a2b78ed22833b383e",
     "wellnessbox_rnd_paths": [
       "apps/inference_api/routes/interim.py",
       "data/contracts/pro_runtime_reference_baselines_v1.json",
