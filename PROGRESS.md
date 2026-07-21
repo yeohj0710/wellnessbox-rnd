@@ -2,6 +2,20 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 product combination and aggregate-dose integration loop
+
+- Chosen stage: `original plan / product optimization`; tasks OP-063 and OP-064.
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. The service fixture contains `7` products for `8` recommendations; canonical evidence contains `4` generated combinations and independently validates `2` representative combinations.
+- Primary evidence: `data/original_plan/evidence/op063_op064_product_combination_dose_smoke_v1.json`; deterministic SHA-256 `64821bf96e724cfcb21be2b4e0d011dd3c364b072614ca7505dda8659b1e9ea8`; combined source SHA-256 `3c48c1b8fecac69e3b8b088830e0efa7c6bcc4b9784f81af72a0dcc39d69ce05`; R&D source `00fbd06f275e7ba2a486e398fdd56591388df6ad`; service source `6c599ebeebca73e8d769426b02f12d4e7be19073`.
+- Implementation: the existing `/api/tips` product-candidate adapter now converts strict catalog declarations into deterministic product combinations. It reuses the lowest-priced in-stock offer, deduplicates shared products, normalizes fractional mass and IU values to exact integer base units, totals declared doses by ingredient and unit, and detects duplicate ingredients across distinct products. Memoized search is bounded to `4096` states and `64` unique combinations. Missing target amounts and ambiguous ranges fail closed. R&D independently validates every returned identity, product, offer, cost, total, duplicate, and search boundary. No new catalog, route, database, order, payment, training, or simulation system was added.
+- Evidence boundary: OP-063 and OP-064 are `INTEGRATED` and COMPLETE at their required stages. Actual Prisma execution, production data freshness, deployment, production operation, ordering, and payment remain unproven.
+- Generated status: complete `50`, partial `13`, pending `56`, external `1`, contradicted `0`. Audit PASS with `63` claims and `196` checked evidence files.
+- Validation: focused tests `10 passed`; exact workflow tests `482 passed`; full Ruff PASS; service product QA, typecheck, lint, and production build PASS; all `15` canonical smokes reproduce byte-identically; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `863 passed`, `77 failed`; the unchanged failures are `73` absent report artifacts and `4` CGM geometry assertions. No OP-063/064 regression was found.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; the overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: service commit `6c599ebeebca73e8d769426b02f12d4e7be19073` passed Encoding Guard run `29811071339`. R&D commit `23d5c43efc8b029f78c2f62c92665bc5960307de` passed Original plan evidence run `29811445770`.
+- Recommended next loops: OP-065/066 budget/product-count pruning and safety-block preservation; OP-067/068 top-k explanations and deterministic reproduction; OP-069/070 stock-aware safe substitution and pre-approval cart candidates.
+
 ## 2026-07-21 optimization constraints and selling-product contract loop
 
 - Chosen stage: `original plan / product optimization`; tasks OP-061 and OP-062.

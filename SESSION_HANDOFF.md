@@ -2,6 +2,20 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 product combination and aggregate-dose integration handoff
+
+- Chosen stage and tasks: `original plan / product optimization`; OP-063 and OP-064.
+- Primary dataset and cases: frozen eval `256` cases; service fixture `7` products and `8` recommendations; canonical smoke `4` generated combinations with `2` independently validated representative combinations.
+- Primary evidence: `data/original_plan/evidence/op063_op064_product_combination_dose_smoke_v1.json`; SHA-256 `64821bf96e724cfcb21be2b4e0d011dd3c364b072614ca7505dda8659b1e9ea8`; combined source SHA-256 `3c48c1b8fecac69e3b8b088830e0efa7c6bcc4b9784f81af72a0dcc39d69ce05`.
+- Source identity: R&D `00fbd06f275e7ba2a486e398fdd56591388df6ad`; WellnessBox `6c599ebeebca73e8d769426b02f12d4e7be19073`.
+- Main changes: the existing `/api/tips` adapter converts strict selling-product declarations into deterministic ingredient combinations, reuses the existing in-stock offer selection, deduplicates shared products, normalizes mass to integer nanograms and IU to milli-IU, and reports total declared dose by ingredient and unit. Duplicate ingredients require distinct product IDs. Search is memoized, bounded to `4096` states, and capped at `64` unique combinations. Ambiguous ranges and missing target amounts fail closed. The R&D model independently revalidates identities, costs, totals, duplicates, limits, and source identity. No training or simulation logic changed.
+- Honest stage: OP-063 and OP-064 are COMPLETE at `INTEGRATED`. The existing service route and R&D validation contract are connected, but actual Prisma execution, production catalog freshness, deployment, production operation, ordering, and payment are not proven.
+- Validation: product-combination tests `10 passed`; exact workflow selection `482 passed`; full Ruff PASS; service QA/typecheck/lint/build PASS; all `15` workflow smokes reproduce byte-identically; audit PASS with `63` claims and `196` evidence files; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `863 passed`, `77 failed`, exactly the known `73` absent-report plus `4` CGM-geometry groups. Frozen eval has `256` cases, seven zero metric deltas, unchanged overall `safety_blocked` weakest slice, and unchanged metric-specific weakest categories.
+- Publication: service commit `6c599ebeebca73e8d769426b02f12d4e7be19073` passed Encoding Guard run `29811071339`. R&D commit `23d5c43efc8b029f78c2f62c92665bc5960307de` passed Original plan evidence run `29811445770`.
+- Five bottlenecks: actual Prisma catalog-query evidence; production catalog freshness; deployed service/R&D operation; OP-065 budget and maximum-product exclusion; OP-066 safety-block preservation.
+- Next three loops: OP-065/066, OP-067/068, OP-069/070.
+
 ## 2026-07-21 optimization constraints and selling-product contract handoff
 
 - Chosen stage and tasks: `original plan / product optimization`; OP-061 and OP-062.
