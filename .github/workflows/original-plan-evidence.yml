@@ -53,6 +53,7 @@ on:
       - "scripts/run_plan_lifecycle_order_boundary_smoke.py"
       - "scripts/run_counseling_passage_entity_smoke.py"
       - "scripts/run_bounded_rag_answer_provenance_smoke.py"
+      - "scripts/run_counseling_verifier_urgent_safety_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -153,6 +154,7 @@ on:
       - "data/knowledge/runtime_knowledge_db_v1.json"
       - "data/knowledge/reference_knowledge_base_v1.json"
       - "data/knowledge/counseling_knowledge_scope_registry_v1.json"
+      - "data/knowledge/counseling_answer_verifier_policy_v1.json"
       - "data/raw_references/**"
       - "data/catalog/ingredients.json"
       - "data/rules/safety_rules.json"
@@ -190,6 +192,7 @@ on:
       - "scripts/run_plan_lifecycle_order_boundary_smoke.py"
       - "scripts/run_counseling_passage_entity_smoke.py"
       - "scripts/run_bounded_rag_answer_provenance_smoke.py"
+      - "scripts/run_counseling_verifier_urgent_safety_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -438,6 +441,11 @@ jobs:
           python scripts/run_bounded_rag_answer_provenance_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op083_op084_bounded_rag_answer_provenance_smoke_v1.json
+      - name: Check counseling verifier and urgent-safety evidence
+        run: >-
+          python scripts/run_counseling_verifier_urgent_safety_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op085_op086_counseling_verifier_urgent_safety_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -553,6 +561,7 @@ jobs:
           scripts/run_plan_lifecycle_order_boundary_smoke.py
           scripts/run_counseling_passage_entity_smoke.py
           scripts/run_bounded_rag_answer_provenance_smoke.py
+          scripts/run_counseling_verifier_urgent_safety_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py

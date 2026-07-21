@@ -44,12 +44,14 @@ SOURCE_PATHS = (
     "src/wellnessbox_rnd/chat/answering.py",
     "src/wellnessbox_rnd/chat/openai_adapter.py",
     "src/wellnessbox_rnd/chat/retrieval.py",
+    "src/wellnessbox_rnd/chat/verifier.py",
     "src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py",
     "tests/test_chat_openai_adapter.py",
     "tests/test_chat_retrieval.py",
     "tests/test_learned_runtime_boundary_audit.py",
 )
 DATA_PATHS = (
+    "data/knowledge/counseling_answer_verifier_policy_v1.json",
     "data/knowledge/counseling_knowledge_scope_registry_v1.json",
     "data/knowledge/reference_knowledge_base_v1.json",
     "data/parsed_references/reference_claims_v1.jsonl",
