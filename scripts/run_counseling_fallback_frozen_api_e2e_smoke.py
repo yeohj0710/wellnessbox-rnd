@@ -27,10 +27,12 @@ RND_SOURCE_PATHS = (
     RND_ROOT / "src/wellnessbox_rnd/chat/openai_adapter.py",
     RND_ROOT / "src/wellnessbox_rnd/chat/retrieval.py",
     RND_ROOT / "src/wellnessbox_rnd/chat/verifier.py",
+    RND_ROOT / "src/wellnessbox_rnd/knowledge/runtime_db.py",
     RND_ROOT / "src/wellnessbox_rnd/interim/store.py",
     RND_ROOT / "data/knowledge/counseling_retrieval_corpus_manifest_v1.json",
     RND_ROOT / "data/knowledge/counseling_knowledge_scope_registry_v1.json",
     RND_ROOT / "data/knowledge/counseling_answer_verifier_policy_v1.json",
+    RND_ROOT / "data/knowledge/runtime_knowledge_db_v1.json",
 )
 SERVICE_SOURCE_PATHS = (
     SERVICE_ROOT / "lib/server/wb-rnd-interim-client.ts",
