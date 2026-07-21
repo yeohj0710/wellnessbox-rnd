@@ -152,7 +152,10 @@ def run_smoke() -> dict[str, object]:
             agent.create_run(profile_id=PROFILE_ID, idempotency_key="after-stop")
         except ValueError as error:
             hold_error = str(error)
-        jobs = [dict(row) for row in store.rows("select * from workflow_jobs order by scheduled_at")]
+        jobs = [
+            dict(row)
+            for row in store.rows("select * from workflow_jobs order by scheduled_at")
+        ]
         followups = [
             dict(row) for row in store.rows("select * from followups order by due_at")
         ]

@@ -950,6 +950,9 @@ class BoundedAgent:
         )
 
     def _raise_if_recommendation_held(self, profile_id: str) -> None:
-        with self.store.connect() as connection:
+        connection = self.store.connect()
+        try:
             if self._recommendation_hold_exists(connection, profile_id=profile_id):
                 raise ValueError("serious_adverse_event_recommendation_hold")
+        finally:
+            connection.close()
