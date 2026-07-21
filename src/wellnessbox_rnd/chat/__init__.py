@@ -14,6 +14,7 @@ from wellnessbox_rnd.chat.openai_adapter import (
     load_openai_chat_adapter_config_from_env,
 )
 from wellnessbox_rnd.chat.retrieval import (
+    BoundedKnowledgeScope,
     ChatQaEvalCase,
     QuestionEntityExtraction,
     QuestionEntityKind,
@@ -24,11 +25,13 @@ from wellnessbox_rnd.chat.retrieval import (
     extract_question_entities,
     load_chat_qa_eval_cases,
     load_retrieval_corpus_manifest,
+    retrieve_bounded_chunks,
     retrieve_relevant_chunks,
 )
 
 __all__ = [
     "ChatQaEvalCase",
+    "BoundedKnowledgeScope",
     "ChatAdapterLiveFailure",
     "ChatAdapterRequest",
     "ChatAdapterResponse",
@@ -49,5 +52,6 @@ __all__ = [
     "load_openai_chat_adapter_config_from_env",
     "load_retrieval_corpus_manifest",
     "retrieve_relevant_chunks",
+    "retrieve_bounded_chunks",
     "verify_bounded_template_answer",
 ]

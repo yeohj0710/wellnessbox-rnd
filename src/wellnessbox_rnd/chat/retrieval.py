@@ -66,6 +66,30 @@ class RetrievalCorpusManifest(BaseModel):
         return self
 
 
+class BoundedKnowledgeScope(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    scope_id: str = Field(min_length=1)
+    allowed_source_types: list[str] = Field(min_length=1)
+    allowed_claim_types: list[str] = Field(min_length=1)
+    allowed_reference_ids: list[str] = Field(min_length=1)
+    max_results: int = Field(default=5, ge=1, le=20)
+
+    @model_validator(mode="after")
+    def validate_allowlists(self) -> BoundedKnowledgeScope:
+        for field_name in (
+            "allowed_source_types",
+            "allowed_claim_types",
+            "allowed_reference_ids",
+        ):
+            values = getattr(self, field_name)
+            if values != sorted(set(values)):
+                raise ValueError(f"knowledge_scope_{field_name}_must_be_sorted_unique")
+            if any(not value.strip() for value in values):
+                raise ValueError(f"knowledge_scope_{field_name}_blank")
+        return self
+
+
 class QuestionEntityKind(StrEnum):
     HEALTH_GOAL = "health_goal"
     INGREDIENT = "ingredient"
@@ -256,6 +280,41 @@ def retrieve_relevant_chunks(
         )
         for score, chunk in scored[:top_k]
     ]
+
+
+def retrieve_bounded_chunks(
+    manifest: RetrievalCorpusManifest,
+    *,
+    scope: BoundedKnowledgeScope,
+    query: str,
+    as_of: datetime,
+    top_k: int = 3,
+) -> list[RetrievalResult]:
+    if as_of.tzinfo is None or as_of.utcoffset() is None:
+        raise ValueError("bounded_retrieval_as_of_timezone_required")
+    if top_k < 1 or top_k > scope.max_results:
+        raise ValueError("bounded_retrieval_top_k_outside_scope")
+    allowed_sources = set(scope.allowed_source_types)
+    allowed_claims = set(scope.allowed_claim_types)
+    allowed_references = set(scope.allowed_reference_ids)
+    scoped_chunks = [
+        chunk
+        for chunk in manifest.chunks
+        if chunk.source_type in allowed_sources
+        and chunk.normalized_claim_type in allowed_claims
+        and chunk.reference_id in allowed_references
+    ]
+    scoped_manifest = RetrievalCorpusManifest(
+        manifest_version=f"{manifest.manifest_version}::{scope.scope_id}",
+        chunk_count=len(scoped_chunks),
+        chunks=scoped_chunks,
+    )
+    return retrieve_relevant_chunks(
+        scoped_manifest,
+        query=query,
+        top_k=top_k,
+        as_of=as_of,
+    )
 
 
 def extract_question_entities(

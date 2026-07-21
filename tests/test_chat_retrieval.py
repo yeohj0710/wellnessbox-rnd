@@ -11,12 +11,14 @@ from wellnessbox_rnd.chat.answering import (
     verify_bounded_template_answer,
 )
 from wellnessbox_rnd.chat.retrieval import (
+    BoundedKnowledgeScope,
     ChatQaEvalCase,
     QuestionEntityExtraction,
     RetrievalChunk,
     RetrievalCorpusManifest,
     evaluate_retrieval_hit_rate,
     extract_question_entities,
+    retrieve_bounded_chunks,
     retrieve_relevant_chunks,
 )
 from wellnessbox_rnd.knowledge.runtime_db import load_runtime_knowledge_db
@@ -357,6 +359,97 @@ def test_retrieval_filters_retired_passage_at_query_time() -> None:
         query="magnesium sleep",
         as_of=datetime(2026, 6, 1, tzinfo=UTC),
     )
+
+
+def test_bounded_retrieval_enforces_all_scope_allowlists_and_validity() -> None:
+    allowed = RetrievalChunk(
+        chunk_id="chunk::allowed",
+        reference_id="reference-allowed",
+        claim_id="claim-allowed",
+        source_title="Allowed source",
+        source_type="clinical_guideline",
+        page_or_section="section",
+        reference_uri="https://example.test/allowed",
+        parsed_source_uri="data/raw_references/allowed.md",
+        license_status="OPEN",
+        effective_at="2025-01-01T00:00:00Z",
+        line_start=1,
+        line_end=2,
+        normalized_claim_type="drug_interaction",
+        text="glucosamine warfarin interaction",
+        excerpt="interaction",
+    )
+    disallowed = allowed.model_copy(
+        update={
+            "chunk_id": "chunk::disallowed",
+            "reference_id": "reference-disallowed",
+            "claim_id": "claim-disallowed",
+            "source_type": "unreviewed_blog",
+        }
+    )
+    retired = allowed.model_copy(
+        update={
+            "chunk_id": "chunk::retired",
+            "claim_id": "claim-retired",
+            "retired_at": datetime(2026, 1, 1, tzinfo=UTC),
+        }
+    )
+    manifest = RetrievalCorpusManifest(
+        manifest_version="test", chunk_count=3, chunks=[allowed, disallowed, retired]
+    )
+    scope = BoundedKnowledgeScope(
+        scope_id="counseling-v1",
+        allowed_source_types=["clinical_guideline"],
+        allowed_claim_types=["drug_interaction"],
+        allowed_reference_ids=["reference-allowed"],
+        max_results=2,
+    )
+
+    results = retrieve_bounded_chunks(
+        manifest,
+        scope=scope,
+        query="glucosamine warfarin",
+        as_of=datetime(2026, 6, 1, tzinfo=UTC),
+        top_k=2,
+    )
+
+    assert [result.chunk_id for result in results] == ["chunk::allowed"]
+
+
+def test_bounded_retrieval_rejects_naive_time_and_excess_top_k() -> None:
+    scope = BoundedKnowledgeScope(
+        scope_id="counseling-v1",
+        allowed_source_types=["clinical_guideline"],
+        allowed_claim_types=["drug_interaction"],
+        allowed_reference_ids=["reference-allowed"],
+        max_results=1,
+    )
+    manifest = RetrievalCorpusManifest(manifest_version="test", chunk_count=0, chunks=[])
+    with pytest.raises(ValueError, match="bounded_retrieval_as_of_timezone_required"):
+        retrieve_bounded_chunks(
+            manifest,
+            scope=scope,
+            query="query",
+            as_of=datetime(2026, 1, 1),
+        )
+    with pytest.raises(ValueError, match="bounded_retrieval_top_k_outside_scope"):
+        retrieve_bounded_chunks(
+            manifest,
+            scope=scope,
+            query="query",
+            as_of=datetime(2026, 1, 1, tzinfo=UTC),
+            top_k=2,
+        )
+
+
+def test_bounded_scope_rejects_unsorted_or_duplicate_allowlists() -> None:
+    with pytest.raises(ValidationError, match="must_be_sorted_unique"):
+        BoundedKnowledgeScope(
+            scope_id="bad",
+            allowed_source_types=["b", "a"],
+            allowed_claim_types=["claim"],
+            allowed_reference_ids=["reference"],
+        )
 
 
 def test_extract_question_entities_uses_runtime_aliases_and_urgent_signals() -> None:
