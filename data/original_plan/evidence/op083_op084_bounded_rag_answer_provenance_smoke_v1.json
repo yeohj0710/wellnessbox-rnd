@@ -3,6 +3,7 @@
   "generated_from": {
     "claims_path": "data/parsed_references/reference_claims_v1.jsonl",
     "references_path": "data/knowledge/reference_knowledge_base_v1.json",
+    "scope_registry_path": "data/knowledge/counseling_knowledge_scope_registry_v1.json",
     "as_of": "2026-07-21T13:00:00+00:00"
   },
   "knowledge_scope": {
@@ -212,8 +213,13 @@
   ],
   "negative_probes": {
     "disallowed_source_blocked": true,
+    "disallowed_reference_blocked": true,
+    "disallowed_claim_type_blocked": true,
+    "forged_repository_scope_blocked": true,
     "retired_passage_blocked": true,
-    "tampered_validity_blocked": true
+    "future_passage_blocked": true,
+    "tampered_validity_blocked": true,
+    "duplicate_provenance_blocked": true
   },
   "stage_boundaries": {
     "claimed_stage": "IMPLEMENTED",
@@ -224,8 +230,8 @@
     "live_llm_inference_used": false
   },
   "source_identity": {
-    "source_commit": "12b477ba7f798b475ad8d3b83363c1ec210361d1",
-    "source_sha256": "f122be02e985ad31268caaf2f92f9bf46dcd214588215528cc4380de88461f33",
-    "data_sha256": "74bdf10ff14d838e6fa9261603abaa5923bef011cc07a18e8aa0de47263637d0"
+    "source_commit": "6528c50d9d453bf397389746b7889ad489cc1b92",
+    "source_sha256": "03c86d65261517c360e4120a9d2f3039cc30fa8db568c9bebe431e558e026f5f",
+    "data_sha256": "95cc551d1be3fe9bb9d62fc39e0a1418587d529f6f89f9fc942cbedd39290356"
   }
 }
