@@ -50,13 +50,18 @@ def _recommendation_request() -> dict[str, object]:
     return payload
 
 
-def _enroll(store: InterimStore) -> dict[str, object]:
+def _enroll(
+    store: InterimStore,
+    *,
+    data_class: str = "SYNTHETIC_OUTCOME_PROXY",
+) -> dict[str, object]:
     return enroll_pro_plan_v1(
         store,
         recommendation_request=_recommendation_request(),
         instrument="PSQI",
         item_scores=[2, 2, 2, 2, 2, 2, 2],
         observed_at=datetime(2026, 1, 1, tzinfo=UTC),
+        data_class=data_class,
     )
 
 
@@ -183,6 +188,8 @@ def test_followup_create_then_same_timepoint_correction_recalculates(tmp_path) -
     assert corrected["raw_score"] != created["raw_score"]
     assert corrected["recalculated_immediately"] is True
     assert corrected["lineage"]["plan_id"] == enrolled["plan_id"]
+    assert created["action_decision"]["action"] == "maintain"
+    assert corrected["action_decision"]["action"] == "maintain"
 
 
 def test_correction_can_change_adherence_without_changing_score(tmp_path) -> None:
@@ -272,3 +279,71 @@ def test_pro_plan_and_followup_api_require_token_and_persist(tmp_path, monkeypat
     )
     assert followup_response.status_code == 200
     assert followup_response.json()["operation"] == "created"
+    assert followup_response.json()["action_decision"]["action"] == "maintain"
+
+
+def test_same_plan_api_accepts_real_world_outcome_data_class(tmp_path) -> None:
+    store = _store(tmp_path)
+    enrolled = _enroll(store, data_class="REAL_WORLD_OUTCOME")
+    assert enrolled["baseline"]["data_class"] == "REAL_WORLD_OUTCOME"
+
+    followed = record_or_correct_pro_followup_v1(
+        store,
+        execution_id=enrolled["execution_id"],
+        profile_id=enrolled["profile_id"],
+        plan_id=enrolled["plan_id"],
+        timepoint="week_2",
+        instrument="PSQI",
+        item_scores=[3] * 7,
+        observed_at=datetime(2026, 1, 15, tzinfo=UTC),
+        actual_day_index=14,
+        planned_dose_count=14,
+        taken_dose_count=14,
+    )
+
+    assert followed["interpretation"]["baseline_event"]["data_class"] == (
+        "REAL_WORLD_OUTCOME"
+    )
+    assert followed["interpretation"]["follow_up_event"]["data_class"] == (
+        "REAL_WORLD_OUTCOME"
+    )
+    assert followed["action_decision"]["action"] == "re_optimize"
+
+
+def test_enrollment_retry_rejects_changed_data_class(tmp_path) -> None:
+    store = _store(tmp_path)
+    _enroll(store)
+
+    with pytest.raises(IdempotencyConflictError, match="baseline_conflict"):
+        _enroll(store, data_class="REAL_WORLD_OUTCOME")
+
+
+def test_pro_plan_api_accepts_only_outcome_data_classes(tmp_path, monkeypatch) -> None:
+    store = _store(tmp_path)
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr("apps.inference_api.routes.interim._store", lambda: store)
+    client = TestClient(app)
+    payload = {
+        "recommendation_request": _recommendation_request(),
+        "baseline": {"instrument": "PSQI", "item_scores": [2] * 7},
+        "observed_at": "2026-01-01T00:00:00Z",
+        "data_class": "REAL_WORLD_OUTCOME",
+    }
+
+    accepted = client.post(
+        "/v1/interim/pro/plans",
+        headers={"x-wb-rnd-token": "test-token"},
+        json=payload,
+    )
+    assert accepted.status_code == 200
+    assert accepted.json()["baseline"]["data_class"] == "REAL_WORLD_OUTCOME"
+
+    payload["recommendation_request"]["request_id"] = "other-request"
+    payload["recommendation_request"]["plan_id"] = "plan_other_001"
+    payload["data_class"] = "PHARMACIST_GOLD"
+    rejected = client.post(
+        "/v1/interim/pro/plans",
+        headers={"x-wb-rnd-token": "test-token"},
+        json=payload,
+    )
+    assert rejected.status_code == 422

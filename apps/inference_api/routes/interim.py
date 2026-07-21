@@ -278,6 +278,9 @@ class PROPlanEnrollmentRequest(BaseModel):
     recommendation_request: CoreRecommendationRequest
     baseline: PROAnswersRequest
     observed_at: datetime
+    data_class: Literal["SYNTHETIC_OUTCOME_PROXY", "REAL_WORLD_OUTCOME"] = (
+        "SYNTHETIC_OUTCOME_PROXY"
+    )
 
 
 class PROFollowUpRecordRequest(BaseModel):
@@ -632,6 +635,7 @@ def enroll_pro_plan(payload: PROPlanEnrollmentRequest) -> dict[str, Any]:
             instrument=payload.baseline.instrument,
             item_scores=payload.baseline.item_scores,
             observed_at=payload.observed_at,
+            data_class=payload.data_class,
         )
     except ConsentStorageDeniedError as error:
         raise HTTPException(status_code=403, detail=str(error)) from error

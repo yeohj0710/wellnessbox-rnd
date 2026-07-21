@@ -12,6 +12,7 @@ from wellnessbox_rnd.interim.data_lake import (
     IdempotencyConflictError,
 )
 from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.metrics.pro_actions import decide_pro_plan_action_v1
 from wellnessbox_rnd.metrics.pro_correction import (
     PRORecommendationEffectLineageV1,
     correct_and_recalculate_pro_followup_v1,
@@ -29,6 +30,7 @@ from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.schemas.recommendation import RecommendationRequest
 
 _SCHEDULED_DAY = {"week_2": 14, "week_4": 28, "discontinuation": None}
+OutcomeDataClass = Literal["SYNTHETIC_OUTCOME_PROXY", "REAL_WORLD_OUTCOME"]
 
 
 def enroll_pro_plan_v1(
@@ -38,6 +40,7 @@ def enroll_pro_plan_v1(
     instrument: str,
     item_scores: list[int],
     observed_at: datetime,
+    data_class: OutcomeDataClass = "SYNTHETIC_OUTCOME_PROXY",
 ) -> dict[str, Any]:
     request = RecommendationRequest.model_validate(recommendation_request)
     if not request.data_source_consents.survey.allow_persistent_storage:
@@ -47,7 +50,7 @@ def enroll_pro_plan_v1(
         schema_version="versioned_pro_followup_event_v1",
         assessment_id=f"assessment_{uuid4().hex}",
         plan_id=request.plan_id,
-        data_class="SYNTHETIC_OUTCOME_PROXY",
+        data_class=data_class,
         timepoint="pre_intake",
         scheduled_day_index=0,
         actual_day_index=0,
@@ -173,12 +176,14 @@ def record_or_correct_pro_followup_v1(
             ),
             replacement_payload=follow_up,
         )
+        action_decision = decide_pro_plan_action_v1(corrected.interpretation)
         return {
             "schema_version": "pro_followup_record_result_v1",
             "operation": "corrected",
             "event_id": target_record.event_id,
             "raw_score": score.raw_score,
             "interpretation": corrected.interpretation.model_dump(mode="json"),
+            "action_decision": action_decision.model_dump(mode="json"),
             "lineage": corrected.lineage.model_dump(mode="json"),
             "recalculated_immediately": True,
         }
@@ -190,6 +195,7 @@ def record_or_correct_pro_followup_v1(
         payload=follow_up,
     )
     interpretation = interpret_pro_followup_effect_v1(baseline, follow_up)
+    action_decision = decide_pro_plan_action_v1(interpretation)
     recommendation = next(item for item in trace.events if item.event_type == "recommendation")
     optimization = next(item for item in trace.events if item.event_type == "optimization")
     lineage = PRORecommendationEffectLineageV1(
@@ -209,6 +215,7 @@ def record_or_correct_pro_followup_v1(
         "event_id": appended.event.event_id,
         "raw_score": score.raw_score,
         "interpretation": interpretation.model_dump(mode="json"),
+        "action_decision": action_decision.model_dump(mode="json"),
         "lineage": lineage.model_dump(mode="json"),
         "recalculated_immediately": True,
     }
