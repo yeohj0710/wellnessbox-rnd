@@ -635,6 +635,8 @@ def enroll_pro_plan(payload: PROPlanEnrollmentRequest) -> dict[str, Any]:
         )
     except ConsentStorageDeniedError as error:
         raise HTTPException(status_code=403, detail=str(error)) from error
+    except IdempotencyConflictError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
     except (ExecutionLedgerError, ValueError) as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
 

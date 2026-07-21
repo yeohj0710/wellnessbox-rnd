@@ -6,7 +6,11 @@ from datetime import datetime
 from typing import Any, Literal
 from uuid import uuid4
 
-from wellnessbox_rnd.interim.data_lake import ExecutionLedger, ExecutionTrace
+from wellnessbox_rnd.interim.data_lake import (
+    ExecutionLedger,
+    ExecutionTrace,
+    IdempotencyConflictError,
+)
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.metrics.pro_correction import (
     PRORecommendationEffectLineageV1,
@@ -58,6 +62,7 @@ def enroll_pro_plan_v1(
             store,
             existing_trace,
             request,
+            baseline,
         )
     response = recommend(request)
     trace = ledger.record_recommendation(request=request, response=response)
@@ -227,6 +232,7 @@ def _existing_enrollment_result(
     store: InterimStore,
     trace: ExecutionTrace,
     request: RecommendationRequest,
+    candidate_baseline: PROFollowUpEventV1,
 ) -> dict[str, Any]:
     plan_id = request.plan_id
     recommendation_event = next(
@@ -244,6 +250,13 @@ def _existing_enrollment_result(
         raise ValueError("incomplete_existing_pro_enrollment")
     if recommendation_event.payload.get("plan_id") != plan_id:
         raise ValueError("existing_pro_enrollment_plan_id_mismatch")
+    existing_baseline = normalize_pro_followup_event_v1(baselines[0].payload)
+    if _baseline_idempotency_identity(existing_baseline) != (
+        _baseline_idempotency_identity(candidate_baseline)
+    ):
+        raise IdempotencyConflictError(
+            f"pro_enrollment_baseline_conflict:{request.request_id}"
+        )
     snapshots = store.rows(
         "select expected_output_json from execution_replay_snapshots where execution_id=?",
         (trace.execution_id,),
@@ -265,7 +278,6 @@ def _existing_enrollment_result(
                 "decision_id": recommendation_event.payload["decision_id"],
             }
         ).model_dump(mode="json")
-    baseline = normalize_pro_followup_event_v1(baselines[0].payload)
     return {
         "schema_version": "pro_plan_enrollment_result_v1",
         "recommendation": response,
@@ -273,9 +285,15 @@ def _existing_enrollment_result(
         "plan_id": plan_id,
         "profile_id": trace.profile_id,
         "baseline_event_id": baselines[0].event_id,
-        "baseline": baseline.model_dump(mode="json"),
+        "baseline": existing_baseline.model_dump(mode="json"),
         "deduplicated": True,
     }
+
+
+def _baseline_idempotency_identity(event: PROFollowUpEventV1) -> dict[str, Any]:
+    payload = event.model_dump(mode="json")
+    payload.pop("assessment_id")
+    return payload
 
 
 __all__ = ["enroll_pro_plan_v1", "record_or_correct_pro_followup_v1"]

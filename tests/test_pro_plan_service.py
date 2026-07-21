@@ -6,6 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
+from wellnessbox_rnd.interim.data_lake import IdempotencyConflictError
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.metrics.pro_runtime import (
     load_pro_runtime_reference_v1,
@@ -114,6 +115,32 @@ def test_enrollment_retry_reuses_execution_and_baseline(tmp_path) -> None:
     assert second["deduplicated"] is True
     assert second["execution_id"] == first["execution_id"]
     assert second["baseline_event_id"] == first["baseline_event_id"]
+    assert store.scalar("select count(*) from executions") == 1
+
+
+@pytest.mark.parametrize(
+    ("item_scores", "observed_at"),
+    [
+        ([1] * 7, datetime(2026, 1, 1, tzinfo=UTC)),
+        ([2] * 7, datetime(2026, 1, 2, tzinfo=UTC)),
+    ],
+)
+def test_enrollment_retry_rejects_changed_baseline_identity(
+    tmp_path,
+    item_scores,
+    observed_at,
+) -> None:
+    store = _store(tmp_path)
+    _enroll(store)
+
+    with pytest.raises(IdempotencyConflictError, match="baseline_conflict"):
+        enroll_pro_plan_v1(
+            store,
+            recommendation_request=_recommendation_request(),
+            instrument="PSQI",
+            item_scores=item_scores,
+            observed_at=observed_at,
+        )
     assert store.scalar("select count(*) from executions") == 1
 
 
