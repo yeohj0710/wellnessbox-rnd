@@ -9,6 +9,10 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from wellnessbox_rnd.interim.plan_lifecycle import (
+    PlanLifecycleState,
+    resolve_plan_lifecycle_states,
+)
 from wellnessbox_rnd.interim.reviews import PharmacistReviewService
 from wellnessbox_rnd.interim.store import InterimStore
 
@@ -652,19 +656,13 @@ class WorkflowJobQueue:
             """,
             (execution_id,),
         ).fetchall()
-        plan_linked = False
-        discontinued = False
-        for event in events:
-            payload = json.loads(event["payload_json"])
-            if event["event_type"] in {"recommendation", "optimization"}:
-                plan_linked = plan_linked or payload.get("plan_id") == plan_id
-            if (
-                event["event_type"] == "followup_evaluation"
-                and payload.get("plan_id") == plan_id
-                and payload.get("timepoint") == "discontinuation"
-            ):
-                discontinued = True
-        return plan_linked and not discontinued
+        states = resolve_plan_lifecycle_states(list(events))
+        return states.get(plan_id) in {
+            PlanLifecycleState.ACTIVE,
+            PlanLifecycleState.MAINTAINED,
+            PlanLifecycleState.ADJUSTED,
+            PlanLifecycleState.MONITORING,
+        }
 
     @classmethod
     def _validate_active_execution_plan(

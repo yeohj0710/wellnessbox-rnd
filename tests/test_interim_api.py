@@ -23,6 +23,84 @@ def _headers() -> dict[str, str]:
     return {"x-wb-rnd-token": "test-token"}
 
 
+def _seed_lifecycle_api_store(database: Path) -> None:
+    store = InterimStore(database)
+    store.migrate()
+    now = datetime(2026, 7, 21, 12, 0, tzinfo=UTC).isoformat()
+    with store.transaction() as connection:
+        connection.execute(
+            "insert into user_profiles values "
+            "('usr_1234567890abcdef', 'PROXY_GOLD_SIMULATION', '[]', '{}', 'p', ?)",
+            (now,),
+        )
+        connection.execute(
+            "insert into consent_snapshots values "
+            "('consent_lifecycle_api', 'usr_1234567890abcdef', 1, 'v1', '{}', 'c', ?)",
+            (now,),
+        )
+        connection.execute(
+            "insert into active_profile_consents values "
+            "('usr_1234567890abcdef', 'consent_lifecycle_api', ?)",
+            (now,),
+        )
+        connection.execute(
+            "insert into executions values "
+            "('execution_lifecycle_api', 'request_lifecycle_api', "
+            "'usr_1234567890abcdef', null, 'consent_lifecycle_api', 'r', "
+            "'COMPLETE', ?, ?)",
+            (now, now),
+        )
+        connection.execute(
+            """
+            insert into execution_events(
+              event_id, execution_id, consent_snapshot_id, event_index, event_type,
+              source, idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values ('event_lifecycle_api_seed', 'execution_lifecycle_api',
+              'consent_lifecycle_api', 0, 'recommendation', 'system', 'seed',
+              '{"plan_id":"plan_lifecycle_api"}', 'seed', 'seed', ?)
+            """,
+            (now,),
+        )
+
+
+def test_plan_lifecycle_api_persists_transition_and_rejects_order_fields(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "lifecycle-api.sqlite3"
+    _seed_lifecycle_api_store(database)
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    client = TestClient(app)
+    payload = {
+        "execution_id": "execution_lifecycle_api",
+        "profile_id": "usr_1234567890abcdef",
+        "plan_id": "plan_lifecycle_api",
+        "expected_state": "ACTIVE",
+        "action": "monitor",
+        "reason_code": "TEST_MONITOR",
+        "idempotency_key": "api-monitor",
+        "occurred_at": "2026-07-21T12:00:00Z",
+    }
+
+    response = client.post(
+        "/v1/interim/plan-lifecycle/transitions", headers=_headers(), json=payload
+    )
+    forbidden = client.post(
+        "/v1/interim/plan-lifecycle/transitions",
+        headers=_headers(),
+        json=payload | {"idempotency_key": "api-order", "order_status": "PAID"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["state_after"] == "MONITORING"
+    assert response.json()["order_state_effect"] == "NONE"
+    assert forbidden.status_code == 422
+    assert InterimStore(database).scalar(
+        "select count(*) from execution_events where event_type='followup_evaluation'"
+    ) == 1
+
+
 @pytest.mark.parametrize(
     "constraints",
     [

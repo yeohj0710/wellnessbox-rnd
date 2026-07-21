@@ -31,6 +31,10 @@ from wellnessbox_rnd.interim.data_mutation import (
 from wellnessbox_rnd.interim.inference import recommend_with_registered_model
 from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
+from wellnessbox_rnd.interim.plan_lifecycle import (
+    PlanLifecycleService,
+    PlanLifecycleTransitionRequestV1,
+)
 from wellnessbox_rnd.interim.reviews import (
     PharmacistReviewDecisionV1,
     PharmacistReviewService,
@@ -608,6 +612,31 @@ def enqueue_due_plan_reevaluations(payload: DuePlanCronRequest) -> dict[str, obj
         )
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.post(
+    "/plan-lifecycle/transitions",
+    dependencies=[Depends(require_event_mutation_token)],
+)
+def transition_plan_lifecycle(
+    payload: PlanLifecycleTransitionRequestV1,
+) -> dict[str, Any]:
+    try:
+        return PlanLifecycleService(_store()).transition(payload).model_dump(mode="json")
+    except PermissionError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
+    except ValueError as error:
+        detail = str(error)
+        if detail in {
+            "plan_lifecycle_execution_not_found",
+            "plan_lifecycle_plan_not_found",
+        }:
+            status_code = 404
+        elif "idempotency" in detail or "stale_state" in detail:
+            status_code = 409
+        else:
+            status_code = 422
+        raise HTTPException(status_code=status_code, detail=detail) from error
 
 
 @router.post("/connectors/device")
