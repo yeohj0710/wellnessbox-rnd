@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "c4abf3f6e483e92c1e19345c801f690bc34491f9a136022ca4e40fcc004ae3f5",
+  "audited_manifest_sha256": "1434d4e5604207064f19d19a687d119c55dae03e29994a20e722cd0108e3d8cd",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 46,
+    "COMPLETE": 48,
     "PARTIAL": 13,
-    "PENDING": 60,
+    "PENDING": 58,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -92,9 +92,9 @@
       "title": "다중제약 최적화와 실제 상품",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 0,
+        "COMPLETE": 2,
         "PARTIAL": 0,
-        "PENDING": 10,
+        "PENDING": 8,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -2136,14 +2136,21 @@
         "docs/context/original_plan.pdf#page=20"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/data/contracts/optimization_constraints_v1.json",
+          "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/constraints.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_optimization_constraints.py",
+          "wellnessbox-rnd/scripts/run_optimization_constraints_product_catalog_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op061_op062_optimization_product_catalog_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -2158,15 +2165,27 @@
         "docs/context/original_plan.pdf#page=20"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox/contracts/wb-rnd/product-candidate-match-v1.json",
+          "wellnessbox/lib/product/product.catalog.ts",
+          "wellnessbox/lib/server/wb-rnd-product-candidates.ts"
+        ],
+        "test_files": [
+          "wellnessbox/scripts/qa/check-rnd-product-candidates.cts",
+          "wellnessbox-rnd/scripts/run_optimization_constraints_product_catalog_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op061_op062_optimization_product_catalog_smoke_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox/app/api/tips/route.ts",
+          "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+          "wellnessbox-rnd/data/original_plan/evidence/op061_op062_optimization_product_catalog_smoke_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []

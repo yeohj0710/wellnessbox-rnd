@@ -266,7 +266,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 5ec3adf1f3948e910c1f4498083b43c701eaf557
+          ref: a85767d9dc9418a23a9adeb2372d14a75d10b865
           fetch-depth: 0
           path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
@@ -352,6 +352,11 @@ jobs:
           python scripts/run_pro_worsening_action_real_outcome_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op059_op060_pro_action_real_outcome_smoke_v1.json
+      - name: Check optimization constraints and selling-product contract evidence
+        run: >-
+          python scripts/run_optimization_constraints_product_catalog_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op061_op062_optimization_product_catalog_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -394,6 +399,7 @@ jobs:
           tests/test_pro_plan_service.py
           tests/test_pro_group_effects.py
           tests/test_pro_actions.py
+          tests/test_optimization_constraints.py
       - name: Lint requirement audit
         run: >-
           python -m ruff check
@@ -455,6 +461,7 @@ jobs:
           scripts/run_pro_personal_group_uncertainty_smoke.py
           scripts/run_pro_correction_plan_lineage_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
+          scripts/run_optimization_constraints_product_catalog_smoke.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
           src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py
           src/wellnessbox_rnd/evals/recommendation_replay_compare.py
@@ -479,11 +486,13 @@ jobs:
           src/wellnessbox_rnd/metrics/statistics.py
           src/wellnessbox_rnd/metrics/pro_correction.py
           src/wellnessbox_rnd/metrics/pro_actions.py
+          src/wellnessbox_rnd/optimizer/constraints.py
           tests/test_pro_scoring.py
           tests/test_versioned_pro_instrument_scoring.py
           tests/test_pro_followup_effects.py
           tests/test_pro_plan_service.py
           tests/test_pro_actions.py
+          tests/test_optimization_constraints.py
           src/wellnessbox_rnd/ingestion/reference_ingestion.py
           src/wellnessbox_rnd/interim
           tests/test_interim_api.py

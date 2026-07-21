@@ -1,0 +1,375 @@
+{
+  "cases": {
+    "optimization_constraint_case_count": 6,
+    "optimization_constraints": {
+      "cost": {
+        "candidate": {
+          "candidate_id": "op061-cost",
+          "daily_unit_count": 3,
+          "expected_effect_score": 7.5,
+          "formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "ingredient_keys": [
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "product_count": 2,
+          "safety_status": "allowed",
+          "schema_version": "optimization_candidate_facts_v1",
+          "total_cost_krw": 50001
+        },
+        "checked_dimensions": [
+          "efficacy",
+          "safety",
+          "cost",
+          "daily_burden",
+          "formulation"
+        ],
+        "constraints": {
+          "excluded_ingredient_keys": [
+            "unsafe_ingredient"
+          ],
+          "max_daily_units": 4,
+          "max_products": 2,
+          "max_total_cost_krw": 50000,
+          "minimum_effect_score": 5.0,
+          "policy_version": "2026-07-21.1",
+          "preferred_formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "schema_version": "optimization_constraints_v1"
+        },
+        "feasible": false,
+        "schema_version": "optimization_constraint_evaluation_v1",
+        "violations": [
+          "maximum_total_cost_exceeded"
+        ]
+      },
+      "daily_burden": {
+        "candidate": {
+          "candidate_id": "op061-burden",
+          "daily_unit_count": 5,
+          "expected_effect_score": 7.5,
+          "formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "ingredient_keys": [
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "product_count": 2,
+          "safety_status": "allowed",
+          "schema_version": "optimization_candidate_facts_v1",
+          "total_cost_krw": 42000
+        },
+        "checked_dimensions": [
+          "efficacy",
+          "safety",
+          "cost",
+          "daily_burden",
+          "formulation"
+        ],
+        "constraints": {
+          "excluded_ingredient_keys": [
+            "unsafe_ingredient"
+          ],
+          "max_daily_units": 4,
+          "max_products": 2,
+          "max_total_cost_krw": 50000,
+          "minimum_effect_score": 5.0,
+          "policy_version": "2026-07-21.1",
+          "preferred_formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "schema_version": "optimization_constraints_v1"
+        },
+        "feasible": false,
+        "schema_version": "optimization_constraint_evaluation_v1",
+        "violations": [
+          "maximum_daily_unit_count_exceeded"
+        ]
+      },
+      "efficacy": {
+        "candidate": {
+          "candidate_id": "op061-efficacy",
+          "daily_unit_count": 3,
+          "expected_effect_score": 4.99,
+          "formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "ingredient_keys": [
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "product_count": 2,
+          "safety_status": "allowed",
+          "schema_version": "optimization_candidate_facts_v1",
+          "total_cost_krw": 42000
+        },
+        "checked_dimensions": [
+          "efficacy",
+          "safety",
+          "cost",
+          "daily_burden",
+          "formulation"
+        ],
+        "constraints": {
+          "excluded_ingredient_keys": [
+            "unsafe_ingredient"
+          ],
+          "max_daily_units": 4,
+          "max_products": 2,
+          "max_total_cost_krw": 50000,
+          "minimum_effect_score": 5.0,
+          "policy_version": "2026-07-21.1",
+          "preferred_formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "schema_version": "optimization_constraints_v1"
+        },
+        "feasible": false,
+        "schema_version": "optimization_constraint_evaluation_v1",
+        "violations": [
+          "minimum_effect_score_not_met"
+        ]
+      },
+      "feasible": {
+        "candidate": {
+          "candidate_id": "op061-feasible",
+          "daily_unit_count": 3,
+          "expected_effect_score": 7.5,
+          "formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "ingredient_keys": [
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "product_count": 2,
+          "safety_status": "allowed",
+          "schema_version": "optimization_candidate_facts_v1",
+          "total_cost_krw": 42000
+        },
+        "checked_dimensions": [
+          "efficacy",
+          "safety",
+          "cost",
+          "daily_burden",
+          "formulation"
+        ],
+        "constraints": {
+          "excluded_ingredient_keys": [
+            "unsafe_ingredient"
+          ],
+          "max_daily_units": 4,
+          "max_products": 2,
+          "max_total_cost_krw": 50000,
+          "minimum_effect_score": 5.0,
+          "policy_version": "2026-07-21.1",
+          "preferred_formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "schema_version": "optimization_constraints_v1"
+        },
+        "feasible": true,
+        "schema_version": "optimization_constraint_evaluation_v1",
+        "violations": []
+      },
+      "formulation": {
+        "candidate": {
+          "candidate_id": "op061-formulation",
+          "daily_unit_count": 3,
+          "expected_effect_score": 7.5,
+          "formulations": [
+            "powder"
+          ],
+          "ingredient_keys": [
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "product_count": 2,
+          "safety_status": "allowed",
+          "schema_version": "optimization_candidate_facts_v1",
+          "total_cost_krw": 42000
+        },
+        "checked_dimensions": [
+          "efficacy",
+          "safety",
+          "cost",
+          "daily_burden",
+          "formulation"
+        ],
+        "constraints": {
+          "excluded_ingredient_keys": [
+            "unsafe_ingredient"
+          ],
+          "max_daily_units": 4,
+          "max_products": 2,
+          "max_total_cost_krw": 50000,
+          "minimum_effect_score": 5.0,
+          "policy_version": "2026-07-21.1",
+          "preferred_formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "schema_version": "optimization_constraints_v1"
+        },
+        "feasible": false,
+        "schema_version": "optimization_constraint_evaluation_v1",
+        "violations": [
+          "preferred_formulation_not_met"
+        ]
+      },
+      "safety": {
+        "candidate": {
+          "candidate_id": "op061-safety",
+          "daily_unit_count": 3,
+          "expected_effect_score": 7.5,
+          "formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "ingredient_keys": [
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "product_count": 2,
+          "safety_status": "blocked",
+          "schema_version": "optimization_candidate_facts_v1",
+          "total_cost_krw": 42000
+        },
+        "checked_dimensions": [
+          "efficacy",
+          "safety",
+          "cost",
+          "daily_burden",
+          "formulation"
+        ],
+        "constraints": {
+          "excluded_ingredient_keys": [
+            "unsafe_ingredient"
+          ],
+          "max_daily_units": 4,
+          "max_products": 2,
+          "max_total_cost_krw": 50000,
+          "minimum_effect_score": 5.0,
+          "policy_version": "2026-07-21.1",
+          "preferred_formulations": [
+            "capsule",
+            "tablet"
+          ],
+          "schema_version": "optimization_constraints_v1"
+        },
+        "feasible": false,
+        "schema_version": "optimization_constraint_evaluation_v1",
+        "violations": [
+          "safety_status_blocked"
+        ]
+      }
+    },
+    "service_contract": {
+      "checks": [
+        "product_match_contract_covers_every_mapped_service_ingredient",
+        "api_tips_maps_rnd_ingredients_to_service_ingredients",
+        "mapped_service_ingredients_resolve_to_catalog_fixture_product_ids",
+        "no_match_is_explicit_and_does_not_invent_product_ids",
+        "invalid_product_catalog_fails_closed",
+        "selling_product_facts_include_ingredients_amount_price_stock_and_formulation",
+        "invalid_selling_offer_fails_closed",
+        "missing_or_non_amount_product_facts_fail_closed"
+      ],
+      "observed": {
+        "catalog_fixture_source": "wellnessbox configured Prisma Product catalog with in-stock PharmacyProduct; captured 2026-07-17",
+        "invalid_catalog_http_status": 502,
+        "invalid_facts_http_status": 502,
+        "invalid_offer_http_status": 502,
+        "mapping_coverage_count": 8,
+        "no_match_complete": false,
+        "product_candidate_mapping_version": "2026-07-16.1",
+        "product_ids": [
+          29,
+          44,
+          29,
+          31,
+          35,
+          30,
+          29,
+          29
+        ],
+        "production_operation_proven": false,
+        "service_ingredient_ids": [
+          "ING:CALCIUM",
+          "ING:COQ10",
+          "ING:MAGNESIUM",
+          "ING:OMEGA3",
+          "ING:PROBIOTIC",
+          "ING:VITAMIN_C",
+          "ING:VITAMIN_D",
+          "ING:ZINC"
+        ],
+        "service_route": "POST /api/tips",
+        "unmatched_service_ingredient_ids": []
+      },
+      "ok": true,
+      "schema_version": "op062_service_selling_product_catalog_contract_v1"
+    }
+  },
+  "checks": {
+    "existing_rnd_optimizer_package_extended": true,
+    "existing_service_product_catalog_contract_adapter_used": true,
+    "existing_tips_route_used": true,
+    "five_constraint_dimensions_explicit": true,
+    "invalid_catalog_or_offer_fails_closed": true,
+    "order_created": false,
+    "selling_product_contract_reads_ingredients_amounts_price_stock_formulation": true
+  },
+  "evidence_boundary": {
+    "actual_prisma_query_executed": false,
+    "configured_prisma_query_source_bound": true,
+    "op061_proven_stage": "IMPLEMENTED",
+    "op061_required_stage": "IMPLEMENTED",
+    "op062_proven_stage": "INTEGRATED",
+    "op062_required_stage": "INTEGRATED",
+    "order_or_payment_created": false,
+    "production_catalog_operation_proven": false,
+    "production_data_freshness_proven": false,
+    "production_deployment_proven": false,
+    "service_route_function_integration_proven": true
+  },
+  "schema_version": "op061_op062_optimization_product_catalog_smoke_v1",
+  "source": {
+    "combined_sha256": "83118c67e45f96e6eba41e6ee853977278da8d9a8043239ca35bb3d97da10429",
+    "wellnessbox_commit": "a85767d9dc9418a23a9adeb2372d14a75d10b865",
+    "wellnessbox_paths": [
+      "app/api/tips/route.ts",
+      "contracts/wb-rnd/ingredient-identifier-map-v1.json",
+      "contracts/wb-rnd/product-candidate-catalog-snapshot-v1.json",
+      "contracts/wb-rnd/product-candidate-match-v1.json",
+      "lib/product/product-detail-facts.ts",
+      "lib/product/product.catalog.ts",
+      "lib/product/product.shared.ts",
+      "lib/server/wb-rnd-ingredient-map.ts",
+      "lib/server/wb-rnd-interim-route.ts",
+      "lib/server/wb-rnd-product-candidates.ts",
+      "lib/server/wb-rnd-tips-route-test-hook.ts",
+      "scripts/qa/check-rnd-product-candidates.cts"
+    ],
+    "wellnessbox_rnd_commit": "ea3bc72484708002065ee4929dc62ca006ce980c",
+    "wellnessbox_rnd_paths": [
+      "data/contracts/optimization_constraints_v1.json",
+      "scripts/run_optimization_constraints_product_catalog_smoke.py",
+      "src/wellnessbox_rnd/optimizer/__init__.py",
+      "src/wellnessbox_rnd/optimizer/constraints.py",
+      "tests/test_optimization_constraints.py"
+    ]
+  }
+}

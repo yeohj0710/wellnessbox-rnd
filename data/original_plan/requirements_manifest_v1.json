@@ -1208,8 +1208,46 @@
       "owners": ["wellnessbox-rnd", "wellnessbox"],
       "default_required_stage": "INTEGRATED",
       "requirements": [
-        {"requirement_id": "OP-061", "title": "효능, 안전, 비용, 복용 수, 제형 선호를 최적화 제약으로 명시한다.", "owners": ["wellnessbox-rnd"], "required_stage": "IMPLEMENTED"},
-        {"requirement_id": "OP-062", "title": "판매 상품의 성분, 함량, 가격, 재고, 제형을 읽는 서비스 계약을 만든다."},
+        {
+          "requirement_id": "OP-061",
+          "title": "효능, 안전, 비용, 복용 수, 제형 선호를 최적화 제약으로 명시한다.",
+          "owners": ["wellnessbox-rnd"],
+          "required_stage": "IMPLEMENTED",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/contracts/optimization_constraints_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/constraints.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_optimization_constraints.py",
+              "wellnessbox-rnd/scripts/run_optimization_constraints_product_catalog_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op061_op062_optimization_product_catalog_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-062",
+          "title": "판매 상품의 성분, 함량, 가격, 재고, 제형을 읽는 서비스 계약을 만든다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/contracts/wb-rnd/product-candidate-match-v1.json",
+              "wellnessbox/lib/product/product.catalog.ts",
+              "wellnessbox/lib/server/wb-rnd-product-candidates.ts"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-product-candidates.cts",
+              "wellnessbox-rnd/scripts/run_optimization_constraints_product_catalog_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op061_op062_optimization_product_catalog_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/app/api/tips/route.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox-rnd/data/original_plan/evidence/op061_op062_optimization_product_catalog_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-063", "title": "실제 상품을 성분 조합 후보로 변환한다."},
         {"requirement_id": "OP-064", "title": "제품 간 중복 성분과 합산 용량을 계산한다."},
         {"requirement_id": "OP-065", "title": "예산과 최대 복용 수를 넘는 조합을 제외한다."},

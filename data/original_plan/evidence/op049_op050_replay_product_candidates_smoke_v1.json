@@ -8510,11 +8510,16 @@
       "api_tips_maps_rnd_ingredients_to_service_ingredients",
       "mapped_service_ingredients_resolve_to_catalog_fixture_product_ids",
       "no_match_is_explicit_and_does_not_invent_product_ids",
-      "invalid_product_catalog_fails_closed"
+      "invalid_product_catalog_fails_closed",
+      "selling_product_facts_include_ingredients_amount_price_stock_and_formulation",
+      "invalid_selling_offer_fails_closed",
+      "missing_or_non_amount_product_facts_fail_closed"
     ],
     "observed": {
       "catalog_fixture_source": "wellnessbox configured Prisma Product catalog with in-stock PharmacyProduct; captured 2026-07-17",
       "invalid_catalog_http_status": 502,
+      "invalid_facts_http_status": 502,
+      "invalid_offer_http_status": 502,
       "mapping_coverage_count": 8,
       "no_match_complete": false,
       "product_candidate_mapping_version": "2026-07-16.1",
@@ -8543,12 +8548,12 @@
       "unmatched_service_ingredient_ids": []
     },
     "ok": true,
-    "schema_version": "op050_service_product_candidate_contract_v1"
+    "schema_version": "op062_service_selling_product_catalog_contract_v1"
   },
   "source_identity": {
-    "wellnessbox_commit": "c77e6980871dc8ea1fe0912d22965ed0810c3da9",
+    "wellnessbox_commit": "a85767d9dc9418a23a9adeb2372d14a75d10b865",
     "wellnessbox_rnd_commit": "e09831e29f5b0f767503ade029a5a103f9086d6a",
     "wellnessbox_rnd_source_sha256": "a95490e2cdd98f00123344cafc07de00e6b78b23d8bc3c97185f8e76f5c1793a",
-    "wellnessbox_source_sha256": "6d4f1d1c169ac5052633550f8922b8f942b5983e7da47b4ff6cca561203ebffa"
+    "wellnessbox_source_sha256": "59a800989ec3c183b95f29e6412b4666ed128c7395a8f580bce833d9290d1a5b"
   }
 }
