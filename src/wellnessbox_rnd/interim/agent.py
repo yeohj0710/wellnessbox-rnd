@@ -3,7 +3,6 @@ from __future__ import annotations
 import hashlib
 import json
 from datetime import UTC, datetime, timedelta
-from enum import StrEnum
 from typing import Any
 from uuid import uuid4
 
@@ -11,37 +10,16 @@ from wellnessbox_rnd.interim.connectors import ingest_device_session
 from wellnessbox_rnd.interim.contracts import DataClass
 from wellnessbox_rnd.interim.safety import evaluate_safety
 from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.interim.workflow_contract import (
+    CLOSED_LOOP_ALLOWED_OPERATIONS_V1,
+    CLOSED_LOOP_TRANSITIONS_V1,
+    ClosedLoopOperation,
+    ClosedLoopState,
+    apply_closed_loop_transition_v1,
+)
 
-
-class AgentState(StrEnum):
-    INTAKE = "INTAKE"
-    CONSENT_CHECK = "CONSENT_CHECK"
-    PROFILE_READY = "PROFILE_READY"
-    EVIDENCE_RETRIEVAL = "EVIDENCE_RETRIEVAL"
-    SAFETY_CHECK = "SAFETY_CHECK"
-    RANKING = "RANKING"
-    REGIMEN_OPTIMIZATION = "REGIMEN_OPTIMIZATION"
-    REVIEW_REQUIRED = "REVIEW_REQUIRED"
-    PLAN_READY = "PLAN_READY"
-    FOLLOWUP_ACTIVE = "FOLLOWUP_ACTIVE"
-    STOPPED = "STOPPED"
-    COMPLETED = "COMPLETED"
-
-
-TRANSITIONS: dict[AgentState, set[AgentState]] = {
-    AgentState.INTAKE: {AgentState.CONSENT_CHECK, AgentState.STOPPED},
-    AgentState.CONSENT_CHECK: {AgentState.PROFILE_READY, AgentState.STOPPED},
-    AgentState.PROFILE_READY: {AgentState.EVIDENCE_RETRIEVAL, AgentState.STOPPED},
-    AgentState.EVIDENCE_RETRIEVAL: {AgentState.SAFETY_CHECK, AgentState.STOPPED},
-    AgentState.SAFETY_CHECK: {AgentState.RANKING, AgentState.REVIEW_REQUIRED, AgentState.STOPPED},
-    AgentState.RANKING: {AgentState.REGIMEN_OPTIMIZATION, AgentState.STOPPED},
-    AgentState.REGIMEN_OPTIMIZATION: {AgentState.PLAN_READY, AgentState.REVIEW_REQUIRED},
-    AgentState.REVIEW_REQUIRED: {AgentState.PLAN_READY, AgentState.STOPPED},
-    AgentState.PLAN_READY: {AgentState.FOLLOWUP_ACTIVE, AgentState.COMPLETED, AgentState.STOPPED},
-    AgentState.FOLLOWUP_ACTIVE: {AgentState.COMPLETED, AgentState.STOPPED},
-    AgentState.STOPPED: set(),
-    AgentState.COMPLETED: set(),
-}
+AgentState = ClosedLoopState
+TRANSITIONS = CLOSED_LOOP_TRANSITIONS_V1
 
 TOOL_NAMES = (
     "get_user_profile",
@@ -58,9 +36,34 @@ TOOL_NAMES = (
 
 
 def transition(current: AgentState, target: AgentState) -> AgentState:
-    if target not in TRANSITIONS[current]:
+    operations = [
+        operation
+        for operation in CLOSED_LOOP_ALLOWED_OPERATIONS_V1[current]
+        if _transition_target(current, operation) == target
+    ]
+    if len(operations) != 1:
         raise ValueError(f"invalid_agent_transition:{current}:{target}")
-    return target
+    return apply_closed_loop_transition_v1(
+        current=current,
+        operation=operations[0],
+        target=target,
+    )
+
+
+def _transition_target(
+    current: AgentState,
+    operation: ClosedLoopOperation,
+) -> AgentState | None:
+    for target in TRANSITIONS[current]:
+        try:
+            return apply_closed_loop_transition_v1(
+                current=current,
+                operation=operation,
+                target=target,
+            )
+        except ValueError:
+            continue
+    return None
 
 
 def _json(value: object) -> str:

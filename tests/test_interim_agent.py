@@ -21,8 +21,8 @@ def _agent(tmp_path: Path) -> BoundedAgent:
     return BoundedAgent(store)
 
 
-def test_state_machine_has_twelve_states_and_rejects_unknown_transition() -> None:
-    assert len(AgentState) == 12
+def test_state_machine_uses_authoritative_states_and_rejects_unknown_transition() -> None:
+    assert len(AgentState) == 11
     assert transition(AgentState.INTAKE, AgentState.CONSENT_CHECK) == AgentState.CONSENT_CHECK
     with pytest.raises(ValueError, match="invalid_agent_transition"):
         transition(AgentState.INTAKE, AgentState.PLAN_READY)
