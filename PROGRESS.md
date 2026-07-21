@@ -1,5 +1,19 @@
 # PROGRESS
 
+## 2026-07-21 follow-up input decision and serious-AE stop loop
+
+- Chosen stage/tasks: `original plan / closed-loop execution`, OP-075 and OP-076.
+- Dataset/cases: frozen eval `256` cases; canonical smoke `3` cases for PRO next-job creation, device next-job creation, and serious-AE immediate stop. Evidence SHA-256 is `847f861085d44916bfcab9c6a51ed2d9048262023c9c8e4b031b716b8285dd97`; source SHA-256 is `4e33d0f4560699ceb9e06eb894671f4312be9fcfd734a85ce60dbce73b4c7a28`.
+- Reuse/integration: reused `execution_events`, `followups`, `workflow_jobs`, `agent_runs`, `recommendation_runs`, `review_tasks`, and the existing FastAPI routes. No parallel event store, scheduler, plan registry, or WellnessBox service route was added.
+- Implementation: accepted PRO/device revisions create deterministic immediate plan-reevaluation jobs from stored input identity and effective observation time. A serious adverse event records the stop before accepting its PRO event, stops active plan/recommendation/agent work, cancels queued work, creates an urgent review, and blocks later recommendation/run creation. Run creation and the hold check share one `BEGIN IMMEDIATE` transaction.
+- Evidence stage: OP-075 and OP-076 are `IMPLEMENTED`, below required `OPERATED`, so both remain PARTIAL. No service change, deployment, production queue execution, or production operation is claimed.
+- Generated status: complete `56`, partial `19`, pending `44`, external `1`, contradicted `0`; audit PASS with `75` claims and `216` checked evidence files.
+- Validation: focused agent/PRO regression `30 passed`; workflow-equivalent selection `532 passed`; 21 canonical smokes reproduced; full Ruff PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `921 passed`, `77 failed`; failures remain exactly `73` absent-report and `4` CGM geometry cases, with no new failure group.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: local commits prepared; push and GitHub Actions verification remain pending.
+- Next loops: OP-077/078, OP-079/080, OP-081/082.
+
 ## 2026-07-21 follow-up queue and due-plan Cron loop
 
 - Chosen stage/tasks: `original plan / closed-loop execution`, OP-073 and OP-074.

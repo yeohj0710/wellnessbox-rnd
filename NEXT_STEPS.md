@@ -2,19 +2,19 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-073/074 now use the existing execution ledger and a shared leased job queue, but both remain below required stage `OPERATED`. Generated status is complete `56`, partial `17`, pending `46`, external `1`, contradicted `0`.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-075/076 now decide stored-input-bound reevaluation work and stop plan/recommendation work after a serious adverse event, but both remain below required stage `OPERATED`. Generated status is complete `56`, partial `19`, pending `44`, external `1`, contradicted `0`.
 
 Next three loops:
 
-1. Implement OP-075 and OP-076: decide the next job after PRO or device receipt, then stop the plan and additional recommendations immediately after a serious adverse event.
-2. Implement OP-077 and OP-078: fail closed on duplicate jobs, stale evidence, timeout, and consent loss, then persist pharmacist-review job creation and completion postconditions.
-3. Implement OP-079 and OP-080: prove the full closed-loop lifecycle and keep order state separate from recommendation/plan state.
+1. Implement OP-077 and OP-078: fail closed on duplicate jobs, stale evidence, timeout, and consent loss, then persist pharmacist-review job creation and completion postconditions.
+2. Implement OP-079 and OP-080: prove the full closed-loop lifecycle and keep order state separate from recommendation/plan state.
+3. Implement OP-081 and OP-082: enforce consent revocation across active work and define the minimum-data state without creating a parallel workflow.
 
-Continue through the closed-loop execution group in two-requirement slices. Reuse the current `agent_runs`, `agent_steps`, follow-up tables, and service paths; do not add a parallel scheduler or event store. Production has no deployed R&D endpoint or `WB_RND_*` settings, so OP-071/072 remain below `OPERATED`, and OP-101 through OP-105 remain separate deployment and production-integration requirements.
+Continue through the closed-loop execution group in two-requirement slices. Reuse the current `agent_runs`, `agent_steps`, follow-up tables, and service paths; do not add a parallel scheduler or event store. Production has no deployed R&D endpoint or `WB_RND_*` settings, so OP-071 through OP-076 remain below `OPERATED`, and OP-101 through OP-105 remain separate deployment and production-integration requirements.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 
-The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. The current environment reports `914 passed, 77 failed`; the 77 failures are the same `73 + 4` groups. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
+The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. The current environment reports `921 passed, 77 failed`; the 77 failures are the same `73 + 4` groups. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
 
 ## 2026-07-14 verified restoration path
 

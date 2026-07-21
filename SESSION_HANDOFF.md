@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-21 OP-075/076 handoff
+
+- Chosen stage/tasks: `original plan / closed-loop execution`; OP-075 follow-up input next-job selection and OP-076 serious-adverse-event plan/recommendation stop.
+- Primary dataset and cases: frozen eval `256` cases; canonical smoke `3` cases. Evidence SHA-256 is `847f861085d44916bfcab9c6a51ed2d9048262023c9c8e4b031b716b8285dd97`; source SHA-256 is `4e33d0f4560699ceb9e06eb894671f4312be9fcfd734a85ce60dbce73b4c7a28`.
+- Main files: `src/wellnessbox_rnd/interim/agent.py`, `jobs.py`, `apps/inference_api/routes/interim.py`, the OP-075/076 smoke, focused tests, manifest, completion reports, and affected shared canonical evidence.
+- Code/data/training/simulation: existing ledgers and queues now decide revision-bound PRO/device reevaluation work and enforce a fail-closed serious-AE hold. No model training, frozen dataset change, service code change, deployment, or production operation occurred.
+- Stage/result: both requirements are proven only to `IMPLEMENTED` and remain PARTIAL because both require `OPERATED`. Completion counts are `56/19/44/1/0` for complete/partial/pending/external/contradicted.
+- Validation: focused `30 passed`; workflow-equivalent `532 passed`; full Ruff PASS; audit PASS (`75` claims, `216` evidence files); completion check PASS; 21 smokes reproduced; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `921 passed`, `77 failed`; known failure split `73` absent-report + `4` CGM geometry; other failures `0`.
+- Frozen/replay/slice: `256` cases, seven zero metric deltas, unchanged overall weakest category `safety_blocked`, and no metric-specific weakest-category change.
+- Publication: local commits prepared; push and GitHub Actions verification remain pending.
+- Five current bottlenecks: no deployed R&D process; no durable production R&D database/queue; no production PRO/device ingestion observation; no authenticated production service-to-R&D round trip; no production serious-AE stop/hold telemetry.
+- Next three loops: OP-077/078 fail-closed execution and pharmacist-review lifecycle; OP-079/080 lifecycle E2E and separate order state; OP-081/082 consent revocation and minimum-data-state handling.
+
 ## 2026-07-21 OP-073/074 handoff
 
 - Chosen stage/tasks: `original plan / closed-loop execution`; OP-073 shared follow-up/reminder queue and OP-074 due-plan reevaluation Cron.
