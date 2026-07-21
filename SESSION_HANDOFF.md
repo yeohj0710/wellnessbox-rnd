@@ -10,6 +10,7 @@
 - Validation: focused `59 passed`; workflow-equivalent `541 passed`; full Ruff PASS; audit PASS (`77` claims, `220` evidence files); completion check PASS; 22 smokes regenerated; independent review Critical `0`, Important `0`, Minor `0`.
 - Full regression: `930 passed`, `77 failed`; known failure split `73` absent-report + `4` CGM geometry; other failures `0`.
 - Frozen/replay/slice: `256` cases, seven zero metric deltas, unchanged overall weakest category `safety_blocked`, and no metric-specific weakest-category change.
+- Publication: implementation/evidence/docs HEAD `de7f493415618d11a492f782f8bbd20b3939b206` was pushed; GitHub Actions `Original plan evidence` run `29829346647` passed.
 - Five current bottlenecks: no deployed R&D process; no durable production R&D database/queue; no production worker timeout/stale-evidence telemetry; no authenticated production service-to-R&D round trip; no observed pharmacist review operation.
 - Next three loops: OP-079/080 lifecycle E2E and separate order state; OP-081/082 passage/source indexing and question entity extraction; OP-083/084 bounded RAG and answer evidence/validity/uncertainty.
 

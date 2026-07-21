@@ -11,6 +11,7 @@
 - Validation: focused `59 passed`; workflow-equivalent selection `541 passed`; 22 canonical smokes regenerated; full Ruff PASS; independent review Critical `0`, Important `0`, Minor `0`.
 - Full suite: `930 passed`, `77 failed`; failures remain exactly `73` absent-report and `4` CGM geometry cases, with no new failure group.
 - Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: implementation/evidence/docs HEAD `de7f493415618d11a492f782f8bbd20b3939b206` was pushed; GitHub Actions `Original plan evidence` run `29829346647` passed.
 - Next loops: OP-079/080, OP-081/082, OP-083/084.
 
 ## 2026-07-21 follow-up input decision and serious-AE stop loop
