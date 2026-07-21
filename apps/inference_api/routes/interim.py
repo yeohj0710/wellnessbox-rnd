@@ -11,6 +11,12 @@ from uuid import uuid4
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
 
+from wellnessbox_rnd.chat import (
+    ChatAdapterRequest,
+    generate_chat_answer_with_openai_fallback,
+    load_approved_counseling_scope,
+    load_retrieval_corpus_manifest,
+)
 from wellnessbox_rnd.interim.agent import BoundedAgent
 from wellnessbox_rnd.interim.behavior_log import BehaviorLogRecorder
 from wellnessbox_rnd.interim.connectors import ingest_device_session, source_adapters
@@ -129,6 +135,31 @@ class RecommendationRequest(BaseModel):
     product_constraints: ProductConstraintsRequest = Field(
         default_factory=ProductConstraintsRequest
     )
+
+
+class CounselingTurnRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    schema_version: Literal["counseling_turn_request_v1"] = "counseling_turn_request_v1"
+    service_session_id: str = Field(min_length=1, max_length=128)
+    turn_id: str = Field(min_length=1, max_length=128)
+    profile_id: str = Field(pattern=r"^usr_[a-f0-9]{16,64}$")
+    query: str = Field(min_length=1, max_length=2_000)
+    answered_at: datetime
+    profile: dict[str, Any]
+    consent_scopes: list[str] = Field(default_factory=list)
+    goals: list[str] = Field(min_length=1, max_length=20)
+    ingredients: list[str] = Field(default_factory=list, max_length=20)
+    safety: dict[str, Any] = Field(default_factory=dict)
+    product_constraints: ProductConstraintsRequest = Field(
+        default_factory=ProductConstraintsRequest
+    )
+
+    @model_validator(mode="after")
+    def validate_answer_time(self) -> CounselingTurnRequest:
+        if self.answered_at.tzinfo is None or self.answered_at.utcoffset() is None:
+            raise ValueError("counseling_answered_at_timezone_required")
+        return self
 
 
 class ToolRequest(BaseModel):
@@ -560,6 +591,143 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
             ],
         )
     return response
+
+
+_COUNSELING_CORPUS_PATH = (
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    + "/data/knowledge/counseling_retrieval_corpus_manifest_v1.json"
+)
+
+
+def _canonical_sha256(value: object) -> str:
+    encoded = json.dumps(
+        value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+@router.post("/counseling/turns")
+def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
+    """Compose verified counseling and an existing recommendation run for one chat session."""
+    upsert_profile(
+        ProfileRequest(
+            profile_id=payload.profile_id,
+            consent_scopes=payload.consent_scopes,
+            profile=payload.profile,
+        )
+    )
+    store = _store()
+    agent_run = BoundedAgent(store).create_run(
+        profile_id=payload.profile_id,
+        idempotency_key=f"counseling-session:{payload.service_session_id}",
+    )
+    manifest = load_retrieval_corpus_manifest(_COUNSELING_CORPUS_PATH)
+    adapter_response = generate_chat_answer_with_openai_fallback(
+        manifest,
+        ChatAdapterRequest(
+            query=payload.query,
+            knowledge_scope=load_approved_counseling_scope(),
+            as_of=payload.answered_at,
+        ),
+        allow_live_api=False,
+    )
+    if not adapter_response.verification.passed:
+        raise HTTPException(status_code=422, detail="counseling_answer_verification_failed")
+
+    recommendation_response: dict[str, Any] | None = None
+    recommendation_payload = RecommendationRequest(
+        profile_id=payload.profile_id,
+        goals=payload.goals,
+        ingredients=payload.ingredients,
+        safety=payload.safety,
+        product_constraints=payload.product_constraints,
+    )
+    recommendation_request_hash = hashlib.sha256(
+        recommendation_payload.model_dump_json().encode()
+    ).hexdigest()
+    if adapter_response.answer.status != "safety_escalation":
+        existing = store.rows(
+            "select response_json from recommendation_runs "
+            "where profile_id=? and request_sha256=? order by created_at limit 1",
+            (payload.profile_id, recommendation_request_hash),
+        )
+        recommendation_response = (
+            json.loads(str(existing[0]["response_json"]))
+            if existing
+            else recommendation(recommendation_payload)
+        )
+
+    answer_payload = adapter_response.answer.model_dump(mode="json")
+    binding_payload = {
+        "schema_version": "counseling_session_binding_v1",
+        "service_session_id": payload.service_session_id,
+        "turn_id": payload.turn_id,
+        "profile_id": payload.profile_id,
+        "agent_run_id": str(agent_run["run_id"]),
+        "answer_sha256": _canonical_sha256(answer_payload),
+        "recommendation_run_id": (
+            None if recommendation_response is None else recommendation_response["run_id"]
+        ),
+    }
+    step_identity = _canonical_sha256(
+        {
+            "service_session_id": payload.service_session_id,
+            "turn_id": payload.turn_id,
+            "query": payload.query,
+        }
+    )
+    with store.transaction(immediate=True) as connection:
+        duplicate = connection.execute(
+            "select 1 from agent_steps where run_id=? and tool_name='counseling_answer' "
+            "and arguments_sha256=?",
+            (agent_run["run_id"], step_identity),
+        ).fetchone()
+        if duplicate is None:
+            step_index = int(
+                connection.execute(
+                    "select coalesce(max(step_index), -1) + 1 from agent_steps where run_id=?",
+                    (agent_run["run_id"],),
+                ).fetchone()[0]
+            )
+            connection.execute(
+                "insert into agent_steps values (?, ?, 'counseling_answer', ?, ?, 1, ?, ?)",
+                (
+                    agent_run["run_id"],
+                    step_index,
+                    step_identity,
+                    binding_payload["answer_sha256"],
+                    json.dumps(
+                        [
+                            "SERVICE_CHAT_SESSION_BOUND",
+                            "RECOMMENDATION_SUPPRESSED_FOR_URGENT_SAFETY"
+                            if recommendation_response is None
+                            else "RECOMMENDATION_RUN_BOUND",
+                        ],
+                        separators=(",", ":"),
+                    ),
+                    payload.answered_at.isoformat(),
+                ),
+            )
+
+    return {
+        "schema_version": "counseling_turn_response_v1",
+        "service_session_id": payload.service_session_id,
+        "turn_id": payload.turn_id,
+        "agent_run_id": agent_run["run_id"],
+        "answer": answer_payload,
+        "verification": adapter_response.verification.model_dump(mode="json"),
+        "recommendation_execution": (
+            None
+            if recommendation_response is None
+            else {
+                "run_id": recommendation_response["run_id"],
+                "status": recommendation_response["status"],
+                "simulation": recommendation_response["simulation"],
+            }
+        ),
+        "session_binding_sha256": _canonical_sha256(binding_payload),
+        "deduplicated": bool(agent_run.get("deduplicated")),
+    }
 
 
 @router.post("/agent/runs")

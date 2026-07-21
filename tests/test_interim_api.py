@@ -19,6 +19,22 @@ from wellnessbox_rnd.interim.store import InterimStore
 RETRAINED_PACKAGE_ROOT = Path("artifacts/tips/interim/retrained")
 
 
+def _counseling_payload() -> dict[str, object]:
+    return {
+        "schema_version": "counseling_turn_request_v1",
+        "service_session_id": "chat-session-op087",
+        "turn_id": "turn-op087-1",
+        "profile_id": "usr_1234567890abcdef",
+        "query": "What should counseling say about glucosamine with warfarin?",
+        "answered_at": "2026-07-21T12:00:00Z",
+        "profile": {"age": 41, "goals": ["bone_joint"]},
+        "consent_scopes": ["counseling:write", "recommendation:write"],
+        "goals": ["bone_joint"],
+        "ingredients": ["glucosamine"],
+        "safety": {},
+    }
+
+
 def _headers() -> dict[str, str]:
     return {"x-wb-rnd-token": "test-token"}
 
@@ -99,6 +115,55 @@ def test_plan_lifecycle_api_persists_transition_and_rejects_order_fields(
     assert InterimStore(database).scalar(
         "select count(*) from execution_events where event_type='followup_evaluation'"
     ) == 1
+
+
+def test_counseling_turn_binds_verified_answer_and_recommendation_to_one_session(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "counseling.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            ingredients=("glucosamine",),
+            scores=(0.91,),
+            evidence_ids=("EV-OP087",),
+            model_id=None,
+        ),
+    )
+    client = TestClient(app)
+
+    first = client.post(
+        "/v1/interim/counseling/turns", headers=_headers(), json=_counseling_payload()
+    )
+    second = client.post(
+        "/v1/interim/counseling/turns", headers=_headers(), json=_counseling_payload()
+    )
+
+    assert first.status_code == 200, first.text
+    assert second.status_code == 200, second.text
+    body = first.json()
+    repeated = second.json()
+    assert body["service_session_id"] == "chat-session-op087"
+    assert body["verification"]["passed"] is True
+    assert body["recommendation_execution"]["run_id"]
+    assert repeated["agent_run_id"] == body["agent_run_id"]
+    assert repeated["recommendation_execution"] == body["recommendation_execution"]
+    assert repeated["deduplicated"] is True
+    store = InterimStore(database)
+    assert store.scalar("select count(*) from agent_runs") == 1
+    assert store.scalar("select count(*) from agent_steps") == 1
+    assert store.scalar("select count(*) from recommendation_runs") == 1
+
+
+def test_counseling_turn_requires_internal_token(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(tmp_path / "auth.sqlite3"))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    response = TestClient(app).post(
+        "/v1/interim/counseling/turns", json=_counseling_payload()
+    )
+    assert response.status_code == 401
 
 
 @pytest.mark.parametrize(

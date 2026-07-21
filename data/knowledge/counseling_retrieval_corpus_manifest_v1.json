@@ -1,0 +1,740 @@
+{
+  "manifest_version": "chat_retrieval_corpus_manifest_v1",
+  "chunk_count": 24,
+  "chunks": [
+    {
+      "chunk_id": "chunk::CLM-ADA-CGM-TIR-001",
+      "reference_id": "REF-ADA-CGM-TIR-001",
+      "claim_id": "CLM-ADA-CGM-TIR-001",
+      "source_title": "ADA Standards of Care in Diabetes 2024 - Glycemic Goals and Hypoglycemia",
+      "source_type": "clinical_guideline",
+      "page_or_section": "Table 6.2 standardized CGM metrics",
+      "reference_uri": "https://diabetesjournals.org/care/article/47/Supplement_1/S111/153951/6-Glycemic-Goals-and-Hypoglycemia-Standards-of",
+      "parsed_source_uri": "data/raw_references/ada_cgm_time_in_range.md",
+      "license_status": "OPEN_ACCESS_RESEARCH",
+      "effective_at": "2024-01-01T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "candidate_signal_threshold",
+      "text": "For many nonpregnant adults with type 1 or type 2 diabetes, ADA lists CGM time in range of 70 to 180 mg/dL with a goal above 70%; individual targets can differ.",
+      "excerpt": "ADA defines CGM time in range as the percentage of readings and time between 70 and 180 mg/dL and lists a goal above 70% for many nonpregnant adults with type 1 or type 2 diabetes. The candidate scorer applies this only when diabetes context and a blood-glucose goal are explicit; it does not change medication, diagnose diabetes, or set an individualized treatment target.",
+      "keywords": [
+        "blood_glucose",
+        "candidate_signal_threshold",
+        "cgm"
+      ],
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "blood_glucose",
+        "cgm"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-CDC-ADULT-SLEEP-001",
+      "reference_id": "REF-CDC-ADULT-SLEEP-001",
+      "claim_id": "CLM-CDC-ADULT-SLEEP-001",
+      "source_title": "CDC - FastStats Sleep in Adults",
+      "source_type": "government_health_reference",
+      "page_or_section": "Recommended sleep duration for adults",
+      "reference_uri": "https://www.cdc.gov/sleep/data-research/facts-stats/adults-sleep-facts-and-stats.html",
+      "parsed_source_uri": "data/raw_references/cdc_adult_sleep_duration.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "candidate_signal_threshold",
+      "text": "Adults are generally recommended to obtain at least seven hours of sleep per day; using this boundary for candidate context does not diagnose a sleep disorder or prove supplement efficacy.",
+      "excerpt": "CDC reports that the recommended amount of sleep for adults is at least seven hours per day. The scoring policy uses this only as a bounded adult sleep-context threshold and does not diagnose a sleep disorder or establish supplement efficacy.",
+      "keywords": [
+        "candidate_signal_threshold",
+        "sleep_support",
+        "wearable"
+      ],
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "sleep_support",
+        "wearable"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-CDC-SOLUBLE-FIBER-001",
+      "reference_id": "REF-CDC-SOLUBLE-FIBER-001",
+      "claim_id": "CLM-CDC-SOLUBLE-FIBER-001",
+      "source_title": "CDC - Fiber Helps Manage Diabetes",
+      "source_type": "government_health_reference",
+      "page_or_section": "Health benefits; Soluble fiber",
+      "reference_uri": "https://www.cdc.gov/diabetes/healthy-eating/fiber-helps-diabetes.html",
+      "parsed_source_uri": "data/raw_references/cdc_soluble_fiber_glucose_gut.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2024-05-15T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "moderate_goal_evidence",
+      "text": "Soluble fiber slows digestion and can support blood-sugar control, while dietary fiber also supports digestive health; this category-level evidence does not establish a specific psyllium product or dose.",
+      "excerpt": "CDC describes fiber as supporting digestive health and blood-sugar management. It explains that soluble fiber forms a gel and slows digestion, which can help control blood sugar and cholesterol. This is fiber-category evidence and does not establish one psyllium product or dose.",
+      "keywords": [
+        "blood_glucose",
+        "gut_health",
+        "moderate_goal_evidence",
+        "soluble_fiber"
+      ],
+      "ingredient_keys": [
+        "soluble_fiber"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "blood_glucose",
+        "gut_health"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-MC-ACTION-001",
+      "reference_id": "REF-MC-ACTION-001",
+      "claim_id": "CLM-MC-ACTION-001",
+      "source_title": "WellnessBox R&D Master Context",
+      "source_type": "master_context",
+      "page_or_section": "autonomous closed-loop action policy",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_action_space.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-03-10T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 39,
+      "normalized_claim_type": "action_space_constraint",
+      "text": "Runtime next_action must stay inside the system-owned action space and must not expose manual review or handoff actions.",
+      "excerpt": "This sample reference captures the no-human action space required for the autonomous closed-loop agent. Runtime actions must remain system-owned so the state machine can continue without manual review or handoff semantics.",
+      "keywords": [
+        "action_space",
+        "action_space_constraint",
+        "policy"
+      ],
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "action_space",
+        "policy"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-MC-ACTION-002",
+      "reference_id": "REF-MC-ACTION-001",
+      "claim_id": "CLM-MC-ACTION-002",
+      "source_title": "WellnessBox R&D Master Context",
+      "source_type": "master_context",
+      "page_or_section": "autonomous closed-loop action policy",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_action_space.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-03-10T00:00:00Z",
+      "retired_at": null,
+      "line_start": 45,
+      "line_end": 61,
+      "normalized_claim_type": "safety_recheck_policy",
+      "text": "High-risk safety paths should route to trigger_safety_recheck as a system action instead of a human-handoff action.",
+      "excerpt": "When safety risk rises, the system still owns the control flow and should move into a safety recheck path rather than a human-review action.",
+      "keywords": [
+        "policy",
+        "safety_recheck",
+        "safety_recheck_policy"
+      ],
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "policy",
+        "safety_recheck"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+      "reference_id": "REF-MC-CANDIDATE-SIGNAL-001",
+      "claim_id": "CLM-MC-CANDIDATE-SIGNAL-POLICY-001",
+      "source_title": "Master context candidate signal scoring policy",
+      "source_type": "master_context",
+      "page_or_section": "Sections 6.9, 13.3, and 18.2",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_candidate_signal_scoring.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "candidate_signal_policy",
+      "text": "Candidate scoring may use normalized symptom, laboratory, lifestyle, dietary, wearable, CGM, and genetic context after safety filtering; the resulting points are ordering policy rather than clinical efficacy probabilities.",
+      "excerpt": "The master context requires candidate generation to use symptoms, lifestyle, dietary and laboratory context after safety filtering. It also lists bounded genetic adjustment directions. Candidate points are deterministic ordering policy, not a diagnosis, treatment target, dose recommendation, or efficacy probability.",
+      "keywords": [
+        "candidate_signal_policy"
+      ],
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "candidate_signal_policy"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-MC-CANDIDATE-SIGNAL-CYP1A2-001",
+      "reference_id": "REF-MC-CANDIDATE-SIGNAL-001",
+      "claim_id": "CLM-MC-CANDIDATE-SIGNAL-CYP1A2-001",
+      "source_title": "Master context candidate signal scoring policy",
+      "source_type": "master_context",
+      "page_or_section": "Sections 6.9, 13.3, and 18.2",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_candidate_signal_scoring.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 22,
+      "line_end": 28,
+      "normalized_claim_type": "genetic_candidate_signal_policy",
+      "text": "The master-context prototype increases L-theanine priority for a declared CYP1A2 slow-metabolizer tag, without treating the tag as a diagnosis or efficacy guarantee.",
+      "excerpt": "Structured claim block.",
+      "keywords": [
+        "genetic_candidate_signal_policy",
+        "l_theanine",
+        "sleep_support",
+        "stress_support"
+      ],
+      "ingredient_keys": [
+        "l_theanine"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "sleep_support",
+        "stress_support"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-MC-CANDIDATE-SIGNAL-LPL-001",
+      "reference_id": "REF-MC-CANDIDATE-SIGNAL-001",
+      "claim_id": "CLM-MC-CANDIDATE-SIGNAL-LPL-001",
+      "source_title": "Master context candidate signal scoring policy",
+      "source_type": "master_context",
+      "page_or_section": "Sections 6.9, 13.3, and 18.2",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_candidate_signal_scoring.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 31,
+      "line_end": 37,
+      "normalized_claim_type": "genetic_candidate_signal_policy",
+      "text": "The master-context prototype increases omega-3 priority for a declared adverse LPL triglyceride-risk tag, without treating the tag as a diagnosis or efficacy guarantee.",
+      "excerpt": "Structured claim block.",
+      "keywords": [
+        "genetic_candidate_signal_policy",
+        "heart_health",
+        "omega3"
+      ],
+      "ingredient_keys": [
+        "omega3"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "heart_health"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-MC-CITATION-001",
+      "reference_id": "REF-MC-CITATION-001",
+      "claim_id": "CLM-MC-CITATION-001",
+      "source_title": "WellnessBox R&D Master Context",
+      "source_type": "master_context",
+      "page_or_section": "17.4 citation structure",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_citation_structure.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-03-10T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 29,
+      "normalized_claim_type": "citation_requirement",
+      "text": "Safety engine outputs must always carry reference_ids so the closed-loop agent stays citation-backed.",
+      "excerpt": "This sample reference normalizes citation requirements from the master context into a deterministic raw document. Structured citations need stable identifiers and typed fields so downstream safety and explanation modules can validate them.",
+      "keywords": [
+        "citation_requirement",
+        "citations",
+        "safety_engine"
+      ],
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "citations",
+        "safety_engine"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-MC-CITATION-002",
+      "reference_id": "REF-MC-CITATION-001",
+      "claim_id": "CLM-MC-CITATION-002",
+      "source_title": "WellnessBox R&D Master Context",
+      "source_type": "master_context",
+      "page_or_section": "17.4 citation structure",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_citation_structure.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-03-10T00:00:00Z",
+      "retired_at": null,
+      "line_start": 36,
+      "line_end": 59,
+      "normalized_claim_type": "citation_schema",
+      "text": "Structured citations should include ref_id, source_title, source_type, page_or_section, claim_text, and normalized_claim_type.",
+      "excerpt": "The canonical citation payload also needs a stable structure instead of free-text retrieval output. That structure is what lets rule ids, claim ids, and references stay connected across ingestion and runtime explanation.",
+      "keywords": [
+        "citation_schema",
+        "citations",
+        "knowledge_base"
+      ],
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "citations",
+        "knowledge_base"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-MC-GOAL-PRIOR-POLICY-001",
+      "reference_id": "REF-MC-GOAL-PRIOR-001",
+      "claim_id": "CLM-MC-GOAL-PRIOR-POLICY-001",
+      "source_title": "WellnessBox R&D Master Context",
+      "source_type": "master_context",
+      "page_or_section": "Sections 13.3 and 18.1 - candidate generation and domain priors",
+      "reference_uri": "docs/context/master_context.md",
+      "parsed_source_uri": "data/raw_references/master_context_goal_prior_policy.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "candidate_prior_policy",
+      "text": "Each managed catalog ingredient-goal pair receives a versioned candidate-ordering prior before safety filtering; the prior is an internal selection policy and not a clinical efficacy probability.",
+      "excerpt": "The master context requires goal-specific candidate tables followed by a base prior score before safety filtering and optimization. The prior is a deterministic candidate-ordering policy, not an efficacy probability or treatment claim. Clinical evidence metadata must therefore qualify the policy without changing its meaning.",
+      "keywords": [
+        "candidate_prior_policy"
+      ],
+      "ingredient_keys": [],
+      "medication_keys": [],
+      "domain_keys": [
+        "candidate_prior_policy"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NCCIH-BERBERINE-GLUCOSE-001",
+      "reference_id": "REF-NCCIH-BERBERINE-GLUCOSE-001",
+      "claim_id": "CLM-NCCIH-BERBERINE-GLUCOSE-001",
+      "source_title": "NCCIH - Diabetes and Dietary Supplements",
+      "source_type": "government_health_reference",
+      "page_or_section": "Berberine",
+      "reference_uri": "https://www.nccih.nih.gov/health/diabetes-and-dietary-supplements-what-you-need-to-know",
+      "parsed_source_uri": "data/raw_references/nccih_berberine_glucose.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "limited_goal_evidence",
+      "text": "Berberine might help blood-glucose control, but heterogeneous effects, study-quality limitations, limited generalizability, interactions, and pregnancy restrictions require cautious interpretation.",
+      "excerpt": "NCCIH summarizes a review suggesting possible glucose-lowering and insulin-resistance benefits from berberine, while emphasizing heterogeneous effects, weak study quality, and limited generalizability. It also notes medication interactions and pregnancy and breastfeeding restrictions.",
+      "keywords": [
+        "berberine",
+        "blood_glucose",
+        "limited_goal_evidence"
+      ],
+      "ingredient_keys": [
+        "berberine"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "blood_glucose"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NCCIH-COQ10-HEART-001",
+      "reference_id": "REF-NCCIH-COQ10-HEART-001",
+      "claim_id": "CLM-NCCIH-COQ10-HEART-001",
+      "source_title": "NCCIH - Coenzyme Q10",
+      "source_type": "government_health_reference",
+      "page_or_section": "Bottom Line",
+      "reference_uri": "https://www.nccih.nih.gov/health/coenzyme-q10",
+      "parsed_source_uri": "data/raw_references/nccih_coq10_heart.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "inconclusive_goal_evidence",
+      "text": "Evidence for CoQ10 in heart-disease prevention and heart failure is inconclusive, so it supports only exploratory consideration rather than a cardiovascular efficacy claim.",
+      "excerpt": "NCCIH reports that only a few studies have examined CoQ10 for heart-disease prevention and that results for prevention and heart failure are inconclusive. This supports only a very low exploratory prior, not a cardiovascular benefit claim.",
+      "keywords": [
+        "coq10",
+        "heart_health",
+        "inconclusive_goal_evidence"
+      ],
+      "ingredient_keys": [
+        "coq10"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "heart_health"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NCCIH-MAGNESIUM-SLEEP-001",
+      "reference_id": "REF-NCCIH-MAGNESIUM-SLEEP-001",
+      "claim_id": "CLM-NCCIH-MAGNESIUM-SLEEP-001",
+      "source_title": "NCCIH - Magnesium Supplements for Sleep Disorders",
+      "source_type": "government_health_reference",
+      "page_or_section": "Evidence summary",
+      "reference_uri": "https://www.nccih.nih.gov/health/in-the-news-magnesium-supplements-for-sleep-disorders",
+      "parsed_source_uri": "data/raw_references/nccih_magnesium_sleep.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "mixed_goal_evidence",
+      "text": "Research on magnesium supplements for insomnia and other sleep disorders is limited and conflicting, and rigorous evidence is insufficient to determine effectiveness; the evidence is not specific to magnesium glycinate.",
+      "excerpt": "NCCIH reports that magnesium research for insomnia and other sleep disorders is sparse. Reviews found low-quality, small, or conflicting studies, so the evidence is not sufficient to determine effectiveness. This evidence concerns magnesium generally and does not establish a magnesium-glycinate-specific effect.",
+      "keywords": [
+        "magnesium_glycinate",
+        "mixed_goal_evidence",
+        "sleep_support"
+      ],
+      "ingredient_keys": [
+        "magnesium_glycinate"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "sleep_support"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NCCIH-PROBIOTICS-GUT-001",
+      "reference_id": "REF-NCCIH-PROBIOTICS-GUT-001",
+      "claim_id": "CLM-NCCIH-PROBIOTICS-GUT-001",
+      "source_title": "NCCIH - Probiotics Usefulness and Safety",
+      "source_type": "government_health_reference",
+      "page_or_section": "Gastrointestinal Conditions",
+      "reference_uri": "https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety",
+      "parsed_source_uri": "data/raw_references/nccih_probiotics_gut.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "limited_goal_evidence",
+      "text": "Some probiotics show promise for selected gastrointestinal outcomes, but effects are strain- and condition-specific and the effective product, dose, and beneficiary groups are often uncertain.",
+      "excerpt": "NCCIH summarizes some promising gastrointestinal findings for probiotics but emphasizes that effects vary by strain and condition, and that the effective product, dose, and beneficiary groups often remain uncertain.",
+      "keywords": [
+        "gut_health",
+        "limited_goal_evidence",
+        "probiotics"
+      ],
+      "ingredient_keys": [
+        "probiotics"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "gut_health"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NIH-ODS-CALCIUM-BONE-001",
+      "reference_id": "REF-NIH-ODS-CALCIUM-BONE-001",
+      "claim_id": "CLM-NIH-ODS-CALCIUM-BONE-001",
+      "source_title": "NIH Office of Dietary Supplements - Calcium",
+      "source_type": "government_health_reference",
+      "page_or_section": "Introduction; Calcium and Health",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/Calcium-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_calcium_bone.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "moderate_goal_evidence",
+      "text": "Calcium is a major structural component of bone and participates in bone remodeling; this category-level evidence does not establish calcium-citrate superiority over other forms.",
+      "excerpt": "NIH ODS describes calcium as a major structural component of bone and teeth and explains its continuous role in bone remodeling. This supports calcium-category relevance but does not establish that calcium citrate is superior to other calcium forms.",
+      "keywords": [
+        "bone_joint",
+        "calcium_citrate",
+        "moderate_goal_evidence"
+      ],
+      "ingredient_keys": [
+        "calcium_citrate"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "bone_joint"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NIH-ODS-IMMUNE-ADEQUACY-001",
+      "reference_id": "REF-NIH-ODS-IMMUNE-001",
+      "claim_id": "CLM-NIH-ODS-IMMUNE-ADEQUACY-001",
+      "source_title": "NIH Office of Dietary Supplements - Dietary Supplements for Immune Function and Infectious Diseases",
+      "source_type": "government_health_reference",
+      "page_or_section": "Introduction; Vitamins and Minerals",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/ImmuneFunction-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_immune_micronutrients.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2026-07-16T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "nutrient_adequacy_goal_evidence",
+      "text": "Adequate vitamin C, vitamin D, and zinc status supports normal immune function, while routine supplementation in the absence of deficiency probably does little to prevent or treat specific infections.",
+      "excerpt": "NIH ODS states that adequate vitamin C, vitamin D, and zinc intake is important for immune function and that deficiencies can weaken immunity. It also cautions that routine micronutrient supplementation probably does little to prevent or treat specific infections when deficiency is absent.",
+      "keywords": [
+        "general_wellness",
+        "immunity_support",
+        "nutrient_adequacy_goal_evidence",
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "ingredient_keys": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "general_wellness",
+        "immunity_support"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NIH-ODS-OMEGA3-HEART-001",
+      "reference_id": "REF-NIH-ODS-OMEGA3-HEART-001",
+      "claim_id": "CLM-NIH-ODS-OMEGA3-HEART-001",
+      "source_title": "NIH Office of Dietary Supplements - Omega-3 Fatty Acids",
+      "source_type": "government_health_reference",
+      "page_or_section": "Conclusions about omega-3s and cardiovascular disease",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_omega3_heart.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2025-08-22T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "moderate_goal_evidence",
+      "text": "Long-chain omega-3 supplements lower triglycerides and might reduce some cardiovascular endpoints, but coronary-risk evidence is supportive rather than conclusive and varies by population.",
+      "excerpt": "NIH ODS reports that long-chain omega-3 supplements lower triglyceride levels and might reduce some cardiovascular endpoints, with stronger evidence in people with existing coronary disease than in healthy populations. Coronary-risk evidence remains supportive but not conclusive.",
+      "keywords": [
+        "heart_health",
+        "moderate_goal_evidence",
+        "omega3"
+      ],
+      "ingredient_keys": [
+        "omega3"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "heart_health"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NIH-ODS-OMEGA3-WARFARIN-001",
+      "reference_id": "REF-NIH-ODS-OMEGA3-001",
+      "claim_id": "CLM-NIH-ODS-OMEGA3-WARFARIN-001",
+      "source_title": "NIH Office of Dietary Supplements - Omega-3 Fatty Acids",
+      "source_type": "government_health_reference",
+      "page_or_section": "Interactions with Medications - Warfarin and similar anticoagulants",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_omega3_warfarin.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2025-08-22T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 20,
+      "normalized_claim_type": "drug_interaction",
+      "text": "Fish oil might prolong clotting time with warfarin, although most research found that 3–6 g/day did not significantly affect anticoagulant status; FDA-approved omega-3 pharmaceutical package inserts state that patients taking those products with anticoagulants should be monitored periodically for INR changes.",
+      "excerpt": "The NIH Office of Dietary Supplements describes a possible fish-oil and warfarin interaction, notes that most research at 3–6 g/day did not significantly change anticoagulant status, and reports that FDA-approved omega-3 pharmaceutical package inserts call for periodic INR monitoring when those products are used with anticoagulants. The source does not state that dietary omega-3 products universally require exclusion.",
+      "keywords": [
+        "bleeding_risk",
+        "coumadin",
+        "drug_interaction",
+        "omega3",
+        "warfarin"
+      ],
+      "ingredient_keys": [
+        "omega3"
+      ],
+      "medication_keys": [
+        "coumadin",
+        "warfarin"
+      ],
+      "domain_keys": [
+        "bleeding_risk",
+        "drug_interaction"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NIH-ODS-B12-ENERGY-001",
+      "reference_id": "REF-NIH-ODS-B12-ENERGY-001",
+      "claim_id": "CLM-NIH-ODS-B12-ENERGY-001",
+      "source_title": "NIH Office of Dietary Supplements - Vitamin B12",
+      "source_type": "government_health_reference",
+      "page_or_section": "Energy and endurance",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/VitaminB12-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_vitamin_b12_energy.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2024-03-26T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "null_goal_evidence_without_deficiency",
+      "text": "Vitamin B12 has a role in energy metabolism, but supplementation does not appear to improve performance or endurance without a nutritional deficit; this does not establish whole B-complex efficacy.",
+      "excerpt": "NIH ODS notes vitamin B12's role in energy metabolism but reports that supplementation does not appear to improve performance or endurance when vitamin B12 status is sufficient. This component-level evidence does not establish efficacy for a whole vitamin-B-complex product.",
+      "keywords": [
+        "energy_support",
+        "null_goal_evidence_without_deficiency",
+        "vitamin_b_complex"
+      ],
+      "ingredient_keys": [
+        "vitamin_b_complex"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "energy_support"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NIH-ODS-B12-VEGETARIAN-001",
+      "reference_id": "REF-NIH-ODS-B12-ENERGY-001",
+      "claim_id": "CLM-NIH-ODS-B12-VEGETARIAN-001",
+      "source_title": "NIH Office of Dietary Supplements - Vitamin B12",
+      "source_type": "government_health_reference",
+      "page_or_section": "Energy and endurance",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/VitaminB12-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_vitamin_b12_energy.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2024-03-26T00:00:00Z",
+      "retired_at": null,
+      "line_start": 23,
+      "line_end": 29,
+      "normalized_claim_type": "dietary_pattern_candidate_signal",
+      "text": "Vegetarian and vegan dietary patterns increase the risk of vitamin B12 inadequacy because natural food sources are largely animal foods; this does not establish whole B-complex efficacy.",
+      "excerpt": "NIH ODS also identifies vegetarian and vegan dietary patterns as risk factors for vitamin B12 inadequacy because natural food sources are largely animal foods. This supports a bounded diet-context ordering term, not a diagnosis and not whole B-complex efficacy.",
+      "keywords": [
+        "dietary_pattern_candidate_signal",
+        "energy_support",
+        "general_wellness",
+        "vitamin_b_complex"
+      ],
+      "ingredient_keys": [
+        "vitamin_b_complex"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "energy_support",
+        "general_wellness"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-NIH-ODS-VITD-BONE-001",
+      "reference_id": "REF-NIH-ODS-VITD-BONE-001",
+      "claim_id": "CLM-NIH-ODS-VITD-BONE-001",
+      "source_title": "NIH Office of Dietary Supplements - Vitamin D",
+      "source_type": "government_health_reference",
+      "page_or_section": "Bone health and osteoporosis",
+      "reference_uri": "https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/",
+      "parsed_source_uri": "data/raw_references/nih_ods_vitamin_d_bone.md",
+      "license_status": "PUBLIC_GOVERNMENT",
+      "effective_at": "2025-06-27T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "moderate_goal_evidence",
+      "text": "Vitamin D is required for calcium absorption and normal bone mineralization, while supplementation outcomes for fractures and falls vary by population and remain inconsistent.",
+      "excerpt": "NIH ODS describes vitamin D as necessary for calcium absorption and normal bone mineralization. Trials of vitamin D with calcium show small bone-density increases in some older populations, while community fracture and fall findings remain inconsistent.",
+      "keywords": [
+        "bone_joint",
+        "moderate_goal_evidence",
+        "vitamin_d3"
+      ],
+      "ingredient_keys": [
+        "vitamin_d3"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "bone_joint"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001",
+      "reference_id": "REF-PUBMED-LTHEANINE-001",
+      "claim_id": "CLM-PUBMED-LTHEANINE-STRESS-SLEEP-001",
+      "source_title": "Effects of L-Theanine Administration on Stress-Related Symptoms and Cognitive Functions in Healthy Adults",
+      "source_type": "peer_reviewed_trial",
+      "page_or_section": "Abstract; randomized placebo-controlled crossover trial",
+      "reference_uri": "https://pubmed.ncbi.nlm.nih.gov/31623400/",
+      "parsed_source_uri": "data/raw_references/pubmed_l_theanine_stress_sleep.md",
+      "license_status": "OPEN_ACCESS_RESEARCH",
+      "effective_at": "2019-10-03T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 19,
+      "normalized_claim_type": "limited_goal_evidence",
+      "text": "A small four-week randomized crossover trial in 30 healthy adults reported improvements in selected stress-related and sleep-quality scores with L-theanine, but the sample size and duration limit generalization.",
+      "excerpt": "A randomized, double-blind crossover study of 30 healthy adults reported lower stress-related scale and Pittsburgh Sleep Quality Index scores after four weeks of 200 mg/day L-theanine. The small sample and short duration limit generalization and do not establish treatment efficacy.",
+      "keywords": [
+        "l_theanine",
+        "limited_goal_evidence",
+        "sleep_support",
+        "stress_support"
+      ],
+      "ingredient_keys": [
+        "l_theanine"
+      ],
+      "medication_keys": [],
+      "domain_keys": [
+        "sleep_support",
+        "stress_support"
+      ]
+    },
+    {
+      "chunk_id": "chunk::CLM-KNOWLEDGE-ANTICOAG-001",
+      "reference_id": "REF-KNOWLEDGE-ANTICOAG-001",
+      "claim_id": "CLM-KNOWLEDGE-ANTICOAG-001",
+      "source_title": "Supplement Interaction Notes",
+      "source_type": "interaction_reference",
+      "page_or_section": "glucosamine chondroitin and anticoagulants",
+      "reference_uri": "data/knowledge/supplements/supplement_overdose_and_drug_interactions_expert.md",
+      "parsed_source_uri": "data/raw_references/supplement_warfarin_interaction.md",
+      "license_status": "APPROVED_INTERNAL",
+      "effective_at": "2026-03-10T00:00:00Z",
+      "retired_at": null,
+      "line_start": 13,
+      "line_end": 33,
+      "normalized_claim_type": "drug_interaction",
+      "text": "Glucosamine or chondroitin used with warfarin or Coumadin can increase anticoagulant effect and bleeding risk.",
+      "excerpt": "This sample reference captures the anticoagulant interaction note already present in the local supplement knowledge files. Glucosamine and chondroitin should be treated as a bleeding-risk interaction when warfarin or Coumadin is present.",
+      "keywords": [
+        "bleeding_risk",
+        "chondroitin",
+        "coumadin",
+        "drug_interaction",
+        "glucosamine",
+        "warfarin"
+      ],
+      "ingredient_keys": [
+        "chondroitin",
+        "glucosamine"
+      ],
+      "medication_keys": [
+        "coumadin",
+        "warfarin"
+      ],
+      "domain_keys": [
+        "bleeding_risk",
+        "drug_interaction"
+      ]
+    }
+  ]
+}
