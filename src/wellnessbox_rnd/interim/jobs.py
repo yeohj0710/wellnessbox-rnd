@@ -96,6 +96,7 @@ class WorkflowJobQueue:
                 profile_id=profile_id,
                 plan_id=plan_id,
             )
+            self._ensure_user_profile_projection(connection, profile_id=profile_id)
             existing_followup = connection.execute(
                 "select * from followups where followup_id=?", (followup_id,)
             ).fetchone()
@@ -161,6 +162,38 @@ class WorkflowJobQueue:
             "deduplicated": deduplicated,
         }
 
+    @staticmethod
+    def _ensure_user_profile_projection(connection, *, profile_id: str) -> None:
+        existing = connection.execute(
+            "select 1 from user_profiles where profile_id=?", (profile_id,)
+        ).fetchone()
+        if existing is not None:
+            return
+        snapshot = connection.execute(
+            """
+            select data_class, payload_json, payload_sha256, created_at
+            from profile_snapshots where profile_id=? order by version desc limit 1
+            """,
+            (profile_id,),
+        ).fetchone()
+        if snapshot is None:
+            raise ValueError("followup_profile_projection_required")
+        connection.execute(
+            """
+            insert into user_profiles(
+              profile_id, data_class, consent_scopes_json, payload_json,
+              payload_sha256, created_at
+            ) values (?, ?, '[]', ?, ?, ?)
+            """,
+            (
+                profile_id,
+                snapshot["data_class"],
+                snapshot["payload_json"],
+                snapshot["payload_sha256"],
+                snapshot["created_at"],
+            ),
+        )
+
     def enqueue_due_plan_reevaluations(self, *, as_of: datetime) -> dict[str, object]:
         cutoff = _utc(as_of)
         jobs: list[WorkflowJobV1] = []
@@ -218,6 +251,105 @@ class WorkflowJobQueue:
             "created_job_count": len(jobs) - deduplicated_count,
             "deduplicated_job_count": deduplicated_count,
             "jobs": [job.model_dump(mode="json") for job in jobs],
+        }
+
+    def enqueue_input_reevaluation(
+        self,
+        *,
+        profile_id: str,
+        plan_id: str,
+        execution_id: str,
+        input_kind: str,
+        input_id: str,
+        input_sha256: str,
+        received_at: datetime,
+    ) -> dict[str, object]:
+        received = _utc(received_at)
+        kind = input_kind.strip().upper()
+        if kind not in {"PRO", "DEVICE"}:
+            raise ValueError("followup_input_kind_invalid")
+        if not input_id.strip():
+            raise ValueError("followup_input_id_required")
+        invalid_hash = len(input_sha256) != 64 or any(
+            character not in "0123456789abcdef" for character in input_sha256
+        )
+        if invalid_hash:
+            raise ValueError("followup_input_sha256_invalid")
+        identity = _sha(
+            {
+                "execution_id": execution_id,
+                "plan_id": plan_id,
+                "input_kind": kind,
+                "input_id": input_id,
+            }
+        )
+        followup_id = f"fu_input_{identity[:24]}"
+        idempotency_key = f"input-reevaluation:{identity}"
+        payload = {
+            "schema_version": "followup_input_reevaluation_job_payload_v1",
+            "input_kind": kind,
+            "input_id": input_id,
+            "input_sha256": input_sha256,
+            "received_at": received.isoformat(),
+            "reason_code": f"{kind}_INPUT_RECEIVED",
+        }
+        with self.store.transaction(immediate=True) as connection:
+            self._validate_active_execution_plan(
+                connection,
+                execution_id=execution_id,
+                profile_id=profile_id,
+                plan_id=plan_id,
+            )
+            self._ensure_user_profile_projection(connection, profile_id=profile_id)
+            existing_followup = connection.execute(
+                "select * from followups where followup_id=?", (followup_id,)
+            ).fetchone()
+            if existing_followup is None:
+                connection.execute(
+                    """
+                    insert into followups(
+                      followup_id, profile_id, plan_id, execution_id, due_at,
+                      requested_data_json, status, created_at
+                    ) values (?, ?, ?, ?, ?, ?, 'REEVALUATION_QUEUED', ?)
+                    """,
+                    (
+                        followup_id,
+                        profile_id,
+                        plan_id,
+                        execution_id,
+                        received.isoformat(),
+                        _json([kind]),
+                        received.isoformat(),
+                    ),
+                )
+            else:
+                expected = (profile_id, plan_id, execution_id)
+                observed = (
+                    str(existing_followup["profile_id"]),
+                    str(existing_followup["plan_id"]),
+                    str(existing_followup["execution_id"]),
+                )
+                if observed != expected:
+                    raise ValueError("followup_input_identity_conflict")
+            job, deduplicated = self._enqueue_in_transaction(
+                connection,
+                job_type=WorkflowJobType.PLAN_REEVALUATION,
+                idempotency_key=idempotency_key,
+                profile_id=profile_id,
+                plan_id=plan_id,
+                followup_id=followup_id,
+                execution_id=execution_id,
+                scheduled_at=received,
+                payload=payload,
+                created_at=received,
+            )
+        return {
+            "schema_version": "followup_input_next_job_decision_v1",
+            "decision": "REEVALUATE_PLAN",
+            "reason_code": f"{kind}_INPUT_RECEIVED",
+            "followup_id": followup_id,
+            "next_job": job.model_dump(mode="json"),
+            "deduplicated": deduplicated,
         }
 
     def claim_ready_jobs(

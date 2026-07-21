@@ -9,7 +9,7 @@ from typing import Annotated, Any, Literal
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
 
 from wellnessbox_rnd.interim.agent import BoundedAgent
 from wellnessbox_rnd.interim.behavior_log import BehaviorLogRecorder
@@ -158,6 +158,27 @@ class DeviceRequest(BaseModel):
     consent_scopes: list[str]
     payload: dict[str, Any]
     environment: str = "simulation"
+    execution_id: str | None = None
+    plan_id: str | None = None
+
+    @model_validator(mode="after")
+    def validate_plan_context(self) -> DeviceRequest:
+        if (self.execution_id is None) != (self.plan_id is None):
+            raise ValueError("device_plan_context_must_be_complete")
+        return self
+
+
+class AdverseEventRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    case_id: str = Field(min_length=3, max_length=128)
+    run_id: str | None = None
+    profile_id: str = Field(pattern=r"^usr_[a-f0-9]{16,64}$")
+    execution_id: str
+    plan_id: str = Field(min_length=3, max_length=128)
+    serious: bool
+    observed_at: datetime
+    related_to_recommendation: bool = True
 
 
 class ExecutionEventRequest(BaseModel):
@@ -402,6 +423,10 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
     )
     if not profile_rows:
         raise HTTPException(status_code=404, detail="profile_not_found")
+    try:
+        BoundedAgent(store)._raise_if_recommendation_held(payload.profile_id)
+    except ValueError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
     profile = json.loads(profile_rows[0][0])
     profile_safety_payload = _source_safety_input(profile, payload.ingredients)
     current_safety_payload = _source_safety_input(payload.safety, payload.ingredients)
@@ -492,6 +517,13 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
         "uncertainty": "실제 약사 골드 라벨로 교체 전인 시뮬레이션 결과입니다.",
     }
     with store.transaction() as connection:
+        if BoundedAgent._recommendation_hold_exists(
+            connection, profile_id=payload.profile_id
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail="serious_adverse_event_recommendation_hold",
+            )
         connection.execute(
             "insert into recommendation_runs values (?, ?, ?, ?, ?, ?, ?, ?)",
             (
@@ -577,8 +609,9 @@ def enqueue_due_plan_reevaluations(payload: DuePlanCronRequest) -> dict[str, obj
 @router.post("/connectors/device")
 def connector(payload: DeviceRequest) -> dict[str, Any]:
     try:
-        return ingest_device_session(
-            _store(),
+        store = _store()
+        result = ingest_device_session(
+            store,
             session_id=payload.session_id,
             profile_id=payload.profile_id,
             source=payload.source,
@@ -586,8 +619,47 @@ def connector(payload: DeviceRequest) -> dict[str, Any]:
             payload=payload.payload,
             environment=payload.environment,
         )
+        if result["success"] and payload.execution_id and payload.plan_id:
+            row = store.rows(
+                "select row_sha256 from connector_sessions where session_id=?",
+                (payload.session_id,),
+            )[0]
+            observed_at = datetime.fromisoformat(
+                str(payload.payload["observed_at"]).replace("Z", "+00:00")
+            )
+            result["next_job_decision"] = WorkflowJobQueue(
+                store
+            ).enqueue_input_reevaluation(
+                profile_id=payload.profile_id,
+                plan_id=payload.plan_id,
+                execution_id=payload.execution_id,
+                input_kind="DEVICE",
+                input_id=payload.session_id,
+                input_sha256=str(row["row_sha256"]),
+                received_at=observed_at,
+            )
+        return result
     except PermissionError as error:
         raise HTTPException(status_code=403, detail=str(error)) from error
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.post(
+    "/agent/adverse-events",
+    dependencies=[Depends(require_event_mutation_token)],
+)
+def record_adverse_event(payload: AdverseEventRequest) -> dict[str, Any]:
+    try:
+        return BoundedAgent(_store()).record_adverse_event(
+            run_id=payload.run_id,
+            arguments=payload.model_dump(mode="json", exclude={"run_id"}),
+        )
+    except PermissionError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
+    except ValueError as error:
+        status_code = 409 if "idempotency" in str(error) else 422
+        raise HTTPException(status_code=status_code, detail=str(error)) from error
 
 
 @router.get("/executions/{execution_id}")
@@ -736,8 +808,9 @@ def enroll_pro_plan(payload: PROPlanEnrollmentRequest) -> dict[str, Any]:
 )
 def record_pro_followup(payload: PROFollowUpRecordRequest) -> dict[str, Any]:
     try:
-        return record_or_correct_pro_followup_v1(
-            _store(),
+        store = _store()
+        result = record_or_correct_pro_followup_v1(
+            store,
             execution_id=payload.execution_id,
             profile_id=payload.profile_id,
             plan_id=payload.plan_id,
@@ -751,6 +824,49 @@ def record_pro_followup(payload: PROFollowUpRecordRequest) -> dict[str, Any]:
             adverse_events=payload.adverse_events,
             discontinuation_reason=payload.discontinuation_reason,
         )
+        serious_events = [
+            event for event in payload.adverse_events if event.get("severity") == "serious"
+        ]
+        if serious_events:
+            event = serious_events[0]
+            result["next_job_decision"] = BoundedAgent(store).record_adverse_event(
+                run_id=None,
+                arguments={
+                    "case_id": str(event["adverse_event_id"]),
+                    "profile_id": payload.profile_id,
+                    "execution_id": payload.execution_id,
+                    "plan_id": payload.plan_id,
+                    "serious": True,
+                    "observed_at": payload.observed_at.isoformat(),
+                    "related_to_recommendation": event.get("relatedness") != "not_related",
+                },
+            )
+        elif payload.timepoint == "discontinuation":
+            result["next_job_decision"] = {
+                "schema_version": "followup_input_next_job_decision_v1",
+                "decision": "STOP_PLAN",
+                "reason_code": "PRO_DISCONTINUATION_RECEIVED",
+                "next_job": None,
+            }
+        else:
+            input_sha256 = str(
+                store.scalar(
+                    "select effective_payload_sha256 from execution_events where event_id=?",
+                    (result["event_id"],),
+                )
+            )
+            result["next_job_decision"] = WorkflowJobQueue(
+                store
+            ).enqueue_input_reevaluation(
+                profile_id=payload.profile_id,
+                plan_id=payload.plan_id,
+                execution_id=payload.execution_id,
+                input_kind="PRO",
+                input_id=result["event_id"],
+                input_sha256=input_sha256,
+                received_at=payload.observed_at,
+            )
+        return result
     except ExecutionNotFoundError as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
     except IdempotencyConflictError as error:

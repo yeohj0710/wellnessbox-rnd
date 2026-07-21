@@ -280,6 +280,45 @@ def test_pro_plan_and_followup_api_require_token_and_persist(tmp_path, monkeypat
     assert followup_response.status_code == 200
     assert followup_response.json()["operation"] == "created"
     assert followup_response.json()["action_decision"]["action"] == "maintain"
+    assert followup_response.json()["next_job_decision"]["decision"] == "REEVALUATE_PLAN"
+
+    device_payload = {
+        "session_id": "device_pro_plan_1",
+        "profile_id": enrolled["profile_id"],
+        "source": "W",
+        "consent_scopes": ["device:write"],
+        "execution_id": enrolled["execution_id"],
+        "plan_id": enrolled["plan_id"],
+        "payload": {
+            "observed_at": "2026-01-16T00:00:00Z",
+            "value": 7000,
+            "unit": "steps",
+            "timezone": "UTC",
+            "source_record_id": "wearable-1",
+        },
+    }
+    device_response = client.post(
+        "/v1/interim/connectors/device",
+        headers={"x-wb-rnd-token": "test-token"},
+        json=device_payload,
+    )
+    assert device_response.status_code == 200
+    assert device_response.json()["next_job_decision"]["reason_code"] == (
+        "DEVICE_INPUT_RECEIVED"
+    )
+    invalid_response = client.post(
+        "/v1/interim/connectors/device",
+        headers={"x-wb-rnd-token": "test-token"},
+        json=device_payload
+        | {
+            "session_id": "device_pro_plan_invalid",
+            "payload": device_payload["payload"] | {"unit": "unknown"},
+        },
+    )
+    assert invalid_response.status_code == 200
+    assert invalid_response.json()["success"] is False
+    assert "next_job_decision" not in invalid_response.json()
+    assert store.scalar("select count(*) from workflow_jobs") == 2
 
 
 def test_same_plan_api_accepts_real_world_outcome_data_class(tmp_path) -> None:
@@ -308,6 +347,64 @@ def test_same_plan_api_accepts_real_world_outcome_data_class(tmp_path) -> None:
         "REAL_WORLD_OUTCOME"
     )
     assert followed["action_decision"]["action"] == "re_optimize"
+
+
+def test_serious_pro_followup_stops_plan_and_cancels_prior_next_job(
+    tmp_path, monkeypatch
+) -> None:
+    store = _store(tmp_path)
+    enrolled = _enroll(store)
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr("apps.inference_api.routes.interim._store", lambda: store)
+    client = TestClient(app)
+    headers = {"x-wb-rnd-token": "test-token"}
+    common = {
+        "execution_id": enrolled["execution_id"],
+        "profile_id": enrolled["profile_id"],
+        "plan_id": enrolled["plan_id"],
+        "answers": {"instrument": "PSQI", "item_scores": [1] * 7},
+        "planned_dose_count": 14,
+        "taken_dose_count": 14,
+    }
+    first = client.post(
+        "/v1/interim/pro/followups",
+        headers=headers,
+        json=common
+        | {
+            "timepoint": "week_2",
+            "observed_at": "2026-01-15T00:00:00Z",
+            "actual_day_index": 14,
+        },
+    )
+    assert first.status_code == 200
+    assert first.json()["next_job_decision"]["decision"] == "REEVALUATE_PLAN"
+
+    serious = client.post(
+        "/v1/interim/pro/followups",
+        headers=headers,
+        json=common
+        | {
+            "timepoint": "week_4",
+            "observed_at": "2026-01-29T00:00:00Z",
+            "actual_day_index": 28,
+            "adverse_events": [
+                {
+                    "adverse_event_id": "ae_pro_serious",
+                    "severity": "serious",
+                    "relatedness": "possible",
+                    "ongoing": True,
+                }
+            ],
+        },
+    )
+
+    assert serious.status_code == 200
+    assert serious.json()["action_decision"]["action"] == "stop"
+    assert serious.json()["next_job_decision"]["plan_stopped"] is True
+    assert store.scalar("select status from workflow_jobs") == "CANCELLED"
+    assert store.scalar(
+        "select count(*) from execution_events where idempotency_key='serious-ae:ae_pro_serious'"
+    ) == 1
 
 
 def test_enrollment_retry_rejects_changed_data_class(tmp_path) -> None:

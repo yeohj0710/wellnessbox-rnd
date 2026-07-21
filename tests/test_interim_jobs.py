@@ -256,3 +256,82 @@ def test_claim_rechecks_plan_after_cron_enqueue(tmp_path) -> None:
     assert queue.store.scalar(
         "select count(*) from workflow_jobs where status='CANCELLED'"
     ) == 2
+
+
+def test_pro_and_device_inputs_decide_immediate_reevaluation_jobs(tmp_path) -> None:
+    queue = _queue(tmp_path)
+    _register_plan(queue, execution_id="execution_inputs", plan_id="plan_inputs")
+
+    pro = queue.enqueue_input_reevaluation(
+        profile_id="usr_jobs",
+        plan_id="plan_inputs",
+        execution_id="execution_inputs",
+        input_kind="PRO",
+        input_id="event_pro_1",
+        input_sha256="a" * 64,
+        received_at=NOW,
+    )
+    retry = queue.enqueue_input_reevaluation(
+        profile_id="usr_jobs",
+        plan_id="plan_inputs",
+        execution_id="execution_inputs",
+        input_kind="PRO",
+        input_id="event_pro_1",
+        input_sha256="a" * 64,
+        received_at=NOW,
+    )
+    device = queue.enqueue_input_reevaluation(
+        profile_id="usr_jobs",
+        plan_id="plan_inputs",
+        execution_id="execution_inputs",
+        input_kind="DEVICE",
+        input_id="device_1",
+        input_sha256="b" * 64,
+        received_at=NOW + timedelta(minutes=1),
+    )
+
+    assert pro["decision"] == "REEVALUATE_PLAN"
+    assert pro["next_job"]["scheduled_at"] == NOW.isoformat().replace("+00:00", "Z")
+    assert retry["deduplicated"] is True
+    assert device["reason_code"] == "DEVICE_INPUT_RECEIVED"
+    assert queue.store.scalar("select count(*) from workflow_jobs") == 2
+
+
+def test_input_reevaluation_rejects_changed_receipt_and_stopped_plan(tmp_path) -> None:
+    queue = _queue(tmp_path)
+    _register_plan(queue, execution_id="execution_inputs", plan_id="plan_inputs")
+    arguments = {
+        "profile_id": "usr_jobs",
+        "plan_id": "plan_inputs",
+        "execution_id": "execution_inputs",
+        "input_kind": "PRO",
+        "input_id": "event_pro_1",
+        "received_at": NOW,
+    }
+    queue.enqueue_input_reevaluation(input_sha256="a" * 64, **arguments)
+    with pytest.raises(ValueError, match="workflow_job_idempotency_payload_conflict"):
+        queue.enqueue_input_reevaluation(input_sha256="b" * 64, **arguments)
+
+    with queue.store.transaction() as connection:
+        connection.execute(
+            """
+            insert into execution_events(
+              event_id, execution_id, consent_snapshot_id, event_index, event_type,
+              source, idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values (?, ?, 'consent_jobs', 1, 'followup_evaluation', 'survey',
+                      'stop-inputs', ?, 'stop-inputs', 'stop-inputs', ?)
+            """,
+            (
+                "event_stop_inputs",
+                "execution_inputs",
+                '{"plan_id":"plan_inputs","timepoint":"discontinuation"}',
+                NOW.isoformat(),
+            ),
+        )
+    with pytest.raises(ValueError, match="followup_active_execution_plan_required"):
+        queue.enqueue_input_reevaluation(
+            input_sha256="c" * 64,
+            input_id="event_pro_2",
+            **{key: value for key, value in arguments.items() if key != "input_id"},
+        )

@@ -112,6 +112,7 @@ class BoundedAgent:
             "select count(*) from user_profiles where profile_id=?", (profile_id,)
         ):
             raise ValueError("unknown_profile")
+        self._raise_if_recommendation_held(profile_id)
         scoped_key = f"{profile_id}:{idempotency_key}"
         existing = self.store.rows(
             "select * from agent_runs where idempotency_key=? and profile_id=?",
@@ -287,18 +288,20 @@ class BoundedAgent:
                         "workflow_transition_target_missing:"
                         f"{current_state.value}:{operation.value}"
                     )
-                connection.execute(
+                updated = connection.execute(
                     """
                     update agent_runs set state_before=?, state_after=?, status='ACTIVE'
                     where run_id=? and status='EXECUTING'
                     """,
                     (current_state, target, run_id),
-                )
+                ).rowcount
             else:
-                connection.execute(
+                updated = connection.execute(
                     "update agent_runs set status='ACTIVE' where run_id=? and status='EXECUTING'",
                     (run_id,),
-                )
+                ).rowcount
+            if updated != 1:
+                raise ValueError("agent_run_stopped_during_operation")
         return result
 
     def execute_recommendation_workflow(
@@ -331,6 +334,7 @@ class BoundedAgent:
         evidence_query: str,
         max_items: int,
     ) -> dict[str, Any]:
+        self._raise_if_recommendation_held(profile_id)
         supplied_safety_ingredients = safety_arguments.get("ingredients")
         if (
             supplied_safety_ingredients is not None
@@ -558,6 +562,8 @@ class BoundedAgent:
                 == 0
             ):
                 raise ValueError("unknown_profile")
+            if self._recommendation_hold_exists(connection, profile_id=profile_id):
+                raise ValueError("serious_adverse_event_recommendation_hold")
             existing = connection.execute(
                 "select * from agent_runs where profile_id=? and idempotency_key like ?",
                 (profile_id, f"{scoped_prefix}%"),
@@ -666,6 +672,9 @@ class BoundedAgent:
         if tool_name == "ingest_pro":
             if "pro:write" not in scopes:
                 raise PermissionError("missing_pro_consent")
+            plan_context = (arguments.get("execution_id"), arguments.get("plan_id"))
+            if any(plan_context) and not all(plan_context):
+                raise ValueError("pro_plan_context_must_be_complete")
             observation_id = str(arguments.get("observation_id") or f"pro_{uuid4().hex}")
             payload = _json(arguments)
             with self.store.transaction() as connection:
@@ -687,8 +696,29 @@ class BoundedAgent:
                         payload,
                     ),
                 )
-            return {"observation_id": observation_id, "postcondition_success": True}
+            result = {"observation_id": observation_id, "postcondition_success": True}
+            if all(plan_context):
+                received_at = datetime.fromisoformat(
+                    str(arguments.get("observed_at", datetime.now(UTC).isoformat())).replace(
+                        "Z", "+00:00"
+                    )
+                )
+                result["next_job_decision"] = WorkflowJobQueue(
+                    self.store
+                ).enqueue_input_reevaluation(
+                    profile_id=profile_id,
+                    plan_id=str(arguments["plan_id"]),
+                    execution_id=str(arguments["execution_id"]),
+                    input_kind="PRO",
+                    input_id=observation_id,
+                    input_sha256=_sha(arguments),
+                    received_at=received_at,
+                )
+            return result
         if tool_name == "ingest_wearable":
+            plan_context = (arguments.get("execution_id"), arguments.get("plan_id"))
+            if any(plan_context) and not all(plan_context):
+                raise ValueError("device_plan_context_must_be_complete")
             result = ingest_device_session(
                 self.store,
                 session_id=str(arguments["session_id"]),
@@ -698,6 +728,27 @@ class BoundedAgent:
                 payload=dict(arguments["payload"]),
                 environment=str(arguments.get("environment", "simulation")),
             )
+            if result["success"] and all(plan_context):
+                stored_hash = str(
+                    self.store.scalar(
+                        "select row_sha256 from connector_sessions where session_id=?",
+                        (str(arguments["session_id"]),),
+                    )
+                )
+                received_at = datetime.fromisoformat(
+                    str(arguments["payload"]["observed_at"]).replace("Z", "+00:00")
+                )
+                result["next_job_decision"] = WorkflowJobQueue(
+                    self.store
+                ).enqueue_input_reevaluation(
+                    profile_id=profile_id,
+                    plan_id=str(arguments["plan_id"]),
+                    execution_id=str(arguments["execution_id"]),
+                    input_kind="DEVICE",
+                    input_id=str(arguments["session_id"]),
+                    input_sha256=stored_hash,
+                    received_at=received_at,
+                )
             return result | {"postcondition_success": bool(result["success"])}
         if tool_name == "log_adverse_event":
             if "ae:write" not in scopes:
@@ -706,13 +757,70 @@ class BoundedAgent:
         raise AssertionError("unreachable_tool")
 
     def _log_adverse_event(self, run_id: str, arguments: dict[str, Any]) -> dict[str, Any]:
+        return self.record_adverse_event(run_id=run_id, arguments=arguments)
+
+    def record_adverse_event(
+        self, *, run_id: str | None, arguments: dict[str, Any]
+    ) -> dict[str, Any]:
+        with _database_lock(self.store):
+            return self._record_adverse_event_serialized(
+                run_id=run_id, arguments=arguments
+            )
+
+    def _record_adverse_event_serialized(
+        self, *, run_id: str | None, arguments: dict[str, Any]
+    ) -> dict[str, Any]:
         case_id = str(arguments.get("case_id") or f"ae_{uuid4().hex}")
-        profile_id = str(arguments.get("profile_id", "")) or None
+        profile_id = str(arguments.get("profile_id", ""))
         serious = bool(arguments.get("serious"))
-        review_id = f"review_{uuid4().hex}" if serious else None
+        execution_id = str(arguments.get("execution_id", ""))
+        plan_id = str(arguments.get("plan_id", ""))
+        observed_at = arguments.get("observed_at") or datetime.now(UTC).isoformat()
+        observed = datetime.fromisoformat(str(observed_at).replace("Z", "+00:00"))
+        if observed.tzinfo is None or observed.utcoffset() is None:
+            raise ValueError("adverse_event_observed_at_timezone_required")
+        observed = observed.astimezone(UTC)
+        review_id = (
+            f"review_{hashlib.sha256(case_id.encode()).hexdigest()[:24]}"
+            if serious
+            else None
+        )
         payload = _json(arguments)
-        now = datetime.now(UTC).isoformat()
-        with self.store.transaction() as connection:
+        payload_sha256 = _sha(arguments)
+        now = observed.isoformat()
+        with self.store.transaction(immediate=True) as connection:
+            existing = connection.execute(
+                "select * from adverse_events where case_id=?", (case_id,)
+            ).fetchone()
+            if existing is not None:
+                if str(existing["row_sha256"]) != payload_sha256:
+                    raise ValueError("adverse_event_idempotency_payload_conflict")
+                existing_review = connection.execute(
+                    "select review_id from review_tasks where profile_id=? and reason_codes_json=?",
+                    (profile_id, _json(["SERIOUS_ADVERSE_EVENT", case_id])),
+                ).fetchone()
+                return {
+                    "case_id": case_id,
+                    "plan_stopped": bool(existing["serious"]),
+                    "review_id": str(existing_review["review_id"]) if existing_review else None,
+                    "deduplicated": True,
+                    "postcondition_success": True,
+                }
+            if run_id is not None:
+                run = connection.execute(
+                    "select profile_id from agent_runs where run_id=?", (run_id,)
+                ).fetchone()
+                if run is None:
+                    raise ValueError("unknown_agent_run")
+                if str(run["profile_id"]) != profile_id:
+                    raise PermissionError("agent_run_owner_mismatch")
+            if serious and not WorkflowJobQueue._execution_plan_is_active(
+                connection,
+                execution_id=execution_id,
+                profile_id=profile_id,
+                plan_id=plan_id,
+            ):
+                raise ValueError("serious_adverse_event_active_plan_required")
             connection.execute(
                 """
                 insert into adverse_events values (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -720,23 +828,64 @@ class BoundedAgent:
                 """,
                 (
                     case_id,
-                    profile_id,
+                    profile_id or None,
                     DataClass.INTERIM_RUNTIME_EVENT,
                     int(arguments.get("related_to_recommendation", True)),
                     int(serious),
                     "ESCALATED" if serious else "RECORDED",
                     arguments.get("observation_month"),
-                    _sha(arguments),
+                    payload_sha256,
                     payload,
                 ),
             )
             if serious:
+                execution = connection.execute(
+                    "select consent_snapshot_id from executions where execution_id=?",
+                    (execution_id,),
+                ).fetchone()
+                stop_payload = {
+                    "schema_version": "serious_adverse_event_plan_stop_v1",
+                    "plan_id": plan_id,
+                    "timepoint": "discontinuation",
+                    "serious_adverse_event_id": case_id,
+                    "observed_at": observed.isoformat(),
+                    "reason_code": "SERIOUS_ADVERSE_EVENT_STOP",
+                }
+                stop_hash = _sha(stop_payload)
+                event_index = int(
+                    connection.execute(
+                        "select coalesce(max(event_index), -1) + 1 from execution_events "
+                        "where execution_id=?",
+                        (execution_id,),
+                    ).fetchone()[0]
+                )
+                connection.execute(
+                    """
+                    insert into execution_events(
+                      event_id, execution_id, consent_snapshot_id, event_index,
+                      event_type, source, idempotency_key, payload_json,
+                      payload_sha256, effective_payload_sha256, created_at
+                    ) values (?, ?, ?, ?, 'followup_evaluation', 'system', ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        f"event_stop_{hashlib.sha256(case_id.encode()).hexdigest()[:24]}",
+                        execution_id,
+                        execution["consent_snapshot_id"],
+                        event_index,
+                        f"serious-ae:{case_id}",
+                        _json(stop_payload),
+                        stop_hash,
+                        stop_hash,
+                        now,
+                    ),
+                )
                 connection.execute(
                     """
                     update agent_runs set state_before=state_after, state_after='STOPPED',
-                      status='COMPLETED', completed_at=? where run_id=? and status='ACTIVE'
+                      status='COMPLETED', completed_at=?
+                    where profile_id=? and status in ('ACTIVE', 'EXECUTING')
                     """,
-                    (now, run_id),
+                    (now, profile_id),
                 )
                 connection.execute(
                     """
@@ -747,17 +896,35 @@ class BoundedAgent:
                 )
                 connection.execute(
                     """
+                    update followups set status='CLOSED'
+                    where execution_id=? and plan_id=?
+                      and status in ('OPEN', 'REEVALUATION_QUEUED')
+                    """,
+                    (execution_id, plan_id),
+                )
+                connection.execute(
+                    """
+                    update workflow_jobs
+                    set status='CANCELLED', lease_until=null, claim_token=null,
+                        last_error='SERIOUS_ADVERSE_EVENT_STOP'
+                    where execution_id=? and plan_id=? and status in ('READY', 'CLAIMED')
+                    """,
+                    (execution_id, plan_id),
+                )
+                connection.execute(
+                    """
                     insert into review_tasks(
                       review_id, run_id, profile_id, data_class, simulation_badge,
                       urgency, reason_codes_json, status, decision_json, created_at, completed_at
                     )
-                    values (?, null, ?, ?, 1, 'URGENT', ?, 'OPEN', null, ?, null)
+                    values (?, ?, ?, ?, 1, 'URGENT', ?, 'OPEN', null, ?, null)
                     """,
                     (
                         review_id,
+                        run_id,
                         profile_id,
                         DataClass.SYNTHETIC_SAFETY_PROXY,
-                        _json(["SERIOUS_ADVERSE_EVENT"]),
+                        _json(["SERIOUS_ADVERSE_EVENT", case_id]),
                         now,
                     ),
                 )
@@ -765,5 +932,24 @@ class BoundedAgent:
             "case_id": case_id,
             "plan_stopped": serious,
             "review_id": review_id,
+            "deduplicated": False,
             "postcondition_success": True,
         }
+
+    @staticmethod
+    def _recommendation_hold_exists(connection, *, profile_id: str) -> bool:
+        return (
+            connection.execute(
+                """
+                select count(*) from adverse_events
+                where profile_id=? and serious=1 and status='ESCALATED'
+                """,
+                (profile_id,),
+            ).fetchone()[0]
+            > 0
+        )
+
+    def _raise_if_recommendation_held(self, profile_id: str) -> None:
+        with self.store.connect() as connection:
+            if self._recommendation_hold_exists(connection, profile_id=profile_id):
+                raise ValueError("serious_adverse_event_recommendation_hold")

@@ -1,8 +1,10 @@
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
 
 from wellnessbox_rnd.interim.agent import TOOL_NAMES, AgentState, BoundedAgent, transition
+from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.store import InterimStore
 
 
@@ -132,6 +134,49 @@ def test_unknown_run_cannot_commit_side_effect(tmp_path: Path) -> None:
     assert agent.store.scalar("select count(*) from followups") == 0
 
 
+def test_followup_inputs_decide_next_jobs_on_agent_path(tmp_path: Path) -> None:
+    agent = _agent(tmp_path)
+    run = agent.create_run(profile_id="usr_1234567890abcdef", idempotency_key="inputs")
+    _seed_run_state(agent, run["run_id"], AgentState.FOLLOWUP_ACTIVE)
+    context = {"execution_id": "execution_agent", "plan_id": "plan_agent_job"}
+
+    pro = agent.execute_tool(
+        run_id=run["run_id"],
+        tool_name="ingest_pro",
+        arguments=context
+        | {
+            "observation_id": "pro_agent_input",
+            "observed_at": "2026-07-21T12:00:00Z",
+            "timepoint_weeks": 2,
+            "z_pre": 1.0,
+            "z_post": 0.5,
+            "percentile_point_change": 10,
+        },
+        consent_scopes={"pro:write"},
+    )
+    device = agent.execute_tool(
+        run_id=run["run_id"],
+        tool_name="ingest_wearable",
+        arguments=context
+        | {
+            "session_id": "device_agent_input",
+            "source": "W",
+            "payload": {
+                "observed_at": "2026-07-21T13:00:00Z",
+                "value": 7000,
+                "unit": "steps",
+                "timezone": "UTC",
+                "source_record_id": "wearable-agent-1",
+            },
+        },
+        consent_scopes={"device:write"},
+    )
+
+    assert pro["next_job_decision"]["reason_code"] == "PRO_INPUT_RECEIVED"
+    assert device["next_job_decision"]["reason_code"] == "DEVICE_INPUT_RECEIVED"
+    assert agent.store.scalar("select count(*) from workflow_jobs") == 2
+
+
 def test_idempotency_key_is_namespaced_by_profile(tmp_path: Path) -> None:
     agent = _agent(tmp_path)
     with agent.store.transaction() as connection:
@@ -159,9 +204,27 @@ def test_serious_ae_atomically_stops_plan_and_creates_review(tmp_path: Path) -> 
         )
     run = agent.create_run(profile_id="usr_1234567890abcdef", idempotency_key="request-3")
     _seed_run_state(agent, run["run_id"], AgentState.FOLLOWUP_ACTIVE)
+    WorkflowJobQueue(agent.store).schedule_followup_with_reminder(
+        followup_id="fu_serious_ae",
+        profile_id="usr_1234567890abcdef",
+        plan_id="plan_agent_job",
+        execution_id="execution_agent",
+        due_at=datetime(2026, 8, 4, tzinfo=UTC),
+        reminder_at=datetime(2026, 8, 3, tzinfo=UTC),
+        requested_data=["PRO"],
+        now=datetime(2026, 7, 21, tzinfo=UTC),
+    )
+    arguments = {
+        "case_id": "ae_serious_agent",
+        "profile_id": "usr_1234567890abcdef",
+        "execution_id": "execution_agent",
+        "plan_id": "plan_agent_job",
+        "serious": True,
+        "observed_at": "2026-07-21T12:00:00Z",
+    }
     result = agent._log_adverse_event(
         run["run_id"],
-        {"profile_id": "usr_1234567890abcdef", "serious": True},
+        arguments,
     )
     assert result["plan_stopped"] is True
     assert (
@@ -169,9 +232,24 @@ def test_serious_ae_atomically_stops_plan_and_creates_review(tmp_path: Path) -> 
         == "STOPPED"
     )
     assert agent.store.scalar("select count(*) from review_tasks") == 1
+    assert agent.store.scalar("select status from followups") == "CLOSED"
+    assert agent.store.scalar("select status from workflow_jobs") == "CANCELLED"
+    assert agent.store.scalar(
+        "select count(*) from execution_events where idempotency_key='serious-ae:ae_serious_agent'"
+    ) == 1
     assert (
         agent.store.scalar("select status from agent_runs where run_id=?", (run["run_id"],))
         == "COMPLETED"
     )
     with pytest.raises(ValueError, match="agent_run_not_active"):
         agent.execute_tool(run_id=run["run_id"], tool_name="check_safety", arguments={"age": 40})
+    retry = agent.record_adverse_event(run_id=run["run_id"], arguments=arguments)
+    assert retry["deduplicated"] is True
+    with pytest.raises(ValueError, match="idempotency_payload_conflict"):
+        agent.record_adverse_event(
+            run_id=run["run_id"], arguments=arguments | {"related_to_recommendation": False}
+        )
+    with pytest.raises(ValueError, match="serious_adverse_event_recommendation_hold"):
+        agent.create_run(
+            profile_id="usr_1234567890abcdef", idempotency_key="after-serious-event"
+        )

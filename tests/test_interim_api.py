@@ -7,7 +7,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
-from wellnessbox_rnd.interim.agent import BoundedAgent
 from wellnessbox_rnd.interim.bootstrap import (
     ORIGINAL_PLAN_PAGE_26_URI,
     bootstrap_operational_evidence,
@@ -442,6 +441,30 @@ def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
             "update agent_runs set state_after='FOLLOWUP_ACTIVE' where run_id=?",
             (run["run_id"],),
         )
+        connection.execute(
+            "insert into consent_snapshots values "
+            "('consent_ae_api', ?, 1, 'v1', '{}', 'consent-ae-api', 'now')",
+            (profile_id,),
+        )
+        connection.execute(
+            "insert into executions values "
+            "('execution_ae_api', 'request_ae_api', ?, null, 'consent_ae_api', "
+            "'request-ae-api', 'COMPLETE', 'now', 'now')",
+            (profile_id,),
+        )
+        connection.execute(
+            """
+            insert into execution_events(
+              event_id, execution_id, consent_snapshot_id, event_index, event_type,
+              source, idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values (
+              'event_ae_api', 'execution_ae_api', 'consent_ae_api', 0,
+              'recommendation', 'system', 'plan', '{"plan_id":"plan_ae_api"}',
+              'plan-ae-api', 'plan-ae-api', 'now'
+            )
+            """
+        )
     event = client.post(
         "/v1/interim/agent/tools",
         headers=_headers(),
@@ -453,9 +476,44 @@ def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
         },
     )
     assert event.status_code == 422
-    result = BoundedAgent(store)._log_adverse_event(
-        run["run_id"], {"profile_id": profile_id, "serious": True}
+    response = client.post(
+        "/v1/interim/agent/adverse-events",
+        headers=_headers(),
+        json={
+            "case_id": "ae_api_serious",
+            "run_id": run["run_id"],
+            "profile_id": profile_id,
+            "execution_id": "execution_ae_api",
+            "plan_id": "plan_ae_api",
+            "serious": True,
+            "observed_at": "2026-07-21T12:00:00Z",
+        },
     )
+    assert response.status_code == 200
+    result = response.json()
+    held_recommendation = client.post(
+        "/v1/interim/recommendations",
+        headers=_headers(),
+        json={"profile_id": profile_id, "goals": ["sleep"], "ingredients": []},
+    )
+    assert held_recommendation.status_code == 409
+    assert held_recommendation.json()["detail"] == (
+        "serious_adverse_event_recommendation_hold"
+    )
+    held_workflow = client.post(
+        "/v1/interim/agent/workflow",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "idempotency_key": "held-workflow",
+            "safety": {},
+            "ingredients": ["magnesium"],
+            "evidence_query": "sleep",
+            "max_items": 1,
+        },
+    )
+    assert held_workflow.status_code == 422
+    assert held_workflow.json()["detail"] == "serious_adverse_event_recommendation_hold"
     review_id = result["review_id"]
     with InterimStore(tmp_path / "api.sqlite3").transaction() as connection:
         connection.execute("update review_tasks set pharmacy_id=1 where review_id=?", (review_id,))
