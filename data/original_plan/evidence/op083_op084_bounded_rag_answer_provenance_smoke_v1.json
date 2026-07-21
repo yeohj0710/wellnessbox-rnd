@@ -254,8 +254,8 @@
     "live_llm_inference_used": false
   },
   "source_identity": {
-    "source_commit": "647765d80e66807e70e40c8b457896b10d608176",
-    "source_sha256": "46c410b0ffc7005bbe4f985c9d0c0e26b93090e8609b0e1d5ad3b77e74bd6f24",
+    "source_commit": "0631f0e89bb2b88e5b86ffeea105d4ee5f2af636",
+    "source_sha256": "411173ae8dbe7e1f5846a4103cdf870825673b7c0f06a9aebdffd318e3378d00",
     "data_sha256": "11f257c44f05db6d0286de3701cf72c428cbe46991b44f190729371ca167f228"
   }
 }
