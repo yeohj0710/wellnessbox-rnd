@@ -383,9 +383,7 @@ class ProductCombinationRankingEvidenceV1(BaseModel):
         expected_input = _canonical_sha256(
             self.replay_identity.optimization_input.model_dump(mode="json")
         )
-        catalog_payload = [
-            item.model_dump(mode="json") for item in self.catalog_identity
-        ]
+        catalog_payload = [item.model_dump(mode="json") for item in self.catalog_identity]
         expected_catalog = f"catalog_{_canonical_sha256(catalog_payload)}"
         if self.replay_identity.input_sha256 != expected_input:
             raise ValueError("ranking input identity does not match canonical input")
@@ -399,6 +397,171 @@ class ProductCombinationRankingEvidenceV1(BaseModel):
         )
         if self.replay_identity.result_sha256 != expected_result_sha256:
             raise ValueError("ranking result identity does not match canonical result")
+        return self
+
+
+class ProductCombinationInventorySelectionV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    product_id: StrictInt = Field(ge=1)
+    pharmacy_product_id: StrictInt = Field(ge=1)
+
+
+class ProductCombinationInventoryContextV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_combination_inventory_context_v1"]
+    previous_catalog_version: str = Field(pattern=r"^catalog_[a-f0-9]{64}$")
+    previous_combination_id: str = Field(pattern=r"^combo_[a-f0-9]{16}$")
+    previous_selections: tuple[ProductCombinationInventorySelectionV1, ...] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_inventory_context(self) -> ProductCombinationInventoryContextV1:
+        identities = tuple(
+            (item.product_id, item.pharmacy_product_id) for item in self.previous_selections
+        )
+        if identities != tuple(sorted(identities)):
+            raise ValueError("inventory selections must be sorted")
+        if len({item.product_id for item in self.previous_selections}) != len(identities) or len(
+            {item.pharmacy_product_id for item in self.previous_selections}
+        ) != len(identities):
+            raise ValueError("inventory selections must have unique identities")
+        identity_payload = [
+            {"product_id": product_id, "pharmacy_product_id": offer_id}
+            for product_id, offer_id in identities
+        ]
+        expected = f"combo_{_canonical_sha256(identity_payload)[:16]}"
+        if self.previous_combination_id != expected:
+            raise ValueError("inventory combination identity does not match selections")
+        return self
+
+
+class ProductCombinationStockSubstitutionV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_combination_stock_substitution_v1"]
+    status: Literal[
+        "NOT_REQUESTED",
+        "UNCHANGED",
+        "SUBSTITUTED",
+        "UNAVAILABLE",
+        "SEARCH_TRUNCATED",
+        "CATALOG_CHANGED",
+    ]
+    previous_catalog_version: str | None
+    current_catalog_version: str = Field(pattern=r"^catalog_[a-f0-9]{64}$")
+    previous_combination_id: str | None
+    current_combination_id: str | None
+    missing_pharmacy_product_ids: tuple[StrictInt, ...]
+    safety_constraints_preserved: bool | None
+
+
+class ProductCombinationCartItemV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    productId: StrictInt = Field(ge=1)
+    productName: str = Field(min_length=1)
+    optionType: str = Field(min_length=1)
+    quantity: Literal[1]
+
+
+class ProductCombinationCartCandidateV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_combination_cart_candidate_v1"]
+    status: Literal["READY", "UNAVAILABLE"]
+    unavailable_reason: (
+        Literal["SEARCH_TRUNCATED", "NO_ELIGIBLE_COMBINATION", "OPTION_TYPE_MISSING"] | None
+    )
+    source_combination_id: str | None
+    items: tuple[ProductCombinationCartItemV1, ...]
+    approval_required: Literal[True]
+    approval_status: Literal["NOT_APPROVED"]
+    cart_storage_written: Literal[False]
+    order_created: Literal[False]
+    order_id: None
+
+
+class ProductCombinationStockCartEvidenceV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_combination_stock_cart_evidence_v1"]
+    inventory_context: ProductCombinationInventoryContextV1
+    previous_ranking: ProductCombinationRankingEvidenceV1
+    current_ranking: ProductCombinationRankingEvidenceV1
+    substitution: ProductCombinationStockSubstitutionV1
+    cart_candidate: ProductCombinationCartCandidateV1
+
+    @model_validator(mode="after")
+    def validate_stock_cart_evidence(self) -> ProductCombinationStockCartEvidenceV1:
+        previous_top = self.previous_ranking.top_k[0]
+        current_top = self.current_ranking.top_k[0]
+        previous_combination = next(
+            item
+            for item in self.previous_ranking.combinations
+            if item.combination_id == previous_top.combination_id
+        )
+        current_combination = next(
+            item
+            for item in self.current_ranking.combinations
+            if item.combination_id == current_top.combination_id
+        )
+        expected_selections = tuple(
+            ProductCombinationInventorySelectionV1(
+                product_id=item.product_id,
+                pharmacy_product_id=item.offer.pharmacy_product_id,
+            )
+            for item in previous_combination.selected_products
+        )
+        if self.inventory_context.previous_selections != expected_selections:
+            raise ValueError("inventory context does not match previous top combination")
+        if (
+            self.inventory_context.previous_catalog_version
+            != self.previous_ranking.replay_identity.catalog_version
+        ):
+            raise ValueError("inventory context does not match previous catalog")
+        current_offer_ids = {
+            offer.pharmacy_product_id
+            for product in self.current_ranking.catalog_identity
+            for offer in product.offers
+        }
+        expected_missing = tuple(
+            sorted(
+                item.pharmacy_product_id
+                for item in self.inventory_context.previous_selections
+                if item.pharmacy_product_id not in current_offer_ids
+            )
+        )
+        substitution = self.substitution
+        if (
+            substitution.status != "SUBSTITUTED"
+            or substitution.previous_catalog_version
+            != self.inventory_context.previous_catalog_version
+            or substitution.current_catalog_version
+            != self.current_ranking.replay_identity.catalog_version
+            or substitution.previous_combination_id != previous_top.combination_id
+            or substitution.current_combination_id != current_top.combination_id
+            or substitution.missing_pharmacy_product_ids != expected_missing
+            or not expected_missing
+            or substitution.safety_constraints_preserved is not True
+        ):
+            raise ValueError("stock substitution does not match ranked catalog evidence")
+        expected_items = tuple(
+            ProductCombinationCartItemV1(
+                productId=item.product_id,
+                productName=item.product_name,
+                optionType=item.offer.option_type,
+                quantity=1,
+            )
+            for item in current_combination.selected_products
+        )
+        if (
+            self.cart_candidate.status != "READY"
+            or self.cart_candidate.unavailable_reason is not None
+            or self.cart_candidate.source_combination_id != current_top.combination_id
+            or self.cart_candidate.items != expected_items
+        ):
+            raise ValueError("cart candidate does not match current top combination")
         return self
 
 
@@ -534,6 +697,10 @@ __all__ = [
     "ProductCombinationFilterPolicyV1",
     "ProductCombinationNonSelectionV1",
     "ProductCombinationOptimizationInputV1",
+    "ProductCombinationInventoryContextV1",
+    "ProductCombinationStockCartEvidenceV1",
+    "ProductCombinationStockSubstitutionV1",
+    "ProductCombinationCartCandidateV1",
     "ProductCombinationRankingEvidenceV1",
     "ProductCombinationReplayIdentityV1",
     "ProductCombinationV1",

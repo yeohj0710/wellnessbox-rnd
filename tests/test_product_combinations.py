@@ -6,8 +6,10 @@ from pydantic import ValidationError
 
 from wellnessbox_rnd.optimizer.product_combinations import (
     CatalogProductIdentityV1,
+    ProductCombinationCartCandidateV1,
     ProductCombinationFilterEvaluationV1,
     ProductCombinationFilterPolicyV1,
+    ProductCombinationInventoryContextV1,
     ProductCombinationOptimizationInputV1,
     ProductCombinationRankingEvidenceV1,
     ProductCombinationV1,
@@ -476,3 +478,50 @@ def test_combination_ranking_rejects_policy_outside_hashed_input() -> None:
             optimization_input=_ranking_provenance()[0],
             catalog_identity=_ranking_provenance()[1],
         )
+
+
+def test_inventory_context_rejects_forged_combination_identity() -> None:
+    with pytest.raises(ValidationError, match="identity does not match"):
+        ProductCombinationInventoryContextV1.model_validate(
+            {
+                "schema_version": "product_combination_inventory_context_v1",
+                "previous_catalog_version": f"catalog_{'1' * 64}",
+                "previous_combination_id": f"combo_{'2' * 16}",
+                "previous_selections": [{"product_id": 1, "pharmacy_product_id": 10}],
+            }
+        )
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("approval_required", False),
+        ("approval_status", "APPROVED"),
+        ("cart_storage_written", True),
+        ("order_created", True),
+        ("order_id", 1),
+    ],
+)
+def test_cart_candidate_rejects_preapproval_side_effects(field: str, value: object) -> None:
+    payload: dict[str, object] = {
+        "schema_version": "product_combination_cart_candidate_v1",
+        "status": "READY",
+        "unavailable_reason": None,
+        "source_combination_id": f"combo_{'1' * 16}",
+        "items": [
+            {
+                "productId": 1,
+                "productName": "zinc",
+                "optionType": "30 days",
+                "quantity": 1,
+            }
+        ],
+        "approval_required": True,
+        "approval_status": "NOT_APPROVED",
+        "cart_storage_written": False,
+        "order_created": False,
+        "order_id": None,
+    }
+    payload[field] = value
+    with pytest.raises(ValidationError):
+        ProductCombinationCartCandidateV1.model_validate(payload)
