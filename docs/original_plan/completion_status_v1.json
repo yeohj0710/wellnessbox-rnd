@@ -1,15 +1,15 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "43de45954165ebac04b0dcda26db33f89337dbe07023d36ccad616726f2711ab",
+  "audited_manifest_sha256": "a85183db0913e2627b35e674f61245ab3c118f87c4b53d6bc5dcebcdf961e541",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 43,
-    "PARTIAL": 14,
+    "COMPLETE": 44,
+    "PARTIAL": 13,
     "PENDING": 62,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
@@ -80,8 +80,8 @@
       "title": "복용 전후 효과 수치화와 PRO",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 5,
-        "PARTIAL": 3,
+        "COMPLETE": 6,
+        "PARTIAL": 2,
         "PENDING": 2,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
@@ -1980,26 +1980,34 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
           "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_correction.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/pro_plan_service.py",
           "wellnessbox-rnd/apps/inference_api/routes/interim.py",
           "wellnessbox/lib/server/wb-rnd-interim-route.ts",
-          "wellnessbox/app/api/tips/pro/effects/route.ts"
+          "wellnessbox/app/api/tips/pro/effects/route.ts",
+          "wellnessbox/app/api/tips/pro/plans/route.ts",
+          "wellnessbox/lib/tips/pro-study-rnd-client.ts",
+          "wellnessbox/components/tips/ProStudySimulation.tsx"
         ],
         "test_files": [
           "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+          "wellnessbox-rnd/tests/test_pro_plan_service.py",
           "wellnessbox/scripts/qa/check-tips-pro-correction-route.cts",
+          "wellnessbox/scripts/qa/check-tips-pro-study-rnd-client.cts",
           "wellnessbox-rnd/scripts/run_pro_correction_plan_lineage_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
         ],
         "integration_evidence": [
           "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+          "wellnessbox/lib/tips/pro-study-rnd-client.ts",
+          "wellnessbox/components/tips/ProStudySimulation.tsx",
           "wellnessbox/scripts/qa/run-tips-pro-correction-client.cts",
           "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
         ],
@@ -2017,7 +2025,7 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
+      "claimed_stage": "INTEGRATED",
       "disposition": "PARTIAL",
       "reasons": [
         "claimed_stage_below_required_stage"
@@ -2025,15 +2033,21 @@
       "evidence": {
         "implementation_files": [
           "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_correction.py",
-          "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py"
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/pro_plan_service.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py"
         ],
         "test_files": [
           "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+          "wellnessbox-rnd/tests/test_pro_plan_service.py",
           "wellnessbox-rnd/scripts/run_pro_correction_plan_lineage_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
         ],
         "integration_evidence": [
           "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+          "wellnessbox/app/api/tips/pro/plans/route.ts",
+          "wellnessbox/app/api/tips/pro/effects/route.ts",
           "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
         ],
         "operational_evidence": [],

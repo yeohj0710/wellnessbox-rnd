@@ -1,32 +1,35 @@
 {
   "cases": {
-    "authenticated_service_correction": 1,
+    "authenticated_service_enrollment": 1,
+    "authenticated_service_followup_correction": 1,
+    "authenticated_service_followup_create": 1,
+    "baseline_raw_score": 10,
     "corrected_raw_score": 7,
-    "mutation_audit_recorded": true,
     "original_raw_score": 8,
     "recalculated_immediately": true,
     "stored_payload_state": "CORRECTED",
     "stored_strict_pro_events": 2
   },
   "evidence_boundary": {
-    "actual_ui_call_proven": false,
-    "authenticated_service_helper_proven": true,
-    "op057_proven_stage": "IMPLEMENTED",
+    "actual_ui_client_binding_proven": true,
+    "authenticated_service_helpers_proven": true,
+    "browser_render_proven": false,
+    "op057_proven_stage": "INTEGRATED",
     "op057_required_stage": "INTEGRATED",
-    "op058_proven_stage": "IMPLEMENTED",
+    "op058_proven_stage": "INTEGRATED",
     "op058_required_stage": "OPERATED",
     "production_deployment_proven": false,
     "production_operation_proven": false,
     "real_world_outcome_used": false,
-    "service_to_rnd_local_http_proven": true,
-    "service_user_input_contract_proven": true
+    "service_to_rnd_local_http_proven": true
   },
   "lineage": {
+    "all_pro_events_share_plan_id": true,
     "causal_effect_claim_allowed": false,
-    "lineage_response_matches_stored_events": true,
-    "plan_id": "plan_op057_service_001",
+    "optimization_event_has_plan_id": true,
+    "plan_id": "plan_0974bca3a038aabfccd5f5ccc0ed9b8b",
     "recommendation_and_effect_share_execution": true,
-    "recommendation_event_has_plan_id": false,
+    "recommendation_event_has_plan_id": true,
     "selected_ingredient_keys": [
       "magnesium_glycinate",
       "l_theanine"
@@ -34,23 +37,34 @@
   },
   "schema_version": "op057_op058_pro_correction_plan_lineage_smoke_v1",
   "source": {
-    "combined_sha256": "bf05dd7ba5ca72d405463fb254387990168216e6473be6fc52702ab2801dfdbf",
-    "wellnessbox_commit": "b0a7af921ddce08fb51323f4f6f10ad666f9a372",
+    "combined_sha256": "79f8cf62c14ea3c89fd00c74735ef3aab5636388e9e30095c8d28da6986464c2",
+    "wellnessbox_commit": "d4c197ed47b213ac83d39128bca89481b4335a37",
     "wellnessbox_paths": [
       "app/api/tips/pro/effects/route.ts",
+      "app/api/tips/pro/plans/route.ts",
+      "components/tips/ProStudySimulation.tsx",
       "lib/server/wb-rnd-interim-client.ts",
       "lib/server/wb-rnd-interim-route.ts",
+      "lib/server/wb-rnd-profile-adapter.ts",
+      "lib/tips/pro-study-engine.ts",
+      "lib/tips/pro-study-rnd-client.ts",
+      "scripts/qa/check-tips-pro-study-rnd-client.cts",
       "scripts/qa/run-tips-pro-correction-client.cts"
     ],
-    "wellnessbox_rnd_commit": "c8c07679aa1a311a3831859c8c82f35aacc855c3",
+    "wellnessbox_rnd_commit": "b8bf67f226be76c6c989231218ab1839460420e0",
     "wellnessbox_rnd_paths": [
       "apps/inference_api/routes/interim.py",
+      "data/contracts/pro_runtime_reference_baselines_v1.json",
       "scripts/run_pro_correction_plan_lineage_smoke.py",
       "src/wellnessbox_rnd/interim/data_lake.py",
       "src/wellnessbox_rnd/interim/data_mutation.py",
       "src/wellnessbox_rnd/metrics/pro_correction.py",
       "src/wellnessbox_rnd/metrics/pro_followup.py",
-      "src/wellnessbox_rnd/metrics/pro_scoring.py"
+      "src/wellnessbox_rnd/metrics/pro_runtime.py",
+      "src/wellnessbox_rnd/metrics/pro_scoring.py",
+      "src/wellnessbox_rnd/orchestration/pro_plan_service.py",
+      "src/wellnessbox_rnd/orchestration/recommendation_service.py",
+      "src/wellnessbox_rnd/schemas/recommendation.py"
     ]
   }
 }

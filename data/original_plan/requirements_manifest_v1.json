@@ -1091,22 +1091,30 @@
           "title": "실제 사용자 입력으로 PRO 점수를 수정하고 즉시 재계산한다.",
           "owners": ["wellnessbox-rnd", "wellnessbox"],
           "required_stage": "INTEGRATED",
-          "claimed_stage": "IMPLEMENTED",
+          "claimed_stage": "INTEGRATED",
           "evidence": {
             "implementation_files": [
               "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_correction.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/pro_plan_service.py",
               "wellnessbox-rnd/apps/inference_api/routes/interim.py",
               "wellnessbox/lib/server/wb-rnd-interim-route.ts",
-              "wellnessbox/app/api/tips/pro/effects/route.ts"
+              "wellnessbox/app/api/tips/pro/effects/route.ts",
+              "wellnessbox/app/api/tips/pro/plans/route.ts",
+              "wellnessbox/lib/tips/pro-study-rnd-client.ts",
+              "wellnessbox/components/tips/ProStudySimulation.tsx"
             ],
             "test_files": [
               "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+              "wellnessbox-rnd/tests/test_pro_plan_service.py",
               "wellnessbox/scripts/qa/check-tips-pro-correction-route.cts",
+              "wellnessbox/scripts/qa/check-tips-pro-study-rnd-client.cts",
               "wellnessbox-rnd/scripts/run_pro_correction_plan_lineage_smoke.py",
               "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
             ],
             "integration_evidence": [
               "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+              "wellnessbox/lib/tips/pro-study-rnd-client.ts",
+              "wellnessbox/components/tips/ProStudySimulation.tsx",
               "wellnessbox/scripts/qa/run-tips-pro-correction-client.cts",
               "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
             ]
@@ -1117,19 +1125,25 @@
           "title": "추천 성분과 관찰 효과 계보를 같은 계획 ID로 연결한다.",
           "owners": ["wellnessbox-rnd", "wellnessbox"],
           "required_stage": "OPERATED",
-          "claimed_stage": "IMPLEMENTED",
+          "claimed_stage": "INTEGRATED",
           "evidence": {
             "implementation_files": [
               "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_correction.py",
-              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py"
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/pro_plan_service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py"
             ],
             "test_files": [
               "wellnessbox-rnd/tests/test_pro_followup_effects.py",
+              "wellnessbox-rnd/tests/test_pro_plan_service.py",
               "wellnessbox-rnd/scripts/run_pro_correction_plan_lineage_smoke.py",
               "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
             ],
             "integration_evidence": [
               "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox/app/api/tips/pro/plans/route.ts",
+              "wellnessbox/app/api/tips/pro/effects/route.ts",
               "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
             ]
           }
