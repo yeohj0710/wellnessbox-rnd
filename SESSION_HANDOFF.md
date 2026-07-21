@@ -1,5 +1,21 @@
 # SESSION_HANDOFF
 
+## 2026-07-21 OP-085/086 handoff
+
+- Chosen stage/tasks: `original plan / counseling RAG`; OP-085 blocks unsupported claims, omitted risks, forbidden expressions, and policy/query-evidence mismatch; OP-086 places deterministic emergency guidance before retrieval, recommendation, and provider calls.
+- Primary dataset and cases: `24` passages from `19` sources; normal/urgent/negated/contrast answer cases; `5` common urgent phrasing cases; `7` tamper/policy probes; frozen evaluation `256` cases. Canonical evidence is `data/original_plan/evidence/op085_op086_counseling_verifier_urgent_safety_smoke_v1.json`, SHA-256 `e7dcfe8248d7ba73769efd618cd29cb3deb99675df8ee4e5af5aff54280d2a36`; source commit `c6ca444488e7af34b416e3da208016972010315d`; source SHA-256 `14022f4617560b4ae386c047eddb88269903b463fdbd2414edac7f9af9528b9c`; data SHA-256 `11f257c44f05db6d0286de3701cf72c428cbe46991b44f190729371ca167f228`.
+- Main files: `src/wellnessbox_rnd/chat/answering.py`, `retrieval.py`, `verifier.py`, the existing OpenAI adapter, `data/knowledge/counseling_answer_verifier_policy_v1.json`, focused tests, canonical smoke, manifest, completion reports, CI workflow, and the two long-form research reports.
+- Code/data/training/simulation: final prose is server-owned; verifier decisions are recomputed from repository policy, the original query, current bounded retrieval, and exact selected evidence. No model training, frozen-data change, WellnessBox service code change, deployment, production operation, external validation, or live language-model inference occurred.
+- Stage/result: OP-085 and OP-086 are COMPLETE at required stage `IMPLEMENTED`. Completion counts are `62/23/34/1/0` for complete/partial/pending/external/contradicted.
+- Research-report result: OP-079 through OP-086 have separate explanatory prose reports. Coverage is `8/120`, not 120/120; `112` remain. Total current report text is `48,961` UTF-8 characters. OP-085 is `6,647` characters and OP-086 is `7,308` characters.
+- Independent review: initial Critical `2`, Important `1`, Minor `0`; after the first fixes Critical `0`, Important `0`, Minor `1`; after threshold replay and CI portability fixes final Critical `0`, Important `0`, Minor `0`. Fixed cases are common urgent aliases, query/evidence relevance recomputation, repository-relative policy loading, non-default support-score replay, and CI service-evidence-root resolution.
+- Validation: focused `50 passed`; exact workflow selection `609 passed`; all `26` workflow smokes PASS; Ruff PASS; audit PASS (`85` claims, `242` evidence files); completion check PASS; canonical bytes and source/data hashes independently verified.
+- Full regression: `1,065` collected, `988 passed`, `77 failed`; known split `73` absent-report + `3` CGM geometry + `1` CGM closed-loop; other failures `0`.
+- Frozen/replay/slice: `256` cases, seven zero metric deltas, unchanged overall weakest category `safety_blocked`, and no metric-specific weakest-category change.
+- Publication: R&D HEAD `bfe7c813c80a29c523a9367b2dc291b1df4d5537` is on `origin/main`. CI run `29841093182` failed only because the smoke assumed a sibling service checkout; commit `c6ca444` fixed it using `WELLNESSBOX_EVIDENCE_ROOT`. Final `Original plan evidence` run `29841384466` passed. The WellnessBox service repository remains at `4d904f43b028a35524a29206aaf7c6b99f58a97b` with preserved user-owned changes.
+- Five current bottlenecks: `112/120` reports remain; OP-087/088 session persistence and service adapter are not implemented; no deployed R&D counseling process exists; no authenticated production service-to-R&D counseling call exists; no external counseling validation or production telemetry exists.
+- Next three loops: OP-087/088, OP-089/090, and OP-091/092, with one full prose report per newly verified requirement and evidence-grounded backfill for OP-001 through OP-078.
+
 ## 2026-07-21 OP-083/084 handoff
 
 - Chosen stage/tasks: `original plan / counseling RAG`; OP-083 repository-bounded retrieval and OP-084 answer provenance, validity dates, and explicit uncertainty.

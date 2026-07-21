@@ -1,5 +1,21 @@
 # PROGRESS
 
+## 2026-07-21 counseling verifier and urgent-safety loop
+
+- Chosen stage/tasks: `original plan / counseling RAG`, OP-085 and OP-086.
+- Dataset/cases: the existing counseling corpus contains `24` passages from `19` sources. The canonical smoke covers supported and urgent answers, explicit negation, contrast clauses, `5` common urgent phrasings, a service-working-directory policy load, and `7` independent tamper/policy probes. Frozen evaluation remains `256` cases. Canonical SHA-256 is `e7dcfe8248d7ba73769efd618cd29cb3deb99675df8ee4e5af5aff54280d2a36`; source commit is `c6ca444488e7af34b416e3da208016972010315d`; source SHA-256 is `14022f4617560b4ae386c047eddb88269903b463fdbd2414edac7f9af9528b9c`.
+- Reuse/integration: reused the existing question-entity extractor, bounded retrieval scope, passage manifest, answer/citation contract, and OpenAI adapter. No parallel chat service, retrieval store, evidence registry, or emergency classifier was added.
+- Implementation: the provider can select only a status and approved chunk identity; the server owns final prose. The verifier recomputes repository policy identity, question-to-evidence relevance, exact template grounding, required interaction risk, forbidden expressions, emergency precedence, evidence validity, uncertainty, and the request's minimum support score. Positive urgent signals return deterministic safety guidance before retrieval or provider use. Common chest-pain/breathing phrasings, negation, and contrast clauses are explicit regressions.
+- Independent review: the first review found two Critical and one Important issue: common urgent phrasings were missed, a provider-selected unrelated chunk could pass verification, and policy loading depended on the current working directory. The second review found one fail-closed Minor around a non-default support threshold. All were fixed. Final review is Critical `0`, Important `0`, Minor `0`.
+- Evidence stage: OP-085 and OP-086 are COMPLETE at required stage `IMPLEMENTED`. No WellnessBox service change, service integration, deployment, production operation, external medical validation, live provider inference, model training, or frozen-data change is claimed.
+- Research reports: separate full-prose reports now exist for OP-079 through OP-086. Coverage is `8/120`; `112` remain. The eight reports total `48,961` UTF-8 characters. OP-085 has `6,647` characters and OP-086 has `7,308` characters and both include the independent-review failures and corrections.
+- Generated status: complete `62`, partial `23`, pending `34`, external `1`, contradicted `0`; audit PASS with `85` claims and `242` checked evidence files.
+- Validation: focused counseling tests `50 passed`; exact workflow selection `609 passed`; `26` workflow canonical smokes passed; full Ruff PASS; source/data hashes independently match; canonical smoke is byte-identical across reruns.
+- Full suite: `1,065` collected, `988 passed`, `77 failed`; failures remain exactly the known `73` absent-report and `4` CGM cases, with no new failure group.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: source/evidence HEAD `bfe7c813c80a29c523a9367b2dc291b1df4d5537` was pushed. The first CI run `29841093182` exposed a non-portable smoke service path and failed; the path was fixed to use `WELLNESSBOX_EVIDENCE_ROOT`. GitHub Actions `Original plan evidence` run `29841384466` then passed every step.
+- Next loops: OP-087/088, OP-089/090, and OP-091/092, with one full prose report per newly verified requirement and evidence-grounded backfill for OP-001 through OP-078.
+
 ## 2026-07-21 bounded RAG answer provenance loop
 
 - Chosen stage/tasks: `original plan / counseling RAG`, OP-083 and OP-084.
