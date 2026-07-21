@@ -72,8 +72,8 @@
   },
   "schema_version": "op059_op060_pro_action_real_outcome_smoke_v1",
   "source": {
-    "combined_sha256": "31eb133cb2aeb71ed5bd8a30d04ddee93327a37084f880610d3b177f3f14cc76",
-    "wellnessbox_commit": "a85767d9dc9418a23a9adeb2372d14a75d10b865",
+    "combined_sha256": "827b091be91d966c4b96d48fb8b210fc1fb4dc9000852d1eaf59a0cc83710f8f",
+    "wellnessbox_commit": "cee66e757bbc873cddc67e24aa7f7384ffba22b4",
     "wellnessbox_paths": [
       "app/api/tips/pro/effects/route.ts",
       "app/api/tips/pro/plans/route.ts",

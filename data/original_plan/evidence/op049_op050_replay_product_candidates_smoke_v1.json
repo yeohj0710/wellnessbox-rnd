@@ -8513,14 +8513,30 @@
       "invalid_product_catalog_fails_closed",
       "selling_product_facts_include_ingredients_amount_price_stock_and_formulation",
       "invalid_selling_offer_fails_closed",
-      "missing_or_non_amount_product_facts_fail_closed"
+      "missing_or_non_amount_product_facts_fail_closed",
+      "actual_product_candidates_form_deterministic_combinations",
+      "same_product_is_deduplicated_across_recommendations",
+      "ingredient_amounts_are_normalized_and_summed_by_product",
+      "duplicate_ingredients_require_multiple_distinct_products",
+      "ambiguous_amounts_fail_closed",
+      "name_match_without_target_ingredient_amount_is_not_a_candidate",
+      "shared_candidate_search_is_memoized_and_bounded",
+      "fractional_micrograms_use_exact_integer_nanograms"
     ],
     "observed": {
+      "ambiguous_amount_http_status": 502,
+      "bounded_search_combination_count": 64,
+      "bounded_search_state_count": 114,
       "catalog_fixture_source": "wellnessbox configured Prisma Product catalog with in-stock PharmacyProduct; captured 2026-07-17",
+      "combination_contract_version": "wb_rnd_product_combination_v1",
+      "combination_count": 4,
+      "duplicate_zinc_combination_id": "combo_aeb9dff90d5edf7a",
+      "fractional_micrograms_normalized_to_nanograms": 12500,
       "invalid_catalog_http_status": 502,
       "invalid_facts_http_status": 502,
       "invalid_offer_http_status": 502,
       "mapping_coverage_count": 8,
+      "missing_matched_amount_http_status": 200,
       "no_match_complete": false,
       "product_candidate_mapping_version": "2026-07-16.1",
       "product_ids": [
@@ -8545,15 +8561,17 @@
         "ING:ZINC"
       ],
       "service_route": "POST /api/tips",
+      "shared_product_combination_id": "combo_39b190324c7b00ff",
+      "shared_product_combination_product_count": 5,
       "unmatched_service_ingredient_ids": []
     },
     "ok": true,
-    "schema_version": "op062_service_selling_product_catalog_contract_v1"
+    "schema_version": "op063_op064_service_product_combination_contract_v1"
   },
   "source_identity": {
-    "wellnessbox_commit": "a85767d9dc9418a23a9adeb2372d14a75d10b865",
+    "wellnessbox_commit": "6c599ebeebca73e8d769426b02f12d4e7be19073",
     "wellnessbox_rnd_commit": "e09831e29f5b0f767503ade029a5a103f9086d6a",
     "wellnessbox_rnd_source_sha256": "a95490e2cdd98f00123344cafc07de00e6b78b23d8bc3c97185f8e76f5c1793a",
-    "wellnessbox_source_sha256": "59a800989ec3c183b95f29e6412b4666ed128c7395a8f580bce833d9290d1a5b"
+    "wellnessbox_source_sha256": "e81e401b9db466eb0b08cc995c88aa15ef5b5eca07706cb6c749ac69050ce138"
   }
 }

@@ -285,14 +285,30 @@
         "invalid_product_catalog_fails_closed",
         "selling_product_facts_include_ingredients_amount_price_stock_and_formulation",
         "invalid_selling_offer_fails_closed",
-        "missing_or_non_amount_product_facts_fail_closed"
+        "missing_or_non_amount_product_facts_fail_closed",
+        "actual_product_candidates_form_deterministic_combinations",
+        "same_product_is_deduplicated_across_recommendations",
+        "ingredient_amounts_are_normalized_and_summed_by_product",
+        "duplicate_ingredients_require_multiple_distinct_products",
+        "ambiguous_amounts_fail_closed",
+        "name_match_without_target_ingredient_amount_is_not_a_candidate",
+        "shared_candidate_search_is_memoized_and_bounded",
+        "fractional_micrograms_use_exact_integer_nanograms"
       ],
       "observed": {
+        "ambiguous_amount_http_status": 502,
+        "bounded_search_combination_count": 64,
+        "bounded_search_state_count": 114,
         "catalog_fixture_source": "wellnessbox configured Prisma Product catalog with in-stock PharmacyProduct; captured 2026-07-17",
+        "combination_contract_version": "wb_rnd_product_combination_v1",
+        "combination_count": 4,
+        "duplicate_zinc_combination_id": "combo_aeb9dff90d5edf7a",
+        "fractional_micrograms_normalized_to_nanograms": 12500,
         "invalid_catalog_http_status": 502,
         "invalid_facts_http_status": 502,
         "invalid_offer_http_status": 502,
         "mapping_coverage_count": 8,
+        "missing_matched_amount_http_status": 200,
         "no_match_complete": false,
         "product_candidate_mapping_version": "2026-07-16.1",
         "product_ids": [
@@ -317,10 +333,12 @@
           "ING:ZINC"
         ],
         "service_route": "POST /api/tips",
+        "shared_product_combination_id": "combo_39b190324c7b00ff",
+        "shared_product_combination_product_count": 5,
         "unmatched_service_ingredient_ids": []
       },
       "ok": true,
-      "schema_version": "op062_service_selling_product_catalog_contract_v1"
+      "schema_version": "op063_op064_service_product_combination_contract_v1"
     }
   },
   "checks": {
@@ -347,8 +365,8 @@
   },
   "schema_version": "op061_op062_optimization_product_catalog_smoke_v1",
   "source": {
-    "combined_sha256": "83118c67e45f96e6eba41e6ee853977278da8d9a8043239ca35bb3d97da10429",
-    "wellnessbox_commit": "a85767d9dc9418a23a9adeb2372d14a75d10b865",
+    "combined_sha256": "e6509c90f36f7892e8db21c6fa7c38a564e0b7fda9a86685f3963672487f5637",
+    "wellnessbox_commit": "6c599ebeebca73e8d769426b02f12d4e7be19073",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",
@@ -363,7 +381,7 @@
       "lib/server/wb-rnd-tips-route-test-hook.ts",
       "scripts/qa/check-rnd-product-candidates.cts"
     ],
-    "wellnessbox_rnd_commit": "ea3bc72484708002065ee4929dc62ca006ce980c",
+    "wellnessbox_rnd_commit": "f04eea224ce16c75135bd3e31d77bf38eb88ae5e",
     "wellnessbox_rnd_paths": [
       "data/contracts/optimization_constraints_v1.json",
       "scripts/run_optimization_constraints_product_catalog_smoke.py",

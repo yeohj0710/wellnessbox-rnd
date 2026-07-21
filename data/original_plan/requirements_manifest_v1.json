@@ -1248,8 +1248,50 @@
             ]
           }
         },
-        {"requirement_id": "OP-063", "title": "실제 상품을 성분 조합 후보로 변환한다."},
-        {"requirement_id": "OP-064", "title": "제품 간 중복 성분과 합산 용량을 계산한다."},
+        {
+          "requirement_id": "OP-063",
+          "title": "실제 상품을 성분 조합 후보로 변환한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/wb-rnd-product-candidates.ts",
+              "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/product_combinations.py"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-product-candidates.cts",
+              "wellnessbox-rnd/tests/test_product_combinations.py",
+              "wellnessbox-rnd/scripts/run_product_combination_dose_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op063_op064_product_combination_dose_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/app/api/tips/route.ts",
+              "wellnessbox/lib/server/wb-rnd-product-candidates.ts",
+              "wellnessbox-rnd/data/original_plan/evidence/op063_op064_product_combination_dose_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-064",
+          "title": "제품 간 중복 성분과 합산 용량을 계산한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/wb-rnd-product-candidates.ts",
+              "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/product_combinations.py"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-product-candidates.cts",
+              "wellnessbox-rnd/tests/test_product_combinations.py",
+              "wellnessbox-rnd/scripts/run_product_combination_dose_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op063_op064_product_combination_dose_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/app/api/tips/route.ts",
+              "wellnessbox/lib/server/wb-rnd-product-candidates.ts",
+              "wellnessbox-rnd/data/original_plan/evidence/op063_op064_product_combination_dose_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-065", "title": "예산과 최대 복용 수를 넘는 조합을 제외한다."},
         {"requirement_id": "OP-066", "title": "안전 차단 성분이 최적화 결과에 다시 들어오지 못하게 한다."},
         {"requirement_id": "OP-067", "title": "Top-k 조합과 선택되지 않은 이유를 반환한다."},
