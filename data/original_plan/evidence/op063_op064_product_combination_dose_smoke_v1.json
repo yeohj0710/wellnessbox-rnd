@@ -492,8 +492,8 @@
   },
   "schema_version": "op063_op064_product_combination_dose_smoke_v1",
   "source": {
-    "combined_sha256": "d424af37644927b6cc7b1c34f8da2fe6d157b5647861af31ae732de2f700306f",
-    "wellnessbox_commit": "62b4824c4d7a9dde68d2eee68548a34f51df8684",
+    "combined_sha256": "ff1cda3ce8b5684628a776ea05741316b27748ab2212c800490d04a81072a412",
+    "wellnessbox_commit": "4d904f43b028a35524a29206aaf7c6b99f58a97b",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",

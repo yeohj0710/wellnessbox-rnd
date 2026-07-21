@@ -9103,9 +9103,9 @@
     "schema_version": "op067_op068_service_product_combination_ranking_contract_v1"
   },
   "source_identity": {
-    "wellnessbox_commit": "62b4824c4d7a9dde68d2eee68548a34f51df8684",
+    "wellnessbox_commit": "4d904f43b028a35524a29206aaf7c6b99f58a97b",
     "wellnessbox_rnd_commit": "e09831e29f5b0f767503ade029a5a103f9086d6a",
     "wellnessbox_rnd_source_sha256": "a95490e2cdd98f00123344cafc07de00e6b78b23d8bc3c97185f8e76f5c1793a",
-    "wellnessbox_source_sha256": "e2146383bd3804f7f4e485ad6d3bbea3dcffb91dc0cb54face18998a1961aa7c"
+    "wellnessbox_source_sha256": "2b65da746dc6f19525dc6fe18f3ac5445115c847c3efac101c0327e65ccc6759"
   }
 }

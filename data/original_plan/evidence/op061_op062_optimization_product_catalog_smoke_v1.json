@@ -899,8 +899,8 @@
   },
   "schema_version": "op061_op062_optimization_product_catalog_smoke_v1",
   "source": {
-    "combined_sha256": "fc2551623c03e95fba8c40fcf7722457debf052f4787883b138c1eb13fd0806b",
-    "wellnessbox_commit": "62b4824c4d7a9dde68d2eee68548a34f51df8684",
+    "combined_sha256": "a24d386cbf72d82fc94a6db2560afcb240508af474fea586ace3d0ed7e05530b",
+    "wellnessbox_commit": "4d904f43b028a35524a29206aaf7c6b99f58a97b",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",

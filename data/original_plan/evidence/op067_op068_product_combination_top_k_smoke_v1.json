@@ -1410,8 +1410,8 @@
   },
   "schema_version": "op067_op068_product_combination_top_k_smoke_v1",
   "source": {
-    "combined_sha256": "bb33fe065a7a13232b6ecb4f2e5b0f794bd758b1da62d8c23f0ccbc1f8bf5c5f",
-    "wellnessbox_commit": "62b4824c4d7a9dde68d2eee68548a34f51df8684",
+    "combined_sha256": "abbe6f28ec667275f8df15b33c9be2d39ebb4d382926ee6c98d2dfb2a6663637",
+    "wellnessbox_commit": "4d904f43b028a35524a29206aaf7c6b99f58a97b",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",

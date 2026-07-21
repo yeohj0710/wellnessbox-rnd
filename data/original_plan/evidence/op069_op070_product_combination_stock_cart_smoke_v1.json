@@ -2046,8 +2046,8 @@
   },
   "schema_version": "op069_op070_product_combination_stock_cart_smoke_v1",
   "source": {
-    "combined_sha256": "12aa33a1dcc7a062f56cbf02ddbebe6017c8c6363656f2cad1457f15bd95ca94",
-    "wellnessbox_commit": "62b4824c4d7a9dde68d2eee68548a34f51df8684",
+    "combined_sha256": "07f8f483bcc013fd51627f27aa58e0e03c6c8cc208dc987abf987600049830ca",
+    "wellnessbox_commit": "4d904f43b028a35524a29206aaf7c6b99f58a97b",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",
