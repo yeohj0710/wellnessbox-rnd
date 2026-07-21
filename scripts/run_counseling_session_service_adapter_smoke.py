@@ -16,17 +16,20 @@ SERVICE_ROOT = Path(
     os.environ.get("WELLNESSBOX_EVIDENCE_ROOT", r"C:\dev\wellnessbox")
 ).resolve()
 PORT = 8878
-SOURCE_PATHS = (
+RND_SOURCE_PATHS = (
     RND_ROOT / "scripts/run_counseling_session_service_adapter_smoke.py",
     RND_ROOT / "apps/inference_api/routes/interim.py",
     RND_ROOT / "src/wellnessbox_rnd/interim/store.py",
     RND_ROOT / "data/knowledge/counseling_retrieval_corpus_manifest_v1.json",
+)
+SERVICE_SOURCE_PATHS = (
     SERVICE_ROOT / "app/api/chat/route-service.ts",
     SERVICE_ROOT / "app/api/chat/save/route-service.ts",
     SERVICE_ROOT / "lib/server/wb-rnd-interim-client.ts",
     SERVICE_ROOT / "scripts/qa/run-rnd-counseling-live-smoke.cts",
     SERVICE_ROOT / "scripts/qa/check-rnd-counseling-adapter.cts",
 )
+SOURCE_PATHS = RND_SOURCE_PATHS + SERVICE_SOURCE_PATHS
 
 
 def _sha256(path: Path) -> str:
@@ -46,9 +49,9 @@ def _git_source_commit(root: Path, paths: tuple[Path, ...]) -> str:
 
 
 def _source_key(path: Path) -> str:
-    if path.is_relative_to(RND_ROOT):
-        return f"wellnessbox-rnd/{path.relative_to(RND_ROOT).as_posix()}"
-    return f"wellnessbox/{path.relative_to(SERVICE_ROOT).as_posix()}"
+    if path.is_relative_to(SERVICE_ROOT):
+        return f"wellnessbox/{path.relative_to(SERVICE_ROOT).as_posix()}"
+    return f"wellnessbox-rnd/{path.relative_to(RND_ROOT).as_posix()}"
 
 
 def _wait_ready(process: subprocess.Popen[str]) -> None:
@@ -188,11 +191,11 @@ def main() -> int:
         "source_identity": {
             "wellnessbox_rnd_commit": _git_source_commit(
                 RND_ROOT,
-                tuple(path for path in SOURCE_PATHS if path.is_relative_to(RND_ROOT)),
+                RND_SOURCE_PATHS,
             ),
             "wellnessbox_service_commit": _git_source_commit(
                 SERVICE_ROOT,
-                tuple(path for path in SOURCE_PATHS if path.is_relative_to(SERVICE_ROOT)),
+                SERVICE_SOURCE_PATHS,
             ),
             "files": {_source_key(path): _sha256(path) for path in SOURCE_PATHS},
         },
