@@ -266,7 +266,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 6c599ebeebca73e8d769426b02f12d4e7be19073
+          ref: 7f248485f522fd85ca09a71a9252cf1ec8dc5896
           fetch-depth: 0
           path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
@@ -362,6 +362,11 @@ jobs:
           python scripts/run_product_combination_dose_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op063_op064_product_combination_dose_smoke_v1.json
+      - name: Check product-combination constraint and safety evidence
+        run: >-
+          python scripts/run_product_combination_constraint_safety_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op065_op066_product_combination_filter_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -469,6 +474,7 @@ jobs:
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py
+          scripts/run_product_combination_constraint_safety_smoke.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
           src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py
           src/wellnessbox_rnd/evals/recommendation_replay_compare.py

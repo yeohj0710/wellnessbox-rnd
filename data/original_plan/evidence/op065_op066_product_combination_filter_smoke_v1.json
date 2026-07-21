@@ -1,5 +1,16 @@
 {
   "cases": {
+    "actual_rnd_service_constraints": {
+      "excluded_ingredient_keys": [
+        "magnesium_glycinate"
+      ],
+      "max_products": 3,
+      "max_total_cost_krw": 54321,
+      "safety_rule_ids": [
+        "SAFE-EMERGENCY-001"
+      ],
+      "schema_version": "product_optimization_constraints_v1"
+    },
     "budget_excluded_combination_count": 3,
     "constrained_evaluation": {
       "budget_excluded_combination_ids": [
@@ -1119,8 +1130,8 @@
     "safety_filter_input_combination_count": 1
   },
   "checks": {
-    "filter_counts_independently_recomputed": true,
-    "limits_validated_by_rnd_before_service_consumption": true,
+    "actual_rnd_constraints_validated_at_service_boundary": true,
+    "manual_fixture_filter_counts_independently_recomputed": true,
     "order_or_payment_created": false,
     "over_budget_combinations_absent_from_output": true,
     "over_product_count_combinations_absent_from_output": true,
@@ -1129,8 +1140,9 @@
   },
   "evidence_boundary": {
     "actual_prisma_query_executed": false,
+    "actual_ready_filter_path_proven": false,
+    "actual_rnd_safety_contract_consumed_by_service": true,
     "configured_prisma_query_source_bound": true,
-    "deterministic_rnd_safety_contract_proven": true,
     "op065_proven_stage": "INTEGRATED",
     "op065_required_stage": "INTEGRATED",
     "op066_proven_stage": "INTEGRATED",
@@ -1143,8 +1155,8 @@
   },
   "schema_version": "op065_op066_product_combination_filter_smoke_v1",
   "source": {
-    "combined_sha256": "1d240506f8814196edcd7865d33cd9ccf17c4b96a69411daa03620085eaaebbf",
-    "wellnessbox_commit": "7896eefd99486325ef5f871c7d25a8f0664fea70",
+    "combined_sha256": "ace71663d00cb8999affafc0cd2fad9c24ccc3390264bba0a895fb1703ead1c0",
+    "wellnessbox_commit": "7f248485f522fd85ca09a71a9252cf1ec8dc5896",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",
@@ -1153,15 +1165,20 @@
       "lib/product/product-detail-facts.ts",
       "lib/product/product.catalog.ts",
       "lib/server/wb-rnd-ingredient-map.ts",
+      "lib/server/wb-rnd-interim-client.ts",
       "lib/server/wb-rnd-interim-route.ts",
+      "lib/server/wb-rnd-interim-safety-authority.ts",
       "lib/server/wb-rnd-product-candidates.ts",
       "lib/server/wb-rnd-tips-route-test-hook.ts",
-      "scripts/qa/check-rnd-product-candidates.cts"
+      "scripts/qa/check-rnd-product-candidates.cts",
+      "scripts/qa/check-rnd-final-safety-authority.cts"
     ],
-    "wellnessbox_rnd_commit": "9689bacde518265d0a34cab5b7dff0e6baa3be0c",
+    "wellnessbox_rnd_commit": "275674c5d667e4a76f42dd6aa62dbcadf5baec50",
     "wellnessbox_rnd_paths": [
       "apps/inference_api/routes/interim.py",
+      "scripts/run_wellnessbox_final_safety_authority_smoke.py",
       "scripts/run_product_combination_constraint_safety_smoke.py",
+      "src/wellnessbox_rnd/interim/safety.py",
       "src/wellnessbox_rnd/optimizer/__init__.py",
       "src/wellnessbox_rnd/optimizer/product_combinations.py",
       "tests/test_interim_api.py",

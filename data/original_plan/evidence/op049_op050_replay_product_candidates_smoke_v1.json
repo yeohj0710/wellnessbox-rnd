@@ -8521,7 +8521,10 @@
       "ambiguous_amounts_fail_closed",
       "name_match_without_target_ingredient_amount_is_not_a_candidate",
       "shared_candidate_search_is_memoized_and_bounded",
-      "fractional_micrograms_use_exact_integer_nanograms"
+      "fractional_micrograms_use_exact_integer_nanograms",
+      "budget_and_product_count_limits_filter_materialized_combinations",
+      "safety_excluded_product_ingredient_cannot_reenter",
+      "safety_excluded_recommendation_fails_closed"
     ],
     "observed": {
       "ambiguous_amount_http_status": 502,
@@ -8530,6 +8533,29 @@
       "catalog_fixture_source": "wellnessbox configured Prisma Product catalog with in-stock PharmacyProduct; captured 2026-07-17",
       "combination_contract_version": "wb_rnd_product_combination_v1",
       "combination_count": 4,
+      "combination_filter_contract_version": "product_combination_filter_v1",
+      "constrained_policy": {
+        "excluded_ingredient_keys": [],
+        "max_products": 5,
+        "max_total_cost_krw": 65000,
+        "safety_rule_ids": [],
+        "schema_version": "product_optimization_constraints_v1"
+      },
+      "constrained_resolution": {
+        "budget_excluded_count": 3,
+        "combination_count": 1,
+        "combination_limit_reached": false,
+        "complete": true,
+        "filter_schema_version": "product_combination_filter_v1",
+        "pre_filter_combination_count": 4,
+        "product_count_excluded_count": 3,
+        "safety_excluded_count": 0,
+        "schema_version": "wb_rnd_product_combination_v1",
+        "search_state_count": 13,
+        "search_truncated": false
+      },
+      "contradictory_safety_reentry_http_status": 502,
+      "contradictory_safety_reentry_reason": "WB_RND_PRODUCT_MATCH_excluded_recommendation_reentered",
       "duplicate_zinc_combination_id": "combo_aeb9dff90d5edf7a",
       "fractional_micrograms_normalized_to_nanograms": 12500,
       "invalid_catalog_http_status": 502,
@@ -8538,6 +8564,7 @@
       "mapping_coverage_count": 8,
       "missing_matched_amount_http_status": 200,
       "no_match_complete": false,
+      "optimization_constraints_contract_version": "product_optimization_constraints_v1",
       "product_candidate_mapping_version": "2026-07-16.1",
       "product_ids": [
         29,
@@ -8550,6 +8577,33 @@
         29
       ],
       "production_operation_proven": false,
+      "safety_filter_policy": {
+        "excluded_ingredient_keys": [
+          "zinc"
+        ],
+        "excluded_service_ingredient_ids": [
+          "ING:ZINC"
+        ],
+        "max_products": 5,
+        "max_total_cost_krw": 100000,
+        "safety_rule_ids": [
+          "SAFE-OP066-TEST"
+        ],
+        "schema_version": "product_optimization_constraints_v1"
+      },
+      "safety_filtered_resolution": {
+        "budget_excluded_count": 0,
+        "combination_count": 0,
+        "combination_limit_reached": false,
+        "complete": false,
+        "filter_schema_version": "product_combination_filter_v1",
+        "pre_filter_combination_count": 1,
+        "product_count_excluded_count": 0,
+        "safety_excluded_count": 1,
+        "schema_version": "wb_rnd_product_combination_v1",
+        "search_state_count": 2,
+        "search_truncated": false
+      },
       "service_ingredient_ids": [
         "ING:CALCIUM",
         "ING:COQ10",
@@ -8563,15 +8617,28 @@
       "service_route": "POST /api/tips",
       "shared_product_combination_id": "combo_39b190324c7b00ff",
       "shared_product_combination_product_count": 5,
+      "unfiltered_resolution": {
+        "budget_excluded_count": 0,
+        "combination_count": 4,
+        "combination_limit_reached": false,
+        "complete": true,
+        "filter_schema_version": "product_combination_filter_v1",
+        "pre_filter_combination_count": 4,
+        "product_count_excluded_count": 0,
+        "safety_excluded_count": 0,
+        "schema_version": "wb_rnd_product_combination_v1",
+        "search_state_count": 13,
+        "search_truncated": false
+      },
       "unmatched_service_ingredient_ids": []
     },
     "ok": true,
-    "schema_version": "op063_op064_service_product_combination_contract_v1"
+    "schema_version": "op065_op066_service_product_combination_filter_contract_v1"
   },
   "source_identity": {
-    "wellnessbox_commit": "6c599ebeebca73e8d769426b02f12d4e7be19073",
+    "wellnessbox_commit": "7f248485f522fd85ca09a71a9252cf1ec8dc5896",
     "wellnessbox_rnd_commit": "e09831e29f5b0f767503ade029a5a103f9086d6a",
     "wellnessbox_rnd_source_sha256": "a95490e2cdd98f00123344cafc07de00e6b78b23d8bc3c97185f8e76f5c1793a",
-    "wellnessbox_source_sha256": "8d68268840bd6626f4c0c697aa80a3dab0c03dcfc09bd071726c039df49b3bf3"
+    "wellnessbox_source_sha256": "6454cb99ddc724d1995c96e58255325361bdcc99406baff89f65ef8d4a96dfca"
   }
 }

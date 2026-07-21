@@ -492,8 +492,8 @@
   },
   "schema_version": "op063_op064_product_combination_dose_smoke_v1",
   "source": {
-    "combined_sha256": "3c48c1b8fecac69e3b8b088830e0efa7c6bcc4b9784f81af72a0dcc39d69ce05",
-    "wellnessbox_commit": "6c599ebeebca73e8d769426b02f12d4e7be19073",
+    "combined_sha256": "7f19a1317052e77509065b93751a15f80b6fcc24cbb7790c1c2244a48dd4f554",
+    "wellnessbox_commit": "7f248485f522fd85ca09a71a9252cf1ec8dc5896",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "contracts/wb-rnd/ingredient-identifier-map-v1.json",
@@ -505,7 +505,7 @@
       "lib/server/wb-rnd-tips-route-test-hook.ts",
       "scripts/qa/check-rnd-product-candidates.cts"
     ],
-    "wellnessbox_rnd_commit": "00fbd06f275e7ba2a486e398fdd56591388df6ad",
+    "wellnessbox_rnd_commit": "5dbe3cfd8ce967193a4d479c71f55be936f0b7a4",
     "wellnessbox_rnd_paths": [
       "scripts/run_product_combination_dose_smoke.py",
       "src/wellnessbox_rnd/optimizer/__init__.py",
