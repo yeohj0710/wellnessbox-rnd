@@ -2,6 +2,20 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 product-combination constraint and safety integration loop
+
+- Chosen stage: `original plan / product optimization`; tasks OP-065 and OP-066.
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. Canonical evidence evaluates `4` materialized combinations for budget/product-count filtering, `1` product-side safety exclusion, and `1` actual localhost R&D-to-service constraint response.
+- Primary evidence: `data/original_plan/evidence/op065_op066_product_combination_filter_smoke_v1.json`; deterministic SHA-256 `87c16d1e39d2a7ea9b64f16ba46f0bcb5946da8265aa87c75e40a53611de2a3f`; combined source SHA-256 `ace71663d00cb8999affafc0cd2fad9c24ccc3390264bba0a895fb1703ead1c0`; R&D source `275674c5d667e4a76f42dd6aa62dbcadf5baec50`; service source `7f248485f522fd85ca09a71a9252cf1ec8dc5896`.
+- Implementation: the existing R&D request and service `/api/tips` path now carry strict budget, maximum-product, excluded-ingredient, and safety-rule constraints. The existing bounded product-combination search filters materialized combinations before its eligible-result cap. Product side ingredients are included in safety exclusion, excluded recommendations fail closed, and zero-recommendation blocked responses are contract-validated before return. No parallel catalog, optimizer, route, database, order, payment, training, or simulation path was added.
+- Evidence boundary: OP-065 and OP-066 are `INTEGRATED` and COMPLETE at their required stages. The localhost blocked-response path is proven. An actual READY R&D filter path, Prisma execution, production catalog freshness, deployment, production operation, ordering, and payment are not proven.
+- Generated status: complete `52`, partial `13`, pending `54`, external `1`, contradicted `0`. Audit PASS with `65` claims and `198` checked evidence files.
+- Validation: focused tests `27 passed`; exact workflow tests `492 passed`; full Ruff PASS; service product QA, typecheck, and lint PASS; all `16` canonical smokes PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `873 passed`, `77 failed`; the unchanged failures are `73` absent report artifacts and `4` CGM geometry assertions. No OP-065/066 regression was found.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, and every metric-specific weakest category is unchanged.
+- Publication: service commit `7f248485f522fd85ca09a71a9252cf1ec8dc5896` passed Encoding Guard run `29813747636`. R&D commit `c085d467a6447316fc865b84996e6085fa7b928d` passed Original plan evidence run `29813998092`.
+- Recommended next loops: OP-067/068 top-k explanations and deterministic reproduction; OP-069/070 stock-aware safe substitution and approval-gated cart candidates; OP-071/072 unified state-transition contract and ordered orchestration.
+
 ## 2026-07-21 product combination and aggregate-dose integration loop
 
 - Chosen stage: `original plan / product optimization`; tasks OP-063 and OP-064.

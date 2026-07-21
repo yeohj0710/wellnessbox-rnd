@@ -2,6 +2,20 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 product-combination constraint and safety integration handoff
+
+- Chosen stage and tasks: `original plan / product optimization`; OP-065 and OP-066.
+- Primary dataset and cases: frozen eval `256` cases; canonical smoke `4` constraint-filter inputs, `1` product-side safety-filter input, and `1` actual localhost R&D-to-service constraint response.
+- Primary evidence: `data/original_plan/evidence/op065_op066_product_combination_filter_smoke_v1.json`; SHA-256 `87c16d1e39d2a7ea9b64f16ba46f0bcb5946da8265aa87c75e40a53611de2a3f`; combined source SHA-256 `ace71663d00cb8999affafc0cd2fad9c24ccc3390264bba0a895fb1703ead1c0`.
+- Source identity: R&D `275674c5d667e4a76f42dd6aa62dbcadf5baec50`; WellnessBox `7f248485f522fd85ca09a71a9252cf1ec8dc5896`.
+- Main changes: strict R&D product constraints; existing service-route validation before zero-result return; budget and maximum-product filters applied before the eligible cap; product-side ingredient safety exclusion; fail-closed recommendation re-entry protection; independent R&D filter recomputation; manifest, reports, workflow, tests, and canonical evidence. No training or simulation behavior changed.
+- Honest stage: OP-065 and OP-066 are COMPLETE at `INTEGRATED`. Actual localhost R&D constraint transport is proven, but the actual READY filter path, Prisma execution, production data freshness, deployment, production operation, ordering, and payment are not.
+- Validation: focused `27 passed`; workflow-equivalent `492 passed`; full Ruff PASS; service QA/typecheck/lint PASS; `16` workflow smokes PASS; audit PASS with `65` claims and `198` evidence files; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `873 passed`, `77 failed`, exactly the known `73` absent-report plus `4` CGM-geometry groups. Frozen eval has `256` cases, seven zero metric deltas, and unchanged metric-specific weakest categories.
+- Publication: service commit `7f248485f522fd85ca09a71a9252cf1ec8dc5896` passed Encoding Guard run `29813747636`. R&D commit `c085d467a6447316fc865b84996e6085fa7b928d` passed Original plan evidence run `29813998092`.
+- Five bottlenecks: actual READY R&D filter-path evidence; actual Prisma catalog-query evidence; production catalog freshness; deployed service/R&D operation; OP-067 top-k non-selection reasons.
+- Next three loops: OP-067/068, OP-069/070, OP-071/072.
+
 ## 2026-07-21 product combination and aggregate-dose integration handoff
 
 - Chosen stage and tasks: `original plan / product optimization`; OP-063 and OP-064.
