@@ -2,19 +2,19 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-079/080 now persist guarded plan lifecycle transitions, require a real replacement candidate, and reject any order-state field or mutation. Both remain below required stage `OPERATED`. Generated status is complete `56`, partial `23`, pending `40`, external `1`, contradicted `0`. Long-form research-report coverage is only `2/120`; the remaining 118 reports still require separate evidence-grounded prose.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-081/082 now validate source-backed passage spans and extract traceable question entities with bounded negation and subtype handling. Both are complete at required stage `IMPLEMENTED`. Generated status is complete `58`, partial `23`, pending `38`, external `1`, contradicted `0`. Long-form research-report coverage is only `4/120`; the remaining 116 reports still require separate evidence-grounded prose. The current four reports total `27,023` characters, so manifest completion must never be presented as 120 finished reports.
 
 Next three loops:
 
-1. Implement OP-081 and OP-082: index evidence passages with source/effective dates and extract health goals, ingredients, drugs, and risk signals from questions.
-2. Implement OP-083 and OP-084: restrict bounded RAG to allowed knowledge and include evidence IDs, validity dates, and uncertainty in answers.
-3. Implement OP-085 and OP-086, while writing one full prose report per newly verified OP and beginning evidence-grounded backfill for OP-001~078.
+1. Implement OP-083 and OP-084: restrict bounded RAG to allowed knowledge and include evidence IDs, validity dates, and uncertainty in answers.
+2. Implement OP-085 and OP-086, with one full prose research report for each requirement.
+3. Implement OP-087 and OP-088, while continuing evidence-grounded report backfill for OP-001~078.
 
 Continue through the closed-loop execution group, then the RAG group, in two-requirement slices. Reuse the current `agent_runs`, `agent_steps`, follow-up tables, knowledge tables, and service paths; do not add a parallel scheduler, event store, or knowledge store. Production has no deployed R&D endpoint or `WB_RND_*` settings, so OP-071 through OP-080 remain below `OPERATED`, and OP-101 through OP-105 remain separate deployment and production-integration requirements.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 
-The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. The current environment reports `948 passed, 77 failed`; the 77 failures are the same `73 + 4` groups. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
+The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. The current environment reports `968 passed, 77 failed`; the 77 failures are the same `73 + 4` groups. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
 
 ## 2026-07-14 verified restoration path
 

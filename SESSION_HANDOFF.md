@@ -1,5 +1,20 @@
 # SESSION_HANDOFF
 
+## 2026-07-21 OP-081/082 handoff
+
+- Chosen stage/tasks: `original plan / counseling RAG`; OP-081 passage-level evidence collection with source/effective dates and OP-082 extraction of health goals, ingredients, drugs, and risk signals.
+- Primary dataset and cases: `24` passages from `19` sources and `9` question cases, including `4` urgent cases; frozen eval `256` cases. Canonical evidence is `data/original_plan/evidence/op081_op082_counseling_passage_entity_smoke_v1.json`, SHA-256 `03c0efdc6110208f4e2e185c17524099d5b8fcdc5f27366cf6bd47c5ecb332f4`; source SHA-256 `ab6ffef24a9d936a9374d82a3a385943ad7a8b2600999b909ce7bc413d918d68`.
+- Main files: `src/wellnessbox_rnd/chat/retrieval.py`, `scripts/build_chat_retrieval_assets.py`, the existing chat adapter and learned-runtime audit fixture, focused tests, canonical smoke, manifest, generated completion reports, CI workflow, and `docs/original_plan/research_reports/OP-081.md` plus `OP-082.md`.
+- Code/data/training/simulation: existing reference and runtime-knowledge data now produce source-span-verified passages and deterministic entity traces. No model training, frozen dataset change, service code change, deployment, production operation, external validation, or LLM inference occurred.
+- Stage/result: OP-081 and OP-082 are COMPLETE at required stage `IMPLEMENTED`. Completion counts are `58/23/38/1/0` for complete/partial/pending/external/contradicted.
+- Research-report result: separate prose reports now exist for OP-079 through OP-082, so coverage is `4/120`, not 120/120. OP-081 and OP-082 are about 6,500 characters each; all four current reports total `27,023` characters. The remaining 116 reports require evidence-grounded writing and must not be represented by manifest rows alone.
+- Validation: focused/downstream regression `51 passed`; workflow-equivalent `584 passed`; full Ruff PASS; audit PASS (`81` claims, `232` evidence files); completion check PASS; `26` smokes reproduced; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `968 passed`, `77 failed`; known failure split `73` absent-report + `4` CGM geometry; other failures `0`.
+- Frozen/replay/slice: `256` cases, seven zero metric deltas, unchanged overall weakest category `safety_blocked`, and no metric-specific weakest-category change.
+- Publication: implementation/evidence HEAD `fd41644949479fbbc4219eb40fa31d7b4b13a30f` was pushed; GitHub Actions `Original plan evidence` run `29835498939` passed.
+- Five current bottlenecks: only `4/120` long-form reports exist; OP-083/084 bounded answer generation is not implemented; no deployed R&D counseling process; no authenticated production service-to-R&D counseling call; no external counseling validation or production telemetry.
+- Next three loops: OP-083/084 bounded RAG and evidence validity/uncertainty; OP-085/086; OP-087/088, with one full prose report per newly verified OP and continuing report backfill.
+
 ## 2026-07-21 OP-079/080 handoff
 
 - Chosen stage/tasks: `original plan / closed-loop execution`; OP-079 lifecycle transition E2E and OP-080 strict separation between plan state and order state.

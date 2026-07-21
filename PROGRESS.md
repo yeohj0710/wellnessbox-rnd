@@ -1,5 +1,20 @@
 # PROGRESS
 
+## 2026-07-21 counseling passage and question-entity loop
+
+- Chosen stage/tasks: `original plan / counseling RAG`, OP-081 and OP-082.
+- Dataset/cases: canonical index contains `24` passages from `19` sources; entity smoke contains `9` questions, including `4` urgent cases. Frozen eval remains `256` cases. Evidence SHA-256 is `03c0efdc6110208f4e2e185c17524099d5b8fcdc5f27366cf6bd47c5ecb332f4`; source SHA-256 is `ab6ffef24a9d936a9374d82a3a385943ad7a8b2600999b909ce7bc413d918d68`.
+- Reuse/integration: reused the existing reference registry, parsed source files, runtime ingredient/drug aliases, retrieval manifest, and chat adapter. No parallel evidence store, terminology database, or counseling service was added.
+- Implementation: every passage preserves source URI, parsed source URI, license status, effective/retired time, and exact source-line span. Asset generation rejects missing references, path escape, metadata mismatch, and source spans that do not contain the declared claim ID and claim text. Question parsing returns exact text spans for health goals, ingredients, drugs, and risk signals. It handles explicit negation locally, does not let negation cross contrast or coordinated propositions, and does not infer a specific subtype from generic magnesium or vitamin-D wording.
+- Evidence stage: OP-081 and OP-082 are `IMPLEMENTED` and COMPLETE at their required `IMPLEMENTED` stage. No WellnessBox service change, deployment, production operation, external validation, or LLM inference is claimed.
+- Research reports: separate long-form prose reports exist for OP-079 through OP-082. Coverage is `4/120`; 116 reports remain. OP-081 has `6,540` characters and OP-082 has `6,637` characters in the current files; all four reports total `27,023` characters.
+- Generated status: complete `58`, partial `23`, pending `38`, external `1`, contradicted `0`; audit PASS with `81` claims and `232` checked evidence files.
+- Validation: focused/downstream regression `51 passed`; workflow-equivalent selection `584 passed`; `26` canonical smokes reproduced; full Ruff PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `968 passed`, `77 failed`; failures remain exactly `73` absent-report and `4` CGM geometry cases, with no new failure group.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: implementation/evidence HEAD `fd41644949479fbbc4219eb40fa31d7b4b13a30f` was pushed; GitHub Actions `Original plan evidence` run `29835498939` passed.
+- Next loops: OP-083/084, OP-085/086, OP-087/088, while adding a full prose report for every newly verified OP and continuing evidence-grounded backfill.
+
 ## 2026-07-21 plan lifecycle and order boundary loop
 
 - Chosen stage/tasks: `original plan / closed-loop execution`, OP-079 and OP-080.
