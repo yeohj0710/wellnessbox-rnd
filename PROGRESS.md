@@ -12,8 +12,8 @@
 - Generated status: complete `62`, partial `25`, pending `32`, external `1`, contradicted `0`; audit PASS with `87` claims and `249` checked evidence files.
 - Validation: focused counseling/audit tests passed; exact workflow pytest selection `613 passed`; full Ruff PASS; completion check PASS; canonical smoke is byte-identical across reruns. The full suite is `992 passed`, `77 failed`; the failures remain the known absent-report and CGM groups, with no new failure group.
 - Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
-- Publication: WellnessBox service commit `f78604c74795c127a004a7be64cb67c7fe112803` is on `origin/main`. R&D evidence publication and GitHub Actions verification remain pending.
-- Next loops: finish OP-087/088 R&D publication and CI, then implement OP-089/090 while separately backfilling evidence-grounded reports for OP-001 through OP-078.
+- Publication: WellnessBox service commit `f78604c74795c127a004a7be64cb67c7fe112803` and R&D source/evidence commit `9f7a71c9fc96f265ed554a1e179a87c3c58dbc2e` are on `origin/main`. GitHub Actions `Original plan evidence` run `29848036378` passed all `27` canonical smokes, the exact contract-test selection, and workflow lint.
+- Next loops: implement OP-089/090 while separately backfilling evidence-grounded reports for OP-001 through OP-078.
 
 ## 2026-07-21 counseling verifier and urgent-safety loop
 
