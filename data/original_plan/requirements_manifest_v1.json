@@ -1390,8 +1390,52 @@
             ]
           }
         },
-        {"requirement_id": "OP-069", "title": "재고 변경 시 안전 조건을 유지하며 대체 조합을 계산한다."},
-        {"requirement_id": "OP-070", "title": "추천 조합을 장바구니 후보로 변환하되 승인 전 주문을 생성하지 않는다."}
+        {
+          "requirement_id": "OP-069",
+          "title": "재고 변경 시 안전 조건을 유지하며 대체 조합을 계산한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/wb-rnd-product-candidates.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/product_combinations.py"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-product-candidates.cts",
+              "wellnessbox-rnd/tests/test_product_combinations.py",
+              "wellnessbox-rnd/scripts/run_product_combination_stock_cart_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op069_op070_product_combination_stock_cart_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/app/api/tips/route.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox-rnd/data/original_plan/evidence/op069_op070_product_combination_stock_cart_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-070",
+          "title": "추천 조합을 장바구니 후보로 변환하되 승인 전 주문을 생성하지 않는다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/wb-rnd-product-candidates.ts",
+              "wellnessbox/lib/client/cart-storage.ts",
+              "wellnessbox-rnd/src/wellnessbox_rnd/optimizer/product_combinations.py"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-product-candidates.cts",
+              "wellnessbox-rnd/tests/test_product_combinations.py",
+              "wellnessbox-rnd/scripts/run_product_combination_stock_cart_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op069_op070_product_combination_stock_cart_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox/app/api/tips/route.ts",
+              "wellnessbox/lib/client/cart-storage.ts",
+              "wellnessbox-rnd/data/original_plan/evidence/op069_op070_product_combination_stock_cart_smoke_v1.json"
+            ]
+          }
+        }
       ]
     },
     {

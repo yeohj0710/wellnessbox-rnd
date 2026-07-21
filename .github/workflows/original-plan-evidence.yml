@@ -266,7 +266,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: a27de7c0beee507114641e24a058827d46ad2ef0
+          ref: 62b4824c4d7a9dde68d2eee68548a34f51df8684
           fetch-depth: 0
           path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
@@ -372,6 +372,11 @@ jobs:
           python scripts/run_product_combination_top_k_reproducibility_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op067_op068_product_combination_top_k_smoke_v1.json
+      - name: Check stock substitution and approval-gated cart evidence
+        run: >-
+          python scripts/run_product_combination_stock_cart_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op069_op070_product_combination_stock_cart_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
