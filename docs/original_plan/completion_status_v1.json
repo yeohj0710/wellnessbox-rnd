@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "6e1b10c3cf1cfc4673e061df090ac850eadf8f46e7bba23384cf85357c080199",
+  "audited_manifest_sha256": "1b3fae03f07fa9b09496f702cbe3247f5a7546f621942cdc2bc0aa6e4797202d",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -9,8 +9,8 @@
   "requirement_count": 120,
   "disposition_counts": {
     "COMPLETE": 56,
-    "PARTIAL": 13,
-    "PENDING": 50,
+    "PARTIAL": 15,
+    "PENDING": 48,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -105,8 +105,8 @@
       "requirement_count": 10,
       "disposition_counts": {
         "COMPLETE": 0,
-        "PARTIAL": 0,
-        "PENDING": 10,
+        "PARTIAL": 2,
+        "PENDING": 8,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -2484,14 +2484,20 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/workflow_contract.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/agent.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_interim_workflow_contract.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -2507,14 +2513,22 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/agent.py",
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_interim_workflow_contract.py",
+          "wellnessbox-rnd/tests/test_interim_api.py",
+          "wellnessbox-rnd/scripts/run_closed_loop_state_order_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
