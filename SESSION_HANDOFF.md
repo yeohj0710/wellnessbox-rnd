@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-087/088 handoff
+
+- Chosen stage/tasks: `original plan / counseling RAG`; OP-087 binds counseling answers to one service session, one turn, one verifier decision, and one recommendation run; OP-088 adds the thin WellnessBox-to-R&D adapter inside the existing chat path.
+- Primary dataset and cases: `24` passages from `19` sources and frozen evaluation `256` cases. Canonical evidence is `data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json`, SHA-256 `8a4690628d6dcfb63da6d9f527c45f0a890bd78b5c781d5d12938dba7dbebf29`; R&D source commit `892cab7152642b81255b81316d6ea4e01a7bc7a5`; service source commit `f78604c74795c127a004a7be64cb67c7fe112803`.
+- Main files: the existing interim route and store, committed counseling corpus, existing chat route and save route, existing R&D client, service QA scripts, focused tests, canonical smoke, manifest, generated completion reports, CI workflow, and two long-form research reports.
+- Code/data/training/simulation: a strict counseling turn contract, stable session binding, full semantic replay hash, concurrent recommendation idempotency, pseudonymous profile mapping, and transactional service persistence are implemented. No model training, frozen-data change, deployment, production operation, production database write, external validation, or live language-model inference occurred.
+- Stage/result: OP-087 is `IMPLEMENTED` against required `OPERATED`; OP-088 is `IMPLEMENTED` against required `INTEGRATED`. Both are PARTIAL. Completion counts are `62/25/32/1/0` for complete/partial/pending/external/contradicted.
+- Research-report result: OP-079 through OP-088 have separate explanatory prose reports. Coverage is `10/120`, not 120/120; `110` remain. Total current report text is `80,291` characters. OP-087 is `11,381` characters and OP-088 is `9,862` characters.
+- Independent review: the review sequence found Critical `1`, Important `10`, Minor `0` in total. Fixes cover session-scoped message identity, changed-payload replay rejection, concurrent insertion, privacy allowlists, truthful consent scopes, persisted binding evidence, atomic Prisma writes, stable retries, migration compatibility, and actual `UserProfile` mapping. Final review is Critical `0`, Important `0`, Minor `0`.
+- Validation: exact workflow selection `613 passed`; full Ruff PASS; audit PASS (`87` claims, `249` evidence files); completion check PASS; canonical bytes and source hashes verified twice. Full regression is `992 passed`, `77 failed`, with no new failure group. Frozen eval has seven zero metric deltas and unchanged weakest categories.
+- Publication: WellnessBox service HEAD `f78604c74795c127a004a7be64cb67c7fe112803` is on `origin/main`. R&D publication and final `Original plan evidence` CI run remain pending.
+- Current bottlenecks: `110/120` reports remain; OP-087 lacks production operation; OP-088 lacks `/api/chat` plus isolated Prisma database evidence; no deployed R&D counseling process or production telemetry exists; external counseling validation remains absent.
+- Next loops: finish R&D push and CI, then OP-089/090, while reconstructing OP-001 through OP-078 reports only from primary source, Git history, tests, and canonical evidence.
+
 ## 2026-07-21 OP-085/086 handoff
 
 - Chosen stage/tasks: `original plan / counseling RAG`; OP-085 blocks unsupported claims, omitted risks, forbidden expressions, and policy/query-evidence mismatch; OP-086 places deterministic emergency guidance before retrieval, recommendation, and provider calls.

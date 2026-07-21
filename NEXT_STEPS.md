@@ -2,13 +2,13 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-085/086 now enforce a repository-owned counseling verifier and emergency guidance before retrieval, recommendation, or provider calls. Both are complete at required stage `IMPLEMENTED`. Generated status is complete `62`, partial `23`, pending `34`, external `1`, contradicted `0`. Long-form research-report coverage is only `8/120`; the remaining 112 reports still require separate evidence-grounded prose. The current eight reports total `48,961` UTF-8 characters, so manifest completion must never be presented as 120 finished reports.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-087/088 now bind counseling turns to existing R&D recommendation runs and add a thin adapter in the existing WellnessBox chat path. Both remain PARTIAL at `IMPLEMENTED`: OP-087 requires `OPERATED`, and OP-088 requires `/api/chat` plus isolated Prisma persistence evidence before `INTEGRATED` can be claimed. Generated status is complete `62`, partial `25`, pending `32`, external `1`, contradicted `0`. Long-form research-report coverage is only `10/120`; the remaining 110 reports still require separate evidence-grounded prose. The current ten reports total `80,291` characters, so manifest completion must never be presented as 120 finished reports.
 
 Every OP requires one independent research report. Write the report as full, connected prose for a human reader rather than as an abbreviated log or a list of results. Explain the original requirement, existing system, sources inspected, decisions and reasons, implementation sequence, failures and corrections, reproducible tests, limitations, and the exact evidence stage. Expand unfamiliar abbreviations on first use. Machine-readable evidence, test output, manifest entries, and handoff bullets are supporting material only and never replace the report. Backfill OP-001 through OP-078 from source commits and canonical evidence; do not invent missing history from short summaries.
 
 Next three loops:
 
-1. Implement OP-087 and OP-088, with one full prose research report for each requirement.
+1. Publish and verify the OP-087/088 evidence loop, then add isolated `/api/chat` and Prisma integration evidence only when the database target is proven safe.
 2. Implement OP-089 and OP-090, with one full prose research report for each requirement.
 3. Implement OP-091 and OP-092, while continuing evidence-grounded report backfill for OP-001 through OP-078.
 

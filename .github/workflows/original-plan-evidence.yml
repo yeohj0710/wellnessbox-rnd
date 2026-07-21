@@ -295,7 +295,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 4d904f43b028a35524a29206aaf7c6b99f58a97b
+          ref: f78604c74795c127a004a7be64cb67c7fe112803
           fetch-depth: 0
           path: _evidence/wellnessbox
       - uses: actions/setup-python@v6
@@ -446,6 +446,11 @@ jobs:
           python scripts/run_counseling_verifier_urgent_safety_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op085_op086_counseling_verifier_urgent_safety_smoke_v1.json
+      - name: Check counseling session and service-adapter evidence
+        run: >-
+          python scripts/run_counseling_session_service_adapter_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest

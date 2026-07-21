@@ -1,5 +1,20 @@
 # PROGRESS
 
+## 2026-07-22 counseling session and service-adapter loop
+
+- Chosen stage/tasks: `original plan / counseling RAG`, OP-087 and OP-088.
+- Dataset/cases: the existing counseling corpus contains `24` passages from `19` sources. The canonical smoke starts a real localhost FastAPI process and calls it through the real WellnessBox TypeScript adapter. Two normalized executions are byte-identical. Canonical SHA-256 is `8a4690628d6dcfb63da6d9f527c45f0a890bd78b5c781d5d12938dba7dbebf29`; R&D source commit is `892cab7152642b81255b81316d6ea4e01a7bc7a5`; service source commit is `f78604c74795c127a004a7be64cb67c7fe112803`.
+- Reuse/integration: the implementation reuses `execution_events`, `agent_runs`, `agent_steps`, `recommendation_runs`, the existing interim recommendation path, `/api/chat`, `ChatSession`, `ChatMessage`, and the existing internal-token client. It adds no parallel event store, recommendation engine, counseling database, or chat route.
+- Implementation: the new R&D turn route binds one stable service session and turn to a bounded answer, verifier result, recommendation run, and stored binding hash. Full semantic request hashing rejects changed same-turn replays before profile mutation. Nullable idempotency identities preserve historical recommendation rows while serializing new concurrent inserts. The service maps the actual `UserProfile` contract into a strict allowlist, uses conservative pregnancy and safety flags, pseudonymizes subjects, and atomically merges counseling metadata into the existing chat tables.
+- Independent review: successive reviews found one Critical and ten Important defects across cross-session message IDs, semantic replay, concurrent inserts, profile over-sharing, consent claims, missing binding persistence, non-atomic writes, unstable retry timestamps, historical migration compatibility, and actual profile-field mapping. Every finding was fixed. Final review is Critical `0`, Important `0`, Minor `0`.
+- Evidence stage: OP-087 and OP-088 are both `IMPLEMENTED` and PARTIAL. OP-087 requires `OPERATED`, but no production operation was observed. OP-088 requires `INTEGRATED`, but canonical evidence calls the service adapter directly and does not exercise `/api/chat` plus an isolated Prisma database. No deployment, production traffic, service database write, external medical validation, or live provider inference is claimed.
+- Research reports: separate full-prose reports now exist for OP-079 through OP-088. Coverage is `10/120`; `110` remain. The ten reports total `80,291` characters. OP-087 has `11,381` characters and OP-088 has `9,862` characters.
+- Generated status: complete `62`, partial `25`, pending `32`, external `1`, contradicted `0`; audit PASS with `87` claims and `249` checked evidence files.
+- Validation: focused counseling/audit tests passed; exact workflow pytest selection `613 passed`; full Ruff PASS; completion check PASS; canonical smoke is byte-identical across reruns. The full suite is `992 passed`, `77 failed`; the failures remain the known absent-report and CGM groups, with no new failure group.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: WellnessBox service commit `f78604c74795c127a004a7be64cb67c7fe112803` is on `origin/main`. R&D evidence publication and GitHub Actions verification remain pending.
+- Next loops: finish OP-087/088 R&D publication and CI, then implement OP-089/090 while separately backfilling evidence-grounded reports for OP-001 through OP-078.
+
 ## 2026-07-21 counseling verifier and urgent-safety loop
 
 - Chosen stage/tasks: `original plan / counseling RAG`, OP-085 and OP-086.

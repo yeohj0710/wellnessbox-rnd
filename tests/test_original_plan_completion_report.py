@@ -64,8 +64,8 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
     assert report.requirement_count == 120
     assert report.disposition_counts == {
         CompletionDisposition.COMPLETE: 62,
-        CompletionDisposition.PARTIAL: 23,
-        CompletionDisposition.PENDING: 34,
+        CompletionDisposition.PARTIAL: 25,
+        CompletionDisposition.PENDING: 32,
         CompletionDisposition.EXTERNAL: 1,
         CompletionDisposition.CONTRADICTED: 0,
     }
@@ -125,6 +125,8 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
     assert _completion_by_id(report, "OP-084").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-085").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-086").disposition == CompletionDisposition.COMPLETE
+    assert _completion_by_id(report, "OP-087").disposition == CompletionDisposition.PARTIAL
+    assert _completion_by_id(report, "OP-088").disposition == CompletionDisposition.PARTIAL
 
 
 def test_report_marks_lower_valid_stage_as_partial() -> None:
@@ -188,7 +190,7 @@ def test_global_source_failure_invalidates_every_existing_completion_claim() -> 
     report = build_original_plan_completion_report_v1(manifest, audit)
 
     assert report.disposition_counts[CompletionDisposition.COMPLETE] == 0
-    assert report.disposition_counts[CompletionDisposition.CONTRADICTED] == 85
+    assert report.disposition_counts[CompletionDisposition.CONTRADICTED] == 87
     assert "original_plan_sha256_mismatch" in report.global_audit_issues
 
 
@@ -201,8 +203,8 @@ def test_markdown_uses_audited_korean_status_language() -> None:
 
     assert "원계획 요구사항 포함: **120/120건**" in markdown
     assert "| 완료 | 62 |" in markdown
-    assert "| 부분 완료 | 23 |" in markdown
-    assert "| 대기 | 34 |" in markdown
+    assert "| 부분 완료 | 25 |" in markdown
+    assert "| 대기 | 32 |" in markdown
     assert "전체 완료: **100%**" not in markdown
 
 

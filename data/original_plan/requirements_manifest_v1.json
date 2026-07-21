@@ -1755,6 +1755,7 @@
           "evidence": {
             "implementation_files": [
               "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py",
               "wellnessbox-rnd/data/knowledge/counseling_retrieval_corpus_manifest_v1.json",
               "wellnessbox/app/api/chat/save/route-service.ts"
             ],
@@ -1773,7 +1774,7 @@
           "title": "서비스 채팅이 R&D 상담 API를 호출하는 얇은 어댑터를 사용한다.",
           "owners": ["wellnessbox-rnd", "wellnessbox"],
           "required_stage": "INTEGRATED",
-          "claimed_stage": "INTEGRATED",
+          "claimed_stage": "IMPLEMENTED",
           "evidence": {
             "implementation_files": [
               "wellnessbox-rnd/apps/inference_api/routes/interim.py",

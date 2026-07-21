@@ -28,19 +28,21 @@
   "service_database_persistence_observed": false,
   "source_identity": {
     "files": {
-      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "12075aaeb07f4ea2b11fa1f758bf1938ba2af7836f4e92393df2f6e25e7200c6",
+      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "ab5f72882d473543fb3a4c6163a2144eb34e9120e50d4be3b3ba97fa76358f83",
       "wellnessbox-rnd/data/knowledge/counseling_retrieval_corpus_manifest_v1.json": "4147c37dcff9b397cb1b4cebac96d92014b2afa47d5d2ef6b7ae95e52c1fad02",
-      "wellnessbox-rnd/scripts/run_counseling_session_service_adapter_smoke.py": "4bb97ff55172cf5ac8587d396acf9e081763274eb11c4d560280b1bbb63dffc5",
-      "wellnessbox/app/api/chat/route-service.ts": "29d3a17e5ce55d695ee3c14d9f3d12885b357f8b59c403758006c7b962d14f02",
-      "wellnessbox/app/api/chat/save/route-service.ts": "4c5c8540aeb077ce8273367866dc24198d16af6342c2a17cef7865576efc609c",
+      "wellnessbox-rnd/scripts/run_counseling_session_service_adapter_smoke.py": "8bbd1ae4899fc1aeda01db80c01467ffc7326595e8ce34dcbfd2ee0efed27276",
+      "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py": "c127c3d8f87f59ae3d41dada8d5b1915ba6fda96c3f729b4632f76e2cee13bf2",
+      "wellnessbox/app/api/chat/route-service.ts": "ecb86f0db7984ea76d474303976656e75632b9275d10b14280540283ea1d8828",
+      "wellnessbox/app/api/chat/save/route-service.ts": "8195d0733ee106605daedcfc324a9575143c66250958c93d8a1a7f7e4af34941",
       "wellnessbox/lib/server/wb-rnd-interim-client.ts": "6500a9d3cfb88a3953273e8ce797869110fdda061970a48c2103e10d1db6e974",
+      "wellnessbox/scripts/qa/check-rnd-counseling-adapter.cts": "f937ce65f3f75fb02643a863a8463bfb2f73bb18a69a5b16b203949519c45cdb",
       "wellnessbox/scripts/qa/run-rnd-counseling-live-smoke.cts": "bb4d8ce0bf8385061699d79955ef9034ff4d0d377173a5d377d738e40432150f"
     },
-    "wellnessbox_rnd_commit": "2af2a2cb4c7e6baad055f38b2387aaf030b0c0d7",
-    "wellnessbox_service_commit": "e2001de8ea440cc6c425d3690fcb2d7e07e91553"
+    "wellnessbox_rnd_commit": "892cab7152642b81255b81316d6ea4e01a7bc7a5",
+    "wellnessbox_service_commit": "f78604c74795c127a004a7be64cb67c7fe112803"
   },
   "stage_boundary": {
     "OP-087": "Local integration does not prove required OPERATED production use.",
-    "OP-088": "The real service TypeScript adapter called the real localhost R&D API."
+    "OP-088": "The real service TypeScript adapter called the real localhost R&D API; the /api/chat route and service database were not exercised."
   }
 }
