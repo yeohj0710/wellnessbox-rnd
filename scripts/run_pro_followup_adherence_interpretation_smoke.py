@@ -300,6 +300,16 @@ def main() -> int:
                 payload=_event_payload("week_2", 8),
             ),
         )
+        strict_payload_wrong_event_type_rejected = _expect_rejection(
+            "strict_payload_wrong_event_type",
+            lambda: ledger.append_event(
+                execution_id=out_of_order_trace.execution_id,
+                event_type="conversation",
+                source="survey",
+                idempotency_key="strict-pro-as-conversation",
+                payload=_event_payload("week_2", 8),
+            ),
+        )
         invalid_correction = _event_payload("pre_intake", 10)
         invalid_correction["scheduled_day_index"] = 999
         assert first_event_id is not None
@@ -423,6 +433,10 @@ def main() -> int:
 
     missing_schema = _event_payload("pre_intake", 10)
     missing_schema.pop("schema_version")
+    duplicate_assessment = _event_payload("week_2", 7)
+    duplicate_assessment["assessment_id"] = baseline["assessment_id"]
+    reversed_observation_time = _event_payload("week_2", 7)
+    reversed_observation_time["observed_at"] = "2025-12-31T00:00:00Z"
     changed_output = interpret_pro_followup_effect_v1(
         baseline,
         _event_payload("week_2", 7),
@@ -430,6 +444,13 @@ def main() -> int:
     changed_output["mean_health_z_change"] = 999.0
     fail_closed_checks = {
         "contract_drift_rejected": contract_drift_rejected,
+        "duplicate_assessment_rejected": _expect_rejection(
+            "duplicate_assessment",
+            lambda: interpret_pro_followup_effect_v1(
+                baseline,
+                duplicate_assessment,
+            ),
+        ),
         "cross_distribution_rejected": _expect_rejection(
             "cross_distribution",
             lambda: interpret_pro_followup_effect_v1(
@@ -461,6 +482,16 @@ def main() -> int:
         "output_mutation_rejected": _expect_rejection(
             "output_mutation",
             lambda: PROFollowUpEffectInterpretationV1.model_validate(changed_output),
+        ),
+        "reversed_observation_time_rejected": _expect_rejection(
+            "reversed_observation_time",
+            lambda: interpret_pro_followup_effect_v1(
+                baseline,
+                reversed_observation_time,
+            ),
+        ),
+        "strict_payload_wrong_event_type_rejected": (
+            strict_payload_wrong_event_type_rejected
         ),
     }
     if not all(fail_closed_checks.values()):

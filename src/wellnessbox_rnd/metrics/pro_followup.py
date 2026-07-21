@@ -545,8 +545,12 @@ def _validate_interpretation_pair(
         raise ValueError("baseline interpretation event must be pre_intake")
     if follow_up.timepoint == "pre_intake":
         raise ValueError("follow-up interpretation event cannot be pre_intake")
+    if baseline.assessment_id == follow_up.assessment_id:
+        raise ValueError("pro follow-up assessment ID must differ from baseline")
     if follow_up.actual_day_index <= baseline.actual_day_index:
         raise ValueError("follow-up actual day must be after baseline")
+    if follow_up.observed_at <= baseline.observed_at:
+        raise ValueError("follow-up observed_at must be after baseline")
     if baseline.plan_id != follow_up.plan_id:
         raise ValueError("pro follow-up plan mismatch")
     if baseline.data_class != follow_up.data_class:

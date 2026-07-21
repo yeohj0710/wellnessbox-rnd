@@ -258,6 +258,19 @@ def test_generic_followup_with_shared_identity_keys_remains_legacy_compatible(
     assert result.event.payload == generic_payload
 
 
+def test_strict_pro_payload_cannot_be_persisted_as_conversation(tmp_path) -> None:
+    store, trace = _store_with_execution(tmp_path)
+
+    with pytest.raises(ValueError, match="followup_evaluation"):
+        ExecutionLedger(store).append_event(
+            execution_id=trace.execution_id,
+            event_type="conversation",
+            source="survey",
+            idempotency_key="strict-pro-disguised-as-conversation",
+            payload=_event_payload("week_2", 8),
+        )
+
+
 def test_execution_event_correction_cannot_convert_generic_event_to_strict_pro(
     tmp_path,
 ) -> None:
@@ -553,6 +566,26 @@ def test_interpretation_rejects_cross_plan_distribution_and_output_mutation() ->
     changed["mean_health_z_change"] = 999.0
     with pytest.raises(ValidationError):
         type(interpretation).model_validate(changed)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "field_value", "error_match"),
+    [
+        ("assessment_id", "assessment_pre_intake", "assessment"),
+        ("observed_at", "2025-12-31T00:00:00Z", "observed_at"),
+    ],
+)
+def test_interpretation_rejects_duplicate_assessment_or_reversed_observation_time(
+    field_name: str,
+    field_value: str,
+    error_match: str,
+) -> None:
+    baseline = _event_payload("pre_intake", 10)
+    follow_up = _event_payload("week_2", 7)
+    follow_up[field_name] = field_value
+
+    with pytest.raises(ValueError, match=error_match):
+        interpret_pro_followup_effect_v1(baseline, follow_up)
 
 
 def test_metrics_package_exports_followup_contract_api() -> None:

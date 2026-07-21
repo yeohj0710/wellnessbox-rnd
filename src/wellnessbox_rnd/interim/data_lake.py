@@ -590,9 +590,17 @@ class ExecutionLedger:
         if len(idempotency_key) > 128:
             raise ValueError("idempotency_key_too_long")
         versioned_pro_event = None
+        payload_is_versioned_pro = is_versioned_pro_followup_payload_v1(payload)
+        if (
+            payload_is_versioned_pro
+            and resolved_type != ExecutionEventType.FOLLOWUP_EVALUATION
+        ):
+            raise ValueError(
+                "versioned_pro_followup_requires_followup_evaluation_event_type"
+            )
         if (
             resolved_type == ExecutionEventType.FOLLOWUP_EVALUATION
-            and is_versioned_pro_followup_payload_v1(payload)
+            and payload_is_versioned_pro
         ):
             versioned_pro_event = normalize_pro_followup_event_v1(payload)
             if resolved_source != ExecutionEventSource.SURVEY:
