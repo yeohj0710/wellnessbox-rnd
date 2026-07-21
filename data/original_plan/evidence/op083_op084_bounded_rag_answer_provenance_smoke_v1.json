@@ -100,6 +100,7 @@
         "forbidden_expression_ok": true,
         "emergency_precedence_ok": true,
         "verifier_policy_ok": true,
+        "query_evidence_relevance_ok": true,
         "knowledge_scope_ok": true,
         "evidence_validity_ok": true,
         "uncertainty_ok": true,
@@ -147,6 +148,7 @@
         "forbidden_expression_ok": true,
         "emergency_precedence_ok": true,
         "verifier_policy_ok": true,
+        "query_evidence_relevance_ok": true,
         "knowledge_scope_ok": true,
         "evidence_validity_ok": true,
         "uncertainty_ok": true,
@@ -185,6 +187,7 @@
         "forbidden_expression_ok": true,
         "emergency_precedence_ok": true,
         "verifier_policy_ok": true,
+        "query_evidence_relevance_ok": true,
         "knowledge_scope_ok": true,
         "evidence_validity_ok": true,
         "uncertainty_ok": true,
@@ -223,6 +226,7 @@
         "forbidden_expression_ok": true,
         "emergency_precedence_ok": true,
         "verifier_policy_ok": true,
+        "query_evidence_relevance_ok": true,
         "knowledge_scope_ok": true,
         "evidence_validity_ok": true,
         "uncertainty_ok": true,
@@ -250,8 +254,8 @@
     "live_llm_inference_used": false
   },
   "source_identity": {
-    "source_commit": "f18c96c45cf50c3e07816cfd687b4f5adeb25cfb",
-    "source_sha256": "15b720a485edebefc09a0cde4757c61f0bb87962529f5b1f7c67b6f273450954",
+    "source_commit": "647765d80e66807e70e40c8b457896b10d608176",
+    "source_sha256": "46c410b0ffc7005bbe4f985c9d0c0e26b93090e8609b0e1d5ad3b77e74bd6f24",
     "data_sha256": "11f257c44f05db6d0286de3701cf72c428cbe46991b44f190729371ca167f228"
   }
 }
