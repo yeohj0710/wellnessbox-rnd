@@ -619,6 +619,19 @@ class InterimStore:
                     connection.execute(
                         f"alter table workflow_jobs add column {column_name} {column_type}"
                     )
+            connection.execute(
+                """
+                update workflow_jobs
+                set status='CANCELLED', last_error='LEGACY_UNLINKED_EXECUTION'
+                where execution_id is null and status in ('READY', 'CLAIMED')
+                """
+            )
+            connection.execute(
+                """
+                update followups set status='CLOSED'
+                where execution_id is null and status in ('OPEN', 'REEVALUATION_QUEUED')
+                """
+            )
             event_columns = {
                 str(row[1]) for row in connection.execute("pragma table_info(execution_events)")
             }

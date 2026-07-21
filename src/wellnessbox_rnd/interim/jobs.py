@@ -255,6 +255,18 @@ class WorkflowJobQueue:
                 (cutoff.isoformat(), limit),
             ).fetchall()
             for row in rows:
+                if not self._execution_plan_is_active(
+                    connection,
+                    execution_id=str(row["execution_id"]),
+                    profile_id=str(row["profile_id"]),
+                    plan_id=str(row["plan_id"]),
+                ):
+                    self._cancel_followup_in_transaction(
+                        connection,
+                        followup_id=str(row["followup_id"]),
+                        reason="PLAN_INACTIVE_AT_CLAIM",
+                    )
+                    continue
                 token = f"claim_{worker_id}_{uuid4().hex}"
                 lease_until = cutoff + timedelta(seconds=lease_seconds)
                 connection.execute(

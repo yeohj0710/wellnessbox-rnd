@@ -6,6 +6,51 @@ import pytest
 from wellnessbox_rnd.interim.store import SCHEMA_SQL, InterimStore
 
 
+def test_v9_unlinked_workflow_rows_are_quarantined_on_migration(tmp_path) -> None:
+    database_path = tmp_path / "legacy-jobs.sqlite3"
+    with sqlite3.connect(database_path) as connection:
+        connection.executescript(
+            """
+            create table user_profiles (
+              profile_id text primary key, data_class text not null,
+              consent_scopes_json text not null, payload_json text not null,
+              payload_sha256 text not null, created_at text not null
+            );
+            create table followups (
+              followup_id text primary key, profile_id text not null,
+              plan_id text, due_at text not null, requested_data_json text not null,
+              status text not null, created_at text not null
+            );
+            create table workflow_jobs (
+              job_id text primary key, job_type text not null, status text not null,
+              idempotency_key text not null unique, profile_id text not null,
+              plan_id text not null, followup_id text not null, scheduled_at text not null,
+              payload_json text not null, payload_sha256 text not null,
+              created_at text not null, claimed_at text, completed_at text
+            );
+            insert into user_profiles values (
+              'legacy', 'PROXY_GOLD_SIMULATION', '[]', '{}', 'h', 'now'
+            );
+            insert into followups values (
+              'fu_legacy', 'legacy', 'plan_legacy', 'now', '[]', 'OPEN', 'now'
+            );
+            insert into workflow_jobs values (
+              'job_legacy', 'FOLLOWUP_REMINDER', 'READY', 'legacy', 'legacy',
+              'plan_legacy', 'fu_legacy', 'now', '{}', 'h', 'now', null, null
+            );
+            """
+        )
+
+    store = InterimStore(database_path)
+    store.migrate()
+
+    assert store.scalar("select status from followups where followup_id='fu_legacy'") == "CLOSED"
+    assert store.scalar("select status from workflow_jobs where job_id='job_legacy'") == "CANCELLED"
+    assert store.scalar("select last_error from workflow_jobs where job_id='job_legacy'") == (
+        "LEGACY_UNLINKED_EXECUTION"
+    )
+
+
 def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
     database_path = tmp_path / "interim.sqlite3"
     store = InterimStore(database_path)
@@ -13,7 +58,7 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
     store.migrate()
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 9
+    assert store.scalar("select max(version) from schema_migrations") == 10
     assert "pharmacy_id" in {row[1] for row in store.rows("pragma table_info(review_tasks)")}
     required_tables = {
         "proxy_cases",
@@ -83,7 +128,7 @@ def test_schema_version_2_profile_data_survives_lineage_migration(tmp_path) -> N
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 9
+    assert store.scalar("select max(version) from schema_migrations") == 10
     assert store.scalar("select count(*) from user_profiles") == 1
     assert store.scalar(
         "select payload_json from user_profiles where profile_id='usr_1234567890abcdef'"
@@ -102,7 +147,7 @@ def test_interim_store_read_helpers_close_database_connections(tmp_path) -> None
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 9
+    assert store.scalar("select max(version) from schema_migrations") == 10
     assert store.rows("select version from schema_migrations")
 
     database_path.unlink()
@@ -180,7 +225,7 @@ def test_schema_version_3_events_gain_consent_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 9
+    assert store.scalar("select max(version) from schema_migrations") == 10
     assert store.scalar(
         "select consent_snapshot_id from execution_events where event_id='event_1'"
     ) == "consent_1"
@@ -235,7 +280,7 @@ def test_schema_version_4_evidence_gains_parsed_span_lineage(tmp_path) -> None:
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 9
+    assert store.scalar("select max(version) from schema_migrations") == 10
     columns = {row[1] for row in store.rows("pragma table_info(evidence_passages)")}
     assert {"page_or_section", "line_start", "line_end", "metadata_json"}.issubset(
         columns
@@ -300,7 +345,7 @@ def test_schema_version_5_gains_disjoint_log_and_identity_tables(tmp_path) -> No
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 9
+    assert store.scalar("select max(version) from schema_migrations") == 10
     assert store.scalar("select count(*) from executions") == 1
     assert {"execution_identities", "behavior_events"}.issubset(store.table_names())
     behavior_sql = store.scalar(
@@ -444,7 +489,7 @@ def test_schema_version_6_lineage_keeps_multiple_rules_for_one_claim(tmp_path) -
     store = InterimStore(database_path)
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 9
+    assert store.scalar("select max(version) from schema_migrations") == 10
     assert store.scalar("select count(*) from execution_knowledge_lineage") == 1
     with store.transaction() as connection:
         connection.execute(
@@ -519,7 +564,7 @@ def test_schema_version_7_gains_event_mutation_history(tmp_path) -> None:
     store.migrate()
     store.migrate()
 
-    assert store.scalar("select max(version) from schema_migrations") == 9
+    assert store.scalar("select max(version) from schema_migrations") == 10
     assert "event_mutations" in store.table_names()
     for table_name in ("execution_events", "behavior_events"):
         table_info = store.rows(f"pragma table_info({table_name})")

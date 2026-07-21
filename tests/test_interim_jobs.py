@@ -229,3 +229,30 @@ def test_closed_or_discontinued_followup_cancels_ready_jobs(tmp_path) -> None:
         queue.store.scalar("select status from followups where followup_id='fu_discontinued'")
         == "CLOSED"
     )
+
+
+def test_claim_rechecks_plan_after_cron_enqueue(tmp_path) -> None:
+    queue = _queue(tmp_path)
+    _schedule(queue, due_at=NOW, reminder_at=NOW - timedelta(days=1))
+    queue.enqueue_due_plan_reevaluations(as_of=NOW)
+    with queue.store.transaction() as connection:
+        connection.execute(
+            """
+            insert into execution_events(
+              event_id, execution_id, consent_snapshot_id, event_index, event_type,
+              source, idempotency_key, payload_json, payload_sha256,
+              effective_payload_sha256, created_at
+            ) values (?, ?, 'consent_jobs', 1, 'followup_evaluation', 'survey',
+                      'stop-after-cron', ?, 'stop-after-cron', 'stop-after-cron', ?)
+            """,
+            (
+                "event_stop_after_cron",
+                "execution_plan_jobs_1",
+                '{"plan_id":"plan_jobs_1","timepoint":"discontinuation"}',
+                NOW.isoformat(),
+            ),
+        )
+    assert queue.claim_ready_jobs(worker_id="worker", as_of=NOW, limit=10) == []
+    assert queue.store.scalar(
+        "select count(*) from workflow_jobs where status='CANCELLED'"
+    ) == 2
