@@ -447,6 +447,22 @@ def test_repository_approved_scope_rejects_same_id_with_forged_content() -> None
             query="anything",
             as_of=ANSWER_TIME,
         )
+    interaction_manifest = _build_single_interaction_manifest()
+    answer = generate_bounded_template_answer(
+        interaction_manifest,
+        query="glucosamine warfarin",
+        scope=approved,
+        as_of=ANSWER_TIME,
+        answer_template_key="interaction_warning",
+    )
+    verification = verify_bounded_template_answer(
+        answer,
+        manifest=interaction_manifest,
+        scope=forged,
+        as_of=ANSWER_TIME,
+    )
+    assert verification.passed is False
+    assert "knowledge_scope_mismatch" in verification.issues
 
 
 def test_answer_verifier_rejects_duplicate_used_chunk_identity() -> None:

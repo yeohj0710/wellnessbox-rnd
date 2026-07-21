@@ -11,6 +11,7 @@ from wellnessbox_rnd.chat.retrieval import (
     RetrievalChunk,
     RetrievalCorpusManifest,
     RetrievalResult,
+    load_approved_counseling_scope,
     retrieve_bounded_chunks,
 )
 
@@ -237,6 +238,12 @@ def verify_bounded_template_answer(
     knowledge_scope_ok = (
         answer.knowledge_scope_id == scope.scope_id and answer.answered_at == as_of
     )
+    try:
+        knowledge_scope_ok = knowledge_scope_ok and (
+            scope == load_approved_counseling_scope(scope.scope_id)
+        )
+    except ValueError:
+        knowledge_scope_ok = False
     if len(answer.used_chunk_ids) != len(set(answer.used_chunk_ids)):
         knowledge_scope_ok = False
     allowed_sources = set(scope.allowed_source_types)
