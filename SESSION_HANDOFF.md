@@ -2,6 +2,20 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 stock substitution and approval-gated cart integration handoff
+
+- Chosen stage and tasks: `original plan / product optimization`; OP-069 and OP-070.
+- Primary dataset and cases: frozen eval `256` cases; canonical smoke `8` previous combinations, `4` current combinations, `1` missing offer, `3` cart items, `1` active safety rule, and `1` active exclusion.
+- Primary evidence: `data/original_plan/evidence/op069_op070_product_combination_stock_cart_smoke_v1.json`; SHA-256 `9b40f6a05e73e82dde8582f7c0e7e043f9e1481214cd3d825c0d19e03a15e139`; combined source SHA-256 `07f8f483bcc013fd51627f27aa58e0e03c6c8cc208dc987abf987600049830ca`.
+- Source identity: R&D `a2ae7a289ae3f0923145db707f3c042e868cd059`; WellnessBox `4d904f43b028a35524a29206aaf7c6b99f58a97b`.
+- Main changes: strict previous replay context; current-catalog stock loss detection; existing optimizer reuse; independent previous/current ranking validation; exact safety-policy and recommendation-input binding; fail-closed cart suppression on non-stock changes; existing cart-item contract conversion; source scan for cart, order, and payment mutations; manifest, reports, workflow, tests, and canonical evidence. No training or simulation behavior changed.
+- Honest stage: OP-069 and OP-070 are COMPLETE at `INTEGRATED`. Existing route-function integration and approval-gated candidate construction are proven. Actual Prisma execution, browser cart mutation, user approval, Order/OrderItem/Payment creation, production deployment, and production operation are not.
+- Validation: focused `26 passed`; workflow-equivalent `505 passed`; full Ruff PASS; service QA/typecheck/lint PASS; `18` service-dependent smokes PASS; audit PASS with `69` claims and `203` evidence files; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `886 passed`, `77 failed`, exactly the known `73` absent-report plus `4` CGM-geometry groups. Frozen eval has `256` cases, seven zero metric deltas, unchanged overall `safety_blocked` weakest slice, and unchanged metric-specific weakest categories.
+- Publication: service commit `4d904f43b028a35524a29206aaf7c6b99f58a97b`; R&D commit `06debd77c39581c6cbe90beefa3be3095336f606`; Original plan evidence run `29819257210` succeeded.
+- Five bottlenecks: actual Prisma catalog-query evidence; production catalog freshness; deployed service/R&D operation; OP-071 unified state-transition contract; OP-072 enforced orchestration order.
+- Next three loops: OP-071/072, OP-073/074, OP-075/076.
+
 ## 2026-07-21 product-combination top-k and reproducibility integration handoff
 
 - Chosen stage and tasks: `original plan / product optimization`; OP-067 and OP-068.

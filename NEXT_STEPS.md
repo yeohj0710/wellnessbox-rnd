@@ -2,19 +2,19 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031 through OP-038, OP-041 through OP-052, OP-054 through OP-057, and OP-059 through OP-068 are complete. OP-021 through OP-030, OP-040, OP-053, and OP-058 are partial below their required stages. OP-039 remains external. OP-067 and OP-068 extend the existing service `/api/tips` combination path with deterministic top-k results, precise non-selection reasons, and content-addressed replay identity. Actual Prisma execution, production catalog freshness, deployment, and production operation remain unproven. Generated status is complete `54`, partial `13`, pending `52`, external `1`, contradicted `0`.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-001 through OP-020, OP-031 through OP-038, OP-041 through OP-052, OP-054 through OP-057, and OP-059 through OP-070 are complete. OP-021 through OP-030, OP-040, OP-053, and OP-058 are partial below their required stages. OP-039 remains external. OP-069 and OP-070 extend the existing service `/api/tips` path with replay-bound stock substitution and an approval-gated existing-cart candidate. Actual Prisma execution, browser cart mutation, user approval, order/payment creation, production deployment, and production operation remain unproven. Generated status is complete `56`, partial `13`, pending `50`, external `1`, contradicted `0`.
 
 Next three loops:
 
-1. Implement OP-069 and OP-070: recompute a safety-preserving substitute combination when stock changes, then convert the recommendation into a cart candidate without creating an order before approval.
-2. Implement OP-071 and OP-072: unify states and allowed transitions in one R&D contract, then enforce safety check, candidate generation, evidence lookup, optimization, and plan-start order.
-3. Implement OP-073 and OP-074: encode contraindication, upper-limit, interaction, duplication, and monitoring rules in the shared safety engine, then classify severity as BLOCK, WARN, or MONITOR.
+1. Implement OP-071 and OP-072: unify states and allowed transitions in one R&D contract, then enforce safety check, candidate generation, evidence lookup, optimization, and plan-start order.
+2. Implement OP-073 and OP-074: encode contraindication, upper-limit, interaction, duplication, and monitoring rules in the shared safety engine, then classify severity as BLOCK, WARN, or MONITOR.
+3. Implement OP-075 and OP-076: define the exact blocking, warning, and monitoring actions and connect them to the existing recommendation workflow without bypassing final safety authority.
 
 Continue through the safety-engine group in two-requirement slices. The current service adapter accepts the existing stored `UserProfile` shape, forwards a stable pseudonymous subject ID, and the R&D recommendation route persists authorized profile, consent, knowledge lineage, and replay snapshots. The service UI can query and replay saved sessions through the existing internal client, but production has no deployed R&D endpoint or `WB_RND_*` settings. OP-029 and OP-030 therefore remain below `OPERATED`, and OP-101 through OP-105 remain separate deployment and production-integration requirements.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 
-The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. The current environment reports `880 passed, 77 failed`; the 77 failures are the same `73 + 4` groups. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
+The legacy full-test baseline remains red for two independent reasons: 73 ignored report files are absent and four CGM geometry assertions do not match current execution. The current environment reports `886 passed, 77 failed`; the 77 failures are the same `73 + 4` groups. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
 
 ## 2026-07-14 verified restoration path
 

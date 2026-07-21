@@ -2,6 +2,20 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 stock substitution and approval-gated cart integration loop
+
+- Chosen stage: `original plan / product optimization`; tasks OP-069 and OP-070.
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. Canonical evidence compares `8` previous and `4` current combinations after `1` offer disappears, then validates a `3`-item cart candidate under `1` active safety rule and `1` active exclusion.
+- Primary evidence: `data/original_plan/evidence/op069_op070_product_combination_stock_cart_smoke_v1.json`; deterministic SHA-256 `9b40f6a05e73e82dde8582f7c0e7e043f9e1481214cd3d825c0d19e03a15e139`; combined source SHA-256 `07f8f483bcc013fd51627f27aa58e0e03c6c8cc208dc987abf987600049830ca`; R&D source `a2ae7a289ae3f0923145db707f3c042e868cd059`; service source `4d904f43b028a35524a29206aaf7c6b99f58a97b`.
+- Implementation: the existing `/api/tips` combination path accepts a strict previous replay context, detects missing in-stock offers, and recomputes the current global top combination with the existing bounded optimizer. Previous and current optimization inputs and active safety constraints must match; safety-policy or recommendation-input changes fail closed and suppress the cart candidate. The selected combination is converted to the existing client cart-item shape, while approval remains required and route/adapter source checks exclude cart-storage, Order, OrderItem, and Payment mutations. No new catalog, optimizer, cart store, order system, training path, or simulation path was added.
+- Evidence boundary: OP-069 and OP-070 are `INTEGRATED` and COMPLETE at their required stages. Route-function integration is proven. Actual Prisma execution, browser cart mutation, user approval, order/payment creation, production deployment, and production operation are not proven.
+- Generated status: complete `56`, partial `13`, pending `50`, external `1`, contradicted `0`. Audit PASS with `69` claims and `203` checked evidence files.
+- Validation: focused tests `26 passed`; exact workflow selection `505 passed`; full Ruff PASS; service product QA, typecheck, and focused lint PASS; all `18` service-dependent canonical smokes PASS; independent review after fixes Critical `0`, Important `0`, Minor `0`.
+- Full suite: `886 passed`, `77 failed`; the unchanged failures are `73` absent report artifacts and `4` CGM geometry assertions. No OP-069/070 regression was found.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: service commit `4d904f43b028a35524a29206aaf7c6b99f58a97b`; R&D evidence/workflow commit `06debd77c39581c6cbe90beefa3be3095336f606`; Original plan evidence run `29819257210` succeeded.
+- Recommended next loops: OP-071/072 unified state-transition contract and ordered orchestration; OP-073/074 shared safety-rule engine and severity classes; OP-075/076 blocking, warning, and monitoring action semantics.
+
 ## 2026-07-21 product-combination top-k and reproducibility integration loop
 
 - Chosen stage: `original plan / product optimization`; tasks OP-067 and OP-068.
