@@ -272,3 +272,24 @@ def test_openai_adapter_rejects_provider_selected_chunk_unrelated_to_query(
     assert response.fallback_reason == "verification_failed"
     assert response.answer.status == "unsupported"
     assert response.verification.passed is True
+
+
+def test_non_default_minimum_support_score_is_replayed_by_verifier(
+    monkeypatch,
+) -> None:
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    response = generate_chat_answer_with_openai_fallback(
+        _build_manifest(),
+        ChatAdapterRequest(
+            query="What should counseling say about glucosamine with warfarin?",
+            knowledge_scope=_build_scope(),
+            as_of=ANSWER_TIME,
+            answer_template_key="interaction_warning",
+            min_score=999.0,
+        ),
+        allow_live_api=False,
+    )
+
+    assert response.answer.status == "unsupported"
+    assert response.answer.minimum_support_score == 999.0
+    assert response.verification.passed is True

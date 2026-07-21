@@ -62,6 +62,7 @@ class ChatTemplateAnswer(BaseModel):
     used_chunk_ids: list[str] = Field(default_factory=list)
     evidence_only: bool = True
     top_result_score: float = 0.0
+    minimum_support_score: float = Field(default=2.0, ge=0.0)
     rationale: str
     knowledge_scope_id: str
     answered_at: datetime
@@ -143,6 +144,7 @@ def generate_bounded_template_answer(
             answer_template_key="urgent_safety_guidance",
             answer_text=policy.emergency_guidance_text,
             rationale="urgent_risk_precedes_retrieval_and_recommendation",
+            minimum_support_score=min_score,
             knowledge_scope_id=scope.scope_id,
             answered_at=as_of,
             uncertainty=AnswerUncertainty(
@@ -164,6 +166,7 @@ def generate_bounded_template_answer(
                 "grounded in local references."
             ),
             rationale="no_retrieval_hit",
+            minimum_support_score=min_score,
             knowledge_scope_id=scope.scope_id,
             answered_at=as_of,
             uncertainty=_build_uncertainty(status="out_of_scope", chunks=[]),
@@ -197,6 +200,7 @@ def generate_bounded_template_answer(
                 "grounded in local references."
             ),
             top_result_score=results[0].score,
+            minimum_support_score=min_score,
             rationale=rationale,
             knowledge_scope_id=scope.scope_id,
             answered_at=as_of,
@@ -213,6 +217,7 @@ def generate_bounded_template_answer(
         citations=citations,
         used_chunk_ids=[selected_chunk.chunk_id],
         top_result_score=selected_result.score,
+        minimum_support_score=min_score,
         rationale=f"supported_by::{selected_chunk.claim_id}",
         knowledge_scope_id=scope.scope_id,
         answered_at=as_of,
@@ -368,7 +373,7 @@ def verify_bounded_template_answer(
             chunk_by_id=chunk_by_id,
             query_tokens=query_tokens,
             answer_template_key=answer.answer_template_key,
-            min_score=2.0,
+            min_score=answer.minimum_support_score,
         )
         if urgent_keys:
             expected_query_status = "safety_escalation"

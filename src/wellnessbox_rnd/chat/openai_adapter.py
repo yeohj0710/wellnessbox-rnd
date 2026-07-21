@@ -384,6 +384,7 @@ def _parse_openai_answer(
         citations=citations,
         used_chunk_ids=valid_chunk_ids,
         evidence_only=True,
+        minimum_support_score=adapter_request.min_score,
         rationale="openai_responses_api",
         knowledge_scope_id=adapter_request.knowledge_scope.scope_id,
         answered_at=adapter_request.as_of,
