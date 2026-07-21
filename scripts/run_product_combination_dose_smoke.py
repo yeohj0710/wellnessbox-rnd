@@ -71,6 +71,7 @@ def _service_report(temp: Path) -> dict[str, object]:
     output = temp / "service-product-combinations.json"
     environment = os.environ.copy()
     environment["WB_RND_PRODUCT_SMOKE_OUTPUT"] = str(output)
+    environment["WB_RND_INCLUDE_PRODUCT_COMBINATION_EVIDENCE"] = "1"
     subprocess.run(
         [
             "node",
