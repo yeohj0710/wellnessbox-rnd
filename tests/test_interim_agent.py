@@ -1,5 +1,6 @@
 from datetime import UTC, datetime
 from pathlib import Path
+from threading import Event, Thread
 
 import pytest
 
@@ -78,6 +79,59 @@ def test_run_creation_is_idempotent_and_tool_is_audited(tmp_path: Path) -> None:
     )
     assert result["action"] == "PASS"
     assert agent.store.scalar("select count(*) from agent_steps") == 1
+
+
+def test_serious_event_cannot_race_with_run_creation(tmp_path: Path, monkeypatch) -> None:
+    agent = _agent(tmp_path)
+    hold_checked = Event()
+    release_create = Event()
+    original = BoundedAgent._recommendation_hold_exists
+
+    def paused_hold_check(connection, *, profile_id: str) -> bool:
+        result = original(connection, profile_id=profile_id)
+        hold_checked.set()
+        assert release_create.wait(timeout=5)
+        return result
+
+    monkeypatch.setattr(
+        BoundedAgent, "_recommendation_hold_exists", staticmethod(paused_hold_check)
+    )
+    created: list[dict[str, object]] = []
+    stopped: list[dict[str, object]] = []
+    create_thread = Thread(
+        target=lambda: created.append(
+            agent.create_run(
+                profile_id="usr_1234567890abcdef", idempotency_key="concurrent-run"
+            )
+        )
+    )
+    create_thread.start()
+    assert hold_checked.wait(timeout=5)
+    stop_thread = Thread(
+        target=lambda: stopped.append(
+            agent.record_adverse_event(
+                run_id=None,
+                arguments={
+                    "case_id": "ae_concurrent_stop",
+                    "profile_id": "usr_1234567890abcdef",
+                    "execution_id": "execution_agent",
+                    "plan_id": "plan_agent_job",
+                    "serious": True,
+                    "observed_at": "2026-07-21T12:00:00Z",
+                },
+            )
+        )
+    )
+    stop_thread.start()
+    release_create.set()
+    create_thread.join(timeout=5)
+    stop_thread.join(timeout=5)
+
+    assert created and stopped
+    assert agent.store.scalar(
+        "select count(*) from agent_runs where status='ACTIVE'"
+    ) == 0
+    assert stopped[0]["plan_stopped"] is True
 
 
 def test_missing_consent_blocks_side_effect_tool(tmp_path: Path) -> None:

@@ -108,21 +108,22 @@ class BoundedAgent:
         idempotency_key: str,
         risk_tier: int = 1,
     ) -> dict[str, Any]:
-        if not self.store.scalar(
-            "select count(*) from user_profiles where profile_id=?", (profile_id,)
-        ):
-            raise ValueError("unknown_profile")
-        self._raise_if_recommendation_held(profile_id)
         scoped_key = f"{profile_id}:{idempotency_key}"
-        existing = self.store.rows(
-            "select * from agent_runs where idempotency_key=? and profile_id=?",
-            (scoped_key, profile_id),
-        )
-        if existing:
-            return dict(existing[0]) | {"deduplicated": True}
         run_id = f"run_{uuid4().hex}"
         now = datetime.now(UTC).isoformat()
-        with self.store.transaction() as connection:
+        with self.store.transaction(immediate=True) as connection:
+            if not connection.execute(
+                "select count(*) from user_profiles where profile_id=?", (profile_id,)
+            ).fetchone()[0]:
+                raise ValueError("unknown_profile")
+            if self._recommendation_hold_exists(connection, profile_id=profile_id):
+                raise ValueError("serious_adverse_event_recommendation_hold")
+            existing = connection.execute(
+                "select * from agent_runs where idempotency_key=? and profile_id=?",
+                (scoped_key, profile_id),
+            ).fetchone()
+            if existing is not None:
+                return dict(existing) | {"deduplicated": True}
             connection.execute(
                 """
                 insert into agent_runs(

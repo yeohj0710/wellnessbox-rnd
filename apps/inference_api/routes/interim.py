@@ -810,6 +810,24 @@ def enroll_pro_plan(payload: PROPlanEnrollmentRequest) -> dict[str, Any]:
 def record_pro_followup(payload: PROFollowUpRecordRequest) -> dict[str, Any]:
     try:
         store = _store()
+        serious_events = [
+            event for event in payload.adverse_events if event.get("severity") == "serious"
+        ]
+        stop_result = None
+        if serious_events:
+            event = serious_events[0]
+            stop_result = BoundedAgent(store).record_adverse_event(
+                run_id=None,
+                arguments={
+                    "case_id": str(event["adverse_event_id"]),
+                    "profile_id": payload.profile_id,
+                    "execution_id": payload.execution_id,
+                    "plan_id": payload.plan_id,
+                    "serious": True,
+                    "observed_at": payload.observed_at.isoformat(),
+                    "related_to_recommendation": event.get("relatedness") != "not_related",
+                },
+            )
         result = record_or_correct_pro_followup_v1(
             store,
             execution_id=payload.execution_id,
@@ -825,23 +843,8 @@ def record_pro_followup(payload: PROFollowUpRecordRequest) -> dict[str, Any]:
             adverse_events=payload.adverse_events,
             discontinuation_reason=payload.discontinuation_reason,
         )
-        serious_events = [
-            event for event in payload.adverse_events if event.get("severity") == "serious"
-        ]
-        if serious_events:
-            event = serious_events[0]
-            result["next_job_decision"] = BoundedAgent(store).record_adverse_event(
-                run_id=None,
-                arguments={
-                    "case_id": str(event["adverse_event_id"]),
-                    "profile_id": payload.profile_id,
-                    "execution_id": payload.execution_id,
-                    "plan_id": payload.plan_id,
-                    "serious": True,
-                    "observed_at": payload.observed_at.isoformat(),
-                    "related_to_recommendation": event.get("relatedness") != "not_related",
-                },
-            )
+        if stop_result is not None:
+            result["next_job_decision"] = stop_result
         elif payload.timepoint == "discontinuation":
             result["next_job_decision"] = {
                 "schema_version": "followup_input_next_job_decision_v1",
@@ -856,6 +859,9 @@ def record_pro_followup(payload: PROFollowUpRecordRequest) -> dict[str, Any]:
                     (result["event_id"],),
                 )
             )
+            effective_observed_at = datetime.fromisoformat(
+                result["interpretation"]["follow_up_event"]["observed_at"]
+            )
             result["next_job_decision"] = WorkflowJobQueue(
                 store
             ).enqueue_input_reevaluation(
@@ -865,7 +871,7 @@ def record_pro_followup(payload: PROFollowUpRecordRequest) -> dict[str, Any]:
                 input_kind="PRO",
                 input_id=f"{result['event_id']}:{input_sha256[:16]}",
                 input_sha256=input_sha256,
-                received_at=payload.observed_at,
+                received_at=effective_observed_at,
             )
         return result
     except ExecutionNotFoundError as error:

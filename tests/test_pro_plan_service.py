@@ -6,6 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
+from wellnessbox_rnd.interim.agent import BoundedAgent
 from wellnessbox_rnd.interim.data_lake import IdempotencyConflictError
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.metrics.pro_runtime import (
@@ -424,6 +425,99 @@ def test_serious_pro_followup_stops_plan_and_cancels_prior_next_job(
     assert store.scalar(
         "select count(*) from execution_events where idempotency_key='serious-ae:ae_pro_serious'"
     ) == 1
+
+
+def test_serious_pro_conflict_does_not_persist_unstopped_followup(
+    tmp_path, monkeypatch
+) -> None:
+    store = _store(tmp_path)
+    enrolled = _enroll(store)
+    BoundedAgent(store).record_adverse_event(
+        run_id=None,
+        arguments={
+            "case_id": "ae_pro_conflict",
+            "profile_id": enrolled["profile_id"],
+            "execution_id": enrolled["execution_id"],
+            "plan_id": enrolled["plan_id"],
+            "serious": False,
+            "observed_at": "2026-01-15T00:00:00Z",
+        },
+    )
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr("apps.inference_api.routes.interim._store", lambda: store)
+    response = TestClient(app).post(
+        "/v1/interim/pro/followups",
+        headers={"x-wb-rnd-token": "test-token"},
+        json={
+            "execution_id": enrolled["execution_id"],
+            "profile_id": enrolled["profile_id"],
+            "plan_id": enrolled["plan_id"],
+            "timepoint": "week_2",
+            "answers": {"instrument": "PSQI", "item_scores": [1] * 7},
+            "observed_at": "2026-01-15T00:00:00Z",
+            "actual_day_index": 14,
+            "planned_dose_count": 14,
+            "taken_dose_count": 14,
+            "adverse_events": [
+                {
+                    "adverse_event_id": "ae_pro_conflict",
+                    "severity": "serious",
+                    "relatedness": "possible",
+                    "ongoing": True,
+                }
+            ],
+        },
+    )
+
+    assert response.status_code == 422
+    assert response.json()["detail"] == "adverse_event_idempotency_payload_conflict"
+    assert store.scalar(
+        "select count(*) from execution_events "
+        "where event_type='followup_evaluation' and idempotency_key like 'pro-followup:%'"
+    ) == 0
+
+
+def test_pro_correction_job_uses_stored_effective_observed_at(
+    tmp_path, monkeypatch
+) -> None:
+    store = _store(tmp_path)
+    enrolled = _enroll(store)
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr("apps.inference_api.routes.interim._store", lambda: store)
+    client = TestClient(app)
+    common = {
+        "execution_id": enrolled["execution_id"],
+        "profile_id": enrolled["profile_id"],
+        "plan_id": enrolled["plan_id"],
+        "timepoint": "week_2",
+        "actual_day_index": 14,
+        "planned_dose_count": 14,
+        "taken_dose_count": 14,
+    }
+    headers = {"x-wb-rnd-token": "test-token"}
+    created = client.post(
+        "/v1/interim/pro/followups",
+        headers=headers,
+        json=common
+        | {
+            "answers": {"instrument": "PSQI", "item_scores": [1] * 7},
+            "observed_at": "2026-01-15T00:00:00Z",
+        },
+    )
+    corrected = client.post(
+        "/v1/interim/pro/followups",
+        headers=headers,
+        json=common
+        | {
+            "answers": {"instrument": "PSQI", "item_scores": [0] * 7},
+            "observed_at": "2026-02-15T00:00:00Z",
+        },
+    )
+
+    assert created.status_code == corrected.status_code == 200
+    job = corrected.json()["next_job_decision"]["next_job"]
+    assert job["scheduled_at"] == "2026-01-15T00:00:00Z"
+    assert job["payload"]["received_at"] == "2026-01-15T00:00:00+00:00"
 
 
 def test_enrollment_retry_rejects_changed_data_class(tmp_path) -> None:
