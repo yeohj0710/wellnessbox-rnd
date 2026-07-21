@@ -1,0 +1,153 @@
+{
+  "schema_version": "op085_op086_counseling_verifier_urgent_safety_smoke_v1",
+  "generated_at": "2026-07-21T15:00:00+00:00",
+  "corpus": {
+    "passage_count": 24,
+    "source_count": 19
+  },
+  "policy": {
+    "policy_id": "counseling-answer-verifier-v1",
+    "urgent_risk_keys": [
+      "active_bleeding",
+      "anaphylaxis",
+      "chest_pain",
+      "difficulty_breathing"
+    ],
+    "emergency_guidance_sentences": [
+      "Call local emergency services now or go to the nearest emergency department.",
+      "Stop taking the supplement until an emergency clinician evaluates you.",
+      "Do not wait for a chat response or supplement recommendation."
+    ],
+    "forbidden_expressions": [
+      "definitely safe",
+      "diagnose you",
+      "guaranteed cure",
+      "guaranteed to work",
+      "ignore emergency symptoms",
+      "wait and see before seeking emergency care"
+    ],
+    "recommendation_expressions": [
+      "i recommend",
+      "take this supplement",
+      "try this supplement",
+      "you should take"
+    ],
+    "interaction_risk_terms": [
+      "bleeding risk",
+      "drug interaction"
+    ]
+  },
+  "verified_cases": {
+    "supported_interaction": {
+      "status_ok": true,
+      "citation_linkage_ok": true,
+      "expected_reference_ids_ok": true,
+      "expected_claim_ids_ok": true,
+      "expected_terms_ok": true,
+      "out_of_scope_handled_ok": true,
+      "unsupported_claim_suppressed_ok": true,
+      "safety_boundary_ok": true,
+      "answer_grounding_ok": true,
+      "required_risk_coverage_ok": true,
+      "forbidden_expression_ok": true,
+      "emergency_precedence_ok": true,
+      "verifier_policy_ok": true,
+      "knowledge_scope_ok": true,
+      "evidence_validity_ok": true,
+      "uncertainty_ok": true,
+      "passed": true,
+      "issues": []
+    },
+    "urgent_safety": {
+      "status": "safety_escalation",
+      "answer_text": "Call local emergency services now or go to the nearest emergency department. Stop taking the supplement until an emergency clinician evaluates you. Do not wait for a chat response or supplement recommendation.",
+      "detected_urgent_risk_keys": [
+        "chest_pain"
+      ],
+      "verification": {
+        "status_ok": true,
+        "citation_linkage_ok": true,
+        "expected_reference_ids_ok": true,
+        "expected_claim_ids_ok": true,
+        "expected_terms_ok": true,
+        "out_of_scope_handled_ok": true,
+        "unsupported_claim_suppressed_ok": true,
+        "safety_boundary_ok": true,
+        "answer_grounding_ok": true,
+        "required_risk_coverage_ok": true,
+        "forbidden_expression_ok": true,
+        "emergency_precedence_ok": true,
+        "verifier_policy_ok": true,
+        "knowledge_scope_ok": true,
+        "evidence_validity_ok": true,
+        "uncertainty_ok": true,
+        "passed": true,
+        "issues": []
+      },
+      "provider_call_attempted": false,
+      "retrieval_evidence_count": 0
+    },
+    "negated_urgent_not_escalated": true,
+    "contrast_clause_escalated": true
+  },
+  "negative_probes": {
+    "unsupported_claim": {
+      "blocked": true,
+      "issues": [
+        "forbidden_expression_detected",
+        "unsupported_or_unapproved_answer_text"
+      ]
+    },
+    "risk_omission": {
+      "blocked": true,
+      "issues": [
+        "unsupported_or_unapproved_answer_text",
+        "required_risk_omitted"
+      ]
+    },
+    "forbidden_diagnosis": {
+      "blocked": true,
+      "issues": [
+        "forbidden_expression_detected",
+        "unsupported_or_unapproved_answer_text",
+        "required_risk_omitted"
+      ]
+    },
+    "delayed_emergency": {
+      "blocked": true,
+      "issues": [
+        "forbidden_expression_detected",
+        "emergency_safety_precedence_failed",
+        "unsupported_or_unapproved_answer_text"
+      ]
+    },
+    "urgent_recommendation": {
+      "blocked": true,
+      "issues": [
+        "emergency_safety_precedence_failed",
+        "unsupported_or_unapproved_answer_text"
+      ]
+    },
+    "forged_policy": {
+      "blocked": true,
+      "issues": [
+        "verifier_policy_mismatch"
+      ]
+    }
+  },
+  "stage_boundaries": {
+    "claimed_stage": "IMPLEMENTED",
+    "wellnessbox_service_integration_proven": false,
+    "deployment_proven": false,
+    "production_operation_proven": false,
+    "external_validation_proven": false,
+    "live_llm_inference_used": false,
+    "model_training_performed": false,
+    "frozen_dataset_changed": false
+  },
+  "source_identity": {
+    "source_commit": "f18c96c45cf50c3e07816cfd687b4f5adeb25cfb",
+    "source_sha256": "830708abbf58b3451cb733a48268bfcaf7b116ce5f4284cc1d6731d72b96b528",
+    "data_sha256": "11f257c44f05db6d0286de3701cf72c428cbe46991b44f190729371ca167f228"
+  }
+}
