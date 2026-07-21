@@ -2,6 +2,20 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 product-combination top-k and reproducibility integration handoff
+
+- Chosen stage and tasks: `original plan / product optimization`; OP-067 and OP-068.
+- Primary dataset and cases: frozen eval `256` cases; canonical smoke `4` evaluated combinations, top-k `3`, and `1` non-selection reason.
+- Primary evidence: `data/original_plan/evidence/op067_op068_product_combination_top_k_smoke_v1.json`; SHA-256 `f510f7c09aea3e23af64275001b53ae6a14b0c45760a3a0a112cb390dd5153ae`; combined source SHA-256 `b78acd6e01dc75eab4dfe18622c975ba810877d6ae3321a5d7847a5452482613`.
+- Source identity: R&D `dc8e145b3a62897af6238f2c9b74dd35a75f4714`; WellnessBox `a27de7c0beee507114641e24a058827d46ad2ef0`.
+- Main changes: global eligible-combination ranking before response limiting; precise non-selection reasons; fail-closed truncated search; content-addressed optimization and catalog identities; duplicate offer-ID rejection; independent R&D ranking and provenance validation; manifest, reports, workflow, tests, and canonical evidence. No training or simulation behavior changed.
+- Honest stage: OP-067 and OP-068 are COMPLETE at `INTEGRATED`. Existing route-function integration is proven, but actual Prisma execution, production data freshness, deployment, production operation, ordering, and payment are not.
+- Validation: focused `20 passed`; workflow-equivalent `499 passed`; full Ruff PASS; service QA/typecheck/lint PASS; `17` service-dependent workflow smokes PASS; audit PASS with `67` claims and `200` evidence files; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `880 passed`, `77 failed`, exactly the known `73` absent-report plus `4` CGM-geometry groups. Frozen eval has `256` cases, seven zero metric deltas, unchanged overall `safety_blocked` weakest slice, and unchanged metric-specific weakest categories.
+- Publication: service commit `a27de7c0beee507114641e24a058827d46ad2ef0`; R&D commit `0635b17c2dd18c9f861c012c5f865fb5f720abf3`; Original plan evidence run `29816477275` succeeded.
+- Five bottlenecks: actual Prisma catalog-query evidence; production catalog freshness; deployed service/R&D operation; stock-change substitution evidence for OP-069; approval-gated cart conversion for OP-070.
+- Next three loops: OP-069/070, OP-071/072, OP-073/074.
+
 ## 2026-07-21 product-combination constraint and safety integration handoff
 
 - Chosen stage and tasks: `original plan / product optimization`; OP-065 and OP-066.

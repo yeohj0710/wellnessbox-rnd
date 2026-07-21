@@ -2,6 +2,20 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 product-combination top-k and reproducibility integration loop
+
+- Chosen stage: `original plan / product optimization`; tasks OP-067 and OP-068.
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. Canonical evidence independently validates `4` evaluated combinations, top-k `3`, and `1` non-selection reason.
+- Primary evidence: `data/original_plan/evidence/op067_op068_product_combination_top_k_smoke_v1.json`; deterministic SHA-256 `f510f7c09aea3e23af64275001b53ae6a14b0c45760a3a0a112cb390dd5153ae`; combined source SHA-256 `b78acd6e01dc75eab4dfe18622c975ba810877d6ae3321a5d7847a5452482613`; R&D source `dc8e145b3a62897af6238f2c9b74dd35a75f4714`; service source `a27de7c0beee507114641e24a058827d46ad2ef0`.
+- Implementation: the existing `/api/tips` product-combination path now ranks every eligible combination by cost, product count, and deterministic ID before applying the `64`-combination response cap. It returns top-k identities and precise non-selection reasons. Search truncation returns no top-k and reports `SEARCH_TRUNCATED`. Replay identity hashes the complete optimization input and normalized catalog, including offer option, capacity, and mapped safety exclusions. R&D independently recomputes ranking, policy linkage, input hash, catalog version, and result hash. No new catalog, route, database, order, payment, training, or simulation path was added.
+- Evidence boundary: OP-067 and OP-068 are `INTEGRATED` and COMPLETE at their required stages. Route-function integration is proven; actual Prisma execution, production catalog freshness, deployment, production operation, ordering, and payment are not proven.
+- Generated status: complete `54`, partial `13`, pending `52`, external `1`, contradicted `0`. Audit PASS with `67` claims and `200` checked evidence files.
+- Validation: focused tests `20 passed`; exact workflow tests `499 passed`; full Ruff PASS; service product QA, typecheck, and lint PASS; all `17` service-dependent canonical smokes PASS; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `880 passed`, `77 failed`; the unchanged failures are `73` absent report artifacts and `4` CGM geometry assertions. No OP-067/068 regression was found.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: service commit `a27de7c0beee507114641e24a058827d46ad2ef0`; R&D implementation commit `0635b17c2dd18c9f861c012c5f865fb5f720abf3`; Original plan evidence run `29816477275` succeeded.
+- Recommended next loops: OP-069/070 stock-aware safe substitution and approval-gated cart candidates; OP-071/072 unified state-transition contract and ordered orchestration; OP-073/074 safety-rule engine and severity classes.
+
 ## 2026-07-21 product-combination constraint and safety integration loop
 
 - Chosen stage: `original plan / product optimization`; tasks OP-065 and OP-066.
