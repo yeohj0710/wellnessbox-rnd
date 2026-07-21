@@ -2,6 +2,22 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 personal and group PRO uncertainty loop
+
+- Chosen stage: `original plan / pre-post outcome quantification and PRO`
+- Chosen tasks: OP-055 separate plan-linked personal observed change from the group mean; OP-056 attach sample size, deterministic 95% confidence intervals, and explicit uncertainty reasons to the group estimate
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. The deterministic smoke separately builds `100` synthetic week-2 personal PRO interpretations and one group estimate.
+- Primary evidence: `data/original_plan/evidence/op055_op056_pro_personal_group_uncertainty_smoke_v1.json`; deterministic SHA-256 `4a458659b2c44cf35cf4589ac9f09e70ae63de37d7c2891356ce6e9c67fd4eb9`; source identity commit `56d0542e9506992621c8e356752ee41aec7b09d3`; source bundle SHA-256 `974bc53e20a0ad73308150eacc6218fe11f8182d563d872e6f7112763b619c34`
+- Reused `PROFollowUpEffectInterpretationV1`, the versioned PRO scoring/baseline distribution, and the interim KPI bootstrap algorithm. The shared bootstrap implementation moved to `metrics/statistics.py`; no parallel PRO store, service path, or KPI system was added.
+- The group summary retains canonical personal interpretations, rejects duplicate plan or assessment IDs and mixed data classes, timepoints, or score identities, and recomputes every derived value during validation. Input order cannot change the output.
+- The 100-person smoke reports mean health-Z change `0.67` with 95% CI `[0.616666, 0.723333]` and mean health-percentile change `25.779542` with 95% CI `[23.82636, 27.745993]`. All `100` personal interpretations are fully interpretable. The remaining reasons are `observational_association_not_causal` and `non_real_world_outcome_data`.
+- Evidence boundary: OP-055 and OP-056 are `IMPLEMENTED` and complete at their required stage. The data class is `SYNTHETIC_OUTCOME_PROXY`; no real-world outcome, WellnessBox service integration, production operation, deployment, or causal effect is claimed. Generated status: complete `43`, partial `12`, pending `64`, external `1`, contradicted `0`.
+- Validation: focused selection `43 passed`; exact GitHub workflow pytest selection `425 passed`; full Ruff PASS; audit PASS with `55` claims and `171` checked evidence files; completion report check PASS; three affected canonical smoke files reproduce exactly and their source hashes/commits match; independent review Critical `0`, Important `0`, Minor `0` after fixing the initial smoke source-path omission.
+- Full suite: `806 passed`, `77 failed`; the unchanged failures remain `73` absent ignored report artifacts and `4` CGM geometry assertions. No OP-055/056 failure remains.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`, and the overall and metric-specific weakest-slice categories are unchanged against `artifacts/reports/op035_op036_frozen_eval/eval_report.json`.
+- Publication: source commits `5b9dedcc62ff3bcb4c36d882f7f28ebaf2784968` and `56d0542e9506992621c8e356752ee41aec7b09d3`, plus evidence commit `0a1f102877a09f90195c64fdeeb67a73843f4913`, are on `origin/main`; Original plan evidence run `29799527985` passed.
+- Recommended next loops: OP-057/058 corrected user PRO recalculation and plan-linked outcome lineage; OP-059/060 observed-worsening actions and real-outcome data-class compatibility; OP-061/062 optimization constraints and the existing service product contract.
+
 ## 2026-07-21 PRO follow-up persistence and interpretation loop
 
 - Chosen stage: `original plan / pre-post outcome quantification and PRO`

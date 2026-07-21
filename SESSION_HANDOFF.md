@@ -2,6 +2,21 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 personal and group PRO uncertainty handoff
+
+- Chosen stage and tasks: `original plan / pre-post outcome quantification and PRO`; OP-055 and OP-056
+- Primary dataset and evidence: `data/frozen_eval/frozen_eval_v1.jsonl` has `256` cases. `data/original_plan/evidence/op055_op056_pro_personal_group_uncertainty_smoke_v1.json` has `100` synthetic personal interpretations plus a separate group estimate and SHA-256 `4a458659b2c44cf35cf4589ac9f09e70ae63de37d7c2891356ce6e9c67fd4eb9`.
+- Source identity: commit `56d0542e9506992621c8e356752ee41aec7b09d3`; source bundle SHA-256 `974bc53e20a0ad73308150eacc6218fe11f8182d563d872e6f7112763b619c34`.
+- Implementation: `metrics/pro_group_effects.py` retains validated personal effects and derives a separately named group estimate. `metrics/statistics.py` now supplies the same seeded percentile bootstrap used by the existing interim KPI path. Cohorts fail closed on duplicate identities and mixed timepoint, data-class, or scoring identities; derived output mutation is rejected.
+- Result: sample size `100`; fully interpretable `100`; mean health-Z change `0.67`, 95% CI `[0.616666, 0.723333]`; mean health-percentile change `25.779542`, 95% CI `[23.82636, 27.745993]`; uncertainty reasons `observational_association_not_causal` and `non_real_world_outcome_data`.
+- Files changed: the new group contract, group metrics/statistics modules, deterministic smoke, focused tests, metrics exports, interim KPI helper call, evidence workflow, manifest, generated completion files, and governance tests. Existing OP-051~054 evidence source identities were refreshed because shared metrics files changed. The WellnessBox service repository was unchanged.
+- Evidence stage: OP-055 and OP-056 are `IMPLEMENTED` and COMPLETE at their required stage. Counts are complete `43`, partial `12`, pending `64`, external `1`, contradicted `0`. This loop proves only synthetic local implementation; it does not prove real-world outcomes, service integration, operation, deployment, or causal effect.
+- Validation: focused `43 passed`; workflow-equivalent `425 passed`; full Ruff PASS; audit PASS with `55` claims and `171` evidence files; report check PASS; full suite `806 passed`, `77 failed` with only the known `73` absent-report and `4` CGM-geometry groups; frozen eval has seven zero deltas and unchanged weakest slices; independent review Critical `0`, Important `0`, Minor `0`.
+- Publication: source commits `5b9dedcc62ff3bcb4c36d882f7f28ebaf2784968` and `56d0542e9506992621c8e356752ee41aec7b09d3`, evidence commit `0a1f102877a09f90195c64fdeeb67a73843f4913`, and Original plan evidence run `29799527985` are published and successful.
+- Biggest remaining bottlenecks: OP-021 through OP-030, OP-040, and OP-053 still lack required operation evidence; OP-039 lacks qualifying independent labels; OP-057 through OP-120 contain `64` pending requirements; the trusted archive for `73` report-dependent tests is absent; `4` CGM geometry assertions remain unresolved.
+- Protected files remain untouched: `docs/plans/2026-07-14-tips-evaluator-ui-overhaul.md` and `docs/plans/2026-07-15-tips-full-implementation-roadmap.md`.
+- Next three loops: OP-057/058 corrected PRO and plan-linked outcome lineage; OP-059/060 observed-worsening actions and real-outcome data classes; OP-061/062 optimization constraints and the existing service product contract.
+
 ## 2026-07-21 PRO follow-up persistence and interpretation handoff
 
 - Chosen stage: `original plan / pre-post outcome quantification and PRO`
