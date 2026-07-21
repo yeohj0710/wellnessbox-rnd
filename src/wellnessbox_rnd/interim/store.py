@@ -383,7 +383,8 @@ CREATE TABLE IF NOT EXISTS recommendation_runs (
   request_sha256 TEXT NOT NULL,
   response_json TEXT,
   created_at TEXT NOT NULL,
-  completed_at TEXT
+  completed_at TEXT,
+  idempotency_identity TEXT UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS recommendation_items (
@@ -707,21 +708,19 @@ class InterimStore:
                     connection.execute(
                         f"alter table agent_steps add column {column_name} text"
                     )
-            duplicate_recommendations = connection.execute(
-                """
-                select profile_id, request_sha256, count(*)
-                from recommendation_runs
-                group by profile_id, request_sha256
-                having count(*) > 1
-                limit 1
-                """
-            ).fetchone()
-            if duplicate_recommendations is not None:
-                raise RuntimeError("duplicate_recommendation_request_identity")
+            recommendation_columns = {
+                str(row[1])
+                for row in connection.execute("pragma table_info(recommendation_runs)")
+            }
+            if "idempotency_identity" not in recommendation_columns:
+                connection.execute(
+                    "alter table recommendation_runs add column idempotency_identity text"
+                )
             connection.execute(
                 "create unique index if not exists "
-                "idx_recommendation_runs_profile_request_unique "
-                "on recommendation_runs(profile_id, request_sha256)"
+                "idx_recommendation_runs_idempotency_identity_unique "
+                "on recommendation_runs(idempotency_identity) "
+                "where idempotency_identity is not null"
             )
             connection.execute(
                 """

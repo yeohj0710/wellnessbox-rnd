@@ -275,7 +275,8 @@ def test_serious_ae_atomically_stops_plan_and_creates_review(tmp_path: Path) -> 
         connection.execute(
             """
             insert into recommendation_runs values (
-              'rec1', 'usr_1234567890abcdef', null, 'READY', 'hash', '{}', 'now', null
+              'rec1', 'usr_1234567890abcdef', null, 'READY', 'hash', '{}',
+              'now', null, null
             )
             """
         )

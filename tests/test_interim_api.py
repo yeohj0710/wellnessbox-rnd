@@ -125,6 +125,7 @@ def test_counseling_turn_binds_verified_answer_and_recommendation_to_one_session
     database = tmp_path / "counseling.sqlite3"
     monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
     monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    InterimStore(database).migrate()
     monkeypatch.setattr(
         "apps.inference_api.routes.interim.recommend_with_registered_model",
         lambda *_args, **_kwargs: SimpleNamespace(
@@ -205,6 +206,7 @@ def test_counseling_turn_concurrent_retry_creates_one_recommendation(
     database = tmp_path / "counseling-concurrent.sqlite3"
     monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
     monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    InterimStore(database).migrate()
     monkeypatch.setattr(
         "apps.inference_api.routes.interim.recommend_with_registered_model",
         lambda *_args, **_kwargs: SimpleNamespace(

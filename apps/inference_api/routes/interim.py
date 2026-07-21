@@ -455,8 +455,9 @@ def upsert_profile(payload: ProfileRequest) -> dict[str, Any]:
     return {"profile_id": payload.profile_id, "stored": True}
 
 
-@router.post("/recommendations")
-def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
+def _recommendation(
+    payload: RecommendationRequest, *, idempotency_identity: str | None = None
+) -> dict[str, Any]:
     store = _store()
     profile_rows = store.rows(
         "select payload_json from user_profiles where profile_id=?", (payload.profile_id,)
@@ -565,7 +566,12 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
                 detail="serious_adverse_event_recommendation_hold",
             )
         connection.execute(
-            "insert into recommendation_runs values (?, ?, ?, ?, ?, ?, ?, ?)",
+            """
+            insert into recommendation_runs(
+              run_id, profile_id, model_id, status, request_sha256,
+              response_json, created_at, completed_at, idempotency_identity
+            ) values (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
             (
                 run_id,
                 payload.profile_id,
@@ -575,6 +581,7 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
                 json.dumps(response, ensure_ascii=False),
                 datetime.now(UTC).isoformat(),
                 datetime.now(UTC).isoformat(),
+                idempotency_identity,
             ),
         )
         connection.executemany(
@@ -592,6 +599,11 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
             ],
         )
     return response
+
+
+@router.post("/recommendations")
+def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
+    return _recommendation(payload)
 
 
 _COUNSELING_CORPUS_PATH = (
@@ -667,6 +679,12 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
     recommendation_request_hash = hashlib.sha256(
         recommendation_payload.model_dump_json().encode()
     ).hexdigest()
+    recommendation_idempotency_identity = _canonical_sha256(
+        {
+            "profile_id": payload.profile_id,
+            "request_sha256": recommendation_request_hash,
+        }
+    )
     if adapter_response.answer.status != "safety_escalation":
         existing = store.rows(
             "select response_json from recommendation_runs "
@@ -677,7 +695,10 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
             recommendation_response = json.loads(str(existing[0]["response_json"]))
         else:
             try:
-                recommendation_response = recommendation(recommendation_payload)
+                recommendation_response = _recommendation(
+                    recommendation_payload,
+                    idempotency_identity=recommendation_idempotency_identity,
+                )
             except sqlite3.IntegrityError:
                 concurrent = store.rows(
                     "select response_json from recommendation_runs "
