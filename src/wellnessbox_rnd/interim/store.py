@@ -752,6 +752,8 @@ class InterimStore:
             "data_mutation_audits_no_delete",
             "plan_lifecycle_events_no_update",
             "plan_lifecycle_events_no_delete",
+            "plan_lifecycle_dependencies_no_update_v2",
+            "plan_lifecycle_dependencies_no_delete_v2",
         }
         index_names = {
             str(row[0])
@@ -939,6 +941,42 @@ class InterimStore:
                         lifecycle.payload_json, '$.replacement_candidate_event_id'
                       )=OLD.event_id
                   )
+                BEGIN
+                  SELECT RAISE(ABORT, 'plan_lifecycle_event_immutable');
+                END
+                """
+            )
+            connection.execute(
+                """
+                CREATE TRIGGER IF NOT EXISTS plan_lifecycle_dependencies_no_update_v2
+                BEFORE UPDATE ON execution_events
+                WHEN EXISTS (
+                  SELECT 1 FROM execution_events AS lifecycle
+                  WHERE lifecycle.payload_state='ACTIVE'
+                    AND json_extract(lifecycle.payload_json, '$.schema_version')=
+                      'plan_lifecycle_transition_v1'
+                    AND json_extract(
+                      lifecycle.payload_json, '$.replacement_candidate_event_id'
+                    )=OLD.event_id
+                )
+                BEGIN
+                  SELECT RAISE(ABORT, 'plan_lifecycle_event_immutable');
+                END
+                """
+            )
+            connection.execute(
+                """
+                CREATE TRIGGER IF NOT EXISTS plan_lifecycle_dependencies_no_delete_v2
+                BEFORE DELETE ON execution_events
+                WHEN EXISTS (
+                  SELECT 1 FROM execution_events AS lifecycle
+                  WHERE lifecycle.payload_state='ACTIVE'
+                    AND json_extract(lifecycle.payload_json, '$.schema_version')=
+                      'plan_lifecycle_transition_v1'
+                    AND json_extract(
+                      lifecycle.payload_json, '$.replacement_candidate_event_id'
+                    )=OLD.event_id
+                )
                 BEGIN
                   SELECT RAISE(ABORT, 'plan_lifecycle_event_immutable');
                 END

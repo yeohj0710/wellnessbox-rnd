@@ -277,6 +277,31 @@ def test_consumed_replacement_candidate_is_immutable(tmp_path) -> None:
             )
 
 
+def test_migration_adds_consumed_candidate_guards_to_existing_database(tmp_path) -> None:
+    service = _service(tmp_path, replacement_plan_id="plan_replacement")
+    with service.store.transaction() as connection:
+        connection.execute("drop trigger plan_lifecycle_dependencies_no_update_v2")
+        connection.execute("drop trigger plan_lifecycle_dependencies_no_delete_v2")
+    service.store.migrate()
+    service.transition(_request(action="replace", replacement_plan_id="plan_replacement"))
+    with service.store.transaction() as connection:
+        names = {
+            row[0]
+            for row in connection.execute(
+                "select name from sqlite_master where type='trigger' "
+                "and name like 'plan_lifecycle_dependencies_%'"
+            )
+        }
+        assert names == {
+            "plan_lifecycle_dependencies_no_update_v2",
+            "plan_lifecycle_dependencies_no_delete_v2",
+        }
+        with pytest.raises(sqlite3.IntegrityError, match="plan_lifecycle_event_immutable"):
+            connection.execute(
+                "delete from execution_events where event_id='event_replacement_candidate'"
+            )
+
+
 def test_transition_rejects_time_before_existing_lineage(tmp_path) -> None:
     service = _service(tmp_path)
     request = _request().model_copy(update={"occurred_at": NOW - timedelta(seconds=1)})
