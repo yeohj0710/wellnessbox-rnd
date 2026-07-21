@@ -297,6 +297,7 @@ class RankingConstraintIdentityV1(BaseModel):
     max_total_cost_krw: StrictInt = Field(ge=0)
     max_products: StrictInt = Field(ge=1, le=20)
     excluded_ingredient_keys: tuple[str, ...]
+    excluded_service_ingredient_ids: tuple[str, ...]
     safety_rule_ids: tuple[str, ...]
 
 
@@ -370,6 +371,15 @@ class ProductCombinationRankingEvidenceV1(BaseModel):
             raise ValueError("top-k ranking does not match combinations and policy")
         if self.non_selection != expected_non_selection:
             raise ValueError("non-selection reasons do not match combinations and policy")
+        constraints = self.replay_identity.optimization_input.constraints
+        if (
+            self.policy.max_total_cost_krw != constraints.max_total_cost_krw
+            or self.policy.max_products != constraints.max_products
+            or self.policy.excluded_service_ingredient_ids
+            != constraints.excluded_service_ingredient_ids
+            or self.policy.safety_rule_ids != constraints.safety_rule_ids
+        ):
+            raise ValueError("ranking policy does not match canonical optimization input")
         expected_input = _canonical_sha256(
             self.replay_identity.optimization_input.model_dump(mode="json")
         )

@@ -16,7 +16,7 @@ from wellnessbox_rnd.optimizer.product_combinations import (
 )
 
 
-def _ranking_provenance():
+def _ranking_provenance(max_total_cost_krw: int = 35_000):
     optimization_input = ProductCombinationOptimizationInputV1.model_validate(
         {
             "recommendations": [
@@ -29,9 +29,10 @@ def _ranking_provenance():
                 }
             ],
             "constraints": {
-                "max_total_cost_krw": 35000,
+                "max_total_cost_krw": max_total_cost_krw,
                 "max_products": 2,
                 "excluded_ingredient_keys": [],
+                "excluded_service_ingredient_ids": [],
                 "safety_rule_ids": [],
             },
         }
@@ -448,8 +449,8 @@ def test_combination_ranking_rejects_forged_outputs(
         combinations,
         policy,
         max_ranked_combinations=1,
-        optimization_input=_ranking_provenance()[0],
-        catalog_identity=_ranking_provenance()[1],
+        optimization_input=_ranking_provenance(25_000)[0],
+        catalog_identity=_ranking_provenance(25_000)[1],
     ).model_dump(mode="json")
     target: object = payload
     for key in path[:-1]:
@@ -458,3 +459,20 @@ def test_combination_ranking_rejects_forged_outputs(
 
     with pytest.raises(ValidationError):
         ProductCombinationRankingEvidenceV1.model_validate(payload)
+
+
+def test_combination_ranking_rejects_policy_outside_hashed_input() -> None:
+    combination = ProductCombinationV1.model_validate(_combination_payload())
+    mismatched_policy = ProductCombinationFilterPolicyV1(
+        schema_version="product_optimization_constraints_v1",
+        max_total_cost_krw=1,
+        max_products=2,
+    )
+    with pytest.raises(ValidationError, match="policy does not match"):
+        evaluate_product_combination_ranking_v1(
+            (combination,),
+            mismatched_policy,
+            max_ranked_combinations=1,
+            optimization_input=_ranking_provenance()[0],
+            catalog_identity=_ranking_provenance()[1],
+        )
