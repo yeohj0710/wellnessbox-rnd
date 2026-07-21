@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -19,6 +20,7 @@ DEFAULT_OUTPUT = RND_ROOT / (
     "op057_op058_pro_correction_plan_lineage_smoke_v1.json"
 )
 TOKEN = "op057-op058-local-token"
+NPM_EXECUTABLE = shutil.which("npm.cmd") or shutil.which("npm")
 RND_SOURCE_PATHS = [
     "apps/inference_api/routes/interim.py",
     "data/contracts/pro_runtime_reference_baselines_v1.json",
@@ -126,6 +128,8 @@ def _service_call(temp: Path, environment: dict[str, str], action: str, body: di
 
 
 def run_smoke() -> dict[str, object]:
+    if NPM_EXECUTABLE is None:
+        raise RuntimeError("npm_executable_not_found")
     with TemporaryDirectory(prefix="op057-op058-") as directory:
         temp = Path(directory)
         port = 18757
@@ -192,7 +196,7 @@ def run_smoke() -> dict[str, object]:
             followup_body["answers"] = {"instrument": "PSQI", "item_scores": _psqi_items(7)}
             corrected = _service_call(temp, environment, "correction", followup_body)
             subprocess.run(
-                ["npm", "run", "qa:tips:pro-study-rnd"],
+                [NPM_EXECUTABLE, "run", "qa:tips:pro-study-rnd"],
                 cwd=SERVICE_ROOT,
                 env=environment,
                 check=True,
