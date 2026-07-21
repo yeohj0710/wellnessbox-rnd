@@ -51,6 +51,7 @@ on:
       - "scripts/run_fail_closed_job_pharmacist_review_smoke.py"
       - "scripts/run_plan_lifecycle_order_boundary_smoke.py"
       - "scripts/run_counseling_passage_entity_smoke.py"
+      - "scripts/run_bounded_rag_answer_provenance_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -133,6 +134,7 @@ on:
       - "tests/test_interim_reviews.py"
       - "tests/test_plan_lifecycle.py"
       - "tests/test_chat_retrieval.py"
+      - "tests/test_chat_openai_adapter.py"
       - "tests/test_pro_group_effects.py"
   push:
     branches: [main]
@@ -185,6 +187,7 @@ on:
       - "scripts/run_fail_closed_job_pharmacist_review_smoke.py"
       - "scripts/run_plan_lifecycle_order_boundary_smoke.py"
       - "scripts/run_counseling_passage_entity_smoke.py"
+      - "scripts/run_bounded_rag_answer_provenance_smoke.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -267,6 +270,7 @@ on:
       - "tests/test_interim_reviews.py"
       - "tests/test_plan_lifecycle.py"
       - "tests/test_chat_retrieval.py"
+      - "tests/test_chat_openai_adapter.py"
       - "tests/test_pro_group_effects.py"
   workflow_dispatch:
 
@@ -427,6 +431,11 @@ jobs:
           python scripts/run_counseling_passage_entity_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op081_op082_counseling_passage_entity_smoke_v1.json
+      - name: Check bounded RAG answer provenance evidence
+        run: >-
+          python scripts/run_bounded_rag_answer_provenance_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op083_op084_bounded_rag_answer_provenance_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -472,6 +481,7 @@ jobs:
           tests/test_interim_reviews.py
           tests/test_plan_lifecycle.py
           tests/test_chat_retrieval.py
+          tests/test_chat_openai_adapter.py
           tests/test_pro_group_effects.py
           tests/test_pro_actions.py
           tests/test_optimization_constraints.py
@@ -540,6 +550,7 @@ jobs:
           scripts/run_fail_closed_job_pharmacist_review_smoke.py
           scripts/run_plan_lifecycle_order_boundary_smoke.py
           scripts/run_counseling_passage_entity_smoke.py
+          scripts/run_bounded_rag_answer_provenance_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py
@@ -579,6 +590,7 @@ jobs:
           tests/test_interim_reviews.py
           tests/test_plan_lifecycle.py
           tests/test_chat_retrieval.py
+          tests/test_chat_openai_adapter.py
           tests/test_pro_actions.py
           tests/test_optimization_constraints.py
           tests/test_product_combinations.py

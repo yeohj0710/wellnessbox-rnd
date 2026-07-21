@@ -1669,8 +1669,42 @@
             ]
           }
         },
-        {"requirement_id": "OP-083", "title": "bounded RAG가 허용된 지식 범위만 검색하게 한다."},
-        {"requirement_id": "OP-084", "title": "답변에 근거 ID, 유효일, 불확실성을 포함한다."},
+        {
+          "requirement_id": "OP-083",
+          "title": "bounded RAG가 허용된 지식 범위만 검색하게 한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_chat_retrieval.py",
+              "wellnessbox-rnd/tests/test_chat_openai_adapter.py",
+              "wellnessbox-rnd/scripts/run_bounded_rag_answer_provenance_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op083_op084_bounded_rag_answer_provenance_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-084",
+          "title": "답변에 근거 ID, 유효일, 불확실성을 포함한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_chat_retrieval.py",
+              "wellnessbox-rnd/tests/test_chat_openai_adapter.py",
+              "wellnessbox-rnd/scripts/run_bounded_rag_answer_provenance_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op083_op084_bounded_rag_answer_provenance_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-085", "title": "verifier가 근거 없는 주장, 위험 누락, 금지 표현을 차단한다."},
         {"requirement_id": "OP-086", "title": "응급 위험 질문은 추천보다 안전 안내를 우선한다."},
         {"requirement_id": "OP-087", "title": "상담 답변과 추천 실행을 같은 세션에 저장한다.", "required_stage": "OPERATED"},
