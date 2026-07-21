@@ -9,6 +9,12 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
 
 NormalizedDoseUnitV1 = Literal["ng", "milli_IU"]
 ProductFormulationV1 = Literal["capsule", "tablet", "powder", "liquid", "gummy", "other"]
+ProductCombinationNonSelectionReasonV1 = Literal[
+    "LOWER_RANKED",
+    "OVER_BUDGET",
+    "OVER_MAX_PRODUCTS",
+    "SAFETY_EXCLUDED_INGREDIENT",
+]
 
 
 class ProductOfferV1(BaseModel):
@@ -251,14 +257,214 @@ def _derive_filter_identities(
     ), tuple(sorted(safety))
 
 
+class RankedProductCombinationV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_combination_ranking_v1"]
+    rank: StrictInt = Field(ge=1)
+    combination_id: str = Field(pattern=r"^combo_[a-f0-9]{16}$")
+    ranking_tuple: tuple[StrictInt, StrictInt, str]
+
+
+class ProductCombinationNonSelectionV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    combination_id: str = Field(pattern=r"^combo_[a-f0-9]{16}$")
+    reason_codes: tuple[ProductCombinationNonSelectionReasonV1, ...] = Field(
+        min_length=1
+    )
+
+
+class ProductCombinationReplayIdentityV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_combination_replay_identity_v1"]
+    input_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    catalog_version: str = Field(pattern=r"^catalog_[a-f0-9]{64}$")
+    catalog_version_contract: Literal["product_catalog_content_sha256_v1"]
+    result_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+
+
+class ProductCombinationRankingEvidenceV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_combination_ranking_evidence_v1"]
+    policy: ProductCombinationFilterPolicyV1
+    max_ranked_combinations: StrictInt = Field(ge=1, le=10)
+    combinations: tuple[ProductCombinationV1, ...] = Field(min_length=1)
+    top_k: tuple[RankedProductCombinationV1, ...]
+    non_selection: tuple[ProductCombinationNonSelectionV1, ...]
+    replay_identity: ProductCombinationReplayIdentityV1
+
+    @model_validator(mode="after")
+    def validate_ranking_evidence(self) -> ProductCombinationRankingEvidenceV1:
+        identities = tuple(item.combination_id for item in self.combinations)
+        if identities != tuple(sorted(identities)) or len(set(identities)) != len(
+            identities
+        ):
+            raise ValueError("ranking input combinations must be unique and sorted")
+        expected_top, expected_non_selection = _derive_ranking(
+            self.combinations,
+            self.policy,
+            self.max_ranked_combinations,
+        )
+        if self.top_k != expected_top:
+            raise ValueError("top-k ranking does not match combinations and policy")
+        if self.non_selection != expected_non_selection:
+            raise ValueError("non-selection reasons do not match combinations and policy")
+        expected_result_sha256 = _ranking_result_sha256(
+            input_sha256=self.replay_identity.input_sha256,
+            catalog_version=self.replay_identity.catalog_version,
+            top_k=self.top_k,
+            non_selection=self.non_selection,
+        )
+        if self.replay_identity.result_sha256 != expected_result_sha256:
+            raise ValueError("ranking result identity does not match canonical result")
+        return self
+
+
+def evaluate_product_combination_ranking_v1(
+    combinations: tuple[ProductCombinationV1, ...],
+    policy: ProductCombinationFilterPolicyV1,
+    *,
+    max_ranked_combinations: int,
+    input_sha256: str,
+    catalog_version: str,
+) -> ProductCombinationRankingEvidenceV1:
+    top_k, non_selection = _derive_ranking(
+        combinations,
+        policy,
+        max_ranked_combinations,
+    )
+    replay_identity = ProductCombinationReplayIdentityV1(
+        schema_version="product_combination_replay_identity_v1",
+        input_sha256=input_sha256,
+        catalog_version=catalog_version,
+        catalog_version_contract="product_catalog_content_sha256_v1",
+        result_sha256=_ranking_result_sha256(
+            input_sha256=input_sha256,
+            catalog_version=catalog_version,
+            top_k=top_k,
+            non_selection=non_selection,
+        ),
+    )
+    return ProductCombinationRankingEvidenceV1(
+        schema_version="product_combination_ranking_evidence_v1",
+        policy=policy,
+        max_ranked_combinations=max_ranked_combinations,
+        combinations=combinations,
+        top_k=top_k,
+        non_selection=non_selection,
+        replay_identity=replay_identity,
+    )
+
+
+def _derive_ranking(
+    combinations: tuple[ProductCombinationV1, ...],
+    policy: ProductCombinationFilterPolicyV1,
+    max_ranked_combinations: int,
+) -> tuple[
+    tuple[RankedProductCombinationV1, ...],
+    tuple[ProductCombinationNonSelectionV1, ...],
+]:
+    eligible, budget, product_count, safety = _derive_filter_identities(
+        combinations, policy
+    )
+    combination_by_id = {item.combination_id: item for item in combinations}
+    ranked = sorted(
+        (combination_by_id[identity] for identity in eligible),
+        key=lambda item: (
+            item.total_cost_krw,
+            item.product_count,
+            item.combination_id,
+        ),
+    )
+    top_k = tuple(
+        RankedProductCombinationV1(
+            schema_version="product_combination_ranking_v1",
+            rank=index + 1,
+            combination_id=item.combination_id,
+            ranking_tuple=(
+                item.total_cost_krw,
+                item.product_count,
+                item.combination_id,
+            ),
+        )
+        for index, item in enumerate(ranked[:max_ranked_combinations])
+    )
+    top_identities = {item.combination_id for item in top_k}
+    eligible_identities = set(eligible)
+    budget_identities = set(budget)
+    product_count_identities = set(product_count)
+    safety_identities = set(safety)
+    non_selection = tuple(
+        ProductCombinationNonSelectionV1(
+            combination_id=item.combination_id,
+            reason_codes=tuple(
+                sorted(
+                    reason
+                    for condition, reason in (
+                        (
+                            item.combination_id in budget_identities,
+                            "OVER_BUDGET",
+                        ),
+                        (
+                            item.combination_id in product_count_identities,
+                            "OVER_MAX_PRODUCTS",
+                        ),
+                        (
+                            item.combination_id in safety_identities,
+                            "SAFETY_EXCLUDED_INGREDIENT",
+                        ),
+                        (
+                            item.combination_id in eligible_identities,
+                            "LOWER_RANKED",
+                        ),
+                    )
+                    if condition
+                )
+            ),
+        )
+        for item in combinations
+        if item.combination_id not in top_identities
+    )
+    return top_k, non_selection
+
+
+def _ranking_result_sha256(
+    *,
+    input_sha256: str,
+    catalog_version: str,
+    top_k: tuple[RankedProductCombinationV1, ...],
+    non_selection: tuple[ProductCombinationNonSelectionV1, ...],
+) -> str:
+    payload = {
+        "schema_version": "product_combination_ranking_v1",
+        "input_sha256": input_sha256,
+        "catalog_version": catalog_version,
+        "top_k": [item.model_dump(mode="json") for item in top_k],
+        "non_selection": [
+            item.model_dump(mode="json") for item in non_selection
+        ],
+    }
+    return hashlib.sha256(
+        json.dumps(payload, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
 __all__ = [
     "IngredientDoseTotalV1",
     "ProductCombinationEvidenceV1",
     "ProductCombinationFilterEvaluationV1",
     "ProductCombinationFilterPolicyV1",
+    "ProductCombinationNonSelectionV1",
+    "ProductCombinationRankingEvidenceV1",
+    "ProductCombinationReplayIdentityV1",
     "ProductCombinationV1",
     "ProductIngredientAmountV1",
     "ProductOfferV1",
     "SelectedProductV1",
     "evaluate_product_combination_filters_v1",
+    "evaluate_product_combination_ranking_v1",
+    "RankedProductCombinationV1",
 ]

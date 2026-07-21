@@ -7,8 +7,10 @@ from pydantic import ValidationError
 from wellnessbox_rnd.optimizer.product_combinations import (
     ProductCombinationFilterEvaluationV1,
     ProductCombinationFilterPolicyV1,
+    ProductCombinationRankingEvidenceV1,
     ProductCombinationV1,
     evaluate_product_combination_filters_v1,
+    evaluate_product_combination_ranking_v1,
 )
 
 
@@ -308,3 +310,94 @@ def test_combination_filter_rejects_forged_output_and_invalid_policy() -> None:
             max_products=5,
             excluded_service_ingredient_ids=("ING:ZINC",),
         )
+
+
+def test_combination_ranking_recomputes_top_k_reasons_and_result_identity() -> None:
+    combinations = tuple(
+        sorted(
+            (
+                ProductCombinationV1.model_validate(
+                    _combination_variant(
+                        pharmacy_product_id=30_001 + index,
+                        second_price_krw=9_000 + index * 10_000,
+                    )
+                )
+                for index in range(4)
+            ),
+            key=lambda item: item.combination_id,
+        )
+    )
+    policy = ProductCombinationFilterPolicyV1(
+        schema_version="product_optimization_constraints_v1",
+        max_total_cost_krw=35_000,
+        max_products=2,
+    )
+
+    first = evaluate_product_combination_ranking_v1(
+        combinations,
+        policy,
+        max_ranked_combinations=1,
+        input_sha256="1" * 64,
+        catalog_version=f"catalog_{'2' * 64}",
+    )
+    second = evaluate_product_combination_ranking_v1(
+        combinations,
+        policy,
+        max_ranked_combinations=1,
+        input_sha256="1" * 64,
+        catalog_version=f"catalog_{'2' * 64}",
+    )
+
+    assert first == second
+    assert first.top_k[0].rank == 1
+    assert first.top_k[0].ranking_tuple[:2] == (19_000, 2)
+    reasons = {item.combination_id: item.reason_codes for item in first.non_selection}
+    assert sum("LOWER_RANKED" in item for item in reasons.values()) == 1
+    assert sum("OVER_BUDGET" in item for item in reasons.values()) == 2
+    assert first.replay_identity.result_sha256 == second.replay_identity.result_sha256
+
+
+@pytest.mark.parametrize(
+    ("path", "value"),
+    [
+        (("top_k", 0, "rank"), 2),
+        (("non_selection", 0, "reason_codes"), []),
+        (("replay_identity", "result_sha256"), "0" * 64),
+    ],
+)
+def test_combination_ranking_rejects_forged_outputs(
+    path: tuple[object, ...], value: object
+) -> None:
+    combinations = tuple(
+        sorted(
+            (
+                ProductCombinationV1.model_validate(
+                    _combination_variant(
+                        pharmacy_product_id=40_001 + index,
+                        second_price_krw=9_000 + index * 10_000,
+                    )
+                )
+                for index in range(3)
+            ),
+            key=lambda item: item.combination_id,
+        )
+    )
+    policy = ProductCombinationFilterPolicyV1(
+        schema_version="product_optimization_constraints_v1",
+        max_total_cost_krw=25_000,
+        max_products=2,
+    )
+    payload = evaluate_product_combination_ranking_v1(
+        combinations,
+        policy,
+        max_ranked_combinations=1,
+        input_sha256="3" * 64,
+        catalog_version=f"catalog_{'4' * 64}",
+    ).model_dump(mode="json")
+    target: object = payload
+    for key in path[:-1]:
+        target = target[key]  # type: ignore[index]
+    target[path[-1]] = value  # type: ignore[index]
+
+    with pytest.raises(ValidationError):
+        ProductCombinationRankingEvidenceV1.model_validate(payload)

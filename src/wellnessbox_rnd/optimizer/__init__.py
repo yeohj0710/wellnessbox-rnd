@@ -11,11 +11,16 @@ from wellnessbox_rnd.optimizer.product_combinations import (
     ProductCombinationEvidenceV1,
     ProductCombinationFilterEvaluationV1,
     ProductCombinationFilterPolicyV1,
+    ProductCombinationNonSelectionV1,
+    ProductCombinationRankingEvidenceV1,
+    ProductCombinationReplayIdentityV1,
     ProductCombinationV1,
     ProductIngredientAmountV1,
     ProductOfferV1,
+    RankedProductCombinationV1,
     SelectedProductV1,
     evaluate_product_combination_filters_v1,
+    evaluate_product_combination_ranking_v1,
 )
 
 __all__ = [
@@ -27,9 +32,14 @@ __all__ = [
     "ProductCombinationEvidenceV1",
     "ProductCombinationFilterEvaluationV1",
     "ProductCombinationFilterPolicyV1",
+    "ProductCombinationNonSelectionV1",
+    "ProductCombinationRankingEvidenceV1",
+    "ProductCombinationReplayIdentityV1",
     "ProductCombinationV1",
     "ProductIngredientAmountV1",
     "ProductOfferV1",
     "SelectedProductV1",
     "evaluate_product_combination_filters_v1",
+    "evaluate_product_combination_ranking_v1",
+    "RankedProductCombinationV1",
 ]
