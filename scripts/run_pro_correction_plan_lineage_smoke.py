@@ -170,6 +170,7 @@ def run_smoke() -> dict[str, object]:
                 environment,
                 "enroll",
                 {
+                    "requestId": f"pro_{'a' * 32}",
                     "profile": {
                         "name": "통합 테스터",
                         "age": 41,
