@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import threading
 from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import uuid4
@@ -13,6 +14,7 @@ from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.interim.workflow_contract import (
     CLOSED_LOOP_ALLOWED_OPERATIONS_V1,
     CLOSED_LOOP_TRANSITIONS_V1,
+    ClosedLoopExecutionTraceV1,
     ClosedLoopOperation,
     ClosedLoopState,
     apply_closed_loop_transition_v1,
@@ -31,7 +33,6 @@ TOOL_NAMES = (
     "create_followup",
     "ingest_pro",
     "ingest_wearable",
-    "escalate_pharmacist",
     "log_adverse_event",
 )
 
@@ -43,7 +44,19 @@ _TOOL_OPERATIONS: dict[str, ClosedLoopOperation] = {
     "optimize_regimen": ClosedLoopOperation.OPTIMIZE,
     "start_plan": ClosedLoopOperation.START_PLAN,
     "create_followup": ClosedLoopOperation.SCHEDULE_FOLLOWUP,
+    "ingest_pro": ClosedLoopOperation.INGEST_FOLLOWUP,
+    "ingest_wearable": ClosedLoopOperation.INGEST_FOLLOWUP,
+    "log_adverse_event": ClosedLoopOperation.INGEST_FOLLOWUP,
 }
+
+_DATABASE_LOCKS: dict[str, threading.RLock] = {}
+_DATABASE_LOCKS_GUARD = threading.Lock()
+
+
+def _database_lock(store: InterimStore) -> threading.RLock:
+    key = str(store.database_path.resolve())
+    with _DATABASE_LOCKS_GUARD:
+        return _DATABASE_LOCKS.setdefault(key, threading.RLock())
 
 
 def transition(current: AgentState, target: AgentState) -> AgentState:
@@ -136,11 +149,7 @@ class BoundedAgent:
         *,
         operation: ClosedLoopOperation,
     ) -> AgentState:
-        return self._move_with_operation(
-            run_id=run_id,
-            operation=operation,
-            target=target,
-        )
+        raise ValueError("direct_agent_move_forbidden")
 
     def _move_with_operation(
         self,
@@ -176,6 +185,22 @@ class BoundedAgent:
         return next_state
 
     def execute_tool(
+        self,
+        *,
+        run_id: str,
+        tool_name: str,
+        arguments: dict[str, Any],
+        consent_scopes: set[str] | None = None,
+    ) -> dict[str, Any]:
+        with _database_lock(self.store):
+            return self._execute_tool_serialized(
+                run_id=run_id,
+                tool_name=tool_name,
+                arguments=arguments,
+                consent_scopes=consent_scopes,
+            )
+
+    def _execute_tool_serialized(
         self,
         *,
         run_id: str,
@@ -265,8 +290,48 @@ class BoundedAgent:
         evidence_query: str,
         max_items: int,
     ) -> dict[str, Any]:
-        run = self.create_run(profile_id=profile_id, idempotency_key=idempotency_key)
+        with _database_lock(self.store):
+            return self._execute_recommendation_workflow_serialized(
+                profile_id=profile_id,
+                idempotency_key=idempotency_key,
+                safety_arguments=safety_arguments,
+                ingredients=ingredients,
+                evidence_query=evidence_query,
+                max_items=max_items,
+            )
+
+    def _execute_recommendation_workflow_serialized(
+        self,
+        *,
+        profile_id: str,
+        idempotency_key: str,
+        safety_arguments: dict[str, Any],
+        ingredients: list[str],
+        evidence_query: str,
+        max_items: int,
+    ) -> dict[str, Any]:
+        supplied_safety_ingredients = safety_arguments.get("ingredients")
+        if (
+            supplied_safety_ingredients is not None
+            and list(supplied_safety_ingredients) != ingredients
+        ):
+            raise ValueError("safety_candidate_ingredients_mismatch")
+        safety_arguments = dict(safety_arguments) | {"ingredients": list(ingredients)}
+        request_identity = _sha(
+            {
+                "safety_arguments": safety_arguments,
+                "ingredients": ingredients,
+                "evidence_query": evidence_query,
+                "max_items": max_items,
+            }
+        )
+        run = self.create_run(
+            profile_id=profile_id,
+            idempotency_key=f"{idempotency_key}:{request_identity}",
+        )
         run_id = str(run["run_id"])
+        if run["deduplicated"]:
+            return self._durable_workflow_trace(run_id)
         steps: list[dict[str, str]] = []
 
         def execute(operation: ClosedLoopOperation, tool_name: str, arguments: dict[str, Any]):
@@ -297,6 +362,7 @@ class BoundedAgent:
             operation=ClosedLoopOperation.VERIFY_CONSENT,
             target=AgentState.PROFILE_READY,
         )
+        self._record_internal_operation(run_id, ClosedLoopOperation.VERIFY_CONSENT)
         steps.append(
             {
                 "operation": ClosedLoopOperation.VERIFY_CONSENT.value,
@@ -379,6 +445,7 @@ class BoundedAgent:
             operation=ClosedLoopOperation.STOP,
             target=AgentState.STOPPED,
         )
+        self._record_internal_operation(run_id, ClosedLoopOperation.STOP)
         steps.append(
             {
                 "operation": ClosedLoopOperation.STOP.value,
@@ -394,13 +461,67 @@ class BoundedAgent:
         *,
         plan_start_recorded: bool,
     ) -> dict[str, Any]:
-        return {
-            "schema_version": "closed_loop_ordered_execution_trace_v1",
-            "run_id": run_id,
-            "status": self._state(run_id).value,
-            "steps": steps,
-            "plan_start_recorded": plan_start_recorded,
-        }
+        return ClosedLoopExecutionTraceV1.model_validate(
+            {
+                "run_id": run_id,
+                "status": self._state(run_id),
+                "steps": steps,
+                "plan_start_recorded": plan_start_recorded,
+            }
+        ).model_dump(mode="json")
+
+    def _record_internal_operation(
+        self, run_id: str, operation: ClosedLoopOperation
+    ) -> None:
+        payload = {"operation": operation.value, "postcondition_success": True}
+        with self.store.transaction() as connection:
+            step_index = connection.execute(
+                "select count(*) from agent_steps where run_id=?", (run_id,)
+            ).fetchone()[0]
+            connection.execute(
+                """
+                insert into agent_steps(
+                  run_id, step_index, tool_name, arguments_sha256, result_sha256,
+                  postcondition_success, reason_codes_json, created_at
+                ) values (?, ?, ?, ?, ?, 1, '[]', ?)
+                """,
+                (
+                    run_id,
+                    step_index,
+                    operation.value,
+                    _sha(payload),
+                    _sha(payload),
+                    datetime.now(UTC).isoformat(),
+                ),
+            )
+
+    def _durable_workflow_trace(self, run_id: str) -> dict[str, Any]:
+        rows = self.store.rows(
+            "select tool_name from agent_steps where run_id=? order by step_index", (run_id,)
+        )
+        reverse_tools = {name: operation for name, operation in _TOOL_OPERATIONS.items()}
+        internal = {ClosedLoopOperation.VERIFY_CONSENT.value, ClosedLoopOperation.STOP.value}
+        operations = [
+            ClosedLoopOperation(str(row[0])) if row[0] in internal else reverse_tools[str(row[0])]
+            for row in rows
+        ]
+        current = AgentState.INTAKE
+        steps: list[dict[str, str]] = []
+        for operation in operations:
+            target = _transition_target(current, operation)
+            if target is None:
+                raise ValueError("durable_workflow_trace_invalid")
+            steps.append(
+                {
+                    "operation": operation.value,
+                    "state_before": current.value,
+                    "state_after": target.value,
+                }
+            )
+            current = target
+        return self._workflow_trace(
+            run_id, steps, plan_start_recorded=ClosedLoopOperation.START_PLAN in operations
+        )
 
     def _dispatch(
         self, run_id: str, tool_name: str, arguments: dict[str, Any], scopes: set[str]
@@ -508,27 +629,6 @@ class BoundedAgent:
                 environment=str(arguments.get("environment", "simulation")),
             )
             return result | {"postcondition_success": bool(result["success"])}
-        if tool_name == "escalate_pharmacist":
-            review_id = f"review_{uuid4().hex}"
-            with self.store.transaction() as connection:
-                connection.execute(
-                    """
-                    insert into review_tasks(
-                      review_id, run_id, profile_id, data_class, simulation_badge,
-                      urgency, reason_codes_json, status, decision_json, created_at, completed_at
-                    )
-                    values (?, null, ?, ?, 1, ?, ?, 'OPEN', null, ?, null)
-                    """,
-                    (
-                        review_id,
-                        profile_id or None,
-                        DataClass.PROXY_GOLD_SIMULATION,
-                        arguments.get("urgency", "ROUTINE"),
-                        _json(arguments.get("reason_codes", [])),
-                        datetime.now(UTC).isoformat(),
-                    ),
-                )
-            return {"review_id": review_id, "simulation_badge": True, "postcondition_success": True}
         if tool_name == "log_adverse_event":
             if "ae:write" not in scopes:
                 raise PermissionError("missing_ae_consent")

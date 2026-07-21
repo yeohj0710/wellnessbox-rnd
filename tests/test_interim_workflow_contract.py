@@ -8,6 +8,7 @@ from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.interim.workflow_contract import (
     CLOSED_LOOP_ALLOWED_OPERATIONS_V1,
     CLOSED_LOOP_TRANSITIONS_V1,
+    ClosedLoopExecutionTraceV1,
     ClosedLoopOperation,
     ClosedLoopState,
     apply_closed_loop_transition_v1,
@@ -59,6 +60,44 @@ def test_closed_loop_contract_rejects_forbidden_transition() -> None:
             current=ClosedLoopState.PROFILE_READY,
             operation=ClosedLoopOperation.START_PLAN,
             target=ClosedLoopState.PLAN_READY,
+        )
+
+
+def test_execution_trace_rejects_discontinuous_or_false_plan_start() -> None:
+    with pytest.raises(ValueError, match="closed_loop_trace_state_discontinuity"):
+        ClosedLoopExecutionTraceV1.model_validate(
+            {
+                "run_id": "run_contract",
+                "status": "SAFETY_CHECK",
+                "steps": [
+                    {
+                        "operation": "load_profile",
+                        "state_before": "INTAKE",
+                        "state_after": "CONSENT_CHECK",
+                    },
+                    {
+                        "operation": "check_safety",
+                        "state_before": "PROFILE_READY",
+                        "state_after": "SAFETY_CHECK",
+                    },
+                ],
+                "plan_start_recorded": False,
+            }
+        )
+    with pytest.raises(ValueError, match="closed_loop_trace_plan_start_mismatch"):
+        ClosedLoopExecutionTraceV1.model_validate(
+            {
+                "run_id": "run_contract",
+                "status": "CONSENT_CHECK",
+                "steps": [
+                    {
+                        "operation": "load_profile",
+                        "state_before": "INTAKE",
+                        "state_after": "CONSENT_CHECK",
+                    }
+                ],
+                "plan_start_recorded": True,
+            }
         )
 
 
@@ -118,7 +157,7 @@ def test_ordered_workflow_runs_safety_candidate_evidence_optimization_then_plan(
         "optimize",
         "start_plan",
     ]
-    assert agent.store.scalar("select count(*) from agent_steps") == 6
+    assert agent.store.scalar("select count(*) from agent_steps") == 7
 
 
 def test_ordered_workflow_stops_after_hard_safety_result(tmp_path) -> None:
@@ -171,3 +210,46 @@ def test_direct_optimization_before_evidence_is_rejected(tmp_path) -> None:
             arguments={"ranked": [{"ingredient": "magnesium", "score": 1.0}]},
         )
     assert agent.store.scalar("select count(*) from agent_steps") == 0
+
+
+def test_public_move_cannot_bypass_tool_execution(tmp_path) -> None:
+    agent = _workflow_agent(tmp_path)
+    run = agent.create_run(profile_id="usr_workflow0001", idempotency_key="move-bypass")
+
+    with pytest.raises(ValueError, match="direct_agent_move_forbidden"):
+        agent.move(
+            run["run_id"],
+            ClosedLoopState.CONSENT_CHECK,
+            operation=ClosedLoopOperation.LOAD_PROFILE,
+        )
+
+
+def test_ordered_workflow_rejects_different_safety_candidates(tmp_path) -> None:
+    agent = _workflow_agent(tmp_path)
+    with pytest.raises(ValueError, match="safety_candidate_ingredients_mismatch"):
+        agent.execute_recommendation_workflow(
+            profile_id="usr_workflow0001",
+            idempotency_key="candidate-mismatch",
+            safety_arguments={"age": 40, "ingredients": ["vitamin_d"]},
+            ingredients=["magnesium"],
+            evidence_query="magnesium",
+            max_items=1,
+        )
+
+
+def test_ordered_workflow_retry_returns_same_durable_trace(tmp_path) -> None:
+    agent = _workflow_agent(tmp_path)
+    arguments = {
+        "profile_id": "usr_workflow0001",
+        "idempotency_key": "durable-retry",
+        "safety_arguments": {"age": 40},
+        "ingredients": ["magnesium"],
+        "evidence_query": "magnesium",
+        "max_items": 1,
+    }
+    first = agent.execute_recommendation_workflow(**arguments)
+    second = agent.execute_recommendation_workflow(**arguments)
+
+    assert second == first
+    assert agent.store.scalar("select count(*) from agent_runs") == 1
+    assert agent.store.scalar("select count(*) from agent_steps") == 7

@@ -3,7 +3,6 @@ from pathlib import Path
 from wellnessbox_rnd.interim.agent import AgentState, BoundedAgent
 from wellnessbox_rnd.interim.evidence import EvidenceRegistry
 from wellnessbox_rnd.interim.store import InterimStore
-from wellnessbox_rnd.interim.workflow_contract import ClosedLoopOperation
 
 
 def test_prompt_injection_text_is_returned_only_as_untrusted_evidence(tmp_path: Path) -> None:
@@ -32,13 +31,11 @@ def test_prompt_injection_text_is_returned_only_as_untrusted_evidence(tmp_path: 
         )
     agent = BoundedAgent(store)
     run = agent.create_run(profile_id="usr_1234567890abcdef", idempotency_key="injection")
-    for operation, state in (
-        (ClosedLoopOperation.LOAD_PROFILE, AgentState.CONSENT_CHECK),
-        (ClosedLoopOperation.VERIFY_CONSENT, AgentState.PROFILE_READY),
-        (ClosedLoopOperation.CHECK_SAFETY, AgentState.SAFETY_CHECK),
-        (ClosedLoopOperation.GENERATE_CANDIDATES, AgentState.RANKING),
-    ):
-        agent.move(run["run_id"], state, operation=operation)
+    with store.transaction() as connection:
+        connection.execute(
+            "update agent_runs set state_after=? where run_id=?",
+            (AgentState.RANKING, run["run_id"]),
+        )
     result = agent.execute_tool(
         run_id=run["run_id"],
         tool_name="retrieve_evidence",

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from enum import StrEnum
 
+from pydantic import BaseModel, ConfigDict, model_validator
+
 
 class ClosedLoopState(StrEnum):
     INTAKE = "INTAKE"
@@ -29,6 +31,49 @@ class ClosedLoopOperation(StrEnum):
     INGEST_FOLLOWUP = "ingest_followup"
     STOP = "stop"
     COMPLETE = "complete"
+
+
+class ClosedLoopExecutionStepV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    operation: ClosedLoopOperation
+    state_before: ClosedLoopState
+    state_after: ClosedLoopState
+
+    @model_validator(mode="after")
+    def validate_transition(self) -> ClosedLoopExecutionStepV1:
+        apply_closed_loop_transition_v1(
+            current=self.state_before,
+            operation=self.operation,
+            target=self.state_after,
+        )
+        return self
+
+
+class ClosedLoopExecutionTraceV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: str = "closed_loop_ordered_execution_trace_v1"
+    run_id: str
+    status: ClosedLoopState
+    steps: tuple[ClosedLoopExecutionStepV1, ...]
+    plan_start_recorded: bool
+
+    @model_validator(mode="after")
+    def validate_trace(self) -> ClosedLoopExecutionTraceV1:
+        if not self.steps or self.steps[0].state_before != ClosedLoopState.INTAKE:
+            raise ValueError("closed_loop_trace_must_start_at_intake")
+        for previous, current in zip(self.steps, self.steps[1:], strict=False):
+            if previous.state_after != current.state_before:
+                raise ValueError("closed_loop_trace_state_discontinuity")
+        if self.steps[-1].state_after != self.status:
+            raise ValueError("closed_loop_trace_status_mismatch")
+        started = any(
+            step.operation == ClosedLoopOperation.START_PLAN for step in self.steps
+        )
+        if started != self.plan_start_recorded:
+            raise ValueError("closed_loop_trace_plan_start_mismatch")
+        return self
 
 
 _ORDERED_TRANSITIONS: dict[
@@ -142,6 +187,8 @@ __all__ = [
     "CLOSED_LOOP_ALLOWED_OPERATIONS_V1",
     "CLOSED_LOOP_TRANSITIONS_V1",
     "ClosedLoopOperation",
+    "ClosedLoopExecutionStepV1",
+    "ClosedLoopExecutionTraceV1",
     "ClosedLoopState",
     "apply_closed_loop_transition_v1",
     "closed_loop_contract_snapshot_v1",

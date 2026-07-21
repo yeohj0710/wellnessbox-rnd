@@ -443,6 +443,12 @@ def test_serious_ae_flow_creates_review_and_review_decision_is_immutable(
         headers=_headers(),
         params={"profile_id": profile_id, "idempotency_key": "ae-run"},
     ).json()
+    store = InterimStore(tmp_path / "api.sqlite3")
+    with store.transaction() as connection:
+        connection.execute(
+            "update agent_runs set state_after='FOLLOWUP_ACTIVE' where run_id=?",
+            (run["run_id"],),
+        )
     event = client.post(
         "/v1/interim/agent/tools",
         headers=_headers(),
