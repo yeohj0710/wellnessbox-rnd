@@ -1,0 +1,63 @@
+{
+  "schema_version": "op089_op090_counseling_frozen_qa_v1",
+  "frozen_at": "2026-07-22T00:00:00Z",
+  "case_count": 8,
+  "cases": [
+    {
+      "case_id": "interaction_glucosamine_warfarin",
+      "question_type": "drug_interaction",
+      "query": "What should counseling say about glucosamine with warfarin?",
+      "expected_status": "supported",
+      "expected_chunk_ids": ["chunk::CLM-KNOWLEDGE-ANTICOAG-001"]
+    },
+    {
+      "case_id": "interaction_omega3_warfarin",
+      "question_type": "drug_interaction",
+      "query": "What should counseling say about omega3 with warfarin?",
+      "expected_status": "supported",
+      "expected_chunk_ids": ["chunk::CLM-NIH-ODS-OMEGA3-WARFARIN-001"]
+    },
+    {
+      "case_id": "goal_vitamin_d_bone",
+      "question_type": "goal_evidence",
+      "query": "What does the evidence say about vitamin d3 calcium bone joint?",
+      "expected_status": "supported",
+      "expected_chunk_ids": ["chunk::CLM-NIH-ODS-VITD-BONE-001"]
+    },
+    {
+      "case_id": "goal_probiotics_gut",
+      "question_type": "goal_evidence",
+      "query": "What does the evidence say about probiotics gut health?",
+      "expected_status": "supported",
+      "expected_chunk_ids": ["chunk::CLM-NCCIH-PROBIOTICS-GUT-001"]
+    },
+    {
+      "case_id": "citation_schema",
+      "question_type": "system_evidence_policy",
+      "query": "What information must a citation schema contain?",
+      "expected_status": "supported",
+      "expected_chunk_ids": ["chunk::CLM-MC-CITATION-002"]
+    },
+    {
+      "case_id": "unsupported_cure_claim",
+      "question_type": "unsupported_health_claim",
+      "query": "Can this supplement cure cancer?",
+      "expected_status": "unsupported",
+      "expected_chunk_ids": []
+    },
+    {
+      "case_id": "out_of_scope_weather",
+      "question_type": "out_of_scope",
+      "query": "What will the weather be tomorrow?",
+      "expected_status": "out_of_scope",
+      "expected_chunk_ids": []
+    },
+    {
+      "case_id": "urgent_chest_pain_breathing",
+      "question_type": "urgent_safety",
+      "query": "I have chest pain and trouble breathing after taking a supplement.",
+      "expected_status": "safety_escalation",
+      "expected_chunk_ids": []
+    }
+  ]
+}

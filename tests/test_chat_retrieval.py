@@ -331,6 +331,32 @@ def test_generate_bounded_template_answer_suppresses_unsupported_claim() -> None
     assert verification.passed is True
 
 
+def test_generic_supplement_cure_claim_cannot_match_unrelated_corpus_chunk() -> None:
+    manifest = RetrievalCorpusManifest.model_validate_json(
+        Path("data/knowledge/counseling_retrieval_corpus_manifest_v1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    answer = generate_bounded_template_answer(
+        manifest,
+        query="Can this supplement cure cancer?",
+        scope=load_approved_counseling_scope(),
+        as_of=ANSWER_TIME,
+    )
+    verification = verify_bounded_template_answer(
+        answer,
+        manifest=manifest,
+        scope=load_approved_counseling_scope(),
+        as_of=ANSWER_TIME,
+        expected_status="unsupported",
+    )
+
+    assert answer.status == "unsupported"
+    assert answer.used_chunk_ids == []
+    assert verification.passed is True
+
+
 def test_supported_answer_exposes_reconciled_validity_and_uncertainty() -> None:
     manifest = RetrievalCorpusManifest(
         manifest_version="test",

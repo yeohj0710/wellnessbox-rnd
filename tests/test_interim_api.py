@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from pathlib import Path
 from types import SimpleNamespace
+from urllib import error
 
 import pytest
 from fastapi.testclient import TestClient
@@ -150,6 +151,8 @@ def test_counseling_turn_binds_verified_answer_and_recommendation_to_one_session
     repeated = second.json()
     assert body["service_session_id"] == "chat-session-op087"
     assert body["verification"]["passed"] is True
+    assert body["answer_execution"]["provider"] == "deterministic_template_fallback"
+    assert body["answer_execution"]["fallback_reason"] == "live_api_disabled"
     assert body["recommendation_execution"]["run_id"]
     assert repeated["agent_run_id"] == body["agent_run_id"]
     assert repeated["recommendation_execution"] == body["recommendation_execution"]
@@ -164,8 +167,60 @@ def test_counseling_turn_binds_verified_answer_and_recommendation_to_one_session
     binding = json.loads(str(binding_row["binding_json"]))
     assert binding["service_session_id"] == "chat-session-op087"
     assert binding["turn_id"] == "turn-op087-1"
+    assert binding["schema_version"] == "counseling_session_binding_v2"
+    assert binding["answer_execution"] == body["answer_execution"]
     assert binding["recommendation_run_id"] == body["recommendation_execution"]["run_id"]
     assert binding_row["binding_sha256"] == body["session_binding_sha256"]
+
+
+def test_counseling_turn_persists_deterministic_provider_failure_snapshot(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "counseling-provider-failure.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setenv("WELLNESSBOX_CHAT_ALLOW_LIVE_API", "1")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-provider-key")
+    provider_calls = 0
+
+    def fail_provider(**_kwargs):
+        nonlocal provider_calls
+        provider_calls += 1
+        raise error.URLError("injected_provider_outage")
+
+    monkeypatch.setattr(
+        "wellnessbox_rnd.chat.openai_adapter._call_openai_responses_api",
+        fail_provider,
+    )
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            ingredients=("glucosamine",),
+            scores=(0.91,),
+            evidence_ids=("EV-OP089",),
+            model_id=None,
+        ),
+    )
+    client = TestClient(app)
+
+    first = client.post(
+        "/v1/interim/counseling/turns", headers=_headers(), json=_counseling_payload()
+    )
+    repeated = client.post(
+        "/v1/interim/counseling/turns", headers=_headers(), json=_counseling_payload()
+    )
+
+    assert first.status_code == 200, first.text
+    assert repeated.status_code == 200, repeated.text
+    execution = first.json()["answer_execution"]
+    assert execution["provider"] == "deterministic_template_fallback"
+    assert execution["fallback_reason"] == "openai_call_failed"
+    assert execution["attempted_live_call"] is True
+    assert execution["live_failure"]["failure_stage"] == "http_request"
+    assert first.json()["answer"] == repeated.json()["answer"]
+    assert first.json()["answer_execution"] == repeated.json()["answer_execution"]
+    assert repeated.json()["deduplicated"] is True
+    assert provider_calls == 1
 
 
 def test_counseling_turn_rejects_changed_payload_for_existing_turn(

@@ -610,6 +610,7 @@ _COUNSELING_CORPUS_PATH = (
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
     + "/data/knowledge/counseling_retrieval_corpus_manifest_v1.json"
 )
+_COUNSELING_LIVE_PROVIDER_ENV_VAR = "WELLNESSBOX_CHAT_ALLOW_LIVE_API"
 
 
 def _canonical_sha256(value: object) -> str:
@@ -617,6 +618,15 @@ def _canonical_sha256(value: object) -> str:
         value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str
     ).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
+
+
+def _counseling_live_provider_enabled() -> bool:
+    return os.getenv(_COUNSELING_LIVE_PROVIDER_ENV_VAR, "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
 
 
 @router.post("/counseling/turns")
@@ -629,7 +639,7 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
     )
     prior_steps = store.rows(
         """
-        select s.arguments_sha256, s.binding_json
+        select s.arguments_sha256, s.binding_json, s.binding_sha256
         from agent_steps s join agent_runs r on r.run_id=s.run_id
         where r.profile_id=? and r.idempotency_key=?
           and s.tool_name='counseling_answer' and s.binding_json is not null
@@ -644,6 +654,24 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
             and str(prior_step["arguments_sha256"]) != request_identity
         ):
             raise HTTPException(status_code=409, detail="counseling_turn_payload_conflict")
+        if (
+            binding.get("schema_version") == "counseling_session_binding_v2"
+            and binding.get("service_session_id") == payload.service_session_id
+            and binding.get("turn_id") == payload.turn_id
+            and str(prior_step["arguments_sha256"]) == request_identity
+        ):
+            return {
+                "schema_version": "counseling_turn_response_v1",
+                "service_session_id": payload.service_session_id,
+                "turn_id": payload.turn_id,
+                "agent_run_id": binding["agent_run_id"],
+                "answer": binding["answer"],
+                "verification": binding["verification"],
+                "answer_execution": binding["answer_execution"],
+                "recommendation_execution": binding["recommendation_execution"],
+                "session_binding_sha256": str(prior_step["binding_sha256"]),
+                "deduplicated": True,
+            }
     upsert_profile(
         ProfileRequest(
             profile_id=payload.profile_id,
@@ -663,7 +691,7 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
             knowledge_scope=load_approved_counseling_scope(),
             as_of=payload.answered_at,
         ),
-        allow_live_api=False,
+        allow_live_api=_counseling_live_provider_enabled(),
     )
     if not adapter_response.verification.passed:
         raise HTTPException(status_code=422, detail="counseling_answer_verification_failed")
@@ -712,15 +740,43 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
                 )
 
     answer_payload = adapter_response.answer.model_dump(mode="json")
+    verification_payload = adapter_response.verification.model_dump(mode="json")
+    answer_execution = {
+        "schema_version": "counseling_answer_execution_v1",
+        "provider": adapter_response.provider,
+        "fallback_reason": adapter_response.fallback_reason,
+        "attempted_live_call": adapter_response.attempted_live_call,
+        "model": adapter_response.model,
+        "evidence_chunk_ids": adapter_response.evidence_chunk_ids,
+        "evidence_reference_ids": adapter_response.evidence_reference_ids,
+        "live_failure": (
+            None
+            if adapter_response.live_failure is None
+            else adapter_response.live_failure.model_dump(mode="json")
+        ),
+    }
+    recommendation_execution = (
+        None
+        if recommendation_response is None
+        else {
+            "run_id": recommendation_response["run_id"],
+            "status": recommendation_response["status"],
+            "simulation": recommendation_response["simulation"],
+        }
+    )
     binding_payload = {
-        "schema_version": "counseling_session_binding_v1",
+        "schema_version": "counseling_session_binding_v2",
         "service_session_id": payload.service_session_id,
         "turn_id": payload.turn_id,
         "profile_id": payload.profile_id,
         "agent_run_id": str(agent_run["run_id"]),
         "answer_sha256": _canonical_sha256(answer_payload),
+        "answer": answer_payload,
+        "verification": verification_payload,
+        "answer_execution": answer_execution,
+        "recommendation_execution": recommendation_execution,
         "recommendation_run_id": (
-            None if recommendation_response is None else recommendation_response["run_id"]
+            None if recommendation_execution is None else recommendation_execution["run_id"]
         ),
     }
     binding_sha256 = _canonical_sha256(binding_payload)
@@ -780,16 +836,9 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
         "turn_id": payload.turn_id,
         "agent_run_id": agent_run["run_id"],
         "answer": answer_payload,
-        "verification": adapter_response.verification.model_dump(mode="json"),
-        "recommendation_execution": (
-            None
-            if recommendation_response is None
-            else {
-                "run_id": recommendation_response["run_id"],
-                "status": recommendation_response["status"],
-                "simulation": recommendation_response["simulation"],
-            }
-        ),
+        "verification": verification_payload,
+        "answer_execution": answer_execution,
+        "recommendation_execution": recommendation_execution,
         "session_binding_sha256": binding_sha256,
         "deduplicated": bool(agent_run.get("deduplicated")),
     }

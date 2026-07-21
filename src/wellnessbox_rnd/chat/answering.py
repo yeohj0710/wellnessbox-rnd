@@ -690,6 +690,8 @@ def _render_template_answer(template_key: str, chunk: RetrievalChunk) -> str:
 
 
 def _looks_in_scope(query_tokens: set[str], manifest: RetrievalCorpusManifest) -> bool:
+    if query_tokens & {"cure", "cures", "diagnose", "diagnoses", "treat", "treats"}:
+        return True
     corpus_tokens: set[str] = set()
     for chunk in manifest.chunks:
         corpus_tokens |= _tokenize(
@@ -712,6 +714,7 @@ def _tokenize(text: str) -> set[str]:
     stopwords = {
         "and",
         "are",
+        "be",
         "can",
         "does",
         "for",
@@ -724,8 +727,11 @@ def _tokenize(text: str) -> set[str]:
         "of",
         "or",
         "should",
+        "supplement",
+        "supplements",
         "say",
         "the",
+        "this",
         "to",
         "today",
         "what",
