@@ -2,6 +2,20 @@
 
 Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
+## 2026-07-21 optimization constraints and selling-product contract loop
+
+- Chosen stage: `original plan / product optimization`; tasks OP-061 and OP-062.
+- Primary dataset: `data/frozen_eval/frozen_eval_v1.jsonl`, `256` cases. Canonical evidence evaluates `6` deterministic constraint cases and the existing service product-candidate QA fixture covers all `8` mapped service ingredient IDs.
+- Primary evidence: `data/original_plan/evidence/op061_op062_optimization_product_catalog_smoke_v1.json`; deterministic SHA-256 `aaa917bb4256e648d62fa12564353c26fe01717cb38360aa23e0495e1f22f480`; combined source SHA-256 `83118c67e45f96e6eba41e6ee853977278da8d9a8043239ca35bb3d97da10429`; R&D source `ea3bc72484708002065ee4929dc62ca006ce980c`; service source `a85767d9dc9418a23a9adeb2372d14a75d10b865`.
+- Implementation: the existing optimizer package now has an immutable, versioned contract for efficacy, safety, total cost, product count, daily-unit burden, and formulation preference. The existing service Product/PharmacyProduct catalog reader and `/api/tips` candidate adapter now expose normalized ingredient amounts, price, positive stock, and formulation. Incomplete product facts and malformed offers fail closed or are excluded before matching. No second catalog, route, database, optimizer, order, or payment path was added.
+- Evidence boundary: OP-061 is `IMPLEMENTED`. OP-062 is `INTEGRATED` through the existing service route function and catalog adapter. The evidence records that an actual Prisma query, production data freshness, deployment, and production operation are not proven.
+- Generated status: complete `48`, partial `13`, pending `58`, external `1`, contradicted `0`. Audit PASS with `61` claims and `192` checked evidence files.
+- Validation: focused optimizer tests `16 passed`; CI-equivalent tests `472 passed`; full Ruff PASS; service product QA, typecheck, lint, and production build PASS; `14` canonical smokes reproduce byte-identically; independent review Critical `0`, Important `0`, Minor `0`.
+- Full suite: `853 passed`, `77 failed`; the unchanged failures are `73` absent report artifacts and `4` CGM geometry assertions. No OP-061/062 regression was found.
+- Frozen evaluation: `256` cases; all seven metric deltas are `0`; the overall weakest slice remains `safety_blocked`, and every metric-specific weakest category is unchanged.
+- Publication: service commit `a85767d9dc9418a23a9adeb2372d14a75d10b865` passed Encoding Guard run `29808830876`. R&D evidence commit `e50ba258e6b965f3a3af9aa5b078e00e8d690647` passed Original plan evidence run `29808907535`.
+- Recommended next loops: OP-063/064 product-to-ingredient combination conversion and duplicate/total-dose handling; OP-065/066 budget/product-count pruning and safety-block preservation; OP-067/068 top-k explanations and deterministic reproduction.
+
 ## 2026-07-21 PRO worsening actions and outcome-class integration loop
 
 - Chosen stage: `original plan / pre-post outcome quantification and PRO`; tasks OP-059 and OP-060.

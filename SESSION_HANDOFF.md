@@ -2,6 +2,20 @@
 
 Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md`.
 
+## 2026-07-21 optimization constraints and selling-product contract handoff
+
+- Chosen stage and tasks: `original plan / product optimization`; OP-061 and OP-062.
+- Primary dataset and cases: frozen eval `256` cases; canonical constraint smoke `6` cases; service product fixture covers `8` mapped ingredient IDs.
+- Primary evidence: `data/original_plan/evidence/op061_op062_optimization_product_catalog_smoke_v1.json`; SHA-256 `aaa917bb4256e648d62fa12564353c26fe01717cb38360aa23e0495e1f22f480`; combined source SHA-256 `83118c67e45f96e6eba41e6ee853977278da8d9a8043239ca35bb3d97da10429`.
+- Source identity: R&D `ea3bc72484708002065ee4929dc62ca006ce980c`; WellnessBox `a85767d9dc9418a23a9adeb2372d14a75d10b865`.
+- Main changes: immutable R&D constraint contract and evaluator; existing service catalog query extended with detail facts and in-stock offers; existing `/api/tips` adapter extended with normalized amount, price, stock, and formulation facts; strict fail-closed QA; manifest, generated reports, workflow, tests, and canonical evidence.
+- Honest stage: OP-061 is COMPLETE at `IMPLEMENTED`. OP-062 is COMPLETE at `INTEGRATED` because the existing service route function consumes the extended adapter contract. Actual Prisma execution, production freshness, deployment, operation, ordering, and payment remain unproven.
+- Validation: optimizer `16 passed`; CI-equivalent `472 passed`; full Ruff PASS; service QA/typecheck/lint/build PASS; all `14` workflow smokes byte-identical; audit PASS with `61` claims and `192` evidence files; independent review Critical `0`, Important `0`, Minor `0`.
+- Full regression: `853 passed`, `77 failed`, exactly the known `73` absent-report plus `4` CGM-geometry groups. Frozen eval has `256` cases, seven zero metric deltas, unchanged overall `safety_blocked` weakest slice, and unchanged metric-specific weakest categories.
+- Publication: service Encoding Guard run `29808830876` and R&D Original plan evidence run `29808907535` passed. Evidence commit is `e50ba258e6b965f3a3af9aa5b078e00e8d690647`.
+- Five bottlenecks: actual Prisma catalog query evidence; production catalog freshness; deployed service/R&D operation; product-to-ingredient combination generation; duplicate-ingredient and total-dose enforcement across combinations.
+- Next three loops: OP-063/064, OP-065/066, OP-067/068.
+
 ## 2026-07-21 PRO worsening actions and outcome-class integration handoff
 
 - Chosen stage and tasks: `original plan / pre-post outcome quantification and PRO`; OP-059 and OP-060.
