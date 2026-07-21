@@ -12,7 +12,9 @@ from pathlib import Path
 from urllib.request import urlopen
 
 RND_ROOT = Path(__file__).resolve().parents[1]
-SERVICE_ROOT = Path(r"C:\dev\wellnessbox")
+SERVICE_ROOT = Path(
+    os.environ.get("WELLNESSBOX_EVIDENCE_ROOT", r"C:\dev\wellnessbox")
+).resolve()
 PORT = 8878
 SOURCE_PATHS = (
     RND_ROOT / "scripts/run_counseling_session_service_adapter_smoke.py",
@@ -31,10 +33,16 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _git_head(root: Path) -> str:
-    return subprocess.check_output(
-        ["git", "rev-parse", "HEAD"], cwd=root, text=True
+def _git_source_commit(root: Path, paths: tuple[Path, ...]) -> str:
+    relative_paths = [path.relative_to(root).as_posix() for path in paths]
+    commit = subprocess.check_output(
+        ["git", "log", "-1", "--format=%H", "--", *relative_paths],
+        cwd=root,
+        text=True,
     ).strip()
+    if not commit:
+        raise RuntimeError(f"source_commit_not_found:{root}")
+    return commit
 
 
 def _source_key(path: Path) -> str:
@@ -178,8 +186,14 @@ def main() -> int:
         "normalized_runs_byte_identical": deterministic,
         "checks": first,
         "source_identity": {
-            "wellnessbox_rnd_commit": _git_head(RND_ROOT),
-            "wellnessbox_service_commit": _git_head(SERVICE_ROOT),
+            "wellnessbox_rnd_commit": _git_source_commit(
+                RND_ROOT,
+                tuple(path for path in SOURCE_PATHS if path.is_relative_to(RND_ROOT)),
+            ),
+            "wellnessbox_service_commit": _git_source_commit(
+                SERVICE_ROOT,
+                tuple(path for path in SOURCE_PATHS if path.is_relative_to(SERVICE_ROOT)),
+            ),
             "files": {_source_key(path): _sha256(path) for path in SOURCE_PATHS},
         },
         "stage_boundary": {
