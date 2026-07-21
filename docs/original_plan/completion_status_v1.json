@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "c180a0859fd0d5eb7c80de9750b6d453b77aa61c679166336dc1de6088f8a44b",
+  "audited_manifest_sha256": "b700680ca55636164a65ad73b31208cd61bccf6083be05879eaf8f0ece6d3277",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 41,
+    "COMPLETE": 43,
     "PARTIAL": 12,
-    "PENDING": 66,
+    "PENDING": 64,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -80,9 +80,9 @@
       "title": "복용 전후 효과 수치화와 PRO",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 3,
+        "COMPLETE": 5,
         "PARTIAL": 1,
-        "PENDING": 6,
+        "PENDING": 4,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -1919,14 +1919,21 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/data/contracts/pro_group_effect_summary_v1.json",
+          "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_group_effects.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_pro_group_effects.py",
+          "wellnessbox-rnd/scripts/run_pro_personal_group_uncertainty_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op055_op056_pro_personal_group_uncertainty_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -1942,14 +1949,22 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/data/contracts/pro_group_effect_summary_v1.json",
+          "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_group_effects.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/metrics/statistics.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_pro_group_effects.py",
+          "wellnessbox-rnd/scripts/run_pro_personal_group_uncertainty_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op055_op056_pro_personal_group_uncertainty_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],

@@ -1,0 +1,93 @@
+{
+  "checks": {
+    "confidence_intervals_present": true,
+    "derived_output_mutation_rejected": true,
+    "duplicate_plan_rejected": true,
+    "group_mean_matches_personal_values": true,
+    "mixed_distribution_rejected": true,
+    "mixed_timepoint_rejected": true,
+    "non_causal_boundary_fixed": true,
+    "order_independent": true,
+    "personal_group_fields_separate": true,
+    "personal_numeric_effects_unchanged": true,
+    "sample_target_met": true
+  },
+  "contract": {
+    "confidence_interval": {
+      "confidence_level": 0.95,
+      "iterations": 3000,
+      "method": "deterministic_percentile_bootstrap_mean",
+      "seed": 20260710
+    },
+    "contract_sha256": "890d93d85333bde8b13545f45dd0b73071c578dc6e268815bd0ef4590063969d",
+    "contract_version": "2026-07-21.1",
+    "kpi_target_sample_size": 100,
+    "minimum_group_sample_size": 2,
+    "schema_version": "pro_group_effect_summary_contract_v1"
+  },
+  "evidence_boundary": {
+    "causal_effect_claim_allowed": false,
+    "data_class": "SYNTHETIC_OUTCOME_PROXY",
+    "production_operation_proven": false,
+    "real_world_outcome_used": false,
+    "service_integration_proven": false
+  },
+  "group_estimate": {
+    "fully_interpretable_sample_size": 100,
+    "interpretation_status_counts": {
+      "observed_change_interpretable": 100
+    },
+    "mean_health_percentile_change": 25.779542,
+    "mean_health_percentile_change_ci95": {
+      "confidence_level": 0.95,
+      "iterations": 3000,
+      "lower": 23.82636,
+      "method": "deterministic_percentile_bootstrap_mean",
+      "seed": 20260710,
+      "upper": 27.745993
+    },
+    "mean_health_z_change": 0.67,
+    "mean_health_z_change_ci95": {
+      "confidence_level": 0.95,
+      "iterations": 3000,
+      "lower": 0.616666,
+      "method": "deterministic_percentile_bootstrap_mean",
+      "seed": 20260710,
+      "upper": 0.723333
+    },
+    "observed_change_status": "improved",
+    "sample_size": 100
+  },
+  "personal_effects": {
+    "count": 100,
+    "first_plan_id": "plan_000",
+    "last_plan_id": "plan_099",
+    "source_sha256": "79f923e5eb971a7c72046eed84397d8928f75f6a0078d207c71b22a0e6b75f3a"
+  },
+  "requirement_stages": {
+    "OP-055": "IMPLEMENTED",
+    "OP-056": "IMPLEMENTED"
+  },
+  "schema_version": "op055_op056_pro_personal_group_uncertainty_smoke_v1",
+  "source_identity": {
+    "commit": "56d0542e9506992621c8e356752ee41aec7b09d3",
+    "source_paths": [
+      "data/contracts/pro_followup_interpretation_v1.json",
+      "data/contracts/pro_group_effect_summary_v1.json",
+      "data/contracts/pro_instrument_scoring_v1.json",
+      "scripts/run_pro_personal_group_uncertainty_smoke.py",
+      "src/wellnessbox_rnd/interim/contracts.py",
+      "src/wellnessbox_rnd/interim/kpi.py",
+      "src/wellnessbox_rnd/metrics/__init__.py",
+      "src/wellnessbox_rnd/metrics/pro_followup.py",
+      "src/wellnessbox_rnd/metrics/pro_group_effects.py",
+      "src/wellnessbox_rnd/metrics/pro_scoring.py",
+      "src/wellnessbox_rnd/metrics/statistics.py"
+    ],
+    "source_sha256": "974bc53e20a0ad73308150eacc6218fe11f8182d563d872e6f7112763b619c34"
+  },
+  "uncertainty_reason_codes": [
+    "observational_association_not_causal",
+    "non_real_world_outcome_data"
+  ]
+}

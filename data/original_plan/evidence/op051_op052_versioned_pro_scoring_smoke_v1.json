@@ -504,7 +504,7 @@
   },
   "schema_version": "op051_op052_versioned_pro_scoring_smoke_v1",
   "source_identity": {
-    "commit": "334bd706f72593b7c948785ad2b8630fb65b8911",
+    "commit": "5b9dedcc62ff3bcb4c36d882f7f28ebaf2784968",
     "source_paths": [
       "data/contracts/pro_instrument_scoring_v1.json",
       "scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py",
@@ -513,6 +513,6 @@
       "src/wellnessbox_rnd/metrics/calculators.py",
       "src/wellnessbox_rnd/metrics/pro_scoring.py"
     ],
-    "source_sha256": "b9d49513fffb58d6f0a1bcda58741e637fca79c14ab09697492be771b9ba9169"
+    "source_sha256": "0ab13daf3f99495c65b80323169b7ba6264a7184ad61b1123c01824334efe998"
   }
 }

@@ -1053,8 +1053,39 @@
             ]
           }
         },
-        {"requirement_id": "OP-055", "title": "개인 개선도와 집단 평균 개선도를 분리한다."},
-        {"requirement_id": "OP-056", "title": "효과 추정에 표본 수, 신뢰구간, 불확실성 사유를 포함한다."},
+        {
+          "requirement_id": "OP-055",
+          "title": "개인 개선도와 집단 평균 개선도를 분리한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/contracts/pro_group_effect_summary_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_group_effects.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_pro_group_effects.py",
+              "wellnessbox-rnd/scripts/run_pro_personal_group_uncertainty_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op055_op056_pro_personal_group_uncertainty_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-056",
+          "title": "효과 추정에 표본 수, 신뢰구간, 불확실성 사유를 포함한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/data/contracts/pro_group_effect_summary_v1.json",
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/pro_group_effects.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/metrics/statistics.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_pro_group_effects.py",
+              "wellnessbox-rnd/scripts/run_pro_personal_group_uncertainty_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op055_op056_pro_personal_group_uncertainty_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-057", "title": "실제 사용자 입력으로 PRO 점수를 수정하고 즉시 재계산한다.", "owners": ["wellnessbox-rnd", "wellnessbox"], "required_stage": "INTEGRATED"},
         {"requirement_id": "OP-058", "title": "추천 성분과 관찰 효과 계보를 같은 계획 ID로 연결한다.", "required_stage": "OPERATED"},
         {"requirement_id": "OP-059", "title": "효과 악화 시 상태기계가 유지, 감량, 중단, 재최적화를 선택한다.", "required_stage": "INTEGRATED"},
