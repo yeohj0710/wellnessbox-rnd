@@ -56,14 +56,14 @@ def test_feasible_candidate_records_all_five_constraint_dimensions() -> None:
     result = evaluate_optimization_candidate_v1(_candidate(), _constraints())
 
     assert result.feasible is True
-    assert result.violations == []
-    assert result.checked_dimensions == [
+    assert result.violations == ()
+    assert result.checked_dimensions == (
         "efficacy",
         "safety",
         "cost",
         "daily_burden",
         "formulation",
-    ]
+    )
 
 
 @pytest.mark.parametrize(
@@ -98,6 +98,16 @@ def test_evaluation_rejects_derived_output_mutation() -> None:
 
     with pytest.raises(ValidationError, match="does not match candidate and constraints"):
         type(result).model_validate(payload)
+
+
+def test_validated_contract_and_evaluation_collections_are_immutable() -> None:
+    constraints = _constraints()
+    result = evaluate_optimization_candidate_v1(_candidate(), constraints)
+
+    with pytest.raises(AttributeError):
+        constraints.excluded_ingredient_keys.append("late_unsafe")  # type: ignore[attr-defined]
+    with pytest.raises(AttributeError):
+        result.checked_dimensions.clear()  # type: ignore[attr-defined]
 
 
 @pytest.mark.parametrize(

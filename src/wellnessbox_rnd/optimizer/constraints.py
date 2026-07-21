@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
@@ -22,13 +23,13 @@ ConstraintViolationV1 = Literal[
     "preferred_formulation_not_met",
 ]
 
-CHECKED_DIMENSIONS: list[ConstraintDimensionV1] = [
+CHECKED_DIMENSIONS: tuple[ConstraintDimensionV1, ...] = (
     "efficacy",
     "safety",
     "cost",
     "daily_burden",
     "formulation",
-]
+)
 
 
 class OptimizationConstraintsV1(BaseModel):
@@ -37,11 +38,11 @@ class OptimizationConstraintsV1(BaseModel):
     schema_version: Literal["optimization_constraints_v1"]
     policy_version: Literal["2026-07-21.1"]
     minimum_effect_score: float = Field(ge=-1000.0, le=1000.0, allow_inf_nan=False)
-    excluded_ingredient_keys: list[str] = Field(default_factory=list)
+    excluded_ingredient_keys: tuple[str, ...] = ()
     max_total_cost_krw: StrictInt = Field(ge=0)
     max_products: StrictInt = Field(ge=1, le=20)
     max_daily_units: StrictInt = Field(ge=1, le=100)
-    preferred_formulations: list[FormulationV1] = Field(min_length=1)
+    preferred_formulations: tuple[FormulationV1, ...] = Field(min_length=1)
 
     @model_validator(mode="after")
     def reject_duplicate_values(self) -> OptimizationConstraintsV1:
@@ -55,7 +56,7 @@ class OptimizationCandidateFactsV1(BaseModel):
 
     schema_version: Literal["optimization_candidate_facts_v1"]
     candidate_id: str = Field(min_length=1, max_length=128)
-    ingredient_keys: list[str] = Field(min_length=1)
+    ingredient_keys: tuple[str, ...] = Field(min_length=1)
     expected_effect_score: float = Field(
         ge=-1000.0,
         le=1000.0,
@@ -65,7 +66,7 @@ class OptimizationCandidateFactsV1(BaseModel):
     total_cost_krw: StrictInt = Field(ge=0)
     product_count: StrictInt = Field(ge=1, le=100)
     daily_unit_count: StrictInt = Field(ge=1, le=1000)
-    formulations: list[FormulationV1] = Field(min_length=1)
+    formulations: tuple[FormulationV1, ...] = Field(min_length=1)
 
     @model_validator(mode="after")
     def reject_duplicate_values(self) -> OptimizationCandidateFactsV1:
@@ -80,8 +81,8 @@ class OptimizationConstraintEvaluationV1(BaseModel):
     schema_version: Literal["optimization_constraint_evaluation_v1"]
     candidate: OptimizationCandidateFactsV1
     constraints: OptimizationConstraintsV1
-    checked_dimensions: list[ConstraintDimensionV1]
-    violations: list[ConstraintViolationV1]
+    checked_dimensions: tuple[ConstraintDimensionV1, ...]
+    violations: tuple[ConstraintViolationV1, ...]
     feasible: bool
 
     @model_validator(mode="after")
@@ -114,7 +115,7 @@ def evaluate_optimization_candidate_v1(
 def _derive_violations(
     candidate: OptimizationCandidateFactsV1,
     constraints: OptimizationConstraintsV1,
-) -> list[ConstraintViolationV1]:
+) -> tuple[ConstraintViolationV1, ...]:
     violations: list[ConstraintViolationV1] = []
     if candidate.expected_effect_score < constraints.minimum_effect_score:
         violations.append("minimum_effect_score_not_met")
@@ -130,10 +131,10 @@ def _derive_violations(
         violations.append("maximum_daily_unit_count_exceeded")
     if not set(candidate.formulations).issubset(constraints.preferred_formulations):
         violations.append("preferred_formulation_not_met")
-    return violations
+    return tuple(violations)
 
 
-def _require_unique(values: list[str], label: str) -> None:
+def _require_unique(values: Sequence[str], label: str) -> None:
     if len(set(values)) != len(values):
         raise ValueError(f"{label} must be unique")
 

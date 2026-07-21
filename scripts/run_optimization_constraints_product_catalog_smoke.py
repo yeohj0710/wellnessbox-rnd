@@ -171,7 +171,7 @@ def run_smoke() -> dict[str, object]:
         "checks": {
             "existing_rnd_optimizer_package_extended": True,
             "five_constraint_dimensions_explicit": True,
-            "existing_service_product_catalog_used": True,
+            "existing_service_product_catalog_contract_adapter_used": True,
             "existing_tips_route_used": True,
             "selling_product_contract_reads_ingredients_amounts_price_stock_formulation": True,
             "invalid_catalog_or_offer_fails_closed": True,
@@ -183,7 +183,8 @@ def run_smoke() -> dict[str, object]:
             "op062_proven_stage": "INTEGRATED",
             "op062_required_stage": "INTEGRATED",
             "service_route_function_integration_proven": True,
-            "configured_prisma_query_implementation_proven": True,
+            "configured_prisma_query_source_bound": True,
+            "actual_prisma_query_executed": False,
             "production_catalog_operation_proven": False,
             "production_data_freshness_proven": False,
             "production_deployment_proven": False,
