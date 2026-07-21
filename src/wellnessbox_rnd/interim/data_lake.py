@@ -564,6 +564,30 @@ class ExecutionLedger:
                 )
         return self.get_trace(execution_id)
 
+    def get_trace_for_request(
+        self,
+        request: RecommendationRequest,
+    ) -> ExecutionTrace | None:
+        rows = self.store.rows(
+            """
+            select execution_id, request_sha256 from executions
+            where request_id=? and profile_id=? order by created_at
+            """,
+            (request.request_id, _profile_id(request)),
+        )
+        if not rows:
+            return None
+        if len(rows) != 1:
+            raise IdempotencyConflictError(
+                f"duplicate_recommendation_request_id:{request.request_id}"
+            )
+        expected_sha256 = _sha256(_request_payload(request))
+        if rows[0]["request_sha256"] != expected_sha256:
+            raise IdempotencyConflictError(
+                f"recommendation_request_id_conflict:{request.request_id}"
+            )
+        return self.get_trace(str(rows[0]["execution_id"]))
+
     def append_event(
         self,
         *,

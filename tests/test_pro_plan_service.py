@@ -106,6 +106,30 @@ def test_enrollment_persists_one_bound_baseline_and_core_plan_ids(tmp_path) -> N
     assert payloads["followup_evaluation"]["timepoint"] == "pre_intake"
 
 
+def test_enrollment_retry_reuses_execution_and_baseline(tmp_path) -> None:
+    store = _store(tmp_path)
+    first = _enroll(store)
+    second = _enroll(store)
+
+    assert second["deduplicated"] is True
+    assert second["execution_id"] == first["execution_id"]
+    assert second["baseline_event_id"] == first["baseline_event_id"]
+    assert store.scalar("select count(*) from executions") == 1
+
+
+def test_invalid_baseline_does_not_leave_orphan_execution(tmp_path) -> None:
+    store = _store(tmp_path)
+    with pytest.raises(ValueError, match="item_count"):
+        enroll_pro_plan_v1(
+            store,
+            recommendation_request=_recommendation_request(),
+            instrument="PSQI",
+            item_scores=[1] * 6,
+            observed_at=datetime(2026, 1, 1, tzinfo=UTC),
+        )
+    assert store.scalar("select count(*) from executions") == 0
+
+
 def test_followup_create_then_same_timepoint_correction_recalculates(tmp_path) -> None:
     store = _store(tmp_path)
     enrolled = _enroll(store)
@@ -132,6 +156,31 @@ def test_followup_create_then_same_timepoint_correction_recalculates(tmp_path) -
     assert corrected["raw_score"] != created["raw_score"]
     assert corrected["recalculated_immediately"] is True
     assert corrected["lineage"]["plan_id"] == enrolled["plan_id"]
+
+
+def test_correction_can_change_adherence_without_changing_score(tmp_path) -> None:
+    store = _store(tmp_path)
+    enrolled = _enroll(store)
+    common = {
+        "execution_id": enrolled["execution_id"],
+        "profile_id": enrolled["profile_id"],
+        "plan_id": enrolled["plan_id"],
+        "timepoint": "week_2",
+        "instrument": "PSQI",
+        "item_scores": [1] * 7,
+        "observed_at": datetime(2026, 1, 15, tzinfo=UTC),
+        "actual_day_index": 14,
+        "planned_dose_count": 14,
+    }
+    created = record_or_correct_pro_followup_v1(
+        store, **common, taken_dose_count=14
+    )
+    corrected = record_or_correct_pro_followup_v1(
+        store, **common, taken_dose_count=10
+    )
+    assert corrected["operation"] == "corrected"
+    assert corrected["raw_score"] == created["raw_score"]
+    assert corrected["interpretation"]["adherence_rate"] == pytest.approx(10 / 14)
 
 
 def test_followup_rejects_cross_plan_and_cross_instrument(tmp_path) -> None:

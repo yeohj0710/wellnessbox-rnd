@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from datetime import datetime
 from typing import Any, Literal
 from uuid import uuid4
 
-from wellnessbox_rnd.interim.data_lake import ExecutionLedger
+from wellnessbox_rnd.interim.data_lake import ExecutionLedger, ExecutionTrace
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.metrics.pro_correction import (
     PRORecommendationEffectLineageV1,
@@ -34,13 +36,13 @@ def enroll_pro_plan_v1(
     observed_at: datetime,
 ) -> dict[str, Any]:
     request = RecommendationRequest.model_validate(recommendation_request)
-    response = recommend(request)
-    trace = ExecutionLedger(store).record_recommendation(request=request, response=response)
+    if not request.data_source_consents.survey.allow_persistent_storage:
+        raise ValueError("pro_plan_requires_survey_persistent_storage_consent")
     score, standardized = score_and_standardize_runtime_pro_v1(instrument, item_scores)
     baseline = PROFollowUpEventV1(
         schema_version="versioned_pro_followup_event_v1",
         assessment_id=f"assessment_{uuid4().hex}",
-        plan_id=response.plan_id,
+        plan_id=request.plan_id,
         data_class="SYNTHETIC_OUTCOME_PROXY",
         timepoint="pre_intake",
         scheduled_day_index=0,
@@ -49,7 +51,17 @@ def enroll_pro_plan_v1(
         instrument_scores=[score],
         standardized_scores=[standardized],
     )
-    appended = ExecutionLedger(store).append_event(
+    ledger = ExecutionLedger(store)
+    existing_trace = ledger.get_trace_for_request(request)
+    if existing_trace is not None:
+        return _existing_enrollment_result(
+            store,
+            existing_trace,
+            request,
+        )
+    response = recommend(request)
+    trace = ledger.record_recommendation(request=request, response=response)
+    appended = ledger.append_event(
         execution_id=trace.execution_id,
         event_type="followup_evaluation",
         source="survey",
@@ -150,7 +162,10 @@ def record_or_correct_pro_followup_v1(
             execution_id=execution_id,
             profile_id=trace.profile_id,
             target_event_id=target_record.event_id,
-            idempotency_key=f"pro-correction:{target_record.event_id}:{follow_up.instrument_scores[0].raw_score}",
+            idempotency_key=_correction_idempotency_key(
+                target_record.event_id,
+                follow_up,
+            ),
             replacement_payload=follow_up,
         )
         return {
@@ -191,6 +206,75 @@ def record_or_correct_pro_followup_v1(
         "interpretation": interpretation.model_dump(mode="json"),
         "lineage": lineage.model_dump(mode="json"),
         "recalculated_immediately": True,
+    }
+
+
+def _correction_idempotency_key(
+    target_event_id: str,
+    replacement: PROFollowUpEventV1,
+) -> str:
+    canonical = json.dumps(
+        replacement.model_dump(mode="json"),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    suffix = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:24]
+    return f"pro-correction:{target_event_id}:{suffix}"
+
+
+def _existing_enrollment_result(
+    store: InterimStore,
+    trace: ExecutionTrace,
+    request: RecommendationRequest,
+) -> dict[str, Any]:
+    plan_id = request.plan_id
+    recommendation_event = next(
+        (event for event in trace.events if event.event_type == "recommendation"),
+        None,
+    )
+    baselines = [
+        event
+        for event in trace.events
+        if event.event_type == "followup_evaluation"
+        and is_versioned_pro_followup_payload_v1(event.payload)
+        and event.payload.get("timepoint") == "pre_intake"
+    ]
+    if recommendation_event is None or len(baselines) != 1:
+        raise ValueError("incomplete_existing_pro_enrollment")
+    if recommendation_event.payload.get("plan_id") != plan_id:
+        raise ValueError("existing_pro_enrollment_plan_id_mismatch")
+    snapshots = store.rows(
+        "select expected_output_json from execution_replay_snapshots where execution_id=?",
+        (trace.execution_id,),
+    )
+    if len(snapshots) == 1:
+        response = json.loads(snapshots[0]["expected_output_json"])
+        response.update(
+            {
+                "execution_id": trace.execution_id,
+                "decision_id": recommendation_event.payload["decision_id"],
+            }
+        )
+        response["metadata"]["generated_at"] = trace.created_at
+        response["safety_summary"]["applied_at"] = trace.created_at
+    else:
+        response = recommend(request).model_copy(
+            update={
+                "execution_id": trace.execution_id,
+                "decision_id": recommendation_event.payload["decision_id"],
+            }
+        ).model_dump(mode="json")
+    baseline = normalize_pro_followup_event_v1(baselines[0].payload)
+    return {
+        "schema_version": "pro_plan_enrollment_result_v1",
+        "recommendation": response,
+        "execution_id": trace.execution_id,
+        "plan_id": plan_id,
+        "profile_id": trace.profile_id,
+        "baseline_event_id": baselines[0].event_id,
+        "baseline": baseline.model_dump(mode="json"),
+        "deduplicated": True,
     }
 
 
