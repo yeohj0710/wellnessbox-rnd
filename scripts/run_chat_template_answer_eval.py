@@ -7,6 +7,7 @@ from sys import exit as sys_exit
 from wellnessbox_rnd.chat import (
     BoundedKnowledgeScope,
     generate_bounded_template_answer,
+    load_approved_counseling_scope,
     load_chat_qa_eval_cases,
     load_retrieval_corpus_manifest,
     verify_bounded_template_answer,
@@ -16,15 +17,8 @@ ANSWER_TIME = datetime(2026, 7, 21, tzinfo=UTC)
 
 
 def _build_scope(manifest) -> BoundedKnowledgeScope:
-    return BoundedKnowledgeScope(
-        scope_id="chat-template-eval-v1",
-        allowed_source_types=sorted({chunk.source_type for chunk in manifest.chunks}),
-        allowed_claim_types=sorted(
-            {chunk.normalized_claim_type for chunk in manifest.chunks}
-        ),
-        allowed_reference_ids=sorted({chunk.reference_id for chunk in manifest.chunks}),
-        max_results=5,
-    )
+    del manifest
+    return load_approved_counseling_scope()
 
 
 def build_parser() -> ArgumentParser:

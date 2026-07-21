@@ -23,6 +23,7 @@ from wellnessbox_rnd.chat.answering import (  # noqa: E402
 from wellnessbox_rnd.chat.retrieval import (  # noqa: E402
     BoundedKnowledgeScope,
     RetrievalCorpusManifest,
+    load_approved_counseling_scope,
     retrieve_bounded_chunks,
 )
 
@@ -32,6 +33,7 @@ DEFAULT_OUTPUT = ROOT / (
 )
 CLAIMS_PATH = ROOT / "data/parsed_references/reference_claims_v1.jsonl"
 REFERENCES_PATH = ROOT / "data/knowledge/reference_knowledge_base_v1.json"
+SCOPE_REGISTRY_PATH = ROOT / "data/knowledge/counseling_knowledge_scope_registry_v1.json"
 AS_OF = datetime(2026, 7, 21, 13, 0, tzinfo=UTC)
 SOURCE_PATHS = (
     "scripts/build_chat_retrieval_assets.py",
@@ -48,6 +50,7 @@ SOURCE_PATHS = (
     "tests/test_learned_runtime_boundary_audit.py",
 )
 DATA_PATHS = (
+    "data/knowledge/counseling_knowledge_scope_registry_v1.json",
     "data/knowledge/reference_knowledge_base_v1.json",
     "data/parsed_references/reference_claims_v1.jsonl",
 )
@@ -75,15 +78,8 @@ def _last_commit(paths: tuple[str, ...]) -> str:
 
 
 def _build_scope(manifest: RetrievalCorpusManifest) -> BoundedKnowledgeScope:
-    return BoundedKnowledgeScope(
-        scope_id="wellnessbox-counseling-knowledge-v1",
-        allowed_source_types=sorted({chunk.source_type for chunk in manifest.chunks}),
-        allowed_claim_types=sorted(
-            {chunk.normalized_claim_type for chunk in manifest.chunks}
-        ),
-        allowed_reference_ids=sorted({chunk.reference_id for chunk in manifest.chunks}),
-        max_results=5,
-    )
+    del manifest
+    return load_approved_counseling_scope()
 
 
 def _answer_case(
@@ -180,16 +176,31 @@ def _build() -> dict[str, object]:
     disallowed = base.model_copy(
         update={
             "chunk_id": "chunk::DISALLOWED-SOURCE",
-            "reference_id": "REF-DISALLOWED-SOURCE",
             "claim_id": "CLM-DISALLOWED-SOURCE",
             "source_type": "unreviewed_external_blog",
             "text": "glucosamine warfarin interaction",
         }
     )
+    disallowed_reference = base.model_copy(
+        update={
+            "chunk_id": "chunk::DISALLOWED-REFERENCE",
+            "reference_id": "REF-DISALLOWED-REFERENCE",
+            "claim_id": "CLM-DISALLOWED-REFERENCE",
+            "text": "glucosamine warfarin interaction",
+        }
+    )
+    disallowed_claim = base.model_copy(
+        update={
+            "chunk_id": "chunk::DISALLOWED-CLAIM",
+            "claim_id": "CLM-DISALLOWED-CLAIM",
+            "normalized_claim_type": "unreviewed_claim",
+            "text": "glucosamine warfarin interaction",
+        }
+    )
     expanded = RetrievalCorpusManifest(
         manifest_version="scope-negative-probe",
-        chunk_count=len(chunks) + 1,
-        chunks=[*chunks, disallowed],
+        chunk_count=len(chunks) + 3,
+        chunks=[*chunks, disallowed, disallowed_reference, disallowed_claim],
     )
     bounded_ids = {
         result.chunk_id
@@ -202,8 +213,39 @@ def _build() -> dict[str, object]:
         )
     }
     disallowed_source_blocked = disallowed.chunk_id not in bounded_ids
-    if not disallowed_source_blocked:
-        raise RuntimeError("disallowed_source_entered_bounded_retrieval")
+    disallowed_reference_blocked = disallowed_reference.chunk_id not in bounded_ids
+    disallowed_claim_blocked = disallowed_claim.chunk_id not in bounded_ids
+    if not all(
+        [
+            disallowed_source_blocked,
+            disallowed_reference_blocked,
+            disallowed_claim_blocked,
+        ]
+    ):
+        raise RuntimeError("disallowed_scope_axis_entered_bounded_retrieval")
+
+    forged_scope = scope.model_copy(
+        update={
+            "allowed_source_types": [*scope.allowed_source_types, "unreviewed_external_blog"],
+            "allowed_claim_types": [*scope.allowed_claim_types, "unreviewed_claim"],
+            "allowed_reference_ids": [
+                *scope.allowed_reference_ids,
+                "REF-DISALLOWED-REFERENCE",
+            ],
+        }
+    )
+    forged_scope_blocked = False
+    try:
+        retrieve_bounded_chunks(
+            expanded,
+            scope=forged_scope,
+            query="glucosamine warfarin interaction",
+            as_of=AS_OF,
+        )
+    except ValueError as exc:
+        forged_scope_blocked = "content_not_repository_approved" in str(exc)
+    if not forged_scope_blocked:
+        raise RuntimeError("forged_repository_scope_not_blocked")
 
     retired = base.model_copy(
         update={
@@ -226,6 +268,25 @@ def _build() -> dict[str, object]:
     )
     if not retired_passage_blocked:
         raise RuntimeError("retired_passage_entered_bounded_retrieval")
+
+    future = base.model_copy(
+        update={
+            "chunk_id": "chunk::FUTURE-PASSAGE",
+            "claim_id": "CLM-FUTURE-PASSAGE",
+            "effective_at": datetime(2026, 8, 1, tzinfo=UTC),
+        }
+    )
+    future_manifest = RetrievalCorpusManifest(
+        manifest_version="future-negative-probe", chunk_count=1, chunks=[future]
+    )
+    future_passage_blocked = not retrieve_bounded_chunks(
+        future_manifest,
+        scope=scope,
+        query=future.text,
+        as_of=AS_OF,
+    )
+    if not future_passage_blocked:
+        raise RuntimeError("future_passage_entered_bounded_retrieval")
 
     supported = generate_bounded_template_answer(
         manifest,
@@ -251,11 +312,29 @@ def _build() -> dict[str, object]:
     if not tampered_validity_blocked:
         raise RuntimeError("tampered_answer_validity_not_blocked")
 
+    duplicate_ids = supported.model_copy(
+        update={
+            "used_chunk_ids": [
+                supported.used_chunk_ids[0],
+                supported.used_chunk_ids[0],
+            ]
+        }
+    )
+    duplicate_verification = verify_bounded_template_answer(
+        duplicate_ids, manifest=manifest, scope=scope, as_of=AS_OF
+    )
+    duplicate_provenance_blocked = not duplicate_verification.passed
+    if not duplicate_provenance_blocked:
+        raise RuntimeError("duplicate_provenance_not_blocked")
+
     return {
         "schema_version": "op083_op084_bounded_rag_answer_provenance_smoke_v1",
         "generated_from": {
             "claims_path": str(CLAIMS_PATH.relative_to(ROOT)).replace("\\", "/"),
             "references_path": str(REFERENCES_PATH.relative_to(ROOT)).replace("\\", "/"),
+            "scope_registry_path": str(SCOPE_REGISTRY_PATH.relative_to(ROOT)).replace(
+                "\\", "/"
+            ),
             "as_of": AS_OF.isoformat(),
         },
         "knowledge_scope": scope.model_dump(mode="json"),
@@ -266,8 +345,13 @@ def _build() -> dict[str, object]:
         "answer_cases": cases,
         "negative_probes": {
             "disallowed_source_blocked": disallowed_source_blocked,
+            "disallowed_reference_blocked": disallowed_reference_blocked,
+            "disallowed_claim_type_blocked": disallowed_claim_blocked,
+            "forged_repository_scope_blocked": forged_scope_blocked,
             "retired_passage_blocked": retired_passage_blocked,
+            "future_passage_blocked": future_passage_blocked,
             "tampered_validity_blocked": tampered_validity_blocked,
+            "duplicate_provenance_blocked": duplicate_provenance_blocked,
         },
         "stage_boundaries": {
             "claimed_stage": "IMPLEMENTED",

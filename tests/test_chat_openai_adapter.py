@@ -15,6 +15,7 @@ from wellnessbox_rnd.chat.retrieval import (
     BoundedKnowledgeScope,
     RetrievalChunk,
     RetrievalCorpusManifest,
+    load_approved_counseling_scope,
 )
 
 ANSWER_TIME = datetime(2026, 7, 21, tzinfo=UTC)
@@ -57,12 +58,7 @@ def _build_manifest() -> RetrievalCorpusManifest:
 
 
 def _build_scope() -> BoundedKnowledgeScope:
-    return BoundedKnowledgeScope(
-        scope_id="test-counseling-v1",
-        allowed_source_types=["interaction_reference"],
-        allowed_claim_types=["drug_interaction"],
-        allowed_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
-    )
+    return load_approved_counseling_scope()
 
 
 def test_openai_adapter_uses_deterministic_fallback_without_key(monkeypatch) -> None:

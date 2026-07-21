@@ -1,0 +1,55 @@
+{
+  "schema_version": "counseling_knowledge_scope_registry_v1",
+  "scopes": [
+    {
+      "scope_id": "wellnessbox-counseling-knowledge-v1",
+      "allowed_source_types": [
+        "clinical_guideline",
+        "government_health_reference",
+        "interaction_reference",
+        "master_context",
+        "peer_reviewed_trial"
+      ],
+      "allowed_claim_types": [
+        "action_space_constraint",
+        "candidate_prior_policy",
+        "candidate_signal_policy",
+        "candidate_signal_threshold",
+        "citation_requirement",
+        "citation_schema",
+        "dietary_pattern_candidate_signal",
+        "drug_interaction",
+        "genetic_candidate_signal_policy",
+        "inconclusive_goal_evidence",
+        "limited_goal_evidence",
+        "mixed_goal_evidence",
+        "moderate_goal_evidence",
+        "null_goal_evidence_without_deficiency",
+        "nutrient_adequacy_goal_evidence",
+        "safety_recheck_policy"
+      ],
+      "allowed_reference_ids": [
+        "REF-ADA-CGM-TIR-001",
+        "REF-CDC-ADULT-SLEEP-001",
+        "REF-CDC-SOLUBLE-FIBER-001",
+        "REF-KNOWLEDGE-ANTICOAG-001",
+        "REF-MC-ACTION-001",
+        "REF-MC-CANDIDATE-SIGNAL-001",
+        "REF-MC-CITATION-001",
+        "REF-MC-GOAL-PRIOR-001",
+        "REF-NCCIH-BERBERINE-GLUCOSE-001",
+        "REF-NCCIH-COQ10-HEART-001",
+        "REF-NCCIH-MAGNESIUM-SLEEP-001",
+        "REF-NCCIH-PROBIOTICS-GUT-001",
+        "REF-NIH-ODS-B12-ENERGY-001",
+        "REF-NIH-ODS-CALCIUM-BONE-001",
+        "REF-NIH-ODS-IMMUNE-001",
+        "REF-NIH-ODS-OMEGA3-001",
+        "REF-NIH-ODS-OMEGA3-HEART-001",
+        "REF-NIH-ODS-VITD-BONE-001",
+        "REF-PUBMED-LTHEANINE-001"
+      ],
+      "max_results": 5
+    }
+  ]
+}

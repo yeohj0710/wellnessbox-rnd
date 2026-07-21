@@ -90,6 +90,38 @@ class BoundedKnowledgeScope(BaseModel):
         return self
 
 
+class CounselingKnowledgeScopeRegistry(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["counseling_knowledge_scope_registry_v1"]
+    scopes: list[BoundedKnowledgeScope] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_scope_ids(self) -> CounselingKnowledgeScopeRegistry:
+        scope_ids = [scope.scope_id for scope in self.scopes]
+        if len(scope_ids) != len(set(scope_ids)):
+            raise ValueError("knowledge_scope_registry_duplicate_scope_id")
+        return self
+
+
+APPROVED_SCOPE_REGISTRY_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "data/knowledge/counseling_knowledge_scope_registry_v1.json"
+)
+
+
+def load_approved_counseling_scope(
+    scope_id: str = "wellnessbox-counseling-knowledge-v1",
+) -> BoundedKnowledgeScope:
+    registry = CounselingKnowledgeScopeRegistry.model_validate_json(
+        APPROVED_SCOPE_REGISTRY_PATH.read_text(encoding="utf-8")
+    )
+    for scope in registry.scopes:
+        if scope.scope_id == scope_id:
+            return scope
+    raise ValueError("knowledge_scope_not_repository_approved")
+
+
 class QuestionEntityKind(StrEnum):
     HEALTH_GOAL = "health_goal"
     INGREDIENT = "ingredient"
@@ -290,6 +322,9 @@ def retrieve_bounded_chunks(
     as_of: datetime,
     top_k: int = 3,
 ) -> list[RetrievalResult]:
+    approved_scope = load_approved_counseling_scope(scope.scope_id)
+    if scope != approved_scope:
+        raise ValueError("knowledge_scope_content_not_repository_approved")
     if as_of.tzinfo is None or as_of.utcoffset() is None:
         raise ValueError("bounded_retrieval_as_of_timezone_required")
     if top_k < 1 or top_k > scope.max_results:

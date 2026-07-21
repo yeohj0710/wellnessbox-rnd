@@ -15,9 +15,9 @@ from wellnessbox_rnd.chat.openai_adapter import (
     generate_chat_answer_with_openai_fallback,
 )
 from wellnessbox_rnd.chat.retrieval import (
-    BoundedKnowledgeScope,
     RetrievalChunk,
     RetrievalCorpusManifest,
+    load_approved_counseling_scope,
 )
 from wellnessbox_rnd.domain.intake import normalize_request
 from wellnessbox_rnd.optimizer.service import select_recommendations
@@ -69,12 +69,7 @@ def build_learned_runtime_boundary_audit(
         _build_minimal_chat_manifest(),
         ChatAdapterRequest(
             query="What counseling applies to glucosamine with warfarin?",
-            knowledge_scope=BoundedKnowledgeScope(
-                scope_id="learned-runtime-audit-chat-v1",
-                allowed_source_types=["interaction_reference"],
-                allowed_claim_types=["drug_interaction"],
-                allowed_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],
-            ),
+            knowledge_scope=load_approved_counseling_scope(),
             as_of=datetime(2026, 7, 21, tzinfo=UTC),
             answer_template_key="interaction_warning",
             expected_reference_ids=["REF-KNOWLEDGE-ANTICOAG-001"],

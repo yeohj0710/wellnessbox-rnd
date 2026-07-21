@@ -18,6 +18,7 @@ from wellnessbox_rnd.chat.retrieval import (
     RetrievalCorpusManifest,
     evaluate_retrieval_hit_rate,
     extract_question_entities,
+    load_approved_counseling_scope,
     retrieve_bounded_chunks,
     retrieve_relevant_chunks,
 )
@@ -27,13 +28,25 @@ ANSWER_TIME = datetime(2026, 7, 21, tzinfo=UTC)
 
 
 def _scope_for(manifest: RetrievalCorpusManifest) -> BoundedKnowledgeScope:
-    return BoundedKnowledgeScope(
-        scope_id="test-counseling-v1",
-        allowed_source_types=sorted({chunk.source_type for chunk in manifest.chunks}),
-        allowed_claim_types=sorted(
-            {chunk.normalized_claim_type for chunk in manifest.chunks}
-        ),
-        allowed_reference_ids=sorted({chunk.reference_id for chunk in manifest.chunks}),
+    del manifest
+    return load_approved_counseling_scope()
+
+
+def _build_single_interaction_manifest() -> RetrievalCorpusManifest:
+    claims = [
+        json.loads(line)
+        for line in Path("data/parsed_references/reference_claims_v1.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()
+        if line.strip()
+    ]
+    claim = next(
+        item for item in claims if item["claim_id"] == "CLM-KNOWLEDGE-ANTICOAG-001"
+    )
+    references = _load_reference_rows("data/knowledge/reference_knowledge_base_v1.json")
+    chunk = _build_chunk_from_claim(claim, references)
+    return RetrievalCorpusManifest(
+        manifest_version="test-interaction", chunk_count=1, chunks=[chunk]
     )
 
 
@@ -332,7 +345,7 @@ def test_supported_answer_exposes_reconciled_validity_and_uncertainty() -> None:
         chunks=[
             RetrievalChunk(
                 chunk_id="chunk::limited",
-                reference_id="reference::limited",
+                reference_id="REF-NCCIH-BERBERINE-GLUCOSE-001",
                 claim_id="claim::limited",
                 source_title="Limited evidence",
                 source_type="peer_reviewed_trial",
@@ -376,7 +389,7 @@ def test_answer_verifier_rejects_forged_validity_and_uncertainty() -> None:
         chunks=[
             RetrievalChunk(
                 chunk_id="chunk::claim",
-                reference_id="reference::claim",
+                reference_id="REF-NIH-ODS-VITD-BONE-001",
                 claim_id="claim::claim",
                 source_title="Evidence",
                 source_type="clinical_guideline",
@@ -414,6 +427,48 @@ def test_answer_verifier_rejects_forged_validity_and_uncertainty() -> None:
     assert verification.passed is False
     assert "answer_evidence_validity_mismatch" in verification.issues
     assert "answer_uncertainty_mismatch" in verification.issues
+
+
+def test_repository_approved_scope_rejects_same_id_with_forged_content() -> None:
+    approved = load_approved_counseling_scope()
+    forged = approved.model_copy(
+        update={
+            "allowed_source_types": [*approved.allowed_source_types, "unreviewed_blog"],
+            "allowed_claim_types": [*approved.allowed_claim_types, "unreviewed_claim"],
+            "allowed_reference_ids": [*approved.allowed_reference_ids, "REF-EVIL"],
+        }
+    )
+    manifest = RetrievalCorpusManifest(manifest_version="test", chunk_count=0, chunks=[])
+
+    with pytest.raises(ValueError, match="content_not_repository_approved"):
+        retrieve_bounded_chunks(
+            manifest,
+            scope=forged,
+            query="anything",
+            as_of=ANSWER_TIME,
+        )
+
+
+def test_answer_verifier_rejects_duplicate_used_chunk_identity() -> None:
+    manifest = _build_single_interaction_manifest()
+    scope = load_approved_counseling_scope()
+    answer = generate_bounded_template_answer(
+        manifest,
+        query="glucosamine warfarin",
+        scope=scope,
+        as_of=ANSWER_TIME,
+        answer_template_key="interaction_warning",
+    )
+    forged = answer.model_copy(
+        update={"used_chunk_ids": [answer.used_chunk_ids[0], answer.used_chunk_ids[0]]}
+    )
+
+    verification = verify_bounded_template_answer(
+        forged, manifest=manifest, scope=scope, as_of=ANSWER_TIME
+    )
+
+    assert verification.passed is False
+    assert "knowledge_scope_mismatch" in verification.issues
 
 
 def test_retrieval_chunk_requires_valid_source_date_and_line_range() -> None:
@@ -483,7 +538,7 @@ def test_retrieval_filters_retired_passage_at_query_time() -> None:
 def test_bounded_retrieval_enforces_all_scope_allowlists_and_validity() -> None:
     allowed = RetrievalChunk(
         chunk_id="chunk::allowed",
-        reference_id="reference-allowed",
+        reference_id="REF-KNOWLEDGE-ANTICOAG-001",
         claim_id="claim-allowed",
         source_title="Allowed source",
         source_type="clinical_guideline",
@@ -501,7 +556,6 @@ def test_bounded_retrieval_enforces_all_scope_allowlists_and_validity() -> None:
     disallowed = allowed.model_copy(
         update={
             "chunk_id": "chunk::disallowed",
-            "reference_id": "reference-disallowed",
             "claim_id": "claim-disallowed",
             "source_type": "unreviewed_blog",
         }
@@ -516,13 +570,7 @@ def test_bounded_retrieval_enforces_all_scope_allowlists_and_validity() -> None:
     manifest = RetrievalCorpusManifest(
         manifest_version="test", chunk_count=3, chunks=[allowed, disallowed, retired]
     )
-    scope = BoundedKnowledgeScope(
-        scope_id="counseling-v1",
-        allowed_source_types=["clinical_guideline"],
-        allowed_claim_types=["drug_interaction"],
-        allowed_reference_ids=["reference-allowed"],
-        max_results=2,
-    )
+    scope = load_approved_counseling_scope()
 
     results = retrieve_bounded_chunks(
         manifest,
@@ -536,13 +584,7 @@ def test_bounded_retrieval_enforces_all_scope_allowlists_and_validity() -> None:
 
 
 def test_bounded_retrieval_rejects_naive_time_and_excess_top_k() -> None:
-    scope = BoundedKnowledgeScope(
-        scope_id="counseling-v1",
-        allowed_source_types=["clinical_guideline"],
-        allowed_claim_types=["drug_interaction"],
-        allowed_reference_ids=["reference-allowed"],
-        max_results=1,
-    )
+    scope = load_approved_counseling_scope()
     manifest = RetrievalCorpusManifest(manifest_version="test", chunk_count=0, chunks=[])
     with pytest.raises(ValueError, match="bounded_retrieval_as_of_timezone_required"):
         retrieve_bounded_chunks(
@@ -557,7 +599,7 @@ def test_bounded_retrieval_rejects_naive_time_and_excess_top_k() -> None:
             scope=scope,
             query="query",
             as_of=datetime(2026, 1, 1, tzinfo=UTC),
-            top_k=2,
+            top_k=6,
         )
 
 

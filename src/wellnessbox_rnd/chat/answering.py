@@ -63,6 +63,13 @@ class ChatTemplateAnswer(BaseModel):
     def validate_answer_time(self) -> ChatTemplateAnswer:
         if self.answered_at.tzinfo is None or self.answered_at.utcoffset() is None:
             raise ValueError("chat_answer_time_timezone_required")
+        if len(self.used_chunk_ids) != len(set(self.used_chunk_ids)):
+            raise ValueError("chat_answer_duplicate_used_chunk_id")
+        citation_ids = [citation.chunk_id for citation in self.citations]
+        if len(citation_ids) != len(set(citation_ids)):
+            raise ValueError("chat_answer_duplicate_citation_chunk_id")
+        if set(citation_ids) != set(self.used_chunk_ids):
+            raise ValueError("chat_answer_citation_used_chunk_bijection_required")
         return self
 
 
@@ -230,6 +237,8 @@ def verify_bounded_template_answer(
     knowledge_scope_ok = (
         answer.knowledge_scope_id == scope.scope_id and answer.answered_at == as_of
     )
+    if len(answer.used_chunk_ids) != len(set(answer.used_chunk_ids)):
+        knowledge_scope_ok = False
     allowed_sources = set(scope.allowed_source_types)
     allowed_claims = set(scope.allowed_claim_types)
     allowed_references = set(scope.allowed_reference_ids)

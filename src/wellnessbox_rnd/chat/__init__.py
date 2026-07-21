@@ -17,6 +17,7 @@ from wellnessbox_rnd.chat.openai_adapter import (
 from wellnessbox_rnd.chat.retrieval import (
     BoundedKnowledgeScope,
     ChatQaEvalCase,
+    CounselingKnowledgeScopeRegistry,
     QuestionEntityExtraction,
     QuestionEntityKind,
     QuestionEntityMatch,
@@ -24,6 +25,7 @@ from wellnessbox_rnd.chat.retrieval import (
     RetrievalCorpusManifest,
     evaluate_retrieval_hit_rate,
     extract_question_entities,
+    load_approved_counseling_scope,
     load_chat_qa_eval_cases,
     load_retrieval_corpus_manifest,
     retrieve_bounded_chunks,
@@ -33,6 +35,7 @@ from wellnessbox_rnd.chat.retrieval import (
 __all__ = [
     "ChatQaEvalCase",
     "BoundedKnowledgeScope",
+    "CounselingKnowledgeScopeRegistry",
     "ChatAdapterLiveFailure",
     "ChatAdapterRequest",
     "ChatAdapterResponse",
@@ -51,6 +54,7 @@ __all__ = [
     "generate_bounded_template_answer",
     "generate_chat_answer_with_openai_fallback",
     "load_chat_qa_eval_cases",
+    "load_approved_counseling_scope",
     "load_openai_chat_adapter_config_from_env",
     "load_retrieval_corpus_manifest",
     "retrieve_relevant_chunks",
