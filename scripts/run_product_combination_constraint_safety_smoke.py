@@ -135,7 +135,7 @@ def run_smoke() -> dict[str, object]:
     }
     if (
         service_report["schema_version"]
-        != "op065_op066_service_product_combination_filter_contract_v1"
+        != "op067_op068_service_product_combination_ranking_contract_v1"
     ):
         raise ValueError("unexpected service product-combination filter report")
     observed = service_report["observed"]
