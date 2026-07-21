@@ -131,7 +131,10 @@ def run_smoke() -> dict[str, object]:
                 (AgentState.FOLLOWUP_ACTIVE, run["run_id"]),
             )
             connection.execute(
-                "insert into recommendation_runs values "
+                "insert into recommendation_runs("
+                "run_id, profile_id, model_id, status, request_sha256, "
+                "response_json, created_at, completed_at"
+                ") values "
                 "('rec_op075_op076', ?, null, 'READY', 'request-hash', '{}', ?, null)",
                 (PROFILE_ID, NOW.isoformat()),
             )
