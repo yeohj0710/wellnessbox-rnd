@@ -1,6 +1,7 @@
 import hashlib
 from datetime import UTC, datetime
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from fastapi.testclient import TestClient
@@ -19,6 +20,84 @@ RETRAINED_PACKAGE_ROOT = Path("artifacts/tips/interim/retrained")
 
 def _headers() -> dict[str, str]:
     return {"x-wb-rnd-token": "test-token"}
+
+
+@pytest.mark.parametrize(
+    "constraints",
+    [
+        {"max_total_cost_krw": True, "max_products": 2},
+        {"max_total_cost_krw": 50_000.5, "max_products": 2},
+        {"max_total_cost_krw": -1, "max_products": 2},
+        {"max_total_cost_krw": 50_000, "max_products": 0},
+        {"max_total_cost_krw": 50_000, "max_products": 21},
+        {"max_total_cost_krw": 50_000, "max_products": 2, "extra": 1},
+    ],
+)
+def test_interim_recommendation_rejects_invalid_product_constraints(
+    constraints, monkeypatch
+) -> None:
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    response = TestClient(app).post(
+        "/v1/interim/recommendations",
+        headers=_headers(),
+        json={
+            "profile_id": "usr_1234567890abcdef",
+            "product_constraints": constraints,
+        },
+    )
+
+    assert response.status_code == 422
+
+
+def test_interim_recommendation_emits_validated_product_constraints(
+    tmp_path, monkeypatch
+) -> None:
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(tmp_path / "api.sqlite3"))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            ingredients=("magnesium",),
+            scores=(0.91,),
+            evidence_ids=("EV-OP065",),
+            model_id=None,
+        ),
+    )
+    client = TestClient(app)
+    profile_id = "usr_1234567890abcdef"
+    assert client.post(
+        "/v1/interim/profiles",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "consent_scopes": ["recommendation:read"],
+            "profile": {"age": 41},
+        },
+    ).status_code == 200
+
+    response = client.post(
+        "/v1/interim/recommendations",
+        headers=_headers(),
+        json={
+            "profile_id": profile_id,
+            "goals": ["sleep"],
+            "ingredients": ["magnesium"],
+            "safety": {"age": 41},
+            "product_constraints": {
+                "max_total_cost_krw": 42_000,
+                "max_products": 2,
+            },
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json()["product_optimization_constraints"] == {
+        "schema_version": "product_optimization_constraints_v1",
+        "max_total_cost_krw": 42_000,
+        "max_products": 2,
+        "excluded_ingredient_keys": [],
+        "safety_rule_ids": [],
+    }
 
 
 def test_interim_api_blocks_emergency_before_registered_model(
@@ -107,6 +186,10 @@ def test_current_safety_input_cannot_remove_stored_high_risk_facts(
                 "medications": [],
                 "symptoms": [],
             },
+            "product_constraints": {
+                "max_total_cost_krw": 35_000,
+                "max_products": 3,
+            },
         },
     )
     body = response.json()
@@ -116,6 +199,13 @@ def test_current_safety_input_cannot_remove_stored_high_risk_facts(
     assert body["status"] == "BLOCKED"
     assert body["recommendations"] == []
     assert {"SAFE-PREG-001", "SAFE-DDI-001"} <= rule_ids
+    assert body["product_optimization_constraints"] == {
+        "schema_version": "product_optimization_constraints_v1",
+        "max_total_cost_krw": 35_000,
+        "max_products": 3,
+        "excluded_ingredient_keys": ["omega3"],
+        "safety_rule_ids": ["SAFE-DDI-001", "SAFE-PREG-001"],
+    }
 
 
 def test_current_safety_input_cannot_remove_stored_dynamic_rule_predicate(

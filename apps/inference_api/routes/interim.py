@@ -9,7 +9,7 @@ from typing import Annotated, Any, Literal
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictInt
 
 from wellnessbox_rnd.interim.agent import BoundedAgent
 from wellnessbox_rnd.interim.behavior_log import BehaviorLogRecorder
@@ -91,6 +91,25 @@ class ProfileRequest(BaseModel):
     profile: dict[str, Any]
 
 
+class ProductConstraintsRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    max_total_cost_krw: StrictInt = Field(default=100_000, ge=0)
+    max_products: StrictInt = Field(default=5, ge=1, le=20)
+
+
+class ProductOptimizationConstraints(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_optimization_constraints_v1"] = (
+        "product_optimization_constraints_v1"
+    )
+    max_total_cost_krw: StrictInt = Field(ge=0)
+    max_products: StrictInt = Field(ge=1, le=20)
+    excluded_ingredient_keys: tuple[str, ...] = ()
+    safety_rule_ids: tuple[str, ...] = ()
+
+
 class RecommendationRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -98,6 +117,9 @@ class RecommendationRequest(BaseModel):
     goals: list[str] = Field(default_factory=list)
     ingredients: list[str] = Field(default_factory=list)
     safety: dict[str, Any] = Field(default_factory=dict)
+    product_constraints: ProductConstraintsRequest = Field(
+        default_factory=ProductConstraintsRequest
+    )
 
 
 class ToolRequest(BaseModel):
@@ -420,6 +442,24 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
         ]
     )
     request_hash = hashlib.sha256(payload.model_dump_json().encode()).hexdigest()
+    product_constraints = ProductOptimizationConstraints(
+        max_total_cost_krw=payload.product_constraints.max_total_cost_krw,
+        max_products=payload.product_constraints.max_products,
+        excluded_ingredient_keys=(
+            tuple(
+                sorted(
+                    {
+                        item.strip().lower()
+                        for item in payload.ingredients
+                        if item.strip()
+                    }
+                )
+            )
+            if decision.hard_failure
+            else ()
+        ),
+        safety_rule_ids=tuple(sorted({finding.rule_id for finding in decision.findings})),
+    )
     response = {
         "run_id": run_id,
         "status": status_value,
@@ -429,6 +469,7 @@ def recommendation(payload: RecommendationRequest) -> dict[str, Any]:
         "safety_action": decision.action,
         "findings": [finding.__dict__ for finding in decision.findings],
         "recommendations": ranked,
+        "product_optimization_constraints": product_constraints.model_dump(mode="json"),
         "uncertainty": "실제 약사 골드 라벨로 교체 전인 시뮬레이션 결과입니다.",
     }
     with store.transaction() as connection:

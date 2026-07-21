@@ -145,11 +145,120 @@ class ProductCombinationEvidenceV1(BaseModel):
         return self
 
 
+class ProductCombinationFilterPolicyV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_optimization_constraints_v1"]
+    max_total_cost_krw: StrictInt = Field(ge=0)
+    max_products: StrictInt = Field(ge=1, le=20)
+    excluded_service_ingredient_ids: tuple[str, ...] = ()
+    safety_rule_ids: tuple[str, ...] = ()
+
+    @model_validator(mode="after")
+    def validate_policy(self) -> ProductCombinationFilterPolicyV1:
+        for values, label in (
+            (self.excluded_service_ingredient_ids, "excluded ingredient identities"),
+            (self.safety_rule_ids, "safety rule identities"),
+        ):
+            if values != tuple(sorted(values)) or len(set(values)) != len(values):
+                raise ValueError(f"{label} must be unique and sorted")
+        if self.excluded_service_ingredient_ids and not self.safety_rule_ids:
+            raise ValueError("safety exclusions require safety rule identities")
+        return self
+
+
+class ProductCombinationFilterEvaluationV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["product_combination_filter_evaluation_v1"]
+    policy: ProductCombinationFilterPolicyV1
+    combinations: tuple[ProductCombinationV1, ...] = Field(min_length=1)
+    eligible_combination_ids: tuple[str, ...]
+    budget_excluded_combination_ids: tuple[str, ...]
+    product_count_excluded_combination_ids: tuple[str, ...]
+    safety_excluded_combination_ids: tuple[str, ...]
+
+    @model_validator(mode="after")
+    def validate_filter_evaluation(self) -> ProductCombinationFilterEvaluationV1:
+        identities = tuple(item.combination_id for item in self.combinations)
+        if identities != tuple(sorted(identities)) or len(set(identities)) != len(identities):
+            raise ValueError("filter input combination identities must be unique and sorted")
+        expected = _derive_filter_identities(self.combinations, self.policy)
+        observed = (
+            self.eligible_combination_ids,
+            self.budget_excluded_combination_ids,
+            self.product_count_excluded_combination_ids,
+            self.safety_excluded_combination_ids,
+        )
+        if observed != expected:
+            raise ValueError("filter evaluation does not match combinations and policy")
+        return self
+
+    @property
+    def pre_filter_combination_count(self) -> int:
+        return len(self.combinations)
+
+    @property
+    def eligible_combination_count(self) -> int:
+        return len(self.eligible_combination_ids)
+
+
+def evaluate_product_combination_filters_v1(
+    combinations: tuple[ProductCombinationV1, ...],
+    policy: ProductCombinationFilterPolicyV1,
+) -> ProductCombinationFilterEvaluationV1:
+    eligible, budget, product_count, safety = _derive_filter_identities(
+        combinations, policy
+    )
+    return ProductCombinationFilterEvaluationV1(
+        schema_version="product_combination_filter_evaluation_v1",
+        policy=policy,
+        combinations=combinations,
+        eligible_combination_ids=eligible,
+        budget_excluded_combination_ids=budget,
+        product_count_excluded_combination_ids=product_count,
+        safety_excluded_combination_ids=safety,
+    )
+
+
+def _derive_filter_identities(
+    combinations: tuple[ProductCombinationV1, ...],
+    policy: ProductCombinationFilterPolicyV1,
+) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...], tuple[str, ...]]:
+    budget = {
+        item.combination_id
+        for item in combinations
+        if item.total_cost_krw > policy.max_total_cost_krw
+    }
+    product_count = {
+        item.combination_id
+        for item in combinations
+        if item.product_count > policy.max_products
+    }
+    excluded = set(policy.excluded_service_ingredient_ids)
+    safety = {
+        item.combination_id
+        for item in combinations
+        if any(total.service_ingredient_id in excluded for total in item.ingredient_totals)
+    }
+    eligible = {
+        item.combination_id
+        for item in combinations
+        if item.combination_id not in budget | product_count | safety
+    }
+    return tuple(sorted(eligible)), tuple(sorted(budget)), tuple(
+        sorted(product_count)
+    ), tuple(sorted(safety))
+
+
 __all__ = [
     "IngredientDoseTotalV1",
     "ProductCombinationEvidenceV1",
+    "ProductCombinationFilterEvaluationV1",
+    "ProductCombinationFilterPolicyV1",
     "ProductCombinationV1",
     "ProductIngredientAmountV1",
     "ProductOfferV1",
     "SelectedProductV1",
+    "evaluate_product_combination_filters_v1",
 ]

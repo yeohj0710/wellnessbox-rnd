@@ -4,7 +4,12 @@ import json
 import pytest
 from pydantic import ValidationError
 
-from wellnessbox_rnd.optimizer.product_combinations import ProductCombinationV1
+from wellnessbox_rnd.optimizer.product_combinations import (
+    ProductCombinationFilterEvaluationV1,
+    ProductCombinationFilterPolicyV1,
+    ProductCombinationV1,
+    evaluate_product_combination_filters_v1,
+)
 
 
 def _combination_payload() -> dict[str, object]:
@@ -94,6 +99,27 @@ def _combination_payload() -> dict[str, object]:
         ],
         "duplicate_ingredient_ids": ["ING:ZINC"],
     }
+
+
+def _combination_variant(*, pharmacy_product_id: int, second_price_krw: int):
+    payload = _combination_payload()
+    products = payload["selected_products"]
+    assert isinstance(products, list)
+    products[1]["offer"]["pharmacy_product_id"] = pharmacy_product_id
+    products[1]["offer"]["price_krw"] = second_price_krw
+    payload["total_cost_krw"] = 10_000 + second_price_krw
+    identity = [
+        {
+            "product_id": item["product_id"],
+            "pharmacy_product_id": item["offer"]["pharmacy_product_id"],
+        }
+        for item in products
+    ]
+    digest = hashlib.sha256(
+        json.dumps(identity, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()[:16]
+    payload["combination_id"] = f"combo_{digest}"
+    return payload
 
 
 def test_combination_validates_duplicate_and_total_dose() -> None:
@@ -214,3 +240,71 @@ def test_duplicate_identity_spans_separate_mass_and_iu_totals() -> None:
         "milli_IU",
         "ng",
     ]
+
+
+def test_combination_filter_recomputes_budget_and_product_count_exclusions() -> None:
+    combinations = tuple(
+        sorted(
+            (
+                ProductCombinationV1.model_validate(
+                    _combination_variant(
+                        pharmacy_product_id=20_001 + index,
+                        second_price_krw=9_000 + index * 10_000,
+                    )
+                )
+                for index in range(3)
+            ),
+            key=lambda item: item.combination_id,
+        )
+    )
+    policy = ProductCombinationFilterPolicyV1(
+        schema_version="product_optimization_constraints_v1",
+        max_total_cost_krw=25_000,
+        max_products=2,
+    )
+
+    result = evaluate_product_combination_filters_v1(combinations, policy)
+
+    assert result.pre_filter_combination_count == 3
+    assert result.eligible_combination_count == 1
+    assert len(result.budget_excluded_combination_ids) == 2
+    assert result.product_count_excluded_combination_ids == ()
+    assert result.safety_excluded_combination_ids == ()
+
+
+def test_combination_filter_rejects_safety_excluded_ingredient_reentry() -> None:
+    combination = ProductCombinationV1.model_validate(_combination_payload())
+    policy = ProductCombinationFilterPolicyV1(
+        schema_version="product_optimization_constraints_v1",
+        max_total_cost_krw=100_000,
+        max_products=5,
+        excluded_service_ingredient_ids=("ING:ZINC",),
+        safety_rule_ids=("SAFE-OP066-TEST",),
+    )
+
+    result = evaluate_product_combination_filters_v1((combination,), policy)
+
+    assert result.eligible_combination_ids == ()
+    assert result.safety_excluded_combination_ids == (combination.combination_id,)
+
+
+def test_combination_filter_rejects_forged_output_and_invalid_policy() -> None:
+    combination = ProductCombinationV1.model_validate(_combination_payload())
+    policy = ProductCombinationFilterPolicyV1(
+        schema_version="product_optimization_constraints_v1",
+        max_total_cost_krw=100_000,
+        max_products=5,
+    )
+    result = evaluate_product_combination_filters_v1((combination,), policy)
+    forged = result.model_dump(mode="json")
+    forged["eligible_combination_ids"] = []
+    with pytest.raises(ValidationError):
+        ProductCombinationFilterEvaluationV1.model_validate(forged)
+
+    with pytest.raises(ValidationError):
+        ProductCombinationFilterPolicyV1(
+            schema_version="product_optimization_constraints_v1",
+            max_total_cost_krw=100_000,
+            max_products=5,
+            excluded_service_ingredient_ids=("ING:ZINC",),
+        )

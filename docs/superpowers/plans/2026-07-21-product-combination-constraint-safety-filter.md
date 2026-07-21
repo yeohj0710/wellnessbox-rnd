@@ -82,4 +82,3 @@
 - [ ] Run focused tests, exact workflow pytest selection, every workflow smoke twice, full Ruff, service QA/typecheck/lint/build, full pytest, and the official 256-case frozen evaluation.
 - [ ] Obtain independent review and resolve every Critical or Important finding before publication.
 - [ ] Push service first, require Encoding Guard success, push R&D next, require Original plan evidence success, then record exact hashes, totals, run IDs, five bottlenecks, and the next three loops.
-
