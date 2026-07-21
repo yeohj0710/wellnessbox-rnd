@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
+from scripts.run_pro_personal_group_uncertainty_smoke import SOURCE_PATHS
 from wellnessbox_rnd.metrics.pro_followup import interpret_pro_followup_effect_v1
 from wellnessbox_rnd.metrics.pro_group_effects import (
     PROGroupEffectSummaryV1,
@@ -362,3 +363,10 @@ def test_metrics_package_exports_group_effect_api() -> None:
     assert metrics.PRO_GROUP_EFFECT_CONTRACT_VERSION_V1 == "2026-07-21.1"
     assert metrics.PROGroupEffectSummaryV1 is PROGroupEffectSummaryV1
     assert metrics.build_pro_group_effect_summary_v1 is build_pro_group_effect_summary_v1
+
+
+def test_smoke_source_identity_includes_direct_contract_dependencies() -> None:
+    assert "data/contracts/pro_group_effect_summary_v1.json" in SOURCE_PATHS
+    assert "data/contracts/pro_followup_interpretation_v1.json" in SOURCE_PATHS
+    assert "data/contracts/pro_instrument_scoring_v1.json" in SOURCE_PATHS
+    assert "src/wellnessbox_rnd/interim/contracts.py" in SOURCE_PATHS

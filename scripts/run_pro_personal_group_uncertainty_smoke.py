@@ -29,7 +29,10 @@ DEFAULT_OUTPUT = (
 )
 SOURCE_PATHS = [
     "data/contracts/pro_group_effect_summary_v1.json",
+    "data/contracts/pro_followup_interpretation_v1.json",
+    "data/contracts/pro_instrument_scoring_v1.json",
     "scripts/run_pro_personal_group_uncertainty_smoke.py",
+    "src/wellnessbox_rnd/interim/contracts.py",
     "src/wellnessbox_rnd/interim/kpi.py",
     "src/wellnessbox_rnd/metrics/__init__.py",
     "src/wellnessbox_rnd/metrics/pro_followup.py",
