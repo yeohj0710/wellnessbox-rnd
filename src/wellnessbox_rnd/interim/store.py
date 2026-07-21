@@ -417,6 +417,8 @@ CREATE TABLE IF NOT EXISTS agent_steps (
   postcondition_success INTEGER NOT NULL,
   reason_codes_json TEXT NOT NULL,
   created_at TEXT NOT NULL,
+  binding_json TEXT,
+  binding_sha256 TEXT,
   PRIMARY KEY(run_id, step_index)
 );
 
@@ -696,6 +698,30 @@ class InterimStore:
                     )
             connection.execute(
                 "update evidence_passages set metadata_json='{}' where metadata_json is null"
+            )
+            agent_step_columns = {
+                str(row[1]) for row in connection.execute("pragma table_info(agent_steps)")
+            }
+            for column_name in ("binding_json", "binding_sha256"):
+                if column_name not in agent_step_columns:
+                    connection.execute(
+                        f"alter table agent_steps add column {column_name} text"
+                    )
+            duplicate_recommendations = connection.execute(
+                """
+                select profile_id, request_sha256, count(*)
+                from recommendation_runs
+                group by profile_id, request_sha256
+                having count(*) > 1
+                limit 1
+                """
+            ).fetchone()
+            if duplicate_recommendations is not None:
+                raise RuntimeError("duplicate_recommendation_request_identity")
+            connection.execute(
+                "create unique index if not exists "
+                "idx_recommendation_runs_profile_request_unique "
+                "on recommendation_runs(profile_id, request_sha256)"
             )
             connection.execute(
                 """

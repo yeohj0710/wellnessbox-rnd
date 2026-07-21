@@ -1,4 +1,6 @@
 import hashlib
+import json
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from pathlib import Path
 from types import SimpleNamespace
@@ -155,6 +157,75 @@ def test_counseling_turn_binds_verified_answer_and_recommendation_to_one_session
     assert store.scalar("select count(*) from agent_runs") == 1
     assert store.scalar("select count(*) from agent_steps") == 1
     assert store.scalar("select count(*) from recommendation_runs") == 1
+    binding_row = store.rows(
+        "select binding_json, binding_sha256 from agent_steps where tool_name='counseling_answer'"
+    )[0]
+    binding = json.loads(str(binding_row["binding_json"]))
+    assert binding["service_session_id"] == "chat-session-op087"
+    assert binding["turn_id"] == "turn-op087-1"
+    assert binding["recommendation_run_id"] == body["recommendation_execution"]["run_id"]
+    assert binding_row["binding_sha256"] == body["session_binding_sha256"]
+
+
+def test_counseling_turn_rejects_changed_payload_for_existing_turn(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "counseling-conflict.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            ingredients=("glucosamine",),
+            scores=(0.91,),
+            evidence_ids=("EV-OP087",),
+            model_id=None,
+        ),
+    )
+    client = TestClient(app)
+    first = client.post(
+        "/v1/interim/counseling/turns", headers=_headers(), json=_counseling_payload()
+    )
+    changed = _counseling_payload() | {"safety": {"pregnant": True}}
+    conflict = client.post(
+        "/v1/interim/counseling/turns", headers=_headers(), json=changed
+    )
+    assert first.status_code == 200
+    assert conflict.status_code == 409
+    assert conflict.json()["detail"] == "counseling_turn_payload_conflict"
+    stored_profile = json.loads(
+        str(InterimStore(database).scalar("select payload_json from user_profiles"))
+    )
+    assert "pregnant" not in stored_profile
+
+
+def test_counseling_turn_concurrent_retry_creates_one_recommendation(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "counseling-concurrent.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setattr(
+        "apps.inference_api.routes.interim.recommend_with_registered_model",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            ingredients=("glucosamine",),
+            scores=(0.91,),
+            evidence_ids=("EV-OP087",),
+            model_id=None,
+        ),
+    )
+
+    def request_once() -> int:
+        return TestClient(app).post(
+            "/v1/interim/counseling/turns",
+            headers=_headers(),
+            json=_counseling_payload(),
+        ).status_code
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        statuses = list(pool.map(lambda _index: request_once(), range(2)))
+    assert statuses == [200, 200]
+    assert InterimStore(database).scalar("select count(*) from recommendation_runs") == 1
 
 
 def test_counseling_turn_requires_internal_token(tmp_path, monkeypatch) -> None:

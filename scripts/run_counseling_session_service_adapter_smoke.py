@@ -17,11 +17,13 @@ PORT = 8878
 SOURCE_PATHS = (
     RND_ROOT / "scripts/run_counseling_session_service_adapter_smoke.py",
     RND_ROOT / "apps/inference_api/routes/interim.py",
+    RND_ROOT / "src/wellnessbox_rnd/interim/store.py",
     RND_ROOT / "data/knowledge/counseling_retrieval_corpus_manifest_v1.json",
     SERVICE_ROOT / "app/api/chat/route-service.ts",
     SERVICE_ROOT / "app/api/chat/save/route-service.ts",
     SERVICE_ROOT / "lib/server/wb-rnd-interim-client.ts",
     SERVICE_ROOT / "scripts/qa/run-rnd-counseling-live-smoke.cts",
+    SERVICE_ROOT / "scripts/qa/check-rnd-counseling-adapter.cts",
 )
 
 

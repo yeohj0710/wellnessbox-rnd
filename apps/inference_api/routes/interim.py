@@ -4,6 +4,7 @@ import hashlib
 import hmac
 import json
 import os
+import sqlite3
 from datetime import UTC, datetime
 from typing import Annotated, Any, Literal
 from uuid import uuid4
@@ -609,6 +610,28 @@ def _canonical_sha256(value: object) -> str:
 @router.post("/counseling/turns")
 def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
     """Compose verified counseling and an existing recommendation run for one chat session."""
+    store = _store()
+    request_identity = _canonical_sha256(payload.model_dump(mode="json"))
+    scoped_run_key = (
+        f"{payload.profile_id}:counseling-session:{payload.service_session_id}"
+    )
+    prior_steps = store.rows(
+        """
+        select s.arguments_sha256, s.binding_json
+        from agent_steps s join agent_runs r on r.run_id=s.run_id
+        where r.profile_id=? and r.idempotency_key=?
+          and s.tool_name='counseling_answer' and s.binding_json is not null
+        """,
+        (payload.profile_id, scoped_run_key),
+    )
+    for prior_step in prior_steps:
+        binding = json.loads(str(prior_step["binding_json"]))
+        if (
+            binding.get("service_session_id") == payload.service_session_id
+            and binding.get("turn_id") == payload.turn_id
+            and str(prior_step["arguments_sha256"]) != request_identity
+        ):
+            raise HTTPException(status_code=409, detail="counseling_turn_payload_conflict")
     upsert_profile(
         ProfileRequest(
             profile_id=payload.profile_id,
@@ -616,7 +639,6 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
             profile=payload.profile,
         )
     )
-    store = _store()
     agent_run = BoundedAgent(store).create_run(
         profile_id=payload.profile_id,
         idempotency_key=f"counseling-session:{payload.service_session_id}",
@@ -651,11 +673,22 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
             "where profile_id=? and request_sha256=? order by created_at limit 1",
             (payload.profile_id, recommendation_request_hash),
         )
-        recommendation_response = (
-            json.loads(str(existing[0]["response_json"]))
-            if existing
-            else recommendation(recommendation_payload)
-        )
+        if existing:
+            recommendation_response = json.loads(str(existing[0]["response_json"]))
+        else:
+            try:
+                recommendation_response = recommendation(recommendation_payload)
+            except sqlite3.IntegrityError:
+                concurrent = store.rows(
+                    "select response_json from recommendation_runs "
+                    "where profile_id=? and request_sha256=?",
+                    (payload.profile_id, recommendation_request_hash),
+                )
+                if not concurrent:
+                    raise
+                recommendation_response = json.loads(
+                    str(concurrent[0]["response_json"])
+                )
 
     answer_payload = adapter_response.answer.model_dump(mode="json")
     binding_payload = {
@@ -669,19 +702,17 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
             None if recommendation_response is None else recommendation_response["run_id"]
         ),
     }
-    step_identity = _canonical_sha256(
-        {
-            "service_session_id": payload.service_session_id,
-            "turn_id": payload.turn_id,
-            "query": payload.query,
-        }
-    )
+    binding_sha256 = _canonical_sha256(binding_payload)
     with store.transaction(immediate=True) as connection:
         duplicate = connection.execute(
-            "select 1 from agent_steps where run_id=? and tool_name='counseling_answer' "
-            "and arguments_sha256=?",
-            (agent_run["run_id"], step_identity),
+            "select arguments_sha256 from agent_steps "
+            "where run_id=? and tool_name='counseling_answer' "
+            "and json_extract(binding_json, '$.service_session_id')=? "
+            "and json_extract(binding_json, '$.turn_id')=?",
+            (agent_run["run_id"], payload.service_session_id, payload.turn_id),
         ).fetchone()
+        if duplicate is not None and str(duplicate["arguments_sha256"]) != request_identity:
+            raise HTTPException(status_code=409, detail="counseling_turn_payload_conflict")
         if duplicate is None:
             step_index = int(
                 connection.execute(
@@ -690,11 +721,17 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
                 ).fetchone()[0]
             )
             connection.execute(
-                "insert into agent_steps values (?, ?, 'counseling_answer', ?, ?, 1, ?, ?)",
+                """
+                insert into agent_steps(
+                  run_id, step_index, tool_name, arguments_sha256, result_sha256,
+                  postcondition_success, reason_codes_json, created_at,
+                  binding_json, binding_sha256
+                ) values (?, ?, 'counseling_answer', ?, ?, 1, ?, ?, ?, ?)
+                """,
                 (
                     agent_run["run_id"],
                     step_index,
-                    step_identity,
+                    request_identity,
                     binding_payload["answer_sha256"],
                     json.dumps(
                         [
@@ -706,6 +743,13 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
                         separators=(",", ":"),
                     ),
                     payload.answered_at.isoformat(),
+                    json.dumps(
+                        binding_payload,
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ),
+                    binding_sha256,
                 ),
             )
 
@@ -725,7 +769,7 @@ def counseling_turn(payload: CounselingTurnRequest) -> dict[str, Any]:
                 "simulation": recommendation_response["simulation"],
             }
         ),
-        "session_binding_sha256": _canonical_sha256(binding_payload),
+        "session_binding_sha256": binding_sha256,
         "deduplicated": bool(agent_run.get("deduplicated")),
     }
 
