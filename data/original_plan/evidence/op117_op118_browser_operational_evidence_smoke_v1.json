@@ -13,7 +13,7 @@
   "dataset": {
     "path": "data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json",
     "case_count": 8,
-    "sha256": "a1f4dc2c5e3a2f6f9f0aa80780acbbebe98cab08dac4440f4d3bb64d821c4cec"
+    "sha256": "6b9b7ae733b0f204e0947fb98409208603e9f4e5086256afae78210b71a36249"
   },
   "browser": {
     "schema_version": "rnd_role_browser_paths_v1",
@@ -42,7 +42,7 @@
   "observed": {
     "browser_case_count": 3,
     "non_external_requirement_count": 119,
-    "evidence_linked_count": 117,
+    "evidence_linked_count": 118,
     "external_requirement_count": 1,
     "operated_requirement_count": 0,
     "operated_gap_count": 119
@@ -169,7 +169,7 @@
     "OP-120"
   ],
   "source_identity": {
-    "wellnessbox_rnd_commit": "a102bc3484c77db0f1f7ae8a9c6aacf616dfb980",
+    "wellnessbox_rnd_commit": "b789ed2405d4acf1b3b1095977b6ca039affd477",
     "wellnessbox_commit": "8b9e2df62c998147ef045390909f7244501ef6e8",
     "wellnessbox_browser_script_sha256": "d6c65676b21d78812ec9ee0242d225d5b650fd36ff5d69180754f242b0c2fb38"
   },
