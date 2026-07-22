@@ -528,3 +528,7 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - OP-105 and OP-106 are `INTEGRATED / PARTIAL`; no public deployment or production user/pharmacist operation is claimed.
 - Independent-review remediation dynamically executes 401 user denial, HMAC profile-ID override, pharmacist-session pharmacy-ID override, and authenticated profile/recommendation/review route handlers.
 - Dataset/evidence: `data/original_plan/op105_op106_profile_review_roundtrip_cases_v1.json`, 8 cases; audit PASS with 105 claims and 289 evidence files. Counts are `70/35/14/1/0`; reports cover `28/120`.
+# 2026-07-22 OP-107/108 bounded loop
+
+- Authenticated admin route loaded real R&D status and sources; unavailable empty KPI state is explicit. Selling-product QA attached real catalog fixture IDs with stock/safety fail-closed rules.
+- OP-107/108 are `INTEGRATED / PARTIAL`; counts `70/37/12/1/0`, reports `30/120`, audit claims `107`.

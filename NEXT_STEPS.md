@@ -252,3 +252,8 @@ Do not run training or a new `cgm` loop yet.
 1. Complete OP-107/108 for real admin API state and selling-product candidate integration.
 2. Backfill OP-001~078 reports; `92/120` reports remain.
 3. Keep OP-101~106 below OPERATED until approved provider and real user/pharmacist evidence exists.
+# Next after OP-107/108
+
+1. Complete OP-109/110 order mutation and plan-only state integration.
+2. Backfill `90/120` missing reports.
+3. Keep production operation claims gated on approval.

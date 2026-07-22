@@ -529,3 +529,9 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - Validation: TypeScript, encoding, Ruff, canonical two-process smoke, audit, and generated completion status pass. Independent review started at Critical/Important/Minor `0/1/1`, then `0/2/0`; route execution, both auth denials, both ID overrides, and real 409 preservation were fixed. Frozen/replay/slice deltas remain zero.
 - Bottlenecks: 92 reports; OP-101~106 lack provider operation; OP-107/108 pending; no real pharmacist browser evidence; legacy absent-artifact/CGM failures.
 - Next loops: OP-107/108; report backfill; approved provider/browser operation.
+# 2026-07-22 OP-107/108 handoff
+
+- Stage: admin/product service integration; both `INTEGRATED / PARTIAL` versus `OPERATED`.
+- Dataset/evidence: `data/original_plan/op107_op108_admin_product_integration_cases_v1.json`, 8 cases; canonical evidence paired with service commit `be30c4d4437526489d8e7e7d7e06ce61db2ea2ee`.
+- Changes: authenticated real status/source API, explicit unavailable KPI state, sequential SQLite-safe reads, actual selling-product candidate mapping, stock substitution, safety and invalid-catalog fail closure. No production or order mutation.
+- Validation: service TypeScript/encoding, R&D Ruff/smoke/audit/status tests. Frozen/replay deltas zero. Bottlenecks: 90 reports, OP-109/110, provider operation, browser evidence, legacy failures. Next: OP-109/110, report backfill, approved operation.
