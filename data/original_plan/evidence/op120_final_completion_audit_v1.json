@@ -170,7 +170,7 @@
       "wellnessbox-rnd/data/knowledge/runtime_knowledge_db_v1.json": "ee688b352e667e8ed54bd206d771311b8455ce55",
       "wellnessbox-rnd/data/original_plan/contracts/op039_external_attestation_trust_roots_v1.json": "3091b78567362ed557a7ae152217c5d07882d1e2",
       "wellnessbox-rnd/data/original_plan/contracts/op039_external_coverage_trust_roots_v1.json": "ff3cde2108f2bba64ad29f9205d733286b9628b2",
-      "wellnessbox-rnd/data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json": "12eb2a43c6088aef2264bcb3c650ba14977d65b4",
+      "wellnessbox-rnd/data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json": "d3def2cf5b2dbf1afa76016917f6f5164b4354b0",
       "wellnessbox-rnd/data/original_plan/evidence/op023_op024_knowledge_lineage_smoke_v1.json": "bef414a93f72a153d983dc72ca9fbbe4d375a6cf",
       "wellnessbox-rnd/data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json": "441b02a05f5f5a4e54ffef53e181c233c127517d",
       "wellnessbox-rnd/data/original_plan/evidence/op027_op028_event_idempotency_data_mutation_smoke_v1.json": "2e774afca9e2d594467128d8b4c52b481b4b466f",
@@ -258,7 +258,7 @@
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-018.md": "99df6f79b8d758455ba8c0a32343b17771d97c3f",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-019.md": "40b1d9ab7274eb37c44192ce3e479fd480f84800",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-020.md": "d8198e4d2ab494927bb898af6719f4d794ee2992",
-      "wellnessbox-rnd/docs/original_plan/research_reports/OP-021.md": "0f835f6ca1d40d3decfc45b0e5befba58bacc109",
+      "wellnessbox-rnd/docs/original_plan/research_reports/OP-021.md": "638739c1ba707449f46925a233a8f6dfc1122b00",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-022.md": "0ecc2cb925eb122e6d2450ab19c1f3d7d475e4e3",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-079.md": "95bafcd30f90cd655d8969290405bb8be0c8a0e8",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-080.md": "e38d566a261911f495e7e7abfdf03589e9dc55f1",
@@ -435,7 +435,7 @@
       "wellnessbox-rnd/tests/test_chat_openai_adapter.py": "e93147397d68ef58fac99711a30b1d1d797b3562",
       "wellnessbox-rnd/tests/test_chat_retrieval.py": "f071494c1f59c050e933ca18567bec191827c71f",
       "wellnessbox-rnd/tests/test_consent_and_input_hash_contracts.py": "80f7b19689a4f49201f521d93a2d6a0d0fc4666b",
-      "wellnessbox-rnd/tests/test_data_lake_lineage.py": "308b2f84047442ab5857ad14676964d686e7e5bd",
+      "wellnessbox-rnd/tests/test_data_lake_lineage.py": "0a595ac3d91ec328dd8318832261603fbd744ebf",
       "wellnessbox-rnd/tests/test_decision_uncertainty_learned_fallback.py": "9f3370b317cf04cf55140e6d45917a8311e20800",
       "wellnessbox-rnd/tests/test_deployment_contract.py": "ee411cdbc45ce4247fc1a4a83bb6718e7e24ca2f",
       "wellnessbox-rnd/tests/test_device_recommendation_assessment.py": "a682cbc8c8b94bec66393a6f25f1a01846ce652d",
@@ -555,7 +555,7 @@
     },
     "repository_commits": {
       "wellnessbox": "8b9e2df62c998147ef045390909f7244501ef6e8",
-      "wellnessbox-rnd": "4b7eb4c2b2833d556df25d1c061bd3a109194d5d"
+      "wellnessbox-rnd": "4f3ab5736572b8f869db394c8c0932ab6776cd0b"
     }
   },
   "dataset": {
