@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import subprocess
 from pathlib import Path
 
@@ -9,7 +10,9 @@ from wellnessbox_rnd.governance.final_completion_audit import audit_final_comple
 from wellnessbox_rnd.schemas.original_plan_manifest import RepositoryName
 
 ROOT = Path(__file__).resolve().parents[1]
-SERVICE_ROOT = ROOT.parent / "wellnessbox"
+SERVICE_ROOT = Path(
+    os.environ.get("WELLNESSBOX_EVIDENCE_ROOT", str(ROOT.parent / "wellnessbox"))
+).resolve()
 MANIFEST = ROOT / "data/original_plan/requirements_manifest_v1.json"
 POLICY = ROOT / "data/original_plan/op120_final_audit_policy_v1.json"
 CASES = ROOT / "data/original_plan/op120_final_completion_audit_cases_v1.json"

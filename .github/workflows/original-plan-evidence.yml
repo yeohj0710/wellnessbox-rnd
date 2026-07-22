@@ -68,6 +68,7 @@ on:
       - "scripts/build_interim_openapi_contract.py"
       - "scripts/run_resilience_openapi_contract_smoke.py"
       - "scripts/run_external_dependency_registry_smoke.py"
+      - "scripts/run_final_completion_audit.py"
       - "data/original_plan/op109_op110_order_plan_context_cases_v1.json"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
@@ -495,6 +496,13 @@ jobs:
           python scripts/run_external_dependency_registry_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op119_external_dependency_registry_smoke_v1.json
+      - name: Replay OP-120 final completion audit
+        env:
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op118
+        run: >-
+          python scripts/run_final_completion_audit.py
+          && git diff --exit-code
+          data/original_plan/evidence/op120_final_completion_audit_v1.json
       - name: Check generated completion report
         env:
           WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op118
@@ -685,6 +693,7 @@ jobs:
           tests/test_original_plan_audit_cli.py
           tests/test_original_plan_completion_report.py
           tests/test_external_dependency_registry.py
+          tests/test_final_completion_audit.py
           tests/test_health_input_contracts.py
           tests/test_medication_supplement_input_contracts.py
           tests/test_diet_lifestyle_lab_input_contracts.py
@@ -819,8 +828,10 @@ jobs:
           scripts/run_product_combination_dose_smoke.py
           scripts/run_product_combination_constraint_safety_smoke.py
           scripts/run_external_dependency_registry_smoke.py
+          scripts/run_final_completion_audit.py
           src/wellnessbox_rnd/governance/external_dependency_registry.py
           tests/test_external_dependency_registry.py
+          tests/test_final_completion_audit.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
           src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py
           src/wellnessbox_rnd/evals/recommendation_replay_compare.py

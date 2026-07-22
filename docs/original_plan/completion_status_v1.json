@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "33697a780ed1c52cd347b9bf4b87b9182ac9a82c70a773a45eb4c8d833608bfc",
+  "audited_manifest_sha256": "d682e41a94ec664e98489804cec95e1191bf7b4e7e3a3cd89c22a61c5316916b",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -9,8 +9,8 @@
   "requirement_count": 120,
   "disposition_counts": {
     "COMPLETE": 76,
-    "PARTIAL": 42,
-    "PENDING": 1,
+    "PARTIAL": 43,
+    "PENDING": 0,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -153,8 +153,8 @@
       "requirement_count": 10,
       "disposition_counts": {
         "COMPLETE": 6,
-        "PARTIAL": 3,
-        "PENDING": 1,
+        "PARTIAL": 4,
+        "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -4064,14 +4064,21 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/governance/final_completion_audit.py",
+          "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_final_completion_audit.py",
+          "wellnessbox-rnd/scripts/run_final_completion_audit.py",
+          "wellnessbox-rnd/data/original_plan/op120_final_completion_audit_cases_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
