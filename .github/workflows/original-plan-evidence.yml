@@ -65,6 +65,8 @@ on:
       - "scripts/run_profile_review_roundtrip_smoke.py"
       - "scripts/run_admin_product_integration_smoke.py"
       - "scripts/run_order_plan_context_integration_smoke.py"
+      - "scripts/build_interim_openapi_contract.py"
+      - "scripts/run_resilience_openapi_contract_smoke.py"
       - "data/original_plan/op109_op110_order_plan_context_cases_v1.json"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
@@ -178,6 +180,8 @@ on:
       - "scripts/run_profile_review_roundtrip_smoke.py"
       - "scripts/run_admin_product_integration_smoke.py"
       - "scripts/run_order_plan_context_integration_smoke.py"
+      - "scripts/build_interim_openapi_contract.py"
+      - "scripts/run_resilience_openapi_contract_smoke.py"
       - "data/original_plan/op109_op110_order_plan_context_cases_v1.json"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
@@ -413,13 +417,23 @@ jobs:
       - name: Install OP-111/112 service dependencies
         working-directory: _evidence/wellnessbox-op112
         run: npm ci
+      - name: Checkout OP-113/114 WellnessBox evidence
+        uses: actions/checkout@v7
+        with:
+          repository: yeohj0710/wellnessbox
+          ref: 415e2d632c36c175792fc4014dc81aff0f80f436
+          fetch-depth: 0
+          path: _evidence/wellnessbox-op114
+      - name: Install OP-113/114 service dependencies
+        working-directory: _evidence/wellnessbox-op114
+        run: npm ci
       - name: Audit requirement evidence
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op112
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op114
         run: python scripts/audit_original_plan_requirements.py
       - name: Check generated completion report
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op112
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op114
         run: python scripts/build_original_plan_completion_report.py --check
       - name: Check interaction and dose aggregation evidence
         run: >-
@@ -586,6 +600,7 @@ jobs:
           WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op108 python scripts/run_admin_product_integration_smoke.py
           WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op110 python scripts/run_order_plan_context_integration_smoke.py
           WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op112 python scripts/run_security_boundary_integration_smoke.py
+          python scripts/run_resilience_openapi_contract_smoke.py --wellnessbox-root ${{ github.workspace }}/_evidence/wellnessbox-op114
           git diff --exit-code -- \
             data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json \
             data/original_plan/evidence/op099_op100_device_dedup_linkage_smoke_v1.json \
@@ -594,10 +609,11 @@ jobs:
             data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json \
             data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json \
             data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json \
-            data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json
+            data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json \
+            data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json
       - name: Run requirement contract tests
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op112
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op114
         run: >-
           python -m pytest
           tests/test_original_plan_manifest.py
@@ -731,6 +747,8 @@ jobs:
           scripts/run_profile_review_roundtrip_smoke.py
           scripts/run_admin_product_integration_smoke.py
           scripts/run_order_plan_context_integration_smoke.py
+          scripts/build_interim_openapi_contract.py
+          scripts/run_resilience_openapi_contract_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py
