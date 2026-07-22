@@ -70,6 +70,15 @@ def _source_sha256() -> str:
 
 
 def _source_commit(root: Path, paths: list[str]) -> str:
+    if root == SERVICE_ROOT:
+        return subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        ).stdout.strip()
     return subprocess.run(
         ["git", "log", "-1", "--format=%H", "--", *paths],
         cwd=root,
