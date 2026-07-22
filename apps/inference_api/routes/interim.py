@@ -1354,6 +1354,40 @@ def admin_sources() -> dict[str, Any]:
     }
 
 
+@router.get("/admin/runtime")
+def admin_runtime() -> dict[str, Any]:
+    store = _store()
+
+    def grouped_counts(table: str, column: str) -> dict[str, int]:
+        rows = store.rows(
+            f"select {column}, count(*) as count from {table} group by {column} "
+            f"order by {column}"
+        )
+        return {str(row[0]): int(row[1]) for row in rows}
+
+    return {
+        "mode": DataClass.PROXY_GOLD_SIMULATION,
+        "rules": {
+            "knowledge_rule_count": int(store.scalar("select count(*) from knowledge_rules")),
+            "knowledge_rule_status_counts": grouped_counts("knowledge_rules", "status"),
+            "safety_rule_version_count": int(store.scalar("select count(*) from safety_rules")),
+            "safety_rule_review_status_counts": grouped_counts(
+                "safety_rules", "review_status"
+            ),
+        },
+        "models": {
+            "model_version_count": int(store.scalar("select count(*) from model_versions")),
+            "model_status_counts": grouped_counts("model_versions", "status"),
+        },
+        "executions": {
+            "execution_count": int(store.scalar("select count(*) from executions")),
+            "execution_status_counts": grouped_counts("executions", "status"),
+            "agent_run_count": int(store.scalar("select count(*) from agent_runs")),
+            "agent_run_status_counts": grouped_counts("agent_runs", "status"),
+        },
+    }
+
+
 @router.get("/admin/reviews")
 def review_queue(
     status_filter: Annotated[str, Query(alias="status")] = "OPEN",

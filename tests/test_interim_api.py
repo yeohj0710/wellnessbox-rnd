@@ -763,6 +763,30 @@ def test_interim_api_requires_token_and_runs_recommendation(tmp_path, monkeypatc
     assert len(body["recommendations"]) >= 1
 
 
+def test_admin_runtime_reports_persisted_rule_model_and_execution_state(
+    tmp_path, monkeypatch
+) -> None:
+    database = tmp_path / "admin-runtime.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    store = InterimStore(database)
+    store.migrate()
+    bootstrap_operational_evidence(store)
+    client = TestClient(app)
+
+    assert client.get("/v1/interim/admin/runtime").status_code == 401
+    response = client.get("/v1/interim/admin/runtime", headers=_headers())
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["rules"]["safety_rule_version_count"] == 1
+    assert body["rules"]["safety_rule_review_status_counts"] == {"ACTIVE": 1}
+    assert body["models"]["model_version_count"] == 0
+    assert body["models"]["model_status_counts"] == {}
+    assert body["executions"]["execution_count"] == 0
+    assert body["executions"]["agent_run_count"] == 0
+
+
 def test_ordered_agent_workflow_endpoint_enforces_safety_to_plan_sequence(
     tmp_path, monkeypatch
 ) -> None:
