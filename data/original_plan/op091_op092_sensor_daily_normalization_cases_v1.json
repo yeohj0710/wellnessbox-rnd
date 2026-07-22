@@ -1,0 +1,60 @@
+{
+  "schema_version": "op091_op092_sensor_daily_normalization_cases_v1",
+  "frozen_at": "2026-07-22T00:00:00Z",
+  "case_count": 8,
+  "cases": [
+    {
+      "case_id": "generic_wearable_two_days",
+      "kind": "wearable_success",
+      "csv": "date,steps,resting_hr,sleep_minutes\n2026-07-20,8000,61,420\n2026-07-21,9100,59,450\n",
+      "expected": [
+        {"date": "2026-07-20", "steps": 8000, "resting_heart_rate_bpm": 61.0, "sleep_hours": 7.0},
+        {"date": "2026-07-21", "steps": 9100, "resting_heart_rate_bpm": 59.0, "sleep_hours": 7.5}
+      ]
+    },
+    {
+      "case_id": "apple_health_overlap_and_duplicate",
+      "kind": "wearable_success",
+      "csv": "type,startDate,endDate,value,unit\nHKQuantityTypeIdentifierStepCount,2026-07-21T08:00:00+09:00,2026-07-21T08:10:00+09:00,3000,count\nHKQuantityTypeIdentifierStepCount,2026-07-21T12:00:00+09:00,2026-07-21T12:10:00+09:00,2500,count\nHKQuantityTypeIdentifierRestingHeartRate,2026-07-21T07:00:00+09:00,2026-07-21T07:01:00+09:00,60,count/min\nHKCategoryTypeIdentifierSleepAnalysis,2026-07-21T00:00:00+09:00,2026-07-21T07:30:00+09:00,HKCategoryValueSleepAnalysisAsleep,\nHKCategoryTypeIdentifierSleepAnalysis,2026-07-21T01:00:00+09:00,2026-07-21T03:00:00+09:00,HKCategoryValueSleepAnalysisAsleepDeep,\nHKQuantityTypeIdentifierStepCount,2026-07-21T12:00:00+09:00,2026-07-21T12:10:00+09:00,2500,count\n",
+      "expected": [
+        {"date": "2026-07-21", "steps": 5500, "resting_heart_rate_bpm": 60.0, "sleep_hours": 7.5}
+      ]
+    },
+    {
+      "case_id": "cgm_mg_dl_fixed_tir",
+      "kind": "cgm_success",
+      "csv": "date,mean_glucose_mg_dl,postprandial_peak_mg_dl,postprandial_rise_mg_dl,time_in_range_70_180_pct\n2026-07-21,122.4,160.2,37.8,78\n",
+      "expected": [{"date": "2026-07-21", "mean_glucose_mg_dl": 122.4, "postprandial_peak_mg_dl": 160.2, "postprandial_rise_mg_dl": 37.8, "time_in_range_pct": 78.0, "time_in_range_low_mg_dl": 70.0, "time_in_range_high_mg_dl": 180.0}]
+    },
+    {
+      "case_id": "cgm_mmol_conversion",
+      "kind": "cgm_success",
+      "csv": "date,avg_glucose,glucose_unit,post_meal_peak,post_meal_rise,time_in_range_70_180_pct\n2026-07-21,6.8,mmol/L,8.9,2.1,78\n",
+      "expected": [{"date": "2026-07-21", "mean_glucose_mg_dl": 122.4, "postprandial_peak_mg_dl": 160.2, "postprandial_rise_mg_dl": 37.8, "time_in_range_pct": 78.0, "time_in_range_low_mg_dl": 70.0, "time_in_range_high_mg_dl": 180.0}]
+    },
+    {
+      "case_id": "wearable_duplicate_date_rejected",
+      "kind": "wearable_failure",
+      "csv": "date,steps,resting_hr,sleep_hours\n2026-07-21,8000,60,7\n2026-07-21,9000,59,8\n",
+      "expected_error": "duplicate_wearable_daily_summary_date"
+    },
+    {
+      "case_id": "apple_health_timezone_required",
+      "kind": "wearable_failure",
+      "csv": "type,startDate,endDate,value,unit\nHKQuantityTypeIdentifierStepCount,2026-07-21T08:00:00,2026-07-21T08:10:00,3000,count\n",
+      "expected_error": "apple_health_datetime_invalid_or_timezone_missing"
+    },
+    {
+      "case_id": "cgm_nonstandard_tir_rejected",
+      "kind": "cgm_failure",
+      "csv": "date,mean_glucose_mg_dl,postprandial_rise_mg_dl,time_in_range_70_180_pct,time_in_range_low_mg_dl,time_in_range_high_mg_dl\n2026-07-21,120,30,78,80,140\n",
+      "expected_error": "standardized_cgm_time_in_range_bounds_mismatch"
+    },
+    {
+      "case_id": "cgm_postprandial_required",
+      "kind": "cgm_failure",
+      "csv": "date,mean_glucose_mg_dl,time_in_range_70_180_pct\n2026-07-21,120,78\n",
+      "expected_error": "cgm_postprandial_metric_required"
+    }
+  ]
+}
