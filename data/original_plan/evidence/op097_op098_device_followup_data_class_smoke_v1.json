@@ -12,8 +12,8 @@
   },
   "dataset": {
     "path": "data/original_plan/op097_op098_device_followup_data_class_cases_v1.json",
-    "sha256": "c9ba65cae6a31d3d36cb5ba086dac3bdbb7ea8855f4c1084d86267fabedeb036",
-    "case_count": 6
+    "sha256": "ec2f38f0ad097a663afcff878d314d1eafcab5ce6b43da53e916d6fc6c8827cf",
+    "case_count": 7
   },
   "checks": {
     "authenticated_real_api": true,
@@ -24,7 +24,8 @@
     "origin_data_class_pair_mismatch_rejected": true,
     "cross_class_followup_rejected": true,
     "exact_replay_deduplicated": true,
-    "append_only_tamper_rejected": true
+    "append_only_tamper_rejected": true,
+    "candidate_entry_exit_and_null_delta_preserved": true
   },
   "observed": {
     "baseline_magnesium_wearable_adjustment": 4.0,
@@ -45,7 +46,23 @@
     "tamper_errors": [
       "device_recommendation_assessments_append_only",
       "device_recommendation_assessments_append_only"
-    ]
+    ],
+    "candidate_set_transition": {
+      "entered": {
+        "selected_at_baseline": false,
+        "selected_at_follow_up": true,
+        "wearable_adjustment_delta": null,
+        "cgm_adjustment_delta": null,
+        "total_delta": null
+      },
+      "exited": {
+        "selected_at_baseline": true,
+        "selected_at_follow_up": false,
+        "wearable_adjustment_delta": null,
+        "cgm_adjustment_delta": null,
+        "total_delta": null
+      }
+    }
   },
   "stage_boundary": {
     "local_authenticated_api_and_sqlite_integration_proven": true,
@@ -53,7 +70,7 @@
     "production_operation_proven": false
   },
   "source_identity": {
-    "wellnessbox_rnd_commit": "58536428364b38e29afc358bb092a3293fc755da",
-    "wellnessbox_rnd_source_sha256": "1fcf61a4cd39792a8aca200cb2b211e75427e3f40c394800880ebbed2f4c17e9"
+    "wellnessbox_rnd_commit": "7dde4d66b6f56ac60eac4914d7e4251a54e001bb",
+    "wellnessbox_rnd_source_sha256": "13f749b6bf078b13302cef9b4f9c57ff98a505fade75a05e6ca4456bae777f4b"
   }
 }
