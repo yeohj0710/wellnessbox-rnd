@@ -263,6 +263,11 @@ class DoseAmount(_StrictHealthInput):
     amount: float = Field(gt=0, le=1_000_000)
     unit: DoseUnit
 
+    @field_validator("amount", mode="before")
+    @classmethod
+    def reject_boolean_amount(cls, value: object) -> object:
+        return _reject_boolean_numeric(value)
+
 
 class MedicationClassification(_StrictHealthInput):
     code: StructuredHealthCode

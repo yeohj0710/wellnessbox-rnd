@@ -758,6 +758,9 @@ def test_ambiguous_legacy_and_structured_product_dose_is_rejected() -> None:
             dose=DoseAmount(amount=0, unit="mg"),
         )
 
+    with pytest.raises(ValidationError, match="numeric, not boolean"):
+        DoseAmount(amount=True, unit="mg")
+
 
 def test_structured_names_and_classification_reach_existing_model_feature_paths() -> None:
     request = _request(
