@@ -598,7 +598,7 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 단계/과제: 외부 의존성 책임·입력·교체 계약 원장. OP-119는 `IMPLEMENTED / COMPLETE`다.
 - 데이터셋: `data/original_plan/op119_external_dependency_registry_cases_v1.json`, 8건, SHA-256 `12fd157f0946427fb86735d9fd2273e7016c9750978e7aa75d0ec46a0274064c`.
 - 변경: OP-039 책임 역할 1개, 외부 공급 역할 1개, 필수 입력 4종, replacement contract 2개, trust root 기반 차단 사유 4개와 promotion condition을 strict Pydantic 원장으로 고정했다.
-- 검증: registry pytest 6건, focused requirement pytest, Ruff, manifest audit, completion 생성·check, workflow YAML parse를 실행한다. 현재 상태 `76/42/1/1/0`, 주장 118, 증거 파일 328, 보고서 `41/120`이다.
+- 검증: registry pytest 11건과 focused requirement pytest 48건, Ruff, manifest audit, completion 생성·check, workflow YAML parse를 통과했다. 현재 상태 `76/42/1/1/0`, 주장 118, 증거 파일 328, 보고서 `41/120`이다.
 - 경계/delta: 외부 입력·승인·OP-039 독립 검증은 모두 false다. frozen 평가, 학습 데이터, 모델, safety, replay·slice 변화는 0이다.
 - 병목 5개: 한국어 보고서 79개, OPERATED 미달 비외부 요구사항, OP-039 실제 외부 입력 4종, production 배포·traffic, 실제 약사 인증 세션.
 - 다음 세 loop: OP-120 fail-closed 최종 감사 계약; 누락 보고서 보강; 승인된 production·external evidence 관찰.
