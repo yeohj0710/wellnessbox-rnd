@@ -1,7 +1,7 @@
 {
   "schema_version": "op105_op106_profile_review_roundtrip_cases_v1",
   "cases": [
-    {"case_id": "profile_saved_through_service_client", "expected_profile_id": "usr_105106abcdef0123456789abcdef"},
+    {"case_id": "profile_saved_through_authenticated_service_route", "expected_pseudonym_scheme": "hmac_sha256_32"},
     {"case_id": "recommendation_uses_saved_profile", "expected_http_status": 200},
     {"case_id": "recommendation_run_identity_returned", "expected_nonempty": true},
     {"case_id": "pharmacy_scoped_open_review_visible", "expected_pharmacy_id": 105},

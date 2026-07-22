@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import atexit
 import hashlib
+import hmac
 import json
 import os
 import socket
@@ -58,6 +59,10 @@ def main() -> int:
     )
     dataset = json.loads(dataset_bytes)
     token = "Canonical-Profile-Review-Token-2026-Alpha"
+    salt = "Canonical-Profile-Review-Pseudonym-Salt-2026"
+    profile_id = (
+        "usr_" + hmac.new(salt.encode(), b"service-user-op105", hashlib.sha256).hexdigest()[:32]
+    )
     with tempfile.TemporaryDirectory() as temporary:
         database = Path(temporary) / "interim.sqlite3"
         store = InterimStore(database)
@@ -65,7 +70,7 @@ def main() -> int:
         with store.transaction(immediate=True) as connection:
             PharmacistReviewService.create_in_transaction(
                 connection,
-                profile_id="usr_105106abcdef0123456789abcdef",
+                profile_id=profile_id,
                 reason_codes=["CANONICAL_PROFILE_REVIEW"],
                 created_at=datetime.now(UTC),
                 data_class="PROXY_GOLD_SIMULATION",
@@ -97,6 +102,7 @@ def main() -> int:
                 "WB_RND_INTERIM_BASE_URL": base_url,
                 "WB_RND_INTERIM_TOKEN": token,
                 "WB_RND_INTERIM_TIMEOUT_MS": "5000",
+                "WB_RND_INTERIM_PSEUDONYM_SALT": salt,
             }
             completed = subprocess.run(
                 [
@@ -114,22 +120,21 @@ def main() -> int:
                 check=False,
             )
             if completed.returncode != 0:
-                raise AssertionError(
-                    f"service_roundtrip_failed:{completed.stderr.strip()}"
-                )
+                raise AssertionError(f"service_roundtrip_failed:{completed.stderr.strip()}")
             observed = json.loads(completed.stdout.strip().splitlines()[-1])
         finally:
             process.terminate()
             process.wait(timeout=10)
     service_blobs = "\n".join(git("show", f"HEAD:{path}", cwd=SERVICE) for path in SERVICE_PATHS)
     checks = {
-        "profile_roundtrip_completed": observed["profileId"] == "usr_105106abcdef0123456789abcdef",
+        "profile_roundtrip_completed": observed["profileId"] == profile_id,
         "recommendation_roundtrip_completed": bool(observed["recommendationRunId"]),
         "review_queue_roundtrip_completed": str(observed["reviewId"]).startswith("review_"),
         "review_decision_completed": observed["reviewStatus"] == "COMPLETED",
         "review_replay_rejected": observed["immutableReplayRejected"] is True,
-        "service_auth_routes_committed": "requireUserSession" in service_blobs
-        and "requirePharmSession" in service_blobs,
+        "service_route_auth_denial_executed": observed["userAuthDenied"] is True,
+        "service_profile_id_override_executed": observed["browserProfileIdIgnored"] is True,
+        "service_pharmacy_id_override_executed": observed["pharmacyIdOverridden"] is True,
         "pharmacist_screen_uses_service_api": '"/api/pharm/tips/reviews"' in service_blobs,
     }
     if not all(checks.values()):
