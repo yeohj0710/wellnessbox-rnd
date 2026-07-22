@@ -107,7 +107,10 @@ def main() -> int:
         "admin_status_loaded": len(admin["statusCountKeys"]) > 0,
         "admin_kpi_state_loaded": admin["kpiAvailability"] == "UNAVAILABLE",
         "admin_sources_loaded": admin["adapterCount"] > 0,
-        "selling_products_loaded": len(products["observed"]["product_ids"]) > 0,
+        "admin_rules_loaded": admin["runtimeRuleCount"] > 0,
+        "admin_models_state_loaded": admin["runtimeModelCount"] >= 0,
+        "admin_executions_state_loaded": admin["runtimeExecutionCount"] >= 0,
+        "selling_product_fixture_loaded": len(products["observed"]["product_ids"]) > 0,
         "product_candidates_attached": "actual_product_candidates_form_deterministic_combinations"
         in products["checks"],
         "invalid_catalog_fails_closed": products["observed"]["invalid_catalog_http_status"] == 502,
@@ -125,7 +128,7 @@ def main() -> int:
         "schema_version": "op107_op108_admin_product_integration_smoke_v1",
         "requirements": {
             "OP-107": {"required_stage": "OPERATED", "claimed_stage": "INTEGRATED"},
-            "OP-108": {"required_stage": "OPERATED", "claimed_stage": "INTEGRATED"},
+            "OP-108": {"required_stage": "OPERATED", "claimed_stage": "IMPLEMENTED"},
         },
         "dataset": {
             "path": DATASET.relative_to(ROOT).as_posix(),
@@ -134,9 +137,22 @@ def main() -> int:
         },
         "checks": checks,
         "observed": {"admin": admin, "products": products["observed"]},
-        "source_identity": {"wellnessbox_commit": git("rev-parse", "HEAD", cwd=SERVICE)},
+        "source_identity": {
+            "wellnessbox_commit": git("rev-parse", "HEAD", cwd=SERVICE),
+            "wellnessbox_rnd_commit": git("rev-parse", "HEAD"),
+            "wellnessbox_rnd_source_blobs": {
+                path: git("rev-parse", f"HEAD:{path}")
+                for path in (
+                    "apps/inference_api/routes/interim.py",
+                    "data/original_plan/op107_op108_admin_product_integration_cases_v1.json",
+                    "scripts/run_admin_product_integration_smoke.py",
+                )
+            },
+        },
         "stage_boundary": {
-            "local_admin_and_product_integration_proven": True,
+            "local_admin_runtime_integration_proven": True,
+            "product_candidate_contract_implemented": True,
+            "actual_prisma_catalog_or_rnd_product_integration_proven": False,
             "production_operation_proven": False,
         },
     }
