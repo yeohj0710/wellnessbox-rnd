@@ -1,5 +1,13 @@
 # SESSION_HANDOFF
 
+## 2026-07-23 OP-017/018 최종 handoff
+
+- 단계/과제: 출처별 동의와 안정된 정규화 입력 hash 보고서 backfill. OP-017/018 `IMPLEMENTED / COMPLETE`.
+- dataset 8건 SHA-256 `b5991cc307f5fa6cea20fb3165d57798a9389d50338adb89da51c807debbcf6d`; OP-120 evidence `ca11bc8843c4f7a92a3336f16e09f1e0d268b16e2879d8d5f0e8d56074b98bb0`.
+- 결과: 물리 60개, 유효 38/120, 누락·부적합 82개, 274,237자. completion `76/43/0/1/0`, OP-120 `BLOCKED`.
+- 검증: focused pytest 62, tracked Ruff, manifest audit, completion check PASS. 독립 검토 `0/0/0`; CI `29935977162` 성공.
+- 서비스·production·원천/frozen/학습 데이터·모델·simulation 변경 없음. frozen/replay/slice delta 0. 다음: OP-019/020, OP-021/022, OP-023/024.
+
 ## 2026-07-23 OP-015/016 최종 handoff
 
 - 단계/과제: 식사·생활 습관과 검사 관측값 구조화 입력 보고서 backfill. OP-015/016 `IMPLEMENTED / COMPLETE`.

@@ -1,5 +1,14 @@
 # PROGRESS
 
+## 2026-07-23 OP-017/018 연구보고서 backfill 완료
+
+- OP-017의 다섯 데이터 출처별 추천 사용·영구 저장 동의와 OP-018의 canonical snapshot·SHA-256 동일성 계약을 schema, intake, API, 테스트, Git 이력, 원본 PDF 16쪽에 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 운영·외부 검증은 주장하지 않는다.
+- 데이터셋은 `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `b5991cc307f5fa6cea20fb3165d57798a9389d50338adb89da51c807debbcf6d`다. 물리 보고서 60개, 유효 38/120, 누락·부적합 82개, 총 274,237자다.
+- OP-120 evidence는 두 번 byte-identical로 재생됐고 SHA-256은 `ca11bc8843c4f7a92a3336f16e09f1e0d268b16e2879d8d5f0e8d56074b98bb0`다. completion은 `76/43/0/1/0`, 최종 감사는 `BLOCKED`다.
+- focused pytest 62건, tracked Ruff, manifest audit, completion check, canonical 재생이 통과했다. 독립 검토 `Critical 0 / Important 0 / Minor 0`; GitHub Actions `29935977162` 성공.
+- 서비스·production·원천/frozen/학습 데이터·모델·simulation 변경 없음. frozen 256건 7개 지표, replay, weakest slice delta 0.
+- 병목 5개: 보고서 82개, stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt. 다음: OP-019/020, OP-021/022, OP-023/024.
+
 ## 2026-07-23 OP-015/016 연구보고서 backfill 완료
 
 - OP-015 알레르기·식이·생활 습관과 OP-016 검사 관측값의 기존 구현을 schema, intake, 모델 feature, API, 테스트, Git 이력, 원본 PDF 16쪽에 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 통합·운영·외부 검증은 주장하지 않는다.

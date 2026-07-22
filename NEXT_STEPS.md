@@ -1,5 +1,13 @@
 # NEXT_STEPS
 
+## OP-017/018 이후 다음 bounded loop
+
+1. OP-019/020의 service profile adapter와 추천 가능성 계약을 같은 기준으로 backfill한다.
+2. OP-021/022의 구현·증거 경계를 조사하고 장문 보고서를 작성한다.
+3. OP-023/024의 구현·증거 경계를 조사하고 장문 보고서를 작성한다.
+
+현재 물리 연구보고서는 60개, 유효 연구보고서는 38/120이며 누락·부적합 82개가 남는다. 전체 글자 수는 274,237자다. completion은 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, OP-120 evidence SHA-256은 `ca11bc8843c4f7a92a3336f16e09f1e0d268b16e2879d8d5f0e8d56074b98bb0`, 성공 CI는 `29935977162`다.
+
 ## OP-015/016 이후 다음 bounded loop
 
 1. OP-017/018의 동의·안정된 입력 hash와 지원하지 않는 입력 차단 계약을 같은 기준으로 backfill한다.
