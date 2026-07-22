@@ -12,12 +12,12 @@
   },
   "dataset": {
     "path": "data/original_plan/op111_op112_security_boundary_cases_v1.json",
-    "sha256": "0a1265afbe0fdda063b54885634ed7df78d179049a60e469cb28991049a8e8cb",
+    "sha256": "f3bcb33ec3495c8fe43414d45a16998aecafe94321d2d4819ff19a29f4de8169",
     "case_count": 8
   },
   "checks": {
     "three_roles_denied_without_auth": true,
-    "role_guard_source_contract_verified": true,
+    "role_guard_decision_functions_executed": true,
     "authenticated_admin_branch_executed": true,
     "admin_fallback_error_bounded": true,
     "user_profile_scope_server_owned": true,
@@ -49,25 +49,26 @@
     "operationalLogCallSiteMasked": true,
     "publicErrorsBounded": true,
     "directIdentifierPayloadRejected": true,
-    "roleGuardSourceContractVerified": true,
+    "roleGuardDecisionFunctionsExecuted": true,
     "authenticatedAdminBranchExecuted": true,
     "adminFallbackBounded": true,
     "profileId": "usr_4abe904bc513c484dc30edd683b5f876"
   },
   "source_identity": {
-    "wellnessbox_commit": "af62c9a0e364f74b3aef4c7672126273c73f48ad",
+    "wellnessbox_commit": "1912f127a02d158a159ed7edd135f389308a1e6e",
     "wellnessbox_source_blobs": {
       "lib/server/wb-rnd-interim-client.ts": "0f371a42c5331da71dc376ed40de0108a1710993",
       "lib/server/wb-rnd-interim-route.ts": "d871c82d3177f97a05037eeccf050ff2cff75e85",
       "lib/server/wb-rnd-profile-adapter.ts": "feca99445f9de717402e3853ac20b1357b9150f4",
+      "lib/server/route-auth.ts": "b50a36d6e4bb03b4097bf4c892214ac73310b8f1",
       "lib/server/wb-rnd-security.ts": "87171aba76ec489f65c789317eceaf20148b9555",
-      "scripts/qa/check-rnd-security-boundary.cts": "8bd1fc37b143d4a8ae6e8e20d2a5fb787df4751d"
+      "scripts/qa/check-rnd-security-boundary.cts": "2d5f57c89065a9aff2681b6cde647d439431e199"
     },
     "wellnessbox_rnd_source_commit": "24d82df978249e44ec0c4d56b6f4db086e25037b"
   },
   "stage_boundary": {
     "actual_service_route_authorization_branches_executed": true,
-    "role_guard_implementation_source_contract_verified": true,
+    "role_guard_decision_functions_executed": true,
     "actual_rnd_http_token_roundtrip_executed": true,
     "production_identity_provider_operation_proven": false,
     "production_log_sink_inspection_proven": false
