@@ -12,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 NPM = shutil.which("npm")
+NODE = shutil.which("node")
 DATASET = ROOT / "data/original_plan/op115_op116_test_matrix_health_alias_cases_v1.json"
 OUTPUT = ROOT / "data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
 RND_SOURCES = (
@@ -65,8 +66,8 @@ def main() -> int:
     parser.add_argument("--wellnessbox-root", type=Path, required=True)
     args = parser.parse_args()
     service = args.wellnessbox_root.resolve()
-    if NPM is None:
-        raise RuntimeError("npm_executable_not_found")
+    if NPM is None or NODE is None:
+        raise RuntimeError("node_or_npm_executable_not_found")
 
     run(
         [
@@ -107,16 +108,47 @@ def main() -> int:
     run([NPM, "run", "qa:rnd:health-alias"], service)
     run([NPM, "run", "audit:encoding"], service)
     run([NPM, "run", "typecheck"], service)
+    ephemeral_keys = json.loads(
+        run(
+            [
+                NODE,
+                "-e",
+                "console.log(JSON.stringify(require('web-push').generateVAPIDKeys()))",
+            ],
+            service,
+        )
+    )
     build_environment = os.environ.copy() | {
-        "NEXT_PUBLIC_VAPID_PUBLIC_KEY": (
-            "BOg6TZGgE_Y2PxxhLOa9ZHGFTFTCy2uzd3bxAbvjugPkEcKqUPC3s9i2_"
-            "JzvHncqaiHDv6dA4QRX4EUw-a8uylY"
-        ),
-        "VAPID_PRIVATE_KEY": "ldG63qcOOA93gSMycg_FGbUqabmpbHgWyhm4YPMwl8w",
+        "NEXT_PUBLIC_VAPID_PUBLIC_KEY": ephemeral_keys["publicKey"],
+        "VAPID_PRIVATE_KEY": ephemeral_keys["privateKey"],
     }
     run([NPM, "run", "build"], service, environment=build_environment)
 
     dataset = json.loads(git(ROOT, "show", f"HEAD:{DATASET.relative_to(ROOT).as_posix()}"))
+    observed_cases = {
+        "rnd_unit": {"passed": True},
+        "rnd_integration": {"deployment_ready": True},
+        "rnd_e2e": {"case_count": smoke["dataset"]["case_count"], "passed": True},
+        "rnd_encoding_build": {"ruff_and_wheel_passed": True},
+        "wellnessbox_unit_integration": {
+            "handler_qa_passed": True,
+            "typecheck_passed": True,
+        },
+        "wellnessbox_e2e_encoding_build": {"encoding_and_build_passed": True},
+        "rnd_health": {
+            "endpoint_family_count": smoke["observed"]["endpoint_family_count"],
+            "deployment_ready": smoke["observed"]["deployment_contract_status"]
+            == "READY_FOR_PROVIDER_DEPLOYMENT",
+        },
+        "wellnessbox_alias": {
+            "path": "/api/internal/rnd/health",
+            "healthy_status": 200,
+            "disabled_or_unhealthy_status": 503,
+        },
+    }
+    expected_cases = {case["case_id"]: case["expected"] for case in dataset["cases"]}
+    if observed_cases != expected_cases:
+        raise AssertionError({"expected": expected_cases, "observed": observed_cases})
     report = {
         "schema_version": "op115_op116_test_matrix_health_alias_smoke_v1",
         "requirements": {
