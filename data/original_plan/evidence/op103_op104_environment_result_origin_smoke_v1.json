@@ -1,0 +1,37 @@
+{
+  "schema_version": "op103_op104_environment_result_origin_smoke_v1",
+  "requirements": {
+    "OP-103": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "IMPLEMENTED"
+    },
+    "OP-104": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "INTEGRATED"
+    }
+  },
+  "dataset": {
+    "path": "data/original_plan/op103_op104_environment_result_origin_cases_v1.json",
+    "sha256": "a9e6b321ec75908ddc8c755b137bf55dd85ff42bd8242131df72205eae4bf391",
+    "case_count": 8
+  },
+  "checks": {
+    "environment_contract_is_committed": true,
+    "secret_is_server_owned": true,
+    "url_and_timeout_fail_closed": true,
+    "remote_execution_origin_is_explicit": true,
+    "local_snapshot_origin_is_explicit": true,
+    "ambiguous_origin_fails_closed": true,
+    "evaluation_screen_renders_origin": true,
+    "focused_contract_test_is_committed": true
+  },
+  "source_identity": {
+    "wellnessbox_commit": "62e623f08e9721b045a0bc9eebba68a6bfaf6fc6",
+    "wellnessbox_source_sha256": "5562ab67179262d3f5218d409dfb5ba0fd99ae10dc13a852103c1aa70bbc85c0"
+  },
+  "stage_boundary": {
+    "local_service_integration_proven": true,
+    "vercel_environment_registered": false,
+    "production_traffic_proven": false
+  }
+}
