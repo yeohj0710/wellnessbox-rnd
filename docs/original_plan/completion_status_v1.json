@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "03bbbb952cb157001e6e24673e37f05c0b7f6a8460b74cda71d42d80751bc178",
+  "audited_manifest_sha256": "47e47de979a978174152aefe239772c2c56585c29537f919c0a38a9d2b21e017",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 69,
-    "PARTIAL": 28,
-    "PENDING": 22,
+    "COMPLETE": 70,
+    "PARTIAL": 29,
+    "PENDING": 20,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -128,9 +128,9 @@
       "title": "웨어러블·CGM·유전자 연동",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 6,
-        "PARTIAL": 2,
-        "PENDING": 2,
+        "COMPLETE": 7,
+        "PARTIAL": 3,
+        "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -3389,14 +3389,21 @@
         "docs/context/original_plan.pdf#page=24"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/connectors.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_interim_connectors.py",
+          "wellnessbox-rnd/scripts/run_device_dedup_linkage_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op099_op100_device_dedup_linkage_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -3412,14 +3419,21 @@
         "docs/context/original_plan.pdf#page=24"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/kpi.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/connectors.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_interim_kpi.py",
+          "wellnessbox-rnd/scripts/run_device_dedup_linkage_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op099_op100_device_dedup_linkage_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
