@@ -60,15 +60,16 @@ deployment. Startup then fails before serving traffic unless all fields below ar
 - `WB_RND_DEPLOYMENT_TARGET`: provider service name
 - `WB_RND_DEPLOYMENT_ID`: immutable provider deployment identifier
 - `WB_RND_CODE_COMMIT`: full 40-character Git SHA
+- `WB_RND_IMAGE_COMMIT`: immutable image build SHA; must equal `WB_RND_CODE_COMMIT`
 - `WB_RND_INTERIM_DATABASE`: absolute SQLite path on the mounted persistent volume
 - `WB_RND_DATABASE_DURABILITY=provider_persistent_volume`
 - `WB_RND_INTERNAL_AUTH_SCHEME=shared_header_hmac_sha256_v1`
+- `WB_RND_INTERNAL_TOKEN_SECRET_REF`: provider secret-store reference
 - `WB_RND_INTERIM_INTERNAL_TOKEN`: provider-managed secret of at least 32 UTF-8 bytes
 - `WB_RND_WORKERS=1`: required while SQLite is the deployment database
 
 Never commit the token or pass it as a command-line argument. The health response exposes
-only a 12-character SHA-256 prefix so operators can distinguish secret rotations without
-recovering the secret.
+no token, token hash, secret reference, database path, deployment ID, or target name.
 
 `GET /health` derives the required endpoint inventory from the mounted FastAPI routes. It
 fails if any required family is absent: health, recommendation, state machine, device, or

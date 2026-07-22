@@ -131,7 +131,7 @@ def _device_payload(session_id: str) -> dict[str, Any]:
 
 def main() -> int:
     dataset = json.loads(DATASET_PATH.read_text(encoding="utf-8"))
-    token = "canonical-deployment-secret-material-32-bytes"
+    token = "Canonical-Deployment-Secret-2026-07-22-Alpha9"
     with tempfile.TemporaryDirectory() as temporary:
         database = Path(temporary).resolve() / "persistent" / "interim.sqlite3"
         database.parent.mkdir()
@@ -149,8 +149,10 @@ def main() -> int:
             "WB_RND_DEPLOYMENT_TARGET": "canonical-local-provider-boundary",
             "WB_RND_DEPLOYMENT_ID": "op101-op102-process-a",
             "WB_RND_CODE_COMMIT": _source_commit(),
+            "WB_RND_IMAGE_COMMIT": _source_commit(),
             "WB_RND_DATABASE_DURABILITY": "provider_persistent_volume",
             "WB_RND_INTERNAL_AUTH_SCHEME": "shared_header_hmac_sha256_v1",
+            "WB_RND_INTERNAL_TOKEN_SECRET_REF": "provider://canonical/wb-rnd-token",
         }
         process = _start(environment)
         try:
@@ -259,7 +261,7 @@ def main() -> int:
             },
             "dataset": {
                 "path": DATASET_PATH.relative_to(ROOT).as_posix(),
-                "sha256": hashlib.sha256(DATASET_PATH.read_bytes()).hexdigest(),
+                "sha256": _git_blob_sha256(DATASET_PATH),
                 "case_count": len(dataset["cases"]),
             },
             "checks": checks,

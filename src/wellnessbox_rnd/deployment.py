@@ -35,11 +35,14 @@ class DeploymentContract:
     database_path: str
     database_durability: str
     internal_auth_scheme: str
-    internal_token_sha256_prefix: str
+    provider_secret_store_configured: bool
     workers: int
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
+
+    def public_summary(self) -> dict[str, str]:
+        return {"schema_version": self.schema_version, "status": self.status}
 
 
 def validate_deployment_contract(
@@ -61,6 +64,9 @@ def validate_deployment_contract(
     code_commit = values.get("WB_RND_CODE_COMMIT", "").strip().lower()
     if not _COMMIT_PATTERN.fullmatch(code_commit):
         errors.append("code_commit_must_be_full_sha")
+    image_commit = values.get("WB_RND_IMAGE_COMMIT", "").strip().lower()
+    if not _COMMIT_PATTERN.fullmatch(image_commit) or image_commit != code_commit:
+        errors.append("code_commit_must_match_image_commit")
     database_value = values.get("WB_RND_INTERIM_DATABASE", "").strip()
     database_path = Path(database_value) if database_value else Path()
     if not database_value or not database_path.is_absolute():
@@ -74,8 +80,19 @@ def validate_deployment_contract(
     token = values.get("WB_RND_INTERIM_INTERNAL_TOKEN", "")
     if len(token.encode("utf-8")) < 32:
         errors.append("internal_token_minimum_32_bytes")
+    if (
+        len(set(token)) < 16
+        or not any(character.isalpha() for character in token)
+        or not any(character.isdigit() for character in token)
+    ):
+        errors.append("internal_token_complexity_insufficient")
+    secret_reference = values.get("WB_RND_INTERNAL_TOKEN_SECRET_REF", "").strip()
+    if not secret_reference:
+        errors.append("provider_secret_reference_required")
     try:
-        workers = int(values.get("WB_RND_WORKERS", "1"))
+        workers = int(
+            values.get("WB_RND_WORKERS", values.get("WEB_CONCURRENCY", "1"))
+        )
     except ValueError:
         workers = 0
     if workers != 1:
@@ -92,9 +109,19 @@ def validate_deployment_contract(
         database_path=str(database_path),
         database_durability=durability,
         internal_auth_scheme=auth_scheme,
-        internal_token_sha256_prefix=hashlib.sha256(token.encode()).hexdigest()[:12],
+        provider_secret_store_configured=bool(secret_reference),
         workers=workers,
     )
+
+
+def deployment_contract_required(
+    app_env: str, environment: Mapping[str, str] | None = None
+) -> bool:
+    values = os.environ if environment is None else environment
+    explicitly_enforced = values.get(
+        "WB_RND_DEPLOYMENT_CONTRACT_ENFORCED", ""
+    ).lower() in {"1", "true", "yes"}
+    return app_env.strip().lower() in {"staging", "production"} or explicitly_enforced
 
 
 def build_endpoint_inventory(routes: list[RouteLike]) -> dict[str, object]:

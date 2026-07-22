@@ -21,7 +21,9 @@ def healthcheck(request: Request) -> dict[str, object]:
         "environment": settings.app_env,
         "runtime_status": runtime_readiness["runtime_status"],
         "checks": runtime_readiness,
-        "deployment_contract": getattr(request.app.state, "deployment_contract", None),
+        "deployment_contract": getattr(
+            request.app.state, "deployment_contract_public", None
+        ),
         "endpoint_inventory": build_endpoint_inventory(list(request.app.routes)),
     }
 
