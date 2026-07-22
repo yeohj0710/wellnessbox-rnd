@@ -536,3 +536,10 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - Changes: 실제 HTTP로 데이터·출처·규칙·모델·실행 상태를 순차 조회하고 빈 KPI만 `UNAVAILABLE`로 분리했다. 상품 QA는 fixture 결합, 재고 대체, 안전 제외, 잘못된 카탈로그 fail-closed만 증명한다. 실제 Prisma, 주문, 결제, 공개 배포는 실행하지 않았다.
 - Validation: 집중 API 테스트 51개, 서비스 TypeScript·인코딩, Ruff, canonical smoke 재생 diff, manifest 감사, completion report가 통과했다. 독립 리뷰는 최초 `0/3/1`에서 최종 `0/0/0`이 됐다. frozen 평가, 학습 데이터, replay 동작 변화는 없다.
 - Five bottlenecks: 보고서 90개, OP-109/110, OP-108 실제 Prisma+R&D 통합, 승인된 provider 운영, 실제 브라우저 증거. Next three loops: OP-109/110, 보고서 보강, 승인된 운영 검증.
+# 2026-07-22 OP-109/110 handoff
+
+- Stage/tasks: 주문 mutation 경계와 주문 상태의 계획 읽기 전용 환류. OP-109/110은 `IMPLEMENTED / PARTIAL`이며 요구 단계는 `OPERATED`다.
+- Dataset/evidence: `data/original_plan/op109_op110_order_plan_context_cases_v1.json`, 8 cases; `data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json`; service commit `637e5c1d67d2569709bd7c7dd4d65b04b314ad97`.
+- Changes: 인증된 서비스 라우트가 사용자·주문·execution·plan이 모두 일치하는 주문의 최소 필드만 읽고 여섯 상태를 정규화해 실제 R&D HTTP API로 보낸다. `createOrder`는 서버에서 결제를 다시 검증하고 DB 상품 가격과 비교한다. paymentId unique 제약과 트랜잭션이 중복 주문·재고 차감을 닫는다. R&D는 plan state와 이벤트 수를 보존한다.
+- Boundaries: 실제 Prisma 조회·mutation, PostgreSQL, payment sandbox, 브라우저 승인, 생산 운영은 실행하지 않았다. Frozen 평가, 학습 데이터, 모델, safety, replay 로직 변화는 0이다.
+- Validation target: 서비스 TypeScript·인코딩, 계획 생명주기 테스트, Ruff, two-process canonical replay, manifest 감사, completion report, independent re-review, GitHub Actions. 최초 독립 리뷰는 `1/2/1`이었고 네 지적을 수정했다. Bottlenecks: 보고서 88개, OP-111/112, 실제 Prisma·결제 제공자, 승인된 운영, 실제 브라우저. Next: OP-111/112, 보고서 보강, 격리 DB 통합.

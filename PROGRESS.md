@@ -535,3 +535,11 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 서비스 커밋은 `e95592a126cdb2bfeec156d4f4d7de43487e2a63`이다. 완료 상태는 `70/37/12/1/0`, 보고서는 `30/120`, 감사 주장은 `107`, 확인한 증거 파일은 `292`개다.
 - 독립 리뷰의 최초 결과 `Critical 0 / Important 3 / Minor 1`에 따라 규칙·모델·실행 API, 정직한 단계 판정, 장문 보고서, R&D 소스 커밋·blob 식별 정보를 보강했다.
 - 최종 독립 재검토는 `Critical 0 / Important 0 / Minor 0`이다.
+# 2026-07-22 OP-109/110 bounded loop
+
+- 결제 결과 검증 뒤 기존 `createOrder`가 재고 차감과 주문 생성을 소유하는 경계를 고정했다. R&D 추천·계획 라우트는 주문을 변경하지 않는다.
+- 최신 주문 상태를 소분·배송·재주문·취소 컨텍스트로 정규화하고 별도 FastAPI에 실제 HTTP로 전달한다. R&D는 호출 전후 실행 이벤트 수와 계획 상태를 보존한다.
+- OP-109와 OP-110은 모두 `IMPLEMENTED / PARTIAL`이다. 실제 Prisma mutation과 조회, 실제 결제 제공자, 운영 사용은 증명하지 않았다.
+- 데이터셋은 `data/original_plan/op109_op110_order_plan_context_cases_v1.json` 8건이다. 상태는 `70/39/10/1/0`, 보고서는 `32/120`, 감사 주장은 `109`, 확인한 증거 파일은 `300`개다.
+- 이전 CI의 최신 서비스 파일 누락은 감사·completion·계약 테스트가 고정된 최신 OP-110 서비스 checkout을 사용하도록 수정했다.
+- 독립 리뷰의 최초 `Critical 1 / Important 2 / Minor 1`에 따라 Server Action 내부 결제 재검증, 결제 금액과 상품 가격 비교, paymentId unique 제약, 정확한 사용자·주문·execution·plan 바인딩, 넓은 mutation 우회 검사를 추가했다. 서비스 커밋은 `637e5c1d67d2569709bd7c7dd4d65b04b314ad97`이다.

@@ -397,7 +397,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 67ce9fc905202e8d6b4dd54a1dc45a77ca539357
+          ref: 637e5c1d67d2569709bd7c7dd4d65b04b314ad97
           fetch-depth: 0
           path: _evidence/wellnessbox-op110
       - name: Install OP-109/110 service dependencies

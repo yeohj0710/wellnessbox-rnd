@@ -257,3 +257,8 @@ Do not run training or a new `cgm` loop yet.
 1. Complete OP-109/110 order mutation and plan-only state integration.
 2. Backfill `90/120` missing reports.
 3. Add an isolated real Prisma catalog plus real localhost R&D recommendation roundtrip before promoting OP-108 beyond `IMPLEMENTED`; keep production operation gated on approval.
+# Next after OP-109/110
+
+1. Complete OP-111/112 internal authorization, data minimization, pseudonymization, and log-masking integration evidence.
+2. Backfill the remaining `88/120` Korean research reports.
+3. Use isolated PostgreSQL and payment sandbox evidence before promoting OP-109/110; keep production changes approval-gated.
