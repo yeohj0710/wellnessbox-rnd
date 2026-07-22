@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "b33eed41222eaf42bcf809896aa2988e1e31d6ae880f233a042663ebc382f9df",
+  "audited_manifest_sha256": "f4d3c0aa0fb2212850dfa4a7d040edd57216481ad1c537884e2c49160809948b",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -3979,7 +3979,7 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
+      "claimed_stage": "IMPLEMENTED",
       "disposition": "PARTIAL",
       "reasons": [
         "claimed_stage_below_required_stage"
@@ -3993,9 +3993,7 @@
           "wellnessbox-rnd/data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json",
           "wellnessbox-rnd/data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json"
         ],
-        "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json"
-        ],
+        "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []

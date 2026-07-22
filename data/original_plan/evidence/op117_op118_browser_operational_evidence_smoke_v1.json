@@ -3,7 +3,7 @@
   "requirements": {
     "OP-117": {
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED"
+      "claimed_stage": "IMPLEMENTED"
     },
     "OP-118": {
       "required_stage": "OPERATED",
