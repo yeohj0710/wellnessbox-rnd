@@ -501,6 +501,10 @@ jobs:
           WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op118
         run: >-
           python scripts/run_final_completion_audit.py
+          && git ls-files --error-unmatch
+          data/original_plan/evidence/op120_final_completion_audit_v1.json
+          && test -z "$(git status --porcelain --
+          data/original_plan/evidence/op120_final_completion_audit_v1.json)"
           && git diff --exit-code
           data/original_plan/evidence/op120_final_completion_audit_v1.json
       - name: Check generated completion report

@@ -1,5 +1,14 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-120 handoff
+
+- 단계/과제: 최종 완료 감사 계약. OP-120은 `IMPLEMENTED / PARTIAL`이며 required stage `OPERATED`에는 도달하지 않았다.
+- 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `eb6fa5b6bdfdadf0f81d28aec9d941847f951b0cbfda08408dc38313936ecd02`.
+- 결과: 감사 `BLOCKED`, `goal_complete=false`; 전체 상태 `76/43/0/1/0`, 주장 119건, 보고서 `42/120`이다.
+- 차단 조건: required stage 부족 43건, OP-039 외부 검증, 보고서 78건, 최종 검증 영수증, Critical 0·Important 0 독립 검토 영수증이다.
+- 경계: public deployment, production 설정, 인증정보와 서비스 저장소 사용자 변경을 건드리지 않았다. frozen·학습·모델·safety·replay·slice delta는 모두 0이다.
+- 다음 세 loop: OP-001~078 보고서 backfill, 승인된 production 운영 증거 수집, OP-039 외부 검증 입력 등록이다.
+
 ## 2026-07-22 OP-101/102 handoff
 
 - Chosen stage/tasks: `original plan / production service integration`; OP-101 defines the R&D deployment target, persistent DB, and internal authentication contract, while OP-102 verifies the five required API families in the mounted FastAPI app.

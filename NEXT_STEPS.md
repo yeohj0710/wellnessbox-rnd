@@ -1,5 +1,11 @@
 # NEXT_STEPS
 
+## Next after OP-120
+
+1. OP-001~OP-078의 누락 연구보고서 78개를 기존 manifest·증거·커밋과 대조해 작성하고 보고서 감사를 통과시킨다.
+2. 비외부 요구사항 43개의 required stage 부족을 운영 증거별로 나눠 해소한다. production 변경은 사용자 승인을 받은 뒤에만 수행한다.
+3. OP-039 외부 입력·승인·독립 평가가 실제로 제공되면 trust root 계약에 등록하고 외부 검증을 실행한다.
+
 ## 2026-07-15 original plan completion program
 
 The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-101/102 now enforce a deployment contract and required endpoint inventory across two local processes, but remain below required `OPERATED` because no provider deployment occurred. Generated status is complete `70`, partial `31`, pending `18`, external `1`, contradicted `0`. Long-form research-report coverage is only `24/120`; the remaining `96` reports still require separate evidence-grounded prose. The current reports total `168,510` characters, so manifest completion must never be presented as 120 finished reports.

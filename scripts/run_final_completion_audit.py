@@ -62,22 +62,16 @@ def main() -> int:
     facts = audit.facts
     observed = {
         "requirement_inventory": {"requirement_count": facts.requirement_count},
-        "claimed_inventory": {
-            "claimed_requirement_count": facts.claimed_requirement_count
-        },
+        "claimed_inventory": {"claimed_requirement_count": facts.claimed_requirement_count},
         "required_stage_gaps": {
             "nonexternal_stage_gap_count": len(facts.nonexternal_stage_gap_ids)
         },
-        "external_validation": {
-            "external_validation_gap_ids": facts.external_validation_gap_ids
-        },
+        "external_validation": {"external_validation_gap_ids": facts.external_validation_gap_ids},
         "research_reports": {
             "report_count": facts.report_count,
             "missing_report_count": len(facts.missing_report_ids),
         },
-        "canonical_evidence": {
-            "audit_passed": facts.canonical_evidence_audit_passed
-        },
+        "canonical_evidence": {"audit_passed": facts.canonical_evidence_audit_passed},
         "completion_receipts": {
             "validation": facts.validation_receipt_valid,
             "independent_review": facts.independent_review_receipt_valid,
@@ -91,6 +85,7 @@ def main() -> int:
     if observed != expected:
         raise AssertionError({"expected": expected, "observed": observed})
     source_commit, source_blobs = verified_head_identity()
+    audited_input_hashes = _audited_input_hashes()
     payload = {
         "schema_version": "op120_final_completion_audit_v1",
         "requirement": {
@@ -106,6 +101,15 @@ def main() -> int:
         "audit": audit.model_dump(mode="json"),
         "observed": observed,
         "source_identity": {"commit": source_commit, "blobs": source_blobs},
+        "audited_input_identity": {
+            "repository_heads": {
+                "wellnessbox-rnd": git("rev-parse", "HEAD"),
+                "wellnessbox": subprocess.check_output(
+                    ["git", "-C", str(SERVICE_ROOT), "rev-parse", "HEAD"], text=True
+                ).strip(),
+            },
+            "file_sha256": audited_input_hashes,
+        },
         "stage_boundary": {
             "final_auditor_implemented": True,
             "final_audit_ready": False,
@@ -118,6 +122,28 @@ def main() -> int:
     )
     print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
     return 0
+
+
+def _audited_input_hashes() -> dict[str, str]:
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    references = {"wellnessbox-rnd/" + MANIFEST.relative_to(ROOT).as_posix()}
+    for group in manifest["groups"]:
+        for requirement in group["requirements"]:
+            for values in requirement.get("evidence", {}).values():
+                if isinstance(values, list):
+                    references.update(
+                        item for item in values if isinstance(item, str) and "/" in item
+                    )
+    for report in REPORTS.glob("OP-*.md"):
+        references.add("wellnessbox-rnd/" + report.relative_to(ROOT).as_posix())
+    hashes: dict[str, str] = {}
+    roots = {"wellnessbox-rnd": ROOT, "wellnessbox": SERVICE_ROOT}
+    for reference in sorted(references):
+        repository, relative = reference.split("/", 1)
+        path = roots[repository] / relative
+        if path.is_file():
+            hashes[reference] = sha256(path)
+    return hashes
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import json
+import hashlib
+import subprocess
 from enum import StrEnum
 from pathlib import Path
 
@@ -46,6 +47,27 @@ class FinalCompletionAuditV1(_StrictModel):
     blockers: list[str] = Field(default_factory=list)
 
 
+class FinalAuditPolicyV1(_StrictModel):
+    schema_version: str
+    required_requirement_count: int
+    required_report_count: int
+    validation_receipt_path: str | None
+    independent_review_receipt_path: str | None
+
+
+class CompletionReceiptV1(_StrictModel):
+    schema_version: str
+    status: str
+    manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    canonical_audit_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    source_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
+
+
+class IndependentReviewReceiptV1(CompletionReceiptV1):
+    critical_count: int
+    important_count: int
+
+
 def evaluate_final_completion_facts_v1(
     facts: FinalCompletionFactsV1,
 ) -> FinalCompletionAuditV1:
@@ -57,9 +79,7 @@ def evaluate_final_completion_facts_v1(
     if facts.nonexternal_stage_gap_ids:
         blockers.append(f"nonexternal_stage_gaps:{len(facts.nonexternal_stage_gap_ids)}")
     if facts.external_validation_gap_ids:
-        blockers.append(
-            f"external_validation_gaps:{len(facts.external_validation_gap_ids)}"
-        )
+        blockers.append(f"external_validation_gaps:{len(facts.external_validation_gap_ids)}")
     if facts.report_count != 120 or facts.missing_report_ids:
         blockers.append(f"research_report_gaps:{len(facts.missing_report_ids)}")
     if not facts.canonical_evidence_audit_passed:
@@ -86,9 +106,7 @@ def audit_final_completion_v1(
 ) -> FinalCompletionAuditV1:
     manifest = load_original_plan_manifest_v1(manifest_path)
     requirements = materialize_original_plan_requirements_v1(manifest)
-    canonical_audit = audit_original_plan_manifest_v1(
-        manifest, repository_roots=repository_roots
-    )
+    canonical_audit = audit_original_plan_manifest_v1(manifest, repository_roots=repository_roots)
     stage_rank = {
         EvidenceStage.IMPLEMENTED: 1,
         EvidenceStage.INTEGRATED: 2,
@@ -113,11 +131,17 @@ def audit_final_completion_v1(
     missing_reports = [
         item.requirement_id
         for item in requirements
-        if not (report_root / f"{item.requirement_id}.md").is_file()
+        if not _valid_research_report(
+            report_root / f"{item.requirement_id}.md", item.requirement_id
+        )
     ]
-    policy = json.loads(Path(policy_path).read_text(encoding="utf-8"))
-    validation_receipt = policy.get("validation_receipt_path")
-    review_receipt = policy.get("independent_review_receipt_path")
+    policy = FinalAuditPolicyV1.model_validate_json(Path(policy_path).read_text(encoding="utf-8"))
+    if policy.schema_version != "op120_final_audit_policy_v1":
+        raise ValueError(f"unsupported final audit policy: {policy.schema_version}")
+    canonical_audit_sha256 = hashlib.sha256(
+        canonical_audit.model_dump_json().encode("utf-8")
+    ).hexdigest()
+    manifest_sha256 = canonical_audit.manifest_sha256
     facts = FinalCompletionFactsV1(
         requirement_count=len(requirements),
         claimed_requirement_count=sum(item.claimed_stage is not None for item in requirements),
@@ -125,39 +149,115 @@ def audit_final_completion_v1(
         external_validation_gap_ids=external_gaps,
         report_count=len(requirements) - len(missing_reports),
         missing_report_ids=missing_reports,
-        canonical_evidence_audit_passed=canonical_audit.status
-        == OriginalPlanAuditStatus.PASS,
-        validation_receipt_valid=_receipt_valid(validation_receipt, "PASS"),
-        independent_review_receipt_valid=_review_receipt_valid(review_receipt),
+        canonical_evidence_audit_passed=canonical_audit.status == OriginalPlanAuditStatus.PASS,
+        validation_receipt_valid=_receipt_valid(
+            policy.validation_receipt_path,
+            repository_roots,
+            manifest_sha256,
+            canonical_audit_sha256,
+        ),
+        independent_review_receipt_valid=_review_receipt_valid(
+            policy.independent_review_receipt_path,
+            repository_roots,
+            manifest_sha256,
+            canonical_audit_sha256,
+        ),
     )
+    if policy.required_requirement_count != 120 or policy.required_report_count != 120:
+        raise ValueError("final audit policy must require exactly 120 requirements and reports")
     return evaluate_final_completion_facts_v1(facts)
 
 
-def _receipt_valid(reference: object, expected_status: str) -> bool:
-    if not isinstance(reference, str):
-        return False
-    path = Path(reference)
-    if not path.is_file():
-        return False
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return False
-    return payload.get("status") == expected_status
-
-
-def _review_receipt_valid(reference: object) -> bool:
-    if not isinstance(reference, str):
-        return False
-    path = Path(reference)
-    if not path.is_file():
+def _receipt_valid(
+    reference: object,
+    repository_roots: dict[RepositoryName | str, str | Path],
+    manifest_sha256: str,
+    canonical_audit_sha256: str,
+) -> bool:
+    resolved = _trusted_receipt_path(reference, repository_roots)
+    if resolved is None:
         return False
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
+        receipt = CompletionReceiptV1.model_validate_json(resolved.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return False
     return (
-        payload.get("status") == "PASS"
-        and payload.get("critical_count") == 0
-        and payload.get("important_count") == 0
+        receipt.schema_version == "final_validation_receipt_v1"
+        and receipt.status == "PASS"
+        and receipt.manifest_sha256 == manifest_sha256
+        and receipt.canonical_audit_sha256 == canonical_audit_sha256
+        and receipt.source_commit
+        in {_git_head(Path(root).resolve()) for root in repository_roots.values()}
+    )
+
+
+def _review_receipt_valid(
+    reference: object,
+    repository_roots: dict[RepositoryName | str, str | Path],
+    manifest_sha256: str,
+    canonical_audit_sha256: str,
+) -> bool:
+    resolved = _trusted_receipt_path(reference, repository_roots)
+    if resolved is None:
+        return False
+    try:
+        receipt = IndependentReviewReceiptV1.model_validate_json(
+            resolved.read_text(encoding="utf-8")
+        )
+    except (OSError, ValueError):
+        return False
+    return (
+        receipt.schema_version == "independent_final_review_receipt_v1"
+        and receipt.status == "PASS"
+        and receipt.manifest_sha256 == manifest_sha256
+        and receipt.canonical_audit_sha256 == canonical_audit_sha256
+        and receipt.critical_count == 0
+        and receipt.important_count == 0
+    )
+
+
+def _trusted_receipt_path(
+    reference: object,
+    repository_roots: dict[RepositoryName | str, str | Path],
+) -> Path | None:
+    if not isinstance(reference, str) or "/" not in reference:
+        return None
+    repository_name, relative = reference.split("/", 1)
+    try:
+        repository = RepositoryName(repository_name)
+    except ValueError:
+        return None
+    roots = {
+        RepositoryName(str(key)): Path(value).resolve() for key, value in repository_roots.items()
+    }
+    root = roots.get(repository)
+    if root is None:
+        return None
+    path = (root / relative).resolve()
+    if not path.is_relative_to(root) or not path.is_file():
+        return None
+    tracked = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "--error-unmatch", relative],
+        capture_output=True,
+        check=False,
+    )
+    return path if tracked.returncode == 0 else None
+
+
+def _git_head(root: Path) -> str:
+    return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+
+
+def _valid_research_report(path: Path, requirement_id: str) -> bool:
+    if not path.is_file():
+        return False
+    try:
+        content = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        return False
+    headings = [line for line in content.splitlines() if line.startswith("## ")]
+    return (
+        len(content.strip()) >= 500
+        and requirement_id in content.splitlines()[0]
+        and len(headings) >= 3
     )
