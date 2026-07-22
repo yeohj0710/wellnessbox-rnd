@@ -1,0 +1,57 @@
+{
+  "schema_version": "op101_op102_deployment_contract_endpoint_smoke_v1",
+  "requirements": {
+    "OP-101": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "INTEGRATED"
+    },
+    "OP-102": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "INTEGRATED"
+    }
+  },
+  "dataset": {
+    "path": "data/original_plan/op101_op102_deployment_contract_endpoint_cases_v1.json",
+    "sha256": "a91d4d5a7f3fe7c18d8ff6a7cf0fc887fa627eb6c449b90cf5684ea452e60cda",
+    "case_count": 8
+  },
+  "checks": {
+    "enforced_contract_ready_on_both_processes": true,
+    "five_required_endpoint_families_mounted": true,
+    "internal_api_rejects_missing_token": true,
+    "health_recommendation_device_http_reachable": true,
+    "state_machine_and_counseling_routes_reachable": true,
+    "persistent_database_survives_restart": true,
+    "restart_replay_uses_canonical_event": true,
+    "deterministic_recommendation_preserved": true
+  },
+  "observed": {
+    "deployment_contract_status": "READY_FOR_PROVIDER_DEPLOYMENT",
+    "endpoint_family_count": 5,
+    "endpoint_inventory_sha256": "28a0b97573aa78e29b5a8f7554466d6b974dc259866f872550271770584a379c",
+    "unauthorized_status": 401,
+    "profile_status": 200,
+    "device_status": 200,
+    "recommend_status": 200,
+    "recommend_mode": "deterministic_baseline_v1",
+    "restart_contract_status": "READY_FOR_PROVIDER_DEPLOYMENT",
+    "replay_status": 200,
+    "replay_deduplicated": true,
+    "replay_session_id": "deployment-device-1",
+    "persisted_connector_rows": 1,
+    "status_api_status": 200,
+    "authorized_family_probe_statuses": {
+      "state_machine": 422,
+      "counseling": 422
+    }
+  },
+  "stage_boundary": {
+    "two_local_processes_and_restart_persistence_proven": true,
+    "provider_deployment_proven": false,
+    "production_traffic_proven": false
+  },
+  "source_identity": {
+    "wellnessbox_rnd_commit": "8c260cfe0c6e5ac9ff7164bdc78c514bcdf34849",
+    "wellnessbox_rnd_source_sha256": "c28a6174a2dbd2cda4fb1c93b9f8f5ceed091c39d76a475bc306c01bf75217f0"
+  }
+}
