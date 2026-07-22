@@ -1,5 +1,19 @@
 # PROGRESS
 
+## 2026-07-22 genetic normalization and consent boundary loop
+
+- Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`, OP-093 and OP-094.
+- Dataset/cases: `data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json` contains `8` frozen cases for alias normalization, deterministic ordering, legacy tags, missing/invalid/conflicting provenance, recommendation denial, and persistent-storage denial/allowance. Canonical evidence is `data/original_plan/evidence/op093_op094_genetic_normalization_consent_smoke_v1.json`, SHA-256 `A1F6264F19728A1C1697704CF03C412ACDF563AAA33481E1D13D4285121B9A24`; source identity is commit `7ebac677f7e54c6935ce789f4261fd71028c3cab`.
+- Reuse/integration: the implementation extends the existing sensor/genetic snapshot, parser, intake consent gate, bounded candidate scoring, and source-partitioned Data Lake profile snapshot. It adds no genetic provider, variant database, diagnostic engine, or parallel persistence path.
+- Implementation: each structured variant requires normalized gene, variant identifier, genotype, bounded interpretation, interpretation criterion, testing laboratory, and ISO test date. Conflicting aliases, duplicate variants, unsupported interpretations, missing provenance, non-string text fields, and invalid dates fail closed. Recommendation denial removes tags and variants before hashing/scoring; storage denial excludes them from actual SQLite profile persistence.
+- Evidence stage: OP-093 and OP-094 are COMPLETE at required `IMPLEMENTED`. No laboratory/provider integration, raw genetic-file ingestion, deployment, production operation, medical reinterpretation, external privacy review, or model training is claimed.
+- Research reports: OP-079 through OP-094 have separate full-prose reports. Coverage is `16/120`; `104` remain. The sixteen reports total `131,374` characters. OP-093 has `5,642` characters and OP-094 has `5,687` characters.
+- Generated status: complete `67`, partial `26`, pending `26`, external `1`, contradicted `0`; audit PASS with `93` claims and `257` checked evidence files.
+- Validation: focused and completion-contract selection `97 passed`; CI exact selection `650 passed, 1 skipped`; tracked-Python Ruff passed; all canonical workflow evidence passed. Full suite collected `1,096`: `1,019 passed`, `77 failed`, exactly the known `73` absent-report plus `4` CGM groups. Frozen evaluation has `256` cases, seven zero metric deltas, and unchanged overall and metric-specific weakest categories.
+- Independent review: the first review found Important `1` because non-string provenance was coerced to text. Strict type rejection and regressions fixed it. Final review is Critical `0`, Important `0`, Minor `0`.
+- Publication: implementation/evidence HEAD `2750d136128920f4408874131c4c1467bfb5aa65` is on `origin/main`. CI run `29882285639` exposed stale downstream source identities; all affected canonical evidence was regenerated against the clean service checkout. `Original plan evidence` run `29882424484` then passed every step.
+- Next loops: OP-095/096 partial-success and raw-file lineage; OP-097/098 device-value integration and data-class boundary; evidence-grounded OP-001 through OP-078 report backfill.
+
 ## 2026-07-22 sensor normalization and fail-closed alias loop
 
 - Chosen stage/tasks: `original plan / sensor integration`, OP-091 and OP-092.

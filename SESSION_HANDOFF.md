@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-093/094 handoff
+
+- Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`; OP-093 preserves normalized variant interpretation provenance, and OP-094 excludes non-consented genetic data from recommendation influence and local persistence.
+- Primary dataset and cases: `data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json`, `8` frozen cases. Canonical evidence is `data/original_plan/evidence/op093_op094_genetic_normalization_consent_smoke_v1.json`, SHA-256 `A1F6264F19728A1C1697704CF03C412ACDF563AAA33481E1D13D4285121B9A24`; source identity is `7ebac677f7e54c6935ce789f4261fd71028c3cab`.
+- Main files: recommendation schema, sensor parser, intake consent gate, Data Lake profile persistence, parser/consent/lineage tests, frozen dataset, canonical runner and evidence, requirement manifest, generated completion reports, workflow, and `OP-093.md` plus `OP-094.md`.
+- Code/data/training/simulation: structured variants require gene, identifier, genotype, bounded interpretation, criterion, laboratory, and ISO date; malformed or conflicting provenance fails closed. Denied genetic data is removed before input hashing and scoring and omitted from actual SQLite storage. Approved legacy tags remain the only genetic score input. No training, frozen-data change, provider integration, deployment, operation, or external validation occurred.
+- Stage/result: OP-093 and OP-094 are COMPLETE at required `IMPLEMENTED`. Completion counts are `67/26/26/1/0` for complete/partial/pending/external/contradicted.
+- Research-report result: OP-079 through OP-094 have separate explanatory prose reports. Coverage is `16/120`, not 120/120; `104` remain. Total report text is `131,374` characters. OP-093 is `5,642` characters and OP-094 is `5,687` characters. Reference basis was the Toss easy-finance explanatory article family.
+- Independent review: initial Critical `0`, Important `1`, Minor `0`; non-string identifiers, genotypes, criteria, and laboratory values had been coerced to text. Strict type rejection and regressions fixed the defect. Final result is Critical `0`, Important `0`, Minor `0`.
+- Validation: focused/completion selection `97 passed`; CI exact selection `650 passed, 1 skipped`; tracked-Python Ruff PASS; audit PASS with `93` claims and `257` evidence files; completion check PASS; every canonical smoke PASS. Full regression collected `1,096`: `1,019 passed`, `77 failed`, exactly the known `73 + 4` groups. Frozen evaluation has `256` cases, seven zero deltas, and unchanged weakest categories.
+- Publication: R&D HEAD `2750d136128920f4408874131c4c1467bfb5aa65` is on `origin/main`; final CI run `29882424484` passed. The service stays at `a24b6c3308cc76627c3ca29807db1705e32c2178`, and its pre-existing user changes were preserved.
+- Five current bottlenecks: `104/120` reports remain; OP-095/096 are not implemented; no raw genetic-file hash/result lineage exists; no production genetic provider or laboratory integration exists; the legacy suite retains `77` known absent-report and CGM failures.
+- Next three loops: OP-095/096 partial-success and raw-hash lineage; OP-097/098 device score/follow-up integration and production-vs-simulation data class; OP-001 through OP-078 report backfill from primary evidence and Git history only.
+
 ## 2026-07-22 OP-091/092 handoff
 
 - Chosen stage/tasks: `original plan / sensor integration`; OP-091 normalizes bounded Fitbit and Apple Health daily activity summaries, and OP-092 normalizes bounded CGM daily summaries with fail-closed unit and alias handling.
