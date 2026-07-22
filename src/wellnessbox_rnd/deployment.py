@@ -22,7 +22,6 @@ IMAGE_COMMIT_PATH = Path(__file__).resolve().parents[2] / ".wellnessbox-rnd-imag
 
 class RouteLike(Protocol):
     path: str
-    methods: set[str] | None
 
 
 @dataclass(frozen=True)
@@ -131,12 +130,7 @@ def deployment_contract_required(
 
 
 def build_endpoint_inventory(routes: list[RouteLike]) -> dict[str, object]:
-    mounted = {
-        (method, route.path)
-        for route in routes
-        for method in sorted(route.methods or set())
-        if method not in {"HEAD", "OPTIONS"}
-    }
+    mounted = set().union(*(_mounted_route_pairs(route) for route in routes))
     families = {
         family: {
             "method": method,
@@ -155,3 +149,17 @@ def build_endpoint_inventory(routes: list[RouteLike]) -> dict[str, object]:
         "families": families,
         "inventory_sha256": hashlib.sha256(canonical.encode()).hexdigest(),
     }
+
+
+def _mounted_route_pairs(route: object, prefix: str = "") -> set[tuple[str, str]]:
+    methods = set(getattr(route, "methods", None) or set()) - {"HEAD", "OPTIONS"}
+    path = str(getattr(route, "path", ""))
+    pairs = {(method, prefix + path) for method in methods}
+    original_router = getattr(route, "original_router", None)
+    if original_router is None:
+        return pairs
+    include_context = getattr(route, "include_context", None)
+    nested_prefix = prefix + str(getattr(include_context, "prefix", ""))
+    for child in getattr(original_router, "routes", []):
+        pairs.update(_mounted_route_pairs(child, nested_prefix))
+    return pairs

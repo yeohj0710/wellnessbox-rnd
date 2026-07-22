@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from fastapi.testclient import TestClient
@@ -80,6 +81,22 @@ def test_endpoint_inventory_is_derived_from_mounted_routes() -> None:
     assert inventory["status"] == "COMPLETE"
     assert set(inventory["families"]) == set(REQUIRED_ENDPOINT_FAMILIES)
     assert all(item["mounted"] for item in inventory["families"].values())
+
+
+def test_endpoint_inventory_ignores_included_router_without_methods() -> None:
+    nested_routes = [
+        SimpleNamespace(path=path.removeprefix("/v1"), methods={method})
+        for method, path in REQUIRED_ENDPOINT_FAMILIES.values()
+        if path.startswith("/v1")
+    ]
+    included = SimpleNamespace(
+        original_router=SimpleNamespace(routes=nested_routes),
+        include_context=SimpleNamespace(prefix="/v1"),
+    )
+
+    inventory = build_endpoint_inventory([*list(app.routes), included])
+
+    assert inventory["status"] == "COMPLETE"
 
 
 def test_web_concurrency_alias_cannot_bypass_single_worker_contract(tmp_path: Path) -> None:
