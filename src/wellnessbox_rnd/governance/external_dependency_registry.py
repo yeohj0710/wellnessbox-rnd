@@ -167,22 +167,7 @@ def audit_external_dependency_registry_v1(
             set(reason_codes)
         ):
             raise ExternalDependencyRegistryError("registry identifiers must be unique")
-        if entry.readiness == "READY" and (
-            any(item.provision_status != "PROVIDED" for item in entry.required_inputs)
-            or entry.blocking_reasons
-        ):
-            raise ExternalDependencyRegistryError(
-                f"{requirement_id} cannot be READY with missing inputs or blockers"
-            )
-        if entry.readiness == "BLOCKED" and (
-            not entry.blocking_reasons
-            or not any(
-                item.provision_status == "MISSING" for item in entry.required_inputs
-            )
-        ):
-            raise ExternalDependencyRegistryError(
-                f"{requirement_id} BLOCKED requires blockers and missing inputs"
-            )
+        _validate_readiness(entry)
         for reason in entry.blocking_reasons:
             source = _resolve_repository_file(root, reason.source_path)
             try:
@@ -284,3 +269,18 @@ def _resolve_json_pointer(document: object, pointer: str) -> object:
             raise KeyError(pointer)
         value = value[token]
     return value
+
+
+def _validate_readiness(entry: ExternalDependencyEntryV1) -> None:
+    has_missing_input = any(
+        item.provision_status == "MISSING" for item in entry.required_inputs
+    )
+    has_blocker = bool(entry.blocking_reasons)
+    if entry.readiness == "READY" and (has_missing_input or has_blocker):
+        raise ExternalDependencyRegistryError(
+            f"{entry.requirement_id} cannot be READY with missing inputs or blockers"
+        )
+    if entry.readiness == "BLOCKED" and not (has_missing_input or has_blocker):
+        raise ExternalDependencyRegistryError(
+            f"{entry.requirement_id} BLOCKED requires an unresolved input or blocker"
+        )

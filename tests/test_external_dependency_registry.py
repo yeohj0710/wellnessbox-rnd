@@ -5,7 +5,9 @@ from pathlib import Path
 
 import pytest
 
+import wellnessbox_rnd.governance.external_dependency_registry as registry_module
 from wellnessbox_rnd.governance.external_dependency_registry import (
+    ExternalDependencyEntryV1,
     ExternalDependencyRegistryError,
     audit_external_dependency_registry_v1,
 )
@@ -118,3 +120,25 @@ def test_registry_rejects_repository_path_traversal(tmp_path: Path) -> None:
     )
     with pytest.raises(ExternalDependencyRegistryError, match="path traversal"):
         audit_external_dependency_registry_v1(path, MANIFEST, ROOT)
+
+
+def _transition_entry(*, readiness: str, blockers: bool) -> ExternalDependencyEntryV1:
+    payload = json.loads(REGISTRY.read_text(encoding="utf-8"))["entries"][0]
+    payload["readiness"] = readiness
+    if not blockers:
+        payload["blocking_reasons"] = []
+    for item in payload["required_inputs"]:
+        item["provision_status"] = "PROVIDED"
+        item["artifact_path"] = "provided.json"
+        item["artifact_sha256"] = "a" * 64
+    return ExternalDependencyEntryV1.model_validate(payload)
+
+
+def test_readiness_allows_all_provided_with_approval_blockers() -> None:
+    entry = _transition_entry(readiness="BLOCKED", blockers=True)
+    registry_module._validate_readiness(entry)
+
+
+def test_readiness_allows_ready_after_all_conditions_resolve() -> None:
+    entry = _transition_entry(readiness="READY", blockers=False)
+    registry_module._validate_readiness(entry)
