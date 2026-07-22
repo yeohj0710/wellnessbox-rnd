@@ -23,6 +23,11 @@ def test_recommendation_score_uses_reference_set_denominator_from_plan_page_26()
     assert score == 50.0
 
 
+def test_recommendation_score_rejects_empty_reference_set() -> None:
+    with pytest.raises(ValueError, match="recommendation_reference_set_required"):
+        recommendation_reference_coverage(reference=set(), predicted=set())
+
+
 def test_linkage_uses_equal_weight_macro_average_across_w_c_g() -> None:
     result = linkage_macro_rate(
         [
@@ -99,6 +104,12 @@ def test_bundled_proxy_evaluation_passes_all_seven_without_real_claims(tmp_path)
         "PENDING_PRODUCTION_DEVICE_SESSIONS",
     }
     assert report.by_id("KPI-1").proxy_value == 100.0
+    assert report.by_id("KPI-1").sample_count == 3_544
+    assert report.by_id("KPI-1").details == {
+        "invalid_reference_count": 1_456,
+        "total_input_count": 5_000,
+        "valid_reference_count": 3_544,
+    }
     assert report.by_id("KPI-5").hard_failures == 0
 
     with store.transaction() as connection:

@@ -8,7 +8,7 @@
 
 | KPI | 프록시 결과 | 표본 | 95% CI | 프록시 판정 | 실제 연구 교체 상태 |
 |---|---:|---:|---:|---|---|
-| KPI-1 | 100.000000 | 5,000 | 100.0000–100.0000 | 통과 | PENDING_PHARMACIST_GOLD |
+| KPI-1 | 100.000000 | 3,544 | 100.0000–100.0000 | 통과 | PENDING_PHARMACIST_GOLD |
 | KPI-2 | 6.045903 | 240 | 5.7740–6.3024 | 통과 | PENDING_REAL_WORLD_OUTCOME |
 | KPI-3 | 99.933333 | 1,500 | 99.8000–100.0000 | 통과 | PENDING_EXTERNAL_TEST |
 | KPI-4 | 98.533333 | 1,500 | 97.8667–99.1333 | 통과 | PENDING_EXTERNAL_TEST |
@@ -26,6 +26,7 @@
 - 재학습 manifest SHA-256: `ec1a038a5ac372beed3b8254311c9c4a271e6aad970515397bd1d7028afcb934`
 - 등록 모델: `proxy-recommendation-f6b053ee0eb39d16` / `f6b053ee0eb39d16e12e102723f9435a03e71068b70502f6ca702c80e82a7612`
 - 원 개발계획 PDF 25–26쪽 수식 대조: 추천 분모는 기준 집합 `|R_i|`; W/C/G는 세 출처 동일 가중 macro 평균.
+- KPI-1 분모 검증: 빈 기준 집합 1,456건 제외; 유효 기준 집합 3,544건 평가.
 
 ## 구현 판정
 

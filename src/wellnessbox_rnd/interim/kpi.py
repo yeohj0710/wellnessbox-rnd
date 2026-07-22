@@ -75,7 +75,7 @@ def recommendation_reference_coverage(
     predicted: set[str],
 ) -> float:
     if not reference:
-        return 100.0 if not predicted else 0.0
+        raise ValueError("recommendation_reference_set_required")
     return 100.0 * len(reference & predicted) / len(reference)
 
 
@@ -142,12 +142,20 @@ def _payloads(store: InterimStore, kind: str) -> list[dict[str, object]]:
 
 def evaluate_proxy_kpis(store: InterimStore) -> KpiReport:
     recommendation_rows = _payloads(store, "recommendation")
+    valid_recommendation_rows = [
+        row for row in recommendation_rows if set(map(str, row.get("gold_proxy", [])))
+    ]
+    invalid_recommendation_reference_count = (
+        len(recommendation_rows) - len(valid_recommendation_rows)
+    )
+    if not valid_recommendation_rows:
+        raise ValueError("recommendation_valid_reference_set_required")
     recommendation_values = [
         recommendation_reference_coverage(
             reference=set(map(str, row.get("gold_proxy", []))),
             predicted=set(map(str, row.get("predicted", []))),
         )
-        for row in recommendation_rows
+        for row in valid_recommendation_rows
     ]
     rec_value = statistics.mean(recommendation_values)
     rec_ci = deterministic_bootstrap_mean_ci(recommendation_values)
@@ -232,6 +240,11 @@ def evaluate_proxy_kpis(store: InterimStore) -> KpiReport:
             ">=88%, CI lower>=84%",
             len(recommendation_values) >= 100 and rec_value >= 88.0 and rec_ci[0] >= 84.0,
             ReplacementStatus.PENDING_PHARMACIST_GOLD,
+            details={
+                "invalid_reference_count": invalid_recommendation_reference_count,
+                "total_input_count": len(recommendation_rows),
+                "valid_reference_count": len(valid_recommendation_rows),
+            },
         ),
         KpiResult(
             "KPI-2",

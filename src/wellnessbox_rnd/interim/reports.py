@@ -111,7 +111,10 @@ def generate_release(
             + f"- 재학습 manifest SHA-256: `{retrained_manifest_hash}`\n"
             + f"- 등록 모델: `{model['model_id']}` / `{model['artifact_sha256']}`\n"
             + "- 원 개발계획 PDF 25–26쪽 수식 대조: 추천 분모는 기준 집합 `|R_i|`; "
-            + "W/C/G는 세 출처 동일 가중 macro 평균.\n\n"
+            + "W/C/G는 세 출처 동일 가중 macro 평균.\n"
+            + "- KPI-1 분모 검증: 빈 기준 집합 "
+            + f"{report.by_id('KPI-1').details['invalid_reference_count']:,}건 제외; "
+            + f"유효 기준 집합 {report.by_id('KPI-1').sample_count:,}건 평가.\n\n"
             + "## 구현 판정\n\n"
             + "| 영역 | 상태 | 직접 근거 |\n|---|---|---|\n"
             + "| 패키지 무결성·15만 건 import | IMPLEMENTED_AND_VERIFIED | manifest·DB count |\n"
@@ -144,7 +147,8 @@ def generate_release(
             _frontmatter("KPI 추적성", generated_at)
             + common_result
             + "## 계산 규칙\n\n"
-            + "- KPI-1: `|reference ∩ predicted| / |reference|`의 케이스 평균.\n"
+            + "- KPI-1: 빈 reference를 제외·보고한 뒤 "
+            + "`|reference ∩ predicted| / |reference|`의 유효 케이스 평균.\n"
             + "- KPI-2: 240개 합성 PRO percentile-point 변화 평균과 bootstrap CI.\n"
             + "- KPI-3~5: 실행 postcondition·안전 hard failure를 포함한 exact 판정.\n"
             + "- KPI-6: 추천 관련 합성 ADR 건수.\n"

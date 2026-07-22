@@ -32,3 +32,8 @@ def test_release_contains_truthful_kpi_and_verifiable_manifest(tmp_path: Path) -
     )
     assert "7/7" in report
     assert "실제 연구 완료 여부는 `false`" in report
+    current_audit = (tmp_path / "docs" / "tips" / "CURRENT_REPO_AUDIT.md").read_text(
+        encoding="utf-8"
+    )
+    assert "빈 기준 집합 1,456건 제외" in current_audit
+    assert "유효 기준 집합 3,544건 평가" in current_audit
