@@ -118,7 +118,7 @@ def main() -> int:
         or observed["external_requirement_count"] != 1
     ):
         raise AssertionError(observed)
-    if observed["evidence_linked_count"] != 118 or observed["operated_requirement_count"] != 0:
+    if observed["evidence_linked_count"] != 119 or observed["operated_requirement_count"] != 0:
         raise AssertionError(observed)
 
     report = {
