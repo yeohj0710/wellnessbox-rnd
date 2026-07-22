@@ -1155,7 +1155,7 @@
   },
   "schema_version": "op065_op066_product_combination_filter_smoke_v1",
   "source": {
-    "combined_sha256": "2819d30a53c7a5a01af2960c7ca26f2347864ff6237189de263c47eeb2bc7393",
+    "combined_sha256": "d9e687a02aa2f677d27c89791150b63a4c98f45aff1e148036bd74940bd38342",
     "wellnessbox_commit": "2875c299403a99dbea2df79205c0fcb764e6b20e",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
