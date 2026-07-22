@@ -70,7 +70,7 @@
     "production_operation_proven": false
   },
   "source_identity": {
-    "wellnessbox_rnd_commit": "24d82df978249e44ec0c4d56b6f4db086e25037b",
+    "wellnessbox_rnd_commit": "b34a9b04ea42838c251a8dc6dfa920f36aed46f5",
     "wellnessbox_rnd_source_sha256": "ba116b39a16f0a9e658c62f097c1be0a60ff8e13fae77bc4b625c41c5066439c"
   }
 }
