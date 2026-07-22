@@ -1,0 +1,38 @@
+{
+  "schema_version": "op097_op098_device_followup_data_class_cases_v1",
+  "cases": [
+    {
+      "case_id": "simulation_baseline_followup_score_change",
+      "data_class": "SIMULATED_DEVICE_SESSION",
+      "session_origin": "SIMULATION_FIXTURE",
+      "baseline_sleep_hours": 5.0,
+      "follow_up_sleep_hours": 8.0,
+      "expected_sleep_delta": 3.0,
+      "expected_magnesium_wearable_delta": -4.0
+    },
+    {
+      "case_id": "production_device_class_is_distinct",
+      "data_class": "PRODUCTION_DEVICE_SESSION",
+      "session_origin": "DEVICE_PROVIDER",
+      "baseline_sleep_hours": 5.0
+    },
+    {
+      "case_id": "simulation_cannot_claim_production_class",
+      "data_class": "PRODUCTION_DEVICE_SESSION",
+      "session_origin": "SIMULATION_FIXTURE",
+      "expected_error": "device_session_origin_data_class_mismatch"
+    },
+    {
+      "case_id": "followup_cannot_cross_data_class",
+      "expected_error": "device_follow_up_data_class_mismatch"
+    },
+    {
+      "case_id": "exact_replay_deduplicates",
+      "expected_row_count": 1
+    },
+    {
+      "case_id": "append_only_tamper_rejected",
+      "expected_error": "device_recommendation_assessments_append_only"
+    }
+  ]
+}
