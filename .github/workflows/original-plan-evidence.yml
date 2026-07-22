@@ -431,12 +431,18 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 3875d62e2762fcb9f2bac5707f0ebefed95f181b
+          ref: 733206a2da41751ff271da523548ce1fab52e1a5
           fetch-depth: 0
           path: _evidence/wellnessbox-op116
       - name: Verify OP-115/116 service test matrix
         working-directory: _evidence/wellnessbox-op116
-        run: npm ci && npm run qa:rnd:health-alias && npm run audit:encoding && npm run typecheck && npm run build
+        run: npm ci
+      - name: Replay OP-115/116 canonical test matrix
+        run: >-
+          python scripts/run_test_matrix_health_alias_smoke.py
+          --wellnessbox-root ${{ github.workspace }}/_evidence/wellnessbox-op116
+          && git diff --exit-code
+          data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json
       - name: Audit requirement evidence
         env:
           WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op116
@@ -623,7 +629,7 @@ jobs:
             data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json
       - name: Run requirement contract tests
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op114
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op116
         run: >-
           python -m pytest
           tests/test_original_plan_manifest.py
