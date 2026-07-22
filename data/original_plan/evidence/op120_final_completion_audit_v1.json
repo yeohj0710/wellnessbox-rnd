@@ -445,7 +445,7 @@
       "wellnessbox-rnd/tests/test_original_plan_audit.py": "8a1104e6c8b483dc9447ddc005cd126ed274edcf9ab36fcb7ac88e333c5cedff",
       "wellnessbox-rnd/tests/test_original_plan_audit_cli.py": "b8469556ca6a5695b811b27c9ee5206c0c0e64af6fa4153b7b2e02a9cf88fe1d",
       "wellnessbox-rnd/tests/test_original_plan_completion_report.py": "10700f6a77fecd197726abdfe278c16fa7bde3f7c804e0f49853380e026c17df",
-      "wellnessbox-rnd/tests/test_original_plan_manifest.py": "e606c6294f83e4881f192f2bc1fb01d848ac38719038be58610ebc79545e095f",
+      "wellnessbox-rnd/tests/test_original_plan_manifest.py": "ba9b90e7212b7dd55394cb08c4c11cb838d4fda2d0e5704effa1a27e4a1c2285",
       "wellnessbox-rnd/tests/test_plan_lifecycle.py": "e82ca05257fa3ad5735dff3b1ca8c3bb2e3dae553f2e3f23eb178526c29f45a4",
       "wellnessbox-rnd/tests/test_pro_actions.py": "4da4c5fa9fe38efb879be96535327db1965f2f5312bfa3440db1894d7dbd0b95",
       "wellnessbox-rnd/tests/test_pro_followup_effects.py": "62aef06dbfacda19fd5da3823f0c878a72aa564ce9ed73006b0dfd400f8fd80f",
