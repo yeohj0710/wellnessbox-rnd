@@ -154,6 +154,13 @@ def main() -> int:
         "existing_create_order_owns_mutations": (
             observed["existingCreateOrderOwnsStockAndOrderMutation"] is True
         ),
+        "create_order_requires_server_verified_payment": (
+            observed["createOrderRequiresServerVerifiedPayment"] is True
+        ),
+        "payment_id_unique_and_transaction_protected": (
+            observed["paymentIdUniqueAndTransactionProtected"] is True
+        ),
+        "order_plan_binding_required": observed["orderPlanBindingRequired"] is True,
         "order_context_read_only": all(
             item["plan_state"] == "ACTIVE" for item in observed["orderStatuses"]
         ),
@@ -196,6 +203,7 @@ def main() -> int:
             "actual_rnd_http_roundtrip_proven": True,
             "actual_prisma_order_or_stock_mutation_proven": False,
             "actual_prisma_order_status_query_proven": False,
+            "actual_payment_provider_call_proven": False,
             "production_operation_proven": False,
         },
     }
