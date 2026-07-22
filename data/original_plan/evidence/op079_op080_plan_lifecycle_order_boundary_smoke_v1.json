@@ -87,7 +87,7 @@
   },
   "schema_version": "op079_op080_plan_lifecycle_order_boundary_smoke_v1",
   "source_identity": {
-    "wellnessbox_commit": "2875c299403a99dbea2df79205c0fcb764e6b20e",
+    "wellnessbox_commit": "a24b6c3308cc76627c3ca29807db1705e32c2178",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
       "lib/order/mutations.ts",
