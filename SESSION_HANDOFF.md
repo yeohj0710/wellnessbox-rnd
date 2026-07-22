@@ -1,5 +1,18 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-089/090 handoff
+
+- Chosen stage/tasks: `original plan / counseling RAG`; OP-089 returns a structured deterministic answer when the optional provider fails, and OP-090 freezes question-type QA and exercises the real service TypeScript client against the real local R&D HTTP API.
+- Primary dataset and cases: `8` frozen cases, `7` first-pass injected provider failures, `1` urgent provider bypass, and two fresh process/database runs. Canonical evidence is `data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json`, SHA-256 `49a3152436fb59e392110999729e82ae64360dd86cf430d7345f6a128577394d`; source commits are R&D `d1273da965da098f8689434e9b140a83bb285cd7` and service `a24b6c3308cc76627c3ca29807db1705e32c2178`.
+- Main implementation: explicit external-provider consent, structured failure metadata, durable answer/verifier snapshots, same-turn conflict rejection, cross-thread and cross-worker serialization, stored-binding replay, frozen QA, actual HTTP/TypeScript E2E, full-answer determinism, and complete direct source/data identity.
+- Stage/result: OP-089 is COMPLETE at `IMPLEMENTED`. OP-090 is `IMPLEMENTED/PARTIAL` against required `INTEGRATED`. Completion counts are `63/26/30/1/0` for complete/partial/pending/external/contradicted.
+- Research-report result: OP-079 through OP-090 have separate explanatory prose reports. Coverage is `12/120`, not 120/120; `108` remain. Total report text is `102,339` characters. OP-089 is `9,793` characters and OP-090 is `12,150` characters.
+- Independent review: final result Critical `0`, Important `0`, Minor `0` after fixing consent, concurrent execution, multi-worker locking, lock cleanup, full-answer comparison, and all direct source-identity omissions.
+- Validation: focused interim API `25 passed`; exact workflow selection `618 passed`; tracked-Python Ruff PASS; service build/typecheck/ESLint/QA PASS; audit PASS with `89` claims and `253` evidence files; completion check PASS; `28` canonical smokes PASS. Full regression is `997 passed`, `77 failed`, exactly the known `73 + 4` groups. Frozen eval has `256` cases, seven zero deltas, and unchanged weakest categories.
+- Publication: service source commit `a24b6c3308cc76627c3ca29807db1705e32c2178` and R&D source/evidence commit `5593c6a0af6ef397e1eeb54a34172fd356476884` are on `origin/main`. CI run `29878812400` passed every evidence, contract-test, and lint step.
+- Current bottlenecks: `108/120` research reports remain; OP-090 lacks `/api/chat` plus isolated Prisma evidence; no production R&D counseling endpoint, production operation, or external counseling validation exists.
+- Next loops: OP-091/092, then continue through OP-120 while backfilling OP-001 through OP-078 only from primary source, Git history, tests, and canonical evidence.
+
 ## 2026-07-22 OP-087/088 handoff
 
 - Chosen stage/tasks: `original plan / counseling RAG`; OP-087 binds counseling answers to one service session, one turn, one verifier decision, and one recommendation run; OP-088 adds the thin WellnessBox-to-R&D adapter inside the existing chat path.

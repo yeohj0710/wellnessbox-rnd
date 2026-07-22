@@ -1,5 +1,19 @@
 # PROGRESS
 
+## 2026-07-22 counseling fallback and frozen API E2E loop
+
+- Chosen stage/tasks: `original plan / counseling RAG`, OP-089 and OP-090.
+- Dataset/cases: frozen counseling QA has `8` cases covering two interaction questions, two goal questions, citation structure, unsupported cure claims, out-of-scope weather, and urgent chest pain with breathing difficulty. The canonical smoke uses a real localhost FastAPI process, the real WellnessBox TypeScript client, a local 503 provider, and two fresh SQLite databases. Canonical SHA-256 is `49a3152436fb59e392110999729e82ae64360dd86cf430d7345f6a128577394d`; R&D source commit is `d1273da965da098f8689434e9b140a83bb285cd7`; service source commit is `a24b6c3308cc76627c3ca29807db1705e32c2178`.
+- Reuse/integration: the implementation extends the existing bounded retrieval, answer verifier, `agent_runs`, `agent_steps`, `recommendation_runs`, interim API, and service R&D client. It adds no parallel counseling engine, event store, recommendation store, or service chat route.
+- Implementation: provider failure returns a structured deterministic fallback snapshot. External health-query processing requires explicit `counseling:external-provider` consent. Same-turn requests are serialized across threads and supported multi-worker processes with a database-scoped byte-range lock, and every retry returns the durable stored binding. Full answers, verifier results, and direct code/data dependencies are included in deterministic and source-identity checks.
+- Independent review: the first review found Important `4`; subsequent reviews found the multi-worker lock gap, memory retention, and three source-identity omissions. Every finding was fixed. Final review is Critical `0`, Important `0`, Minor `0`.
+- Evidence stage: OP-089 is COMPLETE at required `IMPLEMENTED`. OP-090 is `IMPLEMENTED` and PARTIAL against required `INTEGRATED`; the real service client and R&D HTTP API ran, but `/api/chat`, an isolated Prisma database, public deployment, and production traffic were not observed.
+- Research reports: OP-079 through OP-090 now have separate full-prose reports. Coverage is `12/120`; `108` remain. The twelve reports total `102,339` characters. OP-089 has `9,793` characters and OP-090 has `12,150` characters.
+- Generated status: complete `63`, partial `26`, pending `30`, external `1`, contradicted `0`; audit PASS with `89` claims and `253` checked evidence files.
+- Validation: focused interim API `25 passed`; exact workflow pytest selection `618 passed`; all `28` workflow canonical smokes and tracked-Python Ruff passed. Service build, typecheck, ESLint, and adapter QA passed. Full suite collected `1,074`: `997 passed`, `77 failed`, with the unchanged `73` absent-report plus `4` CGM groups. Frozen evaluation has `256` cases, seven zero metric deltas, and unchanged overall and metric-specific weakest categories.
+- Publication: service source commit `a24b6c3308cc76627c3ca29807db1705e32c2178` and R&D source/evidence commit `5593c6a0af6ef397e1eeb54a34172fd356476884` are on `origin/main`. CI run `29850808600` exposed a dirty-local-service source hash in OP-049/050 evidence; clean-checkout regeneration fixed it. `Original plan evidence` run `29878812400` then passed all steps.
+- Next loops: implement OP-091/092 and continue evidence-grounded full-prose backfill for OP-001 through OP-078.
+
 ## 2026-07-22 counseling session and service-adapter loop
 
 - Chosen stage/tasks: `original plan / counseling RAG`, OP-087 and OP-088.
