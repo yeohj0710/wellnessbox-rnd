@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "eb39877550efef5b752672368909a294066ad0c744ef589a4fc15e01a7a33732",
+  "audited_manifest_sha256": "38c8c8e1796081cd50a43d403913b2f335ae3cc3637e27d37754f5f5fc9ea4a0",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -3927,6 +3927,7 @@
         ],
         "test_files": [
           "wellnessbox-rnd/tests/test_deployment_contract.py",
+          "wellnessbox-rnd/scripts/run_test_matrix_health_alias_smoke.py",
           "wellnessbox/scripts/qa/check-rnd-health-alias.cts",
           "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
         ],
