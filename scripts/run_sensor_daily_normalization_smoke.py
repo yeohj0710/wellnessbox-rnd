@@ -112,8 +112,14 @@ def main() -> int:
             },
         },
         "stage_boundary": {
-            "OP-091": "Versioned local CSV normalization is implemented; no Apple Health API operation is claimed.",
-            "OP-092": "Versioned local CGM summary normalization is implemented; no production CGM integration is claimed.",
+            "OP-091": (
+                "Versioned local CSV normalization is implemented; "
+                "no Apple Health API operation is claimed."
+            ),
+            "OP-092": (
+                "Versioned local CGM summary normalization is implemented; "
+                "no production CGM integration is claimed."
+            ),
         },
     }
     encoded = json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
