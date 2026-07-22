@@ -1,0 +1,13 @@
+{
+  "schema_version": "op111_op112_security_boundary_cases_v1",
+  "cases": [
+    {"case_id": "internal_token", "expected": "valid token accepted and invalid token rejected"},
+    {"case_id": "user_role", "expected": "unauthenticated user denied and browser profile ID ignored"},
+    {"case_id": "pharmacy_role", "expected": "unauthenticated pharmacy denied and pharmacy scope server-owned"},
+    {"case_id": "admin_role", "expected": "unauthenticated administrator denied"},
+    {"case_id": "pseudonym", "expected": "service user ID mapped to deterministic salted HMAC subject ID"},
+    {"case_id": "minimum_collection", "expected": "direct identifier and unused source field omitted"},
+    {"case_id": "log_masking", "expected": "credential, email, and phone fields redacted recursively"},
+    {"case_id": "bounded_error", "expected": "unexpected error text is not returned to the client"}
+  ]
+}
