@@ -109,7 +109,7 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as temporary:
         database_path = Path(temporary) / "device-assessments.sqlite3"
         os.environ["WB_RND_INTERIM_INTERNAL_TOKEN"] = "canonical-token"
-        os.environ["WB_RND_DATA_LAKE_PATH"] = str(database_path)
+        os.environ["WB_RND_INTERIM_DATABASE"] = str(database_path)
         client = TestClient(app)
         baseline_payload = _assessment(
             "device_assessment_canonical_baseline",
@@ -196,7 +196,8 @@ def main() -> int:
             "distinct_data_classes": [
                 row[0]
                 for row in store.rows(
-                    "select distinct data_class from device_recommendation_assessments order by data_class"
+                    "select distinct data_class "
+                    "from device_recommendation_assessments order by data_class"
                 )
             ],
             "tamper_errors": tamper_errors,
