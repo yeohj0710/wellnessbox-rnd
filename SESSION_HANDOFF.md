@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-091/092 handoff
+
+- Chosen stage/tasks: `original plan / sensor integration`; OP-091 normalizes bounded Fitbit and Apple Health daily activity summaries, and OP-092 normalizes bounded CGM daily summaries with fail-closed unit and alias handling.
+- Primary dataset and cases: `data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json`, `8` frozen cases. Canonical evidence is `data/original_plan/evidence/op091_op092_sensor_daily_normalization_smoke_v1.json`, SHA-256 `82C016013D247BE2A992E91872C93D986374705B3E2B325A3A4BEC272685C860`; source identity is `603eeb1993ec4f02edcf21bd4cb1898603714486`.
+- Main files: `src/wellnessbox_rnd/domain/sensor_parser.py`, sensor parser and file-schema tests, the frozen cases, canonical smoke runner and evidence, requirements manifest, generated status reports, CI workflow, and `docs/original_plan/research_reports/OP-091.md` plus `OP-092.md`.
+- Code/data/training/simulation: explicit and generic glucose aliases now compare after unit normalization; contradictory aliases and ambiguous time-in-range bounds fail closed; Apple Health units use narrow per-metric allowlists; tests resolve repository paths portably. No provider integration, raw time-series ingestion, model training, frozen-evaluation change, deployment, production operation, or external validation occurred.
+- Stage/result: OP-091 and OP-092 are COMPLETE at required `IMPLEMENTED`. Completion counts are `65/26/28/1/0` for complete/partial/pending/external/contradicted.
+- Research-report result: OP-079 through OP-092 have separate explanatory prose reports. Coverage is `14/120`, not 120/120; `106` remain. Total report text is `120,045` characters. OP-091 is `8,671` characters and OP-092 is `9,035` characters.
+- Independent review: initial Important findings covered conflicts inside alias groups and unit-aware conflict checks between explicit and generic postprandial values. All findings were fixed. Final result is Critical `0`, Important `0`, Minor `0`.
+- Validation: focused sensor/schema `24 passed`; local workflow-equivalent `642 passed`; tracked-Python Ruff PASS; audit PASS with `91` claims and `255` evidence files; completion check PASS; final CI canonical smokes and exact contract selection PASS. Full regression collected `1,086`: `1,009 passed`, `77 failed`, exactly the known `73 + 4` groups. Frozen evaluation has `256` cases, seven zero deltas, and unchanged weakest categories.
+- Publication: R&D HEAD `9f4bbbd36ecef532112cf55792b55da1ab195b7a` is on `origin/main`; CI run `29881297071` passed every evidence, contract-test, and lint step. The service remains at source identity `a24b6c3308cc76627c3ca29807db1705e32c2178`; pre-existing user changes there were preserved.
+- Five current bottlenecks: `106/120` research reports remain; OP-093/094 are not implemented; no production Apple Health API ingestion exists; no production CGM provider or raw-series ingestion exists; the legacy suite still has `77` known failures from absent reports and CGM geometry.
+- Next three loops: OP-093/094 genetic normalization and consent gating; OP-095/096 partial-result behavior and raw-hash lineage; OP-001 through OP-078 report backfill from primary evidence and Git history only.
+
 ## 2026-07-22 OP-089/090 handoff
 
 - Chosen stage/tasks: `original plan / counseling RAG`; OP-089 returns a structured deterministic answer when the optional provider fails, and OP-090 freezes question-type QA and exercises the real service TypeScript client against the real local R&D HTTP API.

@@ -1,5 +1,18 @@
 # PROGRESS
 
+## 2026-07-22 sensor normalization and fail-closed alias loop
+
+- Chosen stage/tasks: `original plan / sensor integration`, OP-091 and OP-092.
+- Dataset/cases: `data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json` contains `8` frozen cases for Fitbit, Apple Health, and continuous glucose monitoring (CGM) daily summaries. Canonical evidence is `data/original_plan/evidence/op091_op092_sensor_daily_normalization_smoke_v1.json`, SHA-256 `82C016013D247BE2A992E91872C93D986374705B3E2B325A3A4BEC272685C860`; source identity is commit `603eeb1993ec4f02edcf21bd4cb1898603714486`.
+- Reuse/integration: the implementation extends the existing sensor parser, file-schema validation, canonical evidence workflow, requirement manifest, and completion generator. It adds no provider client, raw-series store, parallel sensor model, or production ingestion route.
+- Implementation: glucose means and postprandial peak/rise aliases compare only after unit normalization. Conflicting standardized, generic, explicit, or duplicate aliases fail closed. Generic time-in-range values require explicit 70/180 bounds. Apple Health step count accepts only `count`; resting heart rate accepts the bounded rate-unit allowlist. Repository-relative test paths now work on Linux CI as well as Windows.
+- Evidence stage: OP-091 and OP-092 are COMPLETE at required `IMPLEMENTED`. No Apple Health API call, CGM-provider call, raw time-series ingestion, deployment, production operation, external validation, or model training is claimed.
+- Research reports: OP-079 through OP-092 have separate full-prose reports. Coverage is `14/120`; `106` remain. The fourteen reports total `120,045` characters. OP-091 has `8,671` characters and OP-092 has `9,035` characters.
+- Generated status: complete `65`, partial `26`, pending `28`, external `1`, contradicted `0`; audit PASS with `91` claims and `255` checked evidence files.
+- Validation: focused sensor/schema tests `24 passed`; local workflow-equivalent selection `642 passed`; final CI exact selection and every canonical smoke passed; tracked-Python Ruff passed. Full suite collected `1,086`: `1,009 passed`, `77 failed`, exactly the known `73` absent-report plus `4` CGM groups. Frozen evaluation has `256` cases, seven zero metric deltas, and unchanged overall and metric-specific weakest categories. Independent review ended Critical `0`, Important `0`, Minor `0`.
+- Publication: R&D implementation/evidence HEAD `9f4bbbd36ecef532112cf55792b55da1ab195b7a` is on `origin/main`. Earlier CI runs exposed stale downstream source identities, a dirty service-checkout product hash, and Windows-only test working directories; each cause was corrected. `Original plan evidence` run `29881297071` passed in full.
+- Next loops: OP-093/094 genetic normalization and consent gating; OP-095/096 partial-result and raw-hash lineage; evidence-grounded OP-001 through OP-078 report backfill.
+
 ## 2026-07-22 counseling fallback and frozen API E2E loop
 
 - Chosen stage/tasks: `original plan / counseling RAG`, OP-089 and OP-090.
