@@ -132,14 +132,14 @@
   "result": "PASS",
   "schema_version": "op091_op092_sensor_daily_normalization_smoke_v1",
   "source_identity": {
-    "commit": "b686690338eacb1a39fe2ea7c7cfc0b4751e9871",
+    "commit": "87063dec47accf968b7b973d1e2f363ca1507c0d",
     "files": {
       "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json": "5cf8cdfe1675f4cdd2d70686eb0508c81342dea2e40b46a134346954ce79a2bb",
       "data/samples/cgm_summary_v1.csv": "626b2fcc8f065165cf1c3538ef9a58367d65ff929c67682c5d62f7cb31f0b43f",
       "data/samples/wearable_summary_v1.csv": "748f2e1cfa38634a7548bdf231c810cc97732a17a2ecd0ad892b5fcfbda8fbc3",
       "scripts/run_sensor_daily_normalization_smoke.py": "cb95f309f18337d236c51173e1f8773bd8fb584f970de96fd5473ac29a8cf754",
       "src/wellnessbox_rnd/domain/intake.py": "ed2d3c6814a9558542fb90b4069f6888775adc51a46962927c756c98266e8ae2",
-      "src/wellnessbox_rnd/domain/sensor_parser.py": "6f5d3e95ab0aa5525ae0b4c2b1646549120eb0008d8594bbe5a3cfcaf43e1c5b",
+      "src/wellnessbox_rnd/domain/sensor_parser.py": "b54a85324132b187cf10fd262f8c6ec82b33cb1e4314503bc80c90f27d03367f",
       "src/wellnessbox_rnd/interim/data_lake.py": "fb6d2ce6e106463ae84463149e88f3c5e5edf5a63cc5f74acb84623c683f313d",
       "src/wellnessbox_rnd/schemas/recommendation.py": "fc9cc646aac6c54e0a7676d477d19bc47b42369c14eb40315a8a589ed42ee9cb"
     }
