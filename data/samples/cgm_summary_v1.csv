@@ -1,2 +1,2 @@
-avg_glucose,timeInRangePct,avg_glucose_unit,postMealSpike
-6.8,78,mmol/L,true
+date,avg_glucose,timeInRangePct,avg_glucose_unit,postprandial_peak_mg_dl,postprandial_rise_mg_dl,postMealSpike
+2026-07-21,122.4,78,mg/dL,160.2,37.8,true

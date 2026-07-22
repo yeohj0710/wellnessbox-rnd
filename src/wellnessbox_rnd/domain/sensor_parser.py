@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import csv
 import re
+from datetime import date, datetime
 from io import StringIO
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -16,6 +17,28 @@ class SensorFileSchemaValidationResult(BaseModel):
     detected_fields: list[str] = Field(default_factory=list)
     failure_types: list[str] = Field(default_factory=list)
     accepted_aliases: dict[str, list[str]] = Field(default_factory=dict)
+
+
+class NormalizedWearableDailySummary(BaseModel):
+    date: date
+    steps: int | None = Field(default=None, ge=0, le=200_000)
+    resting_heart_rate_bpm: float | None = Field(default=None, ge=20, le=250)
+    sleep_hours: float | None = Field(default=None, ge=0, le=24)
+    source_format: Literal["apple_health_csv", "generic_wearable_csv"]
+    source_row_count: int = Field(ge=1)
+    normalization_notes: list[str] = Field(default_factory=list)
+
+
+class NormalizedCgmDailySummary(BaseModel):
+    date: date
+    mean_glucose_mg_dl: float = Field(ge=20, le=600)
+    postprandial_peak_mg_dl: float | None = Field(default=None, ge=20, le=600)
+    postprandial_rise_mg_dl: float | None = Field(default=None, ge=0, le=580)
+    time_in_range_pct: float = Field(ge=0, le=100)
+    time_in_range_low_mg_dl: float = Field(default=70, ge=20, le=600)
+    time_in_range_high_mg_dl: float = Field(default=180, ge=20, le=600)
+    source_row_count: int = Field(default=1, ge=1)
+    normalization_notes: list[str] = Field(default_factory=list)
 
 
 WEARABLE_ALIAS_GROUPS: dict[str, tuple[str, ...]] = {
@@ -43,10 +66,192 @@ CGM_ALIAS_GROUPS: dict[str, tuple[str, ...]] = {
         "time_in_range_70_180_pct",
         "timeInRange70To180Pct",
     ),
+    "postprandial_summary": (
+        "postprandial_peak_mg_dl",
+        "post_meal_peak_mg_dl",
+        "postprandial_rise_mg_dl",
+        "post_meal_rise_mg_dl",
+    ),
 }
 GENE_ALIAS_GROUPS: dict[str, tuple[str, ...]] = {
     "genetic_tag_source": ("phenotypes", "risk_flags", "markers", "gene_markers"),
 }
+
+
+def normalize_wearable_csv(csv_text: str) -> list[NormalizedWearableDailySummary]:
+    reader = csv.DictReader(StringIO(csv_text))
+    headers = set(reader.fieldnames or [])
+    rows = list(reader)
+    if not headers or not rows:
+        raise ValueError("wearable_csv_header_and_rows_required")
+    if {"type", "startDate", "value"}.issubset(headers):
+        return _normalize_apple_health_rows(rows)
+    return _normalize_generic_wearable_rows(rows)
+
+
+def normalize_cgm_summary_csv(csv_text: str) -> list[NormalizedCgmDailySummary]:
+    reader = csv.DictReader(StringIO(csv_text))
+    rows = list(reader)
+    if not reader.fieldnames or not rows:
+        raise ValueError("cgm_csv_header_and_rows_required")
+    normalized: list[NormalizedCgmDailySummary] = []
+    seen_dates: set[date] = set()
+    for row in rows:
+        observed_date = _parse_date(_first_present(row, "date", "day", "recorded_date"))
+        if observed_date in seen_dates:
+            raise ValueError("duplicate_cgm_daily_summary_date")
+        seen_dates.add(observed_date)
+        unit = _normalize_unit(_first_present(row, "glucose_unit", "avg_glucose_unit"))
+        mean = _required_glucose_mg_dl(
+            _first_present(row, "mean_glucose_mg_dl", "avg_glucose_mg_dl", "avg_glucose"),
+            unit=unit,
+            field="mean_glucose",
+        )
+        peak_value = _first_present(
+            row, "postprandial_peak_mg_dl", "post_meal_peak_mg_dl", "post_meal_peak"
+        )
+        rise_value = _first_present(
+            row, "postprandial_rise_mg_dl", "post_meal_rise_mg_dl", "post_meal_rise"
+        )
+        peak = (
+            None
+            if peak_value is None
+            else _required_glucose_mg_dl(
+                peak_value,
+                unit=(
+                    "mg/dl"
+                    if _first_present(row, "postprandial_peak_mg_dl", "post_meal_peak_mg_dl")
+                    is not None
+                    else unit
+                ),
+                field="postprandial_peak",
+            )
+        )
+        rise = _coerce_float(rise_value)
+        if rise_value is not None and rise is None:
+            raise ValueError("invalid_cgm_postprandial_rise")
+        rise_has_explicit_mg_dl = (
+            _first_present(row, "postprandial_rise_mg_dl", "post_meal_rise_mg_dl") is not None
+        )
+        if rise is not None and unit == "mmol/l" and not rise_has_explicit_mg_dl:
+            rise = round(rise * 18.0, 1)
+        if peak is None and rise is None:
+            raise ValueError("cgm_postprandial_metric_required")
+        tir = _coerce_float(
+            _first_present(
+                row,
+                "time_in_range_70_180_pct",
+                "timeInRange70To180Pct",
+                "time_in_range_pct",
+                "timeInRangePct",
+            )
+        )
+        if tir is None:
+            raise ValueError("invalid_cgm_time_in_range")
+        low = _coerce_float(row.get("time_in_range_low_mg_dl"))
+        high = _coerce_float(row.get("time_in_range_high_mg_dl"))
+        if low not in {None, 70.0} or high not in {None, 180.0}:
+            raise ValueError("standardized_cgm_time_in_range_bounds_mismatch")
+        normalized.append(
+            NormalizedCgmDailySummary(
+                date=observed_date,
+                mean_glucose_mg_dl=mean,
+                postprandial_peak_mg_dl=peak,
+                postprandial_rise_mg_dl=rise,
+                time_in_range_pct=tir,
+                source_row_count=1,
+                normalization_notes=(["cgm_mmol_l_converted_to_mg_dl"] if unit == "mmol/l" else []),
+            )
+        )
+    return normalized
+
+
+def _normalize_generic_wearable_rows(
+    rows: list[dict[str, str]],
+) -> list[NormalizedWearableDailySummary]:
+    normalized: list[NormalizedWearableDailySummary] = []
+    seen_dates: set[date] = set()
+    for row in rows:
+        observed_date = _parse_date(_first_present(row, "date", "day", "recorded_date"))
+        if observed_date in seen_dates:
+            raise ValueError("duplicate_wearable_daily_summary_date")
+        seen_dates.add(observed_date)
+        sleep, steps, resting_hr, notes = _normalize_wearable_payload(row)
+        if sleep is None and steps is None and resting_hr is None:
+            raise ValueError("wearable_daily_summary_has_no_metrics")
+        normalized.append(
+            NormalizedWearableDailySummary(
+                date=observed_date,
+                steps=steps,
+                resting_heart_rate_bpm=resting_hr,
+                sleep_hours=sleep,
+                source_format="generic_wearable_csv",
+                source_row_count=1,
+                normalization_notes=notes,
+            )
+        )
+    return normalized
+
+
+def _normalize_apple_health_rows(
+    rows: list[dict[str, str]],
+) -> list[NormalizedWearableDailySummary]:
+    grouped: dict[date, dict[str, Any]] = {}
+    seen_records: set[tuple[str, str, str, str, str]] = set()
+    for row in rows:
+        record_type = str(row.get("type", "")).strip()
+        start_text = str(row.get("startDate", "")).strip()
+        end_text = str(row.get("endDate", "")).strip()
+        value_text = str(row.get("value", "")).strip()
+        unit = str(row.get("unit", "")).strip()
+        identity = (record_type, start_text, end_text, value_text, unit)
+        if identity in seen_records:
+            continue
+        seen_records.add(identity)
+        start = _parse_datetime(start_text)
+        bucket = grouped.setdefault(
+            start.date(),
+            {"steps": 0.0, "heart_rates": [], "sleep_intervals": [], "rows": 0},
+        )
+        if record_type.endswith("StepCount"):
+            value = _required_float(value_text, "apple_health_steps")
+            bucket["steps"] += value
+        elif record_type.endswith("RestingHeartRate"):
+            bucket["heart_rates"].append(
+                _required_float(value_text, "apple_health_resting_heart_rate")
+            )
+        elif record_type.endswith("SleepAnalysis") and "asleep" in value_text.lower():
+            end = _parse_datetime(end_text)
+            duration = (end - start).total_seconds() / 3600
+            if duration <= 0 or duration > 24:
+                raise ValueError("invalid_apple_health_sleep_interval")
+            bucket["sleep_intervals"].append((start, end))
+        else:
+            continue
+        bucket["rows"] += 1
+    normalized: list[NormalizedWearableDailySummary] = []
+    for observed_date in sorted(grouped):
+        bucket = grouped[observed_date]
+        if bucket["rows"] == 0:
+            continue
+        heart_rates = bucket["heart_rates"]
+        sleep_hours = _merged_interval_hours(bucket["sleep_intervals"])
+        normalized.append(
+            NormalizedWearableDailySummary(
+                date=observed_date,
+                steps=round(bucket["steps"]) if bucket["steps"] else None,
+                resting_heart_rate_bpm=(
+                    round(sum(heart_rates) / len(heart_rates), 1) if heart_rates else None
+                ),
+                sleep_hours=round(sleep_hours, 2) if sleep_hours else None,
+                source_format="apple_health_csv",
+                source_row_count=bucket["rows"],
+                normalization_notes=["apple_health_records_aggregated_by_start_date"],
+            )
+        )
+    if not normalized:
+        raise ValueError("apple_health_csv_has_no_supported_records")
+    return normalized
 
 
 def normalize_sensor_genetic_payloads(
@@ -62,9 +267,14 @@ def normalize_sensor_genetic_payloads(
     )
     notes.extend(wearable_notes)
 
-    mean_glucose_mg_dl, time_in_range_pct, post_meal_spike_concern, cgm_notes = (
-        _normalize_cgm_payload(cgm_payload or {})
-    )
+    (
+        mean_glucose_mg_dl,
+        time_in_range_pct,
+        postprandial_peak_mg_dl,
+        postprandial_rise_mg_dl,
+        post_meal_spike_concern,
+        cgm_notes,
+    ) = _normalize_cgm_payload(cgm_payload or {})
     notes.extend(cgm_notes)
     cgm_input = cgm_payload or {}
     tir_aliases = (
@@ -127,6 +337,8 @@ def normalize_sensor_genetic_payloads(
         time_in_range_pct=time_in_range_pct,
         time_in_range_low_mg_dl=time_in_range_low_mg_dl,
         time_in_range_high_mg_dl=time_in_range_high_mg_dl,
+        postprandial_peak_mg_dl=postprandial_peak_mg_dl,
+        postprandial_rise_mg_dl=postprandial_rise_mg_dl,
         post_meal_spike_concern=post_meal_spike_concern,
         genetic_tags=genetic_tags,
         normalization_notes=notes,
@@ -197,9 +409,10 @@ def validate_cgm_summary_csv_schema(csv_text: str) -> SensorFileSchemaValidation
             prefix="cgm_summary",
             allow_float=True,
         )
-        if _first_present(row, "avg_glucose") is not None and _first_present(
-            row, "avg_glucose_unit", "glucose_unit"
-        ) is None:
+        if (
+            _first_present(row, "avg_glucose") is not None
+            and _first_present(row, "avg_glucose_unit", "glucose_unit") is None
+        ):
             issues.append("missing_unit::cgm_summary::avg_glucose")
     return SensorFileSchemaValidationResult(
         format_name="cgm_summary.csv",
@@ -281,7 +494,7 @@ def _normalize_wearable_payload(
 
 def _normalize_cgm_payload(
     payload: dict[str, Any],
-) -> tuple[float | None, float | None, bool, list[str]]:
+) -> tuple[float | None, float | None, float | None, float | None, bool, list[str]]:
     notes: list[str] = []
     mean_glucose_mg_dl = _coerce_float(
         _first_present(payload, "mean_glucose_mg_dl", "avg_glucose_mg_dl")
@@ -334,7 +547,20 @@ def _normalize_cgm_payload(
     post_meal_spike_concern = _coerce_bool(
         _first_present(payload, "post_meal_spike", "postMealSpike", "post_meal_spike_concern")
     )
-    return mean_glucose_mg_dl, time_in_range_pct, post_meal_spike_concern, notes
+    postprandial_peak_mg_dl = _coerce_float(
+        _first_present(payload, "postprandial_peak_mg_dl", "post_meal_peak_mg_dl")
+    )
+    postprandial_rise_mg_dl = _coerce_float(
+        _first_present(payload, "postprandial_rise_mg_dl", "post_meal_rise_mg_dl")
+    )
+    return (
+        mean_glucose_mg_dl,
+        time_in_range_pct,
+        postprandial_peak_mg_dl,
+        postprandial_rise_mg_dl,
+        post_meal_spike_concern,
+        notes,
+    )
 
 
 def _normalize_genetic_payload(payload: dict[str, Any]) -> tuple[list[str], list[str]]:
@@ -356,6 +582,58 @@ def _first_present(payload: dict[str, Any], *keys: str) -> Any:
         if key in payload and payload[key] is not None:
             return payload[key]
     return None
+
+
+def _parse_date(value: Any) -> date:
+    if value is None or not str(value).strip():
+        raise ValueError("sensor_daily_summary_date_required")
+    try:
+        return date.fromisoformat(str(value).strip())
+    except ValueError as error:
+        raise ValueError("sensor_daily_summary_date_invalid") from error
+
+
+def _parse_datetime(value: str) -> datetime:
+    normalized = value.strip().replace("Z", "+00:00")
+    for candidate in (normalized, normalized.replace(" ", "T", 1)):
+        try:
+            parsed = datetime.fromisoformat(candidate)
+            if parsed.tzinfo is None or parsed.utcoffset() is None:
+                raise ValueError("timezone_required")
+            return parsed
+        except ValueError:
+            continue
+    raise ValueError("apple_health_datetime_invalid_or_timezone_missing")
+
+
+def _merged_interval_hours(intervals: list[tuple[datetime, datetime]]) -> float:
+    if not intervals:
+        return 0.0
+    ordered = sorted(intervals)
+    merged: list[tuple[datetime, datetime]] = []
+    for start, end in ordered:
+        if not merged or start >= merged[-1][1]:
+            merged.append((start, end))
+        else:
+            previous_start, previous_end = merged[-1]
+            merged[-1] = (previous_start, max(previous_end, end))
+    return sum((end - start).total_seconds() for start, end in merged) / 3600
+
+
+def _required_float(value: Any, field: str) -> float:
+    parsed = _coerce_float(value)
+    if parsed is None:
+        raise ValueError(f"invalid_numeric_value::{field}")
+    return parsed
+
+
+def _required_glucose_mg_dl(value: Any, *, unit: str | None, field: str) -> float:
+    parsed = _required_float(value, field)
+    if unit in {None, "mg/dl"}:
+        return parsed
+    if unit == "mmol/l":
+        return round(parsed * 18.0, 1)
+    raise ValueError(f"unsupported_glucose_unit::{unit}")
 
 
 def _coerce_float(value: Any) -> float | None:
@@ -467,9 +745,13 @@ def _validate_numeric_field_group(
 
 
 __all__ = [
+    "NormalizedCgmDailySummary",
     "NormalizedSensorGeneticSnapshot",
+    "NormalizedWearableDailySummary",
     "SensorFileSchemaValidationResult",
+    "normalize_cgm_summary_csv",
     "normalize_sensor_genetic_payloads",
+    "normalize_wearable_csv",
     "validate_cgm_summary_csv_schema",
     "validate_gene_profile_json_schema",
     "validate_wearable_summary_csv_schema",

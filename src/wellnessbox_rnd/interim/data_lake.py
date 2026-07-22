@@ -291,6 +291,8 @@ def _persisted_profile_payload(request: RecommendationRequest) -> dict[str, Any]
                     "time_in_range_pct": snapshot.time_in_range_pct,
                     "time_in_range_low_mg_dl": snapshot.time_in_range_low_mg_dl,
                     "time_in_range_high_mg_dl": snapshot.time_in_range_high_mg_dl,
+                    "postprandial_peak_mg_dl": snapshot.postprandial_peak_mg_dl,
+                    "postprandial_rise_mg_dl": snapshot.postprandial_rise_mg_dl,
                     "post_meal_spike_concern": snapshot.post_meal_spike_concern,
                 }
             elif source == DataSource.GENETIC and snapshot.genetic_available:

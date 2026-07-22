@@ -55,7 +55,7 @@ def main() -> int:
             "sleep_hours,restingHR\n6.5,58\n"
         ).model_dump(mode="json"),
         "cgm_missing_unit_for_avg_glucose": validate_cgm_summary_csv_schema(
-            "avg_glucose,timeInRangePct\n6.8,78\n"
+            "avg_glucose,timeInRangePct,postprandial_rise_mg_dl\n6.8,78,30\n"
         ).model_dump(mode="json"),
         "gene_profile_invalid_type": validate_gene_profile_json_schema(
             {"markers": {"apoe": "e4"}}

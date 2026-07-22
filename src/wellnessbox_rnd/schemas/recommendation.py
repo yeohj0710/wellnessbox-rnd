@@ -385,6 +385,12 @@ class NormalizedSensorGeneticSnapshot(_StrictHealthInput):
     time_in_range_high_mg_dl: float | None = Field(
         default=None, ge=20.0, le=600.0, allow_inf_nan=False
     )
+    postprandial_peak_mg_dl: float | None = Field(
+        default=None, ge=20.0, le=600.0, allow_inf_nan=False
+    )
+    postprandial_rise_mg_dl: float | None = Field(
+        default=None, ge=0.0, le=580.0, allow_inf_nan=False
+    )
     post_meal_spike_concern: StrictBool = False
     genetic_tags: list[
         Annotated[
@@ -410,6 +416,8 @@ class NormalizedSensorGeneticSnapshot(_StrictHealthInput):
             or self.time_in_range_pct is not None
             or self.time_in_range_low_mg_dl is not None
             or self.time_in_range_high_mg_dl is not None
+            or self.postprandial_peak_mg_dl is not None
+            or self.postprandial_rise_mg_dl is not None
             or self.post_meal_spike_concern
         ):
             raise ValueError("CGM values require cgm_available=true")

@@ -281,6 +281,12 @@ def _consent_gate_sensor_snapshot(
             "time_in_range_high_mg_dl": (
                 snapshot.time_in_range_high_mg_dl if availability.cgm else None
             ),
+            "postprandial_peak_mg_dl": (
+                snapshot.postprandial_peak_mg_dl if availability.cgm else None
+            ),
+            "postprandial_rise_mg_dl": (
+                snapshot.postprandial_rise_mg_dl if availability.cgm else None
+            ),
             "post_meal_spike_concern": (
                 snapshot.post_meal_spike_concern if availability.cgm else False
             ),

@@ -4,7 +4,83 @@ import sys
 
 import pytest
 
-from wellnessbox_rnd.domain.sensor_parser import normalize_sensor_genetic_payloads
+from wellnessbox_rnd.domain.sensor_parser import (
+    normalize_cgm_summary_csv,
+    normalize_sensor_genetic_payloads,
+    normalize_wearable_csv,
+)
+
+
+def test_normalize_generic_wearable_csv_preserves_daily_activity_heart_and_sleep() -> None:
+    records = normalize_wearable_csv(
+        "date,steps,resting_hr,sleep_minutes\n2026-07-20,8000,61,420\n2026-07-21,9100,59,450\n"
+    )
+
+    assert [record.date.isoformat() for record in records] == ["2026-07-20", "2026-07-21"]
+    assert records[0].model_dump(mode="json") == {
+        "date": "2026-07-20",
+        "steps": 8000,
+        "resting_heart_rate_bpm": 61.0,
+        "sleep_hours": 7.0,
+        "source_format": "generic_wearable_csv",
+        "source_row_count": 1,
+        "normalization_notes": [
+            "wearable_sleep_minutes_converted_to_hours",
+            "wearable_steps_string_coerced_to_int",
+            "wearable_resting_hr_string_coerced_to_int",
+        ],
+    }
+
+
+def test_normalize_apple_health_csv_aggregates_supported_records_and_deduplicates() -> None:
+    csv_text = (
+        "type,startDate,endDate,value,unit\n"
+        "HKQuantityTypeIdentifierStepCount,2026-07-21T08:00:00+09:00,2026-07-21T08:10:00+09:00,3000,count\n"
+        "HKQuantityTypeIdentifierStepCount,2026-07-21T12:00:00+09:00,2026-07-21T12:10:00+09:00,2500,count\n"
+        "HKQuantityTypeIdentifierRestingHeartRate,2026-07-21T07:00:00+09:00,2026-07-21T07:01:00+09:00,60,count/min\n"
+        "HKCategoryTypeIdentifierSleepAnalysis,2026-07-21T00:00:00+09:00,2026-07-21T07:30:00+09:00,HKCategoryValueSleepAnalysisAsleep,\n"
+        "HKCategoryTypeIdentifierSleepAnalysis,2026-07-21T01:00:00+09:00,2026-07-21T03:00:00+09:00,HKCategoryValueSleepAnalysisAsleepDeep,\n"
+        "HKQuantityTypeIdentifierStepCount,2026-07-21T12:00:00+09:00,2026-07-21T12:10:00+09:00,2500,count\n"
+    )
+
+    records = normalize_wearable_csv(csv_text)
+
+    assert len(records) == 1
+    assert records[0].steps == 5500
+    assert records[0].resting_heart_rate_bpm == 60.0
+    assert records[0].sleep_hours == 7.5
+    assert records[0].source_row_count == 5
+    assert records[0].source_format == "apple_health_csv"
+
+
+def test_normalize_cgm_daily_summary_preserves_glucose_postprandial_and_fixed_tir() -> None:
+    records = normalize_cgm_summary_csv(
+        "date,avg_glucose,glucose_unit,post_meal_peak,post_meal_rise,time_in_range_70_180_pct\n"
+        "2026-07-21,6.8,mmol/L,8.9,2.1,78\n"
+    )
+
+    assert records[0].mean_glucose_mg_dl == 122.4
+    assert records[0].postprandial_peak_mg_dl == 160.2
+    assert records[0].postprandial_rise_mg_dl == 37.8
+    assert records[0].time_in_range_pct == 78.0
+    assert records[0].time_in_range_low_mg_dl == 70.0
+    assert records[0].time_in_range_high_mg_dl == 180.0
+
+
+def test_daily_sensor_csv_rejects_duplicate_dates_and_nonstandard_tir_bounds() -> None:
+    with pytest.raises(ValueError, match="duplicate_wearable_daily_summary_date"):
+        normalize_wearable_csv(
+            "date,steps,resting_hr,sleep_hours\n2026-07-21,8000,60,7\n2026-07-21,9000,59,8\n"
+        )
+    with pytest.raises(ValueError, match="bounds_mismatch"):
+        normalize_cgm_summary_csv(
+            "date,mean_glucose_mg_dl,postprandial_rise_mg_dl,time_in_range_70_180_pct,time_in_range_low_mg_dl,time_in_range_high_mg_dl\n"
+            "2026-07-21,120,30,78,80,140\n"
+        )
+    with pytest.raises(ValueError, match="postprandial_metric_required"):
+        normalize_cgm_summary_csv(
+            "date,mean_glucose_mg_dl,time_in_range_70_180_pct\n2026-07-21,120,78\n"
+        )
 
 
 def test_normalize_sensor_genetic_payloads_converts_wearable_and_cgm_units() -> None:
@@ -53,9 +129,7 @@ def test_normalize_sensor_genetic_payloads_normalizes_genetic_tags() -> None:
 
 
 def test_standardized_cgm_tir_alias_records_ada_range_bounds() -> None:
-    snapshot = normalize_sensor_genetic_payloads(
-        cgm_payload={"time_in_range_70_180_pct": 68.0}
-    )
+    snapshot = normalize_sensor_genetic_payloads(cgm_payload={"time_in_range_70_180_pct": 68.0})
 
     assert snapshot.time_in_range_pct == 68.0
     assert snapshot.time_in_range_low_mg_dl == 70.0
