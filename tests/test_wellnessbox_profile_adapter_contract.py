@@ -47,7 +47,7 @@ def test_wellnessbox_and_rnd_contract_snapshots_are_identical() -> None:
     assert SERVICE_FIXTURE_PATH.read_bytes() == RND_FIXTURE_PATH.read_bytes()
 
 
-def test_adapter_contract_preserves_every_source_property_and_operational_mapping() -> None:
+def test_adapter_contract_minimizes_source_profile_and_preserves_operational_mapping() -> None:
     contract = _load_contract()
     source_profile = contract["source_profile"]
     expected_request = contract["expected_request"]
@@ -57,7 +57,12 @@ def test_adapter_contract_preserves_every_source_property_and_operational_mappin
     assert request.source_profile is not None
     assert request.source_profile.schema_version == "wellnessbox.chat.UserProfile.v1"
     assert request.source_profile.subject_id == "usr_11112222333344445555666677778888"
-    assert request.source_profile.profile.model_dump(exclude_none=True) == source_profile
+    expected_minimized_profile = {
+        key: value
+        for key, value in source_profile.items()
+        if key not in {"name", "caffeineSensitivity"}
+    }
+    assert request.source_profile.profile.model_dump(exclude_none=True) == expected_minimized_profile
     assert type(request.source_profile.profile.heightCm) is int
     assert type(request.source_profile.profile.weightKg) is int
     assert request.user_profile.model_dump(mode="json") == expected_request["user_profile"]
