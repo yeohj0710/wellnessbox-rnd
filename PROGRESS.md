@@ -1,5 +1,18 @@
 # PROGRESS
 
+## 2026-07-22 device-value follow-up and data-class loop
+
+- Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`, OP-097 and OP-098.
+- Dataset/cases: `data/original_plan/op097_op098_device_followup_data_class_cases_v1.json` contains `7` frozen cases. Canonical evidence is `data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json`, SHA-256 `20C3B6FEE428E2AFB12E97ED6A51532EA3ED624374695177A14E2BACD10DC635`; final source identity is commit `7dde4d66b6f56ac60eac4914d7e4251a54e001bb`.
+- Implementation: authenticated device assessments call the real recommendation engine, persist wearable/CGM score snapshots, and calculate follow-up value/score deltas plus candidate entry/exit. Explicit service subject IDs and storage consent for every used source are required. Production-device and simulation-fixture class/origin pairs cannot cross, and follow-ups cannot cross profile, class, or origin.
+- Evidence stage: OP-097 is COMPLETE at required `INTEGRATED`. OP-098 is implemented but remains PARTIAL because its required stage is `OPERATED`; no production provider traffic, deployment, or operation is claimed.
+- Research reports: OP-079 through OP-098 have separate full-prose reports. Coverage is `20/120`; `100` remain. Total text is `151,107` characters. OP-097 has `4,948` characters and OP-098 has `5,225` characters.
+- Generated status: complete `69`, partial `28`, pending `22`, external `1`, contradicted `0`; audit PASS with `97` claims and `266` checked evidence files.
+- Validation: focused device/consent/store/API selection `75 passed`; CI exact selection `669 passed, 1 skipped`; Ruff and every canonical smoke PASS. Full regression collected `1,115`: `1,020 passed`, `95 failed`, all outside this change in absent historical report artifacts and the known CGM geometry group. Frozen evaluation has `256` cases, seven zero metric deltas, and unchanged weakest categories.
+- Independent review: initial Critical `0`, Important `2`, Minor `2`; storage-consent, explicit-subject, origin-claim wording, and candidate-set transition findings were fixed. Final result is Critical `0`, Important `0`, Minor `0`.
+- Publication: implementation/evidence HEAD `b96d642d2f1b68ab867b1e064719aadc214a0aa8` is on `origin/main`; final CI run `29885050044` passed. The service remains at `a24b6c3308cc76627c3ca29807db1705e32c2178`, and its pre-existing user changes were preserved.
+- Next loops: OP-099/100 duplicate-event blocking and production-only W/C/G macro evaluation; OP-101/102 deployment contracts without public deployment; OP-001 through OP-078 report backfill.
+
 ## 2026-07-22 sensor-file partial-success and lineage loop
 
 - Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`, OP-095 and OP-096.

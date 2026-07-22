@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-097/098 handoff
+
+- Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`; OP-097 connects device values to real recommendation score snapshots and follow-up deltas, while OP-098 separates production-device and simulation-fixture data classes.
+- Primary dataset and cases: `data/original_plan/op097_op098_device_followup_data_class_cases_v1.json`, `7` frozen cases. Canonical evidence is `data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json`, SHA-256 `20C3B6FEE428E2AFB12E97ED6A51532EA3ED624374695177A14E2BACD10DC635`; source identity is `7dde4d66b6f56ac60eac4914d7e4251a54e001bb`.
+- Main files: authenticated interim route, `device_evaluation.py`, `DataClass`, schema-v13 `InterimStore`, canonical profile/storage helpers, tests, frozen cases, canonical runner/evidence, manifest/status reports, workflow, and `OP-097.md` plus `OP-098.md`.
+- Code/data/training/simulation: baseline and follow-up values call the real recommendation engine; score changes preserve common candidates and entry/exit. Explicit service subject IDs and all-used-source storage consent are mandatory. Class/origin pairs and longitudinal profile/class/origin boundaries fail closed. No training, frozen-data change, provider integration, deployment, operation, or external validation occurred.
+- Stage/result: OP-097 is COMPLETE at required `INTEGRATED`; OP-098 is PARTIAL at claimed `IMPLEMENTED` versus required `OPERATED`. Completion counts are `69/28/22/1/0` for complete/partial/pending/external/contradicted.
+- Research-report result: coverage is `20/120`, not 120/120; `100` remain. Total report text is `151,107` characters. OP-097 is `4,948` characters and OP-098 is `5,225` characters. Toss easy-finance references guided only the Korean explanatory structure.
+- Independent review: initial Critical `0`, Important `2`, Minor `2`; all-used-source storage consent, explicit service subject identity, origin-claim wording, and candidate entry/exit coverage were corrected. Final result is Critical `0`, Important `0`, Minor `0`.
+- Validation: focused selection `75 passed`; CI exact selection `669 passed, 1 skipped`; tracked-Python Ruff PASS; audit PASS with `97` claims and `266` evidence files; completion check and every canonical smoke PASS. Full regression collected `1,115`: `1,020 passed`, `95 failed`, all outside this change. Frozen evaluation has `256` cases, seven zero deltas, and unchanged weakest categories.
+- Publication: R&D implementation/evidence HEAD `b96d642d2f1b68ab867b1e064719aadc214a0aa8` is on `origin/main`; final CI run `29885050044` passed. The service stays at `a24b6c3308cc76627c3ca29807db1705e32c2178`, and its pre-existing user changes were preserved.
+- Five current bottlenecks: `100/120` reports remain; OP-098 lacks operating evidence; no authenticated production device-provider feed exists; OP-099/100 still need event deduplication and production-only source metrics; the legacy full suite retains `95` absent-artifact and CGM failures.
+- Next three loops: OP-099/100 duplicate-event blocking and production-only W/C/G macro evaluation; OP-101/102 deployment contracts without public deployment; OP-001 through OP-078 report backfill from primary evidence and Git history only.
+
 ## 2026-07-22 OP-095/096 handoff
 
 - Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`; OP-095 returns file-level schema failures and partial-success counts, and OP-096 stores raw-file and normalized-result lineage.
