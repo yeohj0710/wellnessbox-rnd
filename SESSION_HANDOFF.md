@@ -534,5 +534,5 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - Stage/tasks: 관리자 실제 상태 API와 상품 후보 계약. OP-107은 `INTEGRATED / PARTIAL`, OP-108은 `IMPLEMENTED / PARTIAL`이며 둘 다 요구 단계 `OPERATED`보다 낮다.
 - Dataset/evidence: `data/original_plan/op107_op108_admin_product_integration_cases_v1.json`, 8 cases. 증거는 서비스 커밋 `e95592a126cdb2bfeec156d4f4d7de43487e2a63`, R&D 커밋, runner·dataset·API blob SHA를 기록한다.
 - Changes: 실제 HTTP로 데이터·출처·규칙·모델·실행 상태를 순차 조회하고 빈 KPI만 `UNAVAILABLE`로 분리했다. 상품 QA는 fixture 결합, 재고 대체, 안전 제외, 잘못된 카탈로그 fail-closed만 증명한다. 실제 Prisma, 주문, 결제, 공개 배포는 실행하지 않았다.
-- Validation: 집중 API 테스트, 서비스 QA, TypeScript, 인코딩, Ruff, canonical smoke, manifest 감사, completion report를 실행한다. 독립 리뷰는 최초 `0/3/1`이며 지적 4건을 모두 수정한 뒤 재검토한다. frozen 평가, 학습 데이터, replay 동작 변화는 없다.
+- Validation: 집중 API 테스트 51개, 서비스 TypeScript·인코딩, Ruff, canonical smoke 재생 diff, manifest 감사, completion report가 통과했다. 독립 리뷰는 최초 `0/3/1`에서 최종 `0/0/0`이 됐다. frozen 평가, 학습 데이터, replay 동작 변화는 없다.
 - Five bottlenecks: 보고서 90개, OP-109/110, OP-108 실제 Prisma+R&D 통합, 승인된 provider 운영, 실제 브라우저 증거. Next three loops: OP-109/110, 보고서 보강, 승인된 운영 검증.
