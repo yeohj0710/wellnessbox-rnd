@@ -582,3 +582,13 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 다음 세 loop: OP-117 브라우저 재현; 누락 연구보고서 보강; 승인 후 OP-116 production 관측.
 - 독립 리뷰: 최초 `0/4/1`, 1차 수정 후 `0/1/1`, 최종 `0/0/0`이다.
 - GitHub Actions: WellnessBox `29900597777`, R&D `29901559427` 모두 성공했다.
+
+# 2026-07-22 OP-117/118 handoff
+
+- 단계/과제: 브라우저 역할 경로와 비외부 운영 증거 원장. OP-117은 `INTEGRATED / PARTIAL`, OP-118은 `IMPLEMENTED / PARTIAL`이다.
+- 데이터셋: `data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json`, 8건, SHA-256 `e9d723e64bf7f97aacc04b29cc2d85649789a4c23dbc8ff22c3b1d57a06cf98b`.
+- 변경: 실제 Chromium 사용자 화면, 약사 인증 경계, 관리자 인증 화면과 비외부 119건의 evidence·OPERATED gap 원장을 추가했다.
+- 검증: browser 3건, focused pytest 22건, Ruff, manifest audit와 completion stale check가 통과했다. 상태 `75/42/2/1/0`, 주장 117, 증거 파일 322, 보고서 `40/120`이다.
+- 경계/delta: production 배포·traffic, 약사 인증 세션, 모든 비외부 OPERATED는 false다. frozen·학습·모델·safety·replay·slice 변화는 0이다.
+- 병목 5개: 한국어 보고서 80개, production 배포·traffic, 실제 약사 인증 세션, 비외부 OPERATED 119건, OP-119 외부 책임·교체 계약.
+- 다음 세 loop: OP-119; 누락 보고서 보강; 승인 후 OP-116~118 production 관측.

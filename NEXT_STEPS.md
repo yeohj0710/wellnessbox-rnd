@@ -279,3 +279,9 @@ Do not run training or a new `cgm` loop yet.
 1. 다음 bounded loop에서만 OP-117의 브라우저 사용자·약사·관리자 핵심 경로 재현을 구현하고 증거화한다.
 2. 별도 보고서 loop에서 OP-001~OP-078 누락 연구보고서를 기존 구현·manifest·증거와 대조해 작성한다. 현재 38/120이며 82개가 남았다.
 3. 사용자 승인을 받은 뒤에만 production R&D와 WellnessBox를 배포하고 배포 ID·커밋·관측 시각이 연결된 health/alias 기록을 수집해 OP-116 OPERATED 후보를 검토한다.
+
+# Next after OP-117/118
+
+1. 다음 bounded loop에서만 OP-119의 외부 책임자·입력·교체 계약·차단 사유 원장을 구현하고 검증한다.
+2. 별도 보고서 loop에서 누락된 한국어 연구보고서 80개를 기존 canonical evidence와 대조해 작성한다.
+3. 사용자 승인을 받은 뒤에만 production 배포·traffic과 실제 약사 계정 세션을 관찰해 OP-116~118의 OPERATED 후보를 검토한다.

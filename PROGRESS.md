@@ -571,3 +571,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - canonical evidence는 R&D source commit `275a2c5bee47a051532c1bbc0fa0505c384c21c0`과 WellnessBox commit `b37bf99a8f2a5a7eb50fe61016740579011d2aa3` 및 관련 blob을 고정한다. 동결 dataset SHA-256은 `898745db62e724200ecc12f463f8765d704c1f1e0cdad407038e27901de3f93c`다.
 - frozen 평가·학습 데이터·모델·safety 규칙·replay·slice 변화는 0이다. production 배포와 production traffic은 검증하지 않아 OP-116을 OPERATED로 주장하지 않는다.
 - GitHub Actions WellnessBox `29900597777`과 R&D `29901559427`은 모두 성공했다.
+
+# 2026-07-22 OP-117/118 bounded loop
+
+- OP-117은 `INTEGRATED / PARTIAL`, OP-118은 `IMPLEMENTED / PARTIAL`이다. 상태는 `75/42/2/1/0`, 감사 주장은 117, 증거 파일은 322, 한국어 보고서는 `40/120`이다.
+- 8건 동결 데이터셋과 실제 Chromium이 사용자 `/survey`, 약사 인증 경계 `/pharm-login`, 임시 관리자 인증 뒤 `/admin`을 재현했다.
+- 운영 증거 원장은 비외부 119건, evidence 연결 117건, OPERATED 0건과 미달 119건을 기록한다. production 배포·traffic과 약사 인증 세션은 증명하지 않았다.
+- frozen 평가, 학습 데이터, 모델, safety 규칙, replay·slice 변화는 모두 0이다.
