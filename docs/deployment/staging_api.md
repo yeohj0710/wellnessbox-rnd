@@ -53,14 +53,16 @@ If `data/knowledge/runtime_knowledge_db_v1.json` is absent, runtime can rebuild 
 
 ## Enforced interim deployment contract
 
-Set `WB_RND_DEPLOYMENT_CONTRACT_ENFORCED=1` for an interim staging or production
-deployment. Startup then fails before serving traffic unless all fields below are valid.
+Staging and production always enforce the interim deployment contract. Local and test
+environments may set `WB_RND_DEPLOYMENT_CONTRACT_ENFORCED=1` to run the same checks.
+Startup fails before serving traffic unless all fields below are valid.
 
 - `WB_RND_INTERIM_ENABLED=1`
 - `WB_RND_DEPLOYMENT_TARGET`: provider service name
 - `WB_RND_DEPLOYMENT_ID`: immutable provider deployment identifier
 - `WB_RND_CODE_COMMIT`: full 40-character Git SHA
-- `WB_RND_IMAGE_COMMIT`: immutable image build SHA; must equal `WB_RND_CODE_COMMIT`
+- `/app/.wellnessbox-rnd-image-commit`: image build SHA written from
+  `WB_RND_BUILD_COMMIT`; must equal `WB_RND_CODE_COMMIT`
 - `WB_RND_INTERIM_DATABASE`: absolute SQLite path on the mounted persistent volume
 - `WB_RND_DATABASE_DURABILITY=provider_persistent_volume`
 - `WB_RND_INTERNAL_AUTH_SCHEME=shared_header_hmac_sha256_v1`
@@ -73,7 +75,8 @@ no token, token hash, secret reference, database path, deployment ID, or target 
 
 `GET /health` derives the required endpoint inventory from the mounted FastAPI routes. It
 fails if any required family is absent: health, recommendation, state machine, device, or
-counseling. `deployment_contract` is null when enforcement is disabled.
+counseling. `deployment_contract` is null only for local/test execution without explicit
+enforcement.
 
 This contract proves readiness and local restart persistence. It is not proof that a
 provider deployment exists or that production traffic has been served.

@@ -14,13 +14,16 @@ def healthcheck(request: Request) -> dict[str, object]:
     if runtime_readiness is None:
         runtime_readiness = validate_runtime_readiness()
         request.app.state.runtime_readiness = runtime_readiness
+    public_runtime_readiness = {
+        key: value for key, value in runtime_readiness.items() if key != "repo_root"
+    }
 
     return {
         "status": "ok",
         "service": settings.app_name,
         "environment": settings.app_env,
         "runtime_status": runtime_readiness["runtime_status"],
-        "checks": runtime_readiness,
+        "checks": public_runtime_readiness,
         "deployment_contract": getattr(
             request.app.state, "deployment_contract_public", None
         ),

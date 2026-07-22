@@ -17,6 +17,7 @@ REQUIRED_ENDPOINT_FAMILIES = {
     "counseling": ("POST", "/v1/interim/counseling/turns"),
 }
 _COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
+IMAGE_COMMIT_PATH = Path(__file__).resolve().parents[2] / ".wellnessbox-rnd-image-commit"
 
 
 class RouteLike(Protocol):
@@ -47,6 +48,8 @@ class DeploymentContract:
 
 def validate_deployment_contract(
     environment: Mapping[str, str] | None = None,
+    *,
+    image_commit_path: Path = IMAGE_COMMIT_PATH,
 ) -> DeploymentContract:
     values = os.environ if environment is None else environment
     errors: list[str] = []
@@ -64,7 +67,10 @@ def validate_deployment_contract(
     code_commit = values.get("WB_RND_CODE_COMMIT", "").strip().lower()
     if not _COMMIT_PATTERN.fullmatch(code_commit):
         errors.append("code_commit_must_be_full_sha")
-    image_commit = values.get("WB_RND_IMAGE_COMMIT", "").strip().lower()
+    try:
+        image_commit = image_commit_path.read_text(encoding="ascii").strip().lower()
+    except (OSError, UnicodeError):
+        image_commit = ""
     if not _COMMIT_PATTERN.fullmatch(image_commit) or image_commit != code_commit:
         errors.append("code_commit_must_match_image_commit")
     database_value = values.get("WB_RND_INTERIM_DATABASE", "").strip()

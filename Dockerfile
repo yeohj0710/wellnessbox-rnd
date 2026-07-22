@@ -3,10 +3,12 @@ FROM python:3.11-slim
 ARG WB_RND_BUILD_COMMIT
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    WB_RND_IMAGE_COMMIT=${WB_RND_BUILD_COMMIT}
+    PYTHONUNBUFFERED=1
 
 WORKDIR /app
+
+RUN printf '%s' "$WB_RND_BUILD_COMMIT" > /app/.wellnessbox-rnd-image-commit \
+    && chmod 0444 /app/.wellnessbox-rnd-image-commit
 
 COPY pyproject.toml README.md ./
 COPY src ./src

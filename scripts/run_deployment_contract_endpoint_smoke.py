@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import atexit
 import hashlib
 import json
 import os
@@ -32,11 +33,14 @@ SOURCE_PATHS = (
 )
 
 
-def _git_blob_sha256(path: Path) -> str:
-    content = subprocess.check_output(
+def _git_blob_bytes(path: Path) -> bytes:
+    return subprocess.check_output(
         ["git", "show", f"HEAD:{path.relative_to(ROOT).as_posix()}"], cwd=ROOT
     )
-    return hashlib.sha256(content).hexdigest()
+
+
+def _git_blob_sha256(path: Path) -> str:
+    return hashlib.sha256(_git_blob_bytes(path)).hexdigest()
 
 
 def _source_commit() -> str:
@@ -130,8 +134,13 @@ def _device_payload(session_id: str) -> dict[str, Any]:
 
 
 def main() -> int:
-    dataset = json.loads(DATASET_PATH.read_text(encoding="utf-8"))
+    dataset = json.loads(_git_blob_bytes(DATASET_PATH).decode("utf-8"))
     token = "Canonical-Deployment-Secret-2026-07-22-Alpha9"
+    image_commit_path = ROOT / ".wellnessbox-rnd-image-commit"
+    if image_commit_path.exists():
+        raise AssertionError("local_image_commit_file_already_exists")
+    image_commit_path.write_text(_source_commit(), encoding="ascii")
+    atexit.register(image_commit_path.unlink, missing_ok=True)
     with tempfile.TemporaryDirectory() as temporary:
         database = Path(temporary).resolve() / "persistent" / "interim.sqlite3"
         database.parent.mkdir()
@@ -149,7 +158,6 @@ def main() -> int:
             "WB_RND_DEPLOYMENT_TARGET": "canonical-local-provider-boundary",
             "WB_RND_DEPLOYMENT_ID": "op101-op102-process-a",
             "WB_RND_CODE_COMMIT": _source_commit(),
-            "WB_RND_IMAGE_COMMIT": _source_commit(),
             "WB_RND_DATABASE_DURABILITY": "provider_persistent_volume",
             "WB_RND_INTERNAL_AUTH_SCHEME": "shared_header_hmac_sha256_v1",
             "WB_RND_INTERNAL_TOKEN_SECRET_REF": "provider://canonical/wb-rnd-token",
