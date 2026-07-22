@@ -13,26 +13,29 @@
   "dataset": {
     "path": "data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json",
     "case_count": 8,
-    "sha256": "e9d723e64bf7f97aacc04b29cc2d85649789a4c23dbc8ff22c3b1d57a06cf98b"
+    "sha256": "a1f4dc2c5e3a2f6f9f0aa80780acbbebe98cab08dac4440f4d3bb64d821c4cec"
   },
   "browser": {
     "schema_version": "rnd_role_browser_paths_v1",
     "cases": [
       {
         "case_id": "user_survey",
+        "status": 200,
         "path": "/survey",
-        "body_visible": true
+        "form_control_count": 3
       },
       {
         "case_id": "pharmacist_auth_boundary",
         "path": "/pharm-login",
+        "input_count": 2,
         "password_input_visible": true
       },
       {
         "case_id": "admin_authenticated",
         "login_status": 200,
+        "status": 200,
         "path": "/admin",
-        "body_visible": true
+        "admin_link_count": 4
       }
     ]
   },
@@ -166,9 +169,9 @@
     "OP-120"
   ],
   "source_identity": {
-    "wellnessbox_rnd_commit": "4c96ae860044aecd7deeca554ee79003c1cade5a",
-    "wellnessbox_commit": "0984f98a65296d7085291898ca95beafe0ba4003",
-    "wellnessbox_browser_script_sha256": "9eb5707e524fbe720d3d7fdd6726c70b37cd7e7893915fd2bc4d943c2476aee7"
+    "wellnessbox_rnd_commit": "6c40ffd4120a8d9fac8287dec3f3948658622cda",
+    "wellnessbox_commit": "8b9e2df62c998147ef045390909f7244501ef6e8",
+    "wellnessbox_browser_script_sha256": "d6c65676b21d78812ec9ee0242d225d5b650fd36ff5d69180754f242b0c2fb38"
   },
   "stage_boundary": {
     "local_real_browser_proven": true,

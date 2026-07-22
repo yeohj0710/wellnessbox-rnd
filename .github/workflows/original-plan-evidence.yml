@@ -451,6 +451,22 @@ jobs:
       - name: Verify OP-115/116 service test matrix
         working-directory: _evidence/wellnessbox-op116
         run: npm ci
+      - name: Checkout OP-117/118 WellnessBox evidence
+        uses: actions/checkout@v7
+        with:
+          repository: yeohj0710/wellnessbox
+          ref: 8b9e2df
+          fetch-depth: 0
+          path: _evidence/wellnessbox-op118
+      - name: Install OP-117/118 browser dependencies
+        working-directory: _evidence/wellnessbox-op118
+        run: npm ci && npx playwright install --with-deps chromium
+      - name: Replay OP-117/118 browser and coverage evidence
+        run: >-
+          python scripts/run_browser_operational_evidence_smoke.py
+          --wellnessbox-root ${{ github.workspace }}/_evidence/wellnessbox-op118
+          && git diff --exit-code
+          data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json
       - name: Enable canonical build database extensions
         run: >-
           docker exec ${{ job.services.postgres.id }}

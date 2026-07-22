@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import socket
 import subprocess
 import time
@@ -63,14 +64,15 @@ def main() -> int:
     port = free_port()
     base_url = f"http://127.0.0.1:{port}"
     admin_password = "op117-local-browser-admin-password"
-    environment = os.environ.copy() | {
+    passthrough = ("PATH", "SystemRoot", "TEMP", "TMP", "LOCALAPPDATA", "APPDATA", "USERPROFILE")
+    environment = {key: os.environ[key] for key in passthrough if key in os.environ} | {
         "PORT": str(port),
         "ADMIN_PASSWORD": admin_password,
         "JWT_SECRET": "op117-local-jwt-secret-at-least-32-bytes",
         "COOKIE_PASSWORD": "op117-local-cookie-password-at-least-32-bytes",
     }
     process = subprocess.Popen(
-        ["npm.cmd", "run", "dev", "--", "--port", str(port)],
+        [shutil.which("npm") or "npm", "run", "dev", "--", "--port", str(port)],
         cwd=service,
         env=environment,
         stdout=subprocess.DEVNULL,
@@ -95,7 +97,11 @@ def main() -> int:
             )
         browser = json.loads(completed.stdout.strip().splitlines()[-1])
     finally:
-        subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"], capture_output=True)
+        process.terminate()
+        try:
+            process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            process.kill()
 
     observed = {
         "browser_case_count": len(browser["cases"]),

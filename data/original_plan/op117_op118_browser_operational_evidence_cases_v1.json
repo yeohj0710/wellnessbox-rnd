@@ -1,13 +1,13 @@
 {
   "schema_version": "op117_op118_browser_operational_evidence_cases_v1",
   "cases": [
-    {"case_id": "user_survey", "requirement_id": "OP-117"},
-    {"case_id": "pharmacist_auth_boundary", "requirement_id": "OP-117"},
-    {"case_id": "admin_authenticated", "requirement_id": "OP-117"},
-    {"case_id": "non_external_coverage", "requirement_id": "OP-118"},
-    {"case_id": "evidence_link_coverage", "requirement_id": "OP-118"},
-    {"case_id": "external_exclusion", "requirement_id": "OP-118"},
-    {"case_id": "operated_gap_ledger", "requirement_id": "OP-118"},
-    {"case_id": "no_production_inflation", "requirement_id": "OP-118"}
+    {"case_id": "user_survey", "requirement_id": "OP-117", "expected": {"status": 200, "path": "/survey", "form_controls_min": 1}},
+    {"case_id": "pharmacist_auth_boundary", "requirement_id": "OP-117", "expected": {"path": "/pharm-login", "input_count": 2}},
+    {"case_id": "admin_authenticated", "requirement_id": "OP-117", "expected": {"login_status": 200, "status": 200, "path": "/admin", "admin_links_min": 1}},
+    {"case_id": "non_external_coverage", "requirement_id": "OP-118", "expected": {"count": 119}},
+    {"case_id": "evidence_link_coverage", "requirement_id": "OP-118", "expected": {"count": 117}},
+    {"case_id": "external_exclusion", "requirement_id": "OP-118", "expected": {"count": 1}},
+    {"case_id": "operated_gap_ledger", "requirement_id": "OP-118", "expected": {"count": 119}},
+    {"case_id": "no_production_inflation", "requirement_id": "OP-118", "expected": {"operated_count": 0, "production_proven": false}}
   ]
 }
