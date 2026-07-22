@@ -13,7 +13,7 @@
   "dataset": {
     "path": "data/original_plan/op115_op116_test_matrix_health_alias_cases_v1.json",
     "case_count": 8,
-    "sha256": "6ab6bec18b25cb628f14afc1222d773c39ad843828b13054b06acd7956918081"
+    "sha256": "898745db62e724200ecc12f463f8765d704c1f1e0cdad407038e27901de3f93c"
   },
   "checks": {
     "rnd_focused_unit_integration_tests_passed": true,
@@ -31,18 +31,18 @@
     "wellnessbox_alias_disabled_or_unhealthy_status": 503
   },
   "source_identity": {
-    "wellnessbox_rnd_commit": "5ad4a4410dd67eccb220bb0e34f1e3826e98724a",
+    "wellnessbox_rnd_commit": "21eb6e7f219862ce9173157b657666cc147caa27",
     "wellnessbox_rnd_source_blobs": {
-      "scripts/run_test_matrix_health_alias_smoke.py": "608ae8cb2500a1b57d5b883b5230c2669e3a8052",
+      "scripts/run_test_matrix_health_alias_smoke.py": "69173304120a0d85563e6a8076c52be9d4052d0c",
       "scripts/run_deployment_contract_endpoint_smoke.py": "0af2aef093e3cd63e349e0e623dccc1fea1f451b",
       "tests/test_deployment_contract.py": "ee411cdbc45ce4247fc1a4a83bb6718e7e24ca2f",
       "apps/inference_api/routes/health.py": "2dd249ae4d183855ed844a950b6837a7972edde1",
       "src/wellnessbox_rnd/deployment.py": "3dbadf19279a86d280fe447a7dd1077e944a4f10",
-      "data/original_plan/op115_op116_test_matrix_health_alias_cases_v1.json": "8842a7521738cfbaeecf44e63abdfe92fa8e82e8"
+      "data/original_plan/op115_op116_test_matrix_health_alias_cases_v1.json": "2e2f8d00395cb0161bf1e786d2b789c9a9930ee7"
     },
-    "wellnessbox_commit": "ae0b9c6285c40885b491388fc607b7f4eb84daef",
+    "wellnessbox_commit": "1bef19ca4cbf78f8d61f26734d9e2cc8628f6de7",
     "wellnessbox_source_blobs": {
-      ".github/workflows/encoding-guard.yml": "58c56ec25d67f93473057f9e393f2dd45dcb92a0",
+      ".github/workflows/encoding-guard.yml": "eca2500324b642bbc6842e9e8008eaa16e945fbf",
       "app/api/internal/rnd/health/route.ts": "0ac3652195d9606247376b8ac489af0af0521d22",
       "lib/server/wb-rnd-health.ts": "4d1612d153824e059a73ddd6c65d35bdfe1a7f07",
       "scripts/qa/check-rnd-health-alias.cts": "8c75ddba0b16ac2492c786a3baaec461e0808c34",
