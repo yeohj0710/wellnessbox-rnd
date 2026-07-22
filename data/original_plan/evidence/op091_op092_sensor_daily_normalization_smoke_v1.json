@@ -132,16 +132,16 @@
   "result": "PASS",
   "schema_version": "op091_op092_sensor_daily_normalization_smoke_v1",
   "source_identity": {
-    "commit": "603eeb1993ec4f02edcf21bd4cb1898603714486",
+    "commit": "7ebac677f7e54c6935ce789f4261fd71028c3cab",
     "files": {
       "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json": "5cf8cdfe1675f4cdd2d70686eb0508c81342dea2e40b46a134346954ce79a2bb",
       "data/samples/cgm_summary_v1.csv": "626b2fcc8f065165cf1c3538ef9a58367d65ff929c67682c5d62f7cb31f0b43f",
       "data/samples/wearable_summary_v1.csv": "748f2e1cfa38634a7548bdf231c810cc97732a17a2ecd0ad892b5fcfbda8fbc3",
       "scripts/run_sensor_daily_normalization_smoke.py": "cb95f309f18337d236c51173e1f8773bd8fb584f970de96fd5473ac29a8cf754",
-      "src/wellnessbox_rnd/domain/intake.py": "ed2d3c6814a9558542fb90b4069f6888775adc51a46962927c756c98266e8ae2",
-      "src/wellnessbox_rnd/domain/sensor_parser.py": "401ac55b4f9218794898c4050d6a25e8c91a4a5e231668495eafe8249fc30e96",
-      "src/wellnessbox_rnd/interim/data_lake.py": "fb6d2ce6e106463ae84463149e88f3c5e5edf5a63cc5f74acb84623c683f313d",
-      "src/wellnessbox_rnd/schemas/recommendation.py": "fc9cc646aac6c54e0a7676d477d19bc47b42369c14eb40315a8a589ed42ee9cb"
+      "src/wellnessbox_rnd/domain/intake.py": "0730a09f24275e30dfb1a9a269291e48fa8db572d8a6f208442b8deed30a100f",
+      "src/wellnessbox_rnd/domain/sensor_parser.py": "b7582a7f421d32415bf8f4dcee7bcf3fb83ec5de39def66628d890c0e6ac0940",
+      "src/wellnessbox_rnd/interim/data_lake.py": "48c296d4629d9bb3b17477dbc56a44b8a5f0885f083aa3ded59116504ce073af",
+      "src/wellnessbox_rnd/schemas/recommendation.py": "0124dcdfab4ae5f97c9eec801ec73b9a2b83b93015ce733d981fc916f15cf7db"
     }
   },
   "stage_boundary": {
