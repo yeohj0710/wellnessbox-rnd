@@ -258,6 +258,7 @@ def main() -> int:
             json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
         print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+        client.close()
     return 0
 
 
