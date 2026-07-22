@@ -1,8 +1,16 @@
 # NEXT_STEPS
 
+## 다음 bounded loop
+
+1. OP-007/008의 PDF 원문, manifest, 구현·테스트·evidence, Git 이력을 대조하고 각각의 장문 연구보고서를 작성한다.
+2. OP-009/010을 같은 기준으로 backfill하고 stage 주장과 실제 evidence를 다시 검증한다.
+3. OP-011/012를 같은 방식으로 backfill한다.
+
+현재 기준은 연구보고서 유효 26/120, 미작성 94개다. completion 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`다. OP-005/006 loop의 최종 CI는 `29917930551`, OP-120 evidence SHA-256은 `6d761eba95504e84b5de02fe1efdca62604cdad2235d4fecfff9db1c7e3e6b71`이다. KPI-1은 유효 reference 3,544건만 분모로 사용하고 빈 reference 1,456건을 명시적으로 제외한다.
+
 ## Next after OP-120
 
-1. 누락·부적합 연구보고서 100개를 기존 manifest·증거·커밋과 대조해 작성하거나 보강하고 보고서 감사를 통과시킨다.
+1. 누락 연구보고서 94개를 기존 manifest·증거·커밋과 대조해 작성하거나 보강하고 보고서 감사를 통과시킨다.
 2. 비외부 요구사항 43개의 required stage 부족을 운영 증거별로 나눠 해소한다. production 변경은 사용자 승인을 받은 뒤에만 수행한다.
 3. OP-039 외부 입력·승인·독립 평가가 실제로 제공되면 trust root 계약에 등록하고 외부 검증을 실행한다.
 

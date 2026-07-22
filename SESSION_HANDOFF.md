@@ -1,5 +1,18 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-005/006 handoff
+
+- 선택 단계와 작업: OP-005/006 `IMPLEMENTED` 근거 재조사, 두 장문 연구보고서 backfill, OP-120 보고서 감사 갱신, 검토에서 발견한 KPI-1 빈 분모 결함 수정.
+- 데이터셋과 case 수: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `a552b4418c8c523c5ae8c6ef370a1b521be9fe59363d8625f35563c3a3bbfbce`.
+- 핵심 파일: `docs/original_plan/research_reports/OP-005.md`, `OP-006.md`, `OP-120.md`; `src/wellnessbox_rnd/interim/kpi.py`; `src/wellnessbox_rnd/interim/reports.py`; 관련 테스트; OP-055/056·OP-099/100·OP-120 canonical evidence.
+- 코드·데이터·학습·시뮬레이션: 빈 recommendation reference를 직접 계산에서 거부하고 집계에서 제외한다. KPI-1은 valid 3,544 / invalid 1,456 / total 5,000을 보고한다. 프록시 점수는 유효 표본에서 100%다. 원천·학습 데이터, 모델, 시뮬레이션, 서비스 저장소는 변경하지 않았다.
+- 검증: 관련 선택 테스트 38개, 연쇄 evidence 관련 테스트 24개·15개·9개 통과; Ruff, manifest audit, completion check, diff 검사 통과. 독립 재검토 Critical 0 / Important 0 / Minor 0. GitHub Actions `29917930551` 성공.
+- frozen eval·replay·slice: 256건 frozen evaluation의 7개 지표 delta 0, replay delta 0, weakest slice 변화 없음. KPI-1 표본 계약만 5,000에서 유효 3,544로 수정됐다.
+- 결과: 연구보고서 유효 26, 미작성 94, 물리 파일 48. 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`. 최종 OP-120 evidence SHA-256 `6d761eba95504e84b5de02fe1efdca62604cdad2235d4fecfff9db1c7e3e6b71`.
+- 커밋: `468f2ca`, `06031be`, `47980fc`, `336f851`, `6bc3d0e`, `32f3eb1`, `8e67412`. 다음 handoff 문서 커밋은 이 항목을 포함한다.
+- 병목 5개: 보고서 94개, stage 미달 43건, OP-039 외부 검증, 운영 validation receipt, 최종 120개 독립 감사 receipt.
+- 다음 loop 3개: OP-007/008, OP-009/010, OP-011/012 보고서 backfill. Goal은 아직 active다.
+
 ## 2026-07-22 OP-120 handoff
 
 - 단계/과제: 최종 완료 감사 계약. OP-120은 `IMPLEMENTED / PARTIAL`이며 required stage `OPERATED`에는 도달하지 않았다.

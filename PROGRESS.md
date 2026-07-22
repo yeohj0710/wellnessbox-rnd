@@ -1,5 +1,18 @@
 # PROGRESS
 
+## 2026-07-22 OP-005/006 연구보고서 보강 및 KPI-1 분모 수정
+
+- 선택 단계와 작업: original plan의 OP-005/006 `IMPLEMENTED` 근거를 다시 조사하고 각각의 장문 연구보고서를 작성했다. OP-005는 PDF 25~26쪽의 7개 KPI 정의와 현재 계산 경로를 대조했고, OP-006은 요구사항별 소유 저장소·구현·테스트·운영 증거 manifest를 설명했다.
+- 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `a552b4418c8c523c5ae8c6ef370a1b521be9fe59363d8625f35563c3a3bbfbce`.
+- 변경 파일: `docs/original_plan/research_reports/OP-005.md`, `OP-006.md`, `OP-120.md`, OP-120 감사 데이터·evidence, `src/wellnessbox_rnd/interim/kpi.py`, `src/wellnessbox_rnd/interim/reports.py`, 관련 테스트와 감사 문서, 그리고 KPI 코드의 source identity를 포함하는 OP-055/056·OP-099/100 evidence를 갱신했다.
+- 코드 수정: 빈 추천 reference와 빈 예측을 100점으로 처리하던 KPI-1 결함을 fail-closed로 고쳤다. 직접 계산은 빈 reference를 거부하고, 집계는 빈 reference 1,456건을 분모에서 제외해 유효 3,544건만 평가한다. 전체 입력 5,000건과 제외 1,456건은 결과 details에 남는다.
+- 데이터·학습·시뮬레이션: 원천 데이터, 학습 데이터, 모델, 시뮬레이션 정책은 바꾸지 않았다. KPI-1 프록시 점수는 유효 표본에서 100%로 유지되지만 보고 표본 수는 5,000에서 3,544로 바로잡혔다. frozen evaluation 256건의 7개 지표, replay, weakest slice delta는 모두 0이다.
+- 검증: 관련 선택 테스트 38개, 후속 OP-055/056 테스트 24개, OP-099/100 테스트 15개와 OP-120 계약 테스트 9개가 통과했다. Ruff, manifest audit, completion check, diff 검사가 통과했다. 독립 재검토는 Critical 0 / Important 0 / Minor 0이다.
+- 결과: 연구보고서는 유효 26개, 미작성 94개, 물리 파일 48개다. completion 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`로 유지된다. 최종 OP-120 evidence SHA-256은 `6d761eba95504e84b5de02fe1efdca62604cdad2235d4fecfff9db1c7e3e6b71`이다.
+- 배포 확인: source/report `468f2ca`, KPI 수정 `06031be`, 최초 감사 `47980fc`, 연쇄 source-identity 정리 `336f851`, `6bc3d0e`, `32f3eb1`, `8e67412`를 push했다. GitHub Actions `Original plan evidence` run `29917930551`이 성공했다.
+- 현재 병목 5개: 연구보고서 94개 미작성, required-stage 미달 43건, OP-039 외부 검증 부재, 실제 운영 validation receipt 부재, 최종 전체 120개 독립 감사 receipt 부재.
+- 다음 3개 bounded loop: OP-007/008 보고서, OP-009/010 보고서, OP-011/012 보고서 backfill.
+
 ## 2026-07-22 OP-120 bounded loop
 
 - OP-120 최종 완료 감사기를 구현했다. 요구 단계, 외부 검증, 연구보고서, canonical evidence, 최종 검증 영수증과 독립 검토 영수증을 모두 통과해야 `READY`가 된다.
