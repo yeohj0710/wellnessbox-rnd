@@ -1,5 +1,18 @@
 # PROGRESS
 
+## 2026-07-22 deployment-contract and endpoint-inventory loop
+
+- Chosen stage/tasks: `original plan / production service integration`, OP-101 and OP-102.
+- Dataset/cases: `data/original_plan/op101_op102_deployment_contract_endpoint_cases_v1.json` contains `8` Git-blob-pinned cases. Canonical evidence is `data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json`, SHA-256 `70F0D796CEAAEAC95C086CAF12AEC0ED7D3159DC714885FD64D727480A0A4837`; source identity is commit `c7abade652f1c3b3c638ab69eaff9fdc7f82f86f`.
+- Implementation: staging/production startup now requires a fail-closed deployment target/ID, code SHA matching an image-build identity file, absolute SQLite path with provider-persistent-volume declaration, one actual worker across both aliases, provider secret reference, and a complex 32-byte internal token. Public health exposes only contract status and a route-derived inventory for health, recommendation, state machine, device, and counseling.
+- Integration evidence: two separate localhost API processes reused one absolute SQLite database. Health/recommendation/device returned 200, unauthorized interim access returned 401, state-machine/counseling routes reached request validation at 422, and a post-restart device replay returned the original session with one persisted row.
+- Evidence stage: OP-101 and OP-102 are both `INTEGRATED / PARTIAL` versus required `OPERATED`. No provider deployment, public URL, production volume, provider secret injection, or production traffic is claimed.
+- Research reports: OP-079 through OP-102 have separate prose reports. Coverage is `24/120`; `96` remain. Total text is `168,510` characters. OP-101 has `4,523` characters and OP-102 has `4,660` characters.
+- Generated status: complete `70`, partial `31`, pending `18`, external `1`, contradicted `0`; audit PASS with `101` claims and `279` checked evidence files.
+- Validation: focused deployment/API/state/device/chat selection `127 passed`; tracked-Python Ruff, canonical smoke, audit, and completion check PASS. Full regression collected `1,138`: `1,061 passed`, `77` known absent-artifact/CGM failures. Frozen evaluation has `256` cases and seven zero metric deltas. Independent review moved from Critical `0`, Important `5`, Minor `0` through two packaging/data checks to final `0/0/0`.
+- Frozen-data/training/simulation delta: no frozen dataset, model training, simulation policy, safety rule, or service-repository change. Replay/slice metrics and weakest categories remain unchanged.
+- Next loops: OP-103/104 environment-variable and result-origin contracts without provider mutation; OP-105/106 profile roundtrip and review-queue integration; OP-001 through OP-078 report backfill.
+
 ## 2026-07-22 device-event deduplication and linkage-macro loop
 
 - Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`, OP-099 and OP-100.

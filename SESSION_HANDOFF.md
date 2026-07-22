@@ -1,5 +1,18 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-101/102 handoff
+
+- Chosen stage/tasks: `original plan / production service integration`; OP-101 defines the R&D deployment target, persistent DB, and internal authentication contract, while OP-102 verifies the five required API families in the mounted FastAPI app.
+- Primary dataset/cases: `data/original_plan/op101_op102_deployment_contract_endpoint_cases_v1.json`, `8` Git-blob cases. Canonical evidence is `data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json`, SHA-256 `70F0D796CEAAEAC95C086CAF12AEC0ED7D3159DC714885FD64D727480A0A4837`; source identity is `c7abade652f1c3b3c638ab69eaff9fdc7f82f86f`.
+- Main files: `deployment.py`, FastAPI lifespan and health route, Docker build identity, `.env.example`, staging deployment contract, endpoint tests, two-process runner/evidence, workflow, manifest/status, and `OP-101.md` plus `OP-102.md`.
+- Code/data/training/simulation: staging/production cannot bypass contract validation; code SHA must match the immutable installed-image file; DB path/durability, actual worker alias, token complexity, provider secret reference, and internal auth fail closed. Health removes internal paths and secret-derived values. Five endpoint families come from final mounted routes. No training, frozen-data change, simulation-policy change, provider deployment, service edit, or production operation occurred.
+- Stage/result: OP-101 and OP-102 are both PARTIAL at claimed `INTEGRATED` versus required `OPERATED`. Completion counts are `70/31/18/1/0`.
+- Reports: coverage is `24/120`, not 120/120; `96` remain. Total text is `168,510` characters. OP-101 is `4,523` characters and OP-102 is `4,660` characters.
+- Independent review: initial Critical `0`, Important `5`, Minor `0`; enforcement, worker alias, secret exposure, image identity, and Git-blob dataset issues were fixed. Packaging-path and working-tree checks were also corrected. Final result is Critical `0`, Important `0`, Minor `0`.
+- Validation: focused selection `127 passed`; canonical smoke, tracked-Python Ruff, audit, completion check PASS. Audit has `101` claims and `279` evidence files. Full regression collected `1,138`: `1,061 passed`, `77 failed`, all in known absent-artifact/CGM groups. Frozen evaluation has `256` cases and seven zero deltas.
+- Five current bottlenecks: `96/120` reports remain; OP-101/102 lack provider operation; OP-103/104 lack approved environment/result-origin integration; OP-105/106 lack full service roundtrip/review-queue evidence; legacy full suite retains `77` absent-artifact and CGM failures.
+- Next three loops: OP-103/104 environment-variable and result-origin contracts without provider mutation; OP-105/106 profile roundtrip and review-queue integration; OP-001 through OP-078 evidence-grounded report backfill.
+
 ## 2026-07-22 OP-099/100 handoff
 
 - Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`; OP-099 blocks duplicate device events independently of retry session IDs, and OP-100 recomputes W/C/G rates plus equal-weight macro average.
