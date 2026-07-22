@@ -63,9 +63,9 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
 
     assert report.requirement_count == 120
     assert report.disposition_counts == {
-        CompletionDisposition.COMPLETE: 75,
+        CompletionDisposition.COMPLETE: 76,
         CompletionDisposition.PARTIAL: 42,
-        CompletionDisposition.PENDING: 2,
+        CompletionDisposition.PENDING: 1,
         CompletionDisposition.EXTERNAL: 1,
         CompletionDisposition.CONTRADICTED: 0,
     }
@@ -143,6 +143,7 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
     assert _completion_by_id(report, "OP-102").disposition == CompletionDisposition.PARTIAL
     assert _completion_by_id(report, "OP-117").disposition == CompletionDisposition.PARTIAL
     assert _completion_by_id(report, "OP-118").disposition == CompletionDisposition.PARTIAL
+    assert _completion_by_id(report, "OP-119").disposition == CompletionDisposition.COMPLETE
 
 
 def test_report_marks_lower_valid_stage_as_partial() -> None:
@@ -206,7 +207,7 @@ def test_global_source_failure_invalidates_every_existing_completion_claim() -> 
     report = build_original_plan_completion_report_v1(manifest, audit)
 
     assert report.disposition_counts[CompletionDisposition.COMPLETE] == 0
-    assert report.disposition_counts[CompletionDisposition.CONTRADICTED] == 117
+    assert report.disposition_counts[CompletionDisposition.CONTRADICTED] == 118
     assert "original_plan_sha256_mismatch" in report.global_audit_issues
 
 
@@ -218,9 +219,9 @@ def test_markdown_uses_audited_korean_status_language() -> None:
     markdown = render_original_plan_completion_report_markdown_v1(report)
 
     assert "원계획 요구사항 포함: **120/120건**" in markdown
-    assert "| 완료 | 75 |" in markdown
+    assert "| 완료 | 76 |" in markdown
     assert "| 부분 완료 | 42 |" in markdown
-    assert "| 대기 | 2 |" in markdown
+    assert "| 대기 | 1 |" in markdown
     assert "전체 완료: **100%**" not in markdown
 
 
@@ -262,5 +263,5 @@ def test_report_cli_writes_and_checks_deterministic_artifacts(tmp_path: Path) ->
     assert generated.returncode == 0
     assert checked.returncode == 0
     assert stale.returncode == 1
-    assert json.loads(generated.stdout)["disposition_counts"]["COMPLETE"] == 75
+    assert json.loads(generated.stdout)["disposition_counts"]["COMPLETE"] == 76
     assert str(markdown_output) in json.loads(stale.stdout)["stale_outputs"]

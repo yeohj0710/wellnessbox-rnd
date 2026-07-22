@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "f4d3c0aa0fb2212850dfa4a7d040edd57216481ad1c537884e2c49160809948b",
+  "audited_manifest_sha256": "33697a780ed1c52cd347b9bf4b87b9182ac9a82c70a773a45eb4c8d833608bfc",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 75,
+    "COMPLETE": 76,
     "PARTIAL": 42,
-    "PENDING": 2,
+    "PENDING": 1,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -152,9 +152,9 @@
       "title": "배포·보안·최종 완료 감사",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 5,
+        "COMPLETE": 6,
         "PARTIAL": 3,
-        "PENDING": 2,
+        "PENDING": 1,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -4034,14 +4034,22 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/governance/external_dependency_registry.py",
+          "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_v1.json"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_external_dependency_registry.py",
+          "wellnessbox-rnd/scripts/run_external_dependency_registry_smoke.py",
+          "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_cases_v1.json",
+          "wellnessbox-rnd/data/original_plan/evidence/op119_external_dependency_registry_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],

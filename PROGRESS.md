@@ -578,3 +578,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 8건 동결 데이터셋과 실제 Chromium이 사용자 `/survey`, 약사 인증 경계 `/pharm-login`, 임시 관리자 인증 뒤 `/admin`을 재현했다.
 - 운영 증거 원장은 비외부 119건, evidence 연결 117건, OPERATED 0건과 미달 119건을 기록한다. production 배포·traffic과 약사 인증 세션은 증명하지 않았다.
 - frozen 평가, 학습 데이터, 모델, safety 규칙, replay·slice 변화는 모두 0이다.
+
+# 2026-07-22 OP-119 bounded loop
+
+- OP-119는 `IMPLEMENTED / COMPLETE`다. 전체 상태는 `76/42/1/1/0`, 감사 주장은 118, 증거 파일은 328, 한국어 연구보고서는 `41/120`이다.
+- 외부 요구사항 OP-039 한 건에 내부 책임 역할, 독립 외부 공급 역할, 필수 입력 4종, 교체 계약 2종, 검증된 차단 사유 4종과 승격 조건을 연결했다.
+- 8건 동결 사례와 canonical runner가 manifest 외부 집합, 원장 집합, trust root JSON pointer 관측, 예상값 완전 일치, source blob을 검증한다.
+- OP-039 외부 입력·승인·독립 검증은 계속 미충족이며 어떤 가짜 외부 증거도 만들지 않았다. frozen·학습·모델·safety·replay·slice 변화는 0이다.

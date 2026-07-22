@@ -67,6 +67,7 @@ on:
       - "scripts/run_order_plan_context_integration_smoke.py"
       - "scripts/build_interim_openapi_contract.py"
       - "scripts/run_resilience_openapi_contract_smoke.py"
+      - "scripts/run_external_dependency_registry_smoke.py"
       - "data/original_plan/op109_op110_order_plan_context_cases_v1.json"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
@@ -455,7 +456,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 8b9e2df
+          ref: 8b9e2df62c998147ef045390909f7244501ef6e8
           fetch-depth: 0
           path: _evidence/wellnessbox-op118
       - name: Install OP-117/118 browser dependencies
@@ -488,6 +489,11 @@ jobs:
         env:
           WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op116
         run: python scripts/audit_original_plan_requirements.py
+      - name: Replay OP-119 external dependency registry
+        run: >-
+          python scripts/run_external_dependency_registry_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op119_external_dependency_registry_smoke_v1.json
       - name: Check generated completion report
         env:
           WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op116
@@ -677,6 +683,7 @@ jobs:
           tests/test_original_plan_audit.py
           tests/test_original_plan_audit_cli.py
           tests/test_original_plan_completion_report.py
+          tests/test_external_dependency_registry.py
           tests/test_health_input_contracts.py
           tests/test_medication_supplement_input_contracts.py
           tests/test_diet_lifestyle_lab_input_contracts.py
@@ -810,6 +817,9 @@ jobs:
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py
           scripts/run_product_combination_constraint_safety_smoke.py
+          scripts/run_external_dependency_registry_smoke.py
+          src/wellnessbox_rnd/governance/external_dependency_registry.py
+          tests/test_external_dependency_registry.py
           src/wellnessbox_rnd/evals/external_high_risk_safety.py
           src/wellnessbox_rnd/evals/learned_runtime_boundary_audit.py
           src/wellnessbox_rnd/evals/recommendation_replay_compare.py

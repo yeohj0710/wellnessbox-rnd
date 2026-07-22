@@ -285,3 +285,9 @@ Do not run training or a new `cgm` loop yet.
 1. 다음 bounded loop에서만 OP-119의 외부 책임자·입력·교체 계약·차단 사유 원장을 구현하고 검증한다.
 2. 별도 보고서 loop에서 누락된 한국어 연구보고서 80개를 기존 canonical evidence와 대조해 작성한다.
 3. 사용자 승인을 받은 뒤에만 production 배포·traffic과 실제 약사 계정 세션을 관찰해 OP-116~118의 OPERATED 후보를 검토한다.
+
+# Next after OP-119
+
+1. 다음 bounded loop에서만 OP-120 최종 requirement-by-requirement 감사 계약을 구현하되, 미완료 요구사항이 있으면 전체 완료를 거부한다.
+2. 별도 보고서 loop에서 누락된 한국어 연구보고서 79개를 기존 canonical evidence와 대조해 작성한다.
+3. 외부 독립 조직이 실제 OP-039 입력 4종과 승인 기록을 제공한 뒤에만 trust root를 변경하고 외부 평가를 실행한다.

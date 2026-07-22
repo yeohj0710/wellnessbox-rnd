@@ -1,0 +1,85 @@
+{
+  "audit": {
+    "blocked_requirement_ids": [
+      "OP-039"
+    ],
+    "blocking_reason_count": 4,
+    "external_requirement_ids": [
+      "OP-039"
+    ],
+    "registry_requirement_ids": [
+      "OP-039"
+    ],
+    "replacement_contract_count": 2,
+    "required_input_count": 4,
+    "schema_version": "op119_external_dependency_registry_audit_v1",
+    "status": "PASS",
+    "verified_observation_count": 4
+  },
+  "dataset": {
+    "case_count": 8,
+    "path": "data/original_plan/op119_external_dependency_registry_cases_v1.json",
+    "sha256": "12fd157f0946427fb86735d9fd2273e7016c9750978e7aa75d0ec46a0274064c"
+  },
+  "observed": {
+    "accountable_owner": {
+      "owner_count": 1
+    },
+    "blocking_reasons": {
+      "reason_count": 4,
+      "verified_observation_count": 4
+    },
+    "external_provider_role": {
+      "provider_role_count": 1
+    },
+    "external_requirement_set": {
+      "requirement_ids": [
+        "OP-039"
+      ]
+    },
+    "promotion_condition": {
+      "condition_count": 1
+    },
+    "readiness": {
+      "blocked_requirement_ids": [
+        "OP-039"
+      ],
+      "ready_count": 0
+    },
+    "replacement_contracts": {
+      "contract_count": 2
+    },
+    "required_inputs": {
+      "input_count": 4,
+      "missing_count": 4
+    }
+  },
+  "registry": {
+    "entry_count": 1,
+    "path": "data/original_plan/op119_external_dependency_registry_v1.json",
+    "sha256": "ed4288f0f55ab973cf11ed99cac97725cd52e6ff065ce78c8588e348a25f5301"
+  },
+  "requirement": {
+    "claimed_stage": "IMPLEMENTED",
+    "required_stage": "IMPLEMENTED",
+    "requirement_id": "OP-119"
+  },
+  "schema_version": "op119_external_dependency_registry_smoke_v1",
+  "source_identity": {
+    "blobs": {
+      "data/original_plan/op119_external_dependency_registry_cases_v1.json": "04b5cc664f616f6107196934a521a078ca0d6261",
+      "data/original_plan/op119_external_dependency_registry_v1.json": "d2019780ab4a736062864e629d80db7f3d91d492",
+      "data/original_plan/requirements_manifest_v1.json": "a4c8ec1f514f166a6b912a8c483252b3a86382da",
+      "scripts/run_external_dependency_registry_smoke.py": "a358a7e7fad2dca5fbb1fb67cc35f8e9612fa92b",
+      "src/wellnessbox_rnd/governance/external_dependency_registry.py": "aee105ac39e832fe6c089437fd21d029ec2ae27a",
+      "tests/test_external_dependency_registry.py": "9bf859311e50ec0e2fe888d086303531cb5dc83a"
+    },
+    "commit": "0d02027af918bb770f93c0abe4ca362db9ca88dd"
+  },
+  "stage_boundary": {
+    "external_approvals_registered": false,
+    "external_inputs_provided": false,
+    "op039_external_validation_complete": false,
+    "registry_contract_implemented": true
+  }
+}
