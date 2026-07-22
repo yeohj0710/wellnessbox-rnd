@@ -3,9 +3,9 @@
 ## 2026-07-22 OP-120 bounded loop
 
 - OP-120 최종 완료 감사기를 구현했다. 요구 단계, 외부 검증, 연구보고서, canonical evidence, 최종 검증 영수증과 독립 검토 영수증을 모두 통과해야 `READY`가 된다.
-- OP-120은 `IMPLEMENTED / PARTIAL`이다. 전체 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, 감사 주장은 119건, 연구보고서는 `42/120`이다.
-- 고정 데이터셋은 8건이다. SHA-256은 `eb6fa5b6bdfdadf0f81d28aec9d941847f951b0cbfda08408dc38313936ecd02`이다.
-- 현재 감사는 `BLOCKED`다. required stage 부족 43건, OP-039 외부 검증, 보고서 78건, 최종 검증·독립 검토 영수증이 남았다.
+- OP-120은 `IMPLEMENTED / PARTIAL`이다. 전체 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, 감사 주장은 119건이다. 보고서 파일은 42개지만 강화된 검증을 통과한 보고서는 `20/120`이다.
+- 고정 데이터셋은 8건이다. SHA-256은 `e6506727ab9a01a65e53f4de27ed4383e0a6419e29832e081ae1bb0dd2ff3883`이다.
+- 현재 감사는 `BLOCKED`다. required stage 부족 43건, OP-039 외부 검증, 누락·부적합 보고서 100건, 최종 검증·독립 검토 영수증이 남았다.
 - frozen·학습·모델·safety·replay·weakest slice delta는 모두 0이다.
 
 ## 2026-07-22 deployment-contract and endpoint-inventory loop

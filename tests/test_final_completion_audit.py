@@ -141,4 +141,9 @@ def test_padded_report_without_required_semantics_is_rejected(tmp_path: Path) ->
         "# OP-001 filler\n\n## a\n" + "x" * 200 + "\n## b\n" + "y" * 200 + "\n## c\n" + "z" * 200,
         encoding="utf-8",
     )
-    assert _valid_research_report(report, "OP-001") is False
+    assert (
+        _valid_research_report(
+            report, "OP-001", ["wellnessbox-rnd/data/original_plan/evidence/op001.json"]
+        )
+        is False
+    )

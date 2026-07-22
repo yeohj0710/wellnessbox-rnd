@@ -144,7 +144,15 @@ def audit_final_completion_v1(
         item.requirement_id
         for item in requirements
         if not _valid_research_report(
-            report_root / f"{item.requirement_id}.md", item.requirement_id
+            report_root / f"{item.requirement_id}.md",
+            item.requirement_id,
+            [
+                reference
+                for references in item.evidence.model_dump().values()
+                if isinstance(references, list)
+                for reference in references
+                if isinstance(reference, str) and "/" in reference
+            ],
         )
     ]
     policy = FinalAuditPolicyV1.model_validate_json(Path(policy_path).read_text(encoding="utf-8"))
@@ -268,7 +276,7 @@ def _git_head(root: Path) -> str:
     return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
 
 
-def _valid_research_report(path: Path, requirement_id: str) -> bool:
+def _valid_research_report(path: Path, requirement_id: str, evidence_references: list[str]) -> bool:
     if not path.is_file():
         return False
     try:
@@ -293,7 +301,11 @@ def _valid_research_report(path: Path, requirement_id: str) -> bool:
         and len(headings) == len(set(headings))
         and len(section_bodies) == len(headings)
         and all(len(body) >= 80 for body in section_bodies)
-        and sum(any(keyword in content for keyword in group) for group in semantic_groups) >= 2
+        and sum(any(keyword in content for keyword in group) for group in semantic_groups) >= 3
+        and any(
+            reference in content or reference.split("/", 1)[1] in content
+            for reference in evidence_references
+        )
     )
 
 
