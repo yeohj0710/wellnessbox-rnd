@@ -403,13 +403,23 @@ jobs:
       - name: Install OP-109/110 service dependencies
         working-directory: _evidence/wellnessbox-op110
         run: npm ci
+      - name: Checkout OP-111/112 WellnessBox evidence
+        uses: actions/checkout@v7
+        with:
+          repository: yeohj0710/wellnessbox
+          ref: 1205904b19736d2adf480c3b995c5c6d08eb8dc7
+          fetch-depth: 0
+          path: _evidence/wellnessbox-op112
+      - name: Install OP-111/112 service dependencies
+        working-directory: _evidence/wellnessbox-op112
+        run: npm ci
       - name: Audit requirement evidence
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op110
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op112
         run: python scripts/audit_original_plan_requirements.py
       - name: Check generated completion report
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op110
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op112
         run: python scripts/build_original_plan_completion_report.py --check
       - name: Check interaction and dose aggregation evidence
         run: >-
@@ -575,6 +585,7 @@ jobs:
           WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op106 python scripts/run_profile_review_roundtrip_smoke.py
           WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op108 python scripts/run_admin_product_integration_smoke.py
           WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op110 python scripts/run_order_plan_context_integration_smoke.py
+          WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op112 python scripts/run_security_boundary_integration_smoke.py
           git diff --exit-code -- \
             data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json \
             data/original_plan/evidence/op099_op100_device_dedup_linkage_smoke_v1.json \
@@ -582,7 +593,8 @@ jobs:
             data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json \
             data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json \
             data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json \
-            data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json
+            data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json \
+            data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json
       - name: Run requirement contract tests
         env:
           WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op110
