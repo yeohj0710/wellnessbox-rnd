@@ -16,10 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from apps.inference_api.main import app  # noqa: E402
-from wellnessbox_rnd.interim.store import InterimStore  # noqa: E402
 from wellnessbox_rnd.interim.device_evaluation import (  # noqa: E402
     calculate_device_score_changes,
 )
+from wellnessbox_rnd.interim.store import InterimStore  # noqa: E402
 
 DATASET_PATH = ROOT / "data/original_plan/op097_op098_device_followup_data_class_cases_v1.json"
 OUTPUT_PATH = (
