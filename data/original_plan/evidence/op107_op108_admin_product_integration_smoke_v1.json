@@ -7,7 +7,7 @@
     },
     "OP-108": {
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED"
+      "claimed_stage": "IMPLEMENTED"
     }
   },
   "dataset": {
@@ -20,7 +20,10 @@
     "admin_status_loaded": true,
     "admin_kpi_state_loaded": true,
     "admin_sources_loaded": true,
-    "selling_products_loaded": true,
+    "admin_rules_loaded": true,
+    "admin_models_state_loaded": true,
+    "admin_executions_state_loaded": true,
+    "selling_product_fixture_loaded": true,
     "product_candidates_attached": true,
     "invalid_catalog_fails_closed": true,
     "stock_and_safety_preserved": true
@@ -47,7 +50,10 @@
       ],
       "kpiAvailability": "UNAVAILABLE",
       "sourceCount": 9,
-      "adapterCount": 8
+      "adapterCount": 8,
+      "runtimeRuleCount": 1,
+      "runtimeModelCount": 0,
+      "runtimeExecutionCount": 0
     },
     "products": {
       "service_route": "POST /api/tips",
@@ -612,10 +618,18 @@
     }
   },
   "source_identity": {
-    "wellnessbox_commit": "be30c4d4437526489d8e7e7d7e06ce61db2ea2ee"
+    "wellnessbox_commit": "e95592a126cdb2bfeec156d4f4d7de43487e2a63",
+    "wellnessbox_rnd_source_commit": "e096083a71ba87a764aa838f8db5937b9479ed56",
+    "wellnessbox_rnd_source_blobs": {
+      "apps/inference_api/routes/interim.py": "84ad91fd2bcb28b4685b552d138e1842f994c68c",
+      "data/original_plan/op107_op108_admin_product_integration_cases_v1.json": "e70e6867a69758c9c6db8229bfb6110e4e6545bd",
+      "scripts/run_admin_product_integration_smoke.py": "a5ae2f6fcda699303b8a7f3b45fa921d6dd6d468"
+    }
   },
   "stage_boundary": {
-    "local_admin_and_product_integration_proven": true,
+    "local_admin_runtime_integration_proven": true,
+    "product_candidate_contract_implemented": true,
+    "actual_prisma_catalog_or_rnd_product_integration_proven": false,
     "production_operation_proven": false
   }
 }
