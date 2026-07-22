@@ -31,18 +31,18 @@
     "wellnessbox_alias_disabled_or_unhealthy_status": 503
   },
   "source_identity": {
-    "wellnessbox_rnd_commit": "0ee97575d2b818b396b57297c378918c7adf8fe7",
+    "wellnessbox_rnd_commit": "5c307ddbfa0f0a10de138f182c7f3259a1cca97c",
     "wellnessbox_rnd_source_blobs": {
-      "scripts/run_test_matrix_health_alias_smoke.py": "9bbeeccbf0dbe2155c0e83fe9998eb428abddebb",
+      "scripts/run_test_matrix_health_alias_smoke.py": "b11137ee8167e53b1f6114fd06a860575a1cca53",
       "scripts/run_deployment_contract_endpoint_smoke.py": "0af2aef093e3cd63e349e0e623dccc1fea1f451b",
       "tests/test_deployment_contract.py": "ee411cdbc45ce4247fc1a4a83bb6718e7e24ca2f",
       "apps/inference_api/routes/health.py": "2dd249ae4d183855ed844a950b6837a7972edde1",
       "src/wellnessbox_rnd/deployment.py": "3dbadf19279a86d280fe447a7dd1077e944a4f10",
       "data/original_plan/op115_op116_test_matrix_health_alias_cases_v1.json": "2e2f8d00395cb0161bf1e786d2b789c9a9930ee7"
     },
-    "wellnessbox_commit": "036553d7348fe653cdc48de9d855e588066591dd",
+    "wellnessbox_commit": "b37bf99a8f2a5a7eb50fe61016740579011d2aa3",
     "wellnessbox_source_blobs": {
-      ".github/workflows/encoding-guard.yml": "7888de3dab75b4f40900bcfd99f16db54c034eb1",
+      ".github/workflows/encoding-guard.yml": "303a5f3f051126f60be728648474ce0f85c83fd1",
       "app/api/internal/rnd/health/route.ts": "0ac3652195d9606247376b8ac489af0af0521d22",
       "lib/server/wb-rnd-health.ts": "4d1612d153824e059a73ddd6c65d35bdfe1a7f07",
       "scripts/qa/check-rnd-health-alias.cts": "8c75ddba0b16ac2492c786a3baaec461e0808c34",
