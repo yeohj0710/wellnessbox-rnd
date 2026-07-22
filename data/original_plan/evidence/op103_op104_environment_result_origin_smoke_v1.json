@@ -17,6 +17,7 @@
   },
   "checks": {
     "environment_contract_is_committed": true,
+    "runtime_uses_environment_contract": true,
     "secret_is_server_owned": true,
     "url_and_timeout_fail_closed": true,
     "remote_execution_origin_is_explicit": true,
@@ -26,8 +27,8 @@
     "focused_contract_test_is_committed": true
   },
   "source_identity": {
-    "wellnessbox_commit": "62e623f08e9721b045a0bc9eebba68a6bfaf6fc6",
-    "wellnessbox_source_sha256": "5562ab67179262d3f5218d409dfb5ba0fd99ae10dc13a852103c1aa70bbc85c0"
+    "wellnessbox_commit": "5f1d42015d6a467a717d69f3aaa8a7e2afd06931",
+    "wellnessbox_source_sha256": "a7add2a6fba0ea386eb76da2d82a9478f834b763f900768ff9a616292c487af4"
   },
   "stage_boundary": {
     "local_service_integration_proven": true,

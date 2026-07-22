@@ -514,3 +514,11 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - Frozen evaluation: `256` cases; all seven tracked metric deltas are exactly `0` against `artifacts/reports/op029_op030_frozen_eval/eval_report.json`.
 - Integration boundary: the current WellnessBox stored profile still exposes one combined `pregnantOrBreastfeeding` field. This loop implements distinct R&D inputs and rules but does not claim that the service can identify which state produced the combined source value.
 - Recommended next loops: OP-035/036 evidence-linked drug interactions and cross-product aggregate dose; OP-037/038 normalized unit/upper-limit comparison and rule version/application time; OP-039/040 high-risk false-negative evaluation and production final-blocking authority.
+# 2026-07-22 OP-103/104 bounded loop
+
+- WellnessBox commit `5f1d42015d6a467a717d69f3aaa8a7e2afd06931` enforces the enabled R&D runtime contract: production HTTPS, credential/query/hash-free URL, 32-character token, and bounded timeout.
+- Every preview response now has an exclusive `R&D 실행 결과` or `로컬 스냅샷 결과` origin; the evaluation screen renders its ID and fallback reason.
+- OP-103 is `IMPLEMENTED / PARTIAL`; OP-104 is `INTEGRATED / PARTIAL`. No Vercel setting, public deployment, or production traffic was changed or claimed.
+- Dataset/evidence: `data/original_plan/op103_op104_environment_result_origin_cases_v1.json`, 8 cases; canonical evidence `data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json`.
+- Status is complete `70`, partial `33`, pending `16`, external `1`, contradicted `0`; audit PASS with `103` claims and `285` checked evidence files. Reports cover `26/120`; `94` remain.
+- Independent review found Critical `0`, Important `1`, Minor `2`; runtime contract bypass, snapshot ID collision, and integration-test gaps were corrected. Final focused QA and TypeScript checks pass.

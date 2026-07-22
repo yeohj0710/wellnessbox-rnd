@@ -242,3 +242,8 @@ Do not run training or a new `cgm` loop yet.
 - Do not widen `dataset_f_effect_training_view_v1`
 - Do not reintroduce forbidden outcome-side features into effect training
 - Prefer evidence-chain tightening over architecture churn
+# Next after OP-103/104
+
+1. Complete OP-105/106 with a committed profile-to-R&D roundtrip and review-queue integration, without public deployment.
+2. Backfill evidence-grounded Korean reports for OP-001 through OP-078; `94/120` reports remain.
+3. Register WB_RND values and verify browser labels only after explicit approval for Vercel and deployment changes.

@@ -509,3 +509,14 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - Biggest bottlenecks: deployed R&D URL; durable production R&D storage; authenticated service-to-R&D round trip; production mutation postcondition re-query; deterministic whole-session replay and service UI.
 - Next three loops: OP-029/030 replay API and service UI; OP-033/034 pregnancy/lactation and condition safety expansion; OP-035/036 evidence-linked interactions and combined-dose calculation.
 - Publication: implementation commit `e2cfc54` was pushed to `main`; `Original plan evidence` run `29464603258` passed all steps.
+# 2026-07-22 OP-103/104 handoff
+
+- Chosen stage/tasks: production-service integration; OP-103 environment contract and OP-104 result-origin display.
+- Primary dataset/cases: `data/original_plan/op103_op104_environment_result_origin_cases_v1.json`, `8` cases. Canonical evidence is `data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json`; service source commit is `5f1d42015d6a467a717d69f3aaa8a7e2afd06931`.
+- Files: WellnessBox environment/origin/client/UI/QA; R&D dataset, smoke, evidence, manifest/status, workflow, and OP-103/104 reports.
+- Changes: enabled runtime requires production HTTPS, safe URL, 32-character token, and bounded timeout. Remote execution and local snapshot are exclusive, identified origins. No training, frozen-data, simulation-policy, Vercel, public deployment, or production traffic change.
+- Stage/result: OP-103 `IMPLEMENTED / PARTIAL`; OP-104 `INTEGRATED / PARTIAL`. Counts `70/33/16/1/0`.
+- Validation: service focused QA, existing preview regression, TypeScript, encoding, R&D Ruff, canonical smoke, audit, and completion generation pass. Independent review moved from `0/1/2` to corrected findings.
+- Frozen/replay deltas: no recommendation, safety, training, frozen dataset, replay, or slice behavior changed; prior 256-case seven-zero-delta baseline remains applicable.
+- Five bottlenecks: `94/120` reports remain; Vercel values are not registered; no public browser evidence; OP-105/106 roundtrip/review integration is pending; legacy full suite retains known absent-artifact/CGM failures.
+- Next three loops: OP-105/106; OP-001~078 report backfill; approved provider/browser operation.

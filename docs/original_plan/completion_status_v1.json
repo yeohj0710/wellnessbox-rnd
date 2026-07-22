@@ -1,7 +1,7 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "b7b42d44ca15eb944d16af7a8dd6230a7d8a0ade8d331601d4a05921dad6aa78",
+  "audited_manifest_sha256": "ef85abbed36c1dc6f318922f7b9bf5abdd4c82a4fa78bf12dd6a451205146638",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
@@ -9,8 +9,8 @@
   "requirement_count": 120,
   "disposition_counts": {
     "COMPLETE": 70,
-    "PARTIAL": 31,
-    "PENDING": 18,
+    "PARTIAL": 33,
+    "PENDING": 16,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -141,8 +141,8 @@
       "requirement_count": 10,
       "disposition_counts": {
         "COMPLETE": 0,
-        "PARTIAL": 2,
-        "PENDING": 8,
+        "PARTIAL": 4,
+        "PENDING": 6,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -3518,14 +3518,20 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox/lib/server/wb-rnd-environment.ts",
+          "wellnessbox/scripts/qa/check-rnd-environment-result-origin.cts"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/scripts/run_environment_result_origin_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -3542,15 +3548,25 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox/lib/wb-rnd-result-origin.ts",
+          "wellnessbox/lib/server/wb-rnd-client.ts",
+          "wellnessbox/app/(dev)/rnd-preview/rnd-preview-client.tsx"
+        ],
+        "test_files": [
+          "wellnessbox/scripts/qa/check-rnd-environment-result-origin.cts",
+          "wellnessbox-rnd/scripts/run_environment_result_origin_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []
