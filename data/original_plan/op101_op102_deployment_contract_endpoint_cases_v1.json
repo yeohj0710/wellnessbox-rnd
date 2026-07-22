@@ -1,0 +1,13 @@
+{
+  "schema_version": "op101_op102_deployment_contract_endpoint_cases_v1",
+  "cases": [
+    {"case_id": "complete_deployment_contract_starts", "expected_status": "READY_FOR_PROVIDER_DEPLOYMENT"},
+    {"case_id": "relative_database_fails_closed", "expected_error": "interim_database_must_be_absolute"},
+    {"case_id": "short_internal_token_fails_closed", "expected_error": "internal_token_minimum_32_bytes"},
+    {"case_id": "five_required_endpoint_families_mounted", "expected_count": 5},
+    {"case_id": "unauthorized_interim_api_rejected", "expected_status": 401},
+    {"case_id": "health_and_recommendation_http_reachable", "expected_status": 200},
+    {"case_id": "device_event_survives_process_restart", "expected_rows": 1},
+    {"case_id": "restart_replay_returns_canonical_session", "expected_session_id": "deployment-device-1"}
+  ]
+}

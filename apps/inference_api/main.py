@@ -1,4 +1,5 @@
 import logging
+import os
 from contextlib import asynccontextmanager
 from time import perf_counter
 
@@ -8,6 +9,7 @@ from apps.inference_api.routes.health import router as health_router
 from apps.inference_api.routes.interim import router as interim_router
 from apps.inference_api.routes.recommend import router as recommend_router
 from wellnessbox_rnd.config import get_settings
+from wellnessbox_rnd.deployment import validate_deployment_contract
 from wellnessbox_rnd.logging import configure_logging
 from wellnessbox_rnd.runtime import validate_runtime_readiness
 
@@ -20,6 +22,12 @@ logger = logging.getLogger("wellnessbox_rnd.api")
 async def lifespan(app: FastAPI):
     runtime_readiness = validate_runtime_readiness()
     app.state.runtime_readiness = runtime_readiness
+    if os.getenv("WB_RND_DEPLOYMENT_CONTRACT_ENFORCED", "").lower() in {
+        "1",
+        "true",
+        "yes",
+    }:
+        app.state.deployment_contract = validate_deployment_contract().to_dict()
     logger.info(
         "api_startup_complete service=%s env=%s host=%s port=%s workers=%s knowledge_source=%s",
         settings.app_name,
