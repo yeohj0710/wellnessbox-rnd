@@ -121,6 +121,9 @@ def main() -> int:
     build_environment = os.environ.copy() | {
         "NEXT_PUBLIC_VAPID_PUBLIC_KEY": ephemeral_keys["publicKey"],
         "VAPID_PRIVATE_KEY": ephemeral_keys["privateKey"],
+        "GMAIL_SMTP_USER": "build-only@example.invalid",
+        "GMAIL_SMTP_APP_PASSWORD": "build-only-not-a-credential",
+        "GMAIL_SMTP_FROM": "build-only@example.invalid",
     }
     run([NPM, "run", "build"], service, environment=build_environment)
 
