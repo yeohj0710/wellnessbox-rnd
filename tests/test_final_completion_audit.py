@@ -1,9 +1,17 @@
+import base64
 import json
 from pathlib import Path
 
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
 from wellnessbox_rnd.governance.final_completion_audit import (
+    CompletionReceiptV1,
     FinalCompletionFactsV1,
     FinalCompletionStatus,
+    TrustedIssuerV1,
+    _signature_valid,
+    _valid_research_report,
     audit_final_completion_v1,
     evaluate_final_completion_facts_v1,
 )
@@ -95,3 +103,42 @@ def test_untracked_arbitrary_receipts_cannot_unlock_completion(tmp_path: Path) -
     )
     assert result.facts.validation_receipt_valid is False
     assert result.facts.independent_review_receipt_valid is False
+
+
+def test_receipt_requires_allowlisted_valid_signature() -> None:
+    private_key = Ed25519PrivateKey.generate()
+    public_key = private_key.public_key().public_bytes(
+        encoding=serialization.Encoding.Raw,
+        format=serialization.PublicFormat.Raw,
+    )
+    unsigned = {
+        "schema_version": "final_validation_receipt_v1",
+        "status": "PASS",
+        "manifest_sha256": "1" * 64,
+        "canonical_audit_sha256": "2" * 64,
+        "source_commit": "3" * 40,
+        "issuer_id": "external-auditor",
+    }
+    message = json.dumps(
+        unsigned, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    receipt = CompletionReceiptV1(
+        **unsigned,
+        signature_ed25519_base64=base64.b64encode(private_key.sign(message)).decode(),
+    )
+    issuer = TrustedIssuerV1(
+        issuer_id="external-auditor",
+        public_key_ed25519_base64=base64.b64encode(public_key).decode(),
+    )
+    assert _signature_valid(receipt, [issuer]) is True
+    assert _signature_valid(receipt.model_copy(update={"status": "FAIL"}), [issuer]) is False
+    assert _signature_valid(receipt, []) is False
+
+
+def test_padded_report_without_required_semantics_is_rejected(tmp_path: Path) -> None:
+    report = tmp_path / "OP-001.md"
+    report.write_text(
+        "# OP-001 filler\n\n## a\n" + "x" * 200 + "\n## b\n" + "y" * 200 + "\n## c\n" + "z" * 200,
+        encoding="utf-8",
+    )
+    assert _valid_research_report(report, "OP-001") is False

@@ -3,5 +3,6 @@
   "required_requirement_count": 120,
   "required_report_count": 120,
   "validation_receipt_path": null,
-  "independent_review_receipt_path": null
+  "independent_review_receipt_path": null,
+  "trusted_issuers": []
 }

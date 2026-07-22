@@ -126,7 +126,11 @@ def main() -> int:
 
 def _audited_input_hashes() -> dict[str, str]:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    policy = json.loads(POLICY.read_text(encoding="utf-8"))
     references = {"wellnessbox-rnd/" + MANIFEST.relative_to(ROOT).as_posix()}
+    for field in ("validation_receipt_path", "independent_review_receipt_path"):
+        if isinstance(policy.get(field), str):
+            references.add(policy[field])
     for group in manifest["groups"]:
         for requirement in group["requirements"]:
             for values in requirement.get("evidence", {}).values():

@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import base64
 import hashlib
+import json
 import subprocess
 from enum import StrEnum
 from pathlib import Path
 
+from cryptography.exceptions import InvalidSignature
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 from pydantic import BaseModel, ConfigDict, Field
 
 from wellnessbox_rnd.governance.original_plan_audit import (
@@ -53,6 +57,12 @@ class FinalAuditPolicyV1(_StrictModel):
     required_report_count: int
     validation_receipt_path: str | None
     independent_review_receipt_path: str | None
+    trusted_issuers: list[TrustedIssuerV1] = Field(default_factory=list)
+
+
+class TrustedIssuerV1(_StrictModel):
+    issuer_id: str
+    public_key_ed25519_base64: str
 
 
 class CompletionReceiptV1(_StrictModel):
@@ -61,6 +71,8 @@ class CompletionReceiptV1(_StrictModel):
     manifest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     canonical_audit_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     source_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
+    issuer_id: str
+    signature_ed25519_base64: str
 
 
 class IndependentReviewReceiptV1(CompletionReceiptV1):
@@ -155,12 +167,14 @@ def audit_final_completion_v1(
             repository_roots,
             manifest_sha256,
             canonical_audit_sha256,
+            policy.trusted_issuers,
         ),
         independent_review_receipt_valid=_review_receipt_valid(
             policy.independent_review_receipt_path,
             repository_roots,
             manifest_sha256,
             canonical_audit_sha256,
+            policy.trusted_issuers,
         ),
     )
     if policy.required_requirement_count != 120 or policy.required_report_count != 120:
@@ -173,6 +187,7 @@ def _receipt_valid(
     repository_roots: dict[RepositoryName | str, str | Path],
     manifest_sha256: str,
     canonical_audit_sha256: str,
+    trusted_issuers: list[TrustedIssuerV1],
 ) -> bool:
     resolved = _trusted_receipt_path(reference, repository_roots)
     if resolved is None:
@@ -188,6 +203,7 @@ def _receipt_valid(
         and receipt.canonical_audit_sha256 == canonical_audit_sha256
         and receipt.source_commit
         in {_git_head(Path(root).resolve()) for root in repository_roots.values()}
+        and _signature_valid(receipt, trusted_issuers)
     )
 
 
@@ -196,6 +212,7 @@ def _review_receipt_valid(
     repository_roots: dict[RepositoryName | str, str | Path],
     manifest_sha256: str,
     canonical_audit_sha256: str,
+    trusted_issuers: list[TrustedIssuerV1],
 ) -> bool:
     resolved = _trusted_receipt_path(reference, repository_roots)
     if resolved is None:
@@ -213,6 +230,9 @@ def _review_receipt_valid(
         and receipt.canonical_audit_sha256 == canonical_audit_sha256
         and receipt.critical_count == 0
         and receipt.important_count == 0
+        and receipt.source_commit
+        in {_git_head(Path(root).resolve()) for root in repository_roots.values()}
+        and _signature_valid(receipt, trusted_issuers)
     )
 
 
@@ -255,9 +275,43 @@ def _valid_research_report(path: Path, requirement_id: str) -> bool:
         content = path.read_text(encoding="utf-8")
     except (OSError, UnicodeError):
         return False
-    headings = [line for line in content.splitlines() if line.startswith("## ")]
+    lines = content.splitlines()
+    headings = [line for line in lines if line.startswith("## ")]
+    section_bodies = [
+        body.strip() for body in "\n".join(lines[1:]).split("\n## ")[1:] if "\n" in body
+    ]
+    semantic_groups = (
+        ("요구", "문제"),
+        ("검증", "테스트"),
+        ("증거", "evidence"),
+        ("완료", "단계", "stage", "한계"),
+    )
     return (
         len(content.strip()) >= 500
-        and requirement_id in content.splitlines()[0]
+        and lines[0].startswith(f"# {requirement_id} ")
         and len(headings) >= 3
+        and len(headings) == len(set(headings))
+        and len(section_bodies) == len(headings)
+        and all(len(body) >= 80 for body in section_bodies)
+        and sum(any(keyword in content for keyword in group) for group in semantic_groups) >= 2
     )
+
+
+def _signature_valid(receipt: CompletionReceiptV1, trusted_issuers: list[TrustedIssuerV1]) -> bool:
+    issuer = next((item for item in trusted_issuers if item.issuer_id == receipt.issuer_id), None)
+    if issuer is None:
+        return False
+    unsigned = receipt.model_dump(exclude={"signature_ed25519_base64"}, mode="json")
+    message = json.dumps(
+        unsigned, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    try:
+        public_key = Ed25519PublicKey.from_public_bytes(
+            base64.b64decode(issuer.public_key_ed25519_base64, validate=True)
+        )
+        public_key.verify(
+            base64.b64decode(receipt.signature_ed25519_base64, validate=True), message
+        )
+    except (ValueError, InvalidSignature):
+        return False
+    return True
