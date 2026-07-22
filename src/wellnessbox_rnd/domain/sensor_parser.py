@@ -102,6 +102,11 @@ def normalize_cgm_summary_csv(csv_text: str) -> list[NormalizedCgmDailySummary]:
             raise ValueError("duplicate_cgm_daily_summary_date")
         seen_dates.add(observed_date)
         unit = _normalize_unit(_first_present(row, "glucose_unit", "avg_glucose_unit"))
+        _require_consistent_numeric_aliases(
+            row,
+            ("mean_glucose_mg_dl", "avg_glucose_mg_dl"),
+            error="conflicting_cgm_mean_glucose_aliases",
+        )
         explicit_mean_mg_dl = _first_present(
             row, "mean_glucose_mg_dl", "avg_glucose_mg_dl"
         )
@@ -123,8 +128,18 @@ def normalize_cgm_summary_csv(csv_text: str) -> list[NormalizedCgmDailySummary]:
         peak_value = _first_present(
             row, "postprandial_peak_mg_dl", "post_meal_peak_mg_dl", "post_meal_peak"
         )
+        _require_consistent_numeric_aliases(
+            row,
+            ("postprandial_peak_mg_dl", "post_meal_peak_mg_dl"),
+            error="conflicting_cgm_postprandial_peak_aliases",
+        )
         rise_value = _first_present(
             row, "postprandial_rise_mg_dl", "post_meal_rise_mg_dl", "post_meal_rise"
+        )
+        _require_consistent_numeric_aliases(
+            row,
+            ("postprandial_rise_mg_dl", "post_meal_rise_mg_dl"),
+            error="conflicting_cgm_postprandial_rise_aliases",
         )
         peak = (
             None
@@ -154,6 +169,16 @@ def normalize_cgm_summary_csv(csv_text: str) -> list[NormalizedCgmDailySummary]:
             row, "time_in_range_70_180_pct", "timeInRange70To180Pct"
         )
         generic_tir_value = _first_present(row, "time_in_range_pct", "timeInRangePct")
+        _require_consistent_numeric_aliases(
+            row,
+            ("time_in_range_70_180_pct", "timeInRange70To180Pct"),
+            error="conflicting_cgm_time_in_range_aliases",
+        )
+        _require_consistent_numeric_aliases(
+            row,
+            ("time_in_range_pct", "timeInRangePct"),
+            error="conflicting_cgm_time_in_range_aliases",
+        )
         if standardized_tir_value is not None and generic_tir_value is not None:
             standardized_tir = _coerce_float(standardized_tir_value)
             generic_tir = _coerce_float(generic_tir_value)
@@ -606,6 +631,18 @@ def _first_present(payload: dict[str, Any], *keys: str) -> Any:
         if key in payload and payload[key] is not None:
             return payload[key]
     return None
+
+
+def _require_consistent_numeric_aliases(
+    payload: dict[str, Any], aliases: tuple[str, ...], *, error: str
+) -> None:
+    values = [
+        _coerce_float(payload[alias])
+        for alias in aliases
+        if alias in payload and payload[alias] is not None
+    ]
+    if len(values) > 1 and any(value != values[0] for value in values[1:]):
+        raise ValueError(error)
 
 
 def _parse_date(value: Any) -> date:

@@ -106,6 +106,43 @@ def test_cgm_csv_rejects_conflicting_mean_and_tir_aliases() -> None:
 
 
 @pytest.mark.parametrize(
+    ("header", "row", "error"),
+    [
+        (
+            "mean_glucose_mg_dl,avg_glucose_mg_dl,postprandial_rise_mg_dl,time_in_range_70_180_pct",
+            "120,240,30,78",
+            "conflicting_cgm_mean_glucose_aliases",
+        ),
+        (
+            "mean_glucose_mg_dl,postprandial_rise_mg_dl,time_in_range_70_180_pct,timeInRange70To180Pct",
+            "120,30,78,42",
+            "conflicting_cgm_time_in_range_aliases",
+        ),
+        (
+            "mean_glucose_mg_dl,postprandial_rise_mg_dl,time_in_range_pct,timeInRangePct,time_in_range_low_mg_dl,time_in_range_high_mg_dl",
+            "120,30,78,42,70,180",
+            "conflicting_cgm_time_in_range_aliases",
+        ),
+        (
+            "mean_glucose_mg_dl,postprandial_peak_mg_dl,post_meal_peak_mg_dl,time_in_range_70_180_pct",
+            "120,160,300,78",
+            "conflicting_cgm_postprandial_peak_aliases",
+        ),
+        (
+            "mean_glucose_mg_dl,postprandial_rise_mg_dl,post_meal_rise_mg_dl,time_in_range_70_180_pct",
+            "120,30,60,78",
+            "conflicting_cgm_postprandial_rise_aliases",
+        ),
+    ],
+)
+def test_cgm_csv_rejects_conflicts_inside_alias_groups(
+    header: str, row: str, error: str
+) -> None:
+    with pytest.raises(ValueError, match=error):
+        normalize_cgm_summary_csv(f"date,{header}\n2026-07-21,{row}\n")
+
+
+@pytest.mark.parametrize(
     ("record_type", "unit", "error"),
     [
         ("HKQuantityTypeIdentifierStepCount", "km", "unsupported_apple_health_step_unit"),
