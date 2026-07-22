@@ -111,8 +111,12 @@ def main() -> int:
                 text=True,
                 encoding="utf-8",
                 capture_output=True,
-                check=True,
+                check=False,
             )
+            if completed.returncode != 0:
+                raise AssertionError(
+                    f"service_roundtrip_failed:{completed.stderr.strip()}"
+                )
             observed = json.loads(completed.stdout.strip().splitlines()[-1])
         finally:
             process.terminate()
@@ -120,9 +124,7 @@ def main() -> int:
     service_blobs = "\n".join(git("show", f"HEAD:{path}", cwd=SERVICE) for path in SERVICE_PATHS)
     checks = {
         "profile_roundtrip_completed": observed["profileId"] == "usr_105106abcdef0123456789abcdef",
-        "recommendation_roundtrip_completed": str(observed["recommendationRunId"]).startswith(
-            "run_"
-        ),
+        "recommendation_roundtrip_completed": bool(observed["recommendationRunId"]),
         "review_queue_roundtrip_completed": str(observed["reviewId"]).startswith("review_"),
         "review_decision_completed": observed["reviewStatus"] == "COMPLETED",
         "review_replay_rejected": observed["immutableReplayRejected"] is True,

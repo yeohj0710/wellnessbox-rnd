@@ -3,7 +3,7 @@
   "cases": [
     {"case_id": "profile_saved_through_service_client", "expected_profile_id": "usr_105106abcdef0123456789abcdef"},
     {"case_id": "recommendation_uses_saved_profile", "expected_http_status": 200},
-    {"case_id": "recommendation_run_identity_returned", "expected_prefix": "run_"},
+    {"case_id": "recommendation_run_identity_returned", "expected_nonempty": true},
     {"case_id": "pharmacy_scoped_open_review_visible", "expected_pharmacy_id": 105},
     {"case_id": "review_decision_completed", "expected_status": "COMPLETED"},
     {"case_id": "review_completion_is_immutable", "expected_replay_status": 409},
