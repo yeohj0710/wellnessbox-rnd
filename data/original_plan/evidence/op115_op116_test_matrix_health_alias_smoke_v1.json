@@ -31,9 +31,9 @@
     "wellnessbox_alias_disabled_or_unhealthy_status": 503
   },
   "source_identity": {
-    "wellnessbox_rnd_commit": "5c307ddbfa0f0a10de138f182c7f3259a1cca97c",
+    "wellnessbox_rnd_commit": "275a2c5bee47a051532c1bbc0fa0505c384c21c0",
     "wellnessbox_rnd_source_blobs": {
-      "scripts/run_test_matrix_health_alias_smoke.py": "b11137ee8167e53b1f6114fd06a860575a1cca53",
+      "scripts/run_test_matrix_health_alias_smoke.py": "1bdb4e7bb95f04fc60433c7106d935ffb487a42c",
       "scripts/run_deployment_contract_endpoint_smoke.py": "0af2aef093e3cd63e349e0e623dccc1fea1f451b",
       "tests/test_deployment_contract.py": "ee411cdbc45ce4247fc1a4a83bb6718e7e24ca2f",
       "apps/inference_api/routes/health.py": "2dd249ae4d183855ed844a950b6837a7972edde1",
