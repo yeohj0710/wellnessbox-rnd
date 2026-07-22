@@ -340,6 +340,20 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: wellnessbox
+          POSTGRES_PASSWORD: wellnessbox
+          POSTGRES_DB: wellnessbox
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U wellnessbox"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
       WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox
     steps:
@@ -431,13 +445,17 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 4111997fcf93829192c6e6535ecfd2d66b788e29
+          ref: 5b6c1f2e86d4bedc9f1e4a197c8eebbe98768613
           fetch-depth: 0
           path: _evidence/wellnessbox-op116
       - name: Verify OP-115/116 service test matrix
         working-directory: _evidence/wellnessbox-op116
         run: npm ci
       - name: Replay OP-115/116 canonical test matrix
+        env:
+          DATABASE_URL: postgresql://wellnessbox:wellnessbox@127.0.0.1:5432/wellnessbox
+          DIRECT_URL: postgresql://wellnessbox:wellnessbox@127.0.0.1:5432/wellnessbox
+          OP115_INITIALIZE_BUILD_DATABASE: "1"
         run: >-
           python scripts/run_test_matrix_health_alias_smoke.py
           --wellnessbox-root ${{ github.workspace }}/_evidence/wellnessbox-op116

@@ -134,6 +134,12 @@ def main() -> int:
         "ADMIN_PASSWORD": "build-only-admin-password",
         "TEST_PASSWORD": "build-only-test-password",
     }
+    if os.environ.get("OP115_INITIALIZE_BUILD_DATABASE") == "1":
+        run(
+            [NPM, "exec", "--", "prisma", "db", "push", "--skip-generate"],
+            service,
+            environment=build_environment,
+        )
     run([NPM, "run", "build"], service, environment=build_environment)
 
     dataset = json.loads(git(ROOT, "show", f"HEAD:{DATASET.relative_to(ROOT).as_posix()}"))
