@@ -17,6 +17,9 @@ sys.path.insert(0, str(ROOT))
 
 from apps.inference_api.main import app  # noqa: E402
 from wellnessbox_rnd.interim.store import InterimStore  # noqa: E402
+from wellnessbox_rnd.interim.device_evaluation import (  # noqa: E402
+    calculate_device_score_changes,
+)
 
 DATASET_PATH = ROOT / "data/original_plan/op097_op098_device_followup_data_class_cases_v1.json"
 OUTPUT_PATH = (
@@ -206,6 +209,22 @@ def main() -> int:
                 )
             ],
             "tamper_errors": tamper_errors,
+            "candidate_set_transition": calculate_device_score_changes(
+                {
+                    "exited": {
+                        "wearable_adjustment": 4.0,
+                        "cgm_adjustment": 0.0,
+                        "total": 20.0,
+                    }
+                },
+                {
+                    "entered": {
+                        "wearable_adjustment": 0.0,
+                        "cgm_adjustment": 3.0,
+                        "total": 19.0,
+                    }
+                },
+            ),
         }
         checks = {
             "authenticated_real_api": True,
@@ -225,6 +244,18 @@ def main() -> int:
             "cross_class_followup_rejected": observed["cross_class_http_status"] == 422,
             "exact_replay_deduplicated": observed["exact_replay_deduplicated"] is True,
             "append_only_tamper_rejected": len(observed["tamper_errors"]) == 2,
+            "candidate_entry_exit_and_null_delta_preserved": (
+                observed["candidate_set_transition"]["exited"][
+                    "selected_at_follow_up"
+                ]
+                is False
+                and observed["candidate_set_transition"]["entered"][
+                    "selected_at_baseline"
+                ]
+                is False
+                and observed["candidate_set_transition"]["entered"]["total_delta"]
+                is None
+            ),
         }
         if not all(checks.values()):
             raise AssertionError(f"device_followup_smoke_failed:{checks}")

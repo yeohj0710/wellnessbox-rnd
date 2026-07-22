@@ -10,6 +10,7 @@ from apps.inference_api.main import app
 from wellnessbox_rnd.interim.device_evaluation import (
     DeviceRecommendationAssessmentRequest,
     assess_device_recommendation,
+    calculate_device_score_changes,
 )
 from wellnessbox_rnd.interim.store import InterimStore
 
@@ -92,6 +93,40 @@ def test_device_values_change_recommendation_score_and_followup(tmp_path) -> Non
         == -4.0
     )
     assert store.scalar("select count(*) from device_recommendation_assessments") == 2
+
+
+def test_score_changes_preserve_candidate_entry_exit_and_null_delta() -> None:
+    changes = calculate_device_score_changes(
+        {
+            "exited": {
+                "wearable_adjustment": 4.0,
+                "cgm_adjustment": 0.0,
+                "total": 20.0,
+            }
+        },
+        {
+            "entered": {
+                "wearable_adjustment": 0.0,
+                "cgm_adjustment": 3.0,
+                "total": 19.0,
+            }
+        },
+    )
+
+    assert changes["exited"] == {
+        "selected_at_baseline": True,
+        "selected_at_follow_up": False,
+        "wearable_adjustment_delta": None,
+        "cgm_adjustment_delta": None,
+        "total_delta": None,
+    }
+    assert changes["entered"] == {
+        "selected_at_baseline": False,
+        "selected_at_follow_up": True,
+        "wearable_adjustment_delta": None,
+        "cgm_adjustment_delta": None,
+        "total_delta": None,
+    }
 
 
 def test_exact_replay_deduplicates_and_identity_conflict_fails(tmp_path) -> None:

@@ -33,6 +33,10 @@
     {
       "case_id": "append_only_tamper_rejected",
       "expected_error": "device_recommendation_assessments_append_only"
+    },
+    {
+      "case_id": "candidate_entry_exit_preserved",
+      "expected_missing_pair_delta": null
     }
   ]
 }

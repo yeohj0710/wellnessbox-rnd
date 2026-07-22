@@ -103,7 +103,7 @@ def assess_device_recommendation(
         for item in response.recommendations
     }
     sensor_changes: dict[str, dict[str, float | None]] = {}
-    score_changes: dict[str, dict[str, float]] = {}
+    score_changes: dict[str, dict[str, float | bool | None]] = {}
     baseline = None
     if payload.baseline_assessment_id is not None:
         baseline = _load_assessment(store, payload.baseline_assessment_id)
@@ -118,7 +118,7 @@ def assess_device_recommendation(
         baseline_sensor = json.loads(baseline["sensor_snapshot_json"])
         baseline_scores = json.loads(baseline["score_snapshot_json"])
         sensor_changes = _numeric_changes(baseline_sensor, sensor_snapshot)
-        score_changes = _score_changes(baseline_scores, score_snapshot)
+        score_changes = calculate_device_score_changes(baseline_scores, score_snapshot)
 
     request_sha256 = _sha256(request.model_dump(mode="json"))
     values = {
@@ -190,7 +190,7 @@ def _numeric_changes(
     return changes
 
 
-def _score_changes(
+def calculate_device_score_changes(
     baseline: dict[str, dict[str, float]],
     follow_up: dict[str, dict[str, float]],
 ) -> dict[str, dict[str, float | bool | None]]:
@@ -261,4 +261,5 @@ __all__ = [
     "DeviceRecommendationAssessmentRequest",
     "DeviceRecommendationAssessmentResponse",
     "assess_device_recommendation",
+    "calculate_device_score_changes",
 ]
