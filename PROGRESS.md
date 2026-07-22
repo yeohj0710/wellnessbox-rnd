@@ -8,8 +8,9 @@
 - Evidence stage: OP-099 is implemented but PARTIAL versus required `OPERATED`; no real provider traffic or production operation is claimed. OP-100 is COMPLETE at required `IMPLEMENTED`.
 - Research reports: OP-079 through OP-100 have separate prose reports. Coverage is `22/120`; `98` remain. Total text is `159,327` characters. OP-099 has `4,141` characters and OP-100 has `4,079` characters.
 - Generated status: complete `70`, partial `29`, pending `20`, external `1`, contradicted `0`; audit PASS with `99` claims and `272` checked evidence files.
-- Validation: focused connector/KPI/API/agent selection `49 passed`; canonical smoke, tracked-Python Ruff, audit, completion check PASS. Full regression collected `1,124`: `1,029 passed`, `95` known absent-artifact/CGM failures. Frozen evaluation has `256` cases and seven zero metric deltas. Independent review initially found Critical `0`, Important `4`, Minor `2`; all findings were fixed and final review is `0/0/0`.
+- Validation: focused connector/KPI/API/agent selection `49 passed`; final CI exact selection `681 passed, 2 skipped`; canonical smoke, tracked-Python Ruff, audit, completion check PASS. Full regression collected `1,124`: `1,029 passed`, `95` known absent-artifact/CGM failures. Frozen evaluation has `256` cases and seven zero metric deltas. Independent review initially found Critical `0`, Important `4`, Minor `2`; all findings were fixed and final review is `0/0/0`.
 - Frozen-data/training/simulation delta: no frozen dataset, model training, simulation policy, safety rule, or service repository change. Weakest categories remain unchanged.
+- Publication: R&D source/evidence through `cb75d92410f2e95c0076476dcd70e4c7cb385838` is on `origin/main`; Original plan evidence run `29886594091` passed. The service remains at `a24b6c3308cc76627c3ca29807db1705e32c2178`, and its pre-existing user changes were preserved.
 - Next loops: OP-101/102 deployment contracts without public deployment; OP-103/104 service environment and two-process contracts without production mutation; OP-001 through OP-078 report backfill.
 
 ## 2026-07-22 device-value follow-up and data-class loop
