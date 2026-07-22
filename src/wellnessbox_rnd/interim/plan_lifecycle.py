@@ -140,6 +140,31 @@ class OrderPlanContextResultV1(BaseModel):
     persisted_event_count_after: int
 
 
+class PlanBindingValidationRequestV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["plan_binding_validation_request_v1"] = (
+        "plan_binding_validation_request_v1"
+    )
+    execution_id: str = Field(min_length=3, max_length=128)
+    profile_id: str = Field(min_length=3, max_length=128)
+    plan_id: str = Field(min_length=3, max_length=128)
+
+
+class PlanBindingValidationResultV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["plan_binding_validation_result_v1"] = (
+        "plan_binding_validation_result_v1"
+    )
+    execution_id: str
+    profile_id: str
+    plan_id: str
+    plan_state: PlanLifecycleState
+    valid: Literal[True] = True
+    read_only: Literal[True] = True
+
+
 def resolve_plan_lifecycle_states(rows: list[object]) -> dict[str, PlanLifecycleState]:
     states: dict[str, PlanLifecycleState] = {}
     candidate_identity: dict[str, tuple[str, str]] = {}
@@ -374,6 +399,30 @@ class PlanLifecycleService:
             persisted_event_count_after=event_count,
         )
 
+    def validate_plan_binding(
+        self, request: PlanBindingValidationRequestV1
+    ) -> PlanBindingValidationResultV1:
+        execution = self.store.rows(
+            "select * from executions where execution_id=?", (request.execution_id,)
+        )
+        if not execution:
+            raise ValueError("plan_lifecycle_execution_not_found")
+        if str(execution[0]["profile_id"]) != request.profile_id:
+            raise PermissionError("plan_lifecycle_profile_mismatch")
+        rows = self.store.rows(
+            "select * from execution_events where execution_id=? order by event_index",
+            (request.execution_id,),
+        )
+        state = resolve_plan_lifecycle_states(rows).get(request.plan_id)
+        if state is None:
+            raise ValueError("plan_lifecycle_plan_not_found")
+        return PlanBindingValidationResultV1(
+            execution_id=request.execution_id,
+            profile_id=request.profile_id,
+            plan_id=request.plan_id,
+            plan_state=state,
+        )
+
     @staticmethod
     def _result(connection, row, *, deduplicated: bool) -> PlanLifecycleTransitionResultV1:
         payload = json.loads(str(row["payload_json"]))
@@ -418,6 +467,8 @@ class PlanLifecycleService:
 __all__ = [
     "OrderPlanContextRequestV1",
     "OrderPlanContextResultV1",
+    "PlanBindingValidationRequestV1",
+    "PlanBindingValidationResultV1",
     "PlanLifecycleAction",
     "PlanLifecycleService",
     "PlanLifecycleState",

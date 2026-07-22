@@ -13,6 +13,7 @@ from wellnessbox_rnd.interim.data_mutation import DataMutationLedger, EventMutat
 from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.plan_lifecycle import (
     OrderPlanContextRequestV1,
+    PlanBindingValidationRequestV1,
     PlanLifecycleAction,
     PlanLifecycleService,
     PlanLifecycleState,
@@ -191,6 +192,29 @@ def test_order_context_is_read_only_and_preserves_plan_state(tmp_path) -> None:
     assert result.persisted_event_count_before == before
     assert result.persisted_event_count_after == before
     assert int(service.store.scalar("select count(*) from execution_events")) == before
+
+
+def test_plan_binding_validation_requires_owned_execution_and_existing_plan(tmp_path) -> None:
+    service = _service(tmp_path)
+    result = service.validate_plan_binding(
+        PlanBindingValidationRequestV1(
+            execution_id="execution_lifecycle",
+            profile_id="usr_lifecycle",
+            plan_id="plan_lifecycle",
+        )
+    )
+    assert result.valid is True
+    assert result.read_only is True
+    assert result.plan_state == PlanLifecycleState.ACTIVE
+
+    with pytest.raises(PermissionError, match="plan_lifecycle_profile_mismatch"):
+        service.validate_plan_binding(
+            PlanBindingValidationRequestV1(
+                execution_id="execution_lifecycle",
+                profile_id="usr_other",
+                plan_id="plan_lifecycle",
+            )
+        )
 
 
 def test_replace_deactivates_old_plan_and_activates_replacement(tmp_path) -> None:

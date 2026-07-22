@@ -542,4 +542,4 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - OP-109와 OP-110은 모두 `IMPLEMENTED / PARTIAL`이다. 실제 Prisma mutation과 조회, 실제 결제 제공자, 운영 사용은 증명하지 않았다.
 - 데이터셋은 `data/original_plan/op109_op110_order_plan_context_cases_v1.json` 8건이다. 상태는 `70/39/10/1/0`, 보고서는 `32/120`, 감사 주장은 `109`, 확인한 증거 파일은 `300`개다.
 - 이전 CI의 최신 서비스 파일 누락은 감사·completion·계약 테스트가 고정된 최신 OP-110 서비스 checkout을 사용하도록 수정했다.
-- 독립 리뷰의 최초 `Critical 1 / Important 2 / Minor 1`에 따라 Server Action 내부 결제 재검증, 결제 금액과 상품 가격 비교, paymentId unique 제약, 정확한 사용자·주문·execution·plan 바인딩, 넓은 mutation 우회 검사를 추가했다. 서비스 커밋은 `637e5c1d67d2569709bd7c7dd4d65b04b314ad97`이다.
+- 독립 리뷰는 `1/2/1`에서 `0/2/1`로 줄었다. 추가 지적에 따라 R&D가 주문 생성 전에 사용자 소유 execution·plan을 검증하고, migration이 기존 paymentId 중복을 명시적으로 탐지하며, P2002 동시 재시도가 rollback 뒤 기존 주문을 반환하게 했다. 서비스 커밋은 `59399e2569c6152c644c4010ac52e26e876d1040`이다.

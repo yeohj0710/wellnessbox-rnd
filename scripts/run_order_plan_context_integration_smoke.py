@@ -161,6 +161,15 @@ def main() -> int:
             observed["paymentIdUniqueAndTransactionProtected"] is True
         ),
         "order_plan_binding_required": observed["orderPlanBindingRequired"] is True,
+        "order_plan_binding_validated_by_rnd": (
+            observed["orderPlanBindingValidatedByRnd"] is True
+        ),
+        "duplicate_migration_preflight_required": (
+            observed["duplicateMigrationPreflightRequired"] is True
+        ),
+        "concurrent_payment_replay_returns_existing_order": (
+            observed["concurrentPaymentReplayReturnsExistingOrder"] is True
+        ),
         "order_context_read_only": all(
             item["plan_state"] == "ACTIVE" for item in observed["orderStatuses"]
         ),
