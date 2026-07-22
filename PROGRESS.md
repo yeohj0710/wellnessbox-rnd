@@ -594,3 +594,16 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 외부 요구사항 OP-039 한 건에 내부 책임 역할, 독립 외부 공급 역할, 필수 입력 4종, 교체 계약 2종, 검증된 차단 사유 4종과 승격 조건을 연결했다.
 - 8건 동결 사례와 canonical runner가 manifest 외부 집합, 원장 집합, trust root JSON pointer 관측, 예상값 완전 일치, source blob을 검증한다.
 - OP-039 외부 입력·승인·독립 검증은 계속 미충족이며 어떤 가짜 외부 증거도 만들지 않았다. frozen·학습·모델·safety·replay·slice 변화는 0이다.
+# 2026-07-22 OP-001/002 연구보고서 보강 반복
+
+- 선택 단계/과제: 원본 요구사항과 증거 기준 고정; OP-001 원본 SHA-256 동일성, OP-002 59쪽 시각 분류의 한국어 장문 연구보고서 보강.
+- 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `bc4fd0d1ac5d17f15bb5e7ccbdc22445795f2cfc863731800b0830019df34108`.
+- 변경 파일: `docs/original_plan/research_reports/OP-001.md`, `OP-002.md`, `OP-120.md`, OP-120 고정 사례와 canonical evidence. 코드, 서비스 데이터, 학습 데이터, 모델, safety 규칙, 시뮬레이션은 변경하지 않았다.
+- OP-001은 단위 테스트의 고정 manifest 검사와 canonical 감사의 PDF 바이트 재해시 역할을 분리했다. OP-002는 59쪽 전체를 여섯 접촉 시트로 확인하고 3~10·11~27·28~36·37~55·56~58·59쪽을 시장 문제·기술·준비·사업화·회사·안전보안으로 분류했다.
+- OP-001/002는 요구 단계 `IMPLEMENTED`를 유지한다. 서비스 통합, 운영, 외부 공증은 새로 주장하지 않았다.
+- 검증: 보고서 수용 검사 `True/True`, 관련 pytest `31 passed`, Ruff PASS, manifest/completion audit PASS, OP-120 재생 2회 SHA-256 `8facfc9566f29c3bf51bd44fea0e415565a86ec7b2ba5f394f7867223d2863e0` 동일. 독립 검토는 `0/2/1`에서 최종 Critical/Important/Minor `0/0/0`으로 끝났다.
+- GitHub Actions `Original plan evidence` 실행 `29913248935`가 canonical 재생, requirement contract tests, Ruff를 포함한 전체 65단계 검사를 통과했다.
+- OP-120 관측값: 유효 보고서 `20→22`, 누락·부적합 `100→98`; 전체 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, 최종 판정은 계속 `BLOCKED`다.
+- frozen 평가와 replay/slice 변화: 제품 코드·데이터·모델을 바꾸지 않았으므로 기존 256건 평가의 일곱 지표 delta와 weakest-slice delta는 모두 `0`이다.
+- 병목 5개: 누락·부적합 보고서 98개, 비외부 단계 미달 43개, OP-039 외부 검증, 전체 검증 영수증, 독립 검토 영수증.
+- 다음 세 반복: OP-003/004 보고서 보강, OP-005/006 보고서 보강, OP-007/008 보고서 보강.
