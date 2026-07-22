@@ -1843,8 +1843,42 @@
       "owners": ["wellnessbox-rnd"],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
-        {"requirement_id": "OP-091", "title": "Apple Health와 범용 CSV의 활동, 심박, 수면 필드를 정규화한다."},
-        {"requirement_id": "OP-092", "title": "CGM의 혈당, 식후 상승, time-in-range를 정규화한다."},
+        {
+          "requirement_id": "OP-091",
+          "title": "Apple Health와 범용 CSV의 활동, 심박, 수면 필드를 정규화한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/sensor_parser.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_sensor_parser.py",
+              "wellnessbox-rnd/scripts/run_sensor_daily_normalization_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op091_op092_sensor_daily_normalization_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-092",
+          "title": "CGM의 혈당, 식후 상승, time-in-range를 정규화한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/sensor_parser.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_sensor_parser.py",
+              "wellnessbox-rnd/scripts/run_sensor_daily_normalization_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op091_op092_sensor_daily_normalization_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-093", "title": "유전자 변이, 판정 기준, 검사기관, 검사일을 정규화한다."},
         {"requirement_id": "OP-094", "title": "동의하지 않은 데이터 출처를 저장하거나 점수에 사용하지 않는다."},
         {"requirement_id": "OP-095", "title": "파일 스키마 오류와 부분 성공 건수를 응답한다."},

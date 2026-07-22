@@ -1,0 +1,151 @@
+{
+  "checks": {
+    "apple_health_csv_observed": true,
+    "cases": [
+      {
+        "case_id": "generic_wearable_two_days",
+        "record_count": 2,
+        "records": [
+          {
+            "date": "2026-07-20",
+            "normalization_notes": [
+              "wearable_sleep_minutes_converted_to_hours",
+              "wearable_steps_string_coerced_to_int",
+              "wearable_resting_hr_string_coerced_to_int"
+            ],
+            "resting_heart_rate_bpm": 61.0,
+            "sleep_hours": 7.0,
+            "source_format": "generic_wearable_csv",
+            "source_row_count": 1,
+            "steps": 8000
+          },
+          {
+            "date": "2026-07-21",
+            "normalization_notes": [
+              "wearable_sleep_minutes_converted_to_hours",
+              "wearable_steps_string_coerced_to_int",
+              "wearable_resting_hr_string_coerced_to_int"
+            ],
+            "resting_heart_rate_bpm": 59.0,
+            "sleep_hours": 7.5,
+            "source_format": "generic_wearable_csv",
+            "source_row_count": 1,
+            "steps": 9100
+          }
+        ],
+        "result": "PASS"
+      },
+      {
+        "case_id": "apple_health_overlap_and_duplicate",
+        "record_count": 1,
+        "records": [
+          {
+            "date": "2026-07-21",
+            "normalization_notes": [
+              "apple_health_records_aggregated_by_start_date"
+            ],
+            "resting_heart_rate_bpm": 60.0,
+            "sleep_hours": 7.5,
+            "source_format": "apple_health_csv",
+            "source_row_count": 5,
+            "steps": 5500
+          }
+        ],
+        "result": "PASS"
+      },
+      {
+        "case_id": "cgm_mg_dl_fixed_tir",
+        "record_count": 1,
+        "records": [
+          {
+            "date": "2026-07-21",
+            "mean_glucose_mg_dl": 122.4,
+            "normalization_notes": [],
+            "postprandial_peak_mg_dl": 160.2,
+            "postprandial_rise_mg_dl": 37.8,
+            "source_row_count": 1,
+            "time_in_range_high_mg_dl": 180.0,
+            "time_in_range_low_mg_dl": 70.0,
+            "time_in_range_pct": 78.0
+          }
+        ],
+        "result": "PASS"
+      },
+      {
+        "case_id": "cgm_mmol_conversion",
+        "record_count": 1,
+        "records": [
+          {
+            "date": "2026-07-21",
+            "mean_glucose_mg_dl": 122.4,
+            "normalization_notes": [
+              "cgm_mmol_l_converted_to_mg_dl"
+            ],
+            "postprandial_peak_mg_dl": 160.2,
+            "postprandial_rise_mg_dl": 37.8,
+            "source_row_count": 1,
+            "time_in_range_high_mg_dl": 180.0,
+            "time_in_range_low_mg_dl": 70.0,
+            "time_in_range_pct": 78.0
+          }
+        ],
+        "result": "PASS"
+      },
+      {
+        "case_id": "wearable_duplicate_date_rejected",
+        "error": "duplicate_wearable_daily_summary_date",
+        "result": "PASS"
+      },
+      {
+        "case_id": "apple_health_timezone_required",
+        "error": "apple_health_datetime_invalid_or_timezone_missing",
+        "result": "PASS"
+      },
+      {
+        "case_id": "cgm_nonstandard_tir_rejected",
+        "error": "standardized_cgm_time_in_range_bounds_mismatch",
+        "result": "PASS"
+      },
+      {
+        "case_id": "cgm_postprandial_required",
+        "error": "cgm_postprandial_metric_required",
+        "result": "PASS"
+      }
+    ],
+    "cgm_mg_dl_and_mmol_l_observed": true,
+    "generic_wearable_csv_observed": true,
+    "postprandial_peak_and_rise_observed": true,
+    "production_operation_observed": false,
+    "production_provider_api_observed": false,
+    "standardized_tir_70_180_observed": true
+  },
+  "dataset": {
+    "case_count": 8,
+    "path": "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json",
+    "schema_version": "op091_op092_sensor_daily_normalization_cases_v1",
+    "sha256": "5cf8cdfe1675f4cdd2d70686eb0508c81342dea2e40b46a134346954ce79a2bb"
+  },
+  "requirements": [
+    "OP-091",
+    "OP-092"
+  ],
+  "result": "PASS",
+  "schema_version": "op091_op092_sensor_daily_normalization_smoke_v1",
+  "source_identity": {
+    "commit": "b686690338eacb1a39fe2ea7c7cfc0b4751e9871",
+    "files": {
+      "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json": "5cf8cdfe1675f4cdd2d70686eb0508c81342dea2e40b46a134346954ce79a2bb",
+      "data/samples/cgm_summary_v1.csv": "626b2fcc8f065165cf1c3538ef9a58367d65ff929c67682c5d62f7cb31f0b43f",
+      "data/samples/wearable_summary_v1.csv": "748f2e1cfa38634a7548bdf231c810cc97732a17a2ecd0ad892b5fcfbda8fbc3",
+      "scripts/run_sensor_daily_normalization_smoke.py": "cb95f309f18337d236c51173e1f8773bd8fb584f970de96fd5473ac29a8cf754",
+      "src/wellnessbox_rnd/domain/intake.py": "ed2d3c6814a9558542fb90b4069f6888775adc51a46962927c756c98266e8ae2",
+      "src/wellnessbox_rnd/domain/sensor_parser.py": "6f5d3e95ab0aa5525ae0b4c2b1646549120eb0008d8594bbe5a3cfcaf43e1c5b",
+      "src/wellnessbox_rnd/interim/data_lake.py": "fb6d2ce6e106463ae84463149e88f3c5e5edf5a63cc5f74acb84623c683f313d",
+      "src/wellnessbox_rnd/schemas/recommendation.py": "fc9cc646aac6c54e0a7676d477d19bc47b42369c14eb40315a8a589ed42ee9cb"
+    }
+  },
+  "stage_boundary": {
+    "OP-091": "Versioned local CSV normalization is implemented; no Apple Health API operation is claimed.",
+    "OP-092": "Versioned local CGM summary normalization is implemented; no production CGM integration is claimed."
+  }
+}

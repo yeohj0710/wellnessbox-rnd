@@ -55,6 +55,11 @@ on:
       - "scripts/run_bounded_rag_answer_provenance_smoke.py"
       - "scripts/run_counseling_verifier_urgent_safety_smoke.py"
       - "scripts/run_counseling_fallback_frozen_api_e2e_smoke.py"
+      - "scripts/run_sensor_daily_normalization_smoke.py"
+      - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
+      - "data/samples/wearable_summary_v1.csv"
+      - "data/samples/cgm_summary_v1.csv"
+      - "src/wellnessbox_rnd/domain/sensor_parser.py"
       - "src/wellnessbox_rnd/governance/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
@@ -458,6 +463,11 @@ jobs:
           python scripts/run_counseling_fallback_frozen_api_e2e_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json
+      - name: Check sensor daily normalization evidence
+        run: >-
+          python scripts/run_sensor_daily_normalization_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op091_op092_sensor_daily_normalization_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -472,6 +482,8 @@ jobs:
           tests/test_unsupported_input_contracts.py
           tests/test_wellnessbox_profile_adapter_contract.py
           tests/test_inference_api.py
+          tests/test_sensor_parser.py
+          tests/test_sensor_file_schema.py
           tests/test_interim_api.py
           tests/test_data_lake_lineage.py
           tests/test_interim_evidence.py
@@ -575,6 +587,7 @@ jobs:
           scripts/run_bounded_rag_answer_provenance_smoke.py
           scripts/run_counseling_verifier_urgent_safety_smoke.py
           scripts/run_counseling_fallback_frozen_api_e2e_smoke.py
+          scripts/run_sensor_daily_normalization_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py
