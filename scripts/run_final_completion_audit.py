@@ -109,7 +109,7 @@ def main() -> int:
                     ["git", "-C", str(SERVICE_ROOT), "rev-parse", "HEAD"], text=True
                 ).strip(),
             },
-            "file_sha256": audited_input_hashes,
+            "file_blobs": audited_input_hashes,
         },
         "stage_boundary": {
             "final_auditor_implemented": True,
@@ -144,14 +144,24 @@ def _audited_input_hashes() -> dict[str, str]:
                     )
     for report in REPORTS.glob("OP-*.md"):
         references.add("wellnessbox-rnd/" + report.relative_to(ROOT).as_posix())
-    hashes: dict[str, str] = {}
+    blobs: dict[str, str] = {}
     roots = {"wellnessbox-rnd": ROOT, "wellnessbox": SERVICE_ROOT}
     for reference in sorted(references):
         repository, relative = reference.split("/", 1)
         path = roots[repository] / relative
         if path.is_file():
-            hashes[reference] = sha256(path)
-    return hashes
+            committed_blob = subprocess.check_output(
+                ["git", "-C", str(roots[repository]), "rev-parse", f"HEAD:{relative}"],
+                text=True,
+            ).strip()
+            working_blob = subprocess.check_output(
+                ["git", "-C", str(roots[repository]), "hash-object", relative],
+                text=True,
+            ).strip()
+            if working_blob != committed_blob:
+                raise RuntimeError(f"audited input differs from HEAD: {reference}")
+            blobs[reference] = committed_blob
+    return blobs
 
 
 if __name__ == "__main__":
