@@ -70,12 +70,12 @@
       "data/original_plan/contracts/op039_external_input_contract_v1.json": "48a09973b8d89ce570572591768cb3da7a59cefa",
       "data/original_plan/op119_external_dependency_registry_cases_v1.json": "04b5cc664f616f6107196934a521a078ca0d6261",
       "data/original_plan/op119_external_dependency_registry_v1.json": "5e010238687e22a105753bc5d91fbe39a321f50b",
-      "data/original_plan/requirements_manifest_v1.json": "0f09e9a76d211fda47a98f68b4e4e7da7bbe7a73",
+      "data/original_plan/requirements_manifest_v1.json": "3884fc7badcaec4f60f24da87d77be7654fca61d",
       "scripts/run_external_dependency_registry_smoke.py": "be49c50498dc6fbca0d86119a5e90b6318a31d2a",
       "src/wellnessbox_rnd/governance/external_dependency_registry.py": "bc5825122a34f12dfae3d13884c6eaa8b4f48483",
       "tests/test_external_dependency_registry.py": "82ee7c0f26e2be63136f88fe4506271c8f77f939"
     },
-    "commit": "43f6a06141bbd96919a0e2f3a0904b149ac58384"
+    "commit": "ce3afe990ecae41143f17bac9c6f8fa53260021c"
   },
   "stage_boundary": {
     "external_approvals_registered": false,
