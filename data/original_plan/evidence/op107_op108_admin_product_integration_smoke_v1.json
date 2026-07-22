@@ -1,0 +1,621 @@
+{
+  "schema_version": "op107_op108_admin_product_integration_smoke_v1",
+  "requirements": {
+    "OP-107": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "INTEGRATED"
+    },
+    "OP-108": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "INTEGRATED"
+    }
+  },
+  "dataset": {
+    "path": "data/original_plan/op107_op108_admin_product_integration_cases_v1.json",
+    "sha256": "c06feb8e45e8d4e9bb5fd47f39b450ecd98e30b9e9d0123d3ab60db302822037",
+    "case_count": 8
+  },
+  "checks": {
+    "admin_auth_denied": true,
+    "admin_status_loaded": true,
+    "admin_kpi_state_loaded": true,
+    "admin_sources_loaded": true,
+    "selling_products_loaded": true,
+    "product_candidates_attached": true,
+    "invalid_catalog_fails_closed": true,
+    "stock_and_safety_preserved": true
+  },
+  "observed": {
+    "admin": {
+      "ok": true,
+      "adminAuthDenied": true,
+      "statusCountKeys": [
+        "adverse_events",
+        "behavior_events",
+        "connector_sessions",
+        "consent_snapshots",
+        "event_mutations",
+        "execution_events",
+        "execution_identities",
+        "execution_replay_runs",
+        "execution_replay_snapshots",
+        "executions",
+        "kpi_results",
+        "pro_observations",
+        "profile_snapshots",
+        "proxy_cases"
+      ],
+      "kpiAvailability": "UNAVAILABLE",
+      "sourceCount": 9,
+      "adapterCount": 8
+    },
+    "products": {
+      "service_route": "POST /api/tips",
+      "product_candidate_mapping_version": "2026-07-16.1",
+      "catalog_fixture_source": "wellnessbox configured Prisma Product catalog with in-stock PharmacyProduct; captured 2026-07-17",
+      "production_operation_proven": false,
+      "mapping_coverage_count": 8,
+      "unmatched_service_ingredient_ids": [],
+      "service_ingredient_ids": [
+        "ING:CALCIUM",
+        "ING:COQ10",
+        "ING:MAGNESIUM",
+        "ING:OMEGA3",
+        "ING:PROBIOTIC",
+        "ING:VITAMIN_C",
+        "ING:VITAMIN_D",
+        "ING:ZINC"
+      ],
+      "product_ids": [
+        29,
+        44,
+        29,
+        31,
+        35,
+        30,
+        29,
+        29
+      ],
+      "no_match_complete": false,
+      "invalid_catalog_http_status": 502,
+      "invalid_offer_http_status": 502,
+      "invalid_facts_http_status": 502,
+      "ambiguous_amount_http_status": 502,
+      "missing_matched_amount_http_status": 200,
+      "bounded_search_state_count": 4096,
+      "bounded_search_combination_count": 64,
+      "bounded_search_top_k_count": 0,
+      "fractional_micrograms_normalized_to_nanograms": 12500,
+      "combination_contract_version": "wb_rnd_product_combination_v1",
+      "combination_count": 4,
+      "shared_product_combination_id": "combo_39b190324c7b00ff",
+      "shared_product_combination_product_count": 5,
+      "duplicate_zinc_combination_id": "combo_aeb9dff90d5edf7a",
+      "optimization_constraints_contract_version": "product_optimization_constraints_v1",
+      "combination_filter_contract_version": "product_combination_filter_v1",
+      "unfiltered_policy": {
+        "schema_version": "product_optimization_constraints_v1",
+        "max_total_cost_krw": 1000000000,
+        "max_products": 20,
+        "excluded_ingredient_keys": [],
+        "excluded_service_ingredient_ids": [],
+        "safety_rule_ids": []
+      },
+      "unfiltered_resolution": {
+        "schema_version": "wb_rnd_product_combination_v1",
+        "filter_schema_version": "product_combination_filter_v1",
+        "combination_count": 4,
+        "pre_filter_combination_count": 4,
+        "budget_excluded_count": 0,
+        "product_count_excluded_count": 0,
+        "safety_excluded_count": 0,
+        "search_state_count": 13,
+        "search_truncated": false,
+        "combination_limit_reached": false,
+        "complete": true
+      },
+      "constrained_resolution": {
+        "schema_version": "wb_rnd_product_combination_v1",
+        "filter_schema_version": "product_combination_filter_v1",
+        "combination_count": 1,
+        "pre_filter_combination_count": 4,
+        "budget_excluded_count": 3,
+        "product_count_excluded_count": 3,
+        "safety_excluded_count": 0,
+        "search_state_count": 13,
+        "search_truncated": false,
+        "combination_limit_reached": false,
+        "complete": true
+      },
+      "constrained_policy": {
+        "schema_version": "product_optimization_constraints_v1",
+        "max_total_cost_krw": 65000,
+        "max_products": 5,
+        "excluded_ingredient_keys": [],
+        "safety_rule_ids": []
+      },
+      "safety_filtered_resolution": {
+        "schema_version": "wb_rnd_product_combination_v1",
+        "filter_schema_version": "product_combination_filter_v1",
+        "combination_count": 0,
+        "pre_filter_combination_count": 1,
+        "budget_excluded_count": 0,
+        "product_count_excluded_count": 0,
+        "safety_excluded_count": 1,
+        "search_state_count": 2,
+        "search_truncated": false,
+        "combination_limit_reached": false,
+        "complete": false
+      },
+      "safety_filter_policy": {
+        "schema_version": "product_optimization_constraints_v1",
+        "max_total_cost_krw": 100000,
+        "max_products": 5,
+        "excluded_ingredient_keys": [
+          "zinc"
+        ],
+        "excluded_service_ingredient_ids": [
+          "ING:ZINC"
+        ],
+        "safety_rule_ids": [
+          "SAFE-OP066-TEST"
+        ]
+      },
+      "contradictory_safety_reentry_http_status": 502,
+      "contradictory_safety_reentry_reason": "WB_RND_PRODUCT_MATCH_excluded_recommendation_reentered",
+      "combination_ranking_contract_version": "product_combination_ranking_v1",
+      "catalog_version_contract_version": "product_catalog_content_sha256_v1",
+      "max_ranked_product_combinations": 3,
+      "top_k": [
+        {
+          "schema_version": "product_combination_ranking_v1",
+          "rank": 1,
+          "combination_id": "combo_39b190324c7b00ff",
+          "ranking_tuple": [
+            63000,
+            5,
+            "combo_39b190324c7b00ff"
+          ]
+        },
+        {
+          "schema_version": "product_combination_ranking_v1",
+          "rank": 2,
+          "combination_id": "combo_ef3df859d62c0163",
+          "ranking_tuple": [
+            76000,
+            6,
+            "combo_ef3df859d62c0163"
+          ]
+        },
+        {
+          "schema_version": "product_combination_ranking_v1",
+          "rank": 3,
+          "combination_id": "combo_aeb9dff90d5edf7a",
+          "ranking_tuple": [
+            78000,
+            6,
+            "combo_aeb9dff90d5edf7a"
+          ]
+        }
+      ],
+      "non_selection": [
+        {
+          "combination_id": "combo_b0b285099554b28d",
+          "reason_codes": [
+            "HIGHER_COST"
+          ]
+        }
+      ],
+      "replay_identity": {
+        "schema_version": "product_combination_replay_identity_v1",
+        "input_sha256": "709f6bd9adb7b584624e3f672e4f6d3cc39de6953bdcc841299a2f0afd3bc768",
+        "catalog_version": "catalog_1a7aefae72413f07ca27d119ebd04cccdcf2f5e800ef5fd0b210f486da6794a6",
+        "catalog_version_contract": "product_catalog_content_sha256_v1",
+        "result_sha256": "2413b3afd3ab40f4cba41f03f1914895a3103bf0842693f244155b2bd81baf1d",
+        "optimization_input": {
+          "recommendations": [
+            {
+              "ingredient": "calcium_citrate",
+              "service_ingredient_id": "ING:CALCIUM",
+              "rank": 1,
+              "score": 0.91,
+              "evidence_ids": [
+                "EV-OP050-1"
+              ]
+            },
+            {
+              "ingredient": "coq10",
+              "service_ingredient_id": "ING:COQ10",
+              "rank": 2,
+              "score": 0.9,
+              "evidence_ids": [
+                "EV-OP050-2"
+              ]
+            },
+            {
+              "ingredient": "magnesium_glycinate",
+              "service_ingredient_id": "ING:MAGNESIUM",
+              "rank": 3,
+              "score": 0.89,
+              "evidence_ids": [
+                "EV-OP050-3"
+              ]
+            },
+            {
+              "ingredient": "omega3",
+              "service_ingredient_id": "ING:OMEGA3",
+              "rank": 4,
+              "score": 0.88,
+              "evidence_ids": [
+                "EV-OP050-4"
+              ]
+            },
+            {
+              "ingredient": "probiotics",
+              "service_ingredient_id": "ING:PROBIOTIC",
+              "rank": 5,
+              "score": 0.87,
+              "evidence_ids": [
+                "EV-OP050-5"
+              ]
+            },
+            {
+              "ingredient": "vitamin_c",
+              "service_ingredient_id": "ING:VITAMIN_C",
+              "rank": 6,
+              "score": 0.86,
+              "evidence_ids": [
+                "EV-OP050-6"
+              ]
+            },
+            {
+              "ingredient": "vitamin_d3",
+              "service_ingredient_id": "ING:VITAMIN_D",
+              "rank": 7,
+              "score": 0.8500000000000001,
+              "evidence_ids": [
+                "EV-OP050-7"
+              ]
+            },
+            {
+              "ingredient": "zinc",
+              "service_ingredient_id": "ING:ZINC",
+              "rank": 8,
+              "score": 0.8400000000000001,
+              "evidence_ids": [
+                "EV-OP050-8"
+              ]
+            }
+          ],
+          "constraints": {
+            "max_total_cost_krw": 1000000000,
+            "max_products": 20,
+            "excluded_ingredient_keys": [],
+            "excluded_service_ingredient_ids": [],
+            "safety_rule_ids": []
+          }
+        }
+      },
+      "repeated_top_k": [
+        {
+          "schema_version": "product_combination_ranking_v1",
+          "rank": 1,
+          "combination_id": "combo_39b190324c7b00ff",
+          "ranking_tuple": [
+            63000,
+            5,
+            "combo_39b190324c7b00ff"
+          ]
+        },
+        {
+          "schema_version": "product_combination_ranking_v1",
+          "rank": 2,
+          "combination_id": "combo_ef3df859d62c0163",
+          "ranking_tuple": [
+            76000,
+            6,
+            "combo_ef3df859d62c0163"
+          ]
+        },
+        {
+          "schema_version": "product_combination_ranking_v1",
+          "rank": 3,
+          "combination_id": "combo_aeb9dff90d5edf7a",
+          "ranking_tuple": [
+            78000,
+            6,
+            "combo_aeb9dff90d5edf7a"
+          ]
+        }
+      ],
+      "repeated_non_selection": [
+        {
+          "combination_id": "combo_b0b285099554b28d",
+          "reason_codes": [
+            "HIGHER_COST"
+          ]
+        }
+      ],
+      "repeated_replay_identity": {
+        "schema_version": "product_combination_replay_identity_v1",
+        "input_sha256": "709f6bd9adb7b584624e3f672e4f6d3cc39de6953bdcc841299a2f0afd3bc768",
+        "catalog_version": "catalog_1a7aefae72413f07ca27d119ebd04cccdcf2f5e800ef5fd0b210f486da6794a6",
+        "catalog_version_contract": "product_catalog_content_sha256_v1",
+        "result_sha256": "2413b3afd3ab40f4cba41f03f1914895a3103bf0842693f244155b2bd81baf1d",
+        "optimization_input": {
+          "recommendations": [
+            {
+              "ingredient": "calcium_citrate",
+              "service_ingredient_id": "ING:CALCIUM",
+              "rank": 1,
+              "score": 0.91,
+              "evidence_ids": [
+                "EV-OP050-1"
+              ]
+            },
+            {
+              "ingredient": "coq10",
+              "service_ingredient_id": "ING:COQ10",
+              "rank": 2,
+              "score": 0.9,
+              "evidence_ids": [
+                "EV-OP050-2"
+              ]
+            },
+            {
+              "ingredient": "magnesium_glycinate",
+              "service_ingredient_id": "ING:MAGNESIUM",
+              "rank": 3,
+              "score": 0.89,
+              "evidence_ids": [
+                "EV-OP050-3"
+              ]
+            },
+            {
+              "ingredient": "omega3",
+              "service_ingredient_id": "ING:OMEGA3",
+              "rank": 4,
+              "score": 0.88,
+              "evidence_ids": [
+                "EV-OP050-4"
+              ]
+            },
+            {
+              "ingredient": "probiotics",
+              "service_ingredient_id": "ING:PROBIOTIC",
+              "rank": 5,
+              "score": 0.87,
+              "evidence_ids": [
+                "EV-OP050-5"
+              ]
+            },
+            {
+              "ingredient": "vitamin_c",
+              "service_ingredient_id": "ING:VITAMIN_C",
+              "rank": 6,
+              "score": 0.86,
+              "evidence_ids": [
+                "EV-OP050-6"
+              ]
+            },
+            {
+              "ingredient": "vitamin_d3",
+              "service_ingredient_id": "ING:VITAMIN_D",
+              "rank": 7,
+              "score": 0.8500000000000001,
+              "evidence_ids": [
+                "EV-OP050-7"
+              ]
+            },
+            {
+              "ingredient": "zinc",
+              "service_ingredient_id": "ING:ZINC",
+              "rank": 8,
+              "score": 0.8400000000000001,
+              "evidence_ids": [
+                "EV-OP050-8"
+              ]
+            }
+          ],
+          "constraints": {
+            "max_total_cost_krw": 1000000000,
+            "max_products": 20,
+            "excluded_ingredient_keys": [],
+            "excluded_service_ingredient_ids": [],
+            "safety_rule_ids": []
+          }
+        }
+      },
+      "reordered_catalog_top_k": [
+        {
+          "schema_version": "product_combination_ranking_v1",
+          "rank": 1,
+          "combination_id": "combo_39b190324c7b00ff",
+          "ranking_tuple": [
+            63000,
+            5,
+            "combo_39b190324c7b00ff"
+          ]
+        },
+        {
+          "schema_version": "product_combination_ranking_v1",
+          "rank": 2,
+          "combination_id": "combo_ef3df859d62c0163",
+          "ranking_tuple": [
+            76000,
+            6,
+            "combo_ef3df859d62c0163"
+          ]
+        },
+        {
+          "schema_version": "product_combination_ranking_v1",
+          "rank": 3,
+          "combination_id": "combo_aeb9dff90d5edf7a",
+          "ranking_tuple": [
+            78000,
+            6,
+            "combo_aeb9dff90d5edf7a"
+          ]
+        }
+      ],
+      "reordered_catalog_non_selection": [
+        {
+          "combination_id": "combo_b0b285099554b28d",
+          "reason_codes": [
+            "HIGHER_COST"
+          ]
+        }
+      ],
+      "reordered_catalog_replay_identity": {
+        "schema_version": "product_combination_replay_identity_v1",
+        "input_sha256": "709f6bd9adb7b584624e3f672e4f6d3cc39de6953bdcc841299a2f0afd3bc768",
+        "catalog_version": "catalog_1a7aefae72413f07ca27d119ebd04cccdcf2f5e800ef5fd0b210f486da6794a6",
+        "catalog_version_contract": "product_catalog_content_sha256_v1",
+        "result_sha256": "2413b3afd3ab40f4cba41f03f1914895a3103bf0842693f244155b2bd81baf1d",
+        "optimization_input": {
+          "recommendations": [
+            {
+              "ingredient": "calcium_citrate",
+              "service_ingredient_id": "ING:CALCIUM",
+              "rank": 1,
+              "score": 0.91,
+              "evidence_ids": [
+                "EV-OP050-1"
+              ]
+            },
+            {
+              "ingredient": "coq10",
+              "service_ingredient_id": "ING:COQ10",
+              "rank": 2,
+              "score": 0.9,
+              "evidence_ids": [
+                "EV-OP050-2"
+              ]
+            },
+            {
+              "ingredient": "magnesium_glycinate",
+              "service_ingredient_id": "ING:MAGNESIUM",
+              "rank": 3,
+              "score": 0.89,
+              "evidence_ids": [
+                "EV-OP050-3"
+              ]
+            },
+            {
+              "ingredient": "omega3",
+              "service_ingredient_id": "ING:OMEGA3",
+              "rank": 4,
+              "score": 0.88,
+              "evidence_ids": [
+                "EV-OP050-4"
+              ]
+            },
+            {
+              "ingredient": "probiotics",
+              "service_ingredient_id": "ING:PROBIOTIC",
+              "rank": 5,
+              "score": 0.87,
+              "evidence_ids": [
+                "EV-OP050-5"
+              ]
+            },
+            {
+              "ingredient": "vitamin_c",
+              "service_ingredient_id": "ING:VITAMIN_C",
+              "rank": 6,
+              "score": 0.86,
+              "evidence_ids": [
+                "EV-OP050-6"
+              ]
+            },
+            {
+              "ingredient": "vitamin_d3",
+              "service_ingredient_id": "ING:VITAMIN_D",
+              "rank": 7,
+              "score": 0.8500000000000001,
+              "evidence_ids": [
+                "EV-OP050-7"
+              ]
+            },
+            {
+              "ingredient": "zinc",
+              "service_ingredient_id": "ING:ZINC",
+              "rank": 8,
+              "score": 0.8400000000000001,
+              "evidence_ids": [
+                "EV-OP050-8"
+              ]
+            }
+          ],
+          "constraints": {
+            "max_total_cost_krw": 1000000000,
+            "max_products": 20,
+            "excluded_ingredient_keys": [],
+            "excluded_service_ingredient_ids": [],
+            "safety_rule_ids": []
+          }
+        }
+      },
+      "stock_substitution": {
+        "schema_version": "product_combination_stock_substitution_v1",
+        "status": "SUBSTITUTED",
+        "previous_catalog_version": "catalog_ad1290334d0e8e74ebe8c220d39e65880c178370e9fe0e070dd3881399625a1c",
+        "current_catalog_version": "catalog_de89bca0ceac4eb99ca8085ae6359a1304cc03912a3f8cf4147b883055fea82d",
+        "previous_combination_id": "combo_a9af0169dbf9de70",
+        "current_combination_id": "combo_da17182d16b21e1c",
+        "missing_pharmacy_product_ids": [
+          30004
+        ],
+        "safety_constraints_preserved": true,
+        "optimization_input_unchanged": true
+      },
+      "substituted_cart_candidate": {
+        "schema_version": "product_combination_cart_candidate_v1",
+        "status": "READY",
+        "unavailable_reason": null,
+        "source_combination_id": "combo_da17182d16b21e1c",
+        "items": [
+          {
+            "productId": 20000,
+            "productName": "calcium 0",
+            "optionType": "30 days",
+            "quantity": 1
+          },
+          {
+            "productId": 20014,
+            "productName": "coq10 4",
+            "optionType": "30 days",
+            "quantity": 1
+          },
+          {
+            "productId": 20024,
+            "productName": "magnesium 4",
+            "optionType": "30 days",
+            "quantity": 1
+          }
+        ],
+        "approval_required": true,
+        "approval_status": "NOT_APPROVED",
+        "cart_storage_written": false,
+        "order_created": false,
+        "order_id": null
+      },
+      "inventory_context_forwarded_to_rnd": false,
+      "order_created": false,
+      "preapproval_side_effect_source_scan_passed": true,
+      "preapproval_side_effect_forbidden_symbols": [
+        "prisma Order/OrderItem/Payment mutations",
+        "create/authorize/capture order or payment functions",
+        "writeClientCartItems",
+        "localStorage setItem/removeItem/clear"
+      ]
+    }
+  },
+  "source_identity": {
+    "wellnessbox_commit": "be30c4d4437526489d8e7e7d7e06ce61db2ea2ee"
+  },
+  "stage_boundary": {
+    "local_admin_and_product_integration_proven": true,
+    "production_operation_proven": false
+  }
+}
