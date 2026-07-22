@@ -124,7 +124,7 @@ def main() -> int:
     report = {
         "schema_version": "op117_op118_browser_operational_evidence_smoke_v1",
         "requirements": {
-            "OP-117": {"required_stage": "OPERATED", "claimed_stage": "INTEGRATED"},
+            "OP-117": {"required_stage": "OPERATED", "claimed_stage": "IMPLEMENTED"},
             "OP-118": {"required_stage": "OPERATED", "claimed_stage": "IMPLEMENTED"},
         },
         "dataset": {
