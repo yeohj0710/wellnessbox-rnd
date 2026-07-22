@@ -19,6 +19,7 @@ CASES = ROOT / "data/original_plan/op120_final_completion_audit_cases_v1.json"
 REPORTS = ROOT / "docs/original_plan/research_reports"
 OUTPUT = ROOT / "data/original_plan/evidence/op120_final_completion_audit_v1.json"
 SOURCE_PATHS = (
+    "pyproject.toml",
     "src/wellnessbox_rnd/governance/final_completion_audit.py",
     "tests/test_final_completion_audit.py",
     "scripts/run_final_completion_audit.py",
@@ -127,7 +128,10 @@ def main() -> int:
 def _audited_input_hashes() -> dict[str, str]:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     policy = json.loads(POLICY.read_text(encoding="utf-8"))
-    references = {"wellnessbox-rnd/" + MANIFEST.relative_to(ROOT).as_posix()}
+    references = {
+        "wellnessbox-rnd/" + MANIFEST.relative_to(ROOT).as_posix(),
+        "wellnessbox-rnd/pyproject.toml",
+    }
     for field in ("validation_receipt_path", "independent_review_receipt_path"):
         if isinstance(policy.get(field), str):
             references.add(policy[field])
