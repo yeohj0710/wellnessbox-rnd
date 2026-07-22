@@ -2031,8 +2031,46 @@
       "owners": ["wellnessbox-rnd", "wellnessbox"],
       "default_required_stage": "OPERATED",
       "requirements": [
-        {"requirement_id": "OP-101", "title": "R&D FastAPI 배포 대상, 영속 DB, 내부 인증 방식을 확정한다."},
-        {"requirement_id": "OP-102", "title": "health, 추천, 상태기계, 기기, 상담 API를 배포한다."},
+        {
+          "requirement_id": "OP-101",
+          "title": "R&D FastAPI 배포 대상, 영속 DB, 내부 인증 방식을 확정한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/deployment.py",
+              "wellnessbox-rnd/apps/inference_api/main.py",
+              "wellnessbox-rnd/docs/deployment/staging_api.md"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_deployment_contract.py",
+              "wellnessbox-rnd/scripts/run_deployment_contract_endpoint_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-102",
+          "title": "health, 추천, 상태기계, 기기, 상담 API를 배포한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/main.py",
+              "wellnessbox-rnd/apps/inference_api/routes/health.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/deployment.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_deployment_contract.py",
+              "wellnessbox-rnd/scripts/run_deployment_contract_endpoint_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-103", "title": "wellnessbox Vercel에 WB_RND 환경변수를 안전하게 등록한다."},
         {"requirement_id": "OP-104", "title": "평가 화면에서 R&D 실행 결과와 로컬 스냅샷 결과를 구분한다."},
         {"requirement_id": "OP-105", "title": "사용자 프로필 저장과 추천 API가 R&D 서버까지 왕복하는지 검증한다."},

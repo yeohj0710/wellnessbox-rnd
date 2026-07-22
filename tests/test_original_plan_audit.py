@@ -44,7 +44,7 @@ def test_original_plan_audit_accepts_current_claimed_evidence() -> None:
 
     assert report.status == OriginalPlanAuditStatus.PASS
     assert report.requirement_count == 120
-    assert report.claimed_requirement_count == 99
+    assert report.claimed_requirement_count == 101
     assert report.manifest_sha256 == calculate_original_plan_manifest_sha256_v1(
         _manifest_copy()
     )
