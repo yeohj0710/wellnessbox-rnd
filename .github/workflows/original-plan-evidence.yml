@@ -355,6 +355,16 @@ jobs:
       - name: Install WellnessBox service dependencies
         working-directory: _evidence/wellnessbox
         run: npm ci
+      - name: Checkout OP-103/104 WellnessBox evidence
+        uses: actions/checkout@v7
+        with:
+          repository: yeohj0710/wellnessbox
+          ref: 5f1d42015d6a467a717d69f3aaa8a7e2afd06931
+          fetch-depth: 0
+          path: _evidence/wellnessbox-op104
+      - name: Run OP-103/104 service contract QA
+        working-directory: _evidence/wellnessbox-op104
+        run: npm ci && npx tsx scripts/qa/check-rnd-environment-result-origin.cts
       - name: Audit requirement evidence
         run: python scripts/audit_original_plan_requirements.py
       - name: Check generated completion report
@@ -519,7 +529,7 @@ jobs:
           python scripts/run_device_followup_data_class_smoke.py
           python scripts/run_device_dedup_linkage_smoke.py
           python scripts/run_deployment_contract_endpoint_smoke.py
-          python scripts/run_environment_result_origin_smoke.py
+          WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op104 python scripts/run_environment_result_origin_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json
       - name: Run requirement contract tests
