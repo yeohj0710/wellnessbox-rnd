@@ -22,6 +22,7 @@
     "review_decision_completed": true,
     "review_replay_rejected": true,
     "service_route_auth_denial_executed": true,
+    "pharmacist_route_auth_denial_executed": true,
     "service_profile_id_override_executed": true,
     "service_pharmacy_id_override_executed": true,
     "pharmacist_screen_uses_service_api": true
@@ -29,17 +30,18 @@
   "observed": {
     "ok": true,
     "profileId": "usr_2670d86d85bb93e2c281ad26afcc7fb0",
-    "recommendationRunId": "rec_1baed244c75c40fda33563d556233fde",
+    "recommendationRunId": "rec_dbdaee3bd905413096c5949c523d0844",
     "recommendationStatus": "BLOCKED",
     "reviewId": "review_3e37bb1519a75294837a9736",
     "reviewStatus": "COMPLETED",
     "immutableReplayRejected": true,
     "userAuthDenied": true,
+    "pharmacistAuthDenied": true,
     "browserProfileIdIgnored": true,
     "pharmacyIdOverridden": true
   },
   "source_identity": {
-    "wellnessbox_commit": "b153dfdf17d8eba4d080a3f4deee31f2f130cd16"
+    "wellnessbox_commit": "fb00e4ebd972a6630235dda8b09593d27e277ccd"
   },
   "stage_boundary": {
     "local_two_process_roundtrip_proven": true,
