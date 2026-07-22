@@ -1,0 +1,59 @@
+{
+  "schema_version": "op099_op100_device_dedup_linkage_smoke_v1",
+  "requirements": {
+    "OP-099": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "IMPLEMENTED"
+    },
+    "OP-100": {
+      "required_stage": "IMPLEMENTED",
+      "claimed_stage": "IMPLEMENTED"
+    }
+  },
+  "dataset": {
+    "path": "data/original_plan/op099_op100_device_dedup_linkage_cases_v1.json",
+    "sha256": "2e0d83c898b55132222f18e3adc5ab2c2020c2ad549a564cbb46eac5c7058635",
+    "case_count": 7
+  },
+  "checks": {
+    "same_event_new_session_deduplicated": true,
+    "changed_payload_conflict": true,
+    "session_identity_conflict": true,
+    "duplicates_not_persisted": true,
+    "source_rates_recomputed": true,
+    "equal_weight_macro_recomputed": true,
+    "append_only_receipt": true
+  },
+  "observed": {
+    "first_deduplicated": false,
+    "replay_deduplicated": true,
+    "replay_canonical_session_id": "w1",
+    "changed_payload_status": 409,
+    "changed_payload_detail": "duplicate_device_event_conflict",
+    "session_reuse_status": 409,
+    "session_reuse_detail": "device_session_identity_conflict",
+    "connector_row_count": 5,
+    "receipt_row_count": 5,
+    "source_counts": {
+      "W": 2,
+      "C": 2,
+      "G": 1
+    },
+    "source_rates": {
+      "W": 100.0,
+      "C": 50.0,
+      "G": 100.0
+    },
+    "macro_rate": 83.33333333333333,
+    "tamper_error": "device_event_receipts_append_only"
+  },
+  "stage_boundary": {
+    "local_api_and_sqlite_proven": true,
+    "production_provider_traffic_proven": false,
+    "production_operation_proven": false
+  },
+  "source_identity": {
+    "wellnessbox_rnd_commit": "b34a9b04ea42838c251a8dc6dfa920f36aed46f5",
+    "wellnessbox_rnd_source_sha256": "dc0b14133889e00ca0d68e1fe5f87795abcf72ef320cc7b55be5fb8b6f25c455"
+  }
+}
