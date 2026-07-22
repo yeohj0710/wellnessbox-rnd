@@ -101,23 +101,27 @@ def device_linkage_metrics(
     *,
     data_class: DataClass | str,
 ) -> LinkageResult:
-    effective_data_class = DataClass(data_class)
+    try:
+        effective_data_class = DataClass(data_class)
+    except ValueError as error:
+        raise ValueError("unsupported_device_linkage_data_class") from error
     if effective_data_class not in {
         DataClass.PRODUCTION_DEVICE_SESSION,
         DataClass.SIMULATED_DEVICE_SESSION,
         DataClass.SIMULATED_INTEGRATION_PROXY,
     }:
         raise ValueError("unsupported_device_linkage_data_class")
-    deduplication_filter = (
-        "" if effective_data_class == DataClass.SIMULATED_INTEGRATION_PROXY
-        else " and deduplicated=0"
+    table = (
+        "connector_sessions"
+        if effective_data_class == DataClass.SIMULATED_INTEGRATION_PROXY
+        else "device_event_receipts"
     )
     rows = [
         {"source": str(row[0]), "success": bool(row[1])}
         for row in store.rows(
             f"""
-            select source, success from connector_sessions
-            where data_class=?{deduplication_filter}
+            select source, success from {table}
+            where data_class=?
             order by source, session_id
             """,
             (effective_data_class.value,),

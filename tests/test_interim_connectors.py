@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import pytest
@@ -187,3 +188,64 @@ def test_device_event_receipts_are_append_only(tmp_path: Path) -> None:
     with pytest.raises(Exception, match="device_event_receipts_append_only"):
         with store.transaction() as connection:
             connection.execute("update device_event_receipts set success=0")
+
+
+def test_device_invalid_observed_at_fails_and_missing_id_replay_deduplicates(
+    tmp_path: Path,
+) -> None:
+    store = _store(tmp_path)
+    payload = {
+        "observed_at": "not-a-date",
+        "value": 72,
+        "unit": "bpm",
+        "timezone": "Asia/Seoul",
+    }
+    first = ingest_device_session(
+        store,
+        session_id="malformed-1",
+        profile_id="usr_1234567890abcdef",
+        source="W",
+        consent_scopes={"device:write"},
+        payload=payload,
+    )
+    replay = ingest_device_session(
+        store,
+        session_id="malformed-2",
+        profile_id="usr_1234567890abcdef",
+        source="W",
+        consent_scopes={"device:write"},
+        payload=payload,
+    )
+
+    assert first["success"] is False
+    assert replay["deduplicated"] is True
+    assert store.scalar("select count(*) from connector_sessions") == 1
+
+
+def test_concurrent_same_device_event_persists_once(tmp_path: Path) -> None:
+    store = _store(tmp_path)
+    common = {
+        "store": store,
+        "profile_id": "usr_1234567890abcdef",
+        "source": "G",
+        "consent_scopes": {"device:write"},
+        "payload": {
+            "observed_at": "2026-07-22T09:00:00+09:00",
+            "value": "AA",
+            "unit": "genotype",
+            "timezone": "Asia/Seoul",
+            "source_record_id": "concurrent-gene-1",
+        },
+    }
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(
+            pool.map(
+                lambda session_id: ingest_device_session(
+                    session_id=session_id, **common
+                ),
+                ["concurrent-1", "concurrent-2"],
+            )
+        )
+
+    assert sorted(result["deduplicated"] for result in results) == [False, True]
+    assert store.scalar("select count(*) from device_event_receipts") == 1

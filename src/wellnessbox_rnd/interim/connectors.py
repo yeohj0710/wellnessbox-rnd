@@ -62,7 +62,9 @@ def ingest_device_session(
     if effective_data_class != expected_data_class:
         raise ValueError("device_environment_data_class_mismatch")
     required = {"observed_at", "value", "unit", "timezone", "source_record_id"}
-    schema_valid = required.issubset(payload)
+    schema_valid = required.issubset(payload) and _valid_observed_at(
+        payload.get("observed_at")
+    )
     unit_valid = str(payload.get("unit", "")).strip() not in {"", "unknown"}
     timezone_valid = str(payload.get("timezone", "")).startswith(("+", "-", "UTC", "Asia/"))
     provenance_saved = bool(payload.get("source_record_id"))
@@ -70,10 +72,15 @@ def ingest_device_session(
     row_hash = hashlib.sha256(canonical.encode()).hexdigest()
     success = schema_valid and unit_valid and timezone_valid and provenance_saved
     source_record_id = str(payload.get("source_record_id", "")).strip() or None
-    identity_material = (
-        f"{profile_id}:{source}:{source_record_id}"
-        if source_record_id is not None
-        else f"{profile_id}:{source}:missing:{session_id}"
+    identity_material = json.dumps(
+        [
+            profile_id,
+            source,
+            source_record_id or "MISSING",
+            row_hash if source_record_id is None else None,
+        ],
+        ensure_ascii=False,
+        separators=(",", ":"),
     )
     event_identity = "device_event_" + hashlib.sha256(
         identity_material.encode("utf-8")
@@ -197,3 +204,13 @@ def _device_ingestion_result(
         },
         "recorded_at": datetime.now(UTC).isoformat(),
     }
+
+
+def _valid_observed_at(value: object) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        observed_at = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return observed_at.tzinfo is not None

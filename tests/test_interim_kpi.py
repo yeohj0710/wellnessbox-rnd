@@ -45,7 +45,6 @@ def test_production_device_linkage_is_class_scoped_and_macro_averaged(tmp_path) 
             ("c1", "C", 1, "PRODUCTION_DEVICE_SESSION", 0),
             ("c2", "C", 0, "PRODUCTION_DEVICE_SESSION", 0),
             ("g1", "G", 1, "PRODUCTION_DEVICE_SESSION", 0),
-            ("g-duplicate", "G", 0, "PRODUCTION_DEVICE_SESSION", 1),
             ("simulation", "C", 0, "SIMULATED_DEVICE_SESSION", 0),
         ]:
             connection.execute(
@@ -53,6 +52,20 @@ def test_production_device_linkage_is_class_scoped_and_macro_averaged(tmp_path) 
                 "(?, null, ?, 'test', ?, ?, 1, 1, 1, ?, 1, ?, '{}')",
                 (session_id, source, data_class, success, deduplicated, session_id),
             )
+            if data_class == "PRODUCTION_DEVICE_SESSION":
+                connection.execute(
+                    "insert into device_event_receipts values "
+                    "(?, ?, 'profile', ?, ?, ?, ?, 1, 1, 1, 1, ?, 'now')",
+                    (
+                        f"event-{session_id}",
+                        session_id,
+                        source,
+                        session_id,
+                        data_class,
+                        success,
+                        session_id,
+                    ),
+                )
 
     result = device_linkage_metrics(
         store, data_class=DataClass.PRODUCTION_DEVICE_SESSION
