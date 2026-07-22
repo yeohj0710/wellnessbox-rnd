@@ -102,6 +102,15 @@ def test_declared_commit_must_match_image_commit(tmp_path: Path) -> None:
         validate_deployment_contract(environment, image_commit_path=image_commit)
 
 
+def test_docker_writes_identity_to_installed_module_path() -> None:
+    dockerfile = Path("Dockerfile").read_text(encoding="utf-8")
+
+    install_index = dockerfile.index("pip install --no-cache-dir .")
+    identity_index = dockerfile.index("from wellnessbox_rnd.deployment import IMAGE_COMMIT_PATH")
+    assert identity_index > install_index
+    assert 'printf \'%s\' "$WB_RND_BUILD_COMMIT"' in dockerfile
+
+
 def test_health_exposes_non_secret_endpoint_inventory() -> None:
     with TestClient(app) as client:
         response = client.get("/health")

@@ -7,9 +7,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-RUN printf '%s' "$WB_RND_BUILD_COMMIT" > /app/.wellnessbox-rnd-image-commit \
-    && chmod 0444 /app/.wellnessbox-rnd-image-commit
-
 COPY pyproject.toml README.md ./
 COPY src ./src
 COPY apps ./apps
@@ -18,6 +15,10 @@ COPY scripts ./scripts
 
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir .
+
+RUN IMAGE_COMMIT_PATH="$(python -c 'from wellnessbox_rnd.deployment import IMAGE_COMMIT_PATH; print(IMAGE_COMMIT_PATH)')" \
+    && printf '%s' "$WB_RND_BUILD_COMMIT" > "$IMAGE_COMMIT_PATH" \
+    && chmod 0444 "$IMAGE_COMMIT_PATH"
 
 EXPOSE 8000
 
