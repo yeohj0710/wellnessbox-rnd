@@ -54,6 +54,11 @@ def _recommendation(*, sleep_hours: float) -> dict[str, Any]:
     return {
         "request_id": "device-followup-canonical-subject",
         "plan_id": "plan_device_followup_canonical",
+        "source_profile": {
+            "schema_version": "wellnessbox.chat.UserProfile.v1",
+            "subject_id": "usr_0123456789abcdef",
+            "profile": {},
+        },
         "user_profile": {"age": 41, "biological_sex": "female", "pregnant": False},
         "goals": ["sleep_support"],
         "input_availability": {"wearable": True},
@@ -215,7 +220,8 @@ def main() -> int:
             == -4.0,
             "production_and_simulation_classes_distinct": observed["distinct_data_classes"]
             == ["PRODUCTION_DEVICE_SESSION", "SIMULATED_DEVICE_SESSION"],
-            "origin_mislabel_rejected": observed["mismatch_http_status"] == 422,
+            "origin_data_class_pair_mismatch_rejected": observed["mismatch_http_status"]
+            == 422,
             "cross_class_followup_rejected": observed["cross_class_http_status"] == 422,
             "exact_replay_deduplicated": observed["exact_replay_deduplicated"] is True,
             "append_only_tamper_rejected": len(observed["tamper_errors"]) == 2,

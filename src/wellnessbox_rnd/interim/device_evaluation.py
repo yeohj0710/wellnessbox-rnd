@@ -8,7 +8,10 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from wellnessbox_rnd.interim.contracts import DataClass
-from wellnessbox_rnd.interim.data_lake import derive_profile_id
+from wellnessbox_rnd.interim.data_lake import (
+    all_used_sources_allow_storage,
+    derive_profile_id,
+)
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.schemas.recommendation import RecommendationRequest
@@ -48,6 +51,11 @@ class DeviceRecommendationAssessmentRequest(BaseModel):
         if self.phase == "FOLLOW_UP" and self.baseline_assessment_id is None:
             raise ValueError("follow_up_device_assessment_requires_baseline")
         snapshot = self.recommendation_request.sensor_genetic_snapshot
+        source_profile = self.recommendation_request.source_profile
+        if source_profile is None or source_profile.subject_id is None:
+            raise ValueError("device_assessment_requires_explicit_subject_id")
+        if not all_used_sources_allow_storage(self.recommendation_request):
+            raise ValueError("device_assessment_used_source_storage_consent_required")
         if snapshot is None or not (snapshot.wearable_available or snapshot.cgm_available):
             raise ValueError("device_assessment_requires_wearable_or_cgm_values")
         for source in ("wearable", "cgm"):
@@ -73,7 +81,7 @@ class DeviceRecommendationAssessmentResponse(BaseModel):
     sensor_snapshot: dict[str, Any]
     score_snapshot: dict[str, dict[str, float]]
     sensor_changes: dict[str, dict[str, float | None]]
-    score_changes: dict[str, dict[str, float]]
+    score_changes: dict[str, dict[str, float | bool | None]]
     persisted: bool
     deduplicated: bool
 
@@ -185,13 +193,20 @@ def _numeric_changes(
 def _score_changes(
     baseline: dict[str, dict[str, float]],
     follow_up: dict[str, dict[str, float]],
-) -> dict[str, dict[str, float]]:
-    changes: dict[str, dict[str, float]] = {}
-    for ingredient in sorted(set(baseline) & set(follow_up)):
-        terms = {}
+) -> dict[str, dict[str, float | bool | None]]:
+    changes: dict[str, dict[str, float | bool | None]] = {}
+    for ingredient in sorted(set(baseline) | set(follow_up)):
+        before = baseline.get(ingredient)
+        after = follow_up.get(ingredient)
+        terms: dict[str, float | bool | None] = {
+            "selected_at_baseline": before is not None,
+            "selected_at_follow_up": after is not None,
+        }
         for term in ("wearable_adjustment", "cgm_adjustment", "total"):
-            terms[f"{term}_delta"] = round(
-                follow_up[ingredient][term] - baseline[ingredient][term], 6
+            terms[f"{term}_delta"] = (
+                None
+                if before is None or after is None
+                else round(after[term] - before[term], 6)
             )
         changes[ingredient] = terms
     return changes

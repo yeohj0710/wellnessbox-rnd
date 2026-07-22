@@ -338,6 +338,11 @@ def _all_used_sources_allow_storage(request: RecommendationRequest) -> bool:
     )
 
 
+def all_used_sources_allow_storage(request: RecommendationRequest) -> bool:
+    """Return whether every source used by recommendation permits persistence."""
+    return _all_used_sources_allow_storage(request)
+
+
 def _all_request_sources_allow_storage(request: RecommendationRequest) -> bool:
     represented_sources = {DataSource.SURVEY}
     for source in (DataSource.NHIS, DataSource.WEARABLE, DataSource.CGM, DataSource.GENETIC):

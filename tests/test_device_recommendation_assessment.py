@@ -18,6 +18,11 @@ def _recommendation_payload(*, sleep_hours: float) -> dict[str, object]:
     return {
         "request_id": "device-followup-subject-001",
         "plan_id": "plan_device_followup_001",
+        "source_profile": {
+            "schema_version": "wellnessbox.chat.UserProfile.v1",
+            "subject_id": "usr_0123456789abcdef",
+            "profile": {},
+        },
         "user_profile": {
             "age": 41,
             "biological_sex": "female",
@@ -152,6 +157,29 @@ def test_followup_cannot_cross_data_class(tmp_path) -> None:
         )
 
 
+def test_explicit_subject_and_all_used_source_storage_consent_are_required() -> None:
+    payload = {
+        "assessment_id": "device_assessment_subject_boundary",
+        "phase": "BASELINE",
+        "data_class": "SIMULATED_DEVICE_SESSION",
+        "session_origin": "SIMULATION_FIXTURE",
+        "recommendation_request": _recommendation_payload(sleep_hours=5.0),
+    }
+    payload["recommendation_request"].pop("source_profile")
+    with pytest.raises(ValidationError, match="device_assessment_requires_explicit_subject_id"):
+        DeviceRecommendationAssessmentRequest.model_validate(payload)
+
+    payload["recommendation_request"] = _recommendation_payload(sleep_hours=5.0)
+    payload["recommendation_request"]["data_source_consents"]["survey"][
+        "allow_persistent_storage"
+    ] = False
+    with pytest.raises(
+        ValidationError,
+        match="device_assessment_used_source_storage_consent_required",
+    ):
+        DeviceRecommendationAssessmentRequest.model_validate(payload)
+
+
 def test_device_assessment_rows_are_append_only(tmp_path) -> None:
     store = InterimStore(tmp_path / "device.sqlite3")
     store.migrate()
@@ -171,9 +199,15 @@ def test_device_assessment_rows_are_append_only(tmp_path) -> None:
 
 def test_authenticated_device_assessment_api(monkeypatch, tmp_path) -> None:
     monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
-    monkeypatch.setenv("WB_RND_DATA_LAKE_PATH", str(tmp_path / "api.sqlite3"))
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(tmp_path / "api.sqlite3"))
     client = TestClient(app)
-    payload = _assessment(phase="BASELINE", sleep_hours=5.0).model_dump(mode="json")
+    payload = {
+        "assessment_id": "device_assessment_api_boundary",
+        "phase": "BASELINE",
+        "data_class": "SIMULATED_DEVICE_SESSION",
+        "session_origin": "SIMULATION_FIXTURE",
+        "recommendation_request": _recommendation_payload(sleep_hours=5.0),
+    }
 
     denied = client.post("/v1/interim/device-assessments", json=payload)
     accepted = client.post(
@@ -185,3 +219,4 @@ def test_authenticated_device_assessment_api(monkeypatch, tmp_path) -> None:
     assert denied.status_code == 401
     assert accepted.status_code == 200
     assert accepted.json()["data_class"] == "SIMULATED_DEVICE_SESSION"
+    client.close()
