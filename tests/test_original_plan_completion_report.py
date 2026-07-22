@@ -64,8 +64,8 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
     assert report.requirement_count == 120
     assert report.disposition_counts == {
         CompletionDisposition.COMPLETE: 76,
-        CompletionDisposition.PARTIAL: 42,
-        CompletionDisposition.PENDING: 1,
+        CompletionDisposition.PARTIAL: 43,
+        CompletionDisposition.PENDING: 0,
         CompletionDisposition.EXTERNAL: 1,
         CompletionDisposition.CONTRADICTED: 0,
     }
