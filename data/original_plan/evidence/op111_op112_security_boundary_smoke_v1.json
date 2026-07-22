@@ -12,19 +12,24 @@
   },
   "dataset": {
     "path": "data/original_plan/op111_op112_security_boundary_cases_v1.json",
-    "sha256": "b111613f8d429c108fd773bbbcf9b01a43dd10ef2ef7651776ba21ec97a717eb",
+    "sha256": "0a1265afbe0fdda063b54885634ed7df78d179049a60e469cb28991049a8e8cb",
     "case_count": 8
   },
   "checks": {
     "three_roles_denied_without_auth": true,
+    "role_guard_source_contract_verified": true,
+    "authenticated_admin_branch_executed": true,
+    "admin_fallback_error_bounded": true,
     "user_profile_scope_server_owned": true,
     "pharmacy_scope_server_owned": true,
     "internal_token_accepted": true,
     "invalid_internal_token_rejected": true,
     "deterministic_pseudonym_used": true,
+    "direct_identifier_payload_rejected": true,
     "direct_identifier_removed": true,
     "unused_field_removed": true,
     "logs_masked": true,
+    "operational_log_call_site_masked": true,
     "public_errors_bounded": true
   },
   "observed": {
@@ -41,22 +46,28 @@
     "directIdentifierRemoved": true,
     "unusedFieldRemoved": true,
     "logsMasked": true,
+    "operationalLogCallSiteMasked": true,
     "publicErrorsBounded": true,
+    "directIdentifierPayloadRejected": true,
+    "roleGuardSourceContractVerified": true,
+    "authenticatedAdminBranchExecuted": true,
+    "adminFallbackBounded": true,
     "profileId": "usr_4abe904bc513c484dc30edd683b5f876"
   },
   "source_identity": {
-    "wellnessbox_commit": "1205904b19736d2adf480c3b995c5c6d08eb8dc7",
+    "wellnessbox_commit": "af62c9a0e364f74b3aef4c7672126273c73f48ad",
     "wellnessbox_source_blobs": {
       "lib/server/wb-rnd-interim-client.ts": "0f371a42c5331da71dc376ed40de0108a1710993",
-      "lib/server/wb-rnd-interim-route.ts": "cb8eaeb691e3fd8485a5fc0a40435d746ad1d36f",
+      "lib/server/wb-rnd-interim-route.ts": "d871c82d3177f97a05037eeccf050ff2cff75e85",
       "lib/server/wb-rnd-profile-adapter.ts": "feca99445f9de717402e3853ac20b1357b9150f4",
-      "lib/server/wb-rnd-security.ts": "a231d6759613b7ef65fdbbfddc9f73074b1c47fa",
-      "scripts/qa/check-rnd-security-boundary.cts": "00230bbdf85a49a825770b1b0d66bc40e7bd9e00"
+      "lib/server/wb-rnd-security.ts": "87171aba76ec489f65c789317eceaf20148b9555",
+      "scripts/qa/check-rnd-security-boundary.cts": "8bd1fc37b143d4a8ae6e8e20d2a5fb787df4751d"
     },
     "wellnessbox_rnd_source_commit": "24d82df978249e44ec0c4d56b6f4db086e25037b"
   },
   "stage_boundary": {
-    "actual_service_route_guards_executed": true,
+    "actual_service_route_authorization_branches_executed": true,
+    "role_guard_implementation_source_contract_verified": true,
     "actual_rnd_http_token_roundtrip_executed": true,
     "production_identity_provider_operation_proven": false,
     "production_log_sink_inspection_proven": false
