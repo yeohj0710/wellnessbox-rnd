@@ -21,7 +21,7 @@
     "follow_up_value_delta_recorded": true,
     "follow_up_score_delta_recorded": true,
     "production_and_simulation_classes_distinct": true,
-    "origin_mislabel_rejected": true,
+    "origin_data_class_pair_mismatch_rejected": true,
     "cross_class_followup_rejected": true,
     "exact_replay_deduplicated": true,
     "append_only_tamper_rejected": true
@@ -53,7 +53,7 @@
     "production_operation_proven": false
   },
   "source_identity": {
-    "wellnessbox_rnd_commit": "6b220cfc4f158eff4d4526ba36dab9cb6a7a27cf",
-    "wellnessbox_rnd_source_sha256": "82161b07e37eee78fddba6f89783f9034e7c88d9575b12da8b3b27ec40274e9a"
+    "wellnessbox_rnd_commit": "58536428364b38e29afc358bb092a3293fc755da",
+    "wellnessbox_rnd_source_sha256": "1fcf61a4cd39792a8aca200cb2b211e75427e3f40c394800880ebbed2f4c17e9"
   }
 }

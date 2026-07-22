@@ -157,6 +157,28 @@ def test_followup_cannot_cross_data_class(tmp_path) -> None:
         )
 
 
+def test_followup_requires_same_explicit_subject(tmp_path) -> None:
+    store = InterimStore(tmp_path / "device.sqlite3")
+    store.migrate()
+    assess_device_recommendation(
+        _assessment(phase="BASELINE", sleep_hours=5.0), store=store
+    )
+    follow_up = _assessment(phase="FOLLOW_UP", sleep_hours=8.0)
+    different_subject = follow_up.recommendation_request.model_copy(
+        update={
+            "source_profile": follow_up.recommendation_request.source_profile.model_copy(
+                update={"subject_id": "usr_fedcba9876543210"}
+            )
+        }
+    )
+
+    with pytest.raises(ValueError, match="device_follow_up_profile_mismatch"):
+        assess_device_recommendation(
+            follow_up.model_copy(update={"recommendation_request": different_subject}),
+            store=store,
+        )
+
+
 def test_explicit_subject_and_all_used_source_storage_consent_are_required() -> None:
     payload = {
         "assessment_id": "device_assessment_subject_boundary",
