@@ -580,5 +580,5 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - frozen/replay delta: 256건 평가의 7개 지표, weakest slice, 학습 artifact, safety, replay 변화 모두 0이다.
 - 병목 5개: 한국어 보고서 82개, 승인된 production 배포·health 증거, OP-117 브라우저 핵심 경로, OP-118 전체 비외부 운영 증거, OP-119 외부 책임·교체 계약.
 - 다음 세 loop: OP-117 브라우저 재현; 누락 연구보고서 보강; 승인 후 OP-116 production 관측.
-- 독립 리뷰: 최초 `0/4/1`, 1차 수정 후 `0/1/1`; 최종 재검토 진행 중이다.
-- GitHub Actions: WellnessBox `29900597777` 성공. R&D 최종 run은 handoff 커밋 push 뒤 확인한다.
+- 독립 리뷰: 최초 `0/4/1`, 1차 수정 후 `0/1/1`, 최종 `0/0/0`이다.
+- GitHub Actions: WellnessBox `29900597777`, R&D `29901559427` 모두 성공했다.
