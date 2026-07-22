@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -30,7 +31,9 @@ SERVICE_SOURCES = (
 )
 
 
-def run(command: list[str], cwd: Path) -> str:
+def run(
+    command: list[str], cwd: Path, *, environment: dict[str, str] | None = None
+) -> str:
     return subprocess.run(
         command,
         cwd=cwd,
@@ -38,6 +41,7 @@ def run(command: list[str], cwd: Path) -> str:
         capture_output=True,
         text=True,
         encoding="utf-8",
+        env=environment,
     ).stdout
 
 
@@ -103,7 +107,11 @@ def main() -> int:
     run([NPM, "run", "qa:rnd:health-alias"], service)
     run([NPM, "run", "audit:encoding"], service)
     run([NPM, "run", "typecheck"], service)
-    run([NPM, "run", "build"], service)
+    build_environment = os.environ.copy() | {
+        "NEXT_PUBLIC_VAPID_PUBLIC_KEY": "BOg6TZGgE_Y2PxxhLOa9ZHGFTFTCy2uzd3bxAbvjugPkEcKqUPC3s9i2_JzvHncqaiHDv6dA4QRX4EUw-a8uylY",
+        "VAPID_PRIVATE_KEY": "ldG63qcOOA93gSMycg_FGbUqabmpbHgWyhm4YPMwl8w",
+    }
+    run([NPM, "run", "build"], service, environment=build_environment)
 
     dataset = json.loads(git(ROOT, "show", f"HEAD:{DATASET.relative_to(ROOT).as_posix()}"))
     report = {
