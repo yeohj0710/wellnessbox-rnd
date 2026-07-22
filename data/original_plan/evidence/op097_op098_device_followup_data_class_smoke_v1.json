@@ -1,0 +1,59 @@
+{
+  "schema_version": "op097_op098_device_followup_data_class_smoke_v1",
+  "requirements": {
+    "OP-097": {
+      "required_stage": "INTEGRATED",
+      "claimed_stage": "INTEGRATED"
+    },
+    "OP-098": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "IMPLEMENTED"
+    }
+  },
+  "dataset": {
+    "path": "data/original_plan/op097_op098_device_followup_data_class_cases_v1.json",
+    "sha256": "c9ba65cae6a31d3d36cb5ba086dac3bdbb7ea8855f4c1084d86267fabedeb036",
+    "case_count": 6
+  },
+  "checks": {
+    "authenticated_real_api": true,
+    "baseline_value_changes_recommendation_score": true,
+    "follow_up_value_delta_recorded": true,
+    "follow_up_score_delta_recorded": true,
+    "production_and_simulation_classes_distinct": true,
+    "origin_mislabel_rejected": true,
+    "cross_class_followup_rejected": true,
+    "exact_replay_deduplicated": true,
+    "append_only_tamper_rejected": true
+  },
+  "observed": {
+    "baseline_magnesium_wearable_adjustment": 4.0,
+    "follow_up_sleep_delta": 3.0,
+    "follow_up_magnesium_wearable_delta": -4.0,
+    "production_data_class": "PRODUCTION_DEVICE_SESSION",
+    "production_session_origin": "DEVICE_PROVIDER",
+    "mismatch_http_status": 422,
+    "mismatch_detail": {},
+    "cross_class_http_status": 422,
+    "cross_class_detail": "device_follow_up_data_class_mismatch",
+    "exact_replay_deduplicated": true,
+    "persisted_row_count": 3,
+    "distinct_data_classes": [
+      "PRODUCTION_DEVICE_SESSION",
+      "SIMULATED_DEVICE_SESSION"
+    ],
+    "tamper_errors": [
+      "device_recommendation_assessments_append_only",
+      "device_recommendation_assessments_append_only"
+    ]
+  },
+  "stage_boundary": {
+    "local_authenticated_api_and_sqlite_integration_proven": true,
+    "production_provider_traffic_proven": false,
+    "production_operation_proven": false
+  },
+  "source_identity": {
+    "wellnessbox_rnd_commit": "6b220cfc4f158eff4d4526ba36dab9cb6a7a27cf",
+    "wellnessbox_rnd_source_sha256": "82161b07e37eee78fddba6f89783f9034e7c88d9575b12da8b3b27ec40274e9a"
+  }
+}

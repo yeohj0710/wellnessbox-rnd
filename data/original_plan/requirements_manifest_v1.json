@@ -1950,8 +1950,45 @@
             ]
           }
         },
-        {"requirement_id": "OP-097", "title": "기기 수치를 추천 점수와 후속평가에 실제 반영한다.", "required_stage": "INTEGRATED"},
-        {"requirement_id": "OP-098", "title": "생산 기기 세션과 시뮬레이션 세션을 data_class로 구분한다.", "required_stage": "OPERATED"},
+        {
+          "requirement_id": "OP-097",
+          "title": "기기 수치를 추천 점수와 후속평가에 실제 반영한다.",
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/device_evaluation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/efficacy/service.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_device_recommendation_assessment.py",
+              "wellnessbox-rnd/scripts/run_device_followup_data_class_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-098",
+          "title": "생산 기기 세션과 시뮬레이션 세션을 data_class로 구분한다.",
+          "required_stage": "OPERATED",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/contracts.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/device_evaluation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_device_recommendation_assessment.py",
+              "wellnessbox-rnd/scripts/run_device_followup_data_class_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-099", "title": "같은 기기 이벤트의 중복 수신을 차단한다.", "required_stage": "OPERATED"},
         {"requirement_id": "OP-100", "title": "W/C/G 출처별 성공률과 macro 평균을 다시 계산한다."}
       ]

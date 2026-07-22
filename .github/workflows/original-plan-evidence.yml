@@ -58,9 +58,11 @@ on:
       - "scripts/run_sensor_daily_normalization_smoke.py"
       - "scripts/run_genetic_normalization_consent_smoke.py"
       - "scripts/run_sensor_file_ingestion_lineage_smoke.py"
+      - "scripts/run_device_followup_data_class_smoke.py"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
       - "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json"
+      - "data/original_plan/op097_op098_device_followup_data_class_cases_v1.json"
       - "data/samples/wearable_summary_v1.csv"
       - "data/samples/cgm_summary_v1.csv"
       - "src/wellnessbox_rnd/domain/sensor_parser.py"
@@ -118,6 +120,7 @@ on:
       - "tests/test_sensor_parser.py"
       - "tests/test_sensor_file_schema.py"
       - "tests/test_sensor_file_ingestion.py"
+      - "tests/test_device_recommendation_assessment.py"
       - "tests/test_interim_api.py"
       - "tests/test_data_lake_lineage.py"
       - "tests/test_interim_evidence.py"
@@ -158,14 +161,17 @@ on:
       - "scripts/run_sensor_daily_normalization_smoke.py"
       - "scripts/run_genetic_normalization_consent_smoke.py"
       - "scripts/run_sensor_file_ingestion_lineage_smoke.py"
+      - "scripts/run_device_followup_data_class_smoke.py"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
       - "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json"
+      - "data/original_plan/op097_op098_device_followup_data_class_cases_v1.json"
       - "data/samples/wearable_summary_v1.csv"
       - "data/samples/cgm_summary_v1.csv"
       - "tests/test_sensor_parser.py"
       - "tests/test_sensor_file_schema.py"
       - "tests/test_sensor_file_ingestion.py"
+      - "tests/test_device_recommendation_assessment.py"
       - "apps/inference_api/routes/recommend.py"
       - "apps/inference_api/routes/interim.py"
       - "data/original_plan/**"
@@ -496,6 +502,11 @@ jobs:
           python scripts/run_sensor_file_ingestion_lineage_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op095_op096_sensor_file_ingestion_lineage_smoke_v1.json
+      - name: Check device follow-up and data-class evidence
+        run: >-
+          python scripts/run_device_followup_data_class_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -513,6 +524,7 @@ jobs:
           tests/test_sensor_parser.py
           tests/test_sensor_file_schema.py
           tests/test_sensor_file_ingestion.py
+          tests/test_device_recommendation_assessment.py
           tests/test_interim_api.py
           tests/test_data_lake_lineage.py
           tests/test_interim_evidence.py
@@ -619,6 +631,7 @@ jobs:
           scripts/run_sensor_daily_normalization_smoke.py
           scripts/run_genetic_normalization_consent_smoke.py
           scripts/run_sensor_file_ingestion_lineage_smoke.py
+          scripts/run_device_followup_data_class_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py
