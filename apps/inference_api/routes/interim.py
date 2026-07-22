@@ -1075,9 +1075,10 @@ def connector(payload: DeviceRequest) -> dict[str, Any]:
             environment=payload.environment,
         )
         if result["success"] and payload.execution_id and payload.plan_id:
+            stored_session_id = str(result["session_id"])
             row = store.rows(
                 "select row_sha256, payload_json from connector_sessions where session_id=?",
-                (payload.session_id,),
+                (stored_session_id,),
             )[0]
             stored_payload = json.loads(row["payload_json"])
             observed_at = datetime.fromisoformat(
@@ -1090,7 +1091,7 @@ def connector(payload: DeviceRequest) -> dict[str, Any]:
                 plan_id=payload.plan_id,
                 execution_id=payload.execution_id,
                 input_kind="DEVICE",
-                input_id=payload.session_id,
+                input_id=stored_session_id,
                 input_sha256=str(row["row_sha256"]),
                 received_at=observed_at,
             )
@@ -1098,7 +1099,9 @@ def connector(payload: DeviceRequest) -> dict[str, Any]:
     except PermissionError as error:
         raise HTTPException(status_code=403, detail=str(error)) from error
     except ValueError as error:
-        raise HTTPException(status_code=422, detail=str(error)) from error
+        detail = str(error)
+        status_code = 409 if "conflict" in detail else 422
+        raise HTTPException(status_code=status_code, detail=detail) from error
 
 
 @router.post(

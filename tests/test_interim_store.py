@@ -68,6 +68,7 @@ def test_interim_store_migrates_clean_and_is_idempotent(tmp_path) -> None:
         "pro_observations",
         "adverse_events",
         "connector_sessions",
+        "device_event_receipts",
         "device_recommendation_assessments",
         "agent_runs",
         "agent_steps",

@@ -1,0 +1,12 @@
+{
+  "schema_version": "op099_op100_device_dedup_linkage_cases_v1",
+  "cases": [
+    {"case_id": "same_event_new_session_is_deduplicated", "expected_rows": 1},
+    {"case_id": "same_event_changed_payload_conflicts", "expected_status": 409},
+    {"case_id": "same_session_new_event_conflicts", "expected_status": 409},
+    {"case_id": "environment_data_class_mismatch_fails_closed", "expected_error": "device_environment_data_class_mismatch"},
+    {"case_id": "production_w_c_g_rates", "expected_rates": {"W": 100.0, "C": 50.0, "G": 100.0}},
+    {"case_id": "production_macro_is_equal_weight", "expected_macro": 83.33333333333333},
+    {"case_id": "receipt_is_append_only", "expected_error": "device_event_receipts_append_only"}
+  ]
+}

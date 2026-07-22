@@ -737,9 +737,10 @@ class BoundedAgent:
                 environment=str(arguments.get("environment", "simulation")),
             )
             if result["success"] and all(plan_context):
+                stored_session_id = str(result["session_id"])
                 stored = self.store.rows(
                     "select row_sha256, payload_json from connector_sessions where session_id=?",
-                    (str(arguments["session_id"]),),
+                    (stored_session_id,),
                 )[0]
                 stored_payload = json.loads(stored["payload_json"])
                 received_at = datetime.fromisoformat(
@@ -752,7 +753,7 @@ class BoundedAgent:
                     plan_id=str(arguments["plan_id"]),
                     execution_id=str(arguments["execution_id"]),
                     input_kind="DEVICE",
-                    input_id=str(arguments["session_id"]),
+                    input_id=stored_session_id,
                     input_sha256=str(stored["row_sha256"]),
                     received_at=received_at,
                 )

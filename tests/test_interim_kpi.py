@@ -1,5 +1,7 @@
+from wellnessbox_rnd.interim.contracts import DataClass
 from wellnessbox_rnd.interim.importer import import_interim_package
 from wellnessbox_rnd.interim.kpi import (
+    device_linkage_metrics,
     evaluate_proxy_kpis,
     linkage_macro_rate,
     recommendation_reference_coverage,
@@ -31,6 +33,34 @@ def test_linkage_uses_equal_weight_macro_average_across_w_c_g() -> None:
 
     assert result.source_rates == {"W": 100.0, "C": 0.0, "G": 100.0}
     assert result.aggregate == 200.0 / 3.0
+
+
+def test_production_device_linkage_is_class_scoped_and_macro_averaged(tmp_path) -> None:
+    store = InterimStore(tmp_path / "production-linkage.sqlite3")
+    store.migrate()
+    with store.transaction() as connection:
+        for session_id, source, success, data_class, deduplicated in [
+            ("w1", "W", 1, "PRODUCTION_DEVICE_SESSION", 0),
+            ("w2", "W", 1, "PRODUCTION_DEVICE_SESSION", 0),
+            ("c1", "C", 1, "PRODUCTION_DEVICE_SESSION", 0),
+            ("c2", "C", 0, "PRODUCTION_DEVICE_SESSION", 0),
+            ("g1", "G", 1, "PRODUCTION_DEVICE_SESSION", 0),
+            ("g-duplicate", "G", 0, "PRODUCTION_DEVICE_SESSION", 1),
+            ("simulation", "C", 0, "SIMULATED_DEVICE_SESSION", 0),
+        ]:
+            connection.execute(
+                "insert into connector_sessions values "
+                "(?, null, ?, 'test', ?, ?, 1, 1, 1, ?, 1, ?, '{}')",
+                (session_id, source, data_class, success, deduplicated, session_id),
+            )
+
+    result = device_linkage_metrics(
+        store, data_class=DataClass.PRODUCTION_DEVICE_SESSION
+    )
+
+    assert result.source_counts == {"W": 2, "C": 2, "G": 1}
+    assert result.source_rates == {"W": 100.0, "C": 50.0, "G": 100.0}
+    assert result.aggregate == 250.0 / 3.0
 
 
 def test_bundled_proxy_evaluation_passes_all_seven_without_real_claims(tmp_path) -> None:

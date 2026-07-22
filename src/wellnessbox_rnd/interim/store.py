@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 13
+SCHEMA_VERSION = 14
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -501,6 +501,37 @@ CREATE TABLE IF NOT EXISTS connector_sessions (
   row_sha256 TEXT NOT NULL,
   payload_json TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS device_event_receipts (
+  event_identity TEXT PRIMARY KEY,
+  session_id TEXT NOT NULL REFERENCES connector_sessions(session_id),
+  profile_id TEXT NOT NULL,
+  source TEXT NOT NULL CHECK(source IN ('W', 'C', 'G')),
+  source_record_id TEXT,
+  data_class TEXT NOT NULL,
+  success INTEGER NOT NULL,
+  schema_valid INTEGER NOT NULL,
+  unit_valid INTEGER NOT NULL,
+  timezone_valid INTEGER NOT NULL,
+  provenance_saved INTEGER NOT NULL,
+  payload_sha256 TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_device_event_receipts_source_class
+ON device_event_receipts(data_class, source, created_at, event_identity);
+
+CREATE TRIGGER IF NOT EXISTS device_event_receipts_no_update
+BEFORE UPDATE ON device_event_receipts
+BEGIN
+  SELECT RAISE(ABORT, 'device_event_receipts_append_only');
+END;
+
+CREATE TRIGGER IF NOT EXISTS device_event_receipts_no_delete
+BEFORE DELETE ON device_event_receipts
+BEGIN
+  SELECT RAISE(ABORT, 'device_event_receipts_append_only');
+END;
 
 CREATE TABLE IF NOT EXISTS sensor_file_ingestions (
   ingestion_id TEXT PRIMARY KEY,

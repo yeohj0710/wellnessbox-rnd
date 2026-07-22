@@ -6,7 +6,7 @@ from collections.abc import Iterable
 from dataclasses import asdict, dataclass, replace
 from datetime import UTC, datetime
 
-from wellnessbox_rnd.interim.contracts import ReplacementStatus
+from wellnessbox_rnd.interim.contracts import DataClass, ReplacementStatus
 from wellnessbox_rnd.interim.manifest import canonical_json
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.metrics.statistics import deterministic_bootstrap_mean_ci
@@ -96,6 +96,36 @@ def linkage_macro_rate(rows: Iterable[dict[str, object]]) -> LinkageResult:
     )
 
 
+def device_linkage_metrics(
+    store: InterimStore,
+    *,
+    data_class: DataClass | str,
+) -> LinkageResult:
+    effective_data_class = DataClass(data_class)
+    if effective_data_class not in {
+        DataClass.PRODUCTION_DEVICE_SESSION,
+        DataClass.SIMULATED_DEVICE_SESSION,
+        DataClass.SIMULATED_INTEGRATION_PROXY,
+    }:
+        raise ValueError("unsupported_device_linkage_data_class")
+    deduplication_filter = (
+        "" if effective_data_class == DataClass.SIMULATED_INTEGRATION_PROXY
+        else " and deduplicated=0"
+    )
+    rows = [
+        {"source": str(row[0]), "success": bool(row[1])}
+        for row in store.rows(
+            f"""
+            select source, success from connector_sessions
+            where data_class=?{deduplication_filter}
+            order by source, session_id
+            """,
+            (effective_data_class.value,),
+        )
+    ]
+    return linkage_macro_rate(rows)
+
+
 def _payloads(store: InterimStore, kind: str) -> list[dict[str, object]]:
     return [
         json.loads(row[0])
@@ -182,16 +212,10 @@ def evaluate_proxy_kpis(store: InterimStore) -> KpiReport:
             """
         )
     )
-    linkage_rows = [
-        {"source": str(row[0]), "success": bool(row[1])}
-        for row in store.rows(
-            """
-            select source, success from connector_sessions
-            where data_class='SIMULATED_INTEGRATION_PROXY'
-            """
-        )
-    ]
-    linkage = linkage_macro_rate(linkage_rows)
+    linkage = device_linkage_metrics(
+        store,
+        data_class=DataClass.SIMULATED_INTEGRATION_PROXY,
+    )
 
     kpis = (
         KpiResult(
