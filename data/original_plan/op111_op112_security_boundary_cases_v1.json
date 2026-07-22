@@ -4,7 +4,7 @@
     {"case_id": "internal_token", "expected": {"accepted": true, "invalid_rejected": true}},
     {"case_id": "user_role", "expected": {"denied_without_auth": true, "spoof_ignored": true}},
     {"case_id": "pharmacy_role", "expected": {"denied_without_auth": true, "scope_server_owned": true}},
-    {"case_id": "admin_role", "expected": {"denied_without_auth": true, "authenticated_success": true, "guard_source_verified": true, "fallback_error_bounded": true}},
+    {"case_id": "admin_role", "expected": {"denied_without_auth": true, "authenticated_success": true, "guard_decision_functions_executed": true, "fallback_error_bounded": true}},
     {"case_id": "pseudonym", "input": {"subject_id": "service-user-op111"}, "expected": {"algorithm": "HMAC-SHA256", "hex_characters": 32}},
     {"case_id": "minimum_collection", "expected": {"direct_identifier_rejected": true, "name_removed": true, "unused_field_removed": true}},
     {"case_id": "log_masking", "expected": {"utility_masked": true, "operational_call_site_masked": true}},

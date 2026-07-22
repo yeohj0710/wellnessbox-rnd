@@ -407,7 +407,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: af62c9a0e364f74b3aef4c7672126273c73f48ad
+          ref: 1912f127a02d158a159ed7edd135f389308a1e6e
           fetch-depth: 0
           path: _evidence/wellnessbox-op112
       - name: Install OP-111/112 service dependencies

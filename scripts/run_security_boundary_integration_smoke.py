@@ -117,8 +117,8 @@ def main() -> int:
             cases[case_id]["expected"]["denied_without_auth"]
             for case_id in ("user_role", "pharmacy_role", "admin_role")
         ),
-        "role_guard_source_contract_verified": observed["roleGuardSourceContractVerified"]
-        is cases["admin_role"]["expected"]["guard_source_verified"],
+        "role_guard_decision_functions_executed": observed["roleGuardDecisionFunctionsExecuted"]
+        is cases["admin_role"]["expected"]["guard_decision_functions_executed"],
         "authenticated_admin_branch_executed": observed["authenticatedAdminBranchExecuted"]
         is cases["admin_role"]["expected"]["authenticated_success"],
         "admin_fallback_error_bounded": observed["adminFallbackBounded"]
@@ -169,6 +169,7 @@ def main() -> int:
                     "lib/server/wb-rnd-interim-client.ts",
                     "lib/server/wb-rnd-interim-route.ts",
                     "lib/server/wb-rnd-profile-adapter.ts",
+                    "lib/server/route-auth.ts",
                     "lib/server/wb-rnd-security.ts",
                     "scripts/qa/check-rnd-security-boundary.cts",
                 )
@@ -179,7 +180,7 @@ def main() -> int:
         },
         "stage_boundary": {
             "actual_service_route_authorization_branches_executed": True,
-            "role_guard_implementation_source_contract_verified": True,
+            "role_guard_decision_functions_executed": True,
             "actual_rnd_http_token_roundtrip_executed": True,
             "production_identity_provider_operation_proven": False,
             "production_log_sink_inspection_proven": False,
