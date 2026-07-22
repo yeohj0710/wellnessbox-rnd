@@ -1,0 +1,231 @@
+{
+  "checks": {
+    "actual_sqlite_requery_observed": true,
+    "append_only_lineage_observed": true,
+    "authenticated_fastapi_route_observed": true,
+    "cases": [
+      {
+        "case_id": "partial_success_api",
+        "response": {
+          "failure_file_count": 1,
+          "files": [
+            {
+              "deduplicated": false,
+              "failure_types": [],
+              "file_id": "wearable-valid",
+              "ingestion_id": "sfi_fac0c5ce704a21b65263c87c69a4174f",
+              "normalized_payload_sha256": "92ee4cac44ee54d0d9f86e56ba561189da1a142ae42cd412e189e9b66c18eb58",
+              "normalized_record_count": 1,
+              "persisted": true,
+              "raw_file_sha256": "4eabe5126558c7b5b66492424a87b537fa8fec249633f013bc1a127e5b3ddbc7",
+              "source": "wearable",
+              "status": "SUCCESS"
+            },
+            {
+              "deduplicated": false,
+              "failure_types": [
+                "missing_required_field::cgm_summary::postprandial_summary"
+              ],
+              "file_id": "cgm-invalid",
+              "ingestion_id": "sfi_55296e2aaf252f5a7e0dde011e1e271b",
+              "normalized_payload_sha256": null,
+              "normalized_record_count": 0,
+              "persisted": true,
+              "raw_file_sha256": "07441e9cd4af7a45441941d2ef081c40671a071cb030b3c7194343379ed95d43",
+              "source": "cgm",
+              "status": "FAILED"
+            },
+            {
+              "deduplicated": false,
+              "failure_types": [],
+              "file_id": "genetic-valid",
+              "ingestion_id": "sfi_8b73c7be77d4c78e4117f58d875ffec7",
+              "normalized_payload_sha256": "2272dfac2c7b1fd9d10b056f370303c85dac9de412241935ba361c06a979e158",
+              "normalized_record_count": 1,
+              "persisted": true,
+              "raw_file_sha256": "e6c357a63ea83f1ef64774703885977127a23d16daa853ff1efc9214ea19bc42",
+              "source": "genetic",
+              "status": "SUCCESS"
+            }
+          ],
+          "normalized_record_count": 2,
+          "persisted_file_count": 3,
+          "status": "PARTIAL_SUCCESS",
+          "success_file_count": 2,
+          "total_file_count": 3
+        },
+        "result": "PASS"
+      },
+      {
+        "case_id": "multirow_success_api",
+        "response": {
+          "failure_file_count": 0,
+          "files": [
+            {
+              "deduplicated": false,
+              "failure_types": [],
+              "file_id": "wearable-two-days",
+              "ingestion_id": "sfi_e394d73f105ad4f854d3474637d865f6",
+              "normalized_payload_sha256": "cd470db64489dfbaf70ab100c2f99a30668980e876c23b8cbd476710301b56e3",
+              "normalized_record_count": 2,
+              "persisted": true,
+              "raw_file_sha256": "6b3980eba5dbbfda6206374f955afb03a35dedc6cca0039e7adab856bd62e946",
+              "source": "wearable",
+              "status": "SUCCESS"
+            }
+          ],
+          "normalized_record_count": 2,
+          "persisted_file_count": 1,
+          "status": "SUCCESS",
+          "success_file_count": 1,
+          "total_file_count": 1
+        },
+        "result": "PASS"
+      },
+      {
+        "case_id": "all_schema_failures_api",
+        "response": {
+          "failure_file_count": 2,
+          "files": [
+            {
+              "deduplicated": false,
+              "failure_types": [
+                "duplicate_csv_header::steps"
+              ],
+              "file_id": "duplicate-header",
+              "ingestion_id": "sfi_bbf1f744c4c749a17df051e712df22dd",
+              "normalized_payload_sha256": null,
+              "normalized_record_count": 0,
+              "persisted": true,
+              "raw_file_sha256": "1e741b7ea1e0226cd6b82935d49f1047cc656c9bf97fba1381353da9485dc431",
+              "source": "wearable",
+              "status": "FAILED"
+            },
+            {
+              "deduplicated": false,
+              "failure_types": [
+                "gene_profile_duplicate_json_key::markers"
+              ],
+              "file_id": "duplicate-json",
+              "ingestion_id": "sfi_96accd4168ddb2056aa4cbcadd79d4f6",
+              "normalized_payload_sha256": null,
+              "normalized_record_count": 0,
+              "persisted": true,
+              "raw_file_sha256": "abac1205180ef30d9c685d8f417c1c4ddc28490f53655b1a1f92a686b3c58f62",
+              "source": "genetic",
+              "status": "FAILED"
+            }
+          ],
+          "normalized_record_count": 0,
+          "persisted_file_count": 2,
+          "status": "FAILED",
+          "success_file_count": 0,
+          "total_file_count": 2
+        },
+        "result": "PASS"
+      },
+      {
+        "case_id": "use_consent_denied_without_hash",
+        "response": {
+          "failure_file_count": 1,
+          "files": [
+            {
+              "deduplicated": false,
+              "failure_types": [
+                "source_use_consent_required"
+              ],
+              "file_id": "private-genetic",
+              "ingestion_id": null,
+              "normalized_payload_sha256": null,
+              "normalized_record_count": 0,
+              "persisted": false,
+              "raw_file_sha256": null,
+              "source": "genetic",
+              "status": "FAILED"
+            }
+          ],
+          "normalized_record_count": 0,
+          "persisted_file_count": 0,
+          "status": "FAILED",
+          "success_file_count": 0,
+          "total_file_count": 1
+        },
+        "result": "PASS"
+      },
+      {
+        "case_id": "storage_consent_denied",
+        "response": {
+          "failure_file_count": 0,
+          "files": [
+            {
+              "deduplicated": false,
+              "failure_types": [],
+              "file_id": "wearable-ephemeral",
+              "ingestion_id": null,
+              "normalized_payload_sha256": "921ba272de3fff4ce1dbbdde081d0625de010c358c0d6f0a0f9fea20a7d9bf52",
+              "normalized_record_count": 1,
+              "persisted": false,
+              "raw_file_sha256": "b8d9812a12b145f3887180f14f276c148362df065046a989a66227752f03b4f8",
+              "source": "wearable",
+              "status": "SUCCESS"
+            }
+          ],
+          "normalized_record_count": 1,
+          "persisted_file_count": 0,
+          "status": "SUCCESS",
+          "success_file_count": 1,
+          "total_file_count": 1
+        },
+        "result": "PASS"
+      },
+      {
+        "case_id": "exact_replay_deduplicated",
+        "deduplicated_file_count": 3,
+        "result": "PASS"
+      },
+      {
+        "case_id": "append_only_lineage",
+        "error": "sensor_file_ingestions_append_only",
+        "result": "PASS"
+      }
+    ],
+    "deployed_process_observed": false,
+    "exact_replay_deduplicated": true,
+    "final_lineage_row_count": 6,
+    "nonconsented_source_not_hashed_or_persisted": true,
+    "normalized_payload_sha256_preserved": true,
+    "partial_success_counts_observed": true,
+    "production_database_observed": false,
+    "production_operation_observed": false,
+    "raw_bytes_sha256_preserved": true,
+    "raw_file_content_persisted": false
+  },
+  "dataset": {
+    "case_count": 7,
+    "path": "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json",
+    "schema_version": "op095_op096_sensor_file_ingestion_cases_v1",
+    "sha256": "a0f9a890c25dda59610d9efbda763680695247620eb563b89c202ce738dc4755"
+  },
+  "requirements": [
+    "OP-095",
+    "OP-096"
+  ],
+  "result": "PASS",
+  "schema_version": "op095_op096_sensor_file_ingestion_lineage_smoke_v1",
+  "source_identity": {
+    "commit": "d25279ea200b5954391ea7088aae368ef83fceb7",
+    "files": {
+      "apps/inference_api/routes/interim.py": "679bac86be6798eee5a2a509fdc042a976f7da8a620c40c6fba4d3316d15118b",
+      "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json": "a0f9a890c25dda59610d9efbda763680695247620eb563b89c202ce738dc4755",
+      "scripts/run_sensor_file_ingestion_lineage_smoke.py": "b905701cd1c206e3302b4dd8ee7bc4fea1521c31ec68286c8f25d429a25e77a9",
+      "src/wellnessbox_rnd/domain/sensor_parser.py": "f20e88b2d31798860733d40672e4dc4222f20cd5a4e54aeafd4bc3577c2296fa",
+      "src/wellnessbox_rnd/interim/sensor_file_ingestion.py": "73526f3a7cd4a3652617191d8942be55c3992b1147a05705e803aae5fa013ef2",
+      "src/wellnessbox_rnd/interim/store.py": "6ec5882dcf4af2b17fbe38235e01857ca003f46b0c7f5ba5fa7adfa054d12802",
+      "src/wellnessbox_rnd/schemas/recommendation.py": "0124dcdfab4ae5f97c9eec801ec73b9a2b83b93015ce733d981fc916f15cf7db"
+    }
+  },
+  "stage_boundary": {
+    "OP-095": "Authenticated local API partial-success responses are implemented; no production traffic is claimed.",
+    "OP-096": "Append-only local SQLite hash lineage is implemented; required OPERATED evidence remains absent."
+  }
+}

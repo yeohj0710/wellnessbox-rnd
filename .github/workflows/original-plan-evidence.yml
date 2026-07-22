@@ -57,8 +57,10 @@ on:
       - "scripts/run_counseling_fallback_frozen_api_e2e_smoke.py"
       - "scripts/run_sensor_daily_normalization_smoke.py"
       - "scripts/run_genetic_normalization_consent_smoke.py"
+      - "scripts/run_sensor_file_ingestion_lineage_smoke.py"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
+      - "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json"
       - "data/samples/wearable_summary_v1.csv"
       - "data/samples/cgm_summary_v1.csv"
       - "src/wellnessbox_rnd/domain/sensor_parser.py"
@@ -115,6 +117,7 @@ on:
       - "tests/test_inference_api.py"
       - "tests/test_sensor_parser.py"
       - "tests/test_sensor_file_schema.py"
+      - "tests/test_sensor_file_ingestion.py"
       - "tests/test_interim_api.py"
       - "tests/test_data_lake_lineage.py"
       - "tests/test_interim_evidence.py"
@@ -154,12 +157,15 @@ on:
       - ".github/workflows/original-plan-evidence.yml"
       - "scripts/run_sensor_daily_normalization_smoke.py"
       - "scripts/run_genetic_normalization_consent_smoke.py"
+      - "scripts/run_sensor_file_ingestion_lineage_smoke.py"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
+      - "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json"
       - "data/samples/wearable_summary_v1.csv"
       - "data/samples/cgm_summary_v1.csv"
       - "tests/test_sensor_parser.py"
       - "tests/test_sensor_file_schema.py"
+      - "tests/test_sensor_file_ingestion.py"
       - "apps/inference_api/routes/recommend.py"
       - "apps/inference_api/routes/interim.py"
       - "data/original_plan/**"
@@ -485,6 +491,11 @@ jobs:
           python scripts/run_genetic_normalization_consent_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op093_op094_genetic_normalization_consent_smoke_v1.json
+      - name: Check sensor-file partial-success and lineage evidence
+        run: >-
+          python scripts/run_sensor_file_ingestion_lineage_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op095_op096_sensor_file_ingestion_lineage_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -501,6 +512,7 @@ jobs:
           tests/test_inference_api.py
           tests/test_sensor_parser.py
           tests/test_sensor_file_schema.py
+          tests/test_sensor_file_ingestion.py
           tests/test_interim_api.py
           tests/test_data_lake_lineage.py
           tests/test_interim_evidence.py
@@ -606,6 +618,7 @@ jobs:
           scripts/run_counseling_fallback_frozen_api_e2e_smoke.py
           scripts/run_sensor_daily_normalization_smoke.py
           scripts/run_genetic_normalization_consent_smoke.py
+          scripts/run_sensor_file_ingestion_lineage_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py

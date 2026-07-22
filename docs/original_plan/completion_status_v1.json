@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "6f47115378b4d575016ffd346df23e8d0c11be03d0aa6da1098af924b8b026c3",
+  "audited_manifest_sha256": "74d31673f751fc341529ea7e269040615dba6a0d5c384daddd0435888e9cfcb3",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 67,
-    "PARTIAL": 26,
-    "PENDING": 26,
+    "COMPLETE": 68,
+    "PARTIAL": 27,
+    "PENDING": 24,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -128,9 +128,9 @@
       "title": "웨어러블·CGM·유전자 연동",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 4,
-        "PARTIAL": 0,
-        "PENDING": 6,
+        "COMPLETE": 5,
+        "PARTIAL": 1,
+        "PENDING": 4,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -3263,14 +3263,22 @@
         "docs/context/original_plan.pdf#page=24"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/sensor_file_ingestion.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/domain/sensor_parser.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_sensor_file_ingestion.py",
+          "wellnessbox-rnd/scripts/run_sensor_file_ingestion_lineage_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op095_op096_sensor_file_ingestion_lineage_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -3286,14 +3294,22 @@
         "docs/context/original_plan.pdf#page=24"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/sensor_file_ingestion.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_sensor_file_ingestion.py",
+          "wellnessbox-rnd/scripts/run_sensor_file_ingestion_lineage_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op095_op096_sensor_file_ingestion_lineage_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],

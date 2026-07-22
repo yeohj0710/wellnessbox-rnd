@@ -1915,8 +1915,41 @@
             ]
           }
         },
-        {"requirement_id": "OP-095", "title": "파일 스키마 오류와 부분 성공 건수를 응답한다."},
-        {"requirement_id": "OP-096", "title": "원본 파일 해시와 정규화 결과 계보를 저장한다.", "required_stage": "OPERATED"},
+        {
+          "requirement_id": "OP-095",
+          "title": "파일 스키마 오류와 부분 성공 건수를 응답한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/sensor_file_ingestion.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/sensor_parser.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_sensor_file_ingestion.py",
+              "wellnessbox-rnd/scripts/run_sensor_file_ingestion_lineage_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op095_op096_sensor_file_ingestion_lineage_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-096",
+          "title": "원본 파일 해시와 정규화 결과 계보를 저장한다.",
+          "required_stage": "OPERATED",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/sensor_file_ingestion.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_sensor_file_ingestion.py",
+              "wellnessbox-rnd/scripts/run_sensor_file_ingestion_lineage_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op095_op096_sensor_file_ingestion_lineage_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-097", "title": "기기 수치를 추천 점수와 후속평가에 실제 반영한다.", "required_stage": "INTEGRATED"},
         {"requirement_id": "OP-098", "title": "생산 기기 세션과 시뮬레이션 세션을 data_class로 구분한다.", "required_stage": "OPERATED"},
         {"requirement_id": "OP-099", "title": "같은 기기 이벤트의 중복 수신을 차단한다.", "required_stage": "OPERATED"},
