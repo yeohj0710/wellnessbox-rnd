@@ -284,6 +284,8 @@ def test_normalize_genetic_variants_preserves_interpretation_provenance() -> Non
         ({"test_date": "06/30/2026"}, "genetic_test_date_must_be_iso_date"),
         ({"classification": "certain cure"}, "unsupported_genetic_interpretation"),
         ({"gene_symbol": "APOE"}, "conflicting_genetic_variant_gene_symbol_aliases"),
+        ({"call": {"alleles": ["A", "C"]}}, "genetic_variant_genotype_must_be_string"),
+        ({"lab": 12345}, "genetic_variant_testing_laboratory_must_be_string"),
     ],
 )
 def test_genetic_variant_normalization_fails_closed(

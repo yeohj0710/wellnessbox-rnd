@@ -759,10 +759,13 @@ def _single_consistent_alias_value(
 def _required_consistent_text_alias(
     payload: dict[str, Any], aliases: tuple[str, ...], *, field: str
 ) -> str:
+    supplied = [
+        payload[key] for key in aliases if key in payload and payload[key] is not None
+    ]
+    if any(not isinstance(value, str) for value in supplied):
+        raise ValueError(f"genetic_variant_{field}_must_be_string")
     values = [
-        str(payload[key]).strip()
-        for key in aliases
-        if key in payload and payload[key] is not None and str(payload[key]).strip()
+        value.strip() for value in supplied if value.strip()
     ]
     if not values:
         raise ValueError(f"genetic_variant_{field}_required")
