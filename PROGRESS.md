@@ -1,5 +1,15 @@
 # PROGRESS
 
+## 2026-07-22 OP-013/014 연구보고서 보강 완료
+
+- OP-013 약물 구조와 OP-014 건강기능식품 제품·성분·1일 용량 보고서를 완성했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 더 높은 단계는 주장하지 않는다.
+- 데이터셋은 `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `183b3b8e61134046df7dc8245d9ce40da9b1b0aec01c1c381b89ea98af448dbe`다. 물리 보고서 56개, 유효 34/120, 누락·부적합 86개, 총 259,631자다.
+- 공용 `DoseAmount`가 boolean을 숫자로 변환하던 결함을 red-green 회귀로 수정했다. OP-120 audited commit/blob provenance의 self-reference, shallow service history, CI evidence root portability도 함께 수정했다.
+- schema-dependent canonical smoke 10개와 workflow service root 기반 OP-049/050·057/058·059/060 evidence를 재생성했다. 최종 OP-120 evidence SHA-256은 `103014005b229e778fde4e71e018743643305baa2eebf7efd69a96f72fa6b7c8`다.
+- 검증: focused pytest 87건, tracked Ruff, manifest audit, completion check PASS. 독립 검토 최종 `Critical 0 / Important 0 / Minor 0`. GitHub Actions `29931855632` 성공.
+- 코드 변경은 입력 검증과 evidence provenance에 한정했다. production·학습·simulation은 변경하지 않았고 frozen 256건의 7개 지표, weakest slice와 replay 결과 의미 delta는 0이다.
+- 병목 5개: 보고서 86개, stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt. 다음: OP-015/016, OP-017/018, OP-019/020.
+
 ## 2026-07-22 OP-013/014 연구보고서 보강 진행 중
 
 - OP-013/014 장문 보고서와 OP-120 inventory를 갱신했다. 물리 56개, 유효 34/120, 누락·부적합 86개, 259,631자다.

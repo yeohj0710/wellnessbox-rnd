@@ -1,5 +1,14 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-013/014 최종 handoff
+
+- 단계/과제: 약물과 건강기능식품 구조화 입력. OP-013/014 `IMPLEMENTED / COMPLETE`.
+- dataset 8건 SHA-256 `183b3b8e61134046df7dc8245d9ce40da9b1b0aec01c1c381b89ea98af448dbe`; OP-120 evidence `103014005b229e778fde4e71e018743643305baa2eebf7efd69a96f72fa6b7c8`.
+- 결과: 물리 56개, 유효 34/120, 누락·부적합 86개, 259,631자. completion `76/43/0/1/0`, OP-120 `BLOCKED`.
+- 수정: boolean dose 거부, audited input commit/blob 재현, service shallow-history 독립 provenance, CI evidence-root portable test. schema-dependent canonical evidence도 workflow 환경에서 갱신했다.
+- 검증: focused pytest 87, tracked Ruff, audit, completion check PASS; 독립 검토 `0/0/0`; CI `29931855632` 성공.
+- production·학습·simulation 변경 없음. frozen/replay/slice delta 0. 다음: OP-015/016, OP-017/018, OP-019/020.
+
 ## 2026-07-22 OP-013/014 중간 handoff
 
 - 보고서·OP-120 evidence와 공용 dose boolean 거부 수정은 HEAD `9a02008`까지 push됐다.

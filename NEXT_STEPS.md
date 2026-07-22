@@ -1,10 +1,10 @@
 # NEXT_STEPS
 
-## OP-013/014 즉시 재개
+## OP-013/014 이후 다음 bounded loop
 
-1. 수정 HEAD `9a02008`의 독립 재검토가 Critical 0 / Important 0인지 확인한다.
-2. `Original plan evidence` run `29924086385`의 최종 결론을 확인한다.
-3. 둘 다 통과하면 OP-013/014 handoff를 확정하고 OP-015/016으로 이동한다.
+1. OP-015/016의 식사·생활·검사 입력과 동의·입력 hash 계약을 backfill한다.
+2. OP-017/018의 지원하지 않는 입력 차단과 service profile adapter 계약을 backfill한다.
+3. OP-019/020의 실행 계보와 원천 가용성 계약을 backfill한다.
 
 ## OP-011/012 이후 다음 bounded loop
 
