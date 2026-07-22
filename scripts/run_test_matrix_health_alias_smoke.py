@@ -124,6 +124,9 @@ def main() -> int:
         "GMAIL_SMTP_USER": "build-only@example.invalid",
         "GMAIL_SMTP_APP_PASSWORD": "build-only-not-a-credential",
         "GMAIL_SMTP_FROM": "build-only@example.invalid",
+        "SOLAPI_KEY": "build-only-solapi-key",
+        "SOLAPI_SECRET": "build-only-solapi-secret",
+        "SOLAPI_SENDER": "01000000000",
     }
     run([NPM, "run", "build"], service, environment=build_environment)
 

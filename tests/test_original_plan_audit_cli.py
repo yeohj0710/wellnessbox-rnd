@@ -124,7 +124,7 @@ def test_original_plan_audit_workflow_runs_cli_and_contract_tests() -> None:
     assert "python scripts/run_order_plan_context_integration_smoke.py" in workflow
     assert "1912f127a02d158a159ed7edd135f389308a1e6e" in workflow
     assert "d07123903072f5eac7ef7f5021cf8278ca02c9c9" in workflow
-    assert "036553d7348fe653cdc48de9d855e588066591dd" in workflow
+    assert "d4437f1a2793bd3b5433c91053a208f22d978d8f" in workflow
     assert "_evidence/wellnessbox-op112" in workflow
     assert "python scripts/run_security_boundary_integration_smoke.py" in workflow
     assert workflow.count(

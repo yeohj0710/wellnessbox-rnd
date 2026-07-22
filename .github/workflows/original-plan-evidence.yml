@@ -431,7 +431,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 036553d7348fe653cdc48de9d855e588066591dd
+          ref: d4437f1a2793bd3b5433c91053a208f22d978d8f
           fetch-depth: 0
           path: _evidence/wellnessbox-op116
       - name: Verify OP-115/116 service test matrix
