@@ -62,7 +62,10 @@ def test_adapter_contract_minimizes_source_profile_and_preserves_operational_map
         for key, value in source_profile.items()
         if key not in {"name", "caffeineSensitivity"}
     }
-    assert request.source_profile.profile.model_dump(exclude_none=True) == expected_minimized_profile
+    assert (
+        request.source_profile.profile.model_dump(exclude_none=True)
+        == expected_minimized_profile
+    )
     assert type(request.source_profile.profile.heightCm) is int
     assert type(request.source_profile.profile.weightKg) is int
     assert request.user_profile.model_dump(mode="json") == expected_request["user_profile"]
