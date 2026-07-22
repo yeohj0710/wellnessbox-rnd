@@ -523,9 +523,9 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 # 2026-07-22 OP-105/106 handoff
 
 - Stage/tasks: production-service integration; profile/recommendation roundtrip and pharmacist review queue.
-- Dataset: `data/original_plan/op105_op106_profile_review_roundtrip_cases_v1.json`, 8 cases; evidence `data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json`; service commit `4aa0e4fc6b7ac1cb6f3ea1ddd8d5f7f59abf0907`.
+- Dataset: `data/original_plan/op105_op106_profile_review_roundtrip_cases_v1.json`, 8 cases; evidence `data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json`; service commit `fb00e4ebd972a6630235dda8b09593d27e277ccd`.
 - Changes: actual service client called separate FastAPI for profile, stored-risk blocked recommendation, scoped review list, completed decision, and immutable replay rejection. No training, frozen-data, simulation-policy, public deployment, or production operation changed.
 - Result: both `INTEGRATED / PARTIAL`; counts `70/35/14/1/0`; reports `28/120`.
-- Validation: TypeScript, encoding, Ruff, canonical two-process smoke, audit, and generated completion status pass. Frozen/replay/slice deltas remain zero because recommendation and safety code did not change.
+- Validation: TypeScript, encoding, Ruff, canonical two-process smoke, audit, and generated completion status pass. Independent review started at Critical/Important/Minor `0/1/1`, then `0/2/0`; route execution, both auth denials, both ID overrides, and real 409 preservation were fixed. Frozen/replay/slice deltas remain zero.
 - Bottlenecks: 92 reports; OP-101~106 lack provider operation; OP-107/108 pending; no real pharmacist browser evidence; legacy absent-artifact/CGM failures.
 - Next loops: OP-107/108; report backfill; approved provider/browser operation.

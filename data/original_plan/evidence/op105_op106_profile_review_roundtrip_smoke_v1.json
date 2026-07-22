@@ -12,7 +12,7 @@
   },
   "dataset": {
     "path": "data/original_plan/op105_op106_profile_review_roundtrip_cases_v1.json",
-    "sha256": "b455ad20fe86ec2cecd689129f25b402afe5be072c95bcd3848056972c32628a",
+    "sha256": "a0916c5cf7b0598c4fefa01e9c33a08d77f9d5bc32c9adf3e1dab51aa2d18831",
     "case_count": 8
   },
   "checks": {
@@ -21,20 +21,25 @@
     "review_queue_roundtrip_completed": true,
     "review_decision_completed": true,
     "review_replay_rejected": true,
-    "service_auth_routes_committed": true,
+    "service_route_auth_denial_executed": true,
+    "service_profile_id_override_executed": true,
+    "service_pharmacy_id_override_executed": true,
     "pharmacist_screen_uses_service_api": true
   },
   "observed": {
     "ok": true,
-    "profileId": "usr_105106abcdef0123456789abcdef",
-    "recommendationRunId": "rec_453c22cc94fa4d19befb1653ef3c5f9d",
+    "profileId": "usr_2670d86d85bb93e2c281ad26afcc7fb0",
+    "recommendationRunId": "rec_1baed244c75c40fda33563d556233fde",
     "recommendationStatus": "BLOCKED",
-    "reviewId": "review_d0683a7911d6acc366d4379b",
+    "reviewId": "review_3e37bb1519a75294837a9736",
     "reviewStatus": "COMPLETED",
-    "immutableReplayRejected": true
+    "immutableReplayRejected": true,
+    "userAuthDenied": true,
+    "browserProfileIdIgnored": true,
+    "pharmacyIdOverridden": true
   },
   "source_identity": {
-    "wellnessbox_commit": "4aa0e4fc6b7ac1cb6f3ea1ddd8d5f7f59abf0907"
+    "wellnessbox_commit": "b153dfdf17d8eba4d080a3f4deee31f2f130cd16"
   },
   "stage_boundary": {
     "local_two_process_roundtrip_proven": true,

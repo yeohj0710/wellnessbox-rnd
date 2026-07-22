@@ -133,6 +133,8 @@ def main() -> int:
         "review_decision_completed": observed["reviewStatus"] == "COMPLETED",
         "review_replay_rejected": observed["immutableReplayRejected"] is True,
         "service_route_auth_denial_executed": observed["userAuthDenied"] is True,
+        "pharmacist_route_auth_denial_executed": observed["pharmacistAuthDenied"]
+        is True,
         "service_profile_id_override_executed": observed["browserProfileIdIgnored"] is True,
         "service_pharmacy_id_override_executed": observed["pharmacyIdOverridden"] is True,
         "pharmacist_screen_uses_service_api": '"/api/pharm/tips/reviews"' in service_blobs,

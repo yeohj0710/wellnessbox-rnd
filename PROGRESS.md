@@ -526,4 +526,5 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 
 - Separate Node and FastAPI processes completed profile save, stored-risk recommendation, pharmacy-scoped review listing, immutable decision, and 409 replay rejection through the committed service client.
 - OP-105 and OP-106 are `INTEGRATED / PARTIAL`; no public deployment or production user/pharmacist operation is claimed.
+- Independent-review remediation dynamically executes 401 user denial, HMAC profile-ID override, pharmacist-session pharmacy-ID override, and authenticated profile/recommendation/review route handlers.
 - Dataset/evidence: `data/original_plan/op105_op106_profile_review_roundtrip_cases_v1.json`, 8 cases; audit PASS with 105 claims and 289 evidence files. Counts are `70/35/14/1/0`; reports cover `28/120`.
