@@ -475,6 +475,7 @@ jobs:
           -c 'CREATE EXTENSION IF NOT EXISTS vector'
       - name: Replay OP-115/116 canonical test matrix
         env:
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op118
           DATABASE_URL: postgresql://wellnessbox:wellnessbox@127.0.0.1:5432/wellnessbox
           DIRECT_URL: postgresql://wellnessbox:wellnessbox@127.0.0.1:5432/wellnessbox
           WELLNESSBOX_PRISMA_URL: postgresql://wellnessbox:wellnessbox@127.0.0.1:5432/wellnessbox

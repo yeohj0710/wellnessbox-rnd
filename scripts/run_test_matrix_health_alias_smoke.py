@@ -68,8 +68,11 @@ def main() -> int:
     service = args.wellnessbox_root.resolve()
     if NPM is None or NODE is None:
         raise RuntimeError("node_or_npm_executable_not_found")
+    evidence_root = Path(
+        os.environ.get("WELLNESSBOX_EVIDENCE_ROOT", str(service))
+    ).resolve()
     test_environment = os.environ.copy() | {
-        "WELLNESSBOX_EVIDENCE_ROOT": str(service)
+        "WELLNESSBOX_EVIDENCE_ROOT": str(evidence_root)
     }
 
     run(
