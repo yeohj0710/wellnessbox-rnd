@@ -1,0 +1,80 @@
+{
+  "schema_version": "op119_external_dependency_registry_v1",
+  "entries": [
+    {
+      "requirement_id": "OP-039",
+      "accountable_owner": {
+        "role_id": "wellnessbox_external_evidence_governance",
+        "authority": "WellnessBox external evidence governance",
+        "responsibility": "외부 검증 입력의 승인 기록과 repository trust root 등록을 소유한다."
+      },
+      "external_provider_role": "implementation team과 독립된 임상 안전성 검토 조직 및 별도 증명 검증 조직",
+      "required_inputs": [
+        {
+          "input_id": "externally_labeled_high_risk_dataset",
+          "supplier_role": "독립 임상 안전성 검토 조직",
+          "schema_version": "external_high_risk_safety_case_v2",
+          "acceptance_contract": "docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md",
+          "provision_status": "MISSING"
+        },
+        {
+          "input_id": "external_attestation",
+          "supplier_role": "독립 임상 안전성 검토 조직",
+          "schema_version": "external_high_risk_safety_attestation_v2",
+          "acceptance_contract": "docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md",
+          "provision_status": "MISSING"
+        },
+        {
+          "input_id": "verification_receipt",
+          "supplier_role": "별도 외부 증명 검증 조직",
+          "schema_version": "external_high_risk_safety_verification_receipt_v1",
+          "acceptance_contract": "docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md",
+          "provision_status": "MISSING"
+        },
+        {
+          "input_id": "frozen_coverage_protocol",
+          "supplier_role": "독립 검증 설계 책임 조직",
+          "schema_version": "external_high_risk_safety_coverage_protocol_v1",
+          "acceptance_contract": "docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md",
+          "provision_status": "MISSING"
+        }
+      ],
+      "replacement_contracts": [
+        "wellnessbox-rnd/data/original_plan/contracts/op039_external_coverage_trust_roots_v1.json",
+        "wellnessbox-rnd/data/original_plan/contracts/op039_external_attestation_trust_roots_v1.json"
+      ],
+      "blocking_reasons": [
+        {
+          "code": "COVERAGE_PROTOCOL_NOT_APPROVED",
+          "description": "승인된 동결 coverage protocol hash가 등록되지 않았다.",
+          "source_path": "data/original_plan/contracts/op039_external_coverage_trust_roots_v1.json",
+          "json_pointer": "/approved_coverage_protocols",
+          "expected_observation": "EMPTY_LIST"
+        },
+        {
+          "code": "COVERAGE_APPROVAL_RECORD_MISSING",
+          "description": "coverage protocol 승인 기록 참조가 없다.",
+          "source_path": "data/original_plan/contracts/op039_external_coverage_trust_roots_v1.json",
+          "json_pointer": "/approval_record_references",
+          "expected_observation": "EMPTY_LIST"
+        },
+        {
+          "code": "ATTESTATION_NOT_APPROVED",
+          "description": "외부 증명서와 검증 영수증 hash가 등록되지 않았다.",
+          "source_path": "data/original_plan/contracts/op039_external_attestation_trust_roots_v1.json",
+          "json_pointer": "/approved_attestations",
+          "expected_observation": "EMPTY_LIST"
+        },
+        {
+          "code": "ATTESTATION_APPROVAL_RECORD_MISSING",
+          "description": "외부 증명 승인 기록 참조가 없다.",
+          "source_path": "data/original_plan/contracts/op039_external_attestation_trust_roots_v1.json",
+          "json_pointer": "/approval_record_references",
+          "expected_observation": "EMPTY_LIST"
+        }
+      ],
+      "readiness": "BLOCKED",
+      "promotion_condition": "필수 입력 4종이 실제 외부 조직에서 제공되고 coverage·attestation trust root에 승인 hash와 승인 기록을 등록한 뒤 독립 평가가 hard false negative 0을 입증해야 한다."
+    }
+  ]
+}

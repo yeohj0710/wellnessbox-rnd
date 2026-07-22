@@ -1,0 +1,13 @@
+{
+  "schema_version": "op119_external_dependency_registry_cases_v1",
+  "cases": [
+    {"case_id": "external_requirement_set", "expected": {"requirement_ids": ["OP-039"]}},
+    {"case_id": "accountable_owner", "expected": {"owner_count": 1}},
+    {"case_id": "external_provider_role", "expected": {"provider_role_count": 1}},
+    {"case_id": "required_inputs", "expected": {"input_count": 4, "missing_count": 4}},
+    {"case_id": "replacement_contracts", "expected": {"contract_count": 2}},
+    {"case_id": "blocking_reasons", "expected": {"reason_count": 4, "verified_observation_count": 4}},
+    {"case_id": "readiness", "expected": {"blocked_requirement_ids": ["OP-039"], "ready_count": 0}},
+    {"case_id": "promotion_condition", "expected": {"condition_count": 1}}
+  ]
+}
