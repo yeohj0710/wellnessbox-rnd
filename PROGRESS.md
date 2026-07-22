@@ -568,6 +568,6 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - OP-115는 `INTEGRATED / COMPLETE`, OP-116은 `INTEGRATED / PARTIAL`이다. 전체 상태는 `75/40/4/1/0`, 감사 주장은 `115`, 증거 파일은 `318`, 한국어 연구보고서는 `38/120`이다.
 - 8건 동결 데이터셋과 canonical runner가 R&D focused pytest, 실제 FastAPI 프로세스 smoke, Ruff, wheel build, WellnessBox 실제 GET handler QA, 인코딩, typecheck, Next.js build를 실행한다. CI는 evidence를 재생성한 뒤 diff를 차단한다.
 - WellnessBox `/api/internal/rnd/health`는 upstream `status=ok`와 `READY_FOR_PROVIDER_DEPLOYMENT`가 모두 참일 때만 200을 반환한다. degraded, NOT_READY, non-2xx, 비JSON, 비활성 상태는 503이다. 응답은 status와 alias만 공개한다.
-- canonical evidence는 R&D source commit `21eb6e7f219862ce9173157b657666cc147caa27`과 WellnessBox commit `1bef19ca4cbf78f8d61f26734d9e2cc8628f6de7` 및 관련 blob을 고정한다. 동결 dataset SHA-256은 `898745db62e724200ecc12f463f8765d704c1f1e0cdad407038e27901de3f93c`다.
+- canonical evidence는 R&D source commit `0ee97575d2b818b396b57297c378918c7adf8fe7`과 WellnessBox commit `036553d7348fe653cdc48de9d855e588066591dd` 및 관련 blob을 고정한다. 동결 dataset SHA-256은 `898745db62e724200ecc12f463f8765d704c1f1e0cdad407038e27901de3f93c`다.
 - frozen 평가·학습 데이터·모델·safety 규칙·replay·slice 변화는 0이다. production 배포와 production traffic은 검증하지 않아 OP-116을 OPERATED로 주장하지 않는다.
 - GitHub Actions는 WellnessBox `29898937957`, R&D `29898937606`에서 실행 중이다.
