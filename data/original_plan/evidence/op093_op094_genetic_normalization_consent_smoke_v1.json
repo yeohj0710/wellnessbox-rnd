@@ -98,7 +98,7 @@
   "result": "PASS",
   "schema_version": "op093_op094_genetic_normalization_consent_smoke_v1",
   "source_identity": {
-    "commit": "58536428364b38e29afc358bb092a3293fc755da",
+    "commit": "94b0374a3599973ba5201a3cc751912f07bb146a",
     "files": {
       "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json": "bf5a62bab97f14d38265c4f1e75b1354b2e617e55e6a44c449502d9ef11095b7",
       "data/rules/candidate_signal_scoring_rules_v1.json": "f8b757c32226b315662013e14d98d0affa900f68904d847df21e02418b339ba8",
@@ -107,7 +107,7 @@
       "src/wellnessbox_rnd/domain/sensor_parser.py": "f20e88b2d31798860733d40672e4dc4222f20cd5a4e54aeafd4bc3577c2296fa",
       "src/wellnessbox_rnd/efficacy/service.py": "e153c2c0de496b59384347dcd9260cb31b16aadb3791e7960305147e3b3f2634",
       "src/wellnessbox_rnd/interim/data_lake.py": "9baeaae3000dff9e5e00b4894231a8cbb772d0694e3c13b7ffa0b190aaca4e28",
-      "src/wellnessbox_rnd/schemas/recommendation.py": "0124dcdfab4ae5f97c9eec801ec73b9a2b83b93015ce733d981fc916f15cf7db"
+      "src/wellnessbox_rnd/schemas/recommendation.py": "722b8229be2588ff1f2c08c2c4ee5fb7cbfe2e54c5de840515135bf587fd1299"
     }
   },
   "stage_boundary": {
