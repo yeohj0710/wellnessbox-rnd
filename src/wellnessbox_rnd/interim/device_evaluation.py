@@ -221,11 +221,14 @@ def _persist(store: InterimStore, values: dict[str, Any]) -> bool:
 
 
 def _load_assessment(store: InterimStore, assessment_id: str) -> dict[str, Any]:
-    with store.connect() as connection:
+    connection = store.connect()
+    try:
         row = connection.execute(
             "select * from device_recommendation_assessments where assessment_id=?",
             (assessment_id,),
         ).fetchone()
+    finally:
+        connection.close()
     if row is None:
         raise ValueError("device_baseline_assessment_not_found")
     return dict(row)
