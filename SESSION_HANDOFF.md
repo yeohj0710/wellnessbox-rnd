@@ -1,5 +1,13 @@
 # SESSION_HANDOFF
 
+## 2026-07-23 OP-015/016 최종 handoff
+
+- 단계/과제: 식사·생활 습관과 검사 관측값 구조화 입력 보고서 backfill. OP-015/016 `IMPLEMENTED / COMPLETE`.
+- dataset 8건 SHA-256 `9911c8b9344d82478bfa5aad41524f7507c9dbc9185df0501bd3b7372be7e1eb`; OP-120 evidence `ad43403b9105a3bdd49ddf23d616d35e47da559db7b11e692ed4832ed8bd2c8e`.
+- 결과: 물리 58개, 유효 36/120, 누락·부적합 84개, 267,068자. completion `76/43/0/1/0`, OP-120 `BLOCKED`.
+- 검증: focused pytest 57, tracked Ruff, manifest audit, completion check PASS. 전체 pytest는 기존 artifact 부재·CGM 실패군만 남았다. 독립 검토 `0/0/0`; CI `29934330927` 성공.
+- 서비스·production·원천/frozen/학습 데이터·모델·simulation 변경 없음. frozen/replay/slice delta 0. 다음: OP-017/018, OP-019/020, OP-021/022.
+
 ## 2026-07-22 OP-013/014 최종 handoff
 
 - 단계/과제: 약물과 건강기능식품 구조화 입력. OP-013/014 `IMPLEMENTED / COMPLETE`.

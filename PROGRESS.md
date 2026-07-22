@@ -1,5 +1,14 @@
 # PROGRESS
 
+## 2026-07-23 OP-015/016 연구보고서 backfill 완료
+
+- OP-015 알레르기·식이·생활 습관과 OP-016 검사 관측값의 기존 구현을 schema, intake, 모델 feature, API, 테스트, Git 이력, 원본 PDF 16쪽에 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 통합·운영·외부 검증은 주장하지 않는다.
+- 데이터셋은 `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `9911c8b9344d82478bfa5aad41524f7507c9dbc9185df0501bd3b7372be7e1eb`다. 물리 보고서 58개, 유효 36/120, 누락·부적합 84개, 총 267,068자다.
+- OP-120 evidence는 두 번 byte-identical로 재생됐고 SHA-256은 `ad43403b9105a3bdd49ddf23d616d35e47da559db7b11e692ed4832ed8bd2c8e`다. completion은 `76/43/0/1/0`, 최종 감사는 `BLOCKED`다.
+- focused pytest 57건, tracked Ruff, manifest audit, completion check, canonical 재생이 통과했다. 전체 pytest의 실패는 기존 artifact 부재와 CGM 계열뿐이며 OP-015/016 신규 실패는 없다. 독립 검토는 Minor 2건을 고친 뒤 `Critical 0 / Important 0 / Minor 0`; GitHub Actions `29934330927` 성공.
+- 서비스·production·원천/frozen/학습 데이터·모델·simulation 변경 없음. frozen 256건 7개 지표, replay, weakest slice delta 0.
+- 병목 5개: 보고서 84개, stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt. 다음: OP-017/018, OP-019/020, OP-021/022.
+
 ## 2026-07-22 OP-013/014 연구보고서 보강 완료
 
 - OP-013 약물 구조와 OP-014 건강기능식품 제품·성분·1일 용량 보고서를 완성했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 더 높은 단계는 주장하지 않는다.
