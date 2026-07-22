@@ -102,9 +102,22 @@ def normalize_cgm_summary_csv(csv_text: str) -> list[NormalizedCgmDailySummary]:
             raise ValueError("duplicate_cgm_daily_summary_date")
         seen_dates.add(observed_date)
         unit = _normalize_unit(_first_present(row, "glucose_unit", "avg_glucose_unit"))
+        explicit_mean_mg_dl = _first_present(
+            row, "mean_glucose_mg_dl", "avg_glucose_mg_dl"
+        )
+        generic_mean = _first_present(row, "avg_glucose")
+        if explicit_mean_mg_dl is not None and generic_mean is not None:
+            explicit_mean = _required_glucose_mg_dl(
+                explicit_mean_mg_dl, unit="mg/dl", field="mean_glucose"
+            )
+            normalized_generic_mean = _required_glucose_mg_dl(
+                generic_mean, unit=unit, field="mean_glucose"
+            )
+            if explicit_mean != normalized_generic_mean:
+                raise ValueError("conflicting_cgm_mean_glucose_aliases")
         mean = _required_glucose_mg_dl(
             _first_present(row, "mean_glucose_mg_dl", "avg_glucose_mg_dl", "avg_glucose"),
-            unit=unit,
+            unit="mg/dl" if explicit_mean_mg_dl is not None else unit,
             field="mean_glucose",
         )
         peak_value = _first_present(
@@ -137,19 +150,26 @@ def normalize_cgm_summary_csv(csv_text: str) -> list[NormalizedCgmDailySummary]:
             rise = round(rise * 18.0, 1)
         if peak is None and rise is None:
             raise ValueError("cgm_postprandial_metric_required")
+        standardized_tir_value = _first_present(
+            row, "time_in_range_70_180_pct", "timeInRange70To180Pct"
+        )
+        generic_tir_value = _first_present(row, "time_in_range_pct", "timeInRangePct")
+        if standardized_tir_value is not None and generic_tir_value is not None:
+            standardized_tir = _coerce_float(standardized_tir_value)
+            generic_tir = _coerce_float(generic_tir_value)
+            if standardized_tir != generic_tir:
+                raise ValueError("conflicting_cgm_time_in_range_aliases")
         tir = _coerce_float(
-            _first_present(
-                row,
-                "time_in_range_70_180_pct",
-                "timeInRange70To180Pct",
-                "time_in_range_pct",
-                "timeInRangePct",
-            )
+            standardized_tir_value
+            if standardized_tir_value is not None
+            else generic_tir_value
         )
         if tir is None:
             raise ValueError("invalid_cgm_time_in_range")
         low = _coerce_float(row.get("time_in_range_low_mg_dl"))
         high = _coerce_float(row.get("time_in_range_high_mg_dl"))
+        if standardized_tir_value is None and (low != 70.0 or high != 180.0):
+            raise ValueError("generic_cgm_time_in_range_bounds_required")
         if low not in {None, 70.0} or high not in {None, 180.0}:
             raise ValueError("standardized_cgm_time_in_range_bounds_mismatch")
         normalized.append(
@@ -214,9 +234,13 @@ def _normalize_apple_health_rows(
             {"steps": 0.0, "heart_rates": [], "sleep_intervals": [], "rows": 0},
         )
         if record_type.endswith("StepCount"):
+            if unit.lower() != "count":
+                raise ValueError("unsupported_apple_health_step_unit")
             value = _required_float(value_text, "apple_health_steps")
             bucket["steps"] += value
         elif record_type.endswith("RestingHeartRate"):
+            if unit.lower() not in {"count/min", "bpm", "beats/min", "beats/minute"}:
+                raise ValueError("unsupported_apple_health_resting_heart_rate_unit")
             bucket["heart_rates"].append(
                 _required_float(value_text, "apple_health_resting_heart_rate")
             )

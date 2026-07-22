@@ -67,6 +67,66 @@ def test_normalize_cgm_daily_summary_preserves_glucose_postprandial_and_fixed_ti
     assert records[0].time_in_range_high_mg_dl == 180.0
 
 
+def test_cgm_explicit_mg_dl_mean_ignores_generic_mmol_unit() -> None:
+    records = normalize_cgm_summary_csv(
+        "date,mean_glucose_mg_dl,glucose_unit,postprandial_rise_mg_dl,time_in_range_70_180_pct\n"
+        "2026-07-21,120,mmol/L,30,78\n"
+    )
+
+    assert records[0].mean_glucose_mg_dl == 120.0
+
+
+def test_generic_cgm_tir_requires_explicit_standard_bounds() -> None:
+    with pytest.raises(ValueError, match="generic_cgm_time_in_range_bounds_required"):
+        normalize_cgm_summary_csv(
+            "date,mean_glucose_mg_dl,postprandial_rise_mg_dl,time_in_range_pct\n"
+            "2026-07-21,120,30,78\n"
+        )
+
+    records = normalize_cgm_summary_csv(
+        "date,mean_glucose_mg_dl,postprandial_rise_mg_dl,time_in_range_pct,time_in_range_low_mg_dl,time_in_range_high_mg_dl\n"
+        "2026-07-21,120,30,78,70,180\n"
+    )
+
+    assert records[0].time_in_range_pct == 78.0
+
+
+def test_cgm_csv_rejects_conflicting_mean_and_tir_aliases() -> None:
+    with pytest.raises(ValueError, match="conflicting_cgm_mean_glucose_aliases"):
+        normalize_cgm_summary_csv(
+            "date,mean_glucose_mg_dl,avg_glucose,glucose_unit,postprandial_rise_mg_dl,time_in_range_70_180_pct\n"
+            "2026-07-21,120,8.0,mmol/L,30,78\n"
+        )
+
+    with pytest.raises(ValueError, match="conflicting_cgm_time_in_range_aliases"):
+        normalize_cgm_summary_csv(
+            "date,mean_glucose_mg_dl,postprandial_rise_mg_dl,time_in_range_70_180_pct,time_in_range_pct,time_in_range_low_mg_dl,time_in_range_high_mg_dl\n"
+            "2026-07-21,120,30,78,79,70,180\n"
+        )
+
+
+@pytest.mark.parametrize(
+    ("record_type", "unit", "error"),
+    [
+        ("HKQuantityTypeIdentifierStepCount", "km", "unsupported_apple_health_step_unit"),
+        (
+            "HKQuantityTypeIdentifierRestingHeartRate",
+            "meters",
+            "unsupported_apple_health_resting_heart_rate_unit",
+        ),
+    ],
+)
+def test_apple_health_rejects_units_that_change_metric_semantics(
+    record_type: str, unit: str, error: str
+) -> None:
+    with pytest.raises(ValueError, match=error):
+        normalize_wearable_csv(
+            "type,startDate,endDate,value,unit\n"
+            f"{record_type},2026-07-21T08:00:00+09:00,"
+            f"2026-07-21T08:10:00+09:00,12,{unit}\n"
+        )
+
+
 def test_daily_sensor_csv_rejects_duplicate_dates_and_nonstandard_tir_bounds() -> None:
     with pytest.raises(ValueError, match="duplicate_wearable_daily_summary_date"):
         normalize_wearable_csv(
