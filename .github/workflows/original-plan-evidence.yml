@@ -111,6 +111,8 @@ on:
       - "tests/test_unsupported_input_contracts.py"
       - "tests/test_wellnessbox_profile_adapter_contract.py"
       - "tests/test_inference_api.py"
+      - "tests/test_sensor_parser.py"
+      - "tests/test_sensor_file_schema.py"
       - "tests/test_interim_api.py"
       - "tests/test_data_lake_lineage.py"
       - "tests/test_interim_evidence.py"
@@ -148,6 +150,12 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/original-plan-evidence.yml"
+      - "scripts/run_sensor_daily_normalization_smoke.py"
+      - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
+      - "data/samples/wearable_summary_v1.csv"
+      - "data/samples/cgm_summary_v1.csv"
+      - "tests/test_sensor_parser.py"
+      - "tests/test_sensor_file_schema.py"
       - "apps/inference_api/routes/recommend.py"
       - "apps/inference_api/routes/interim.py"
       - "data/original_plan/**"
