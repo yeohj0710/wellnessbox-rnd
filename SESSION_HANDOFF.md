@@ -569,3 +569,16 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 경계/delta: production outage, 다중 인스턴스 circuit, rolling deployment, 배포 artifact hash는 검증하지 않았다. frozen 데이터, 모델 학습, safety, replay·slice 변화는 0이다.
 - 병목 5개: 보고서 84개, OP-115/116, 승인된 production 장애 훈련, 다중 인스턴스 circuit 관찰, 배포된 양쪽 artifact hash·호환성 증거.
 - 다음 세 루프: OP-115/116; 보고서 보강; 승인된 production 장애·artifact 관찰.
+# 2026-07-22 OP-115/116 handoff
+
+- 단계/과제: 최종 검사 행렬과 health alias 통합. OP-115는 `INTEGRATED / COMPLETE`, OP-116은 `INTEGRATED / PARTIAL`이다.
+- 데이터셋: `data/original_plan/op115_op116_test_matrix_health_alias_cases_v1.json`, 8건, SHA-256 `898745db62e724200ecc12f463f8765d704c1f1e0cdad407038e27901de3f93c`.
+- 구현: WellnessBox GET `/api/internal/rnd/health`, fail-closed health client, 실제 handler·장애 QA, 두 저장소 검사 행렬 runner, 양쪽 CI build/replay gate.
+- 검증: focused pytest 40 passed, 배포 계약 15 passed, 프로세스 smoke 8건, Ruff·wheel·alias QA·encoding·typecheck·Next build passed, manifest audit PASS, completion `75/40/4/1/0`.
+- source: WellnessBox `1bef19ca4cbf78f8d61f26734d9e2cc8628f6de7`; R&D canonical source `21eb6e7f219862ce9173157b657666cc147caa27`; R&D current `9e7a65b4ea6de409c37c25daeea58b4495a21ef2`.
+- stage boundary: local process와 실제 Next GET handler는 입증했다. production deployment/traffic은 false이며 OP-116 OPERATED는 미충족이다.
+- frozen/replay delta: 256건 평가의 7개 지표, weakest slice, 학습 artifact, safety, replay 변화 모두 0이다.
+- 병목 5개: 한국어 보고서 82개, 승인된 production 배포·health 증거, OP-117 브라우저 핵심 경로, OP-118 전체 비외부 운영 증거, OP-119 외부 책임·교체 계약.
+- 다음 세 loop: OP-117 브라우저 재현; 누락 연구보고서 보강; 승인 후 OP-116 production 관측.
+- 독립 리뷰: 최초 `0/4/1`, 1차 수정 후 `0/1/1`; 최종 재검토 진행 중이다.
+- GitHub Actions: WellnessBox `29898937957`, R&D `29898937606` 실행 중.
