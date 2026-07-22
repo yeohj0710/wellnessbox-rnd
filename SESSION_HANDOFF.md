@@ -1,5 +1,18 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-007/008 handoff
+
+- 선택 단계와 작업: original plan / evidence governance. OP-007의 단계 schema와 OP-008의 manifest 파일 감사를 코드·테스트·Git 이력·PDF KPI 기준에 대조하고 두 장문 보고서를 작성했다.
+- 주 데이터셋과 case 수: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `0b5e2cb31533798c6281574761723c2fbc71f156e17652f099814e1e2f5c6b5b`.
+- 변경 파일: `docs/original_plan/research_reports/OP-007.md`, `OP-008.md`, `OP-120.md`, `data/original_plan/op120_final_completion_audit_cases_v1.json`, `data/original_plan/evidence/op120_final_completion_audit_v1.json`, 그리고 세 인계 문서.
+- 핵심 결과: OP-007은 네 단계 어휘와 단계별 최소 evidence를 고정한다. OP-008은 `external_dependencies`를 제외한 파일형 evidence 5종의 저장소 접두사, owner, path escape, 존재와 Git 추적을 검사하고 원본 PDF hash를 검증한다. 파일 내용의 진실성, 실제 운영, 외부 receipt 자체는 자동으로 증명하지 않는다.
+- 코드·데이터·학습·시뮬레이션: 구현 코드, manifest stage, 서비스 저장소, 원천·frozen·학습 데이터, 모델, 시뮬레이션은 변경하지 않았다. 공식 frozen eval 256건 일곱 지표 delta 0, replay delta 0, weakest slice 변화 없음.
+- 보고서·상태: OP-007 6,523자, OP-008 7,507자. 물리 파일 50개, 유효 28개, 미작성·부적합 92개, 전체 233,130자. completion은 `76/43/0/1/0`이며 Goal은 active다.
+- 검증: 관련 선택 31개 통과, Ruff·manifest audit·completion check PASS. 독립 검토는 Minor 1을 고친 뒤 Critical 0 / Important 0 / Minor 0. OP-120 evidence는 두 번 byte-identical, SHA-256 `1be4ea55dcca71849aaed7332ee6859fdb419061561177ddf8eb2e7120a4ce01`. GitHub Actions run `29919479757` 성공.
+- 커밋: `031c913`, `75a8538`, `6edb1c0`, `5419fb3`; 다음 handoff 문서 커밋이 이 항목을 포함한다.
+- 병목 5개: 보고서 92개, stage 미달 43건, OP-039 외부 검증, validation receipt, 전체 독립 감사 receipt.
+- 다음 loop 3개: OP-009/010, OP-011/012, OP-013/014 보고서 backfill.
+
 ## 2026-07-22 OP-005/006 handoff
 
 - 선택 단계와 작업: OP-005/006 `IMPLEMENTED` 근거 재조사, 두 장문 연구보고서 backfill, OP-120 보고서 감사 갱신, 검토에서 발견한 KPI-1 빈 분모 결함 수정.

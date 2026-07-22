@@ -1,5 +1,18 @@
 # PROGRESS
 
+## 2026-07-22 OP-007/008 연구보고서 backfill
+
+- 선택 단계와 작업: original plan 거버넌스의 OP-007/008 `IMPLEMENTED` 근거를 다시 조사했다. OP-007은 `IMPLEMENTED`, `INTEGRATED`, `OPERATED`, `EXTERNAL` 단계와 최소 evidence 목록을 strict Pydantic schema로 고정한다. OP-008은 파일형 evidence 경로의 저장소 소유권, root 경계, 파일 존재와 Git 추적 여부, 원본 PDF SHA-256을 감사한다.
+- 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `0b5e2cb31533798c6281574761723c2fbc71f156e17652f099814e1e2f5c6b5b`.
+- 변경 파일: `docs/original_plan/research_reports/OP-007.md`, `OP-008.md`, `OP-120.md`, OP-120 frozen audit case와 canonical evidence. 구현 코드, manifest, 서비스 저장소는 바꾸지 않았다.
+- 연구 결과: OP-007은 6,523자, OP-008은 7,507자다. 전체 물리 보고서 파일은 50개, 유효 보고서는 28개, 미작성·부적합 보고서는 92개, 전체 보고서 본문은 233,130자다. OP-007/008은 required stage와 claimed stage가 모두 `IMPLEMENTED`라 COMPLETE다.
+- 코드·데이터·학습·시뮬레이션: 코드, 원천·frozen·학습 데이터, 모델, 시뮬레이션 정책, 서비스 저장소를 변경하지 않았다. 공식 frozen evaluation 256건의 일곱 지표 delta는 모두 0이다. replay와 weakest-slice 입력·결과도 바뀌지 않아 delta는 0이다.
+- 검증: 관련 manifest·audit·completion 선택 31개 통과, Ruff 통과, manifest audit PASS(120 requirements, 119 claims, 333 evidence files, source hash match), completion check PASS. 독립 검토의 file-field 범위 Minor 1을 고친 뒤 최종 Critical 0 / Important 0 / Minor 0이다.
+- canonical evidence: OP-120 evidence를 두 번 생성해 byte-identical SHA-256 `1be4ea55dcca71849aaed7332ee6859fdb419061561177ddf8eb2e7120a4ce01`을 확인했다. 감사 상태는 계속 `BLOCKED`, completion 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`다.
+- 커밋과 CI: `031c913` 보고서, `75a8538` 감사 기대값, `6edb1c0` 검토 수정, `5419fb3` canonical evidence를 push했다. GitHub Actions `Original plan evidence` run `29919479757`이 성공했다.
+- 현재 병목 5개: 보고서 92개, required-stage 미달 43건, OP-039 외부 검증, 전체 validation receipt, 전체 독립 감사 receipt.
+- 다음 3개 loop: OP-009/010, OP-011/012, OP-013/014 연구보고서 backfill.
+
 ## 2026-07-22 OP-005/006 연구보고서 보강 및 KPI-1 분모 수정
 
 - 선택 단계와 작업: original plan의 OP-005/006 `IMPLEMENTED` 근거를 다시 조사하고 각각의 장문 연구보고서를 작성했다. OP-005는 PDF 25~26쪽의 7개 KPI 정의와 현재 계산 경로를 대조했고, OP-006은 요구사항별 소유 저장소·구현·테스트·운영 증거 manifest를 설명했다.
