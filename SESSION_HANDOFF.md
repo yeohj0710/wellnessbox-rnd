@@ -1,5 +1,14 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-011/012 handoff
+
+- 단계/과제: 구조화 건강 입력 보고서 backfill. OP-011/012 `IMPLEMENTED / COMPLETE`.
+- 데이터셋 8건 SHA-256 `6faeb8fc5d5a61ccd5c02e068c7be2df166176b2e888671c740769778ababb84`; evidence SHA-256 `5a8c90de500aa12ff871df36a8bdd2758f6637a730399b803701521e9f8c9873`.
+- 물리 54개, 유효 32/120, 누락·부적합 88개, 254,619자. completion `76/43/0/1/0`, OP-120 `BLOCKED`.
+- pytest 49건, tracked Ruff, audit, completion check 통과. 독립 검토 `Critical 0 / Important 0 / Minor 0`; CI `29922469760` 성공.
+- 코드·서비스·데이터·학습·모델·simulation 변경 없음. frozen/replay/slice delta 0 유지.
+- 병목 5개: 보고서 88개, stage gap 43개, OP-039, validation receipt, independent-review receipt. 다음: OP-013/014, OP-015/016, OP-017/018.
+
 ## 2026-07-22 OP-009/010 handoff
 
 - 단계/과제: 원본 요구사항 감사 자동화; OP-009 감사 CLI·CI와 OP-010 generated completion report 연구보고서 backfill. 둘 다 `IMPLEMENTED / COMPLETE`다.
