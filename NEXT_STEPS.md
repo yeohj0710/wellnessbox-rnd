@@ -1,16 +1,16 @@
 # NEXT_STEPS
 
-## OP-007/008 이후 다음 bounded loop
+## OP-009/010 이후 다음 bounded loop
 
-1. OP-009/010의 workflow gate와 generated completion report를 PDF·manifest·구현·테스트·Git 이력에 대조해 두 장문 보고서를 작성한다.
-2. OP-011/012의 사용자 기본 프로필 schema와 source availability 계약을 같은 기준으로 backfill한다.
-3. OP-013/014의 약물·질환·알레르기 입력과 목표 우선순위 계약을 같은 기준으로 backfill한다.
+1. OP-011/012의 사용자 기본 프로필 schema와 source availability 계약을 PDF·manifest·구현·테스트·Git 이력에 대조해 두 장문 보고서로 backfill한다.
+2. OP-013/014의 약물·질환·알레르기 입력과 목표 우선순위 계약을 같은 기준으로 backfill한다.
+3. OP-015/016의 식사·생활·검사 입력과 동의·입력 hash 계약을 같은 기준으로 backfill한다.
 
-현재 유효 연구보고서는 28/120이고 92개가 남았다. completion 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`다. 마지막 OP-120 evidence SHA-256은 `1be4ea55dcca71849aaed7332ee6859fdb419061561177ddf8eb2e7120a4ce01`, 성공 CI는 `29919479757`이다.
+현재 물리 연구보고서는 52개, 유효 연구보고서는 30/120이며 누락·부적합 90개가 남았다. 전체 글자 수는 246,876자다. completion 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`다. OP-120 evidence SHA-256은 `0b649dd9d14bc13f511a1a369533103838ca083ff68a064988a4552e8246a574`, 성공 CI는 `29921069084`다.
 
 ## Next after OP-120
 
-1. 누락 연구보고서 92개를 기존 manifest·증거·커밋과 대조해 작성하거나 보강하고 보고서 감사를 통과시킨다.
+1. 누락·부적합 연구보고서 90개를 기존 manifest·증거·커밋과 대조해 작성하거나 보강하고 보고서 감사를 통과시킨다.
 2. 비외부 요구사항 43개의 required stage 부족을 운영 증거별로 나눠 해소한다. production 변경은 사용자 승인을 받은 뒤에만 수행한다.
 3. OP-039 외부 입력·승인·독립 평가가 실제로 제공되면 trust root 계약에 등록하고 외부 검증을 실행한다.
 

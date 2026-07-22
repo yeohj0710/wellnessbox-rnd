@@ -1,5 +1,18 @@
 # PROGRESS
 
+## 2026-07-22 OP-009/010 연구보고서 보강
+
+- 선택 단계와 과제: 원본 요구사항 감사 자동화; OP-009 감사 CLI·CI gate와 OP-010 자동 completion report를 기존 구현·테스트·Git 이력에 대조해 한국어 장문 보고서로 backfill했다. 두 항목은 `IMPLEMENTED / COMPLETE`이며 통합·운영·외부검증은 주장하지 않는다.
+- 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `345006573b8cbdd16765c16dc6b2dd125154413f664d3012bd8a25af3752e791`.
+- 변경 파일: OP-009·010 보고서, OP-120 보고서, OP-120 사례와 canonical evidence. 코드, 서비스, 원천·학습·frozen 데이터, 모델, simulation은 변경하지 않았다.
+- 결과: 물리 보고서 52개, 유효 보고서 30개, 누락·부적합 90개, 전체 246,876자. completion은 `76/43/0/1/0`, 최종 감사는 `BLOCKED`다.
+- 검증: 관련 계약 pytest `31 passed`; manifest audit PASS `120/119`, issue 0; completion `--check` PASS; tracked Python Ruff PASS. canonical runner 2회 SHA-256 `0b649dd9d14bc13f511a1a369533103838ca083ff68a064988a4552e8246a574`로 동일했다. 전체 Ruff의 `etc/` 33건은 보호된 checkout의 기존 오류이며 tracked 검사 대상에서 제외했다.
+- 독립 검토: 최종 `Critical 0 / Important 0 / Minor 0`. reviewer가 report 판정, dataset hash, source/audited commit과 두 번의 evidence hash를 독립 대조했다.
+- frozen/replay/slice: 추천 코드와 평가 입력을 바꾸지 않아 이전 256건의 7개 지표 delta, weakest slice, replay delta는 모두 0으로 유지된다. 이번 loop에서 학습이나 simulation을 실행하지 않았다.
+- 커밋과 CI: 보고서 `5e16abb`, OP-120 사례 `0978351`, evidence `0b44a5f`; `Original plan evidence` run `29921069084` 성공.
+- 남은 병목 5개: 보고서 90개, 비외부 stage gap 43개, OP-039 외부 검증, 전체 validation receipt, 독립 review receipt.
+- 다음 세 loop: OP-011/012, OP-013/014, OP-015/016 보고서 backfill.
+
 ## 2026-07-22 OP-007/008 연구보고서 backfill
 
 - 선택 단계와 작업: original plan 거버넌스의 OP-007/008 `IMPLEMENTED` 근거를 다시 조사했다. OP-007은 `IMPLEMENTED`, `INTEGRATED`, `OPERATED`, `EXTERNAL` 단계와 최소 evidence 목록을 strict Pydantic schema로 고정한다. OP-008은 파일형 evidence 경로의 저장소 소유권, root 경계, 파일 존재와 Git 추적 여부, 원본 PDF SHA-256을 감사한다.

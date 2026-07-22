@@ -1,5 +1,16 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-009/010 handoff
+
+- 단계/과제: 원본 요구사항 감사 자동화; OP-009 감사 CLI·CI와 OP-010 generated completion report 연구보고서 backfill. 둘 다 `IMPLEMENTED / COMPLETE`다.
+- 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `345006573b8cbdd16765c16dc6b2dd125154413f664d3012bd8a25af3752e791`.
+- 변경: OP-009·010 장문 보고서와 OP-120 보고서·사례·evidence만 갱신했다. 코드, 서비스, 데이터, 학습, 모델, simulation은 바꾸지 않았다.
+- 결과: 물리 52개, 유효 30/120, 누락·부적합 90개, 246,876자. completion `76/43/0/1/0`; OP-120은 `BLOCKED`다.
+- 검증: 계약 pytest 31건, manifest audit, completion check, tracked Ruff 통과. evidence 2회 동일 SHA-256 `0b649dd9d14bc13f511a1a369533103838ca083ff68a064988a4552e8246a574`. 독립 검토 최종 `0/0/0`. CI `29921069084` 성공.
+- frozen/replay/slice delta: 변경 대상이 아니며 256건의 7개 지표와 weakest slice, replay delta는 0 유지. 학습·simulation 미실행.
+- 병목 5개: 보고서 90개, stage gap 43개, OP-039, validation receipt, independent-review receipt.
+- 다음 세 loop: OP-011/012, OP-013/014, OP-015/016.
+
 ## 2026-07-22 OP-007/008 handoff
 
 - 선택 단계와 작업: original plan / evidence governance. OP-007의 단계 schema와 OP-008의 manifest 파일 감사를 코드·테스트·Git 이력·PDF KPI 기준에 대조하고 두 장문 보고서를 작성했다.
