@@ -8,7 +8,10 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
-from wellnessbox_rnd.schemas.recommendation import NormalizedSensorGeneticSnapshot
+from wellnessbox_rnd.schemas.recommendation import (
+    NormalizedGeneticVariant,
+    NormalizedSensorGeneticSnapshot,
+)
 
 
 class SensorFileSchemaValidationResult(BaseModel):
@@ -75,6 +78,22 @@ CGM_ALIAS_GROUPS: dict[str, tuple[str, ...]] = {
 }
 GENE_ALIAS_GROUPS: dict[str, tuple[str, ...]] = {
     "genetic_tag_source": ("phenotypes", "risk_flags", "markers", "gene_markers"),
+    "variant_source": ("variants", "variant_results", "genotypes"),
+}
+
+GENETIC_INTERPRETATION_ALIASES = {
+    "increased_risk": "increased_risk",
+    "high_risk": "increased_risk",
+    "risk": "increased_risk",
+    "typical": "typical",
+    "normal": "typical",
+    "average": "typical",
+    "reduced_risk": "reduced_risk",
+    "low_risk": "reduced_risk",
+    "carrier": "carrier",
+    "indeterminate": "indeterminate",
+    "uncertain": "indeterminate",
+    "vus": "indeterminate",
 }
 
 
@@ -394,7 +413,9 @@ def normalize_sensor_genetic_payloads(
             _first_present(cgm_input, "time_in_range_high_mg_dl")
         )
 
-    genetic_tags, genetic_notes = _normalize_genetic_payload(genetic_payload or {})
+    genetic_tags, genetic_variants, genetic_notes = _normalize_genetic_payload(
+        genetic_payload or {}
+    )
     notes.extend(genetic_notes)
 
     return NormalizedSensorGeneticSnapshot(
@@ -412,6 +433,7 @@ def normalize_sensor_genetic_payloads(
         postprandial_rise_mg_dl=postprandial_rise_mg_dl,
         post_meal_spike_concern=post_meal_spike_concern,
         genetic_tags=genetic_tags,
+        genetic_variants=genetic_variants,
         normalization_notes=notes,
     )
 
@@ -505,15 +527,18 @@ def validate_gene_profile_json_schema(payload: Any) -> SensorFileSchemaValidatio
             accepted_aliases={key: list(value) for key, value in GENE_ALIAS_GROUPS.items()},
         )
 
-    _validate_required_alias_groups(
-        row=payload,
-        alias_groups=GENE_ALIAS_GROUPS,
-        issues=issues,
-        prefix="gene_profile",
-    )
+    if all(
+        _first_present(payload, *aliases) is None
+        for aliases in GENE_ALIAS_GROUPS.values()
+    ):
+        issues.append("missing_required_field::gene_profile::tag_or_variant_source")
     present_value = _first_present(payload, *GENE_ALIAS_GROUPS["genetic_tag_source"])
     if present_value is not None and not isinstance(present_value, (str, list)):
         issues.append("invalid_value_type::gene_profile::genetic_tag_source")
+    try:
+        _normalize_genetic_payload(payload)
+    except (TypeError, ValueError) as error:
+        issues.append(f"invalid_gene_profile::{error}")
 
     return SensorFileSchemaValidationResult(
         format_name="gene_profile.json",
@@ -634,7 +659,9 @@ def _normalize_cgm_payload(
     )
 
 
-def _normalize_genetic_payload(payload: dict[str, Any]) -> tuple[list[str], list[str]]:
+def _normalize_genetic_payload(
+    payload: dict[str, Any],
+) -> tuple[list[str], list[NormalizedGeneticVariant], list[str]]:
     notes: list[str] = []
     raw_values: list[str] = []
     for key in ("phenotypes", "risk_flags", "markers", "gene_markers"):
@@ -643,9 +670,106 @@ def _normalize_genetic_payload(payload: dict[str, Any]) -> tuple[list[str], list
             continue
         raw_values.extend(_as_string_list(raw_value))
     normalized = sorted({_slugify(value) for value in raw_values if _slugify(value)})
+    raw_variants = _single_consistent_alias_value(
+        payload,
+        GENE_ALIAS_GROUPS["variant_source"],
+        error="conflicting_genetic_variant_sources",
+    )
+    if raw_variants is None:
+        variants: list[NormalizedGeneticVariant] = []
+    elif not isinstance(raw_variants, list):
+        raise ValueError("genetic_variants_must_be_list")
+    else:
+        variants = [_normalize_genetic_variant(item) for item in raw_variants]
+        variants.sort(key=lambda item: (item.gene_symbol, item.variant_id, item.tested_on))
+        keys = [(item.gene_symbol, item.variant_id, item.tested_on) for item in variants]
+        if len(set(keys)) != len(keys):
+            raise ValueError("duplicate_genetic_variant")
     if normalized:
         notes.append("genetic_tags_normalized_to_snake_case")
-    return normalized, notes
+    if variants:
+        notes.append("genetic_variants_normalized_with_provenance")
+    return normalized, variants, notes
+
+
+def _normalize_genetic_variant(value: Any) -> NormalizedGeneticVariant:
+    if not isinstance(value, dict):
+        raise ValueError("genetic_variant_must_be_object")
+    gene = _required_consistent_text_alias(
+        value, ("gene_symbol", "gene"), field="gene_symbol"
+    ).upper()
+    variant_id = _required_consistent_text_alias(
+        value, ("variant_id", "variant", "rsid"), field="variant_id"
+    )
+    variant_id = variant_id.lower() if re.fullmatch(r"RS\d+", variant_id, re.I) else variant_id
+    genotype = _required_consistent_text_alias(
+        value, ("genotype", "call", "result"), field="genotype"
+    ).upper().replace("|", "/")
+    if "/" in genotype:
+        genotype = "/".join(sorted(part.strip() for part in genotype.split("/")))
+    raw_interpretation = _slugify(
+        _required_consistent_text_alias(
+            value,
+            ("interpretation", "classification", "risk_assessment"),
+            field="interpretation",
+        )
+    )
+    interpretation = GENETIC_INTERPRETATION_ALIASES.get(raw_interpretation)
+    if interpretation is None:
+        raise ValueError("unsupported_genetic_interpretation")
+    criterion = _required_consistent_text_alias(
+        value,
+        ("interpretation_criterion", "criterion", "basis"),
+        field="interpretation_criterion",
+    )
+    laboratory = _required_consistent_text_alias(
+        value,
+        ("testing_laboratory", "laboratory", "lab", "testing_lab"),
+        field="testing_laboratory",
+    )
+    tested_on_raw = _required_consistent_text_alias(
+        value,
+        ("tested_on", "test_date", "collection_date"),
+        field="tested_on",
+    )
+    try:
+        tested_on = date.fromisoformat(tested_on_raw)
+    except ValueError as error:
+        raise ValueError("genetic_test_date_must_be_iso_date") from error
+    return NormalizedGeneticVariant(
+        gene_symbol=gene,
+        variant_id=variant_id,
+        genotype=genotype,
+        interpretation=interpretation,
+        interpretation_criterion=" ".join(criterion.split()),
+        testing_laboratory=" ".join(laboratory.split()),
+        tested_on=tested_on,
+    )
+
+
+def _single_consistent_alias_value(
+    payload: dict[str, Any], aliases: tuple[str, ...], *, error: str
+) -> Any:
+    values = [payload[key] for key in aliases if key in payload and payload[key] is not None]
+    if len(values) > 1 and any(value != values[0] for value in values[1:]):
+        raise ValueError(error)
+    return values[0] if values else None
+
+
+def _required_consistent_text_alias(
+    payload: dict[str, Any], aliases: tuple[str, ...], *, field: str
+) -> str:
+    values = [
+        str(payload[key]).strip()
+        for key in aliases
+        if key in payload and payload[key] is not None and str(payload[key]).strip()
+    ]
+    if not values:
+        raise ValueError(f"genetic_variant_{field}_required")
+    normalized = [" ".join(value.split()) for value in values]
+    if any(value.casefold() != normalized[0].casefold() for value in normalized[1:]):
+        raise ValueError(f"conflicting_genetic_variant_{field}_aliases")
+    return normalized[0]
 
 
 def _first_present(payload: dict[str, Any], *keys: str) -> Any:

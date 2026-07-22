@@ -259,6 +259,17 @@ def test_sensor_snapshot_is_partitioned_by_each_source_storage_consent(tmp_path)
         "time_in_range_pct": 42,
         "post_meal_spike_concern": True,
         "genetic_tags": ["private_genetic_tag"],
+        "genetic_variants": [
+            {
+                "gene_symbol": "LPL",
+                "variant_id": "rs328",
+                "genotype": "C/G",
+                "interpretation": "increased_risk",
+                "interpretation_criterion": "private-panel-v1",
+                "testing_laboratory": "Private Genetics Lab",
+                "tested_on": "2026-06-30",
+            }
+        ],
     }
     request = RecommendationRequest.model_validate(payload)
 
@@ -284,6 +295,8 @@ def test_sensor_snapshot_is_partitioned_by_each_source_storage_consent(tmp_path)
     stored_text = json.dumps(stored, ensure_ascii=False)
     assert "143" not in stored_text
     assert "private_genetic_tag" not in stored_text
+    assert "private-panel-v1" not in stored_text
+    assert "Private Genetics Lab" not in stored_text
 
 
 def test_core_and_delayed_events_share_the_response_execution_id(tmp_path) -> None:

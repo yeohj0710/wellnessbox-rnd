@@ -292,6 +292,7 @@ def _consent_gate_sensor_snapshot(
             ),
             "genetic_available": snapshot.genetic_available and availability.genetic,
             "genetic_tags": snapshot.genetic_tags if availability.genetic else [],
+            "genetic_variants": snapshot.genetic_variants if availability.genetic else [],
         }
     )
 

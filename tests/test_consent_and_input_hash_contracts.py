@@ -166,6 +166,40 @@ def test_consent_denial_removes_optional_source_influence_from_recommendation() 
     assert denied_response.recommendations == absent_response.recommendations
 
 
+def test_genetic_consent_denial_removes_structured_variants_from_hash_and_score() -> None:
+    denied_payload = _payload()
+    denied_payload["sensor_genetic_snapshot"] = {
+        "genetic_available": True,
+        "genetic_tags": ["lpl_triglyceride_risk"],
+        "genetic_variants": [
+            {
+                "gene_symbol": "LPL",
+                "variant_id": "rs328",
+                "genotype": "C/G",
+                "interpretation": "increased_risk",
+                "interpretation_criterion": "panel-v1",
+                "testing_laboratory": "Example Genomics",
+                "tested_on": "2026-06-30",
+            }
+        ],
+    }
+    absent_payload = deepcopy(denied_payload)
+    absent_payload["sensor_genetic_snapshot"] = {"genetic_available": False}
+
+    denied_request = RecommendationRequest.model_validate(denied_payload)
+    absent_request = RecommendationRequest.model_validate(absent_payload)
+    denied_intake = normalize_request(denied_request)
+    absent_intake = normalize_request(absent_request)
+
+    assert denied_intake.sensor_genetic_snapshot is not None
+    assert denied_intake.sensor_genetic_snapshot.genetic_variants == []
+    assert denied_intake.sensor_genetic_snapshot.genetic_tags == []
+    assert calculate_normalized_input_sha256_v1(
+        denied_intake
+    ) == calculate_normalized_input_sha256_v1(absent_intake)
+    assert recommend(denied_request).recommendations == recommend(absent_request).recommendations
+
+
 def test_legacy_request_materializes_explicit_non_persistent_source_scopes() -> None:
     payload = _payload()
     payload.pop("data_source_consents")

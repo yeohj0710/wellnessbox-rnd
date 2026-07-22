@@ -1,0 +1,59 @@
+{
+  "schema_version": "op093_op094_genetic_normalization_consent_cases_v1",
+  "frozen_at": "2026-07-22T00:00:00Z",
+  "case_count": 8,
+  "cases": [
+    {
+      "case_id": "aliases_normalize_with_provenance",
+      "kind": "normalization_success",
+      "payload": {"variants": [{"gene": " cyp1a2 ", "rsid": "RS762551", "call": "C|A", "classification": "high risk", "basis": " Lab panel v2 ", "lab": " Example Genomics ", "test_date": "2026-06-30"}]},
+      "expected": {"gene_symbol": "CYP1A2", "variant_id": "rs762551", "genotype": "A/C", "interpretation": "increased_risk", "interpretation_criterion": "Lab panel v2", "testing_laboratory": "Example Genomics", "tested_on": "2026-06-30"}
+    },
+    {
+      "case_id": "multiple_variants_sort_deterministically",
+      "kind": "normalization_success",
+      "payload": {"variants": [{"gene_symbol": "MTHFR", "variant_id": "c.665C>T", "genotype": "C/T", "interpretation": "carrier", "interpretation_criterion": "panel-v1", "testing_laboratory": "Example Genomics", "tested_on": "2026-06-29"}, {"gene_symbol": "APOE", "variant_id": "rs429358", "genotype": "C/T", "interpretation": "typical", "interpretation_criterion": "panel-v1", "testing_laboratory": "Example Genomics", "tested_on": "2026-06-30"}]},
+      "expected_gene_order": ["APOE", "MTHFR"]
+    },
+    {
+      "case_id": "legacy_tags_remain_bounded",
+      "kind": "normalization_success",
+      "payload": {"risk_flags": [" LPL Triglyceride Risk "]},
+      "expected_tags": ["lpl_triglyceride_risk"]
+    },
+    {
+      "case_id": "missing_interpretation_criterion_rejected",
+      "kind": "normalization_failure",
+      "payload": {"variants": [{"gene": "CYP1A2", "rsid": "rs762551", "call": "A/C", "classification": "high risk", "lab": "Example Genomics", "test_date": "2026-06-30"}]},
+      "expected_error": "genetic_variant_interpretation_criterion_required"
+    },
+    {
+      "case_id": "non_iso_test_date_rejected",
+      "kind": "normalization_failure",
+      "payload": {"variants": [{"gene": "CYP1A2", "rsid": "rs762551", "call": "A/C", "classification": "high risk", "basis": "panel-v2", "lab": "Example Genomics", "test_date": "06/30/2026"}]},
+      "expected_error": "genetic_test_date_must_be_iso_date"
+    },
+    {
+      "case_id": "conflicting_gene_aliases_rejected",
+      "kind": "normalization_failure",
+      "payload": {"variants": [{"gene": "CYP1A2", "gene_symbol": "APOE", "rsid": "rs762551", "call": "A/C", "classification": "high risk", "basis": "panel-v2", "lab": "Example Genomics", "test_date": "2026-06-30"}]},
+      "expected_error": "conflicting_genetic_variant_gene_symbol_aliases"
+    },
+    {
+      "case_id": "denied_genetic_source_not_scored_or_stored",
+      "kind": "consent_denied",
+      "use_for_recommendation": false,
+      "allow_persistent_storage": false,
+      "expected_genetic_adjustment": 0.0,
+      "expected_stored": false
+    },
+    {
+      "case_id": "authorized_genetic_source_scored_and_stored",
+      "kind": "consent_allowed",
+      "use_for_recommendation": true,
+      "allow_persistent_storage": true,
+      "expected_genetic_adjustment": 4.0,
+      "expected_stored": true
+    }
+  ]
+}

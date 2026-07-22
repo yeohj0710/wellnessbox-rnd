@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from enum import StrEnum
 from hashlib import sha256
 from typing import Annotated, Any, Literal
@@ -370,6 +370,42 @@ class LifestyleInput(_StrictRequestInput):
         return _reject_boolean_numeric(value)
 
 
+class NormalizedGeneticVariant(_StrictHealthInput):
+    gene_symbol: Annotated[
+        str,
+        StringConstraints(
+            strip_whitespace=True,
+            min_length=1,
+            max_length=32,
+            pattern=r"^[A-Z0-9-]+$",
+        ),
+    ]
+    variant_id: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1, max_length=128),
+    ]
+    genotype: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1, max_length=64),
+    ]
+    interpretation: Literal[
+        "increased_risk",
+        "typical",
+        "reduced_risk",
+        "carrier",
+        "indeterminate",
+    ]
+    interpretation_criterion: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1, max_length=256),
+    ]
+    testing_laboratory: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1, max_length=256),
+    ]
+    tested_on: date
+
+
 class NormalizedSensorGeneticSnapshot(_StrictHealthInput):
     wearable_available: StrictBool = False
     cgm_available: StrictBool = False
@@ -403,6 +439,7 @@ class NormalizedSensorGeneticSnapshot(_StrictHealthInput):
             ),
         ]
     ] = Field(default_factory=list)
+    genetic_variants: list[NormalizedGeneticVariant] = Field(default_factory=list)
     normalization_notes: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
@@ -432,10 +469,16 @@ class NormalizedSensorGeneticSnapshot(_StrictHealthInput):
                 raise ValueError("CGM time-in-range bounds require time_in_range_pct")
             if range_bounds[0] >= range_bounds[1]:
                 raise ValueError("CGM time-in-range lower bound must be below upper bound")
-        if not self.genetic_available and self.genetic_tags:
-            raise ValueError("genetic tags require genetic_available=true")
+        if not self.genetic_available and (self.genetic_tags or self.genetic_variants):
+            raise ValueError("genetic values require genetic_available=true")
         if len(set(self.genetic_tags)) != len(self.genetic_tags):
             raise ValueError("genetic tags must be unique")
+        variant_keys = [
+            (item.gene_symbol, item.variant_id, item.tested_on)
+            for item in self.genetic_variants
+        ]
+        if len(set(variant_keys)) != len(variant_keys):
+            raise ValueError("genetic variants must be unique by gene, variant, and test date")
         return self
 
 

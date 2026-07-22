@@ -298,6 +298,9 @@ def _persisted_profile_payload(request: RecommendationRequest) -> dict[str, Any]
             elif source == DataSource.GENETIC and snapshot.genetic_available:
                 source_payload["sensor_genetic_snapshot"] = {
                     "genetic_tags": list(snapshot.genetic_tags),
+                    "genetic_variants": [
+                        item.model_dump(mode="json") for item in snapshot.genetic_variants
+                    ],
                 }
         if source_payload:
             persisted_sources[source.value] = source_payload

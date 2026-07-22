@@ -247,6 +247,62 @@ def test_normalize_sensor_genetic_payloads_normalizes_genetic_tags() -> None:
     assert "genetic_tags_normalized_to_snake_case" in snapshot.normalization_notes
 
 
+def test_normalize_genetic_variants_preserves_interpretation_provenance() -> None:
+    snapshot = normalize_sensor_genetic_payloads(
+        genetic_payload={
+            "variants": [
+                {
+                    "gene": " cyp1a2 ",
+                    "rsid": "RS762551",
+                    "call": "C|A",
+                    "classification": "high risk",
+                    "basis": " Lab-defined caffeine metabolism panel v2 ",
+                    "lab": " Example Genomics ",
+                    "test_date": "2026-06-30",
+                }
+            ]
+        }
+    )
+
+    assert snapshot.genetic_variants[0].model_dump(mode="json") == {
+        "gene_symbol": "CYP1A2",
+        "variant_id": "rs762551",
+        "genotype": "A/C",
+        "interpretation": "increased_risk",
+        "interpretation_criterion": "Lab-defined caffeine metabolism panel v2",
+        "testing_laboratory": "Example Genomics",
+        "tested_on": "2026-06-30",
+    }
+    assert "genetic_variants_normalized_with_provenance" in snapshot.normalization_notes
+
+
+@pytest.mark.parametrize(
+    ("update", "error"),
+    [
+        ({"basis": None}, "genetic_variant_interpretation_criterion_required"),
+        ({"lab": None}, "genetic_variant_testing_laboratory_required"),
+        ({"test_date": "06/30/2026"}, "genetic_test_date_must_be_iso_date"),
+        ({"classification": "certain cure"}, "unsupported_genetic_interpretation"),
+        ({"gene_symbol": "APOE"}, "conflicting_genetic_variant_gene_symbol_aliases"),
+    ],
+)
+def test_genetic_variant_normalization_fails_closed(
+    update: dict[str, object], error: str
+) -> None:
+    variant = {
+        "gene": "CYP1A2",
+        "rsid": "rs762551",
+        "call": "A/C",
+        "classification": "increased risk",
+        "basis": "panel-v2",
+        "lab": "Example Genomics",
+        "test_date": "2026-06-30",
+    }
+    variant.update(update)
+    with pytest.raises(ValueError, match=error):
+        normalize_sensor_genetic_payloads(genetic_payload={"variants": [variant]})
+
+
 def test_standardized_cgm_tir_alias_records_ada_range_bounds() -> None:
     snapshot = normalize_sensor_genetic_payloads(cgm_payload={"time_in_range_70_180_pct": 68.0})
 
