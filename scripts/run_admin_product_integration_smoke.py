@@ -139,7 +139,13 @@ def main() -> int:
         "observed": {"admin": admin, "products": products["observed"]},
         "source_identity": {
             "wellnessbox_commit": git("rev-parse", "HEAD", cwd=SERVICE),
-            "wellnessbox_rnd_commit": git("rev-parse", "HEAD"),
+            "wellnessbox_rnd_source_commit": git(
+                "log",
+                "-1",
+                "--format=%H",
+                "--",
+                "scripts/run_admin_product_integration_smoke.py",
+            ),
             "wellnessbox_rnd_source_blobs": {
                 path: git("rev-parse", f"HEAD:{path}")
                 for path in (

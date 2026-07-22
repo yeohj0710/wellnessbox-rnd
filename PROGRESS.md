@@ -530,5 +530,7 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - Dataset/evidence: `data/original_plan/op105_op106_profile_review_roundtrip_cases_v1.json`, 8 cases; audit PASS with 105 claims and 289 evidence files. Counts are `70/35/14/1/0`; reports cover `28/120`.
 # 2026-07-22 OP-107/108 bounded loop
 
-- Authenticated admin route loaded real R&D status and sources; unavailable empty KPI state is explicit. Selling-product QA attached real catalog fixture IDs with stock/safety fail-closed rules.
-- OP-107/108 are `INTEGRATED / PARTIAL`; counts `70/37/12/1/0`, reports `30/120`, audit claims `107`.
+- 인증된 관리자 라우트가 실제 R&D HTTP API에서 데이터, 출처, 규칙, 모델, 실행 상태를 읽는다. 빈 평가 저장소의 KPI는 `UNAVAILABLE`로 분리한다.
+- OP-107은 `INTEGRATED / PARTIAL`이다. OP-108은 상품과 R&D 응답을 주입한 fixture 검증이므로 `IMPLEMENTED / PARTIAL`이다. 실제 Prisma 상품 조회나 R&D 상품 경로 통합을 주장하지 않는다.
+- 서비스 커밋은 `e95592a126cdb2bfeec156d4f4d7de43487e2a63`이다. 완료 상태는 `70/37/12/1/0`, 보고서는 `30/120`, 감사 주장은 `107`, 확인한 증거 파일은 `292`개다.
+- 독립 리뷰의 최초 결과 `Critical 0 / Important 3 / Minor 1`에 따라 규칙·모델·실행 API, 정직한 단계 판정, 장문 보고서, R&D 소스 커밋·blob 식별 정보를 보강했다.

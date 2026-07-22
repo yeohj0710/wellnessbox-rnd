@@ -256,4 +256,4 @@ Do not run training or a new `cgm` loop yet.
 
 1. Complete OP-109/110 order mutation and plan-only state integration.
 2. Backfill `90/120` missing reports.
-3. Keep production operation claims gated on approval.
+3. Add an isolated real Prisma catalog plus real localhost R&D recommendation roundtrip before promoting OP-108 beyond `IMPLEMENTED`; keep production operation gated on approval.
