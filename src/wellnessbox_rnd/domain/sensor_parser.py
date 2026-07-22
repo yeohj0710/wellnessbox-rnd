@@ -917,8 +917,6 @@ def _parse_summary_csv(
         issues.append(f"missing_header::{format_name}")
     if not rows:
         issues.append(f"missing_rows::{format_name}")
-    elif len(rows) != 1:
-        issues.append(f"unexpected_row_count::{format_name}::{len(rows)}")
     return rows, headers, issues
 
 

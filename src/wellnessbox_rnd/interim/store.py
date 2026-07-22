@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 11
+SCHEMA_VERSION = 12
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -501,6 +501,45 @@ CREATE TABLE IF NOT EXISTS connector_sessions (
   row_sha256 TEXT NOT NULL,
   payload_json TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS sensor_file_ingestions (
+  ingestion_id TEXT PRIMARY KEY,
+  profile_id TEXT NOT NULL,
+  file_id TEXT NOT NULL,
+  source TEXT NOT NULL CHECK(source IN ('wearable', 'cgm', 'genetic')),
+  normalization_version TEXT NOT NULL,
+  raw_file_sha256 TEXT NOT NULL,
+  status TEXT NOT NULL CHECK(status IN ('SUCCESS', 'FAILED')),
+  schema_validation_json TEXT NOT NULL,
+  failure_types_json TEXT NOT NULL,
+  normalized_record_count INTEGER NOT NULL CHECK(normalized_record_count >= 0),
+  normalized_payload_json TEXT,
+  normalized_payload_sha256 TEXT,
+  created_at TEXT NOT NULL,
+  UNIQUE(profile_id, file_id, raw_file_sha256, normalization_version),
+  CHECK(
+    (status='SUCCESS' AND normalized_payload_json IS NOT NULL
+      AND normalized_payload_sha256 IS NOT NULL AND normalized_record_count > 0)
+    OR
+    (status='FAILED' AND normalized_payload_json IS NULL
+      AND normalized_payload_sha256 IS NULL AND normalized_record_count = 0)
+  )
+);
+
+CREATE INDEX IF NOT EXISTS idx_sensor_file_ingestions_profile_created
+ON sensor_file_ingestions(profile_id, created_at, ingestion_id);
+
+CREATE TRIGGER IF NOT EXISTS sensor_file_ingestions_no_update
+BEFORE UPDATE ON sensor_file_ingestions
+BEGIN
+  SELECT RAISE(ABORT, 'sensor_file_ingestions_append_only');
+END;
+
+CREATE TRIGGER IF NOT EXISTS sensor_file_ingestions_no_delete
+BEFORE DELETE ON sensor_file_ingestions
+BEGIN
+  SELECT RAISE(ABORT, 'sensor_file_ingestions_append_only');
+END;
 
 CREATE TABLE IF NOT EXISTS review_tasks (
   review_id TEXT PRIMARY KEY,

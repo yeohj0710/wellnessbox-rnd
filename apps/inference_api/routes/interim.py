@@ -52,6 +52,11 @@ from wellnessbox_rnd.interim.reviews import (
     PharmacistReviewService,
 )
 from wellnessbox_rnd.interim.safety import SafetyDecision, SafetyRank, evaluate_safety
+from wellnessbox_rnd.interim.sensor_file_ingestion import (
+    SensorFileBatchRequest,
+    SensorFileBatchResponse,
+    ingest_sensor_file_batch,
+)
 from wellnessbox_rnd.interim.session_replay import (
     SessionReplayIntegrityError,
     SessionReplayLedger,
@@ -107,6 +112,14 @@ _COUNSELING_TURN_LOCKS: dict[
 
 def _store() -> InterimStore:
     return open_data_lake_store()
+
+
+@router.post(
+    "/sensor-files/ingest",
+    response_model=SensorFileBatchResponse,
+)
+def ingest_sensor_files(payload: SensorFileBatchRequest) -> SensorFileBatchResponse:
+    return ingest_sensor_file_batch(payload, store=_store())
 
 
 class ProfileRequest(BaseModel):

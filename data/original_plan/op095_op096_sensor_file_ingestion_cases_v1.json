@@ -1,0 +1,76 @@
+{
+  "schema_version": "op095_op096_sensor_file_ingestion_cases_v1",
+  "frozen_at": "2026-07-22T00:00:00Z",
+  "case_count": 7,
+  "cases": [
+    {
+      "case_id": "partial_success_api",
+      "kind": "api",
+      "profile_id": "usr_partial_success",
+      "use_for_recommendation": true,
+      "allow_persistent_storage": true,
+      "files": [
+        {"file_id": "wearable-valid", "source": "wearable", "content": "date,steps,resting_hr,sleep_minutes\n2026-07-21,8000,61,420\n"},
+        {"file_id": "cgm-invalid", "source": "cgm", "content": "date,mean_glucose_mg_dl,time_in_range_70_180_pct\n2026-07-21,120,78\n"},
+        {"file_id": "genetic-valid", "source": "genetic", "content": "{\"variants\":[{\"gene\":\"CYP1A2\",\"rsid\":\"rs762551\",\"call\":\"A/C\",\"classification\":\"high risk\",\"basis\":\"panel-v2\",\"lab\":\"Example Genomics\",\"test_date\":\"2026-06-30\"}]}"}
+      ],
+      "expected": {"status": "PARTIAL_SUCCESS", "total_file_count": 3, "success_file_count": 2, "failure_file_count": 1, "normalized_record_count": 2, "persisted_file_count": 3}
+    },
+    {
+      "case_id": "multirow_success_api",
+      "kind": "api",
+      "profile_id": "usr_multirow_success",
+      "use_for_recommendation": true,
+      "allow_persistent_storage": true,
+      "files": [
+        {"file_id": "wearable-two-days", "source": "wearable", "content": "date,steps,resting_hr,sleep_minutes\n2026-07-20,8000,61,420\n2026-07-21,9100,59,450\n"}
+      ],
+      "expected": {"status": "SUCCESS", "total_file_count": 1, "success_file_count": 1, "failure_file_count": 0, "normalized_record_count": 2, "persisted_file_count": 1}
+    },
+    {
+      "case_id": "all_schema_failures_api",
+      "kind": "api",
+      "profile_id": "usr_schema_failures",
+      "use_for_recommendation": true,
+      "allow_persistent_storage": true,
+      "files": [
+        {"file_id": "duplicate-header", "source": "wearable", "content": "date,steps,steps,resting_hr,sleep_hours\n2026-07-21,10,20,60,7\n"},
+        {"file_id": "duplicate-json", "source": "genetic", "content": "{\"markers\":[\"a\"],\"markers\":[\"b\"]}"}
+      ],
+      "expected": {"status": "FAILED", "total_file_count": 2, "success_file_count": 0, "failure_file_count": 2, "normalized_record_count": 0, "persisted_file_count": 2}
+    },
+    {
+      "case_id": "use_consent_denied_without_hash",
+      "kind": "api",
+      "profile_id": "usr_use_denied",
+      "use_for_recommendation": false,
+      "allow_persistent_storage": true,
+      "files": [
+        {"file_id": "private-genetic", "source": "genetic", "content_base64": "not-base64-private-content"}
+      ],
+      "expected": {"status": "FAILED", "total_file_count": 1, "success_file_count": 0, "failure_file_count": 1, "normalized_record_count": 0, "persisted_file_count": 0}
+    },
+    {
+      "case_id": "storage_consent_denied",
+      "kind": "api",
+      "profile_id": "usr_storage_denied",
+      "use_for_recommendation": true,
+      "allow_persistent_storage": false,
+      "files": [
+        {"file_id": "wearable-ephemeral", "source": "wearable", "content": "date,steps,resting_hr,sleep_hours\n2026-07-21,5000,60,7\n"}
+      ],
+      "expected": {"status": "SUCCESS", "total_file_count": 1, "success_file_count": 1, "failure_file_count": 0, "normalized_record_count": 1, "persisted_file_count": 0}
+    },
+    {
+      "case_id": "exact_replay_deduplicated",
+      "kind": "replay",
+      "replay_case_id": "partial_success_api",
+      "expected_deduplicated_file_count": 3
+    },
+    {
+      "case_id": "append_only_lineage",
+      "kind": "tamper",
+      "expected_error": "sensor_file_ingestions_append_only"
+    }
+  ]
+}
