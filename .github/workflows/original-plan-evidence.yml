@@ -445,12 +445,17 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: a4db0ec7436c77662886508e7b2c7744a8cf783d
+          ref: b37bf99a8f2a5a7eb50fe61016740579011d2aa3
           fetch-depth: 0
           path: _evidence/wellnessbox-op116
       - name: Verify OP-115/116 service test matrix
         working-directory: _evidence/wellnessbox-op116
         run: npm ci
+      - name: Enable canonical build database extensions
+        run: >-
+          docker exec ${{ job.services.postgres.id }}
+          psql -U wellnessbox -d wellnessbox
+          -c 'CREATE EXTENSION IF NOT EXISTS vector'
       - name: Replay OP-115/116 canonical test matrix
         env:
           DATABASE_URL: postgresql://wellnessbox:wellnessbox@127.0.0.1:5432/wellnessbox
