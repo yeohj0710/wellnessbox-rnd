@@ -1,6 +1,7 @@
 import json
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
 
@@ -9,6 +10,8 @@ from wellnessbox_rnd.domain.sensor_parser import (
     normalize_sensor_genetic_payloads,
     normalize_wearable_csv,
 )
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_normalize_generic_wearable_csv_preserves_daily_activity_heart_and_sleep() -> None:
@@ -321,7 +324,7 @@ def test_build_sensor_genetic_parser_report_writes_expected_summary(tmp_path) ->
         ],
         capture_output=True,
         check=False,
-        cwd="C:/dev/wellnessbox-rnd",
+        cwd=ROOT,
         text=True,
     )
 

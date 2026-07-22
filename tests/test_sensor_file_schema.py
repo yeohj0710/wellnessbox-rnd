@@ -9,6 +9,8 @@ from wellnessbox_rnd.domain.sensor_parser import (
     validate_wearable_summary_csv_schema,
 )
 
+ROOT = Path(__file__).resolve().parents[1]
+
 
 def test_validate_sensor_file_schemas_accept_valid_sample_fixtures() -> None:
     wearable_result = validate_wearable_summary_csv_schema(
@@ -51,7 +53,7 @@ def test_build_sensor_genetic_file_schema_report_writes_expected_summary(tmp_pat
         ],
         capture_output=True,
         check=False,
-        cwd="C:/dev/wellnessbox-rnd",
+        cwd=ROOT,
         text=True,
     )
 
