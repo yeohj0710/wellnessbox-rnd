@@ -621,7 +621,7 @@
     "wellnessbox_commit": "e95592a126cdb2bfeec156d4f4d7de43487e2a63",
     "wellnessbox_rnd_source_commit": "e096083a71ba87a764aa838f8db5937b9479ed56",
     "wellnessbox_rnd_source_blobs": {
-      "apps/inference_api/routes/interim.py": "84ad91fd2bcb28b4685b552d138e1842f994c68c",
+      "apps/inference_api/routes/interim.py": "65e996fcd56d718396084902ef5c8da0f85b5fad",
       "data/original_plan/op107_op108_admin_product_integration_cases_v1.json": "e70e6867a69758c9c6db8229bfb6110e4e6545bd",
       "scripts/run_admin_product_integration_smoke.py": "a5ae2f6fcda699303b8a7f3b45fa921d6dd6d468"
     }

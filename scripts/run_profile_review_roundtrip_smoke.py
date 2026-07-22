@@ -141,6 +141,11 @@ def main() -> int:
     }
     if not all(checks.values()):
         raise AssertionError(checks)
+    normalized_observed = {
+        **observed,
+        "recommendationRunId": "<generated_recommendation_run_id>",
+        "reviewId": "<generated_review_id>",
+    }
     report = {
         "schema_version": "op105_op106_profile_review_roundtrip_smoke_v1",
         "requirements": {
@@ -153,7 +158,7 @@ def main() -> int:
             "case_count": len(dataset["cases"]),
         },
         "checks": checks,
-        "observed": observed,
+        "observed": normalized_observed,
         "source_identity": {"wellnessbox_commit": git("rev-parse", "HEAD", cwd=SERVICE)},
         "stage_boundary": {
             "local_two_process_roundtrip_proven": True,

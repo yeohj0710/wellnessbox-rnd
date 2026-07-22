@@ -30,9 +30,9 @@
   "observed": {
     "ok": true,
     "profileId": "usr_2670d86d85bb93e2c281ad26afcc7fb0",
-    "recommendationRunId": "rec_dbdaee3bd905413096c5949c523d0844",
+    "recommendationRunId": "<generated_recommendation_run_id>",
     "recommendationStatus": "BLOCKED",
-    "reviewId": "review_3e37bb1519a75294837a9736",
+    "reviewId": "<generated_review_id>",
     "reviewStatus": "COMPLETED",
     "immutableReplayRejected": true,
     "userAuthDenied": true,
