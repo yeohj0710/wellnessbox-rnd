@@ -108,7 +108,10 @@ def main() -> int:
     run([NPM, "run", "audit:encoding"], service)
     run([NPM, "run", "typecheck"], service)
     build_environment = os.environ.copy() | {
-        "NEXT_PUBLIC_VAPID_PUBLIC_KEY": "BOg6TZGgE_Y2PxxhLOa9ZHGFTFTCy2uzd3bxAbvjugPkEcKqUPC3s9i2_JzvHncqaiHDv6dA4QRX4EUw-a8uylY",
+        "NEXT_PUBLIC_VAPID_PUBLIC_KEY": (
+            "BOg6TZGgE_Y2PxxhLOa9ZHGFTFTCy2uzd3bxAbvjugPkEcKqUPC3s9i2_"
+            "JzvHncqaiHDv6dA4QRX4EUw-a8uylY"
+        ),
         "VAPID_PRIVATE_KEY": "ldG63qcOOA93gSMycg_FGbUqabmpbHgWyhm4YPMwl8w",
     }
     run([NPM, "run", "build"], service, environment=build_environment)
