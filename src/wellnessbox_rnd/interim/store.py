@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 12
+SCHEMA_VERSION = 13
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -539,6 +539,42 @@ CREATE TRIGGER IF NOT EXISTS sensor_file_ingestions_no_delete
 BEFORE DELETE ON sensor_file_ingestions
 BEGIN
   SELECT RAISE(ABORT, 'sensor_file_ingestions_append_only');
+END;
+
+CREATE TABLE IF NOT EXISTS device_recommendation_assessments (
+  assessment_id TEXT PRIMARY KEY,
+  profile_id TEXT NOT NULL,
+  phase TEXT NOT NULL CHECK(phase IN ('BASELINE', 'FOLLOW_UP')),
+  baseline_assessment_id TEXT REFERENCES device_recommendation_assessments(assessment_id),
+  data_class TEXT NOT NULL CHECK(
+    data_class IN ('PRODUCTION_DEVICE_SESSION', 'SIMULATED_DEVICE_SESSION')
+  ),
+  session_origin TEXT NOT NULL CHECK(session_origin IN ('DEVICE_PROVIDER', 'SIMULATION_FIXTURE')),
+  request_sha256 TEXT NOT NULL,
+  sensor_snapshot_json TEXT NOT NULL,
+  score_snapshot_json TEXT NOT NULL,
+  sensor_changes_json TEXT NOT NULL,
+  score_changes_json TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  CHECK(
+    (phase='BASELINE' AND baseline_assessment_id IS NULL)
+    OR (phase='FOLLOW_UP' AND baseline_assessment_id IS NOT NULL)
+  )
+);
+
+CREATE INDEX IF NOT EXISTS idx_device_assessments_profile_created
+ON device_recommendation_assessments(profile_id, created_at, assessment_id);
+
+CREATE TRIGGER IF NOT EXISTS device_assessments_no_update
+BEFORE UPDATE ON device_recommendation_assessments
+BEGIN
+  SELECT RAISE(ABORT, 'device_recommendation_assessments_append_only');
+END;
+
+CREATE TRIGGER IF NOT EXISTS device_assessments_no_delete
+BEFORE DELETE ON device_recommendation_assessments
+BEGIN
+  SELECT RAISE(ABORT, 'device_recommendation_assessments_append_only');
 END;
 
 CREATE TABLE IF NOT EXISTS review_tasks (

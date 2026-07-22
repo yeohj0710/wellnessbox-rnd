@@ -198,6 +198,11 @@ def _profile_id(request: RecommendationRequest) -> str:
     return f"usr_{digest[:32]}"
 
 
+def derive_profile_id(request: RecommendationRequest) -> str:
+    """Return the canonical execution-ledger profile identity for a request."""
+    return _profile_id(request)
+
+
 def _request_payload(request: RecommendationRequest) -> dict[str, Any]:
     payload = request.model_dump(mode="json", exclude_none=False)
     if request.source_profile is not None:

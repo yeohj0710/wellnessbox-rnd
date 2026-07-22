@@ -1,0 +1,187 @@
+from __future__ import annotations
+
+import sqlite3
+
+import pytest
+from fastapi.testclient import TestClient
+from pydantic import ValidationError
+
+from apps.inference_api.main import app
+from wellnessbox_rnd.interim.device_evaluation import (
+    DeviceRecommendationAssessmentRequest,
+    assess_device_recommendation,
+)
+from wellnessbox_rnd.interim.store import InterimStore
+
+
+def _recommendation_payload(*, sleep_hours: float) -> dict[str, object]:
+    return {
+        "request_id": "device-followup-subject-001",
+        "plan_id": "plan_device_followup_001",
+        "user_profile": {
+            "age": 41,
+            "biological_sex": "female",
+            "pregnant": False,
+        },
+        "goals": ["sleep_support"],
+        "input_availability": {"wearable": True},
+        "sensor_genetic_snapshot": {
+            "wearable_available": True,
+            "sleep_hours": sleep_hours,
+        },
+        "data_source_consents": {
+            "survey": {
+                "use_for_recommendation": True,
+                "allow_persistent_storage": True,
+            },
+            "wearable": {
+                "use_for_recommendation": True,
+                "allow_persistent_storage": True,
+            },
+        },
+    }
+
+
+def _assessment(
+    *, phase: str, sleep_hours: float, data_class: str = "SIMULATED_DEVICE_SESSION"
+) -> DeviceRecommendationAssessmentRequest:
+    return DeviceRecommendationAssessmentRequest.model_validate(
+        {
+            "assessment_id": f"device_assessment_{phase.lower()}_001",
+            "phase": phase,
+            "baseline_assessment_id": (
+                None if phase == "BASELINE" else "device_assessment_baseline_001"
+            ),
+            "data_class": data_class,
+            "session_origin": (
+                "SIMULATION_FIXTURE"
+                if data_class == "SIMULATED_DEVICE_SESSION"
+                else "DEVICE_PROVIDER"
+            ),
+            "recommendation_request": _recommendation_payload(
+                sleep_hours=sleep_hours
+            ),
+        }
+    )
+
+
+def test_device_values_change_recommendation_score_and_followup(tmp_path) -> None:
+    store = InterimStore(tmp_path / "device.sqlite3")
+    store.migrate()
+
+    baseline = assess_device_recommendation(
+        _assessment(phase="BASELINE", sleep_hours=5.0), store=store
+    )
+    follow_up = assess_device_recommendation(
+        _assessment(phase="FOLLOW_UP", sleep_hours=8.0), store=store
+    )
+
+    assert baseline.score_snapshot["magnesium_glycinate"]["wearable_adjustment"] == 4.0
+    assert follow_up.sensor_changes["sleep_hours"] == {
+        "baseline": 5.0,
+        "follow_up": 8.0,
+        "delta": 3.0,
+    }
+    assert (
+        follow_up.score_changes["magnesium_glycinate"]["wearable_adjustment_delta"]
+        == -4.0
+    )
+    assert store.scalar("select count(*) from device_recommendation_assessments") == 2
+
+
+def test_exact_replay_deduplicates_and_identity_conflict_fails(tmp_path) -> None:
+    store = InterimStore(tmp_path / "device.sqlite3")
+    store.migrate()
+    payload = _assessment(phase="BASELINE", sleep_hours=5.0)
+
+    first = assess_device_recommendation(payload, store=store)
+    second = assess_device_recommendation(payload, store=store)
+
+    assert first.deduplicated is False
+    assert second.deduplicated is True
+    with pytest.raises(ValueError, match="device_assessment_identity_conflict"):
+        assess_device_recommendation(
+            payload.model_copy(
+                update={
+                    "recommendation_request": payload.recommendation_request.model_copy(
+                        update={"request_id": "different-subject"}
+                    )
+                }
+            ),
+            store=store,
+        )
+
+
+@pytest.mark.parametrize(
+    ("data_class", "origin"),
+    [
+        ("PRODUCTION_DEVICE_SESSION", "SIMULATION_FIXTURE"),
+        ("SIMULATED_DEVICE_SESSION", "DEVICE_PROVIDER"),
+    ],
+)
+def test_device_origin_and_data_class_cannot_be_mislabeled(
+    data_class: str, origin: str
+) -> None:
+    with pytest.raises(ValidationError, match="device_session_origin_data_class_mismatch"):
+        DeviceRecommendationAssessmentRequest.model_validate(
+            {
+                "assessment_id": "device_assessment_boundary_001",
+                "phase": "BASELINE",
+                "data_class": data_class,
+                "session_origin": origin,
+                "recommendation_request": _recommendation_payload(sleep_hours=5.0),
+            }
+        )
+
+
+def test_followup_cannot_cross_data_class(tmp_path) -> None:
+    store = InterimStore(tmp_path / "device.sqlite3")
+    store.migrate()
+    assess_device_recommendation(
+        _assessment(phase="BASELINE", sleep_hours=5.0), store=store
+    )
+
+    with pytest.raises(ValueError, match="device_follow_up_data_class_mismatch"):
+        assess_device_recommendation(
+            _assessment(
+                phase="FOLLOW_UP",
+                sleep_hours=8.0,
+                data_class="PRODUCTION_DEVICE_SESSION",
+            ),
+            store=store,
+        )
+
+
+def test_device_assessment_rows_are_append_only(tmp_path) -> None:
+    store = InterimStore(tmp_path / "device.sqlite3")
+    store.migrate()
+    assess_device_recommendation(
+        _assessment(phase="BASELINE", sleep_hours=5.0), store=store
+    )
+
+    with pytest.raises(sqlite3.IntegrityError, match="append_only"):
+        with store.transaction() as connection:
+            connection.execute(
+                "update device_recommendation_assessments set phase='FOLLOW_UP'"
+            )
+    with pytest.raises(sqlite3.IntegrityError, match="append_only"):
+        with store.transaction() as connection:
+            connection.execute("delete from device_recommendation_assessments")
+
+
+def test_authenticated_device_assessment_api(monkeypatch, tmp_path) -> None:
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    monkeypatch.setenv("WB_RND_DATA_LAKE_PATH", str(tmp_path / "api.sqlite3"))
+    client = TestClient(app)
+    payload = _assessment(phase="BASELINE", sleep_hours=5.0).model_dump(mode="json")
+
+    denied = client.post("/v1/interim/device-assessments", json=payload)
+    accepted = client.post(
+        "/v1/interim/device-assessments",
+        json=payload,
+        headers={"x-wb-rnd-token": "test-token"},
+    )
+
+    assert denied.status_code == 401
+    assert accepted.status_code == 200
+    assert accepted.json()["data_class"] == "SIMULATED_DEVICE_SESSION"

@@ -40,6 +40,11 @@ from wellnessbox_rnd.interim.data_mutation import (
     EventMutationNotFoundError,
     EventMutationStateError,
 )
+from wellnessbox_rnd.interim.device_evaluation import (
+    DeviceRecommendationAssessmentRequest,
+    DeviceRecommendationAssessmentResponse,
+    assess_device_recommendation,
+)
 from wellnessbox_rnd.interim.inference import recommend_with_registered_model
 from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
@@ -120,6 +125,19 @@ def _store() -> InterimStore:
 )
 def ingest_sensor_files(payload: SensorFileBatchRequest) -> SensorFileBatchResponse:
     return ingest_sensor_file_batch(payload, store=_store())
+
+
+@router.post(
+    "/device-assessments",
+    response_model=DeviceRecommendationAssessmentResponse,
+)
+def assess_device_values(
+    payload: DeviceRecommendationAssessmentRequest,
+) -> DeviceRecommendationAssessmentResponse:
+    try:
+        return assess_device_recommendation(payload, store=_store())
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
 
 
 class ProfileRequest(BaseModel):
