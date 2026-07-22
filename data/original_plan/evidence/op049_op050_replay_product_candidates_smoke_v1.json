@@ -8570,7 +8570,7 @@
         "search_truncated": false
       },
       "contradictory_safety_reentry_http_status": 502,
-      "contradictory_safety_reentry_reason": "R&D request failed",
+      "contradictory_safety_reentry_reason": "WB_RND_PRODUCT_MATCH_excluded_recommendation_reentered",
       "duplicate_zinc_combination_id": "combo_aeb9dff90d5edf7a",
       "fractional_micrograms_normalized_to_nanograms": 12500,
       "invalid_catalog_http_status": 502,
@@ -9103,9 +9103,9 @@
     "schema_version": "op067_op068_service_product_combination_ranking_contract_v1"
   },
   "source_identity": {
-    "wellnessbox_commit": "1047f62bfa5ccdc59d99ed192d43fcfe3e45c7c3",
+    "wellnessbox_commit": "4d904f43b028a35524a29206aaf7c6b99f58a97b",
     "wellnessbox_rnd_commit": "94b0374a3599973ba5201a3cc751912f07bb146a",
     "wellnessbox_rnd_source_sha256": "46c07a0c784e3ab3a82a23ca219fd40c066ac976cffcb40046691c277e5a82ed",
-    "wellnessbox_source_sha256": "dd39c32681824e3da66f5deaf3eeb2ea4347cbfa4e4c59a401084e4a9a1691d6"
+    "wellnessbox_source_sha256": "2b65da746dc6f19525dc6fe18f3ac5445115c847c3efac101c0327e65ccc6759"
   }
 }
