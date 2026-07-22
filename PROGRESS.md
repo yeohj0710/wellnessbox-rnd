@@ -1,5 +1,17 @@
 # PROGRESS
 
+## 2026-07-22 device-event deduplication and linkage-macro loop
+
+- Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`, OP-099 and OP-100.
+- Dataset/cases: `data/original_plan/op099_op100_device_dedup_linkage_cases_v1.json` contains `7` frozen cases. Canonical evidence is `data/original_plan/evidence/op099_op100_device_dedup_linkage_smoke_v1.json`, SHA-256 `7C11B895B37BF42CACCAAAC05B8B492A20015A2DBACBF02678785DC585ABFE4C`; source identity is commit `029f606ed5191d34132fe78e3b21fef8d88cd75f`.
+- Implementation: a canonical JSON tuple of profile/source/provider record identifies events independently of retry session IDs. Exact replay returns the first session, changed payload and reused session identities return 409, invalid timezone-aware observation times fail, and immutable schema-v14 receipts preserve the denominator. Production W/C/G rates read immutable receipts and use equal-weight macro averaging.
+- Evidence stage: OP-099 is implemented but PARTIAL versus required `OPERATED`; no real provider traffic or production operation is claimed. OP-100 is COMPLETE at required `IMPLEMENTED`.
+- Research reports: OP-079 through OP-100 have separate prose reports. Coverage is `22/120`; `98` remain. Total text is `159,327` characters. OP-099 has `4,141` characters and OP-100 has `4,079` characters.
+- Generated status: complete `70`, partial `29`, pending `20`, external `1`, contradicted `0`; audit PASS with `99` claims and `272` checked evidence files.
+- Validation: focused connector/KPI/API/agent selection `49 passed`; canonical smoke, tracked-Python Ruff, audit, completion check PASS. Full regression collected `1,124`: `1,029 passed`, `95` known absent-artifact/CGM failures. Frozen evaluation has `256` cases and seven zero metric deltas. Independent review initially found Critical `0`, Important `4`, Minor `2`; all findings were fixed and final review is `0/0/0`.
+- Frozen-data/training/simulation delta: no frozen dataset, model training, simulation policy, safety rule, or service repository change. Weakest categories remain unchanged.
+- Next loops: OP-101/102 deployment contracts without public deployment; OP-103/104 service environment and two-process contracts without production mutation; OP-001 through OP-078 report backfill.
+
 ## 2026-07-22 device-value follow-up and data-class loop
 
 - Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`, OP-097 and OP-098.

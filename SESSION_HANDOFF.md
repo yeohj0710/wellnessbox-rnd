@@ -1,5 +1,18 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-099/100 handoff
+
+- Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`; OP-099 blocks duplicate device events independently of retry session IDs, and OP-100 recomputes W/C/G rates plus equal-weight macro average.
+- Primary dataset/cases: `data/original_plan/op099_op100_device_dedup_linkage_cases_v1.json`, `7` cases. Canonical evidence is `data/original_plan/evidence/op099_op100_device_dedup_linkage_smoke_v1.json`, SHA-256 `7C11B895B37BF42CACCAAAC05B8B492A20015A2DBACBF02678785DC585ABFE4C`; source identity is `029f606ed5191d34132fe78e3b21fef8d88cd75f`.
+- Main files: schema-v14 `InterimStore`, `connectors.py`, `kpi.py`, authenticated interim route/agent queue bridge, focused tests, frozen dataset, canonical runner/evidence, workflow, manifest/status, and `OP-099.md` plus `OP-100.md`.
+- Code/data/training/simulation: canonical tuple identity, immediate transaction, immutable receipts, conflict 409s, timezone-aware observation validation, concurrent replay coverage, class-scoped immutable KPI input, and W/C/G macro calculation were added. No model training, frozen-data change, simulation-policy change, service edit, deployment, provider integration, or production operation occurred.
+- Stage/result: OP-099 is PARTIAL at claimed `IMPLEMENTED` versus required `OPERATED`; OP-100 is COMPLETE at required `IMPLEMENTED`. Counts are `70/29/20/1/0` for complete/partial/pending/external/contradicted.
+- Reports: coverage is `22/120`, not 120/120; `98` remain. Total text is `159,327` characters. OP-099 is `4,141` characters and OP-100 is `4,079` characters. Toss easy-finance references guided only the explanatory structure.
+- Independent review: initial Critical `0`, Important `4`, Minor `2`; date validation, immutable KPI input, missing-ID replay, tuple collision, error contract, and concurrency coverage were fixed. Final result is Critical `0`, Important `0`, Minor `0`.
+- Validation: focused selection `49 passed`; canonical smoke, tracked-Python Ruff, audit, and completion check PASS. Audit has `99` claims and `272` evidence files. Full regression collected `1,124`: `1,029 passed`, `95 failed`, all in known absent-artifact/CGM groups. Frozen evaluation has `256` cases and seven zero deltas.
+- Five current bottlenecks: `98/120` reports remain; OP-099 lacks provider operation; no authenticated production device feed exists; OP-101 through OP-105 lack deployment evidence; legacy full suite retains `95` absent-artifact and CGM failures.
+- Next three loops: OP-101/102 deployment contracts without public deployment; OP-103/104 service environment and two-process contracts without production mutation; OP-001 through OP-078 evidence-grounded report backfill.
+
 ## 2026-07-22 OP-097/098 handoff
 
 - Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`; OP-097 connects device values to real recommendation score snapshots and follow-up deltas, while OP-098 separates production-device and simulation-fixture data classes.

@@ -2,21 +2,21 @@
 
 ## 2026-07-15 original plan completion program
 
-The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-097 now connects device values to real recommendation scores and follow-up deltas. OP-098 separates production-device and simulation-fixture classes but remains below required `OPERATED`. Generated status is complete `69`, partial `28`, pending `22`, external `1`, contradicted `0`. Long-form research-report coverage is only `20/120`; the remaining `100` reports still require separate evidence-grounded prose. The current twenty reports total `151,107` characters, so manifest completion must never be presented as 120 finished reports.
+The authoritative execution ledger is `docs/plans/2026-07-15-original-plan-completion-program.md`, the machine-readable source is `data/original_plan/requirements_manifest_v1.json`, and the generated status report is `docs/original_plan/COMPLETION_STATUS.md`. OP-099 now blocks device-event replay across changed session IDs but remains below required `OPERATED`. OP-100 recomputes immutable production W/C/G rates and equal-weight macro average. Generated status is complete `70`, partial `29`, pending `20`, external `1`, contradicted `0`. Long-form research-report coverage is only `22/120`; the remaining `98` reports still require separate evidence-grounded prose. The current reports total `159,327` characters, so manifest completion must never be presented as 120 finished reports.
 
 Every OP requires one independent research report. Write the report as full, connected prose for a human reader rather than as an abbreviated log or a list of results. Explain the original requirement, existing system, sources inspected, decisions and reasons, implementation sequence, failures and corrections, reproducible tests, limitations, and the exact evidence stage. Expand unfamiliar abbreviations on first use. Machine-readable evidence, test output, manifest entries, and handoff bullets are supporting material only and never replace the report. Backfill OP-001 through OP-078 from source commits and canonical evidence; do not invent missing history from short summaries.
 
 Next three loops:
 
-1. Implement OP-099 and OP-100 for duplicate-event blocking and production-only W/C/G source macro evaluation.
-2. Continue with OP-101 and OP-102 for deployment contracts and endpoint inventory without public deployment.
+1. Continue with OP-101 and OP-102 for deployment contracts and endpoint inventory without public deployment.
+2. Continue with OP-103 and OP-104 for service environment and two-process contracts without production mutation.
 3. Continue evidence-grounded report backfill for OP-001 through OP-078 without reconstructing facts from summaries alone.
 
 Continue through the closed-loop execution group, then the RAG group, in two-requirement slices. Reuse the current `agent_runs`, `agent_steps`, follow-up tables, knowledge tables, and service paths; do not add a parallel scheduler, event store, or knowledge store. Production has no deployed R&D endpoint or `WB_RND_*` settings, so OP-071 through OP-080 remain below `OPERATED`, and OP-101 through OP-105 remain separate deployment and production-integration requirements.
 
 Keep OP-101 through OP-110 open until an independently deployed R&D FastAPI process, internal authentication, persistent storage, service environment variables, and real two-process E2E evidence exist. Current proxy code alone is not integration evidence.
 
-The legacy full-test baseline remains red for two independent reasons: historical report artifacts are absent and four CGM geometry assertions do not match current execution. The current environment collected `1,115` tests and reports `1,020 passed, 95 failed`; none of the failures exercises the OP-097/098 implementation. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
+The legacy full-test baseline remains red for two independent reasons: historical report artifacts are absent and four CGM geometry assertions do not match current execution. The current environment collected `1,124` tests and reports `1,029 passed, 95 failed`; none of the failures exercises the OP-099/100 implementation. Restore report evidence only from a trusted hash-verified source; investigate the CGM drift separately instead of changing expected values to force PASS.
 
 ## 2026-07-14 verified restoration path
 
