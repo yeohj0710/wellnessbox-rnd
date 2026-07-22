@@ -544,3 +544,4 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 이전 CI의 최신 서비스 파일 누락은 감사·completion·계약 테스트가 고정된 최신 OP-110 서비스 checkout을 사용하도록 수정했다.
 - 독립 리뷰는 `1/2/1`에서 `0/2/1`로 줄었다. 추가 지적에 따라 R&D가 주문 생성 전에 사용자 소유 execution·plan을 검증하고, migration이 기존 paymentId 중복을 명시적으로 탐지하며, P2002 동시 재시도가 rollback 뒤 기존 주문을 반환하게 했다. 서비스 커밋은 `59399e2569c6152c644c4010ac52e26e876d1040`이다.
 - 최종 독립 재검토는 `Critical 0 / Important 0 / Minor 0`이다. 서비스 Encoding Guard `29891500251`도 통과했다.
+- R&D 전체 `Original plan evidence` 실행 `29893387739`가 통과했다. 실행 중 발견한 과거 증거 provenance를 현재 경로별 소스 식별자로 동기화했고, OP-105/106 생성기는 실행마다 바뀌는 ID를 안정된 표기로 정규화했다. 검증된 R&D 소스·증거 커밋은 `07fff30f2ed5cbd4e22b5b85fc944412892c287b`다.
