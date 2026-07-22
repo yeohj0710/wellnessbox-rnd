@@ -84,7 +84,9 @@ def main() -> int:
         == cases["typescript_registry"]["expected"]["registered_operation_count"]
         and contract["discoveredUsedPathCount"]
         == cases["typescript_registry"]["expected"]["used_path_count"],
-        "typescript_registry_scans_all_service_sources": contract["scannedSourceFileCount"] > 100,
+        "typescript_client_registry_enforced": contract["clientOperationRegistryEnforced"]
+        and resilience["checks"]["unregistered_operation_rejected_at_type_and_runtime"]
+        and resilience["checks"]["wrong_method_rejected_at_type_and_runtime"],
     }
     if not all(checks.values()):
         raise AssertionError(checks)

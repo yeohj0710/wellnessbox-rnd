@@ -8,6 +8,6 @@
     {"case_id": "half_open_recovery", "requirement_id": "OP-113", "expected": {"cooldown_ms": 30000, "recovered": true, "single_probe": true}},
     {"case_id": "route_fallback", "requirement_id": "OP-113", "expected": {"http_status": 200, "availability": "UNAVAILABLE", "bounded_error": "R&D request failed"}},
     {"case_id": "openapi_snapshot", "requirement_id": "OP-114", "expected": {"exact_cross_repository_match": true, "generator_current": true}},
-    {"case_id": "typescript_registry", "requirement_id": "OP-114", "expected": {"registered_operation_count": 19, "used_path_count": 19, "recursive_source_scan": true, "method_checked": true}}
+    {"case_id": "typescript_registry", "requirement_id": "OP-114", "expected": {"registered_operation_count": 19, "used_path_count": 19, "compile_time_enforced": true, "runtime_enforced": true, "method_checked": true}}
   ]
 }
