@@ -1,0 +1,44 @@
+{
+  "schema_version": "op105_op106_profile_review_roundtrip_smoke_v1",
+  "requirements": {
+    "OP-105": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "INTEGRATED"
+    },
+    "OP-106": {
+      "required_stage": "OPERATED",
+      "claimed_stage": "INTEGRATED"
+    }
+  },
+  "dataset": {
+    "path": "data/original_plan/op105_op106_profile_review_roundtrip_cases_v1.json",
+    "sha256": "b455ad20fe86ec2cecd689129f25b402afe5be072c95bcd3848056972c32628a",
+    "case_count": 8
+  },
+  "checks": {
+    "profile_roundtrip_completed": true,
+    "recommendation_roundtrip_completed": true,
+    "review_queue_roundtrip_completed": true,
+    "review_decision_completed": true,
+    "review_replay_rejected": true,
+    "service_auth_routes_committed": true,
+    "pharmacist_screen_uses_service_api": true
+  },
+  "observed": {
+    "ok": true,
+    "profileId": "usr_105106abcdef0123456789abcdef",
+    "recommendationRunId": "rec_42e9b420d79b45cd946f766bd474c373",
+    "recommendationStatus": "BLOCKED",
+    "reviewId": "review_d0683a7911d6acc366d4379b",
+    "reviewStatus": "COMPLETED",
+    "immutableReplayRejected": true
+  },
+  "source_identity": {
+    "wellnessbox_commit": "4aa0e4fc6b7ac1cb6f3ea1ddd8d5f7f59abf0907"
+  },
+  "stage_boundary": {
+    "local_two_process_roundtrip_proven": true,
+    "public_deployment_proven": false,
+    "production_pharmacist_operation_proven": false
+  }
+}
