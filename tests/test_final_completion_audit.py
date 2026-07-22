@@ -6,7 +6,10 @@ from pathlib import Path
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
-from scripts.run_final_completion_audit import audited_repository_commits
+from scripts.run_final_completion_audit import (
+    _audited_input_hashes,
+    audited_repository_commits,
+)
 from wellnessbox_rnd.governance.final_completion_audit import (
     CompletionReceiptV1,
     FinalCompletionFactsV1,
@@ -23,12 +26,20 @@ ROOT = Path(__file__).resolve().parents[1]
 SERVICE_ROOT = ROOT.parent / "wellnessbox"
 
 
-def test_audited_repository_commit_uses_current_repository_heads() -> None:
-    commits = audited_repository_commits()
+def test_audited_repository_commit_reproduces_recorded_file_blobs() -> None:
+    file_blobs = _audited_input_hashes()
+    commits = audited_repository_commits(file_blobs)
 
-    assert commits["wellnessbox-rnd"] == subprocess.check_output(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
-    ).strip()
+    for reference, expected_blob in file_blobs.items():
+        repository, relative = reference.split("/", 1)
+        if repository != "wellnessbox-rnd":
+            continue
+        actual_blob = subprocess.check_output(
+            ["git", "rev-parse", f'{commits["wellnessbox-rnd"]}:{relative}'],
+            cwd=ROOT,
+            text=True,
+        ).strip()
+        assert actual_blob == expected_blob
     assert commits["wellnessbox"] == subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=SERVICE_ROOT, text=True
     ).strip()

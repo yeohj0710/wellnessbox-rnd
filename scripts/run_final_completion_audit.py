@@ -34,9 +34,14 @@ def git(*args: str) -> str:
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
 
-def audited_repository_commits() -> dict[str, str]:
+def audited_repository_commits(file_blobs: dict[str, str]) -> dict[str, str]:
+    rnd_paths = [
+        reference.split("/", 1)[1]
+        for reference in file_blobs
+        if reference.startswith("wellnessbox-rnd/")
+    ]
     return {
-        "wellnessbox-rnd": git("rev-parse", "HEAD"),
+        "wellnessbox-rnd": git("log", "-1", "--format=%H", "--", *rnd_paths),
         "wellnessbox": subprocess.check_output(
             ["git", "-C", str(SERVICE_ROOT), "rev-parse", "HEAD"], text=True
         ).strip(),
@@ -112,7 +117,7 @@ def main() -> int:
         "observed": observed,
         "source_identity": {"commit": source_commit, "blobs": source_blobs},
         "audited_input_identity": {
-            "repository_commits": audited_repository_commits(),
+            "repository_commits": audited_repository_commits(audited_input_hashes),
             "file_blobs": audited_input_hashes,
         },
         "stage_boundary": {
