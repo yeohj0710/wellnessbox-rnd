@@ -552,4 +552,5 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 8개 사례와 별도 FastAPI/Node smoke가 내부 토큰, user/pharmacy/admin 권한, HMAC 가명, 최소 수집, 로그 마스킹, 공개 오류 경계를 검증한다.
 - 서비스는 중첩 프로필의 직접 식별자와 알 수 없는 필드를 저장 전에 거부한다. 실제 guard가 공유하는 역할 판정 함수를 허용·거부 사례에서 실행하고 실제 오류 로그 호출부를 재귀 마스킹한다.
 - 서비스 커밋 `1912f127a02d158a159ed7edd135f389308a1e6e`의 Encoding Guard `29894827365`가 통과했다. 독립 재검토는 `Critical 0 / Important 0 / Minor 0`이다.
+- R&D 커밋 `354a5caf20c10d3e1bb7b5634e7fdf8ffc18e1c5`의 Original plan evidence 실행 `29895612666`도 전체 증거 재생, 699개 통과·2개 건너뜀의 계약 테스트, Ruff를 포함해 성공했다.
 - frozen 평가, 학습 데이터, 모델, safety 규칙, replay 결과 변화는 0이다. production identity provider와 production log sink는 검증하지 않아 `OPERATED`를 주장하지 않는다.

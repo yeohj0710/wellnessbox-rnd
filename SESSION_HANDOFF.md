@@ -552,6 +552,7 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 변경: 실제 profile 저장 프록시 strict schema, HMAC profile ID, 내부 토큰 왕복, user/pharmacy/admin route 분기와 공유 guard 판정 함수, 서버 소유 scope, 재귀 로그 마스킹, bounded public error를 검증했다.
 - 검증: focused pytest 18건, Ruff, manifest audit, completion stale check, canonical 재실행 diff가 통과했다. 감사 결과는 주장 `111`, 증거 파일 `305`, 상태 `72/39/8/1/0`, 보고서 `34/120`이다.
 - 독립 검토: 최초 `Critical 1 / Important 4 / Minor 0`; 최종 `0/0/0`. 서비스 HEAD `1912f127a02d158a159ed7edd135f389308a1e6e`, Encoding Guard `29894827365` 성공.
+- R&D CI: 커밋 `354a5caf20c10d3e1bb7b5634e7fdf8ffc18e1c5`, Original plan evidence `29895612666` 성공. 전체 계약 선택은 `699 passed, 2 skipped`였고 Ruff도 통과했다.
 - 경계/delta: production identity provider, production log sink, public deployment는 검증하거나 변경하지 않았다. frozen 데이터, 모델 학습, safety 규칙, replay·slice 결과 변경은 모두 0이다.
 - 병목 5개: 보고서 86개, production identity provider 증거, production log sink 관찰, OP-113/114, 승인된 실제 사용자·약사·관리자 운영 증거.
 - 다음 세 루프: OP-113/114; 보고서 보강; 승인된 production 인증·로그 관찰.
