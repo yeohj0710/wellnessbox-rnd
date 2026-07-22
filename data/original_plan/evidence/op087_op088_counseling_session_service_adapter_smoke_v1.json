@@ -38,7 +38,7 @@
       "wellnessbox/scripts/qa/check-rnd-counseling-adapter.cts": "e017903bca6e659dda8c601febfa668e28e642e782f9b4d6366372360d5e9cd0",
       "wellnessbox/scripts/qa/run-rnd-counseling-live-smoke.cts": "bb4d8ce0bf8385061699d79955ef9034ff4d0d377173a5d377d738e40432150f"
     },
-    "wellnessbox_rnd_commit": "b34a9b04ea42838c251a8dc6dfa920f36aed46f5",
+    "wellnessbox_rnd_commit": "24d82df978249e44ec0c4d56b6f4db086e25037b",
     "wellnessbox_service_commit": "2875c299403a99dbea2df79205c0fcb764e6b20e"
   },
   "stage_boundary": {

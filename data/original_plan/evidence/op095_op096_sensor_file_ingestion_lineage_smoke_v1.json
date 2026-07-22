@@ -213,7 +213,7 @@
   "result": "PASS",
   "schema_version": "op095_op096_sensor_file_ingestion_lineage_smoke_v1",
   "source_identity": {
-    "commit": "b34a9b04ea42838c251a8dc6dfa920f36aed46f5",
+    "commit": "24d82df978249e44ec0c4d56b6f4db086e25037b",
     "files": {
       "apps/inference_api/routes/interim.py": "ade119b02a5d3974202f4f7b2d862532f552b1c551ca52125b46fa920bfde8dd",
       "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json": "a0f9a890c25dda59610d9efbda763680695247620eb563b89c202ce738dc4755",

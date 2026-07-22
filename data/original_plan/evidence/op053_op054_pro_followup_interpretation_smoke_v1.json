@@ -180,7 +180,7 @@
   },
   "schema_version": "op053_op054_pro_followup_interpretation_smoke_v1",
   "source_identity": {
-    "commit": "b34a9b04ea42838c251a8dc6dfa920f36aed46f5",
+    "commit": "24d82df978249e44ec0c4d56b6f4db086e25037b",
     "source_paths": [
       "data/contracts/pro_followup_interpretation_v1.json",
       "data/contracts/pro_instrument_scoring_v1.json",
