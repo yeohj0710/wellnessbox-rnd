@@ -522,3 +522,8 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - Dataset/evidence: `data/original_plan/op103_op104_environment_result_origin_cases_v1.json`, 8 cases; canonical evidence `data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json`.
 - Status is complete `70`, partial `33`, pending `16`, external `1`, contradicted `0`; audit PASS with `103` claims and `285` checked evidence files. Reports cover `26/120`; `94` remain.
 - Independent review found Critical `0`, Important `1`, Minor `2`; runtime contract bypass, snapshot ID collision, and integration-test gaps were corrected. Final focused QA and TypeScript checks pass.
+# 2026-07-22 OP-105/106 bounded loop
+
+- Separate Node and FastAPI processes completed profile save, stored-risk recommendation, pharmacy-scoped review listing, immutable decision, and 409 replay rejection through the committed service client.
+- OP-105 and OP-106 are `INTEGRATED / PARTIAL`; no public deployment or production user/pharmacist operation is claimed.
+- Dataset/evidence: `data/original_plan/op105_op106_profile_review_roundtrip_cases_v1.json`, 8 cases; audit PASS with 105 claims and 289 evidence files. Counts are `70/35/14/1/0`; reports cover `28/120`.

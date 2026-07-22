@@ -247,3 +247,8 @@ Do not run training or a new `cgm` loop yet.
 1. Complete OP-105/106 with a committed profile-to-R&D roundtrip and review-queue integration, without public deployment.
 2. Backfill evidence-grounded Korean reports for OP-001 through OP-078; `94/120` reports remain.
 3. Register WB_RND values and verify browser labels only after explicit approval for Vercel and deployment changes.
+# Next after OP-105/106
+
+1. Complete OP-107/108 for real admin API state and selling-product candidate integration.
+2. Backfill OP-001~078 reports; `92/120` reports remain.
+3. Keep OP-101~106 below OPERATED until approved provider and real user/pharmacist evidence exists.
