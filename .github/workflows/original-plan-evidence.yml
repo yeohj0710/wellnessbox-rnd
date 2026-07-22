@@ -597,7 +597,7 @@ jobs:
             data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json
       - name: Run requirement contract tests
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op110
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op112
         run: >-
           python -m pytest
           tests/test_original_plan_manifest.py
