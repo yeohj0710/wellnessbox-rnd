@@ -127,6 +127,12 @@ def main() -> int:
         "SOLAPI_KEY": "build-only-solapi-key",
         "SOLAPI_SECRET": "build-only-solapi-secret",
         "SOLAPI_SENDER": "01000000000",
+        "JWT_SECRET": "build-only-jwt-secret-at-least-32-bytes",
+        "COOKIE_PASSWORD": "build-only-cookie-password-at-least-32-bytes",
+        "OTP_PEPPER": "build-only-otp-pepper-at-least-32-bytes",
+        "CRON_SECRET": "build-only-cron-secret-at-least-32-bytes",
+        "ADMIN_PASSWORD": "build-only-admin-password",
+        "TEST_PASSWORD": "build-only-test-password",
     }
     run([NPM, "run", "build"], service, environment=build_environment)
 
