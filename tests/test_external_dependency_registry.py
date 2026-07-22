@@ -85,3 +85,36 @@ def test_registry_rejects_unverified_blocker_observation(tmp_path: Path) -> None
     )
     with pytest.raises(ExternalDependencyRegistryError, match="json pointer"):
         audit_external_dependency_registry_v1(path, MANIFEST, ROOT)
+
+
+def test_registry_rejects_required_input_contract_drift(tmp_path: Path) -> None:
+    path = _write_changed(
+        tmp_path,
+        lambda payload: payload["entries"][0]["required_inputs"][0].update(
+            {"schema_version": "changed_schema"}
+        ),
+    )
+    with pytest.raises(ExternalDependencyRegistryError, match="required inputs"):
+        audit_external_dependency_registry_v1(path, MANIFEST, ROOT)
+
+
+def test_registry_rejects_provided_input_without_artifact(tmp_path: Path) -> None:
+    path = _write_changed(
+        tmp_path,
+        lambda payload: payload["entries"][0]["required_inputs"][0].update(
+            {"provision_status": "PROVIDED"}
+        ),
+    )
+    with pytest.raises(ExternalDependencyRegistryError, match="requires artifact"):
+        audit_external_dependency_registry_v1(path, MANIFEST, ROOT)
+
+
+def test_registry_rejects_repository_path_traversal(tmp_path: Path) -> None:
+    path = _write_changed(
+        tmp_path,
+        lambda payload: payload["entries"][0].update(
+            {"input_contract_path": "../outside.json"}
+        ),
+    )
+    with pytest.raises(ExternalDependencyRegistryError, match="path traversal"):
+        audit_external_dependency_registry_v1(path, MANIFEST, ROOT)

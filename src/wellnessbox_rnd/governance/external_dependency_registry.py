@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Literal
@@ -29,6 +30,21 @@ class RequiredExternalInputV1(_StrictModel):
     schema_version: str = Field(min_length=1, max_length=200)
     acceptance_contract: str = Field(min_length=1, max_length=500)
     provision_status: Literal["MISSING", "PROVIDED"]
+    artifact_path: str | None = None
+    artifact_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+
+
+class ExternalInputDefinitionV1(_StrictModel):
+    input_id: str = Field(min_length=1, max_length=200)
+    supplier_role: str = Field(min_length=1, max_length=300)
+    schema_version: str = Field(min_length=1, max_length=200)
+    acceptance_contract: str = Field(min_length=1, max_length=500)
+
+
+class ExternalInputContractV1(_StrictModel):
+    schema_version: Literal["op039_external_input_contract_v1"]
+    requirement_id: Literal["OP-039"]
+    required_inputs: list[ExternalInputDefinitionV1] = Field(min_length=1)
 
 
 class BlockingReasonV1(_StrictModel):
@@ -43,9 +59,10 @@ class ExternalDependencyEntryV1(_StrictModel):
     requirement_id: str = Field(pattern=r"^OP-[0-9]{3}$")
     accountable_owner: AccountableOwnerV1
     external_provider_role: str = Field(min_length=1, max_length=300)
+    input_contract_path: str = Field(min_length=1, max_length=500)
     required_inputs: list[RequiredExternalInputV1] = Field(min_length=1)
     replacement_contracts: list[str] = Field(min_length=1)
-    blocking_reasons: list[BlockingReasonV1] = Field(min_length=1)
+    blocking_reasons: list[BlockingReasonV1]
     readiness: Literal["BLOCKED", "READY"]
     promotion_condition: str = Field(min_length=1, max_length=2000)
 
@@ -108,10 +125,42 @@ def audit_external_dependency_registry_v1(
                 f"{requirement_id} replacement contracts do not match manifest"
             )
         for relative in entry.replacement_contracts:
-            if not (root / _strip_repository_prefix(relative)).is_file():
+            if not _resolve_repository_file(root, relative).is_file():
                 raise ExternalDependencyRegistryError(
                     f"replacement contract file missing: {relative}"
                 )
+        input_contract_path = _resolve_repository_file(root, entry.input_contract_path)
+        try:
+            input_contract = ExternalInputContractV1.model_validate_json(
+                input_contract_path.read_text(encoding="utf-8")
+            )
+        except (OSError, ValidationError) as error:
+            raise ExternalDependencyRegistryError(
+                f"invalid external input contract: {error}"
+            ) from error
+        if input_contract.requirement_id != requirement_id:
+            raise ExternalDependencyRegistryError("input contract requirement mismatch")
+        registry_input_contract = [
+            ExternalInputDefinitionV1.model_validate(
+                item.model_dump(
+                    exclude={"provision_status", "artifact_path", "artifact_sha256"}
+                )
+            )
+            for item in entry.required_inputs
+        ]
+        if registry_input_contract != input_contract.required_inputs:
+            raise ExternalDependencyRegistryError(
+                f"{requirement_id} required inputs do not match input contract"
+            )
+        for definition in input_contract.required_inputs:
+            if not _resolve_repository_file(
+                root, definition.acceptance_contract
+            ).is_file():
+                raise ExternalDependencyRegistryError(
+                    f"acceptance contract file missing: {definition.acceptance_contract}"
+                )
+        for item in entry.required_inputs:
+            _validate_provisioned_input(root, item)
         input_ids = [item.input_id for item in entry.required_inputs]
         reason_codes = [reason.code for reason in entry.blocking_reasons]
         if len(input_ids) != len(set(input_ids)) or len(reason_codes) != len(
@@ -125,8 +174,17 @@ def audit_external_dependency_registry_v1(
             raise ExternalDependencyRegistryError(
                 f"{requirement_id} cannot be READY with missing inputs or blockers"
             )
+        if entry.readiness == "BLOCKED" and (
+            not entry.blocking_reasons
+            or not any(
+                item.provision_status == "MISSING" for item in entry.required_inputs
+            )
+        ):
+            raise ExternalDependencyRegistryError(
+                f"{requirement_id} BLOCKED requires blockers and missing inputs"
+            )
         for reason in entry.blocking_reasons:
-            source = root / _strip_repository_prefix(reason.source_path)
+            source = _resolve_repository_file(root, reason.source_path)
             try:
                 value = _resolve_json_pointer(
                     json.loads(source.read_text(encoding="utf-8")),
@@ -164,6 +222,59 @@ def audit_external_dependency_registry_v1(
 def _strip_repository_prefix(path: str) -> Path:
     prefix = "wellnessbox-rnd/"
     return Path(path[len(prefix) :] if path.startswith(prefix) else path)
+
+
+def _resolve_repository_file(root: Path, path: str) -> Path:
+    relative = _strip_repository_prefix(path)
+    if relative.is_absolute():
+        raise ExternalDependencyRegistryError(f"absolute repository path rejected: {path}")
+    resolved = (root / relative).resolve()
+    if not resolved.is_relative_to(root):
+        raise ExternalDependencyRegistryError(f"repository path traversal rejected: {path}")
+    return resolved
+
+
+def _validate_provisioned_input(root: Path, item: RequiredExternalInputV1) -> None:
+    if item.provision_status == "MISSING":
+        if item.artifact_path is not None or item.artifact_sha256 is not None:
+            raise ExternalDependencyRegistryError(
+                f"missing input {item.input_id} cannot reference an artifact"
+            )
+        return
+    if item.artifact_path is None or item.artifact_sha256 is None:
+        raise ExternalDependencyRegistryError(
+            f"provided input {item.input_id} requires artifact path and SHA-256"
+        )
+    artifact = _resolve_repository_file(root, item.artifact_path)
+    if not artifact.is_file():
+        raise ExternalDependencyRegistryError(
+            f"provided input artifact missing: {item.artifact_path}"
+        )
+    if hashlib.sha256(artifact.read_bytes()).hexdigest() != item.artifact_sha256:
+        raise ExternalDependencyRegistryError(
+            f"provided input artifact SHA-256 mismatch: {item.input_id}"
+        )
+    try:
+        if item.schema_version == "external_high_risk_safety_case_v2":
+            schemas = {
+                json.loads(line)["schema_version"]
+                for line in artifact.read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            }
+            valid_schema = schemas == {item.schema_version}
+        else:
+            valid_schema = (
+                json.loads(artifact.read_text(encoding="utf-8"))["schema_version"]
+                == item.schema_version
+            )
+    except (OSError, KeyError, json.JSONDecodeError) as error:
+        raise ExternalDependencyRegistryError(
+            f"provided input artifact schema unreadable: {item.input_id}"
+        ) from error
+    if not valid_schema:
+        raise ExternalDependencyRegistryError(
+            f"provided input artifact schema mismatch: {item.input_id}"
+        )
 
 
 def _resolve_json_pointer(document: object, pointer: str) -> object:

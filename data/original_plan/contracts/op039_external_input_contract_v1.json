@@ -1,0 +1,30 @@
+{
+  "schema_version": "op039_external_input_contract_v1",
+  "requirement_id": "OP-039",
+  "required_inputs": [
+    {
+      "input_id": "externally_labeled_high_risk_dataset",
+      "supplier_role": "독립 임상 안전성 검토 조직",
+      "schema_version": "external_high_risk_safety_case_v2",
+      "acceptance_contract": "docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md"
+    },
+    {
+      "input_id": "external_attestation",
+      "supplier_role": "독립 임상 안전성 검토 조직",
+      "schema_version": "external_high_risk_safety_attestation_v2",
+      "acceptance_contract": "docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md"
+    },
+    {
+      "input_id": "verification_receipt",
+      "supplier_role": "별도 외부 증명 검증 조직",
+      "schema_version": "external_high_risk_safety_verification_receipt_v1",
+      "acceptance_contract": "docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md"
+    },
+    {
+      "input_id": "frozen_coverage_protocol",
+      "supplier_role": "독립 검증 설계 책임 조직",
+      "schema_version": "external_high_risk_safety_coverage_protocol_v1",
+      "acceptance_contract": "docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md"
+    }
+  ]
+}

@@ -20,6 +20,7 @@ SOURCE_PATHS = (
     "scripts/run_external_dependency_registry_smoke.py",
     "data/original_plan/op119_external_dependency_registry_v1.json",
     "data/original_plan/op119_external_dependency_registry_cases_v1.json",
+    "data/original_plan/contracts/op039_external_input_contract_v1.json",
     "data/original_plan/requirements_manifest_v1.json",
 )
 
@@ -30,6 +31,19 @@ def git(*args: str) -> str:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def verified_head_identity() -> tuple[str, dict[str, str]]:
+    blobs: dict[str, str] = {}
+    for path in SOURCE_PATHS:
+        try:
+            committed = subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=ROOT)
+        except subprocess.CalledProcessError as error:
+            raise RuntimeError(f"source is not committed at HEAD: {path}") from error
+        if committed != (ROOT / path).read_bytes():
+            raise RuntimeError(f"source differs from HEAD: {path}")
+        blobs[path] = git("rev-parse", f"HEAD:{path}")
+    return git("log", "-1", "--format=%H", "--", *SOURCE_PATHS), blobs
 
 
 def main() -> int:
@@ -71,7 +85,7 @@ def main() -> int:
     expected = {item["case_id"]: item["expected"] for item in cases["cases"]}
     if observed != expected:
         raise AssertionError({"expected": expected, "observed": observed})
-    source_commit = git("log", "-1", "--format=%H", "--", *SOURCE_PATHS)
+    source_commit, source_blobs = verified_head_identity()
     report = {
         "schema_version": "op119_external_dependency_registry_smoke_v1",
         "requirement": {
@@ -93,7 +107,7 @@ def main() -> int:
         "observed": observed,
         "source_identity": {
             "commit": source_commit,
-            "blobs": {path: git("rev-parse", f"HEAD:{path}") for path in SOURCE_PATHS},
+            "blobs": source_blobs,
         },
         "stage_boundary": {
             "external_inputs_provided": False,
