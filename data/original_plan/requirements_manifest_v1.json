@@ -2071,8 +2071,8 @@
             ]
           }
         },
-        {"requirement_id": "OP-103", "title": "wellnessbox Vercel에 WB_RND 환경변수를 안전하게 등록한다."},
-        {"requirement_id": "OP-104", "title": "평가 화면에서 R&D 실행 결과와 로컬 스냅샷 결과를 구분한다."},
+        {"requirement_id": "OP-103", "title": "wellnessbox Vercel에 WB_RND 환경변수를 안전하게 등록한다.", "claimed_stage": "IMPLEMENTED", "evidence": {"implementation_files": ["wellnessbox/lib/server/wb-rnd-environment.ts", "wellnessbox/scripts/qa/check-rnd-environment-result-origin.cts"], "test_files": ["wellnessbox-rnd/scripts/run_environment_result_origin_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"]}},
+        {"requirement_id": "OP-104", "title": "평가 화면에서 R&D 실행 결과와 로컬 스냅샷 결과를 구분한다.", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox/lib/wb-rnd-result-origin.ts", "wellnessbox/lib/server/wb-rnd-client.ts", "wellnessbox/app/(dev)/rnd-preview/rnd-preview-client.tsx"], "test_files": ["wellnessbox/scripts/qa/check-rnd-environment-result-origin.cts", "wellnessbox-rnd/scripts/run_environment_result_origin_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"]}},
         {"requirement_id": "OP-105", "title": "사용자 프로필 저장과 추천 API가 R&D 서버까지 왕복하는지 검증한다."},
         {"requirement_id": "OP-106", "title": "약사 검토 화면을 R&D 검토 큐와 연결한다."},
         {"requirement_id": "OP-107", "title": "관리자 화면이 데이터, 규칙, 모델, 실행 상태를 실제 API에서 조회한다."},

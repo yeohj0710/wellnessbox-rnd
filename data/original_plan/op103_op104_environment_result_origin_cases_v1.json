@@ -1,0 +1,13 @@
+{
+  "schema_version": "op103_op104_environment_result_origin_cases_v1",
+  "cases": [
+    {"case_id": "disabled_contract_has_no_secret", "expected_status": "disabled"},
+    {"case_id": "production_requires_https", "expected_error": "https_required"},
+    {"case_id": "url_rejects_credentials_query_hash", "expected_error": "contains_credentials_or_suffix"},
+    {"case_id": "token_requires_32_characters", "expected_error": "too_short"},
+    {"case_id": "timeout_is_bounded", "expected_range_ms": [500, 15000]},
+    {"case_id": "remote_response_has_execution_origin", "expected_label": "R&D 실행 결과"},
+    {"case_id": "fallback_has_snapshot_origin", "expected_label": "로컬 스냅샷 결과"},
+    {"case_id": "ambiguous_origin_fails_closed", "expected_error": "missing_fallback_reason"}
+  ]
+}
