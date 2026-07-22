@@ -625,3 +625,16 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - frozen/replay/slice delta: 모두 `0`. 이 반복은 문서와 감사 사례만 바꿨다.
 - 병목 5개: 보고서 98개, 단계 미달 43개, OP-039 외부 검증, 전체 검증 영수증, 독립 검토 영수증.
 - 다음 세 반복: OP-003/004, OP-005/006, OP-007/008 보고서 보강.
+# 2026-07-22 OP-003/004 연구보고서 보강 handoff
+
+- 단계/과제: 원본 요구사항과 증거 기준 고정; OP-003/004 한국어 장문 연구보고서 보강. 두 요구사항은 `IMPLEMENTED / COMPLETE`이며 더 높은 단계를 주장하지 않는다.
+- 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `bfb0e4d0070ac87d807fe2e88c2206b5508e89bcdb641025a96b589080a8436d`.
+- 파일: `docs/original_plan/research_reports/OP-003.md`, `OP-004.md`, `OP-120.md`, OP-120 사례와 `data/original_plan/evidence/op120_final_completion_audit_v1.json`.
+- 변경: p.15 여섯 블록을 manifest 그룹과 연결하고 p.16~24 입력·처리·출력을 master context와 대조했다. 원문 직접 계약과 후속 구현의 계보·동의·운영 상태를 분리했다. 코드, 서비스 데이터, 학습, 모델, 시뮬레이션은 변경하지 않았다.
+- 검증: 관련 pytest `31 passed`, Ruff PASS, completion stale 없음, canonical runner 2회 동일 SHA-256 `fc2f01bec47c55373fac397b9704691deb5f0dabcbde745b6d89e19d15918143`. 독립 검토 최종 `Critical 0 / Important 0 / Minor 0`.
+- CI: R&D `Original plan evidence` 실행 `29914515047` 성공. canonical evidence 재생, requirement contract tests, Ruff를 모두 통과했다.
+- 결과: OP-120 유효 보고서 `24`, 누락·부적합 `96`, 전체 최종 감사 `BLOCKED`. 상태 `76/43/0/1/0`; 비외부 단계 미달 43개와 OP-039 외부 검증 부족은 그대로다.
+- source/evidence 커밋: 보고서 `2d262ec`, 검토 수정 `1aa8c86`, canonical evidence `1e201e2`. WellnessBox의 보호된 사용자 변경은 건드리지 않았다.
+- frozen/replay/slice delta: 모두 `0`. 이 반복은 문서와 감사 사례만 바꿨다.
+- 병목 5개: 보고서 96개, 단계 미달 43개, OP-039 외부 검증, 전체 검증 영수증, 독립 검토 영수증.
+- 다음 세 반복: OP-005/006, OP-007/008, OP-009/010 보고서 보강.

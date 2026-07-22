@@ -607,3 +607,17 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - frozen 평가와 replay/slice 변화: 제품 코드·데이터·모델을 바꾸지 않았으므로 기존 256건 평가의 일곱 지표 delta와 weakest-slice delta는 모두 `0`이다.
 - 병목 5개: 누락·부적합 보고서 98개, 비외부 단계 미달 43개, OP-039 외부 검증, 전체 검증 영수증, 독립 검토 영수증.
 - 다음 세 반복: OP-003/004 보고서 보강, OP-005/006 보고서 보강, OP-007/008 보고서 보강.
+# 2026-07-22 OP-003/004 연구보고서 보강 반복
+
+- 선택 단계/과제: 원본 요구사항과 증거 기준 고정; OP-003 p.15 여섯 기술 블록의 독립 등록과 OP-004 p.16~24 입력·처리·출력 대조 보고서 보강.
+- 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `bfb0e4d0070ac87d807fe2e88c2206b5508e89bcdb641025a96b589080a8436d`.
+- 변경 파일: `docs/original_plan/research_reports/OP-003.md`, `OP-004.md`, `OP-120.md`, OP-120 고정 사례와 canonical evidence. 제품 코드, 서비스 데이터, 학습 데이터, 모델, 안전 규칙, 시뮬레이션은 변경하지 않았다.
+- OP-003은 Data Lake, 안전, 효과 추론, 다중제약 최적화, Closed-loop, 바이오센서·유전자 블록을 manifest C~J의 독립 요구사항 묶음과 K/L 공통 통합·감사 항목에 연결했다.
+- OP-004는 p.16~24의 입력·처리·출력을 master context 6.1~6.9와 대조했다. 독립 검토에 따라 원문 직접 계약과 후속 구현의 계보·동의·운영 상태를 명시적으로 분리했다.
+- 두 요구사항은 `IMPLEMENTED / COMPLETE`다. 모든 하위 요구의 통합·운영·외부 검증 완료를 주장하지 않는다.
+- 검증: 보고서 수용 검사 `True/True`, 관련 pytest `31 passed`, Ruff PASS, manifest/completion audit PASS, OP-120 재생 2회 SHA-256 `fc2f01bec47c55373fac397b9704691deb5f0dabcbde745b6d89e19d15918143` 동일. 독립 검토는 `0/1/0`에서 최종 Critical/Important/Minor `0/0/0`으로 끝났다.
+- GitHub Actions `Original plan evidence` 실행 `29914515047`이 canonical 재생, requirement contract tests, Ruff를 포함한 전체 검사를 통과했다.
+- OP-120 관측값: 유효 보고서 `22→24`, 누락·부적합 `98→96`; 전체 상태는 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, 최종 판정은 계속 `BLOCKED`다.
+- frozen 평가와 replay/slice 변화: 코드·데이터·모델을 바꾸지 않아 기존 256건 평가의 일곱 지표 delta와 weakest-slice delta는 모두 `0`이다.
+- 병목 5개: 누락·부적합 보고서 96개, 비외부 단계 미달 43개, OP-039 외부 검증, 전체 검증 영수증, 독립 검토 영수증.
+- 다음 세 반복: OP-005/006 보고서 보강, OP-007/008 보고서 보강, OP-009/010 보고서 보강.
