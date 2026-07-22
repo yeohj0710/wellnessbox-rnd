@@ -1,13 +1,13 @@
 {
   "schema_version": "op113_op114_resilience_contract_cases_v1",
   "cases": [
-    {"case_id": "retryable_get", "requirement_id": "OP-113", "expected": {"attempts": 2, "backoff_ms": [50]}},
+    {"case_id": "retryable_get", "requirement_id": "OP-113", "expected": {"attempts": 2, "backoff_ms": [50], "non_json_error_retried": true}},
     {"case_id": "non_idempotent_post", "requirement_id": "OP-113", "expected": {"attempts": 1}},
-    {"case_id": "timeout", "requirement_id": "OP-113", "expected": {"public_error": "R&D timeout"}},
-    {"case_id": "circuit_breaker", "requirement_id": "OP-113", "expected": {"failed_calls_before_open": 3, "network_attempts": 6, "open_call_network_attempts": 0}},
-    {"case_id": "half_open_recovery", "requirement_id": "OP-113", "expected": {"cooldown_ms": 30000, "recovered": true}},
+    {"case_id": "timeout", "requirement_id": "OP-113", "expected": {"public_error": "R&D timeout", "minimum_clamped_timeout_ms": 500, "actual_signal_abort": true}},
+    {"case_id": "circuit_breaker", "requirement_id": "OP-113", "expected": {"failed_calls_before_open": 3, "network_attempts": 6, "open_call_network_attempts": 0, "non_retryable_4xx_excluded": true}},
+    {"case_id": "half_open_recovery", "requirement_id": "OP-113", "expected": {"cooldown_ms": 30000, "recovered": true, "single_probe": true}},
     {"case_id": "route_fallback", "requirement_id": "OP-113", "expected": {"http_status": 200, "availability": "UNAVAILABLE", "bounded_error": "R&D request failed"}},
     {"case_id": "openapi_snapshot", "requirement_id": "OP-114", "expected": {"exact_cross_repository_match": true, "generator_current": true}},
-    {"case_id": "typescript_registry", "requirement_id": "OP-114", "expected": {"registered_operation_count": 19, "used_path_count": 19}}
+    {"case_id": "typescript_registry", "requirement_id": "OP-114", "expected": {"registered_operation_count": 19, "used_path_count": 19, "recursive_source_scan": true, "method_checked": true}}
   ]
 }

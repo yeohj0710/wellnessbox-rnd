@@ -63,13 +63,19 @@ def main() -> int:
         == cases["retryable_get"]["expected"]["attempts"],
         "retry_backoff_bounded": resilience["observed"]["retrySleeps"]
         == cases["retryable_get"]["expected"]["backoff_ms"],
+        "non_json_retryable_response_retried": resilience["checks"]
+        ["non_json_retryable_response_retried"],
         "post_not_retried": resilience["observed"]["postCalls"]
         == cases["non_idempotent_post"]["expected"]["attempts"],
-        "timeout_bounded": resilience["checks"]["timeout_bounded"],
+        "actual_timeout_timer_clamped_and_aborted": resilience["checks"]
+        ["actual_timeout_timer_clamped_and_aborted"],
+        "non_retryable_4xx_does_not_open_circuit": resilience["checks"]
+        ["non_retryable_4xx_does_not_open_circuit"],
         "circuit_opens_and_skips_network": resilience["observed"]["circuitFetchCalls"]
         == cases["circuit_breaker"]["expected"]["network_attempts"]
         and resilience["checks"]["open_circuit_skips_network"],
         "half_open_recovers": resilience["checks"]["half_open_recovers_after_30_seconds"],
+        "half_open_allows_single_probe": resilience["checks"]["half_open_allows_single_probe"],
         "actual_route_fallback_bounded": resilience["checks"]
         ["actual_admin_route_fallback_bounded"],
         "generated_openapi_snapshot_current": True,
@@ -78,6 +84,7 @@ def main() -> int:
         == cases["typescript_registry"]["expected"]["registered_operation_count"]
         and contract["discoveredUsedPathCount"]
         == cases["typescript_registry"]["expected"]["used_path_count"],
+        "typescript_registry_scans_all_service_sources": contract["scannedSourceFileCount"] > 100,
     }
     if not all(checks.values()):
         raise AssertionError(checks)

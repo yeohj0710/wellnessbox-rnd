@@ -4,8 +4,8 @@ on:
   pull_request:
     paths:
       - ".github/workflows/original-plan-evidence.yml"
-      - "apps/inference_api/routes/recommend.py"
-      - "apps/inference_api/routes/interim.py"
+      - "apps/inference_api/main.py"
+      - "apps/inference_api/routes/**"
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/contracts/wellnessbox_ingredient_identifier_map_v1.json"
@@ -196,8 +196,8 @@ on:
       - "tests/test_interim_connectors.py"
       - "tests/test_interim_kpi.py"
       - "tests/test_deployment_contract.py"
-      - "apps/inference_api/routes/recommend.py"
-      - "apps/inference_api/routes/interim.py"
+      - "apps/inference_api/main.py"
+      - "apps/inference_api/routes/**"
       - "data/original_plan/**"
       - "data/contracts/wellnessbox_profile_adapter_v1.json"
       - "data/contracts/wellnessbox_ingredient_identifier_map_v1.json"
@@ -421,7 +421,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: yeohj0710/wellnessbox
-          ref: 415e2d632c36c175792fc4014dc81aff0f80f436
+          ref: 41f2e15984943e276359034b43e2cc72e428cb00
           fetch-depth: 0
           path: _evidence/wellnessbox-op114
       - name: Install OP-113/114 service dependencies
