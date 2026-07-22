@@ -1155,7 +1155,7 @@
   },
   "schema_version": "op065_op066_product_combination_filter_smoke_v1",
   "source": {
-    "combined_sha256": "6a25504268a19292b517e51f3b9c449b399f9df65445bc14df1d017aad1c9c1e",
+    "combined_sha256": "2819d30a53c7a5a01af2960c7ca26f2347864ff6237189de263c47eeb2bc7393",
     "wellnessbox_commit": "2875c299403a99dbea2df79205c0fcb764e6b20e",
     "wellnessbox_paths": [
       "app/api/tips/route.ts",
@@ -1173,7 +1173,7 @@
       "scripts/qa/check-rnd-product-candidates.cts",
       "scripts/qa/check-rnd-final-safety-authority.cts"
     ],
-    "wellnessbox_rnd_commit": "b6b6c5d2bcc28da06fe2a2f0a8957a20ccd7b3b7",
+    "wellnessbox_rnd_commit": "b34a9b04ea42838c251a8dc6dfa920f36aed46f5",
     "wellnessbox_rnd_paths": [
       "apps/inference_api/routes/interim.py",
       "scripts/run_wellnessbox_final_safety_authority_smoke.py",

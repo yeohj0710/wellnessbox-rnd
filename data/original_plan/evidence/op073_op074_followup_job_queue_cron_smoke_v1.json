@@ -338,7 +338,7 @@
   },
   "schema_version": "op073_op074_followup_job_queue_cron_smoke_v1",
   "source": {
-    "commit": "b6b6c5d2bcc28da06fe2a2f0a8957a20ccd7b3b7",
+    "commit": "b34a9b04ea42838c251a8dc6dfa920f36aed46f5",
     "paths": [
       "apps/inference_api/routes/interim.py",
       "scripts/run_due_plan_reevaluation_cron.py",
@@ -350,6 +350,6 @@
       "tests/test_interim_api.py",
       "tests/test_interim_jobs.py"
     ],
-    "sha256": "904289fe3d649fe31a472eab3a272d3718e0a090a7ea928f2aa0d4f244170a79"
+    "sha256": "a5de80d6ec3ce1f2502d35ee9a77e424676150214fc86e5f81d50ed288fcec34"
   }
 }

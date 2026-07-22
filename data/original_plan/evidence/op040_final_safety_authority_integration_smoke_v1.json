@@ -50,8 +50,8 @@
   "schema_version": "op040_final_safety_authority_integration_smoke_v2",
   "source_identity": {
     "wellnessbox_commit": "2875c299403a99dbea2df79205c0fcb764e6b20e",
-    "wellnessbox_rnd_commit": "b6b6c5d2bcc28da06fe2a2f0a8957a20ccd7b3b7",
-    "wellnessbox_rnd_source_sha256": "819d6c50d3fc57746e0674d48f44405b3dc074204b4fd487b7ec97658939e08d",
+    "wellnessbox_rnd_commit": "b34a9b04ea42838c251a8dc6dfa920f36aed46f5",
+    "wellnessbox_rnd_source_sha256": "68cfd8d7fe00903ccab7ac67e64322398442f0a3e7dd34e6effdfcd365318b2d",
     "wellnessbox_source_sha256": "7ea3309eba6b3f4447be2f3c7ee17a99e047b3522c2bafbde99a13ff8b69e3c1"
   },
   "transport": "localhost_http"
