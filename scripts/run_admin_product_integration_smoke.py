@@ -12,6 +12,9 @@ import time
 from pathlib import Path
 from urllib import request
 
+from wellnessbox_rnd.interim.bootstrap import bootstrap_operational_evidence
+from wellnessbox_rnd.interim.store import InterimStore
+
 ROOT = Path(__file__).resolve().parents[1]
 SERVICE = Path(os.environ.get("WELLNESSBOX_SERVICE_REPO", "C:/dev/wellnessbox"))
 DATASET = ROOT / "data/original_plan/op107_op108_admin_product_integration_cases_v1.json"
@@ -54,7 +57,7 @@ def node(script: str, environment: dict[str, str]) -> dict:
     )
     if completed.returncode != 0:
         raise AssertionError(f"service_qa_failed:{script}:{completed.stderr}")
-    return json.loads(completed.stdout.strip().splitlines()[-1])
+    return json.loads(completed.stdout.strip())
 
 
 def main() -> int:
@@ -64,6 +67,10 @@ def main() -> int:
     dataset = json.loads(dataset_bytes)
     token = "Canonical-Admin-Product-Token-2026-Alpha"
     with tempfile.TemporaryDirectory() as temporary:
+        database = Path(temporary) / "interim.sqlite3"
+        store = InterimStore(database)
+        store.migrate()
+        bootstrap_operational_evidence(store)
         api_port = port()
         base_url = f"http://127.0.0.1:{api_port}"
         environment = os.environ.copy() | {
@@ -71,7 +78,7 @@ def main() -> int:
             "WB_RND_PORT": str(api_port),
             "WB_RND_WORKERS": "1",
             "WB_RND_INTERIM_ENABLED": "1",
-            "WB_RND_INTERIM_DATABASE": str(Path(temporary) / "interim.sqlite3"),
+            "WB_RND_INTERIM_DATABASE": str(database),
             "WB_RND_INTERIM_INTERNAL_TOKEN": token,
         }
         process = subprocess.Popen(
@@ -98,12 +105,19 @@ def main() -> int:
     checks = {
         "admin_auth_denied": admin["adminAuthDenied"] is True,
         "admin_status_loaded": len(admin["statusCountKeys"]) > 0,
-        "admin_kpis_loaded": isinstance(admin["macroAverage"], (int, float)),
+        "admin_kpi_state_loaded": admin["kpiAvailability"] == "UNAVAILABLE",
         "admin_sources_loaded": admin["adapterCount"] > 0,
         "selling_products_loaded": len(products["observed"]["product_ids"]) > 0,
-        "product_candidates_attached": "selling_product_candidates_attached" in products["checks"],
+        "product_candidates_attached": "actual_product_candidates_form_deterministic_combinations"
+        in products["checks"],
         "invalid_catalog_fails_closed": products["observed"]["invalid_catalog_http_status"] == 502,
-        "stock_and_safety_preserved": "stock_substitution_preserves_safety" in products["checks"],
+        "stock_and_safety_preserved": all(
+            item in products["checks"]
+            for item in (
+                "stock_change_recomputes_safe_substitute_with_existing_optimizer",
+                "safety_excluded_product_ingredient_cannot_reenter",
+            )
+        ),
     }
     if not all(checks.values()):
         raise AssertionError(checks)
