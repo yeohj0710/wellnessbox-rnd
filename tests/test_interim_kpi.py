@@ -1,3 +1,5 @@
+import pytest
+
 from wellnessbox_rnd.interim.contracts import DataClass
 from wellnessbox_rnd.interim.importer import import_interim_package
 from wellnessbox_rnd.interim.kpi import (
@@ -77,6 +79,8 @@ def test_production_device_linkage_is_class_scoped_and_macro_averaged(tmp_path) 
 
 
 def test_bundled_proxy_evaluation_passes_all_seven_without_real_claims(tmp_path) -> None:
+    if not PACKAGE_ROOT.exists():
+        pytest.skip("approved_interim_source_package_not_available")
     store = InterimStore(tmp_path / "interim.sqlite3")
     store.migrate()
     import_interim_package(store, PACKAGE_ROOT, max_records_per_split=1)
