@@ -1,0 +1,13 @@
+{
+  "schema_version": "op115_op116_test_matrix_health_alias_cases_v1",
+  "cases": [
+    {"case_id": "rnd_unit", "requirement_id": "OP-115", "expected": {"pytest_passed": true}},
+    {"case_id": "rnd_integration", "requirement_id": "OP-115", "expected": {"deployment_contract_tests": 15, "passed": true}},
+    {"case_id": "rnd_e2e", "requirement_id": "OP-115", "expected": {"process_smoke_cases": 8, "passed": true}},
+    {"case_id": "rnd_encoding_build", "requirement_id": "OP-115", "expected": {"ruff_passed": true, "package_import_passed": true}},
+    {"case_id": "wellnessbox_unit_integration", "requirement_id": "OP-115", "expected": {"typecheck_passed": true, "health_alias_qa_passed": true}},
+    {"case_id": "wellnessbox_e2e_encoding_build", "requirement_id": "OP-115", "expected": {"encoding_passed": true, "production_build_passed": true}},
+    {"case_id": "rnd_health", "requirement_id": "OP-116", "expected": {"status": "ok", "deployment_contract": "READY_FOR_PROVIDER_DEPLOYMENT"}},
+    {"case_id": "wellnessbox_alias", "requirement_id": "OP-116", "expected": {"path": "/api/internal/rnd/health", "healthy_status": 200, "disabled_status": 503}}
+  ]
+}

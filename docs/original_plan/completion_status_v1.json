@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "359dae744d5a62c4cb6db1254fabcf2c2b618833a4ab79f5cfdd6256094863f5",
+  "audited_manifest_sha256": "eb39877550efef5b752672368909a294066ad0c744ef589a4fc15e01a7a33732",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 74,
-    "PARTIAL": 39,
-    "PENDING": 6,
+    "COMPLETE": 75,
+    "PARTIAL": 40,
+    "PENDING": 4,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -152,9 +152,9 @@
       "title": "배포·보안·최종 완료 감사",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 4,
-        "PARTIAL": 0,
-        "PENDING": 6,
+        "COMPLETE": 5,
+        "PARTIAL": 1,
+        "PENDING": 4,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -3914,15 +3914,25 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox-rnd/apps/inference_api/routes/health.py",
+          "wellnessbox/app/api/internal/rnd/health/route.ts",
+          "wellnessbox/lib/server/wb-rnd-health.ts"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_deployment_contract.py",
+          "wellnessbox/scripts/qa/check-rnd-health-alias.cts",
+          "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []
@@ -3936,15 +3946,25 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "PARTIAL",
       "reasons": [
-        "completion_claim_missing"
+        "claimed_stage_below_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox-rnd/apps/inference_api/routes/health.py",
+          "wellnessbox/app/api/internal/rnd/health/route.ts",
+          "wellnessbox/lib/server/wb-rnd-health.ts"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/scripts/run_deployment_contract_endpoint_smoke.py",
+          "wellnessbox/scripts/qa/check-rnd-health-alias.cts",
+          "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []

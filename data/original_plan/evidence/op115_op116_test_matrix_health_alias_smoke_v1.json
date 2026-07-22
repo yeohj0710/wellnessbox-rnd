@@ -1,0 +1,46 @@
+{
+  "schema_version": "op115_op116_test_matrix_health_alias_smoke_v1",
+  "requirements": {
+    "OP-115": {"required_stage": "INTEGRATED", "claimed_stage": "INTEGRATED"},
+    "OP-116": {"required_stage": "OPERATED", "claimed_stage": "INTEGRATED"}
+  },
+  "dataset": {
+    "path": "data/original_plan/op115_op116_test_matrix_health_alias_cases_v1.json",
+    "case_count": 8,
+    "sha256": "6ab6bec18b25cb628f14afc1222d773c39ad843828b13054b06acd7956918081"
+  },
+  "checks": {
+    "rnd_deployment_contract_tests_passed": true,
+    "rnd_process_e2e_passed": true,
+    "rnd_health_ready_for_provider_deployment": true,
+    "wellnessbox_health_alias_qa_passed": true,
+    "wellnessbox_typecheck_passed": true,
+    "wellnessbox_encoding_audit_passed": true,
+    "wellnessbox_production_build_passed": true
+  },
+  "observed": {
+    "rnd_deployment_contract_test_count": 15,
+    "rnd_process_smoke_case_count": 8,
+    "rnd_endpoint_family_count": 5,
+    "wellnessbox_alias_path": "/api/internal/rnd/health",
+    "wellnessbox_alias_healthy_status": 200,
+    "wellnessbox_alias_disabled_status": 503,
+    "wellnessbox_next_static_page_count": 99
+  },
+  "source_identity": {
+    "wellnessbox_commit": "3875d62e2762fcb9f2bac5707f0ebefed95f181b",
+    "wellnessbox_source_blobs": {
+      "app/api/internal/rnd/health/route.ts": "0ac3652195d9606247376b8ac489af0af0521d22",
+      "lib/server/wb-rnd-health.ts": "24c7e2ab55bf01b45b9d093805e752c6e56a0cbb",
+      "scripts/qa/check-rnd-health-alias.cts": "188d5248b7f523c24dc5e49c64a58aa0520daac7",
+      "package.json": "f9476f9a82ec1c4b00bfb9bbb23b37be218fe46b",
+      ".github/workflows/encoding-guard.yml": "9d2a08388cbedc7c0281a92fccfc1426636494fc"
+    }
+  },
+  "stage_boundary": {
+    "local_rnd_process_health_proven": true,
+    "actual_wellnessbox_alias_handler_proven": true,
+    "production_deployment_proven": false,
+    "production_traffic_proven": false
+  }
+}

@@ -427,13 +427,23 @@ jobs:
       - name: Install OP-113/114 service dependencies
         working-directory: _evidence/wellnessbox-op114
         run: npm ci
+      - name: Checkout OP-115/116 WellnessBox evidence
+        uses: actions/checkout@v7
+        with:
+          repository: yeohj0710/wellnessbox
+          ref: 3875d62e2762fcb9f2bac5707f0ebefed95f181b
+          fetch-depth: 0
+          path: _evidence/wellnessbox-op116
+      - name: Verify OP-115/116 service test matrix
+        working-directory: _evidence/wellnessbox-op116
+        run: npm ci && npm run qa:rnd:health-alias && npm run audit:encoding && npm run typecheck && npm run build
       - name: Audit requirement evidence
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op114
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op116
         run: python scripts/audit_original_plan_requirements.py
       - name: Check generated completion report
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op114
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op116
         run: python scripts/build_original_plan_completion_report.py --check
       - name: Check interaction and dose aggregation evidence
         run: >-
