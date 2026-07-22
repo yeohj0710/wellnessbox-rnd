@@ -51,6 +51,11 @@ def blob_sha256(root: Path, path: Path) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
+def rnd_source_commit() -> str:
+    paths = [path.relative_to(ROOT).as_posix() for path in RND_SOURCES]
+    return git(ROOT, "log", "-1", "--format=%H", "--", *paths)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--wellnessbox-root", type=Path, required=True)
@@ -131,7 +136,7 @@ def main() -> int:
             "wellnessbox_alias_disabled_or_unhealthy_status": 503,
         },
         "source_identity": {
-            "wellnessbox_rnd_commit": git(ROOT, "rev-parse", "HEAD"),
+            "wellnessbox_rnd_commit": rnd_source_commit(),
             "wellnessbox_rnd_source_blobs": {
                 path.relative_to(ROOT).as_posix(): git(
                     ROOT, "rev-parse", f"HEAD:{path.relative_to(ROOT).as_posix()}"
