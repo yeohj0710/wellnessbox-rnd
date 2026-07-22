@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import atexit
 import hashlib
+import hmac
 import json
 import os
 import socket
@@ -103,19 +104,47 @@ def main() -> int:
             process.terminate()
             process.wait(timeout=10)
 
+    cases = {case["case_id"]: case for case in dataset["cases"]}
+    expected_profile_id = "usr_" + hmac.new(
+        salt.encode(),
+        cases["pseudonym"]["input"]["subject_id"].encode(),
+        hashlib.sha256,
+    ).hexdigest()[: cases["pseudonym"]["expected"]["hex_characters"]]
     checks = {
         "three_roles_denied_without_auth": observed["deniedRoles"]
-        == ["user", "pharmacy", "admin"],
-        "user_profile_scope_server_owned": observed["userProfileSpoofIgnored"] is True,
-        "pharmacy_scope_server_owned": observed["pharmacyScopeOverridden"] is True,
-        "internal_token_accepted": observed["internalTokenAccepted"] is True,
+        == ["user", "pharmacy", "admin"]
+        and all(
+            cases[case_id]["expected"]["denied_without_auth"]
+            for case_id in ("user_role", "pharmacy_role", "admin_role")
+        ),
+        "role_guard_source_contract_verified": observed["roleGuardSourceContractVerified"]
+        is cases["admin_role"]["expected"]["guard_source_verified"],
+        "authenticated_admin_branch_executed": observed["authenticatedAdminBranchExecuted"]
+        is cases["admin_role"]["expected"]["authenticated_success"],
+        "admin_fallback_error_bounded": observed["adminFallbackBounded"]
+        is cases["admin_role"]["expected"]["fallback_error_bounded"],
+        "user_profile_scope_server_owned": observed["userProfileSpoofIgnored"]
+        is cases["user_role"]["expected"]["spoof_ignored"],
+        "pharmacy_scope_server_owned": observed["pharmacyScopeOverridden"]
+        is cases["pharmacy_role"]["expected"]["scope_server_owned"],
+        "internal_token_accepted": observed["internalTokenAccepted"]
+        is cases["internal_token"]["expected"]["accepted"],
         "invalid_internal_token_rejected": observed["invalidInternalTokenRejected"]
-        is True,
-        "deterministic_pseudonym_used": str(observed["profileId"]).startswith("usr_"),
-        "direct_identifier_removed": observed["directIdentifierRemoved"] is True,
-        "unused_field_removed": observed["unusedFieldRemoved"] is True,
-        "logs_masked": observed["logsMasked"] is True,
-        "public_errors_bounded": observed["publicErrorsBounded"] is True,
+        is cases["internal_token"]["expected"]["invalid_rejected"],
+        "deterministic_pseudonym_used": observed["profileId"] == expected_profile_id
+        and cases["pseudonym"]["expected"]["algorithm"] == "HMAC-SHA256",
+        "direct_identifier_payload_rejected": observed["directIdentifierPayloadRejected"]
+        is cases["minimum_collection"]["expected"]["direct_identifier_rejected"],
+        "direct_identifier_removed": observed["directIdentifierRemoved"]
+        is cases["minimum_collection"]["expected"]["name_removed"],
+        "unused_field_removed": observed["unusedFieldRemoved"]
+        is cases["minimum_collection"]["expected"]["unused_field_removed"],
+        "logs_masked": observed["logsMasked"]
+        is cases["log_masking"]["expected"]["utility_masked"],
+        "operational_log_call_site_masked": observed["operationalLogCallSiteMasked"]
+        is cases["log_masking"]["expected"]["operational_call_site_masked"],
+        "public_errors_bounded": observed["publicErrorsBounded"]
+        is cases["bounded_error"]["expected"]["unexpected_error_bounded"],
     }
     if not all(checks.values()):
         raise AssertionError(checks)
@@ -149,7 +178,8 @@ def main() -> int:
             ),
         },
         "stage_boundary": {
-            "actual_service_route_guards_executed": True,
+            "actual_service_route_authorization_branches_executed": True,
+            "role_guard_implementation_source_contract_verified": True,
             "actual_rnd_http_token_roundtrip_executed": True,
             "production_identity_provider_operation_proven": False,
             "production_log_sink_inspection_proven": False,
