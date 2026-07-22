@@ -49,6 +49,7 @@ from wellnessbox_rnd.interim.inference import recommend_with_registered_model
 from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.kpi import evaluate_proxy_kpis
 from wellnessbox_rnd.interim.plan_lifecycle import (
+    OrderPlanContextRequestV1,
     PlanLifecycleService,
     PlanLifecycleTransitionRequestV1,
 )
@@ -1058,6 +1059,20 @@ def transition_plan_lifecycle(
             status_code = 409
         else:
             status_code = 422
+        raise HTTPException(status_code=status_code, detail=detail) from error
+
+
+@router.post("/plans/order-context")
+def read_order_plan_context(payload: OrderPlanContextRequestV1) -> dict[str, Any]:
+    try:
+        return PlanLifecycleService(_store()).read_order_context(payload).model_dump(
+            mode="json"
+        )
+    except PermissionError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
+    except ValueError as error:
+        detail = str(error)
+        status_code = 404 if detail.endswith("_not_found") else 422
         raise HTTPException(status_code=status_code, detail=detail) from error
 
 

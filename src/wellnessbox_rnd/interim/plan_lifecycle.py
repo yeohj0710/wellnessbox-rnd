@@ -98,6 +98,48 @@ class PlanLifecycleTransitionResultV1(BaseModel):
     order_state_mutation_allowed: Literal[False] = False
 
 
+class OrderPlanContextRequestV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["order_plan_context_request_v1"] = (
+        "order_plan_context_request_v1"
+    )
+    execution_id: str = Field(min_length=3, max_length=128)
+    profile_id: str = Field(min_length=3, max_length=128)
+    plan_id: str = Field(min_length=3, max_length=128)
+    order_id: int = Field(gt=0)
+    order_status: str = Field(min_length=1, max_length=64)
+    packaging_state: Literal["PENDING", "COMPLETE", "CANCELED"]
+    delivery_state: Literal["PENDING", "IN_TRANSIT", "DELIVERED", "CANCELED"]
+    reorder_state: Literal["NOT_ELIGIBLE", "ELIGIBLE", "CANCELED"]
+    cancellation_state: Literal["ACTIVE", "CANCELED"]
+    observed_at: datetime
+
+    @model_validator(mode="after")
+    def validate_observed_at(self) -> OrderPlanContextRequestV1:
+        if self.observed_at.tzinfo is None or self.observed_at.utcoffset() is None:
+            raise ValueError("order_plan_context_observed_at_timezone_required")
+        return self
+
+
+class OrderPlanContextResultV1(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["order_plan_context_result_v1"] = (
+        "order_plan_context_result_v1"
+    )
+    execution_id: str
+    profile_id: str
+    plan_id: str
+    plan_state: PlanLifecycleState
+    order_context: OrderPlanContextRequestV1
+    read_only: Literal[True] = True
+    order_state_effect: Literal["NONE"] = "NONE"
+    order_state_mutation_allowed: Literal[False] = False
+    persisted_event_count_before: int
+    persisted_event_count_after: int
+
+
 def resolve_plan_lifecycle_states(rows: list[object]) -> dict[str, PlanLifecycleState]:
     states: dict[str, PlanLifecycleState] = {}
     candidate_identity: dict[str, tuple[str, str]] = {}
@@ -303,6 +345,35 @@ class PlanLifecycleService:
             ).fetchone()
             return self._result(connection, stored, deduplicated=False)
 
+    def read_order_context(
+        self, request: OrderPlanContextRequestV1
+    ) -> OrderPlanContextResultV1:
+        execution = self.store.rows(
+            "select * from executions where execution_id=?", (request.execution_id,)
+        )
+        if not execution:
+            raise ValueError("plan_lifecycle_execution_not_found")
+        if str(execution[0]["profile_id"]) != request.profile_id:
+            raise PermissionError("plan_lifecycle_profile_mismatch")
+        rows = self.store.rows(
+            "select * from execution_events where execution_id=? order by event_index",
+            (request.execution_id,),
+        )
+        states = resolve_plan_lifecycle_states(rows)
+        state = states.get(request.plan_id)
+        if state is None:
+            raise ValueError("plan_lifecycle_plan_not_found")
+        event_count = len(rows)
+        return OrderPlanContextResultV1(
+            execution_id=request.execution_id,
+            profile_id=request.profile_id,
+            plan_id=request.plan_id,
+            plan_state=state,
+            order_context=request,
+            persisted_event_count_before=event_count,
+            persisted_event_count_after=event_count,
+        )
+
     @staticmethod
     def _result(connection, row, *, deduplicated: bool) -> PlanLifecycleTransitionResultV1:
         payload = json.loads(str(row["payload_json"]))
@@ -345,6 +416,8 @@ class PlanLifecycleService:
 
 
 __all__ = [
+    "OrderPlanContextRequestV1",
+    "OrderPlanContextResultV1",
     "PlanLifecycleAction",
     "PlanLifecycleService",
     "PlanLifecycleState",

@@ -12,6 +12,7 @@ from pydantic import ValidationError
 from wellnessbox_rnd.interim.data_mutation import DataMutationLedger, EventMutationStateError
 from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
 from wellnessbox_rnd.interim.plan_lifecycle import (
+    OrderPlanContextRequestV1,
     PlanLifecycleAction,
     PlanLifecycleService,
     PlanLifecycleState,
@@ -162,6 +163,34 @@ def test_transition_persists_in_existing_execution_events(tmp_path, action, targ
         )
         == 0
     )
+
+
+def test_order_context_is_read_only_and_preserves_plan_state(tmp_path) -> None:
+    service = _service(tmp_path)
+    before = int(service.store.scalar("select count(*) from execution_events"))
+
+    result = service.read_order_context(
+        OrderPlanContextRequestV1(
+            execution_id="execution_lifecycle",
+            profile_id="usr_lifecycle",
+            plan_id="plan_lifecycle",
+            order_id=109,
+            order_status="delivery-complete",
+            packaging_state="COMPLETE",
+            delivery_state="DELIVERED",
+            reorder_state="ELIGIBLE",
+            cancellation_state="ACTIVE",
+            observed_at=NOW,
+        )
+    )
+
+    assert result.plan_state == PlanLifecycleState.ACTIVE
+    assert result.read_only is True
+    assert result.order_state_effect == "NONE"
+    assert result.order_state_mutation_allowed is False
+    assert result.persisted_event_count_before == before
+    assert result.persisted_event_count_after == before
+    assert int(service.store.scalar("select count(*) from execution_events")) == before
 
 
 def test_replace_deactivates_old_plan_and_activates_replacement(tmp_path) -> None:

@@ -1,0 +1,13 @@
+{
+  "schema_version": "op109_op110_order_plan_context_cases_v1",
+  "cases": [
+    {"case_id": "op109_payment_gate", "requirement_id": "OP-109", "expected": "createOrder is reached only after a verified payment outcome"},
+    {"case_id": "op109_existing_mutator", "requirement_id": "OP-109", "expected": "the existing createOrder owns stock decrement and order creation"},
+    {"case_id": "op109_recommendation_no_mutation", "requirement_id": "OP-109", "expected": "the R&D recommendation route has no order or stock mutation"},
+    {"case_id": "op109_no_prisma_execution", "requirement_id": "OP-109", "expected": "canonical evidence does not overclaim an actual Prisma mutation"},
+    {"case_id": "op110_packaging_delivery", "requirement_id": "OP-110", "expected": "dispensing and pickup statuses map to packaging and delivery context"},
+    {"case_id": "op110_reorder", "requirement_id": "OP-110", "expected": "delivery completion maps to reorder eligibility"},
+    {"case_id": "op110_cancel", "requirement_id": "OP-110", "expected": "cancellation maps to canceled plan context"},
+    {"case_id": "op110_read_only", "requirement_id": "OP-110", "expected": "R&D returns the context without writing an event or mutating order state"}
+  ]
+}
