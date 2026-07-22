@@ -12,22 +12,22 @@
     "post_not_retried": true,
     "retry_backoff_bounded": true,
     "retryable_get_retried_once": true,
-    "typescript_registry_covers_used_paths": true,
-    "typescript_registry_scans_all_service_sources": true
+    "typescript_client_registry_enforced": true,
+    "typescript_registry_covers_used_paths": true
   },
   "dataset": {
     "case_count": 8,
     "path": "data/original_plan/op113_op114_resilience_contract_cases_v1.json",
-    "sha256": "2a8646a765f2e19257a4bca1ae8c74914d35e0527f46ebb859b30b208d6679ff"
+    "sha256": "1bb8a5593309ac9e98ea734bbc86898eded61791e3f23fda7a740fcaaea8dfca"
   },
   "observed": {
     "contract": {
+      "clientOperationRegistryEnforced": true,
       "componentSchemaCount": 63,
       "discoveredUsedPathCount": 19,
       "ok": true,
       "openApiPathCount": 31,
       "registeredOperationCount": 19,
-      "scannedSourceFileCount": 1490,
       "schemaVersion": "wb_rnd_interim_openapi_surface_v1"
     },
     "resilience": {
@@ -41,7 +41,9 @@
         "non_retryable_4xx_does_not_open_circuit": true,
         "open_circuit_skips_network": true,
         "post_not_retried": true,
-        "retryable_get_retried_once": true
+        "retryable_get_retried_once": true,
+        "unregistered_operation_rejected_at_type_and_runtime": true,
+        "wrong_method_rejected_at_type_and_runtime": true
       },
       "observed": {
         "circuitFetchCalls": 6,
@@ -69,13 +71,13 @@
   "schema_version": "op113_op114_resilience_contract_smoke_v1",
   "source_identity": {
     "rnd_openapi_generator_commit": "9534e640e8baac941c2fb9a31a9c759849fbf173",
-    "wellnessbox_commit": "41f2e15984943e276359034b43e2cc72e428cb00",
+    "wellnessbox_commit": "d07123903072f5eac7ef7f5021cf8278ca02c9c9",
     "wellnessbox_source_blobs": {
       "contracts/wb-rnd/interim-openapi-surface-v1.json": "9bbccfd74a850bee85f89227f2aeb95e9fdf4134",
-      "lib/server/wb-rnd-interim-client.ts": "266907433fc8915bd245aae2afffbb5c5baed576",
+      "lib/server/wb-rnd-interim-client.ts": "b07e459b13bd813a86707813b5a2baba0c8fb9d2",
       "lib/server/wb-rnd-interim-contract.ts": "86babf8c73137caef5282fcf4e67c12456ee3a85",
-      "scripts/qa/check-rnd-openapi-contract.cts": "03ae8a2c4e64a0910a881d3f99bd033f762e91de",
-      "scripts/qa/check-rnd-resilience-contract.cts": "63ed39d027ff68b5c5c27eac1f28ecc8500d4aef"
+      "scripts/qa/check-rnd-openapi-contract.cts": "fbfb3a791b3bcc926261edb5b790ad673854120b",
+      "scripts/qa/check-rnd-resilience-contract.cts": "1ea0a608325c9b3ac0b6b73335e2f91da9d19290"
     }
   },
   "stage_boundary": {
