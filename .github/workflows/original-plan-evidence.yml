@@ -488,7 +488,7 @@ jobs:
           data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json
       - name: Audit requirement evidence
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op116
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op118
         run: python scripts/audit_original_plan_requirements.py
       - name: Replay OP-119 external dependency registry
         run: >-
@@ -497,7 +497,7 @@ jobs:
           data/original_plan/evidence/op119_external_dependency_registry_smoke_v1.json
       - name: Check generated completion report
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op116
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op118
         run: python scripts/build_original_plan_completion_report.py --check
       - name: Check interaction and dose aggregation evidence
         run: >-
@@ -677,7 +677,7 @@ jobs:
             data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json
       - name: Run requirement contract tests
         env:
-          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op116
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op118
         run: >-
           python -m pytest
           tests/test_original_plan_manifest.py
