@@ -1,10 +1,12 @@
 import base64
 import json
+import subprocess
 from pathlib import Path
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
+from scripts.run_final_completion_audit import audited_repository_commits
 from wellnessbox_rnd.governance.final_completion_audit import (
     CompletionReceiptV1,
     FinalCompletionFactsV1,
@@ -18,6 +20,18 @@ from wellnessbox_rnd.governance.final_completion_audit import (
 from wellnessbox_rnd.schemas.original_plan_manifest import RepositoryName
 
 ROOT = Path(__file__).resolve().parents[1]
+SERVICE_ROOT = ROOT.parent / "wellnessbox"
+
+
+def test_audited_repository_commit_uses_current_repository_heads() -> None:
+    commits = audited_repository_commits()
+
+    assert commits["wellnessbox-rnd"] == subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+    ).strip()
+    assert commits["wellnessbox"] == subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=SERVICE_ROOT, text=True
+    ).strip()
 
 
 def test_current_repository_is_fail_closed() -> None:

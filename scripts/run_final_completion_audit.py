@@ -34,6 +34,15 @@ def git(*args: str) -> str:
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
 
+def audited_repository_commits() -> dict[str, str]:
+    return {
+        "wellnessbox-rnd": git("rev-parse", "HEAD"),
+        "wellnessbox": subprocess.check_output(
+            ["git", "-C", str(SERVICE_ROOT), "rev-parse", "HEAD"], text=True
+        ).strip(),
+    }
+
+
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -103,12 +112,7 @@ def main() -> int:
         "observed": observed,
         "source_identity": {"commit": source_commit, "blobs": source_blobs},
         "audited_input_identity": {
-            "repository_commits": {
-                "wellnessbox-rnd": source_commit,
-                "wellnessbox": subprocess.check_output(
-                    ["git", "-C", str(SERVICE_ROOT), "rev-parse", "HEAD"], text=True
-                ).strip(),
-            },
+            "repository_commits": audited_repository_commits(),
             "file_blobs": audited_input_hashes,
         },
         "stage_boundary": {
