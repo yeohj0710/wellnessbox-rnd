@@ -64,6 +64,8 @@ on:
       - "scripts/run_environment_result_origin_smoke.py"
       - "scripts/run_profile_review_roundtrip_smoke.py"
       - "scripts/run_admin_product_integration_smoke.py"
+      - "scripts/run_order_plan_context_integration_smoke.py"
+      - "data/original_plan/op109_op110_order_plan_context_cases_v1.json"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
       - "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json"
@@ -175,6 +177,8 @@ on:
       - "scripts/run_environment_result_origin_smoke.py"
       - "scripts/run_profile_review_roundtrip_smoke.py"
       - "scripts/run_admin_product_integration_smoke.py"
+      - "scripts/run_order_plan_context_integration_smoke.py"
+      - "data/original_plan/op109_op110_order_plan_context_cases_v1.json"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
       - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
       - "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json"
@@ -389,9 +393,23 @@ jobs:
       - name: Install OP-107/108 service dependencies
         working-directory: _evidence/wellnessbox-op108
         run: npm ci
+      - name: Checkout OP-109/110 WellnessBox evidence
+        uses: actions/checkout@v7
+        with:
+          repository: yeohj0710/wellnessbox
+          ref: 968ce4687ef4e3fdd0fce4f675bb224972797861
+          fetch-depth: 0
+          path: _evidence/wellnessbox-op110
+      - name: Install OP-109/110 service dependencies
+        working-directory: _evidence/wellnessbox-op110
+        run: npm ci
       - name: Audit requirement evidence
+        env:
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op110
         run: python scripts/audit_original_plan_requirements.py
       - name: Check generated completion report
+        env:
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op110
         run: python scripts/build_original_plan_completion_report.py --check
       - name: Check interaction and dose aggregation evidence
         run: >-
@@ -556,14 +574,18 @@ jobs:
           WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op104 python scripts/run_environment_result_origin_smoke.py
           WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op106 python scripts/run_profile_review_roundtrip_smoke.py
           WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op108 python scripts/run_admin_product_integration_smoke.py
+          WELLNESSBOX_SERVICE_REPO=${{ github.workspace }}/_evidence/wellnessbox-op110 python scripts/run_order_plan_context_integration_smoke.py
           git diff --exit-code -- \
             data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json \
             data/original_plan/evidence/op099_op100_device_dedup_linkage_smoke_v1.json \
             data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json \
             data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json \
             data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json \
-            data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json
+            data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json \
+            data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json
       - name: Run requirement contract tests
+        env:
+          WELLNESSBOX_EVIDENCE_ROOT: ${{ github.workspace }}/_evidence/wellnessbox-op110
         run: >-
           python -m pytest
           tests/test_original_plan_manifest.py
@@ -696,6 +718,7 @@ jobs:
           scripts/run_environment_result_origin_smoke.py
           scripts/run_profile_review_roundtrip_smoke.py
           scripts/run_admin_product_integration_smoke.py
+          scripts/run_order_plan_context_integration_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py

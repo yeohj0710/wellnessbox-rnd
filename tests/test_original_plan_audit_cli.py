@@ -26,7 +26,7 @@ def test_original_plan_audit_cli_returns_zero_for_current_manifest() -> None:
     assert result.returncode == 0
     assert report["status"] == "PASS"
     assert report["requirement_count"] == 120
-    assert report["claimed_requirement_count"] == 107
+    assert report["claimed_requirement_count"] == 109
     assert report["issues"] == []
 
 
@@ -119,6 +119,9 @@ def test_original_plan_audit_workflow_runs_cli_and_contract_tests() -> None:
     assert "a24b6c3308cc76627c3ca29807db1705e32c2178" in workflow
     assert "yeohj0710/wellnessbox" in workflow
     assert "WELLNESSBOX_EVIDENCE_ROOT" in workflow
+    assert "968ce4687ef4e3fdd0fce4f675bb224972797861" in workflow
+    assert "_evidence/wellnessbox-op110" in workflow
+    assert "python scripts/run_order_plan_context_integration_smoke.py" in workflow
     assert workflow.count(
         '"data/samples/api_recommend_diet_lifestyle_lab_request_v1.json"'
     ) == 2
