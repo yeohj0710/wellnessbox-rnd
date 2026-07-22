@@ -544,3 +544,14 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - Boundaries: 실제 Prisma 조회·mutation, PostgreSQL, payment sandbox, 브라우저 승인, 생산 운영은 실행하지 않았다. Frozen 평가, 학습 데이터, 모델, safety, replay 로직 변화는 0이다.
 - Validation: 서비스 TypeScript·인코딩·lint·build, 계획 생명주기 포함 집중 테스트 70개, Ruff, two-process canonical replay diff, manifest 감사, completion report가 통과했다. 독립 리뷰는 `1/2/1`→`0/2/1`→최종 `0/0/0`이다. 서비스 Encoding Guard `29891500251`도 통과했다. Bottlenecks: 보고서 88개, OP-111/112, 실제 Prisma·결제 제공자, 승인된 운영, 실제 브라우저. Next: OP-111/112, 보고서 보강, 격리 DB 통합.
 - Final CI/publication: R&D `Original plan evidence` 실행 `29893387739`가 전 단계 증거 재생성, 계약 테스트, Ruff를 포함해 통과했다. 검증된 R&D 소스·증거 커밋 `07fff30f2ed5cbd4e22b5b85fc944412892c287b`와 서비스 HEAD `59399e2569c6152c644c4010ac52e26e876d1040`는 `origin/main`에 있다.
+
+# 2026-07-22 OP-111/112 handoff
+
+- 단계/과제: production-service security integration; OP-111 내부 API 인증·역할 권한, OP-112 최소 수집·가명화·로그 마스킹. 둘 다 `INTEGRATED / COMPLETE`다.
+- 데이터셋/증거: `data/original_plan/op111_op112_security_boundary_cases_v1.json`, 8건; canonical evidence는 `data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json`이다.
+- 변경: 실제 profile 저장 프록시 strict schema, HMAC profile ID, 내부 토큰 왕복, user/pharmacy/admin route 분기와 공유 guard 판정 함수, 서버 소유 scope, 재귀 로그 마스킹, bounded public error를 검증했다.
+- 검증: focused pytest 18건, Ruff, manifest audit, completion stale check, canonical 재실행 diff가 통과했다. 감사 결과는 주장 `111`, 증거 파일 `305`, 상태 `72/39/8/1/0`, 보고서 `34/120`이다.
+- 독립 검토: 최초 `Critical 1 / Important 4 / Minor 0`; 최종 `0/0/0`. 서비스 HEAD `1912f127a02d158a159ed7edd135f389308a1e6e`, Encoding Guard `29894827365` 성공.
+- 경계/delta: production identity provider, production log sink, public deployment는 검증하거나 변경하지 않았다. frozen 데이터, 모델 학습, safety 규칙, replay·slice 결과 변경은 모두 0이다.
+- 병목 5개: 보고서 86개, production identity provider 증거, production log sink 관찰, OP-113/114, 승인된 실제 사용자·약사·관리자 운영 증거.
+- 다음 세 루프: OP-113/114; 보고서 보강; 승인된 production 인증·로그 관찰.

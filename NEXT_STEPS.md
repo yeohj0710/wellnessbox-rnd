@@ -262,3 +262,9 @@ Do not run training or a new `cgm` loop yet.
 1. Complete OP-111/112 internal authorization, data minimization, pseudonymization, and log-masking integration evidence.
 2. Backfill the remaining `88/120` Korean research reports.
 3. Use isolated PostgreSQL and payment sandbox evidence before promoting OP-109/110; keep production changes approval-gated.
+
+# Next after OP-111/112
+
+1. 다음 bounded loop에서만 OP-113/114의 요청 제한·비용 상한과 장애 복구 계약을 구현하고 검증한다.
+2. 누락된 한국어 연구 보고서 `86/120`개를 근거 파일에 연결해 보강한다.
+3. 승인을 받은 뒤에만 production identity provider와 production log sink를 관찰해 OP-111/112의 `OPERATED` 후보 증거를 수집한다.

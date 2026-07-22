@@ -545,3 +545,11 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 독립 리뷰는 `1/2/1`에서 `0/2/1`로 줄었다. 추가 지적에 따라 R&D가 주문 생성 전에 사용자 소유 execution·plan을 검증하고, migration이 기존 paymentId 중복을 명시적으로 탐지하며, P2002 동시 재시도가 rollback 뒤 기존 주문을 반환하게 했다. 서비스 커밋은 `59399e2569c6152c644c4010ac52e26e876d1040`이다.
 - 최종 독립 재검토는 `Critical 0 / Important 0 / Minor 0`이다. 서비스 Encoding Guard `29891500251`도 통과했다.
 - R&D 전체 `Original plan evidence` 실행 `29893387739`가 통과했다. 실행 중 발견한 과거 증거 provenance를 현재 경로별 소스 식별자로 동기화했고, OP-105/106 생성기는 실행마다 바뀌는 ID를 안정된 표기로 정규화했다. 검증된 R&D 소스·증거 커밋은 `07fff30f2ed5cbd4e22b5b85fc944412892c287b`다.
+
+# 2026-07-22 OP-111/112 bounded loop
+
+- OP-111과 OP-112를 요구 단계인 `INTEGRATED`로 완료했다. 상태는 `72/39/8/1/0`, 감사 주장은 `111`, 확인한 증거 파일은 `305`, 한국어 보고서는 `34/120`이다.
+- 8개 사례와 별도 FastAPI/Node smoke가 내부 토큰, user/pharmacy/admin 권한, HMAC 가명, 최소 수집, 로그 마스킹, 공개 오류 경계를 검증한다.
+- 서비스는 중첩 프로필의 직접 식별자와 알 수 없는 필드를 저장 전에 거부한다. 실제 guard가 공유하는 역할 판정 함수를 허용·거부 사례에서 실행하고 실제 오류 로그 호출부를 재귀 마스킹한다.
+- 서비스 커밋 `1912f127a02d158a159ed7edd135f389308a1e6e`의 Encoding Guard `29894827365`가 통과했다. 독립 재검토는 `Critical 0 / Important 0 / Minor 0`이다.
+- frozen 평가, 학습 데이터, 모델, safety 규칙, replay 결과 변화는 0이다. production identity provider와 production log sink는 검증하지 않아 `OPERATED`를 주장하지 않는다.
