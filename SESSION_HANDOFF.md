@@ -556,3 +556,16 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 경계/delta: production identity provider, production log sink, public deployment는 검증하거나 변경하지 않았다. frozen 데이터, 모델 학습, safety 규칙, replay·slice 결과 변경은 모두 0이다.
 - 병목 5개: 보고서 86개, production identity provider 증거, production log sink 관찰, OP-113/114, 승인된 실제 사용자·약사·관리자 운영 증거.
 - 다음 세 루프: OP-113/114; 보고서 보강; 승인된 production 인증·로그 관찰.
+
+# 2026-07-22 OP-113/114 handoff
+
+- 단계/과제: production-service resilience and contract integration. OP-113 장애 복원력과 OP-114 OpenAPI·TypeScript drift 차단은 모두 `INTEGRATED / COMPLETE`다.
+- 데이터셋/증거: `data/original_plan/op113_op114_resilience_contract_cases_v1.json`, 8건; canonical evidence는 `data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json`이다.
+- 변경: retryable GET 1회 재시도, POST 무재시도, 실제 timeout signal, retryable 오류 전용 circuit, half-open 단일 probe, bounded fallback, FastAPI OpenAPI generator, registry-derived client type/runtime guard를 추가했다.
+- 계약 규모: OpenAPI interim path 31개, reachable component schema 63개, 서비스 operation 19개. 양쪽 snapshot은 byte-equivalent하다.
+- 검증: 서비스 TypeScript·lint·build와 두 QA, R&D runner canonical diff, generator check, focused pytest 40건, Ruff, manifest audit, completion stale check가 통과했다. 상태 `74/39/6/1/0`, 주장 `113`, 증거 파일 `313`, 보고서 `36/120`이다.
+- 독립 검토: `0/5/0`→`0/1/0`→최종 `0/0/0`. 서비스 HEAD `d07123903072f5eac7ef7f5021cf8278ca02c9c9`, Encoding Guard `29896967812` 성공.
+- R&D CI: HEAD `811f5e46f8d6408915c677c3e273718b8f241d29`, Original plan evidence `29897044861` 성공. 전체 canonical smoke, requirement 계약 테스트, Ruff가 모두 통과했다.
+- 경계/delta: production outage, 다중 인스턴스 circuit, rolling deployment, 배포 artifact hash는 검증하지 않았다. frozen 데이터, 모델 학습, safety, replay·slice 변화는 0이다.
+- 병목 5개: 보고서 84개, OP-115/116, 승인된 production 장애 훈련, 다중 인스턴스 circuit 관찰, 배포된 양쪽 artifact hash·호환성 증거.
+- 다음 세 루프: OP-115/116; 보고서 보강; 승인된 production 장애·artifact 관찰.

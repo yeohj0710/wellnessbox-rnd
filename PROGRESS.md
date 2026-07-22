@@ -554,3 +554,12 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 서비스 커밋 `1912f127a02d158a159ed7edd135f389308a1e6e`의 Encoding Guard `29894827365`가 통과했다. 독립 재검토는 `Critical 0 / Important 0 / Minor 0`이다.
 - R&D 커밋 `354a5caf20c10d3e1bb7b5634e7fdf8ffc18e1c5`의 Original plan evidence 실행 `29895612666`도 전체 증거 재생, 699개 통과·2개 건너뜀의 계약 테스트, Ruff를 포함해 성공했다.
 - frozen 평가, 학습 데이터, 모델, safety 규칙, replay 결과 변화는 0이다. production identity provider와 production log sink는 검증하지 않아 `OPERATED`를 주장하지 않는다.
+
+# 2026-07-22 OP-113/114 bounded loop
+
+- OP-113과 OP-114를 요구 단계 `INTEGRATED`로 완료했다. 상태는 `74/39/6/1/0`, 감사 주장은 `113`, 증거 파일은 `313`, 한국어 보고서는 `36/120`이다.
+- 8개 사례가 GET 단일 재시도, POST 무재시도, 실제 500ms timeout abort, retryable 오류 전용 circuit, 30초 half-open 단일 probe, 관리자 KPI fallback, OpenAPI snapshot, TypeScript operation registry를 검증한다.
+- FastAPI가 생성한 31개 interim path와 reachable component schema 63개를 양쪽 저장소에 byte-equivalent하게 고정했다. 서비스 client는 registry-derived method/path union과 런타임 matcher로 미등록 operation을 fetch 전에 차단한다.
+- 독립 검토는 최초 `Critical 0 / Important 5 / Minor 0`, 중간 `0/1/0`, 최종 `0/0/0`이다. 서비스 HEAD `d07123903072f5eac7ef7f5021cf8278ca02c9c9`의 Encoding Guard `29896967812`가 성공했다.
+- R&D HEAD `811f5e46f8d6408915c677c3e273718b8f241d29`의 Original plan evidence `29897044861`도 전체 canonical 재생, 계약 테스트, Ruff를 포함해 성공했다.
+- frozen 평가, 학습 데이터, 모델, safety 규칙, replay·slice 변화는 0이다. production 장애 주입, 다중 인스턴스 circuit 공유, 배포 artifact hash는 검증하지 않았다.

@@ -268,3 +268,9 @@ Do not run training or a new `cgm` loop yet.
 1. 다음 bounded loop에서만 OP-113/114의 요청 제한·비용 상한과 장애 복구 계약을 구현하고 검증한다.
 2. 누락된 한국어 연구 보고서 `86/120`개를 근거 파일에 연결해 보강한다.
 3. 승인을 받은 뒤에만 production identity provider와 production log sink를 관찰해 OP-111/112의 `OPERATED` 후보 증거를 수집한다.
+
+# Next after OP-113/114
+
+1. 다음 bounded loop에서만 OP-115/116의 전체 테스트 계층과 배포 후 health·alias 검증 계약을 구현한다.
+2. 누락된 한국어 연구 보고서 `84/120`개를 canonical evidence와 연결해 보강한다.
+3. 승인을 받은 뒤에만 production 장애 훈련과 배포 artifact hash를 관찰해 OP-113/114의 `OPERATED` 후보 증거를 수집한다.
