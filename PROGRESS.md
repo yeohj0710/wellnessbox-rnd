@@ -1,5 +1,17 @@
 # PROGRESS
 
+## 2026-07-22 sensor-file partial-success and lineage loop
+
+- Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`, OP-095 and OP-096.
+- Dataset/cases: `data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json` contains `7` frozen cases. Canonical evidence is `data/original_plan/evidence/op095_op096_sensor_file_ingestion_lineage_smoke_v1.json`, SHA-256 `882CD29412BAE087FB77D32DC8B6A0A620947CAD748245861176C33D16DF4206`; implementation source identity is commit `d25279ea200b5954391ea7088aae368ef83fceb7`.
+- Implementation: the authenticated API returns per-file schema failures and total/success/failure/normalized/persisted counts. Exact raw-byte and canonical normalized-result hashes share an append-only SQLite lineage row. Consent denial skips decode/hash/storage; storage denial skips persistence; raw content is never stored; exact replay deduplicates.
+- Evidence stage: OP-095 is COMPLETE at required `IMPLEMENTED`. OP-096 is implemented locally but remains PARTIAL because its required stage is `OPERATED`; no deployment, production traffic, production database, backup recovery, or operating evidence is claimed.
+- Research reports: OP-079 through OP-096 have separate full-prose reports. Coverage is `18/120`; `102` remain. Total text is `140,934` characters. OP-095 has `4,528` characters and OP-096 has `5,032` characters.
+- Generated status: complete `68`, partial `27`, pending `24`, external `1`, contradicted `0`; audit PASS with `95` claims and `261` checked evidence files.
+- Validation: focused selection `94 passed`; CI exact selection `659 passed, 1 skipped`; Ruff PASS; every canonical smoke PASS. Full regression collected `1,105`: `1,010 passed`, `95 failed`; failures remain outside this change in absent historical report artifacts and the known CGM geometry group. Frozen evaluation has `256` cases, seven zero metric deltas, and unchanged weakest categories. Independent review initially found Important `2` and Minor `1`, all in report wording; corrections left Critical `0`, Important `0`, Minor `0`.
+- Publication: R&D HEAD `3af7bf7d4301a42e8787fc47478d45bf457d57b7` is on `origin/main`; final CI run `29883787699` passed. The service remains at `a24b6c3308cc76627c3ca29807db1705e32c2178`, and its pre-existing user changes were preserved.
+- Next loops: OP-097/098 device score/follow-up integration and production-vs-simulation data class; OP-099/100 event deduplication and source macro evaluation; OP-001 through OP-078 report backfill.
+
 ## 2026-07-22 genetic normalization and consent boundary loop
 
 - Chosen stage/tasks: `original plan / wearable·CGM·genetic integration`, OP-093 and OP-094.
