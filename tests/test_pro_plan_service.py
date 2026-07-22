@@ -332,7 +332,8 @@ def test_pro_plan_and_followup_api_require_token_and_persist(tmp_path, monkeypat
         json=device_payload
         | {
             "session_id": "device_pro_plan_invalid",
-            "payload": device_payload["payload"] | {"unit": "unknown"},
+            "payload": device_payload["payload"]
+            | {"unit": "unknown", "source_record_id": "wearable-invalid-1"},
         },
     )
     assert invalid_response.status_code == 200
