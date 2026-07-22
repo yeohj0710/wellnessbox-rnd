@@ -68,6 +68,9 @@ def main() -> int:
     service = args.wellnessbox_root.resolve()
     if NPM is None or NODE is None:
         raise RuntimeError("node_or_npm_executable_not_found")
+    test_environment = os.environ.copy() | {
+        "WELLNESSBOX_EVIDENCE_ROOT": str(service)
+    }
 
     run(
         [
@@ -82,6 +85,7 @@ def main() -> int:
             "-q",
         ],
         ROOT,
+        environment=test_environment,
     )
     smoke = json.loads(
         run([sys.executable, "scripts/run_deployment_contract_endpoint_smoke.py"], ROOT)
