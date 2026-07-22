@@ -1,5 +1,12 @@
 # SESSION_HANDOFF
 
+## 2026-07-22 OP-013/014 중간 handoff
+
+- 보고서·OP-120 evidence와 공용 dose boolean 거부 수정은 HEAD `9a02008`까지 push됐다.
+- 현재 보고서: 물리 56, 유효 34/120, 누락·부적합 86. evidence SHA-256 `1d8653bf098fa8dd57ebca445497e56e1bda8e07a13d3010683cfe837aa8018f`.
+- 최초 독립 검토 `0/1/0`; Important 수정 후 재검토 진행 중. CI `29924086385`도 진행 중이다.
+- 두 gate를 확인하기 전 OP-013/014 loop 완료를 주장하지 않는다. 코드 외 서비스·production·학습·simulation 변경은 없다.
+
 ## 2026-07-22 OP-011/012 handoff
 
 - 단계/과제: 구조화 건강 입력 보고서 backfill. OP-011/012 `IMPLEMENTED / COMPLETE`.

@@ -1,5 +1,12 @@
 # PROGRESS
 
+## 2026-07-22 OP-013/014 연구보고서 보강 진행 중
+
+- OP-013/014 장문 보고서와 OP-120 inventory를 갱신했다. 물리 56개, 유효 34/120, 누락·부적합 86개, 259,631자다.
+- 독립 검토 Important 1건으로 `DoseAmount(amount=True)`가 1.0으로 변환되는 공용 결함을 재현했다. 회귀 테스트를 먼저 실패시킨 뒤 boolean before-validator를 추가해 수정했다.
+- focused pytest 86건, 약물·보충제 44건, tracked Ruff, manifest audit, completion check가 통과했다. evidence SHA-256은 `1d8653bf098fa8dd57ebca445497e56e1bda8e07a13d3010683cfe837aa8018f`다.
+- 수정 HEAD `9a02008`; GitHub Actions `29924086385`와 독립 재검토가 진행 중이다. 두 결과 전에는 이 loop를 완료로 처리하지 않는다.
+
 ## 2026-07-22 OP-011/012 연구보고서 보강
 
 - 단계/과제: 구조화 건강 입력; OP-011 개인 프로필과 OP-012 질환·증상·응급 위험 신호 보고서 backfill. 둘 다 `IMPLEMENTED / COMPLETE`다.

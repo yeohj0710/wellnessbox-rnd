@@ -1,5 +1,11 @@
 # NEXT_STEPS
 
+## OP-013/014 즉시 재개
+
+1. 수정 HEAD `9a02008`의 독립 재검토가 Critical 0 / Important 0인지 확인한다.
+2. `Original plan evidence` run `29924086385`의 최종 결론을 확인한다.
+3. 둘 다 통과하면 OP-013/014 handoff를 확정하고 OP-015/016으로 이동한다.
+
 ## OP-011/012 이후 다음 bounded loop
 
 1. OP-013/014의 약물·질환·알레르기 입력과 목표 우선순위 계약을 같은 기준으로 backfill한다.
