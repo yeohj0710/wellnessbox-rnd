@@ -7,6 +7,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from scripts.run_final_completion_audit import (
+    SERVICE_ROOT,
     _audited_input_hashes,
     audited_repository_commits,
 )
@@ -23,9 +24,6 @@ from wellnessbox_rnd.governance.final_completion_audit import (
 from wellnessbox_rnd.schemas.original_plan_manifest import RepositoryName
 
 ROOT = Path(__file__).resolve().parents[1]
-SERVICE_ROOT = ROOT.parent / "wellnessbox"
-
-
 def test_audited_repository_commit_reproduces_recorded_file_blobs() -> None:
     file_blobs = _audited_input_hashes()
     commits = audited_repository_commits(file_blobs)
