@@ -3,12 +3,14 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+NPM = shutil.which("npm")
 DATASET = ROOT / "data/original_plan/op115_op116_test_matrix_health_alias_cases_v1.json"
 OUTPUT = ROOT / "data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
 RND_SOURCES = (
@@ -54,6 +56,8 @@ def main() -> int:
     parser.add_argument("--wellnessbox-root", type=Path, required=True)
     args = parser.parse_args()
     service = args.wellnessbox_root.resolve()
+    if NPM is None:
+        raise RuntimeError("npm_executable_not_found")
 
     pytest_output = run(
         [
@@ -91,10 +95,10 @@ def main() -> int:
             [sys.executable, "-m", "pip", "wheel", ".", "--no-deps", "-w", wheel_dir],
             ROOT,
         )
-    run(["npm", "run", "qa:rnd:health-alias"], service)
-    run(["npm", "run", "audit:encoding"], service)
-    run(["npm", "run", "typecheck"], service)
-    run(["npm", "run", "build"], service)
+    run([NPM, "run", "qa:rnd:health-alias"], service)
+    run([NPM, "run", "audit:encoding"], service)
+    run([NPM, "run", "typecheck"], service)
+    run([NPM, "run", "build"], service)
 
     dataset = json.loads(git(ROOT, "show", f"HEAD:{DATASET.relative_to(ROOT).as_posix()}"))
     report = {
