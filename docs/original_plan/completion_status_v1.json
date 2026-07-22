@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "bb538059bfd1b3342a10a704bfb3743f894a9ae1883b85feeed5628553583fe5",
+  "audited_manifest_sha256": "359dae744d5a62c4cb6db1254fabcf2c2b618833a4ab79f5cfdd6256094863f5",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 72,
+    "COMPLETE": 74,
     "PARTIAL": 39,
-    "PENDING": 8,
+    "PENDING": 6,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -152,9 +152,9 @@
       "title": "배포·보안·최종 완료 감사",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 2,
+        "COMPLETE": 4,
         "PARTIAL": 0,
-        "PENDING": 8,
+        "PENDING": 6,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -3850,15 +3850,24 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+          "wellnessbox/lib/server/wb-rnd-interim-route.ts"
+        ],
+        "test_files": [
+          "wellnessbox/scripts/qa/check-rnd-resilience-contract.cts",
+          "wellnessbox-rnd/scripts/run_resilience_openapi_contract_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []
@@ -3872,15 +3881,26 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
-        "integration_evidence": [],
+        "implementation_files": [
+          "wellnessbox-rnd/scripts/build_interim_openapi_contract.py",
+          "wellnessbox-rnd/data/contracts/wb_rnd_interim_openapi_surface_v1.json",
+          "wellnessbox/lib/server/wb-rnd-interim-contract.ts",
+          "wellnessbox/contracts/wb-rnd/interim-openapi-surface-v1.json"
+        ],
+        "test_files": [
+          "wellnessbox/scripts/qa/check-rnd-openapi-contract.cts",
+          "wellnessbox-rnd/scripts/run_resilience_openapi_contract_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"
+        ],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"
+        ],
         "operational_evidence": [],
         "external_dependencies": [],
         "replacement_contracts": []
