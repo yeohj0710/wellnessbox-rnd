@@ -252,7 +252,7 @@
   },
   "schema_version": "op047_op048_decision_uncertainty_learned_fallback_smoke_v1",
   "source_identity": {
-    "commit": "e09831e29f5b0f767503ade029a5a103f9086d6a",
-    "source_sha256": "7293b2859282ac4808c92b1b298d6a4dde2c19fb0d6e1f2885a05b715d968045"
+    "commit": "395acc486285579430f83f07cbc836284ddfe670",
+    "source_sha256": "0e98c9cea318fe3328dde331a0b31ce36515cf37db61f9d60146ef2c9547b20a"
   }
 }
