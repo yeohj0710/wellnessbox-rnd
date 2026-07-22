@@ -133,6 +133,17 @@ def normalize_cgm_summary_csv(csv_text: str) -> list[NormalizedCgmDailySummary]:
             ("postprandial_peak_mg_dl", "post_meal_peak_mg_dl"),
             error="conflicting_cgm_postprandial_peak_aliases",
         )
+        explicit_peak_mg_dl = _first_present(
+            row, "postprandial_peak_mg_dl", "post_meal_peak_mg_dl"
+        )
+        generic_peak = _first_present(row, "post_meal_peak")
+        if explicit_peak_mg_dl is not None and generic_peak is not None:
+            if _required_glucose_mg_dl(
+                explicit_peak_mg_dl, unit="mg/dl", field="postprandial_peak"
+            ) != _required_glucose_mg_dl(
+                generic_peak, unit=unit, field="postprandial_peak"
+            ):
+                raise ValueError("conflicting_cgm_postprandial_peak_aliases")
         rise_value = _first_present(
             row, "postprandial_rise_mg_dl", "post_meal_rise_mg_dl", "post_meal_rise"
         )
@@ -141,6 +152,17 @@ def normalize_cgm_summary_csv(csv_text: str) -> list[NormalizedCgmDailySummary]:
             ("postprandial_rise_mg_dl", "post_meal_rise_mg_dl"),
             error="conflicting_cgm_postprandial_rise_aliases",
         )
+        explicit_rise_mg_dl = _first_present(
+            row, "postprandial_rise_mg_dl", "post_meal_rise_mg_dl"
+        )
+        generic_rise = _first_present(row, "post_meal_rise")
+        if explicit_rise_mg_dl is not None and generic_rise is not None:
+            if _required_glucose_mg_dl(
+                explicit_rise_mg_dl, unit="mg/dl", field="postprandial_rise"
+            ) != _required_glucose_mg_dl(
+                generic_rise, unit=unit, field="postprandial_rise"
+            ):
+                raise ValueError("conflicting_cgm_postprandial_rise_aliases")
         peak = (
             None
             if peak_value is None

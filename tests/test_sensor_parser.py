@@ -142,6 +142,25 @@ def test_cgm_csv_rejects_conflicts_inside_alias_groups(
         normalize_cgm_summary_csv(f"date,{header}\n2026-07-21,{row}\n")
 
 
+def test_cgm_csv_compares_explicit_and_generic_postprandial_units() -> None:
+    equivalent = normalize_cgm_summary_csv(
+        "date,mean_glucose_mg_dl,glucose_unit,postprandial_peak_mg_dl,post_meal_peak,time_in_range_70_180_pct\n"
+        "2026-07-21,120,mmol/L,160.2,8.9,78\n"
+    )
+    assert equivalent[0].postprandial_peak_mg_dl == 160.2
+
+    with pytest.raises(ValueError, match="conflicting_cgm_postprandial_peak_aliases"):
+        normalize_cgm_summary_csv(
+            "date,mean_glucose_mg_dl,glucose_unit,postprandial_peak_mg_dl,post_meal_peak,time_in_range_70_180_pct\n"
+            "2026-07-21,120,mmol/L,160,20,78\n"
+        )
+    with pytest.raises(ValueError, match="conflicting_cgm_postprandial_rise_aliases"):
+        normalize_cgm_summary_csv(
+            "date,mean_glucose_mg_dl,glucose_unit,postprandial_rise_mg_dl,post_meal_rise,time_in_range_70_180_pct\n"
+            "2026-07-21,120,mmol/L,30,10,78\n"
+        )
+
+
 @pytest.mark.parametrize(
     ("record_type", "unit", "error"),
     [
