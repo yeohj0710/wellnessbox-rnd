@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from copy import deepcopy
+from pathlib import Path
 
 import pytest
 
@@ -10,11 +11,22 @@ from wellnessbox_rnd.interim.data_lake import (
     ExecutionLedger,
     IdempotencyConflictError,
 )
-from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.schemas.recommendation import RecommendationRequest
 
 SUBJECT_ID = "usr_0123456789abcdef0123456789abcdef"
+LINEAGE_EVIDENCE_PATH = (
+    Path(__file__).parents[1]
+    / "data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json"
+)
+
+
+def test_canonical_lineage_evidence_matches_current_database_schema() -> None:
+    evidence = json.loads(LINEAGE_EVIDENCE_PATH.read_text(encoding="utf-8"))
+
+    assert evidence["database_schema_version"] == SCHEMA_VERSION
+    assert evidence["checks"]["database_schema_version_matches_current"] is True
 
 
 def _payload(*, age: int = 41, allow_survey_storage: bool = True) -> dict[str, object]:
