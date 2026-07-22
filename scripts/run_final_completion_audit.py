@@ -102,8 +102,8 @@ def main() -> int:
         "observed": observed,
         "source_identity": {"commit": source_commit, "blobs": source_blobs},
         "audited_input_identity": {
-            "repository_heads": {
-                "wellnessbox-rnd": git("rev-parse", "HEAD"),
+            "repository_commits": {
+                "wellnessbox-rnd": source_commit,
                 "wellnessbox": subprocess.check_output(
                     ["git", "-C", str(SERVICE_ROOT), "rev-parse", "HEAD"], text=True
                 ).strip(),
