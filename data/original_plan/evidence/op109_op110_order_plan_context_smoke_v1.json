@@ -23,6 +23,9 @@
     "create_order_requires_server_verified_payment": true,
     "payment_id_unique_and_transaction_protected": true,
     "order_plan_binding_required": true,
+    "order_plan_binding_validated_by_rnd": true,
+    "duplicate_migration_preflight_required": true,
+    "concurrent_payment_replay_returns_existing_order": true,
     "order_context_read_only": true
   },
   "observed": {
@@ -83,16 +86,19 @@
     "createOrderRequiresServerVerifiedPayment": true,
     "paymentIdUniqueAndTransactionProtected": true,
     "orderPlanBindingRequired": true,
+    "orderPlanBindingValidatedByRnd": true,
+    "duplicateMigrationPreflightRequired": true,
+    "concurrentPaymentReplayReturnsExistingOrder": true,
     "actualPrismaMutationExecuted": false
   },
   "source_identity": {
-    "wellnessbox_commit": "637e5c1d67d2569709bd7c7dd4d65b04b314ad97",
-    "wellnessbox_rnd_source_commit": "0fc4bdd249385a656f9ef2b16c7b6412c624d17c",
+    "wellnessbox_commit": "59399e2569c6152c644c4010ac52e26e876d1040",
+    "wellnessbox_rnd_source_commit": "24d82df978249e44ec0c4d56b6f4db086e25037b",
     "wellnessbox_rnd_source_blobs": {
-      "apps/inference_api/routes/interim.py": "e4bd21c97bb5b45615182569885c49059cf6936e",
+      "apps/inference_api/routes/interim.py": "65e996fcd56d718396084902ef5c8da0f85b5fad",
       "data/original_plan/op109_op110_order_plan_context_cases_v1.json": "250d460036725248227e9be2dd47091a23200aca",
-      "scripts/run_order_plan_context_integration_smoke.py": "13b7005cd795c549830dc539c3d404a4ba23ffda",
-      "src/wellnessbox_rnd/interim/plan_lifecycle.py": "54a316a0215b808de9e84f4b5351396064a35710"
+      "scripts/run_order_plan_context_integration_smoke.py": "6b6fcf3a202595226ba8ae8a3fe591cbbafd0be1",
+      "src/wellnessbox_rnd/interim/plan_lifecycle.py": "fe7bdc22aee4bd907634b6a5574e682c501431c5"
     }
   },
   "stage_boundary": {
