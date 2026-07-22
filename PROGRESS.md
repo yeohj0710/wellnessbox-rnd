@@ -543,3 +543,4 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 데이터셋은 `data/original_plan/op109_op110_order_plan_context_cases_v1.json` 8건이다. 상태는 `70/39/10/1/0`, 보고서는 `32/120`, 감사 주장은 `109`, 확인한 증거 파일은 `300`개다.
 - 이전 CI의 최신 서비스 파일 누락은 감사·completion·계약 테스트가 고정된 최신 OP-110 서비스 checkout을 사용하도록 수정했다.
 - 독립 리뷰는 `1/2/1`에서 `0/2/1`로 줄었다. 추가 지적에 따라 R&D가 주문 생성 전에 사용자 소유 execution·plan을 검증하고, migration이 기존 paymentId 중복을 명시적으로 탐지하며, P2002 동시 재시도가 rollback 뒤 기존 주문을 반환하게 했다. 서비스 커밋은 `59399e2569c6152c644c4010ac52e26e876d1040`이다.
+- 최종 독립 재검토는 `Critical 0 / Important 0 / Minor 0`이다. 서비스 Encoding Guard `29891500251`도 통과했다.
