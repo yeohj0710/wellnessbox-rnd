@@ -1879,8 +1879,42 @@
             ]
           }
         },
-        {"requirement_id": "OP-093", "title": "유전자 변이, 판정 기준, 검사기관, 검사일을 정규화한다."},
-        {"requirement_id": "OP-094", "title": "동의하지 않은 데이터 출처를 저장하거나 점수에 사용하지 않는다."},
+        {
+          "requirement_id": "OP-093",
+          "title": "유전자 변이, 판정 기준, 검사기관, 검사일을 정규화한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/sensor_parser.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_sensor_parser.py",
+              "wellnessbox-rnd/scripts/run_genetic_normalization_consent_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op093_op094_genetic_normalization_consent_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-094",
+          "title": "동의하지 않은 데이터 출처를 저장하거나 점수에 사용하지 않는다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/efficacy/service.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_consent_and_input_hash_contracts.py",
+              "wellnessbox-rnd/tests/test_data_lake_lineage.py",
+              "wellnessbox-rnd/scripts/run_genetic_normalization_consent_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op093_op094_genetic_normalization_consent_smoke_v1.json"
+            ]
+          }
+        },
         {"requirement_id": "OP-095", "title": "파일 스키마 오류와 부분 성공 건수를 응답한다."},
         {"requirement_id": "OP-096", "title": "원본 파일 해시와 정규화 결과 계보를 저장한다.", "required_stage": "OPERATED"},
         {"requirement_id": "OP-097", "title": "기기 수치를 추천 점수와 후속평가에 실제 반영한다.", "required_stage": "INTEGRATED"},

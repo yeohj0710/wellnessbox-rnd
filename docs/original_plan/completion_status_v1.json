@@ -1,16 +1,16 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "96a6811ce98862c9f8a7569b3aa2d47ed16d7421defbf16e400bf3de30fec712",
+  "audited_manifest_sha256": "6f47115378b4d575016ffd346df23e8d0c11be03d0aa6da1098af924b8b026c3",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 65,
+    "COMPLETE": 67,
     "PARTIAL": 26,
-    "PENDING": 28,
+    "PENDING": 26,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
   },
@@ -128,9 +128,9 @@
       "title": "웨어러블·CGM·유전자 연동",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 2,
+        "COMPLETE": 4,
         "PARTIAL": 0,
-        "PENDING": 8,
+        "PENDING": 6,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
       }
@@ -3199,14 +3199,22 @@
         "docs/context/original_plan.pdf#page=24"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/domain/sensor_parser.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_sensor_parser.py",
+          "wellnessbox-rnd/scripts/run_genetic_normalization_consent_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op093_op094_genetic_normalization_consent_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -3222,14 +3230,24 @@
         "docs/context/original_plan.pdf#page=24"
       ],
       "required_stage": "IMPLEMENTED",
-      "claimed_stage": null,
-      "disposition": "PENDING",
+      "claimed_stage": "IMPLEMENTED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "completion_claim_missing"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
-        "implementation_files": [],
-        "test_files": [],
+        "implementation_files": [
+          "wellnessbox-rnd/src/wellnessbox_rnd/domain/intake.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/efficacy/service.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/schemas/recommendation.py"
+        ],
+        "test_files": [
+          "wellnessbox-rnd/tests/test_consent_and_input_hash_contracts.py",
+          "wellnessbox-rnd/tests/test_data_lake_lineage.py",
+          "wellnessbox-rnd/scripts/run_genetic_normalization_consent_smoke.py",
+          "wellnessbox-rnd/data/original_plan/evidence/op093_op094_genetic_normalization_consent_smoke_v1.json"
+        ],
         "integration_evidence": [],
         "operational_evidence": [],
         "external_dependencies": [],

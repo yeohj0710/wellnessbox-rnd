@@ -56,7 +56,9 @@ on:
       - "scripts/run_counseling_verifier_urgent_safety_smoke.py"
       - "scripts/run_counseling_fallback_frozen_api_e2e_smoke.py"
       - "scripts/run_sensor_daily_normalization_smoke.py"
+      - "scripts/run_genetic_normalization_consent_smoke.py"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
+      - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
       - "data/samples/wearable_summary_v1.csv"
       - "data/samples/cgm_summary_v1.csv"
       - "src/wellnessbox_rnd/domain/sensor_parser.py"
@@ -151,7 +153,9 @@ on:
     paths:
       - ".github/workflows/original-plan-evidence.yml"
       - "scripts/run_sensor_daily_normalization_smoke.py"
+      - "scripts/run_genetic_normalization_consent_smoke.py"
       - "data/original_plan/op091_op092_sensor_daily_normalization_cases_v1.json"
+      - "data/original_plan/op093_op094_genetic_normalization_consent_cases_v1.json"
       - "data/samples/wearable_summary_v1.csv"
       - "data/samples/cgm_summary_v1.csv"
       - "tests/test_sensor_parser.py"
@@ -476,6 +480,11 @@ jobs:
           python scripts/run_sensor_daily_normalization_smoke.py
           && git diff --exit-code
           data/original_plan/evidence/op091_op092_sensor_daily_normalization_smoke_v1.json
+      - name: Check genetic normalization and consent evidence
+        run: >-
+          python scripts/run_genetic_normalization_consent_smoke.py
+          && git diff --exit-code
+          data/original_plan/evidence/op093_op094_genetic_normalization_consent_smoke_v1.json
       - name: Run requirement contract tests
         run: >-
           python -m pytest
@@ -596,6 +605,7 @@ jobs:
           scripts/run_counseling_verifier_urgent_safety_smoke.py
           scripts/run_counseling_fallback_frozen_api_e2e_smoke.py
           scripts/run_sensor_daily_normalization_smoke.py
+          scripts/run_genetic_normalization_consent_smoke.py
           scripts/run_pro_worsening_action_real_outcome_smoke.py
           scripts/run_optimization_constraints_product_catalog_smoke.py
           scripts/run_product_combination_dose_smoke.py
