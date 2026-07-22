@@ -1,5 +1,13 @@
 # NEXT_STEPS
 
+## OP-019/020 이후 다음 bounded loop
+
+1. OP-021/022의 구현·증거 경계를 조사하고 장문 보고서를 작성한다.
+2. OP-023/024의 구현·증거 경계를 조사하고 장문 보고서를 작성한다.
+3. OP-025/026의 구현·증거 경계를 조사하고 장문 보고서를 작성한다.
+
+현재 물리 연구보고서는 62개, 유효 연구보고서는 40/120이며 누락·부적합 80개가 남는다. 전체 글자 수는 282,078자다. completion은 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, OP-120 evidence SHA-256은 `6318bd672f8202dfe5513641f4edad694c47123a082e0fc0390f45a79752a6b7`이다. GitHub Actions `29937570061`은 최초 일시적 build 실패 후 동일 failed-job 재실행에서 성공했다.
+
 ## OP-017/018 이후 다음 bounded loop
 
 1. OP-019/020의 service profile adapter와 추천 가능성 계약을 같은 기준으로 backfill한다.

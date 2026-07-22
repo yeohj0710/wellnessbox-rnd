@@ -1,5 +1,15 @@
 # PROGRESS
 
+## 2026-07-23 OP-019/020 연구보고서 backfill 완료
+
+- OP-019 WellnessBox profile adapter와 OP-020 미지원 입력 오류·지원 결측 `missing_information` 계약을 양쪽 schema, adapter, preview route, 공유 fixture, API 테스트와 Git 이력에 대조했다. 둘 다 `INTEGRATED / COMPLETE`이며 production 운영·외부 검증은 주장하지 않는다.
+- 데이터셋은 `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `a0c4255339a2945dce61bd330d427693ef4f797799c246db603028447206a545`다. 물리 보고서 62개, 유효 40/120, 누락·부적합 80개, 총 282,078자다.
+- OP-120 evidence는 두 번 byte-identical로 재생됐고 SHA-256은 `6318bd672f8202dfe5513641f4edad694c47123a082e0fc0390f45a79752a6b7`다. completion은 `76/43/0/1/0`, 최종 감사는 `BLOCKED`다.
+- R&D focused pytest 72건, 서비스 adapter QA 17 checks, tracked Ruff, manifest audit, completion check가 통과했다. 독립 검토 `Critical 0 / Important 0 / Minor 0`.
+- GitHub Actions `29937570061` 최초 시도는 관련 없는 OP-115/116 과거 build 재생에서 stderr 없이 실패했다. 동일 source failed-job 재실행은 전체 성공해 일시적 CI build 실패로 판정했다.
+- 서비스 보호 변경·production·원천/frozen/학습 데이터·모델·simulation 변경 없음. frozen 256건 7개 지표, replay, weakest slice delta 0.
+- 병목 5개: 보고서 80개, stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt. 다음: OP-021/022, OP-023/024, OP-025/026.
+
 ## 2026-07-23 OP-017/018 연구보고서 backfill 완료
 
 - OP-017의 다섯 데이터 출처별 추천 사용·영구 저장 동의와 OP-018의 canonical snapshot·SHA-256 동일성 계약을 schema, intake, API, 테스트, Git 이력, 원본 PDF 16쪽에 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 운영·외부 검증은 주장하지 않는다.
