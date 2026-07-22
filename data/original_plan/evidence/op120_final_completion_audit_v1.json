@@ -191,7 +191,7 @@
       "wellnessbox-rnd/data/original_plan/evidence/op043_op044_candidate_signal_scoring_smoke_v1.json": "2b02914da7cc6af2441a22d932fbfa7738311086",
       "wellnessbox-rnd/data/original_plan/evidence/op045_op046_candidate_pool_structured_reasons_smoke_v1.json": "e772f02c85387ce09417ef97835ba450fa893366",
       "wellnessbox-rnd/data/original_plan/evidence/op047_op048_decision_uncertainty_learned_fallback_smoke_v1.json": "e8579295e2f74a76be7cbb34c2a99bc3093097e5",
-      "wellnessbox-rnd/data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json": "3ad7647515175bf6f2c01905259d949e7cd51826",
+      "wellnessbox-rnd/data/original_plan/evidence/op049_op050_replay_product_candidates_smoke_v1.json": "38deb29812078ae7cc6006bf56cdf8fcac067d1a",
       "wellnessbox-rnd/data/original_plan/evidence/op051_op052_versioned_pro_scoring_smoke_v1.json": "2ffcb244d697a70bf7d0d88c020bfe592fd66ddf",
       "wellnessbox-rnd/data/original_plan/evidence/op053_op054_pro_followup_interpretation_smoke_v1.json": "5ffac18ff4d87ee77e590a4c21191ac7496a0d88",
       "wellnessbox-rnd/data/original_plan/evidence/op055_op056_pro_personal_group_uncertainty_smoke_v1.json": "60b9e7e171d8b3b3001982ce8cfc2049b4227e35",
@@ -555,7 +555,7 @@
     },
     "repository_commits": {
       "wellnessbox": "8b9e2df62c998147ef045390909f7244501ef6e8",
-      "wellnessbox-rnd": "52d88180899b1c1f48ee6b78c45f70e582dc2477"
+      "wellnessbox-rnd": "bcac7da06862dd8663ef9d22a3bd5cd79ef68ad5"
     }
   },
   "dataset": {
