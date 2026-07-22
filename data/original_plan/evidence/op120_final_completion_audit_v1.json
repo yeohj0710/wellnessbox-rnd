@@ -4,7 +4,7 @@
       "claimed_requirement_count:119!=120",
       "nonexternal_stage_gaps:43",
       "external_validation_gaps:1",
-      "research_report_gaps:78",
+      "research_report_gaps:100",
       "validation_receipt_missing_or_invalid",
       "independent_review_receipt_missing_or_invalid"
     ],
@@ -93,7 +93,29 @@
         "OP-075",
         "OP-076",
         "OP-077",
-        "OP-078"
+        "OP-078",
+        "OP-082",
+        "OP-086",
+        "OP-087",
+        "OP-089",
+        "OP-090",
+        "OP-091",
+        "OP-092",
+        "OP-093",
+        "OP-094",
+        "OP-095",
+        "OP-096",
+        "OP-097",
+        "OP-098",
+        "OP-099",
+        "OP-100",
+        "OP-102",
+        "OP-103",
+        "OP-104",
+        "OP-105",
+        "OP-106",
+        "OP-117",
+        "OP-118"
       ],
       "nonexternal_stage_gap_ids": [
         "OP-021",
@@ -140,7 +162,7 @@
         "OP-118",
         "OP-120"
       ],
-      "report_count": 42,
+      "report_count": 20,
       "requirement_count": 120,
       "validation_receipt_valid": false
     },
@@ -225,7 +247,7 @@
       "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_cases_v1.json": "12fd157f0946427fb86735d9fd2273e7016c9750978e7aa75d0ec46a0274064c",
       "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_v1.json": "839cbbf61b732df727de05483928d35f8f2758a27888d7de6d70b932b014809b",
       "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json": "77fb740af282944144daa6bf58b99e535337fc343f4b39dd47a129d16e532d33",
-      "wellnessbox-rnd/data/original_plan/op120_final_completion_audit_cases_v1.json": "eb6fa5b6bdfdadf0f81d28aec9d941847f951b0cbfda08408dc38313936ecd02",
+      "wellnessbox-rnd/data/original_plan/op120_final_completion_audit_cases_v1.json": "e6506727ab9a01a65e53f4de27ed4383e0a6419e29832e081ae1bb0dd2ff3883",
       "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json": "a4a3440539b25d21147d21e9793885f4410a4ec0357df62e288261d6f0dbd107",
       "wellnessbox-rnd/data/parsed_references/reference_claims_v1.jsonl": "7d1c6e138e150ca1bda09bc36c8a337eea98523417290d62a386e49282f1f8b8",
       "wellnessbox-rnd/data/raw_references/nih_ods_omega3_warfarin.md": "0f3e3290f842e0fe9ed31b15bcfca75cb2b9d0861e774522001728416e4be1bb",
@@ -279,7 +301,7 @@
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-117.md": "1fdccf4d5fe19587cede6dea8f03192f869d2d2a7e5d751b628cfbdd37916374",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-118.md": "2771c84610837e6f41063d97c00fec6c209ec4b50bf4ae7496d6776a6cf939b2",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-119.md": "6613a466995e8994faaa7b5d229af223ca8d789f0da1e7bee8e8b7815c60d0b1",
-      "wellnessbox-rnd/docs/original_plan/research_reports/OP-120.md": "fa61d3e2b76b088fd09983ebdded56a15a9b01f7090b6143e07b355a3979dbd6",
+      "wellnessbox-rnd/docs/original_plan/research_reports/OP-120.md": "f9d12e6139096cdd9e3249ae4416c9feebe75a31c1b2ddb156b78451feb59a39",
       "wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md": "ccd0257027c14a4123b5008f4f55d62f5e78cccc4ff9efa5e20d7774cd25a345",
       "wellnessbox-rnd/docs/tips/CURRENT_REPO_AUDIT.md": "e395f40b44f258075f2c61fb0a0cc83cc1a1da73fae6e5f80849779f610c74d1",
       "wellnessbox-rnd/pyproject.toml": "18c579e7b0c4bc384ade80b07ec37e983209be074fb59792f03f9754d9b889f4",
@@ -355,7 +377,7 @@
       "wellnessbox-rnd/src/wellnessbox_rnd/evals/recommendation_replay_compare.py": "716bae8a8fc0db1435b8dbd1c704405e38fc5f8baa4cb793940cd505bd5267ad",
       "wellnessbox-rnd/src/wellnessbox_rnd/governance/__init__.py": "1df9d82cf289e2b88b31bd2c26aa2a99cfd9a6b7ed3fa5cd2b8ee0291ffc7be2",
       "wellnessbox-rnd/src/wellnessbox_rnd/governance/external_dependency_registry.py": "de112f88990b780d69ccdc6011b5901fb9f501683544d19f2e0bd25fe1ad60c0",
-      "wellnessbox-rnd/src/wellnessbox_rnd/governance/final_completion_audit.py": "6ef3227426b1c3f359f08f8011d2727e4e4d4084bf4d5c15fa793fa72429c32f",
+      "wellnessbox-rnd/src/wellnessbox_rnd/governance/final_completion_audit.py": "fe06260a4c75b77fc90ebfcc249eb113afaa0a945e7107e0ffa7d90c428765c2",
       "wellnessbox-rnd/src/wellnessbox_rnd/governance/original_plan_audit.py": "a1f107c959d9a522c469fa316577b4fb0ca3210d82f1331388598a9db7b554a4",
       "wellnessbox-rnd/src/wellnessbox_rnd/governance/original_plan_report.py": "19c65c67be46a89aeca366ba5fd2ec700c8bd5a1e30ed7a4d9a823febb77e792",
       "wellnessbox-rnd/src/wellnessbox_rnd/ingestion/reference_ingestion.py": "42b13ca031e6a61c1e1e2c0949509e4b653dc16bbf103ef5539e1c60dc97a459",
@@ -421,7 +443,7 @@
       "wellnessbox-rnd/tests/test_event_idempotency_data_mutation.py": "98f535ee83ecb1582d6916a8cdfa717f59a69a42557d5cd753d4741721dd2b89",
       "wellnessbox-rnd/tests/test_external_dependency_registry.py": "01f4bbcae26edb43397e5f4642892a8e3ad77846466ec0ca2bb6951f1368fff9",
       "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py": "a9e0cdb112755afbe6441c64b3a0a07a146410a2ff48e91c90d00cac52dc0560",
-      "wellnessbox-rnd/tests/test_final_completion_audit.py": "0f77aa4003e4290b646edfb58a3c0e6bfcae42cdbc2dad24c628f8533b135370",
+      "wellnessbox-rnd/tests/test_final_completion_audit.py": "1b76a9b494d994a80b11afe9f51d603017d13edf43a8cf372eca412291c9ccb1",
       "wellnessbox-rnd/tests/test_goal_ingredient_priors.py": "f5d8a12a5c8b62d4648509e479433c870d252948977c431b4a144976a56ffcdd",
       "wellnessbox-rnd/tests/test_health_input_contracts.py": "e91e7bbb0a073c115739fc390afdb300601e0cbc763f04478ebdf682faf6369b",
       "wellnessbox-rnd/tests/test_inference_api.py": "cd9f9f5f06182a48b3af53fc2d52137706de8e142f640fc1af246e2f4b8b73c1",
@@ -533,13 +555,13 @@
     },
     "repository_commits": {
       "wellnessbox": "8b9e2df62c998147ef045390909f7244501ef6e8",
-      "wellnessbox-rnd": "e236db4b06aa98d0f1185784b61a200eb5125655"
+      "wellnessbox-rnd": "a8ca415b774fef3d4394ea8d962e7eec19b1f9f1"
     }
   },
   "dataset": {
     "case_count": 8,
     "path": "data/original_plan/op120_final_completion_audit_cases_v1.json",
-    "sha256": "eb6fa5b6bdfdadf0f81d28aec9d941847f951b0cbfda08408dc38313936ecd02"
+    "sha256": "e6506727ab9a01a65e53f4de27ed4383e0a6419e29832e081ae1bb0dd2ff3883"
   },
   "observed": {
     "canonical_evidence": {
@@ -568,8 +590,8 @@
       "requirement_count": 120
     },
     "research_reports": {
-      "missing_report_count": 78,
-      "report_count": 42
+      "missing_report_count": 100,
+      "report_count": 20
     }
   },
   "requirement": {
@@ -581,14 +603,14 @@
   "source_identity": {
     "blobs": {
       "data/original_plan/op120_final_audit_policy_v1.json": "0449c73e7f4abe861d3d2871e26a9418d52be3aa",
-      "data/original_plan/op120_final_completion_audit_cases_v1.json": "718a021ead302593d0fac8462251b16517a12cd3",
+      "data/original_plan/op120_final_completion_audit_cases_v1.json": "b095fbc68bcab80be6e7dd192f67cde3ebec9ee2",
       "data/original_plan/requirements_manifest_v1.json": "3884fc7badcaec4f60f24da87d77be7654fca61d",
-      "docs/original_plan/research_reports/OP-120.md": "376b157cc11cec1f53fdee77063c2a53c7984617",
+      "docs/original_plan/research_reports/OP-120.md": "14e7b3b44d16372439e46f108ddaf20354893166",
       "scripts/run_final_completion_audit.py": "622e17edeac8fbca93a797c63a29b6317283a839",
-      "src/wellnessbox_rnd/governance/final_completion_audit.py": "d58b09c489a2bcb64500e98c35a562d126b47364",
-      "tests/test_final_completion_audit.py": "68821969c80656a4fa0d36921d6ac1fde3fe82ec"
+      "src/wellnessbox_rnd/governance/final_completion_audit.py": "a437e964c95821ebe1f81edb175bdade8014c8ca",
+      "tests/test_final_completion_audit.py": "56560188e4ce7d2fc6b7aa57a433f8c8434ae0f0"
     },
-    "commit": "e236db4b06aa98d0f1185784b61a200eb5125655"
+    "commit": "a8ca415b774fef3d4394ea8d962e7eec19b1f9f1"
   },
   "stage_boundary": {
     "final_audit_ready": false,
