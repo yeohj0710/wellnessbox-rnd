@@ -7,6 +7,7 @@
 - 고정 데이터셋은 8건이다. SHA-256은 `e6506727ab9a01a65e53f4de27ed4383e0a6419e29832e081ae1bb0dd2ff3883`이다.
 - 현재 감사는 `BLOCKED`다. required stage 부족 43건, OP-039 외부 검증, 누락·부적합 보고서 100건, 최종 검증·독립 검토 영수증이 남았다.
 - frozen·학습·모델·safety·replay·weakest slice delta는 모두 0이다.
+- 검증된 구현·증거 HEAD는 `914c4572e23e385fe34f0b1f9362137fa6118f7b`이며 GitHub Actions `29911825838`이 성공했다. 독립 검토는 Critical 0, Important 0, Minor 1이다.
 
 ## 2026-07-22 deployment-contract and endpoint-inventory loop
 
