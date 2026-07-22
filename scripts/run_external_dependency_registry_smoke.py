@@ -37,12 +37,13 @@ def verified_head_identity() -> tuple[str, dict[str, str]]:
     blobs: dict[str, str] = {}
     for path in SOURCE_PATHS:
         try:
-            committed = subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=ROOT)
+            committed_blob = git("rev-parse", f"HEAD:{path}")
+            working_blob = git("hash-object", path)
         except subprocess.CalledProcessError as error:
             raise RuntimeError(f"source is not committed at HEAD: {path}") from error
-        if committed != (ROOT / path).read_bytes():
+        if working_blob != committed_blob:
             raise RuntimeError(f"source differs from HEAD: {path}")
-        blobs[path] = git("rev-parse", f"HEAD:{path}")
+        blobs[path] = committed_blob
     return git("log", "-1", "--format=%H", "--", *SOURCE_PATHS), blobs
 
 
