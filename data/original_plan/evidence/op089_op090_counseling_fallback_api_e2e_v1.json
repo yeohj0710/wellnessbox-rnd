@@ -504,7 +504,7 @@
   "service_database_persistence_observed": false,
   "source_identity": {
     "files": {
-      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "679bac86be6798eee5a2a509fdc042a976f7da8a620c40c6fba4d3316d15118b",
+      "wellnessbox-rnd/apps/inference_api/routes/interim.py": "1383ad2906896731cfe6033a92685f02fdec4892bc627a569387a15e65398b43",
       "wellnessbox-rnd/data/knowledge/counseling_answer_verifier_policy_v1.json": "12d71723887094714241425b5cfdc88621cf6a21ffdb1bd66d4d89a5e4c927de",
       "wellnessbox-rnd/data/knowledge/counseling_knowledge_scope_registry_v1.json": "a4bbfc0e2bdc85befe5d7ae6e4383cecd2ce942ade90b02eeeec94e86cb43d19",
       "wellnessbox-rnd/data/knowledge/counseling_retrieval_corpus_manifest_v1.json": "ab8703d02c2e30db8c8a6f83835da9be055aaccc4425cc8aea121e636754a1b7",
@@ -515,13 +515,13 @@
       "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py": "399ed9fb1ef7eed7ec164f229eecf5d8d611f98231efbf311bbaa11eded7530b",
       "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py": "6209f229766a8aa24d39093433861763f2410c5b5291574ef359bd084cda32f6",
       "wellnessbox-rnd/src/wellnessbox_rnd/chat/verifier.py": "7e93321aab942c97394d29248547d150a1390a1cb03c0b59026182e7bf0ba685",
-      "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py": "48c296d4629d9bb3b17477dbc56a44b8a5f0885f083aa3ded59116504ce073af",
-      "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py": "6ec5882dcf4af2b17fbe38235e01857ca003f46b0c7f5ba5fa7adfa054d12802",
+      "wellnessbox-rnd/src/wellnessbox_rnd/interim/data_lake.py": "9baeaae3000dff9e5e00b4894231a8cbb772d0694e3c13b7ffa0b190aaca4e28",
+      "wellnessbox-rnd/src/wellnessbox_rnd/interim/store.py": "c806a7096a2935d7c4f011337148fcb5905c0014d0d231252926f5fc2c2aac6a",
       "wellnessbox-rnd/src/wellnessbox_rnd/knowledge/runtime_db.py": "70d4226539e88152ae2923e733540cc47d39ae26fa919f0f6cf8285d668b0b62",
       "wellnessbox/lib/server/wb-rnd-interim-client.ts": "03f061ee67083ca3dd938551fc8d1fe5c2943e6cdfec93505e5b12deea75d836",
       "wellnessbox/scripts/qa/run-rnd-counseling-frozen-api-e2e.cts": "e00d6d8fd82e1875d3f28e0a6bc206bf396c1348d03bbc5e29e7edbc0f241046"
     },
-    "wellnessbox_rnd_commit": "d25279ea200b5954391ea7088aae368ef83fceb7",
+    "wellnessbox_rnd_commit": "58536428364b38e29afc358bb092a3293fc755da",
     "wellnessbox_service_commit": "a24b6c3308cc76627c3ca29807db1705e32c2178"
   },
   "stage_boundary": {

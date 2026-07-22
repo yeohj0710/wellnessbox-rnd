@@ -213,14 +213,14 @@
   "result": "PASS",
   "schema_version": "op095_op096_sensor_file_ingestion_lineage_smoke_v1",
   "source_identity": {
-    "commit": "d25279ea200b5954391ea7088aae368ef83fceb7",
+    "commit": "b6b6c5d2bcc28da06fe2a2f0a8957a20ccd7b3b7",
     "files": {
-      "apps/inference_api/routes/interim.py": "679bac86be6798eee5a2a509fdc042a976f7da8a620c40c6fba4d3316d15118b",
+      "apps/inference_api/routes/interim.py": "1383ad2906896731cfe6033a92685f02fdec4892bc627a569387a15e65398b43",
       "data/original_plan/op095_op096_sensor_file_ingestion_cases_v1.json": "a0f9a890c25dda59610d9efbda763680695247620eb563b89c202ce738dc4755",
       "scripts/run_sensor_file_ingestion_lineage_smoke.py": "b905701cd1c206e3302b4dd8ee7bc4fea1521c31ec68286c8f25d429a25e77a9",
       "src/wellnessbox_rnd/domain/sensor_parser.py": "f20e88b2d31798860733d40672e4dc4222f20cd5a4e54aeafd4bc3577c2296fa",
       "src/wellnessbox_rnd/interim/sensor_file_ingestion.py": "73526f3a7cd4a3652617191d8942be55c3992b1147a05705e803aae5fa013ef2",
-      "src/wellnessbox_rnd/interim/store.py": "6ec5882dcf4af2b17fbe38235e01857ca003f46b0c7f5ba5fa7adfa054d12802",
+      "src/wellnessbox_rnd/interim/store.py": "c806a7096a2935d7c4f011337148fcb5905c0014d0d231252926f5fc2c2aac6a",
       "src/wellnessbox_rnd/schemas/recommendation.py": "0124dcdfab4ae5f97c9eec801ec73b9a2b83b93015ce733d981fc916f15cf7db"
     }
   },
