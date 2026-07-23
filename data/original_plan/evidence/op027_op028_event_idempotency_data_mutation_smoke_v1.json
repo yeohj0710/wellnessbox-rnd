@@ -3,7 +3,7 @@
   "status": "passed",
   "data_class": "INTERIM_RUNTIME_EVENT",
   "case_count": 3,
-  "database_schema_version": 8,
+  "database_schema_version": 14,
   "conversation_event_count": 1,
   "behavior_event_count": 1,
   "event_mutation_count": 2,

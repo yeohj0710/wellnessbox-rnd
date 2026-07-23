@@ -2,6 +2,7 @@ import hashlib
 import json
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -11,9 +12,20 @@ from wellnessbox_rnd.interim.data_mutation import (
     DataMutationLedger,
     EventMutationTargetType,
 )
-from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore
 
 PROFILE_ID = "usr_abcdef0123456789abcdef0123456789"
+EVIDENCE_PATH = Path(
+    "data/original_plan/evidence/"
+    "op027_op028_event_idempotency_data_mutation_smoke_v1.json"
+)
+
+
+def test_canonical_evidence_uses_current_database_schema() -> None:
+    evidence = json.loads(EVIDENCE_PATH.read_text(encoding="utf-8"))
+
+    assert evidence["database_schema_version"] == SCHEMA_VERSION
+    assert evidence["checks"]["database_schema_version_matches_current"] is True
 
 
 def _headers() -> dict[str, str]:
