@@ -1,5 +1,15 @@
 # PROGRESS
 
+## 2026-07-23 OP-021/022 연구보고서 backfill 완료
+
+- OP-021 프로필·동의 버전 스냅샷과 OP-022 다섯 이벤트의 공통 `execution_id` 연결을 원본 PDF 16쪽, SQLite schema, ledger, FastAPI, 테스트와 canonical smoke에 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 production 운영은 주장하지 않는다.
+- 데이터셋은 `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `eb6fa5b6bdfdadf0f81d28aec9d941847f951b0cbfda08408dc38313936ecd02`다. 물리 보고서 64개, 유효 42/120, 누락·부적합 78개, 총 292,110자다.
+- 독립 검토가 오래된 schema version 8 smoke를 Important로 발견했다. 현재 schema 14로 재생하고 evidence와 `SCHEMA_VERSION`을 직접 비교하는 회귀 테스트를 추가했다. smoke SHA-256은 `4ed927ba7a081b74b5fd1a7dff62a67ac797ba7450dd90fcb489b7e210e0da97`다.
+- OP-120 evidence는 수정 뒤 두 번 byte-identical로 재생됐고 SHA-256은 `d8059938b8487452b68c3c4a26ffa8f24429f6119750286d725cf2d6941dccb6`다. completion은 `76/43/0/1/0`, 최종 감사는 `BLOCKED`다.
+- 수정 후 R&D focused pytest 109건, 서비스 adapter QA 17 checks, tracked Ruff, manifest audit, completion check가 통과했다. 재검토는 `Critical 0 / Important 0 / Minor 0`, GitHub Actions `29940069699`도 성공했다.
+- 서비스 보호 변경·production·원천/frozen/학습 데이터·모델·simulation 변경 없음. frozen 256건 7개 지표, replay, weakest slice delta 0.
+- 병목 5개: 보고서 78개, stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt. 다음: OP-023/024, OP-025/026, OP-027/028.
+
 ## 2026-07-23 OP-019/020 연구보고서 backfill 완료
 
 - OP-019 WellnessBox profile adapter와 OP-020 미지원 입력 오류·지원 결측 `missing_information` 계약을 양쪽 schema, adapter, preview route, 공유 fixture, API 테스트와 Git 이력에 대조했다. 둘 다 `INTEGRATED / COMPLETE`이며 production 운영·외부 검증은 주장하지 않는다.

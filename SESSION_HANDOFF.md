@@ -1,5 +1,15 @@
 # SESSION_HANDOFF
 
+## 2026-07-23 OP-021/022 최종 handoff
+
+- 단계/과제: 프로필·동의 snapshot 영속화와 추천·안전·최적화·대화·후속평가 공통 실행 ID 보고서 backfill. OP-021/022 `IMPLEMENTED / COMPLETE`.
+- dataset 8건 SHA-256 `eb6fa5b6bdfdadf0f81d28aec9d941847f951b0cbfda08408dc38313936ecd02`; lineage smoke 3건 SHA-256 `4ed927ba7a081b74b5fd1a7dff62a67ac797ba7450dd90fcb489b7e210e0da97`; OP-120 evidence `d8059938b8487452b68c3c4a26ffa8f24429f6119750286d725cf2d6941dccb6`.
+- 결과: 물리 64개, 유효 42/120, 누락·부적합 78개, 292,110자. completion `76/43/0/1/0`, OP-120 `BLOCKED`.
+- 독립 검토 Important 1건은 stale schema 8 smoke였다. schema 14 재생과 `SCHEMA_VERSION` 직접 비교 회귀 테스트로 수정했고 최종 재검토는 `Critical 0 / Important 0 / Minor 0`이다.
+- 검증: 수정 후 R&D focused pytest 109, 서비스 QA 17 checks, tracked Ruff, manifest audit, completion check PASS. CI `29940069699` 성공.
+- R&D HEAD `e8e5e133a5d9c2a4be5ca1c2802ca8bf4c6bd4ac`은 `origin/main`에 있다. 서비스는 `8b9e2df62c998147ef045390909f7244501ef6e8`에 유지했고 기존 사용자 변경을 보존했다.
+- 서비스 보호 변경·production·원천/frozen/학습 데이터·모델·simulation 변경 없음. frozen/replay/slice delta 0. 다음: OP-023/024, OP-025/026, OP-027/028.
+
 ## 2026-07-23 OP-019/020 최종 handoff
 
 - 단계/과제: WellnessBox profile adapter와 미지원 입력·지원 결측 계약 보고서 backfill. OP-019/020 `INTEGRATED / COMPLETE`.
