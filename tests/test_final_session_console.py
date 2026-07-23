@@ -35,6 +35,11 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn("currentStepIndex++;await load()", page)
         self.assertIn("$('finalAudit').style.display='block'", page)
 
+    def test_normal_local_launcher_does_not_rewrite_canonical_evidence(self) -> None:
+        launcher = (ROOT / "research-server-start.cmd").read_text(encoding="utf-8")
+        self.assertIn("python scripts\\run_local_research_session.py", launcher)
+        self.assertNotIn("--verify", launcher)
+
     def test_console_persists_policy_reviews_and_deferrals(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
