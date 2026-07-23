@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from scripts.run_final_completion_audit import (
     SERVICE_ROOT,
     _audited_input_hashes,
+    assert_no_regression,
     audited_repository_commits,
 )
 from wellnessbox_rnd.governance.final_completion_audit import (
@@ -24,6 +25,43 @@ from wellnessbox_rnd.governance.final_completion_audit import (
 from wellnessbox_rnd.schemas.original_plan_manifest import RepositoryName
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_fixed_cases_allow_monotonic_completion_progress() -> None:
+    expected = {
+        "requirement_inventory": {"requirement_count": 120},
+        "claimed_inventory": {"claimed_requirement_count": 119},
+        "required_stage_gaps": {"nonexternal_stage_gap_count": 43},
+        "external_validation": {"external_validation_gap_ids": ["OP-039"]},
+        "research_reports": {"report_count": 120, "missing_report_count": 0},
+        "canonical_evidence": {"audit_passed": True},
+        "completion_receipts": {"validation": False, "independent_review": False},
+        "completion_decision": {"status": "BLOCKED", "goal_complete": False},
+    }
+    improved = {
+        **expected,
+        "completion_receipts": {"validation": True, "independent_review": True},
+    }
+    assert_no_regression(expected, improved)
+
+
+def test_fixed_cases_still_reject_regression() -> None:
+    expected = {
+        "requirement_inventory": {"requirement_count": 120},
+        "claimed_inventory": {"claimed_requirement_count": 119},
+        "required_stage_gaps": {"nonexternal_stage_gap_count": 43},
+        "external_validation": {"external_validation_gap_ids": ["OP-039"]},
+        "research_reports": {"report_count": 120, "missing_report_count": 0},
+        "canonical_evidence": {"audit_passed": True},
+        "completion_receipts": {"validation": False, "independent_review": False},
+        "completion_decision": {"status": "BLOCKED", "goal_complete": False},
+    }
+    regressed = {**expected, "claimed_inventory": {"claimed_requirement_count": 118}}
+    try:
+        assert_no_regression(expected, regressed)
+    except AssertionError:
+        return
+    raise AssertionError("regression was accepted")
 def test_audited_repository_commit_reproduces_recorded_file_blobs() -> None:
     file_blobs = _audited_input_hashes()
     commits = audited_repository_commits(file_blobs)

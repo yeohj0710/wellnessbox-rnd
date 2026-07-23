@@ -63,6 +63,55 @@ def verified_head_identity() -> tuple[str, dict[str, str]]:
     return git("log", "-1", "--format=%H", "--", *SOURCE_PATHS), blobs
 
 
+def assert_no_regression(expected: dict[str, dict], observed: dict[str, dict]) -> None:
+    regressions: dict[str, dict] = {}
+    exact_cases = {"requirement_inventory"}
+    for case_id in exact_cases:
+        if observed[case_id] != expected[case_id]:
+            regressions[case_id] = {
+                "expected": expected[case_id],
+                "observed": observed[case_id],
+            }
+    if (
+        observed["claimed_inventory"]["claimed_requirement_count"]
+        < expected["claimed_inventory"]["claimed_requirement_count"]
+    ):
+        regressions["claimed_inventory"] = observed["claimed_inventory"]
+    if (
+        observed["required_stage_gaps"]["nonexternal_stage_gap_count"]
+        > expected["required_stage_gaps"]["nonexternal_stage_gap_count"]
+    ):
+        regressions["required_stage_gaps"] = observed["required_stage_gaps"]
+    if not set(observed["external_validation"]["external_validation_gap_ids"]).issubset(
+        expected["external_validation"]["external_validation_gap_ids"]
+    ):
+        regressions["external_validation"] = observed["external_validation"]
+    reports = observed["research_reports"]
+    expected_reports = expected["research_reports"]
+    if (
+        reports["report_count"] < expected_reports["report_count"]
+        or reports["missing_report_count"] > expected_reports["missing_report_count"]
+    ):
+        regressions["research_reports"] = reports
+    if expected["canonical_evidence"]["audit_passed"] and not observed[
+        "canonical_evidence"
+    ]["audit_passed"]:
+        regressions["canonical_evidence"] = observed["canonical_evidence"]
+    for field, required in expected["completion_receipts"].items():
+        if required and not observed["completion_receipts"][field]:
+            regressions.setdefault("completion_receipts", {})[field] = False
+    status_rank = {"BLOCKED": 0, "READY": 1}
+    expected_decision = expected["completion_decision"]
+    observed_decision = observed["completion_decision"]
+    if (
+        status_rank[observed_decision["status"]] < status_rank[expected_decision["status"]]
+        or (expected_decision["goal_complete"] and not observed_decision["goal_complete"])
+    ):
+        regressions["completion_decision"] = observed_decision
+    if regressions:
+        raise AssertionError({"regressions": regressions})
+
+
 def main() -> int:
     audit = audit_final_completion_v1(
         manifest_path=MANIFEST,
@@ -97,8 +146,7 @@ def main() -> int:
         },
     }
     expected = {item["case_id"]: item["expected"] for item in cases["cases"]}
-    if observed != expected:
-        raise AssertionError({"expected": expected, "observed": observed})
+    assert_no_regression(expected, observed)
     source_commit, source_blobs = verified_head_identity()
     audited_input_hashes = _audited_input_hashes()
     payload = {
@@ -122,8 +170,8 @@ def main() -> int:
         },
         "stage_boundary": {
             "final_auditor_implemented": True,
-            "final_audit_ready": False,
-            "goal_complete": False,
+            "final_audit_ready": audit.status.value == "READY",
+            "goal_complete": audit.goal_complete,
         },
     }
     OUTPUT.write_text(
