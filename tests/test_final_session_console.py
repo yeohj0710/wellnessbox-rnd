@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from datetime import UTC, datetime
 from pathlib import Path
+from unittest.mock import patch
 
 from wellnessbox_rnd.governance.final_session_console import FinalSessionConsole, run_rehearsal
 from wellnessbox_rnd.interim.ai_drafts import AiDraftCreateV1, AiDraftService
@@ -83,6 +84,50 @@ class FinalSessionConsoleTest(unittest.TestCase):
                 },
             )
             self.assertEqual(console.state["steps"]["H-007"]["status"], "deferred")
+
+    def test_finalize_registers_policy_before_resigning_receipts(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "project"
+            root.mkdir()
+            console = FinalSessionConsole(root)
+            for step in console.state["steps"].values():
+                step["status"] = "completed"
+            console.state["steps"]["H-006"].update(
+                {
+                    "key_path": "key.pem",
+                    "issuer_id": "issuer",
+                    "validation_receipt_path": "v.json",
+                    "independent_review_receipt_path": "r.json",
+                    "public_key_ed25519_base64": "key",
+                }
+            )
+            events: list[str] = []
+
+            def commit(_: list[Path], message: str) -> None:
+                events.append(message)
+
+            def sign(**_: object) -> dict[str, str]:
+                self.assertIn("docs: register final receipt trust policy", events)
+                events.append("signed")
+                return {
+                    "validation_receipt_path": str(root / "v.json"),
+                    "independent_review_receipt_path": str(root / "r.json"),
+                }
+
+            with (
+                patch.object(console, "_register_final_signoffs", return_value=[]),
+                patch.object(
+                    console, "_register_receipt_policy", return_value=root / "policy.json"
+                ),
+                patch.object(console, "_git_commit", side_effect=commit),
+                patch.object(console, "sign_receipts", side_effect=sign),
+                patch.object(console, "run_final_audit", return_value={"status": "READY"}),
+            ):
+                result = console.finalize_and_audit()
+            self.assertTrue(result["finalized"])
+            self.assertLess(
+                events.index("docs: register final receipt trust policy"), events.index("signed")
+            )
 
     def test_rehearsal_completes_all_steps_without_production_writes(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

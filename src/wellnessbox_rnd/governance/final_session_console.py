@@ -25,6 +25,7 @@ from wellnessbox_rnd.governance.final_completion_audit import (
 )
 from wellnessbox_rnd.governance.original_plan_audit import audit_original_plan_manifest_v1
 from wellnessbox_rnd.interim.ai_drafts import (
+    AiDraftCreateV1,
     AiDraftDecisionV1,
     AiDraftService,
     DraftReviewStatus,
@@ -246,6 +247,24 @@ class FinalSessionConsole:
                 observed = hashlib.sha256(trusted_path.read_bytes()).hexdigest()
                 if getattr(report, field) != observed:
                     raise ValueError(f"external validation trust mismatch: {field}")
+            coverage_roots = json.loads(trust_files["coverage_trust_roots_sha256"].read_text())
+            attestation_roots = json.loads(
+                trust_files["attestation_trust_roots_sha256"].read_text()
+            )
+            coverage_match = any(
+                item.get("coverage_protocol_sha256") == report.coverage_protocol_sha256
+                and item.get("approval_reference") == report.coverage_approval_reference
+                for item in coverage_roots["approved_coverage_protocols"]
+            )
+            attestation_match = any(
+                item.get("attestation_sha256") == report.attestation_sha256
+                and item.get("verification_receipt_sha256") == report.verification_receipt_sha256
+                and item.get("coverage_protocol_sha256") == report.coverage_protocol_sha256
+                and item.get("approval_reference") == report.attestation_approval_reference
+                for item in attestation_roots["approved_attestations"]
+            )
+            if not coverage_match or not attestation_match:
+                raise ValueError("external validation is not pinned by OP-039 trust registries")
         destination = self.state_root / "external_validation" / source.name
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
@@ -341,19 +360,57 @@ class FinalSessionConsole:
         self._record("H-006", "completed", result)
         return result
 
+    def _stage_gap_ids(self) -> list[str]:
+        ranks = {"IMPLEMENTED": 1, "INTEGRATED": 2, "OPERATED": 3}
+        manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+        gaps = []
+        for group in manifest["groups"]:
+            default = group.get("default_required_stage")
+            for requirement in group["requirements"]:
+                required = requirement.get("required_stage", default)
+                if required == "EXTERNAL":
+                    continue
+                if ranks.get(requirement.get("claimed_stage"), 0) < ranks.get(required, 0):
+                    gaps.append(requirement["requirement_id"])
+        return gaps
+
     def record_operations(self, operator_id: str, checks: dict[str, Any]) -> dict[str, Any]:
         required = {"rnd_api", "wellnessbox_environment", "health_check", "browser_roundtrip"}
-        complete = required.issubset(checks) and all(
+        environment_complete = required.issubset(checks) and all(
             isinstance(checks[key], dict)
             and checks[key].get("status") == "PASS"
             and isinstance(checks[key].get("evidence"), str)
-            and checks[key]["evidence"].strip()
+            and Path(checks[key]["evidence"]).resolve().is_file()
             for key in required
         )
+        required_gaps = set(self._stage_gap_ids())
+        supplied = checks.get("requirement_evidence", {})
+        registered: dict[str, str] = {}
+        if isinstance(supplied, dict):
+            destination_root = self.state_root / "operational_evidence"
+            destination_root.mkdir(parents=True, exist_ok=True)
+            for requirement_id, source_value in supplied.items():
+                if requirement_id not in required_gaps or not isinstance(source_value, str):
+                    continue
+                source = Path(source_value).resolve()
+                if not source.is_file():
+                    continue
+                payload = json.loads(source.read_text(encoding="utf-8"))
+                if (
+                    payload.get("requirement_id") != requirement_id
+                    or payload.get("status") != "PASS"
+                ):
+                    continue
+                destination = destination_root / f"{requirement_id}.json"
+                shutil.copy2(source, destination)
+                registered[requirement_id] = str(destination)
+        complete = environment_complete and set(registered) == required_gaps
         record = {
             "schema_version": "operational_environment_signoff_v1",
             "operator_id": operator_id,
             "checks": checks,
+            "registered_requirement_evidence": registered,
+            "required_requirement_ids": sorted(required_gaps),
             "recorded_at": _now(),
         }
         _write_json(self.state_root / "operational_environment_signoff_v1.json", record)
@@ -386,9 +443,9 @@ class FinalSessionConsole:
             },
         )
         manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
-        signoff_ref = f"wellnessbox-rnd/{signoff.relative_to(self.root).as_posix()}"
         external_path = Path(external).resolve()
         external_ref = f"wellnessbox-rnd/{external_path.relative_to(self.root).as_posix()}"
+        registered = self.state["steps"]["H-007"].get("registered_requirement_evidence", {})
         for group in manifest["groups"]:
             group_required = group.get("default_required_stage")
             for requirement in group["requirements"]:
@@ -396,11 +453,15 @@ class FinalSessionConsole:
                 if requirement["requirement_id"] == "OP-039":
                     requirement["claimed_stage"] = "EXTERNAL"
                     requirement["evidence"].setdefault("external_evidence", []).append(external_ref)
-                elif required in {"IMPLEMENTED", "INTEGRATED", "OPERATED"}:
+                elif requirement["requirement_id"] in registered:
                     requirement["claimed_stage"] = required
+                    evidence_path = Path(registered[requirement["requirement_id"]]).resolve()
+                    evidence_ref = (
+                        f"wellnessbox-rnd/{evidence_path.relative_to(self.root).as_posix()}"
+                    )
                     evidence = requirement["evidence"].setdefault("operational_evidence", [])
-                    if signoff_ref not in evidence:
-                        evidence.append(signoff_ref)
+                    if evidence_ref not in evidence:
+                        evidence.append(evidence_ref)
         _write_json(self.manifest_path, manifest)
         cases_path = self.root / "data/original_plan/op120_final_completion_audit_cases_v1.json"
         cases = json.loads(cases_path.read_text(encoding="utf-8"))
@@ -429,6 +490,7 @@ class FinalSessionConsole:
                     + closed_items.lstrip()
                 )
                 checklist_path.write_text(checklist, encoding="utf-8")
+        operational_evidence = [Path(value) for value in registered.values()]
         return [
             self.manifest_path,
             cases_path,
@@ -437,9 +499,10 @@ class FinalSessionConsole:
             operations,
             external_path,
             self.state_path,
+            *operational_evidence,
         ]
 
-    def _register_receipt_policy(self, receipt: dict[str, Any]) -> list[Path]:
+    def _register_receipt_policy(self, receipt: dict[str, Any]) -> Path:
         policy = json.loads(self.audit_policy_path.read_text(encoding="utf-8"))
         validation = Path(receipt["validation_receipt_path"]).resolve()
         review = Path(receipt["independent_review_receipt_path"]).resolve()
@@ -459,7 +522,7 @@ class FinalSessionConsole:
             if item["issuer_id"] != issuer["issuer_id"]
         ] + [issuer]
         _write_json(self.audit_policy_path, policy)
-        return [self.audit_policy_path, validation, review, self.state_path]
+        return self.audit_policy_path
 
     def finalize_and_audit(self) -> dict[str, Any]:
         incomplete = [step for step in STEPS if self.state["steps"][step]["status"] != "completed"]
@@ -469,10 +532,16 @@ class FinalSessionConsole:
         phase_paths = self._register_final_signoffs()
         self._git_commit(phase_paths, "docs: record final human signoffs")
         receipt_state = self.state["steps"]["H-006"]
+        policy_path = self._register_receipt_policy(receipt_state)
+        self._git_commit([policy_path], "docs: register final receipt trust policy")
         receipt = self.sign_receipts(
             key_path=receipt_state["key_path"], issuer_id=receipt_state["issuer_id"]
         )
-        receipt_paths = self._register_receipt_policy(receipt)
+        receipt_paths = [
+            Path(receipt["validation_receipt_path"]),
+            Path(receipt["independent_review_receipt_path"]),
+            self.state_path,
+        ]
         self._git_commit(receipt_paths, "docs: register final signed receipts")
         return {"finalized": True, "incomplete_steps": [], "audit": self.run_final_audit()}
 
@@ -498,9 +567,29 @@ def run_rehearsal(root: Path, rehearsal_root: Path) -> dict[str, Any]:
     console.confirm_alignment("simulation-owner")
     for rule in console.policy_rules():
         console.review_policy_rule(rule["rule_id"], "simulation-pharmacist", "approved")
-    simulated_ledger = rehearsal_root / "simulated_ai_draft_ledger.json"
-    _write_json(simulated_ledger, {"data_class": "SIMULATION", "reviewed": 3})
-    console.record_draft_review_summary(str(simulated_ledger), "simulation-pharmacist")
+    simulated_ledger = rehearsal_root / "simulated_ai_drafts.sqlite3"
+    store = InterimStore(simulated_ledger)
+    store.migrate()
+    draft_service = AiDraftService(store)
+    for index in range(3):
+        draft_service.create(
+            AiDraftCreateV1(
+                record_type="rehearsal",
+                model_identifier="simulation-model",
+                prompt_version="simulation-v1",
+                content={"text": f"simulation-draft-{index}"},
+                rationale={"data_class": "SIMULATION"},
+                idempotency_key=f"rehearsal-{index}",
+            ),
+            created_at=datetime.now(UTC),
+        )
+    for item in list(draft_service.queue()):
+        console.decide_draft(
+            database_path=str(simulated_ledger),
+            draft_id=item["draft_id"],
+            reviewer_id="simulation-pharmacist",
+            decision="approved",
+        )
     console.record_report_tone("simulation-owner", True)
     external = rehearsal_root / "simulated_external_validation.json"
     _write_json(external, {"data_class": "SIMULATION", "status": "PASS"})
@@ -511,14 +600,22 @@ def run_rehearsal(root: Path, rehearsal_root: Path) -> dict[str, Any]:
         issuer_id="simulation-issuer",
         source_commit="0" * 40,
     )
+    environment_files = {}
+    for name in ("rnd_api", "wellnessbox_environment", "health_check", "browser_roundtrip"):
+        path = rehearsal_root / f"{name}.json"
+        _write_json(path, {"data_class": "SIMULATION", "status": "PASS", "check": name})
+        environment_files[name] = {"status": "PASS", "evidence": str(path)}
+    requirement_evidence = {}
+    for requirement_id in console._stage_gap_ids():
+        path = rehearsal_root / "requirement_evidence" / f"{requirement_id}.json"
+        _write_json(
+            path,
+            {"data_class": "SIMULATION", "requirement_id": requirement_id, "status": "PASS"},
+        )
+        requirement_evidence[requirement_id] = str(path)
     console.record_operations(
         "simulation-operator",
-        {
-            "rnd_api": {"status": "PASS", "evidence": "simulation-ready"},
-            "wellnessbox_environment": {"status": "PASS", "evidence": "simulation-ready"},
-            "health_check": {"status": "PASS", "evidence": "simulation-pass"},
-            "browser_roundtrip": {"status": "PASS", "evidence": "simulation-pass"},
-        },
+        {**environment_files, "requirement_evidence": requirement_evidence},
     )
     receipt_state = console.state["steps"]["H-006"]
     issuer = TrustedIssuerV1(
