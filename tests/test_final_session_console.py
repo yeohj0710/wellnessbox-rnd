@@ -27,6 +27,37 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertEqual(restored.state["steps"]["H-002"]["status"], "completed")
             self.assertEqual(restored.state["steps"]["H-005"]["status"], "deferred")
 
+    def test_console_approves_all_policy_rules_as_wellnessbox(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
+            console.approve_all_policy_rules()
+            self.assertEqual(console.state["steps"]["H-002"]["status"], "completed")
+            ledger = json.loads(
+                (Path(temp) / "session/policy_rule_reviews_v1.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(len(ledger["reviews"]), 9)
+            self.assertEqual(
+                {item["reviewer_id"] for item in ledger["reviews"].values()},
+                {"웰니스박스"},
+            )
+
+    def test_console_confirms_empty_draft_queue_without_path_input(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            database = root / "drafts.sqlite3"
+            console = FinalSessionConsole(ROOT, state_root=root / "session")
+            console.confirm_empty_draft_queue(str(database))
+            self.assertEqual(console.state["steps"]["H-003"]["status"], "completed")
+            cycle = json.loads(
+                (root / "session/ai_draft_downstream_cycle_v1.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(cycle["training_consumed_count"], 0)
+            self.assertEqual(cycle["evaluation_consumed_count"], 0)
+
     def test_console_decides_real_ai_draft_and_returns_next(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -80,6 +111,18 @@ class FinalSessionConsoleTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 console.register_external_validation(str(invalid))
 
+    def test_external_validation_upload_uses_session_storage(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            console = FinalSessionConsole(
+                ROOT, state_root=Path(temp) / "session", simulation=True
+            )
+            console.register_external_validation_upload(
+                {"data_class": "SIMULATION", "status": "PASS"}
+            )
+            registered = Path(console.state["steps"]["H-005"]["registered_path"])
+            self.assertTrue(registered.is_file())
+            self.assertTrue(registered.is_relative_to(Path(temp)))
+
     def test_operations_require_pass_status_and_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
@@ -117,14 +160,33 @@ class FinalSessionConsoleTest(unittest.TestCase):
             ]
             self.assertIn(requirement_id, registered)
 
+    def test_uploaded_operations_are_classified_without_user_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
+            requirement_id = console._stage_gap_ids()[0]
+            console.record_uploaded_operations(
+                "웰니스박스",
+                [
+                    {"check": "rnd_api", "status": "PASS"},
+                    {"requirement_id": requirement_id, "status": "PASS"},
+                ],
+            )
+            step = console.state["steps"]["H-007"]
+            self.assertEqual(step["checks"]["rnd_api"]["status"], "PASS")
+            self.assertIn(requirement_id, step["registered_requirement_evidence"])
+
     def test_console_html_has_automatic_draft_queue_and_structured_operations(self) -> None:
         html = (ROOT / "scripts/run_final_session_console.py").read_text(encoding="utf-8")
         self.assertIn("data.next_draft", html)
         self.assertIn("draftReviewerId", html)
-        self.assertIn('type="checkbox" id="check-${id}"', html)
-        self.assertIn("registered[id]?'checked':''", html)
-        self.assertIn("saved.operator_id", html)
+        self.assertIn("const defaultActor='웰니스박스'", html)
+        self.assertIn("policy_all", html)
+        self.assertIn('id="draftDb" type="hidden"', html)
+        self.assertIn("receipts_prepare", html)
+        self.assertIn('id="externalFile" type="file"', html)
+        self.assertIn('id="operationFiles" type="file"', html)
         self.assertNotIn("운영 확인 JSON", html)
+        self.assertNotIn("외부 평가 결과 JSON 경로", html)
 
     def test_finalize_registers_policy_before_resigning_receipts(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -169,6 +231,22 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertLess(
                 events.index("docs: register final receipt trust policy"), events.index("signed")
             )
+
+    def test_prepare_receipts_creates_default_key_only_when_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            console = FinalSessionConsole(ROOT, state_root=root / "session")
+            key_path = root / "session/signing.pem"
+            with patch.object(
+                console,
+                "sign_receipts",
+                return_value={"issuer_id": "웰니스박스"},
+            ) as sign:
+                console.prepare_and_sign_receipts(str(key_path))
+                first_key = key_path.read_bytes()
+                console.prepare_and_sign_receipts(str(key_path))
+            self.assertEqual(key_path.read_bytes(), first_key)
+            self.assertEqual(sign.call_count, 2)
 
     def test_rehearsal_completes_all_steps_without_production_writes(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

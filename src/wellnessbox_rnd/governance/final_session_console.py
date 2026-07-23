@@ -124,6 +124,9 @@ class FinalSessionConsole:
             "policy_rules": readable_rules,
             "report_samples": samples,
             "draft_database_path": str(data_lake_database_path().resolve()),
+            "default_signing_key_path": str(
+                (self.state_root / "final_session_signing_key.pem").resolve()
+            ),
             "stage_gap_ids": self._stage_gap_ids(),
         }
 
@@ -155,11 +158,69 @@ class FinalSessionConsole:
             {"reviewed_rule_count": len(ledger["reviews"]), "rule_count": len(rules)},
         )
 
+    def approve_all_policy_rules(self, reviewer_id: str = "웰니스박스") -> dict[str, Any]:
+        for rule in self.policy_rules():
+            self.review_policy_rule(rule["rule_id"], reviewer_id, "approved")
+        return self.state
+
     def draft_queue(self, database_path: str) -> dict[str, Any]:
         store = InterimStore(Path(database_path).resolve())
         store.migrate()
         service = AiDraftService(store)
         return {"items": service.queue(), "summary": service.summary()}
+
+    def _run_draft_downstream_cycle(
+        self, store: InterimStore, database_path: str
+    ) -> Path:
+        service = AiDraftService(store)
+        summary = service.summary()
+        approved_ids = [
+            str(row["draft_id"])
+            for row in store.rows(
+                "select draft_id from ai_drafts "
+                "where review_status in ('approved', 'approved_with_edits') "
+                "order by created_at"
+            )
+        ]
+        cycle = {
+            "schema_version": "ai_draft_downstream_cycle_v1",
+            "draft_ledger_path": str(Path(database_path).resolve()),
+            "review_counts": summary,
+            "training_consumed_count": len(
+                service.consume_approved(
+                    draft_ids=approved_ids, purpose=DownstreamPurpose.TRAINING
+                )
+            ),
+            "evaluation_consumed_count": len(
+                service.consume_approved(
+                    draft_ids=approved_ids, purpose=DownstreamPurpose.EVALUATION
+                )
+            ),
+            "executed_at": _now(),
+        }
+        path = self.state_root / "ai_draft_downstream_cycle_v1.json"
+        _write_json(path, cycle)
+        return path
+
+    def confirm_empty_draft_queue(
+        self, database_path: str, reviewer_id: str = "웰니스박스"
+    ) -> dict[str, Any]:
+        store = InterimStore(Path(database_path).resolve())
+        store.migrate()
+        service = AiDraftService(store)
+        if service.queue():
+            raise ValueError("pending_ai_drafts_must_be_reviewed")
+        cycle_path = self._run_draft_downstream_cycle(store, database_path)
+        return self._record(
+            "H-003",
+            "completed",
+            {
+                "reviewer_id": reviewer_id,
+                "draft_ledger_path": str(Path(database_path).resolve()),
+                "review_counts": service.summary(),
+                "downstream_cycle_path": str(cycle_path),
+            },
+        )
 
     def decide_draft(
         self,
@@ -188,32 +249,7 @@ class FinalSessionConsole:
         summary = service.summary()
         downstream_cycle_path = None
         if not queue:
-            approved_ids = [
-                str(row["draft_id"])
-                for row in store.rows(
-                    "select draft_id from ai_drafts "
-                    "where review_status in ('approved', 'approved_with_edits') "
-                    "order by created_at"
-                )
-            ]
-            cycle = {
-                "schema_version": "ai_draft_downstream_cycle_v1",
-                "draft_ledger_path": str(Path(database_path).resolve()),
-                "review_counts": summary,
-                "training_consumed_count": len(
-                    service.consume_approved(
-                        draft_ids=approved_ids, purpose=DownstreamPurpose.TRAINING
-                    )
-                ),
-                "evaluation_consumed_count": len(
-                    service.consume_approved(
-                        draft_ids=approved_ids, purpose=DownstreamPurpose.EVALUATION
-                    )
-                ),
-                "executed_at": _now(),
-            }
-            downstream_cycle_path = self.state_root / "ai_draft_downstream_cycle_v1.json"
-            _write_json(downstream_cycle_path, cycle)
+            downstream_cycle_path = self._run_draft_downstream_cycle(store, database_path)
         self._record(
             "H-003",
             "completed" if not queue else "pending",
@@ -302,6 +338,15 @@ class FinalSessionConsole:
             },
         )
 
+    def register_external_validation_upload(
+        self, document: dict[str, Any] | None
+    ) -> dict[str, Any]:
+        if document is None:
+            return self.register_external_validation(None)
+        path = self.state_root / "uploads/op039_external_validation.json"
+        _write_json(path, document)
+        return self.register_external_validation(str(path))
+
     def generate_key(self, key_path: str) -> dict[str, str]:
         path = Path(key_path).resolve()
         if path.exists():
@@ -385,6 +430,14 @@ class FinalSessionConsole:
         self._record("H-006", "completed", result)
         return result
 
+    def prepare_and_sign_receipts(
+        self, key_path: str, issuer_id: str = "웰니스박스"
+    ) -> dict[str, Any]:
+        path = Path(key_path).resolve()
+        if not path.exists():
+            self.generate_key(str(path))
+        return self.sign_receipts(key_path=str(path), issuer_id=issuer_id)
+
     def _stage_gap_ids(self) -> list[str]:
         ranks = {"IMPLEMENTED": 1, "INTEGRATED": 2, "OPERATED": 3}
         manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
@@ -445,6 +498,41 @@ class FinalSessionConsole:
         }
         _write_json(self.state_root / "operational_environment_signoff_v1.json", record)
         return self._record("H-007", "completed" if complete else "deferred", record)
+
+    def record_uploaded_operations(
+        self, operator_id: str, documents: list[dict[str, Any]]
+    ) -> dict[str, Any]:
+        checks: dict[str, Any] = {"requirement_evidence": {}}
+        environment_names = {
+            "rnd_api",
+            "wellnessbox_environment",
+            "health_check",
+            "browser_roundtrip",
+        }
+        upload_root = self.state_root / "uploads/operational"
+        for index, document in enumerate(documents):
+            if not isinstance(document, dict):
+                continue
+            evidence_id = document.get("requirement_id") or document.get("check")
+            if not isinstance(evidence_id, str):
+                continue
+            safe_id = "".join(
+                character
+                for character in evidence_id
+                if character.isalnum() or character in "-_"
+            )
+            if not safe_id:
+                continue
+            path = upload_root / f"{index:03}-{safe_id}.json"
+            _write_json(path, document)
+            if evidence_id in environment_names:
+                checks[evidence_id] = {
+                    "status": document.get("status"),
+                    "evidence": str(path),
+                }
+            else:
+                checks["requirement_evidence"][evidence_id] = str(path)
+        return self.record_operations(operator_id, checks)
 
     def _production_state(self) -> bool:
         return self.state_root == (self.root / "data/original_plan/final_session").resolve()
