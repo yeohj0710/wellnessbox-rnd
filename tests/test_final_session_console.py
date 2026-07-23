@@ -25,6 +25,16 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn("auditButton.disabled=true", page)
         self.assertIn("auditButton.disabled=false", page)
 
+    def test_console_renders_one_step_wizard_with_next_only_navigation(self) -> None:
+        page = (ROOT / "scripts/run_final_session_console.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("const stepIds=['H-001','H-002','H-003','H-004','H-005','H-006','H-007']", page)
+        self.assertIn('button onclick="nextStep()">다음</button>', page)
+        self.assertIn("이 단계의 확인 버튼을 먼저 눌러 주세요.", page)
+        self.assertIn("currentStepIndex++;await load()", page)
+        self.assertIn("$('finalAudit').style.display='block'", page)
+
     def test_console_persists_policy_reviews_and_deferrals(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
