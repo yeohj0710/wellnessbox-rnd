@@ -1,5 +1,16 @@
 # SESSION_HANDOFF
 
+## 2026-07-23 OP-023/024 최종 handoff
+
+- 단계/과제: 원문·파싱 구간·주장·규칙·추천 결과 계보와 지식 source lifecycle·type·license 저장 보고서 backfill. OP-023/024 `IMPLEMENTED / COMPLETE`.
+- dataset 8건 SHA-256 `39e363ecae5f1f7187e0edd25a01cc553cc77bdf816252491f85f64007749970`; knowledge smoke 1건 SHA-256 `b13b97b0ccb20ba4cda96bc8f4b32acc398f49a683adda20ab09d06685d504fd`; OP-120 evidence `17189085bee1c02a4a350d8bbf333a1d5da082938d6f15704ec8566d1f138c16`.
+- 결과: 물리 66개, 유효 44/120, 누락·부적합 76개, 304,015자. completion `76/43/0/1/0`, OP-120 `BLOCKED`.
+- 결함 수정: smoke가 schema 8과 초기 artifact count를 고정했다. schema 14·정본 artifact count를 동적으로 비교하고 evidence 현재성 테스트를 추가했다.
+- 독립 검토 `0/1/1`은 runtime quarantine 과장과 claim-rule 검증 방향 문구를 바로잡은 뒤 `Critical 0 / Important 0 / Minor 0`으로 종료했다.
+- 검증: focused pytest 87, tracked Ruff, manifest audit, completion check PASS. CI `29968699617` 성공.
+- R&D 증거 HEAD `186ee41f891477e35b30ea3fbb2a48fb48f92c6a`은 `origin/main`에 있다. 서비스는 `8b9e2df62c998147ef045390909f7244501ef6e8`에 유지했고 기존 사용자 변경을 보존했다.
+- production·서비스·원천 지식·frozen/학습 데이터·모델·simulation 변경 없음. frozen/replay/slice delta 0. 다음: OP-025/026, OP-027/028, OP-029/030.
+
 ## 2026-07-23 OP-021/022 최종 handoff
 
 - 단계/과제: 프로필·동의 snapshot 영속화와 추천·안전·최적화·대화·후속평가 공통 실행 ID 보고서 backfill. OP-021/022 `IMPLEMENTED / COMPLETE`.

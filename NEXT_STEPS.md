@@ -1,5 +1,13 @@
 # NEXT_STEPS
 
+## OP-023/024 이후 다음 bounded loop
+
+1. OP-025/026의 사용자 행동 로그 분리와 model·engine·code·dataset·config 실행 identity 고정을 조사해 두 장문 보고서를 작성한다.
+2. OP-027/028의 이벤트 멱등성과 사용자 데이터 정정·삭제 이력을 같은 기준으로 backfill한다.
+3. OP-029/030의 session replay와 서비스 UI 조회 연결을 검토해 현재 단계보다 높이지 않고 보고서를 작성한다.
+
+현재 물리 연구보고서는 66개, 유효 연구보고서는 44/120이며 누락·부적합 76개가 남는다. 전체 글자 수는 304,015자다. completion은 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, OP-120 evidence SHA-256은 `17189085bee1c02a4a350d8bbf333a1d5da082938d6f15704ec8566d1f138c16`이다. GitHub Actions `29968699617`이 성공했다. 현재 병목은 보고서 76개, required-stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt다.
+
 ## OP-021/022 이후 다음 bounded loop
 
 1. OP-023/024의 지식 근거 lineage와 결과별 claim·rule 연결을 조사해 장문 보고서를 작성한다.
