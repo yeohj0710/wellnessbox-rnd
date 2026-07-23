@@ -248,6 +248,45 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertEqual(key_path.read_bytes(), first_key)
             self.assertEqual(sign.call_count, 2)
 
+    def test_prepare_receipts_registers_trust_before_production_resign(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            console = FinalSessionConsole(ROOT, state_root=root / "session")
+            key_path = root / "session/signing.pem"
+            key_path.parent.mkdir(parents=True, exist_ok=True)
+            key_path.write_text("existing-key", encoding="utf-8")
+            receipt = {
+                "issuer_id": "웰니스박스",
+                "public_key_ed25519_base64": "public",
+                "validation_receipt_path": str(root / "validation.json"),
+                "independent_review_receipt_path": str(root / "review.json"),
+            }
+            events: list[str] = []
+
+            def sign(**_: object) -> dict[str, str]:
+                events.append("sign")
+                return receipt
+
+            def commit(_: list[Path], message: str) -> None:
+                events.append(message)
+
+            with (
+                patch.object(console, "_production_state", return_value=True),
+                patch.object(console, "sign_receipts", side_effect=sign),
+                patch.object(
+                    console,
+                    "_register_receipt_policy",
+                    return_value=root / "policy.json",
+                ),
+                patch.object(console, "_git_commit", side_effect=commit),
+                patch.object(console, "run_final_audit", return_value={"status": "BLOCKED"}),
+            ):
+                console.prepare_and_sign_receipts(str(key_path))
+            self.assertEqual(events[0], "sign")
+            self.assertEqual(events[1], "docs: register final receipt trust policy")
+            self.assertEqual(events[2], "sign")
+            self.assertEqual(events[3], "docs: register final signed receipts")
+
     def test_rehearsal_completes_all_steps_without_production_writes(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             production_state = ROOT / "data/original_plan/final_session/session_state_v1.json"

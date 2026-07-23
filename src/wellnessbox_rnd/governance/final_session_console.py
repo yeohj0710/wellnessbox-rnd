@@ -439,7 +439,19 @@ class FinalSessionConsole:
         path = Path(key_path).resolve()
         if not path.exists():
             self.generate_key(str(path))
-        return self.sign_receipts(key_path=str(path), issuer_id=issuer_id)
+        receipt = self.sign_receipts(key_path=str(path), issuer_id=issuer_id)
+        if not self._production_state():
+            return receipt
+        policy_path = self._register_receipt_policy(receipt)
+        self._git_commit([policy_path], "docs: register final receipt trust policy")
+        receipt = self.sign_receipts(key_path=str(path), issuer_id=issuer_id)
+        receipt_paths = [
+            Path(receipt["validation_receipt_path"]),
+            Path(receipt["independent_review_receipt_path"]),
+            self.state_path,
+        ]
+        self._git_commit(receipt_paths, "docs: register final signed receipts")
+        return {**receipt, "audit": self.run_final_audit()}
 
     def _stage_gap_ids(self) -> list[str]:
         ranks = {"IMPLEMENTED": 1, "INTEGRATED": 2, "OPERATED": 3}
