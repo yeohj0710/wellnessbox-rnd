@@ -1,0 +1,9 @@
+{
+  "schema_version": "final_validation_receipt_v1",
+  "status": "PASS",
+  "manifest_sha256": "22486a163c65a341cfda2d8940d1caa8d454b0c44b5e15ca88d5abeec2f3df66",
+  "canonical_audit_sha256": "8e2805a1eb9413b2dd1a364ac53778fe58a4eb680294763da1e14582a1ff1a78",
+  "source_commit": "29f10502d9a0e2b2a164010477ddc20d1bcb5680",
+  "issuer_id": "웰니스박스",
+  "signature_ed25519_base64": "SzfeU5vzE0lNnnZ/jKj2rHMqYPEjjQFervIuvLjvwcSDvaQDO6tU+mfoy1gxFRYdvkKGV/9kH2FGdS71dQaEDg=="
+}
