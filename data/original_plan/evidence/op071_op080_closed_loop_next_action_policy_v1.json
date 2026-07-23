@@ -1,0 +1,923 @@
+{
+  "schema_version": "closed_loop_next_action_policy_evidence_v1",
+  "case_count": 130,
+  "correct_count": 130,
+  "next_action_accuracy_pct": 100.0,
+  "target_accuracy_pct": 80.0,
+  "passed": true,
+  "results": [
+    {
+      "case_id": "NA-adverse-01",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-02",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-03",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-04",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-05",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-06",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-07",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-08",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-09",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-10",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-11",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-12",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-adverse-13",
+      "expected_action": "stop_and_escalate",
+      "actual_action": "stop_and_escalate",
+      "rule_id": "NA-001",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-01",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-02",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-03",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-04",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-05",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-06",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-07",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-08",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-09",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-10",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-11",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-12",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-intolerance-13",
+      "expected_action": "replace",
+      "actual_action": "replace",
+      "rule_id": "NA-002",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-01",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-02",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-03",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-04",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-05",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-06",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-07",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-08",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-09",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-10",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-11",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-12",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-dose-13",
+      "expected_action": "reduce",
+      "actual_action": "reduce",
+      "rule_id": "NA-003",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-01",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-02",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-03",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-04",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-05",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-06",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-07",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-08",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-09",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-10",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-11",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-12",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-safety-13",
+      "expected_action": "request_safety_review",
+      "actual_action": "request_safety_review",
+      "rule_id": "NA-004",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-01",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-02",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-03",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-04",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-05",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-06",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-07",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-08",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-09",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-10",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-11",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-12",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-followup-13",
+      "expected_action": "request_followup",
+      "actual_action": "request_followup",
+      "rule_id": "NA-005",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-01",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-02",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-03",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-04",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-05",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-06",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-07",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-08",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-09",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-10",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-11",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-12",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-measurement-13",
+      "expected_action": "request_measurement",
+      "actual_action": "request_measurement",
+      "rule_id": "NA-006",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-01",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-02",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-03",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-04",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-05",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-06",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-07",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-08",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-09",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-10",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-11",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-12",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-ambiguous-13",
+      "expected_action": "hold_for_review",
+      "actual_action": "hold_for_review",
+      "rule_id": "NA-007",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-01",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-02",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-03",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-04",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-05",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-06",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-07",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-08",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-09",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-10",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-11",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-12",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-improved-13",
+      "expected_action": "maintain",
+      "actual_action": "maintain",
+      "rule_id": "NA-008",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-01",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-02",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-03",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-04",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-05",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-06",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-07",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-08",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-09",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-10",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-11",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-12",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-unchanged-13",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-01",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-02",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-03",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-04",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-05",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-06",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-07",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-08",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-09",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-10",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-11",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-12",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    },
+    {
+      "case_id": "NA-worsened-13",
+      "expected_action": "reoptimize",
+      "actual_action": "reoptimize",
+      "rule_id": "NA-009",
+      "correct": true
+    }
+  ],
+  "dataset_path": "data/original_plan/closed_loop_next_action_scenarios_v1.json",
+  "dataset_sha256": "ee978a91f59ab2b666fb69649b9edcc0856aca8b1bbba6887edfe4001d5ec229",
+  "policy_path": "data/original_plan/closed_loop_next_action_policy_v1.json"
+}

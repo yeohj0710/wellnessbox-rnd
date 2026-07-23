@@ -57,7 +57,7 @@ def _seed_run_state(agent: BoundedAgent, run_id: str, state: AgentState) -> None
 
 
 def test_state_machine_uses_authoritative_states_and_rejects_unknown_transition() -> None:
-    assert len(AgentState) == 11
+    assert len(AgentState) == 17
     assert transition(AgentState.INTAKE, AgentState.CONSENT_CHECK) == AgentState.CONSENT_CHECK
     with pytest.raises(ValueError, match="invalid_agent_transition"):
         transition(AgentState.INTAKE, AgentState.PLAN_READY)

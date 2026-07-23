@@ -220,6 +220,15 @@ class PlanLifecycleService:
         request_payload["occurred_at"] = occurred.isoformat()
         request_sha256 = _sha(request_payload)
         with self.store.transaction(immediate=True) as connection:
+            active_agent = connection.execute(
+                "select run_id from agent_runs where profile_id=? "
+                "and status in ('ACTIVE', 'EXECUTING') limit 1",
+                (request.profile_id,),
+            ).fetchone()
+            if active_agent is not None:
+                raise ValueError(
+                    "plan_lifecycle_manual_transition_forbidden_use_closed_loop_policy"
+                )
             execution = connection.execute(
                 "select * from executions where execution_id=?", (request.execution_id,)
             ).fetchone()

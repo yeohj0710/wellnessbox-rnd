@@ -1,0 +1,16 @@
+{
+  "schema_version": "closed_loop_next_action_policy_v1",
+  "source": "docs/context/master_context.md#19.2-19.3",
+  "default_basis": "docs/original_plan/human_signoff_checklist.md#H-002",
+  "rules": [
+    {"rule_id":"NA-001","priority":10,"when":{"state":"FOLLOWUP_ACTIVE","adverse_event":true},"action":"stop_and_escalate","reason_code":"ADVERSE_EVENT_STOP_ESCALATE"},
+    {"rule_id":"NA-002","priority":20,"when":{"state":"FOLLOWUP_ACTIVE","ingredient_intolerance":true,"adverse_event":false},"action":"replace","reason_code":"INGREDIENT_INTOLERANCE_REPLACE"},
+    {"rule_id":"NA-003","priority":30,"when":{"state":"FOLLOWUP_ACTIVE","dose_related_issue":true,"adverse_event":false},"action":"reduce","reason_code":"DOSE_RELATED_ISSUE_REDUCE"},
+    {"rule_id":"NA-004","priority":40,"when":{"state":"FOLLOWUP_ACTIVE","safety_review_required":true,"adverse_event":false},"action":"request_safety_review","reason_code":"SAFETY_REVIEW_REQUIRED"},
+    {"rule_id":"NA-005","priority":50,"when":{"state":"FOLLOWUP_ACTIVE","followup_submitted":false,"adverse_event":false},"action":"request_followup","reason_code":"FOLLOWUP_REQUIRED"},
+    {"rule_id":"NA-006","priority":60,"when":{"state":"FOLLOWUP_ACTIVE","measurement_complete":false,"adverse_event":false},"action":"request_measurement","reason_code":"MEASUREMENT_REQUIRED"},
+    {"rule_id":"NA-007","priority":70,"when":{"state":"FOLLOWUP_ACTIVE","ambiguous":true,"adverse_event":false},"action":"hold_for_review","reason_code":"AMBIGUOUS_HOLD"},
+    {"rule_id":"NA-008","priority":80,"when":{"state":"FOLLOWUP_ACTIVE","score_delta_gt":0,"adverse_event":false},"action":"maintain","reason_code":"IMPROVED_MAINTAIN"},
+    {"rule_id":"NA-009","priority":90,"when":{"state":"FOLLOWUP_ACTIVE","score_delta_lte":0,"adverse_event":false},"action":"reoptimize","reason_code":"NOT_IMPROVED_REOPTIMIZE"}
+  ]
+}

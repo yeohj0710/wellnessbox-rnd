@@ -10,6 +10,7 @@ from uuid import uuid4
 from wellnessbox_rnd.interim.connectors import ingest_device_session
 from wellnessbox_rnd.interim.contracts import DataClass
 from wellnessbox_rnd.interim.jobs import WorkflowJobQueue
+from wellnessbox_rnd.interim.next_action import decide_next_action
 from wellnessbox_rnd.interim.reviews import PharmacistReviewService
 from wellnessbox_rnd.interim.safety import evaluate_safety
 from wellnessbox_rnd.interim.store import InterimStore
@@ -463,6 +464,51 @@ class BoundedAgent:
         if value is None:
             raise ValueError("unknown_agent_run")
         return AgentState(value)
+
+    def decide_followup_action(
+        self,
+        *,
+        run_id: str,
+        event: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Select and persist the next follow-up action in the authoritative state machine."""
+        with _database_lock(self.store):
+            current = self._state(run_id)
+            if current != AgentState.FOLLOWUP_ACTIVE:
+                raise ValueError(f"followup_decision_state_invalid:{current.value}")
+            normalized = {
+                "adverse_event": False,
+                "ingredient_intolerance": False,
+                "dose_related_issue": False,
+                "safety_review_required": False,
+                "followup_submitted": True,
+                "measurement_complete": True,
+                "ambiguous": False,
+            } | event
+            decision = decide_next_action(state=current, event=normalized)
+            target = self._move_with_operation(
+                run_id=run_id,
+                operation=decision.operation,
+                target=decision.target_state,
+            )
+            self._record_internal_operation(run_id, decision.operation)
+            if decision.action.value == "stop_and_escalate":
+                self._move_with_operation(
+                    run_id=run_id,
+                    operation=ClosedLoopOperation.STOP,
+                    target=AgentState.STOPPED,
+                )
+                self._record_internal_operation(run_id, ClosedLoopOperation.STOP)
+                target = AgentState.STOPPED
+            return {
+                "schema_version": "closed_loop_next_action_decision_v1",
+                "rule_id": decision.rule_id,
+                "action": decision.action.value,
+                "reason_code": decision.reason_code,
+                "state_before": current.value,
+                "state_after": target.value,
+                "postcondition_success": True,
+            }
 
     def _stop_workflow(self, run_id: str, steps: list[dict[str, str]]) -> None:
         before = self._state(run_id)

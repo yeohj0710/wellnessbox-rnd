@@ -1,0 +1,2347 @@
+{
+  "schema_version": "closed_loop_next_action_scenarios_v1",
+  "source": "docs/context/master_context.md#15.3",
+  "case_count": 130,
+  "cases": [
+    {
+      "case_id": "NA-adverse-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-adverse-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": true,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "stop_and_escalate"
+    },
+    {
+      "case_id": "NA-intolerance-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-intolerance-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": true,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "replace"
+    },
+    {
+      "case_id": "NA-dose-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-dose-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": true,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "reduce"
+    },
+    {
+      "case_id": "NA-safety-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-safety-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": true,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "request_safety_review"
+    },
+    {
+      "case_id": "NA-followup-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-followup-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": false,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "request_followup"
+    },
+    {
+      "case_id": "NA-measurement-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-measurement-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": false,
+        "ambiguous": false,
+        "score_delta": 1.0,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "request_measurement"
+    },
+    {
+      "case_id": "NA-ambiguous-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-ambiguous-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": true,
+        "score_delta": 1.0,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "hold_for_review"
+    },
+    {
+      "case_id": "NA-improved-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-improved-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.01,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "maintain"
+    },
+    {
+      "case_id": "NA-unchanged-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-unchanged-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": 0.0,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-01",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 7,
+        "risk_tier": "low",
+        "case_variant": 0
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-02",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 8,
+        "risk_tier": "moderate",
+        "case_variant": 1
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-03",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 9,
+        "risk_tier": "high",
+        "case_variant": 2
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-04",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 10,
+        "risk_tier": "low",
+        "case_variant": 3
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-05",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 11,
+        "risk_tier": "moderate",
+        "case_variant": 4
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-06",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 12,
+        "risk_tier": "high",
+        "case_variant": 5
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-07",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 13,
+        "risk_tier": "low",
+        "case_variant": 6
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-08",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 14,
+        "risk_tier": "moderate",
+        "case_variant": 7
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-09",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 15,
+        "risk_tier": "high",
+        "case_variant": 8
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-10",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 16,
+        "risk_tier": "low",
+        "case_variant": 9
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-11",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 17,
+        "risk_tier": "moderate",
+        "case_variant": 10
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-12",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 18,
+        "risk_tier": "high",
+        "case_variant": 11
+      },
+      "expected_action": "reoptimize"
+    },
+    {
+      "case_id": "NA-worsened-13",
+      "state": "FOLLOWUP_ACTIVE",
+      "event": {
+        "adverse_event": false,
+        "ingredient_intolerance": false,
+        "dose_related_issue": false,
+        "safety_review_required": false,
+        "followup_submitted": true,
+        "measurement_complete": true,
+        "ambiguous": false,
+        "score_delta": -0.01,
+        "days_since_start": 19,
+        "risk_tier": "low",
+        "case_variant": 12
+      },
+      "expected_action": "reoptimize"
+    }
+  ]
+}

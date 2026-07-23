@@ -15,6 +15,12 @@ class ClosedLoopState(StrEnum):
     REGIMEN_OPTIMIZATION = "REGIMEN_OPTIMIZATION"
     PLAN_READY = "PLAN_READY"
     FOLLOWUP_ACTIVE = "FOLLOWUP_ACTIVE"
+    FOLLOWUP_REVIEW = "FOLLOWUP_REVIEW"
+    PLAN_MAINTAINED = "PLAN_MAINTAINED"
+    PLAN_REOPTIMIZATION = "PLAN_REOPTIMIZATION"
+    PLAN_REDUCED = "PLAN_REDUCED"
+    PLAN_REPLACED = "PLAN_REPLACED"
+    ESCALATED = "ESCALATED"
     STOPPED = "STOPPED"
     COMPLETED = "COMPLETED"
 
@@ -29,6 +35,12 @@ class ClosedLoopOperation(StrEnum):
     START_PLAN = "start_plan"
     SCHEDULE_FOLLOWUP = "schedule_followup"
     INGEST_FOLLOWUP = "ingest_followup"
+    HOLD_FOR_REVIEW = "hold_for_review"
+    MAINTAIN_PLAN = "maintain_plan"
+    REOPTIMIZE_PLAN = "reoptimize_plan"
+    REDUCE_PLAN = "reduce_plan"
+    REPLACE_PLAN = "replace_plan"
+    ESCALATE = "escalate"
     STOP = "stop"
     COMPLETE = "complete"
 
@@ -106,6 +118,40 @@ _ORDERED_TRANSITIONS: dict[
     (ClosedLoopState.FOLLOWUP_ACTIVE, ClosedLoopOperation.INGEST_FOLLOWUP): (
         ClosedLoopState.FOLLOWUP_ACTIVE
     ),
+    (ClosedLoopState.FOLLOWUP_ACTIVE, ClosedLoopOperation.HOLD_FOR_REVIEW): (
+        ClosedLoopState.FOLLOWUP_REVIEW
+    ),
+    (ClosedLoopState.FOLLOWUP_ACTIVE, ClosedLoopOperation.MAINTAIN_PLAN): (
+        ClosedLoopState.PLAN_MAINTAINED
+    ),
+    (ClosedLoopState.FOLLOWUP_ACTIVE, ClosedLoopOperation.REOPTIMIZE_PLAN): (
+        ClosedLoopState.PLAN_REOPTIMIZATION
+    ),
+    (ClosedLoopState.FOLLOWUP_ACTIVE, ClosedLoopOperation.REDUCE_PLAN): (
+        ClosedLoopState.PLAN_REDUCED
+    ),
+    (ClosedLoopState.FOLLOWUP_ACTIVE, ClosedLoopOperation.REPLACE_PLAN): (
+        ClosedLoopState.PLAN_REPLACED
+    ),
+    (ClosedLoopState.FOLLOWUP_ACTIVE, ClosedLoopOperation.ESCALATE): (
+        ClosedLoopState.ESCALATED
+    ),
+    (ClosedLoopState.FOLLOWUP_REVIEW, ClosedLoopOperation.INGEST_FOLLOWUP): (
+        ClosedLoopState.FOLLOWUP_ACTIVE
+    ),
+    (ClosedLoopState.PLAN_MAINTAINED, ClosedLoopOperation.SCHEDULE_FOLLOWUP): (
+        ClosedLoopState.FOLLOWUP_ACTIVE
+    ),
+    (ClosedLoopState.PLAN_REDUCED, ClosedLoopOperation.SCHEDULE_FOLLOWUP): (
+        ClosedLoopState.FOLLOWUP_ACTIVE
+    ),
+    (ClosedLoopState.PLAN_REPLACED, ClosedLoopOperation.SCHEDULE_FOLLOWUP): (
+        ClosedLoopState.FOLLOWUP_ACTIVE
+    ),
+    (ClosedLoopState.PLAN_REOPTIMIZATION, ClosedLoopOperation.OPTIMIZE): (
+        ClosedLoopState.REGIMEN_OPTIMIZATION
+    ),
+    (ClosedLoopState.ESCALATED, ClosedLoopOperation.STOP): ClosedLoopState.STOPPED,
     (ClosedLoopState.PLAN_READY, ClosedLoopOperation.COMPLETE): ClosedLoopState.COMPLETED,
     (ClosedLoopState.FOLLOWUP_ACTIVE, ClosedLoopOperation.COMPLETE): (
         ClosedLoopState.COMPLETED
@@ -122,6 +168,12 @@ for _state in (
     ClosedLoopState.REGIMEN_OPTIMIZATION,
     ClosedLoopState.PLAN_READY,
     ClosedLoopState.FOLLOWUP_ACTIVE,
+    ClosedLoopState.FOLLOWUP_REVIEW,
+    ClosedLoopState.PLAN_MAINTAINED,
+    ClosedLoopState.PLAN_REOPTIMIZATION,
+    ClosedLoopState.PLAN_REDUCED,
+    ClosedLoopState.PLAN_REPLACED,
+    ClosedLoopState.ESCALATED,
 ):
     _ORDERED_TRANSITIONS[(_state, ClosedLoopOperation.STOP)] = ClosedLoopState.STOPPED
 
