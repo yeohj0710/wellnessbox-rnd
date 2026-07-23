@@ -2,7 +2,12 @@
   "schema_version": "op120_final_audit_policy_v1",
   "required_requirement_count": 120,
   "required_report_count": 120,
-  "validation_receipt_path": null,
-  "independent_review_receipt_path": null,
-  "trusted_issuers": []
+  "validation_receipt_path": "wellnessbox-rnd/data/original_plan/final_session/final_validation_receipt_v1.json",
+  "independent_review_receipt_path": "wellnessbox-rnd/data/original_plan/final_session/independent_final_review_receipt_v1.json",
+  "trusted_issuers": [
+    {
+      "issuer_id": "웰니스박스",
+      "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g="
+    }
+  ]
 }
