@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -12,11 +13,21 @@ from wellnessbox_rnd.interim.session_replay import (
     SessionReplayLedger,
     SessionReplayUnavailableError,
 )
-from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
 from wellnessbox_rnd.schemas.recommendation import RecommendationRequest
 
 SUBJECT_ID = "usr_abcdef0123456789abcdef0123456789"
+EVIDENCE_PATH = Path(
+    "data/original_plan/evidence/"
+    "op029_op030_session_replay_service_ui_smoke_v1.json"
+)
+
+
+def test_canonical_evidence_uses_current_database_schema() -> None:
+    evidence = json.loads(EVIDENCE_PATH.read_text(encoding="utf-8"))
+
+    assert evidence["schema_version"] == SCHEMA_VERSION
 
 
 def _payload(*, allow_storage: bool = True) -> dict[str, object]:
