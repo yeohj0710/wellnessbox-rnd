@@ -43,6 +43,25 @@ def main() -> int:
         "function downloadReview(){",
         "async function downloadReview(){",
     )
+    form = form.replace(
+        '<label class="field" for="license">약사 면허번호(원문을 저장하지 않음)</label><input id="license" type="password" autocomplete="off"><p>면허번호는 이 브라우저에서 SHA-256 해시로 바뀌며 원문은 저장하거나 전송하지 않습니다.</p>',
+        '<p><strong>약사 면허번호는 수집하지 않습니다.</strong> 등록 버튼을 누르면 검토자가 실제 약사임을 본인이 확인한 것으로 기록합니다.</p>',
+    ).replace(
+        '<ul><li>검토자는 웰니스박스 구현팀과 독립되어 있습니다.</li>',
+        '<ul><li>검토자는 실제 약사입니다.</li><li>검토자는 웰니스박스 구현팀과 독립되어 있습니다.</li>',
+    ).replace(
+        "async function sha256(value){const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value));return Array.from(new Uint8Array(digest)).map(byte=>byte.toString(16).padStart(2,'0')).join('')}async function buildResult(){const name=document.getElementById('name').value.trim();const organization=document.getElementById('org').value.trim();const rawLicense=document.getElementById('license').value.trim();",
+        "async function buildResult(){const name=document.getElementById('name').value.trim();const organization=document.getElementById('org').value.trim();",
+    ).replace(
+        "if(!name||!organization||!rawLicense||decisions.some",
+        "if(!name||!organization||decisions.some",
+    ).replace(
+        "const pharmacistLicenseId='sha256:'+await sha256(rawLicense);const reviewer={name,organization,pharmacist_license_id:pharmacistLicenseId,",
+        "const reviewer={name,organization,pharmacist_license_id:'not-collected:self-attested-pharmacist',credential_verification_method:'self_attestation',",
+    ).replace(
+        "const profile=JSON.parse(localStorage.getItem('op039ExternalReviewer')||'{}');",
+        "cases.forEach(c=>{const area=document.getElementById('comment-'+c.case_id);area.style.display='none';document.querySelectorAll(`input[name=\"${c.case_id}\"]`).forEach(input=>input.addEventListener('change',()=>{area.style.display=input.value==='invalid'&&input.checked?'block':'none'}))});const profile=JSON.parse(localStorage.getItem('op039ExternalReviewer')||'{}');",
+    )
     FORM_OUTPUT.write_text(form, encoding="utf-8")
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(OUTPUT, "w", zipfile.ZIP_DEFLATED) as archive:
