@@ -15,14 +15,6 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from wellnessbox_rnd.evals.external_high_risk_safety import ExternalHighRiskSafetyEvalReportV2
-from wellnessbox_rnd.governance.final_completion_audit import (
-    CompletionReceiptV1,
-    FinalCompletionFactsV1,
-    IndependentReviewReceiptV1,
-    TrustedIssuerV1,
-    _signature_valid,
-    evaluate_final_completion_facts_v1,
-)
 from wellnessbox_rnd.governance.original_plan_audit import audit_original_plan_manifest_v1
 from wellnessbox_rnd.interim.ai_drafts import (
     AiDraftCreateV1,
@@ -46,7 +38,9 @@ def _write_json(path: Path, value: object) -> None:
 
 
 class FinalSessionConsole:
-    def __init__(self, root: Path, *, state_root: Path | None = None) -> None:
+    def __init__(
+        self, root: Path, *, state_root: Path | None = None, simulation: bool = False
+    ) -> None:
         self.root = root.resolve()
         self.workspace = self.root.parent
         self.state_root = (state_root or self.root / "data/original_plan/final_session").resolve()
@@ -54,6 +48,7 @@ class FinalSessionConsole:
         self.policy_path = self.root / "data/original_plan/closed_loop_next_action_policy_v1.json"
         self.audit_policy_path = self.root / "data/original_plan/op120_final_audit_policy_v1.json"
         self.manifest_path = self.root / "data/original_plan/requirements_manifest_v1.json"
+        self.simulation = simulation
         self.state = self._load_state()
 
     def _load_state(self) -> dict[str, Any]:
@@ -225,7 +220,7 @@ class FinalSessionConsole:
         if not source.is_file():
             raise FileNotFoundError(source)
         payload = json.loads(source.read_text(encoding="utf-8"))
-        simulation = payload.get("data_class") == "SIMULATION" and not self._production_state()
+        simulation = payload.get("data_class") == "SIMULATION" and self.simulation
         if not simulation:
             report = ExternalHighRiskSafetyEvalReportV2.model_validate(payload)
             if (
@@ -423,10 +418,14 @@ class FinalSessionConsole:
         relative = [str(path.resolve().relative_to(self.root)).replace("\\", "/") for path in paths]
         subprocess.run(["git", "-C", str(self.root), "add", "--", *relative], check=True)
         staged = subprocess.run(
-            ["git", "-C", str(self.root), "diff", "--cached", "--quiet"], check=False
+            ["git", "-C", str(self.root), "diff", "--cached", "--quiet", "--", *relative],
+            check=False,
         )
         if staged.returncode != 0:
-            subprocess.run(["git", "-C", str(self.root), "commit", "-m", message], check=True)
+            subprocess.run(
+                ["git", "-C", str(self.root), "commit", "--only", "-m", message, "--", *relative],
+                check=True,
+            )
 
     def _register_final_signoffs(self) -> list[Path]:
         external = self.state["steps"]["H-005"].get("registered_path")
@@ -452,16 +451,23 @@ class FinalSessionConsole:
                 required = requirement.get("required_stage", group_required)
                 if requirement["requirement_id"] == "OP-039":
                     requirement["claimed_stage"] = "EXTERNAL"
-                    requirement["evidence"].setdefault("external_evidence", []).append(external_ref)
+                    test_files = requirement["evidence"].setdefault("test_files", [])
+                    if external_ref not in test_files:
+                        test_files.append(external_ref)
                 elif requirement["requirement_id"] in registered:
                     requirement["claimed_stage"] = required
                     evidence_path = Path(registered[requirement["requirement_id"]]).resolve()
                     evidence_ref = (
                         f"wellnessbox-rnd/{evidence_path.relative_to(self.root).as_posix()}"
                     )
-                    evidence = requirement["evidence"].setdefault("operational_evidence", [])
-                    if evidence_ref not in evidence:
-                        evidence.append(evidence_ref)
+                    if required in {"INTEGRATED", "OPERATED"}:
+                        integrated = requirement["evidence"].setdefault("integration_evidence", [])
+                        if evidence_ref not in integrated:
+                            integrated.append(evidence_ref)
+                    if required == "OPERATED":
+                        operational = requirement["evidence"].setdefault("operational_evidence", [])
+                        if evidence_ref not in operational:
+                            operational.append(evidence_ref)
         _write_json(self.manifest_path, manifest)
         cases_path = self.root / "data/original_plan/op120_final_completion_audit_cases_v1.json"
         cases = json.loads(cases_path.read_text(encoding="utf-8"))
@@ -563,7 +569,33 @@ class FinalSessionConsole:
 
 
 def run_rehearsal(root: Path, rehearsal_root: Path) -> dict[str, Any]:
-    console = FinalSessionConsole(root, state_root=rehearsal_root)
+    sandbox = rehearsal_root / "workspace"
+    sandbox.mkdir(parents=True, exist_ok=True)
+    rehearsal_rnd = sandbox / "wellnessbox-rnd"
+    rehearsal_web = sandbox / "wellnessbox"
+    subprocess.run(
+        ["git", "clone", "--quiet", "--shared", str(root), str(rehearsal_rnd)], check=True
+    )
+    subprocess.run(
+        [
+            "git",
+            "clone",
+            "--quiet",
+            "--shared",
+            str(root.parent / "wellnessbox"),
+            str(rehearsal_web),
+        ],
+        check=True,
+    )
+    for repository in (rehearsal_rnd, rehearsal_web):
+        subprocess.run(
+            ["git", "-C", str(repository), "config", "user.name", "Simulation"], check=True
+        )
+        subprocess.run(
+            ["git", "-C", str(repository), "config", "user.email", "simulation@localhost"],
+            check=True,
+        )
+    console = FinalSessionConsole(rehearsal_rnd, simulation=True)
     console.confirm_alignment("simulation-owner")
     for rule in console.policy_rules():
         console.review_policy_rule(rule["rule_id"], "simulation-pharmacist", "approved")
@@ -591,7 +623,7 @@ def run_rehearsal(root: Path, rehearsal_root: Path) -> dict[str, Any]:
             decision="approved",
         )
     console.record_report_tone("simulation-owner", True)
-    external = rehearsal_root / "simulated_external_validation.json"
+    external = rehearsal_rnd / "simulated_external_validation.json"
     _write_json(external, {"data_class": "SIMULATION", "status": "PASS"})
     console.register_external_validation(str(external))
     key = console.generate_key(str(rehearsal_root / "simulation_ed25519.pem"))
@@ -602,12 +634,12 @@ def run_rehearsal(root: Path, rehearsal_root: Path) -> dict[str, Any]:
     )
     environment_files = {}
     for name in ("rnd_api", "wellnessbox_environment", "health_check", "browser_roundtrip"):
-        path = rehearsal_root / f"{name}.json"
+        path = rehearsal_rnd / f"{name}.json"
         _write_json(path, {"data_class": "SIMULATION", "status": "PASS", "check": name})
         environment_files[name] = {"status": "PASS", "evidence": str(path)}
     requirement_evidence = {}
     for requirement_id in console._stage_gap_ids():
-        path = rehearsal_root / "requirement_evidence" / f"{requirement_id}.json"
+        path = rehearsal_rnd / "requirement_evidence" / f"{requirement_id}.json"
         _write_json(
             path,
             {"data_class": "SIMULATION", "requirement_id": requirement_id, "status": "PASS"},
@@ -617,44 +649,13 @@ def run_rehearsal(root: Path, rehearsal_root: Path) -> dict[str, Any]:
         "simulation-operator",
         {**environment_files, "requirement_evidence": requirement_evidence},
     )
-    receipt_state = console.state["steps"]["H-006"]
-    issuer = TrustedIssuerV1(
-        issuer_id=receipt_state["issuer_id"],
-        public_key_ed25519_base64=receipt_state["public_key_ed25519_base64"],
-    )
-    validation = CompletionReceiptV1.model_validate_json(
-        Path(receipt_state["validation_receipt_path"]).read_text(encoding="utf-8")
-    )
-    review = IndependentReviewReceiptV1.model_validate_json(
-        Path(receipt_state["independent_review_receipt_path"]).read_text(encoding="utf-8")
-    )
-    signatures_valid = _signature_valid(validation, [issuer]) and _signature_valid(review, [issuer])
-    canonical = audit_original_plan_manifest_v1(
-        load_original_plan_manifest_v1(console.manifest_path),
-        repository_roots={"wellnessbox-rnd": root, "wellnessbox": root.parent / "wellnessbox"},
-    )
-    report_count = len(list((root / "docs/original_plan/research_reports").glob("OP-*.md")))
-    all_steps_complete = all(
-        item["status"] == "completed" for item in console.state["steps"].values()
-    )
-    audit = evaluate_final_completion_facts_v1(
-        FinalCompletionFactsV1(
-            requirement_count=120,
-            claimed_requirement_count=120 if all_steps_complete else 119,
-            nonexternal_stage_gap_ids=[] if all_steps_complete else ["SIMULATED_GAP"],
-            external_validation_gap_ids=[] if all_steps_complete else ["OP-039"],
-            report_count=report_count,
-            missing_report_ids=[],
-            canonical_evidence_audit_passed=canonical.status.value == "PASS",
-            validation_receipt_valid=signatures_valid,
-            independent_review_receipt_valid=signatures_valid,
-        )
-    )
+    finalized = console.finalize_and_audit()
+    audit = finalized["audit"]["audit"]
     result = {
         "schema_version": "final_session_console_rehearsal_v1",
         "data_class": "SIMULATION",
         "steps": console.state["steps"],
-        "audit": audit.model_dump(mode="json"),
+        "audit": audit,
         "production_paths_touched": False,
     }
     _write_json(rehearsal_root / "rehearsal_result_v1.json", result)
