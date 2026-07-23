@@ -118,6 +118,13 @@ class FinalSessionConsole:
                 {"report_id": report_id, "excerpt": path.read_text(encoding="utf-8")[:1200]}
             )
         completed = sum(item["status"] == "completed" for item in self.state["steps"].values())
+        runtime_path = self.root / "etc/local_research_runtime/session_processes.json"
+        runtime = (
+            json.loads(runtime_path.read_text(encoding="utf-8"))
+            if runtime_path.is_file()
+            else {"urls": {"wellnessbox": "http://127.0.0.1:3001"}}
+        )
+        wellnessbox_url = runtime.get("urls", {}).get("wellnessbox", "http://127.0.0.1:3001")
         return {
             **self.state,
             "progress": {"completed": completed, "total": len(STEPS)},
@@ -136,6 +143,10 @@ class FinalSessionConsole:
                 "reviewer_must_differ_from": "웰니스박스",
             },
             "operational_coverage": self.operational_coverage_summary(),
+            "operational_urls": {
+                "user_session": f"{wellnessbox_url}/test-login?redirect=/tips",
+                "pharmacist_review": f"{wellnessbox_url}/pharm/tips",
+            },
         }
 
     def review_policy_rule(
