@@ -388,7 +388,7 @@ class FinalSessionConsole:
         destination = self.state_root / "external_validation" / source.name
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
-        return self._record(
+        result = self._record(
             "H-005",
             "completed",
             {
@@ -396,6 +396,26 @@ class FinalSessionConsole:
                 "sha256": hashlib.sha256(destination.read_bytes()).hexdigest(),
             },
         )
+        if self._production_state():
+            manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+            external_ref = (
+                "wellnessbox-rnd/"
+                + destination.resolve().relative_to(self.root).as_posix()
+            )
+            for group in manifest["groups"]:
+                for requirement in group["requirements"]:
+                    if requirement["requirement_id"] != "OP-039":
+                        continue
+                    requirement["claimed_stage"] = "EXTERNAL"
+                    evidence = requirement["evidence"].setdefault("test_files", [])
+                    if external_ref not in evidence:
+                        evidence.append(external_ref)
+            _write_json(self.manifest_path, manifest)
+            self._git_commit(
+                [self.manifest_path, destination, self.state_path],
+                "docs: register OP-039 external pharmacist validation",
+            )
+        return result
 
     def register_external_validation_upload(
         self, document: dict[str, Any] | None
