@@ -71,6 +71,122 @@
       "title": "AdverseEventRequest",
       "type": "object"
     },
+    "AiDraftConsumeRequestV1": {
+      "additionalProperties": false,
+      "properties": {
+        "draft_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Draft Ids",
+          "type": "array"
+        },
+        "purpose": {
+          "$ref": "#/components/schemas/DownstreamPurpose"
+        }
+      },
+      "required": [
+        "draft_ids",
+        "purpose"
+      ],
+      "title": "AiDraftConsumeRequestV1",
+      "type": "object"
+    },
+    "AiDraftCreateV1": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "additionalProperties": true,
+          "title": "Content",
+          "type": "object"
+        },
+        "idempotency_key": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "model_identifier": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Model Identifier",
+          "type": "string"
+        },
+        "prompt_version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "rationale": {
+          "additionalProperties": true,
+          "title": "Rationale",
+          "type": "object"
+        },
+        "record_type": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Record Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_type",
+        "model_identifier",
+        "prompt_version",
+        "content",
+        "rationale",
+        "idempotency_key"
+      ],
+      "title": "AiDraftCreateV1",
+      "type": "object"
+    },
+    "AiDraftDecisionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "edited_content": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Edited Content"
+        },
+        "rejection_reason": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Rejection Reason"
+        },
+        "review_status": {
+          "$ref": "#/components/schemas/DraftReviewStatus"
+        },
+        "reviewer_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Reviewer Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "review_status",
+        "reviewer_id"
+      ],
+      "title": "AiDraftDecisionV1",
+      "type": "object"
+    },
     "BehaviorEventRequest": {
       "additionalProperties": false,
       "properties": {
@@ -625,6 +741,26 @@
         "capsule"
       ],
       "title": "DoseUnit",
+      "type": "string"
+    },
+    "DownstreamPurpose": {
+      "enum": [
+        "training",
+        "evaluation",
+        "recommendation",
+        "knowledge"
+      ],
+      "title": "DownstreamPurpose",
+      "type": "string"
+    },
+    "DraftReviewStatus": {
+      "enum": [
+        "pending",
+        "approved",
+        "approved_with_edits",
+        "rejected"
+      ],
+      "title": "DraftReviewStatus",
       "type": "string"
     },
     "DuePlanCronRequest": {
@@ -2769,6 +2905,247 @@
   },
   "openapi_version": "3.1.0",
   "paths": {
+    "/v1/interim/admin/ai-drafts": {
+      "get": {
+        "operationId": "ai_draft_queue_v1_interim_admin_ai_drafts_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-wb-rnd-token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Wb-Rnd-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Ai Draft Queue V1 Interim Admin Ai Drafts Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Ai Draft Queue",
+        "tags": [
+          "interim-proxy"
+        ]
+      },
+      "post": {
+        "operationId": "create_ai_draft_v1_interim_admin_ai_drafts_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-wb-rnd-token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Wb-Rnd-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiDraftCreateV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Create Ai Draft V1 Interim Admin Ai Drafts Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Ai Draft",
+        "tags": [
+          "interim-proxy"
+        ]
+      }
+    },
+    "/v1/interim/admin/ai-drafts/consume-approved": {
+      "post": {
+        "operationId": "consume_approved_ai_drafts_v1_interim_admin_ai_drafts_consume_approved_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-wb-rnd-token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Wb-Rnd-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiDraftConsumeRequestV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Consume Approved Ai Drafts V1 Interim Admin Ai Drafts Consume Approved Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Consume Approved Ai Drafts",
+        "tags": [
+          "interim-proxy"
+        ]
+      }
+    },
+    "/v1/interim/admin/ai-drafts/{draft_id}/decision": {
+      "post": {
+        "operationId": "decide_ai_draft_v1_interim_admin_ai_drafts__draft_id__decision_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "title": "Draft Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-wb-rnd-token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Wb-Rnd-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiDraftDecisionV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Decide Ai Draft V1 Interim Admin Ai Drafts  Draft Id  Decision Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Decide Ai Draft",
+        "tags": [
+          "interim-proxy"
+        ]
+      }
+    },
     "/v1/interim/admin/reviews": {
       "get": {
         "operationId": "review_queue_v1_interim_admin_reviews_get",

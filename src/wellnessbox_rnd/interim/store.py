@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 14
+SCHEMA_VERSION = 15
 
 SCHEMA_SQL = """
 PRAGMA foreign_keys = ON;
@@ -625,6 +625,52 @@ CREATE TABLE IF NOT EXISTS review_tasks (
   completion_postcondition_json TEXT,
   completion_postcondition_sha256 TEXT
 );
+
+CREATE TABLE IF NOT EXISTS ai_drafts (
+  draft_id TEXT PRIMARY KEY,
+  record_type TEXT NOT NULL,
+  generation_source TEXT NOT NULL CHECK(generation_source = 'ai_draft'),
+  model_identifier TEXT NOT NULL,
+  prompt_version TEXT NOT NULL,
+  content_json TEXT NOT NULL,
+  rationale_json TEXT NOT NULL,
+  review_status TEXT NOT NULL CHECK(review_status IN (
+    'pending', 'approved', 'approved_with_edits', 'rejected'
+  )),
+  reviewer_id TEXT,
+  reviewed_at TEXT,
+  edit_diff_json TEXT,
+  rejection_reason TEXT,
+  created_at TEXT NOT NULL,
+  row_sha256 TEXT NOT NULL,
+  CHECK(
+    (review_status='pending' AND reviewer_id IS NULL AND reviewed_at IS NULL
+      AND edit_diff_json IS NULL AND rejection_reason IS NULL)
+    OR
+    (review_status='approved' AND reviewer_id IS NOT NULL AND reviewed_at IS NOT NULL
+      AND edit_diff_json IS NULL AND rejection_reason IS NULL)
+    OR
+    (review_status='approved_with_edits' AND reviewer_id IS NOT NULL
+      AND reviewed_at IS NOT NULL AND edit_diff_json IS NOT NULL
+      AND rejection_reason IS NULL)
+    OR
+    (review_status='rejected' AND reviewer_id IS NOT NULL AND reviewed_at IS NOT NULL
+      AND edit_diff_json IS NULL AND rejection_reason IS NOT NULL)
+  )
+);
+
+CREATE TRIGGER IF NOT EXISTS ai_drafts_reviewed_no_update
+BEFORE UPDATE ON ai_drafts
+WHEN OLD.review_status != 'pending'
+BEGIN
+  SELECT RAISE(ABORT, 'reviewed_ai_draft_immutable');
+END;
+
+CREATE TRIGGER IF NOT EXISTS ai_drafts_no_delete
+BEFORE DELETE ON ai_drafts
+BEGIN
+  SELECT RAISE(ABORT, 'ai_draft_append_only');
+END;
 
 CREATE TRIGGER IF NOT EXISTS trg_completed_review_immutable_update
 BEFORE UPDATE ON review_tasks

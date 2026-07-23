@@ -1,0 +1,46 @@
+{
+  "schema_version": "ai_draft_pharmacist_approval_evidence_v1",
+  "simulation": true,
+  "checks": {
+    "provenance_complete": true,
+    "approved_and_edited_consumable": true,
+    "pending_rejected_blocked_all_downstreams": true,
+    "review_decision_single_use": true,
+    "fastapi_integration_tested": true,
+    "review_quality_gate_absent": true,
+    "review_friction_absent": true
+  },
+  "review_counts": {
+    "generated": 4,
+    "reviewed": 3,
+    "pending": 1,
+    "approved": 1,
+    "approved_with_edits": 1,
+    "rejected": 1
+  },
+  "blocked_purposes": {
+    "training": [
+      "pending",
+      "rejected"
+    ],
+    "evaluation": [
+      "pending",
+      "rejected"
+    ],
+    "recommendation": [
+      "pending",
+      "rejected"
+    ],
+    "knowledge": [
+      "pending",
+      "rejected"
+    ]
+  },
+  "evidence_files": [
+    "tests/test_ai_drafts.py",
+    "tests/test_interim_api.py",
+    "src/wellnessbox_rnd/interim/ai_drafts.py",
+    "apps/inference_api/routes/interim.py",
+    "wellnessbox/components/tips/InterimRoleConsole.tsx"
+  ]
+}

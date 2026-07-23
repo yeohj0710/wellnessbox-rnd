@@ -123,6 +123,56 @@ def test_plan_lifecycle_api_persists_transition_and_rejects_order_fields(
     ) == 1
 
 
+def test_ai_draft_review_api_returns_next_item_and_blocks_pending(tmp_path, monkeypatch) -> None:
+    database = tmp_path / "ai-draft-api.sqlite3"
+    monkeypatch.setenv("WB_RND_INTERIM_DATABASE", str(database))
+    monkeypatch.setenv("WB_RND_INTERIM_INTERNAL_TOKEN", "test-token")
+    client = TestClient(app)
+    first = client.post(
+        "/v1/interim/admin/ai-drafts",
+        headers=_headers(),
+        json={
+            "record_type": "recommendation_gold_candidate",
+            "model_identifier": "draft-model-v1",
+            "prompt_version": "prompt-v1",
+            "content": {"ingredients": ["magnesium"]},
+            "rationale": {"evidence_ids": ["ev-1"]},
+            "idempotency_key": "draft-api-1",
+        },
+    ).json()
+    second = client.post(
+        "/v1/interim/admin/ai-drafts",
+        headers=_headers(),
+        json={
+            "record_type": "recommendation_gold_candidate",
+            "model_identifier": "draft-model-v1",
+            "prompt_version": "prompt-v1",
+            "content": {"ingredients": ["vitamin-d"]},
+            "rationale": {"evidence_ids": ["ev-2"]},
+            "idempotency_key": "draft-api-2",
+        },
+    ).json()
+    blocked = client.post(
+        "/v1/interim/admin/ai-drafts/consume-approved",
+        headers=_headers(),
+        json={"draft_ids": [first["draft_id"]], "purpose": "training"},
+    )
+    decision = client.post(
+        f"/v1/interim/admin/ai-drafts/{first['draft_id']}/decision",
+        headers=_headers(),
+        json={"review_status": "approved", "reviewer_id": "pharmacist-1"},
+    )
+    consumed = client.post(
+        "/v1/interim/admin/ai-drafts/consume-approved",
+        headers=_headers(),
+        json={"draft_ids": [first["draft_id"]], "purpose": "training"},
+    )
+    assert blocked.status_code == 409
+    assert decision.status_code == 200
+    assert decision.json()["next_draft"]["draft_id"] == second["draft_id"]
+    assert consumed.status_code == 200
+
+
 def test_counseling_turn_binds_verified_answer_and_recommendation_to_one_session(
     tmp_path, monkeypatch
 ) -> None:

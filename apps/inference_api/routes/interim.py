@@ -23,6 +23,12 @@ from wellnessbox_rnd.chat import (
     load_retrieval_corpus_manifest,
 )
 from wellnessbox_rnd.interim.agent import BoundedAgent
+from wellnessbox_rnd.interim.ai_drafts import (
+    AiDraftCreateV1,
+    AiDraftDecisionV1,
+    AiDraftService,
+    DownstreamPurpose,
+)
 from wellnessbox_rnd.interim.behavior_log import BehaviorLogRecorder
 from wellnessbox_rnd.interim.connectors import ingest_device_session, source_adapters
 from wellnessbox_rnd.interim.contracts import DataClass
@@ -1457,3 +1463,50 @@ def decide_review(
     except ValueError as error:
         status_code = 404 if str(error) == "review_missing" else 409
         raise HTTPException(status_code=status_code, detail=str(error)) from error
+
+
+class AiDraftConsumeRequestV1(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    draft_ids: list[str] = Field(min_length=1)
+    purpose: DownstreamPurpose
+
+
+@router.post("/admin/ai-drafts")
+def create_ai_draft(draft: AiDraftCreateV1) -> dict[str, Any]:
+    try:
+        return AiDraftService(_store()).create(draft, created_at=datetime.now(UTC))
+    except ValueError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+
+
+@router.get("/admin/ai-drafts")
+def ai_draft_queue() -> dict[str, Any]:
+    service = AiDraftService(_store())
+    return {"items": service.queue(), "summary": service.summary()}
+
+
+@router.post("/admin/ai-drafts/{draft_id}/decision")
+def decide_ai_draft(draft_id: str, decision: AiDraftDecisionV1) -> dict[str, Any]:
+    try:
+        decided = AiDraftService(_store()).decide(
+            draft_id=draft_id,
+            decision=decision,
+            reviewed_at=datetime.now(UTC),
+        )
+        return decided | {"next_draft": (AiDraftService(_store()).queue() or [None])[0]}
+    except ValueError as error:
+        status_code = 404 if str(error) == "ai_draft_missing" else 409
+        raise HTTPException(status_code=status_code, detail=str(error)) from error
+
+
+@router.post("/admin/ai-drafts/consume-approved")
+def consume_approved_ai_drafts(request: AiDraftConsumeRequestV1) -> dict[str, Any]:
+    try:
+        items = AiDraftService(_store()).consume_approved(
+            draft_ids=request.draft_ids,
+            purpose=request.purpose,
+        )
+        return {"purpose": request.purpose, "items": items}
+    except (PermissionError, ValueError) as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
