@@ -1,0 +1,68 @@
+{
+  "schema_version": "op039_external_review_result_v1",
+  "package_id": "op039-independent-high-risk-review-2026-07-23",
+  "cases_sha256": "70871fcbbb6f4e3fec483f1eda51b4bb4a8cd10311ece3e404210ce9192005cc",
+  "reviewer": {
+    "name": "여형준",
+    "organization": "연세대학교 약학대학",
+    "pharmacist_license_id": "not-collected:self-attested-pharmacist",
+    "credential_verification_method": "self_attestation",
+    "contact": "",
+    "independent_of_implementation_team": true,
+    "was_ai_draft_reviewer": false
+  },
+  "decisions": [
+    {
+      "case_id": "pregnancy",
+      "decision": "valid",
+      "comment": ""
+    },
+    {
+      "case_id": "lactation",
+      "decision": "valid",
+      "comment": ""
+    },
+    {
+      "case_id": "severe_renal_block",
+      "decision": "valid",
+      "comment": ""
+    },
+    {
+      "case_id": "hepatic_review_block",
+      "decision": "valid",
+      "comment": ""
+    },
+    {
+      "case_id": "hemochromatosis_contraindication",
+      "decision": "valid",
+      "comment": ""
+    },
+    {
+      "case_id": "warfarin_glucosamine",
+      "decision": "valid",
+      "comment": ""
+    },
+    {
+      "case_id": "warfarin_omega3",
+      "decision": "valid",
+      "comment": ""
+    },
+    {
+      "case_id": "vitamin_c_above_limit",
+      "decision": "valid",
+      "comment": ""
+    },
+    {
+      "case_id": "emergency_final_authority",
+      "decision": "valid",
+      "comment": ""
+    },
+    {
+      "case_id": "emergency_zero_recommendations",
+      "decision": "valid",
+      "comment": ""
+    }
+  ],
+  "reviewed_at": "2026-07-23T07:33:29.571Z",
+  "signature_name": "여형준"
+}

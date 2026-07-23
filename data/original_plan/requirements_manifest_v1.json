@@ -7,8 +7,12 @@
     {
       "group_id": "A",
       "title": "원본 요구사항과 증거 기준 고정",
-      "source_refs": ["docs/context/original_plan.pdf#page=1-59"],
-      "owners": ["wellnessbox-rnd"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=1-59"
+      ],
+      "owners": [
+        "wellnessbox-rnd"
+      ],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
         {
@@ -16,8 +20,12 @@
           "title": "전달된 원본과 저장소 원본의 SHA-256 일치를 확인한다.",
           "claimed_stage": "IMPLEMENTED",
           "evidence": {
-            "implementation_files": ["wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md"],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+            "implementation_files": [
+              "wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_manifest.py"
+            ]
           }
         },
         {
@@ -25,8 +33,13 @@
           "title": "원본 59쪽을 시각적으로 확인하고 연구개발 기능과 사업 문구를 구분한다.",
           "claimed_stage": "IMPLEMENTED",
           "evidence": {
-            "implementation_files": ["wellnessbox-rnd/docs/context/master_context.md", "wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md"],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+            "implementation_files": [
+              "wellnessbox-rnd/docs/context/master_context.md",
+              "wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_manifest.py"
+            ]
           }
         },
         {
@@ -34,8 +47,13 @@
           "title": "원본 15쪽의 여섯 기술 블록을 독립 요구사항으로 등록한다.",
           "claimed_stage": "IMPLEMENTED",
           "evidence": {
-            "implementation_files": ["wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md", "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json"],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+            "implementation_files": [
+              "wellnessbox-rnd/docs/plans/2026-07-15-original-plan-completion-program.md",
+              "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_manifest.py"
+            ]
           }
         },
         {
@@ -43,8 +61,13 @@
           "title": "원본 16~24쪽의 입력, 처리, 출력 요구사항을 master context와 대조한다.",
           "claimed_stage": "IMPLEMENTED",
           "evidence": {
-            "implementation_files": ["wellnessbox-rnd/docs/context/master_context.md", "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json"],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+            "implementation_files": [
+              "wellnessbox-rnd/docs/context/master_context.md",
+              "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_manifest.py"
+            ]
           }
         },
         {
@@ -52,8 +75,14 @@
           "title": "원본 25~26쪽의 일곱 KPI 수식과 분모를 현재 계산기와 대조한다.",
           "claimed_stage": "IMPLEMENTED",
           "evidence": {
-            "implementation_files": ["wellnessbox-rnd/docs/context/master_context.md", "wellnessbox-rnd/docs/tips/CURRENT_REPO_AUDIT.md"],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py", "wellnessbox-rnd/tests/test_interim_manifest.py"]
+            "implementation_files": [
+              "wellnessbox-rnd/docs/context/master_context.md",
+              "wellnessbox-rnd/docs/tips/CURRENT_REPO_AUDIT.md"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_manifest.py",
+              "wellnessbox-rnd/tests/test_interim_manifest.py"
+            ]
           }
         },
         {
@@ -65,7 +94,9 @@
               "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json",
               "wellnessbox-rnd/src/wellnessbox_rnd/schemas/original_plan_manifest.py"
             ],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_manifest.py"
+            ]
           }
         },
         {
@@ -73,8 +104,12 @@
           "title": "IMPLEMENTED, INTEGRATED, OPERATED, EXTERNAL 증거 단계를 Pydantic 스키마로 고정한다.",
           "claimed_stage": "IMPLEMENTED",
           "evidence": {
-            "implementation_files": ["wellnessbox-rnd/src/wellnessbox_rnd/schemas/original_plan_manifest.py"],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_manifest.py"]
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/schemas/original_plan_manifest.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_manifest.py"
+            ]
           }
         },
         {
@@ -86,7 +121,9 @@
               "wellnessbox-rnd/src/wellnessbox_rnd/governance/original_plan_audit.py",
               "wellnessbox-rnd/src/wellnessbox_rnd/governance/__init__.py"
             ],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_audit.py"]
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_audit.py"
+            ]
           }
         },
         {
@@ -98,7 +135,9 @@
               "wellnessbox-rnd/scripts/audit_original_plan_requirements.py",
               "wellnessbox-rnd/.github/workflows/original-plan-evidence.yml"
             ],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_audit_cli.py"]
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_audit_cli.py"
+            ]
           }
         },
         {
@@ -110,7 +149,9 @@
               "wellnessbox-rnd/src/wellnessbox_rnd/governance/original_plan_report.py",
               "wellnessbox-rnd/scripts/build_original_plan_completion_report.py"
             ],
-            "test_files": ["wellnessbox-rnd/tests/test_original_plan_completion_report.py"]
+            "test_files": [
+              "wellnessbox-rnd/tests/test_original_plan_completion_report.py"
+            ]
           }
         }
       ]
@@ -118,8 +159,13 @@
     {
       "group_id": "B",
       "title": "개인 건강 입력과 동의 계약",
-      "source_refs": ["docs/context/original_plan.pdf#page=13", "docs/context/original_plan.pdf#page=16"],
-      "owners": ["wellnessbox-rnd"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=13",
+        "docs/context/original_plan.pdf#page=16"
+      ],
+      "owners": [
+        "wellnessbox-rnd"
+      ],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
         {
@@ -132,7 +178,9 @@
               "wellnessbox-rnd/apps/inference_api/routes/recommend.py",
               "wellnessbox-rnd/data/samples/api_recommend_structured_health_input_request_v1.json"
             ],
-            "test_files": ["wellnessbox-rnd/tests/test_health_input_contracts.py"]
+            "test_files": [
+              "wellnessbox-rnd/tests/test_health_input_contracts.py"
+            ]
           }
         },
         {
@@ -276,7 +324,10 @@
         {
           "requirement_id": "OP-019",
           "title": "wellnessbox 프로필을 R&D 요청으로 손실 없이 변환한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "INTEGRATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -321,8 +372,13 @@
     {
       "group_id": "C",
       "title": "Data Lake와 근거 계보",
-      "source_refs": ["docs/context/original_plan.pdf#page=16"],
-      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=16"
+      ],
+      "owners": [
+        "wellnessbox-rnd",
+        "wellnessbox"
+      ],
       "default_required_stage": "OPERATED",
       "requirements": [
         {
@@ -532,8 +588,12 @@
     {
       "group_id": "D",
       "title": "개인화 안전 검증 엔진",
-      "source_refs": ["docs/context/original_plan.pdf#page=17"],
-      "owners": ["wellnessbox-rnd"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=17"
+      ],
+      "owners": [
+        "wellnessbox-rnd"
+      ],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
         {
@@ -548,7 +608,9 @@
               "wellnessbox-rnd/src/wellnessbox_rnd/safety/service.py",
               "wellnessbox-rnd/data/rules/safety_rules.json"
             ],
-            "test_files": ["wellnessbox-rnd/tests/test_inference_api.py"]
+            "test_files": [
+              "wellnessbox-rnd/tests/test_inference_api.py"
+            ]
           }
         },
         {
@@ -564,7 +626,9 @@
               "wellnessbox-rnd/src/wellnessbox_rnd/orchestration/recommendation_service.py",
               "wellnessbox-rnd/data/rules/safety_rules.json"
             ],
-            "test_files": ["wellnessbox-rnd/tests/test_inference_api.py"]
+            "test_files": [
+              "wellnessbox-rnd/tests/test_inference_api.py"
+            ]
           }
         },
         {
@@ -701,7 +765,10 @@
         {
           "requirement_id": "OP-039",
           "title": "hard false negative 0을 고위험 frozen eval로 검증한다.",
-          "source_refs": ["docs/context/original_plan.pdf#page=17", "docs/context/original_plan.pdf#page=25"],
+          "source_refs": [
+            "docs/context/original_plan.pdf#page=17",
+            "docs/context/original_plan.pdf#page=25"
+          ],
           "required_stage": "EXTERNAL",
           "evidence": {
             "implementation_files": [
@@ -710,7 +777,8 @@
               "wellnessbox-rnd/docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md"
             ],
             "test_files": [
-              "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py"
+              "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py",
+              "wellnessbox-rnd/data/original_plan/final_session/external_validation/op039_external_validation.json"
             ],
             "external_dependencies": [
               "Independent organization supplies a frozen high-risk dataset labeled under the pre-approved coverage and labeling protocols",
@@ -720,12 +788,16 @@
               "wellnessbox-rnd/data/original_plan/contracts/op039_external_coverage_trust_roots_v1.json",
               "wellnessbox-rnd/data/original_plan/contracts/op039_external_attestation_trust_roots_v1.json"
             ]
-          }
+          },
+          "claimed_stage": "EXTERNAL"
         },
         {
           "requirement_id": "OP-040",
           "title": "프로덕션 추천 경로에서 안전 엔진의 최종 차단 권한을 통합 검증한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "OPERATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -754,14 +826,22 @@
     {
       "group_id": "E",
       "title": "추천 후보와 효과 점수",
-      "source_refs": ["docs/context/original_plan.pdf#page=18", "docs/context/original_plan.pdf#page=19"],
-      "owners": ["wellnessbox-rnd"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=18",
+        "docs/context/original_plan.pdf#page=19"
+      ],
+      "owners": [
+        "wellnessbox-rnd"
+      ],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
         {
           "requirement_id": "OP-041",
           "title": "서비스와 R&D 성분 식별자의 변환표를 버전 관리한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "INTEGRATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -950,7 +1030,10 @@
         {
           "requirement_id": "OP-050",
           "title": "추천 결과를 실제 서비스 성분과 상품 후보로 변환한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "INTEGRATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -980,8 +1063,13 @@
     {
       "group_id": "F",
       "title": "복용 전후 효과 수치화와 PRO",
-      "source_refs": ["docs/context/original_plan.pdf#page=18", "docs/context/original_plan.pdf#page=19"],
-      "owners": ["wellnessbox-rnd"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=18",
+        "docs/context/original_plan.pdf#page=19"
+      ],
+      "owners": [
+        "wellnessbox-rnd"
+      ],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
         {
@@ -1089,7 +1177,10 @@
         {
           "requirement_id": "OP-057",
           "title": "실제 사용자 입력으로 PRO 점수를 수정하고 즉시 재계산한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "INTEGRATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -1123,7 +1214,10 @@
         {
           "requirement_id": "OP-058",
           "title": "추천 성분과 관찰 효과 계보를 같은 계획 ID로 연결한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "OPERATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -1151,7 +1245,10 @@
         {
           "requirement_id": "OP-059",
           "title": "효과 악화 시 상태기계가 유지, 감량, 중단, 재최적화를 선택한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "INTEGRATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -1176,7 +1273,10 @@
         {
           "requirement_id": "OP-060",
           "title": "data_class 교체만으로 실제 결과 데이터를 같은 API에서 처리한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "INTEGRATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -1204,14 +1304,21 @@
     {
       "group_id": "G",
       "title": "다중제약 최적화와 실제 상품",
-      "source_refs": ["docs/context/original_plan.pdf#page=20"],
-      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=20"
+      ],
+      "owners": [
+        "wellnessbox-rnd",
+        "wellnessbox"
+      ],
       "default_required_stage": "INTEGRATED",
       "requirements": [
         {
           "requirement_id": "OP-061",
           "title": "효능, 안전, 비용, 복용 수, 제형 선호를 최적화 제약으로 명시한다.",
-          "owners": ["wellnessbox-rnd"],
+          "owners": [
+            "wellnessbox-rnd"
+          ],
           "required_stage": "IMPLEMENTED",
           "claimed_stage": "IMPLEMENTED",
           "evidence": {
@@ -1441,8 +1548,14 @@
     {
       "group_id": "H",
       "title": "Closed-loop 상태기계와 후속 실행",
-      "source_refs": ["docs/context/original_plan.pdf#page=21", "docs/context/original_plan.pdf#page=22"],
-      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=21",
+        "docs/context/original_plan.pdf#page=22"
+      ],
+      "owners": [
+        "wellnessbox-rnd",
+        "wellnessbox"
+      ],
       "default_required_stage": "OPERATED",
       "requirements": [
         {
@@ -1630,8 +1743,13 @@
     {
       "group_id": "I",
       "title": "상담과 근거 검색",
-      "source_refs": ["docs/context/original_plan.pdf#page=15", "docs/context/original_plan.pdf#page=22"],
-      "owners": ["wellnessbox-rnd"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=15",
+        "docs/context/original_plan.pdf#page=22"
+      ],
+      "owners": [
+        "wellnessbox-rnd"
+      ],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
         {
@@ -1750,7 +1868,10 @@
           "requirement_id": "OP-087",
           "title": "상담 답변과 추천 실행을 같은 세션에 저장한다.",
           "required_stage": "OPERATED",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "claimed_stage": "IMPLEMENTED",
           "evidence": {
             "implementation_files": [
@@ -1772,7 +1893,10 @@
         {
           "requirement_id": "OP-088",
           "title": "서비스 채팅이 R&D 상담 API를 호출하는 얇은 어댑터를 사용한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "INTEGRATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -1815,7 +1939,10 @@
         {
           "requirement_id": "OP-090",
           "title": "질문 유형별 frozen QA와 실제 API E2E를 통과한다.",
-          "owners": ["wellnessbox-rnd", "wellnessbox"],
+          "owners": [
+            "wellnessbox-rnd",
+            "wellnessbox"
+          ],
           "required_stage": "INTEGRATED",
           "claimed_stage": "INTEGRATED",
           "evidence": {
@@ -1841,8 +1968,13 @@
     {
       "group_id": "J",
       "title": "웨어러블·CGM·유전자 연동",
-      "source_refs": ["docs/context/original_plan.pdf#page=23", "docs/context/original_plan.pdf#page=24"],
-      "owners": ["wellnessbox-rnd"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=23",
+        "docs/context/original_plan.pdf#page=24"
+      ],
+      "owners": [
+        "wellnessbox-rnd"
+      ],
       "default_required_stage": "IMPLEMENTED",
       "requirements": [
         {
@@ -2029,8 +2161,15 @@
     {
       "group_id": "K",
       "title": "프로덕션 서비스 통합",
-      "source_refs": ["docs/context/original_plan.pdf#page=13", "docs/context/original_plan.pdf#page=15", "docs/context/original_plan.pdf#page=22"],
-      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=13",
+        "docs/context/original_plan.pdf#page=15",
+        "docs/context/original_plan.pdf#page=22"
+      ],
+      "owners": [
+        "wellnessbox-rnd",
+        "wellnessbox"
+      ],
       "default_required_stage": "OPERATED",
       "requirements": [
         {
@@ -2073,33 +2212,369 @@
             ]
           }
         },
-        {"requirement_id": "OP-103", "title": "wellnessbox Vercel에 WB_RND 환경변수를 안전하게 등록한다.", "claimed_stage": "IMPLEMENTED", "evidence": {"implementation_files": ["wellnessbox/lib/server/wb-rnd-environment.ts", "wellnessbox/scripts/qa/check-rnd-environment-result-origin.cts"], "test_files": ["wellnessbox-rnd/scripts/run_environment_result_origin_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"]}},
-        {"requirement_id": "OP-104", "title": "평가 화면에서 R&D 실행 결과와 로컬 스냅샷 결과를 구분한다.", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox/lib/wb-rnd-result-origin.ts", "wellnessbox/lib/server/wb-rnd-client.ts", "wellnessbox/app/(dev)/rnd-preview/rnd-preview-client.tsx"], "test_files": ["wellnessbox/scripts/qa/check-rnd-environment-result-origin.cts", "wellnessbox-rnd/scripts/run_environment_result_origin_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"]}},
-        {"requirement_id": "OP-105", "title": "사용자 프로필 저장과 추천 API가 R&D 서버까지 왕복하는지 검증한다.", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox/lib/server/wb-rnd-interim-client.ts", "wellnessbox/lib/server/wb-rnd-interim-route.ts", "wellnessbox/scripts/qa/check-rnd-profile-review-roundtrip.cts"], "test_files": ["wellnessbox-rnd/scripts/run_profile_review_roundtrip_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"]}},
-        {"requirement_id": "OP-106", "title": "약사 검토 화면을 R&D 검토 큐와 연결한다.", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox/lib/server/wb-rnd-interim-route.ts", "wellnessbox/components/tips/InterimRoleConsole.tsx", "wellnessbox/scripts/qa/check-rnd-profile-review-roundtrip.cts"], "test_files": ["wellnessbox-rnd/scripts/run_profile_review_roundtrip_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"]}},
-        {"requirement_id": "OP-107", "title": "관리자 화면이 데이터, 규칙, 모델, 실행 상태를 실제 API에서 조회한다.", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox-rnd/apps/inference_api/routes/interim.py", "wellnessbox/lib/server/wb-rnd-interim-route.ts", "wellnessbox/components/tips/InterimRoleConsole.tsx"], "test_files": ["wellnessbox-rnd/tests/test_interim_api.py", "wellnessbox/scripts/qa/check-rnd-admin-dashboard-roundtrip.cts", "wellnessbox-rnd/scripts/run_admin_product_integration_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"]}},
-        {"requirement_id": "OP-108", "title": "실제 상품 후보를 추천 결과와 연결한다.", "claimed_stage": "IMPLEMENTED", "evidence": {"implementation_files": ["wellnessbox/lib/server/wb-rnd-interim-route.ts", "wellnessbox/lib/server/wb-rnd-product-candidates.ts"], "test_files": ["wellnessbox/scripts/qa/check-rnd-product-candidates.cts", "wellnessbox-rnd/scripts/run_admin_product_integration_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"]}},
-        {"requirement_id": "OP-109", "title": "사용자 승인 후 기존 createOrder만 재고와 주문을 변경한다.", "claimed_stage": "IMPLEMENTED", "evidence": {"implementation_files": ["wellnessbox/app/(orders)/order-complete/useOrderCompleteBootstrap.ts", "wellnessbox/lib/order/mutations.ts", "wellnessbox/lib/payment/verified-order-payment.ts", "wellnessbox/prisma/schema.prisma", "wellnessbox/lib/server/wb-rnd-interim-route.ts"], "test_files": ["wellnessbox/scripts/qa/check-rnd-order-plan-context.cts", "wellnessbox-rnd/scripts/run_order_plan_context_integration_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json"]}},
-        {"requirement_id": "OP-110", "title": "소분, 배송, 재주문, 취소 상태를 계획에 읽기 전용으로 환류한다.", "claimed_stage": "IMPLEMENTED", "evidence": {"implementation_files": ["wellnessbox/lib/order/queries.ts", "wellnessbox/lib/server/wb-rnd-order-plan-context.ts", "wellnessbox/lib/server/wb-rnd-interim-route.ts", "wellnessbox-rnd/src/wellnessbox_rnd/interim/plan_lifecycle.py", "wellnessbox-rnd/apps/inference_api/routes/interim.py"], "test_files": ["wellnessbox-rnd/tests/test_plan_lifecycle.py", "wellnessbox/scripts/qa/check-rnd-order-plan-context.cts", "wellnessbox-rnd/scripts/run_order_plan_context_integration_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json"]}}
+        {
+          "requirement_id": "OP-103",
+          "title": "wellnessbox Vercel에 WB_RND 환경변수를 안전하게 등록한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/wb-rnd-environment.ts",
+              "wellnessbox/scripts/qa/check-rnd-environment-result-origin.cts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/scripts/run_environment_result_origin_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-104",
+          "title": "평가 화면에서 R&D 실행 결과와 로컬 스냅샷 결과를 구분한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/wb-rnd-result-origin.ts",
+              "wellnessbox/lib/server/wb-rnd-client.ts",
+              "wellnessbox/app/(dev)/rnd-preview/rnd-preview-client.tsx"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-environment-result-origin.cts",
+              "wellnessbox-rnd/scripts/run_environment_result_origin_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-105",
+          "title": "사용자 프로필 저장과 추천 API가 R&D 서버까지 왕복하는지 검증한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox/scripts/qa/check-rnd-profile-review-roundtrip.cts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/scripts/run_profile_review_roundtrip_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-106",
+          "title": "약사 검토 화면을 R&D 검토 큐와 연결한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox/components/tips/InterimRoleConsole.tsx",
+              "wellnessbox/scripts/qa/check-rnd-profile-review-roundtrip.cts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/scripts/run_profile_review_roundtrip_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-107",
+          "title": "관리자 화면이 데이터, 규칙, 모델, 실행 상태를 실제 API에서 조회한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox/components/tips/InterimRoleConsole.tsx"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_interim_api.py",
+              "wellnessbox/scripts/qa/check-rnd-admin-dashboard-roundtrip.cts",
+              "wellnessbox-rnd/scripts/run_admin_product_integration_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-108",
+          "title": "실제 상품 후보를 추천 결과와 연결한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox/lib/server/wb-rnd-product-candidates.ts"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-product-candidates.cts",
+              "wellnessbox-rnd/scripts/run_admin_product_integration_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-109",
+          "title": "사용자 승인 후 기존 createOrder만 재고와 주문을 변경한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/app/(orders)/order-complete/useOrderCompleteBootstrap.ts",
+              "wellnessbox/lib/order/mutations.ts",
+              "wellnessbox/lib/payment/verified-order-payment.ts",
+              "wellnessbox/prisma/schema.prisma",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-order-plan-context.cts",
+              "wellnessbox-rnd/scripts/run_order_plan_context_integration_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-110",
+          "title": "소분, 배송, 재주문, 취소 상태를 계획에 읽기 전용으로 환류한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/order/queries.ts",
+              "wellnessbox/lib/server/wb-rnd-order-plan-context.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox-rnd/src/wellnessbox_rnd/interim/plan_lifecycle.py",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_plan_lifecycle.py",
+              "wellnessbox/scripts/qa/check-rnd-order-plan-context.cts",
+              "wellnessbox-rnd/scripts/run_order_plan_context_integration_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json"
+            ]
+          }
+        }
       ]
     },
     {
       "group_id": "L",
       "title": "배포·보안·최종 완료 감사",
-      "source_refs": ["docs/context/original_plan.pdf#page=15-26"],
-      "owners": ["wellnessbox-rnd", "wellnessbox"],
+      "source_refs": [
+        "docs/context/original_plan.pdf#page=15-26"
+      ],
+      "owners": [
+        "wellnessbox-rnd",
+        "wellnessbox"
+      ],
       "default_required_stage": "OPERATED",
       "requirements": [
-        {"requirement_id": "OP-111", "title": "내부 API 인증과 사용자·약국·관리자 권한을 회귀 테스트한다.", "required_stage": "INTEGRATED", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox/lib/server/route-auth.ts", "wellnessbox/lib/server/wb-rnd-interim-client.ts", "wellnessbox/lib/server/wb-rnd-interim-route.ts", "wellnessbox-rnd/apps/inference_api/routes/interim.py"], "test_files": ["wellnessbox/scripts/qa/check-rnd-security-boundary.cts", "wellnessbox-rnd/scripts/run_security_boundary_integration_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json"]}},
-        {"requirement_id": "OP-112", "title": "개인정보 최소수집, 가명처리, 로그 마스킹을 검증한다.", "required_stage": "INTEGRATED", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox/contracts/wb-rnd/profile-adapter-v1.json", "wellnessbox/lib/server/wb-rnd-profile-adapter.ts", "wellnessbox/lib/server/wb-rnd-interim-client.ts", "wellnessbox/lib/server/wb-rnd-security.ts"], "test_files": ["wellnessbox/scripts/qa/check-rnd-profile-adapter.cts", "wellnessbox/scripts/qa/check-rnd-security-boundary.cts", "wellnessbox-rnd/scripts/run_security_boundary_integration_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json"]}},
-        {"requirement_id": "OP-113", "title": "timeout, 재시도, circuit breaker, fallback을 장애 주입으로 검증한다.", "required_stage": "INTEGRATED", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox/lib/server/wb-rnd-interim-client.ts", "wellnessbox/lib/server/wb-rnd-interim-route.ts"], "test_files": ["wellnessbox/scripts/qa/check-rnd-resilience-contract.cts", "wellnessbox-rnd/scripts/run_resilience_openapi_contract_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"]}},
-        {"requirement_id": "OP-114", "title": "R&D와 서비스 OpenAPI·TypeScript 계약 차이를 CI에서 차단한다.", "required_stage": "INTEGRATED", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox-rnd/scripts/build_interim_openapi_contract.py", "wellnessbox-rnd/data/contracts/wb_rnd_interim_openapi_surface_v1.json", "wellnessbox/lib/server/wb-rnd-interim-contract.ts", "wellnessbox/contracts/wb-rnd/interim-openapi-surface-v1.json"], "test_files": ["wellnessbox/scripts/qa/check-rnd-openapi-contract.cts", "wellnessbox-rnd/scripts/run_resilience_openapi_contract_smoke.py", "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"]}},
-        {"requirement_id": "OP-115", "title": "두 저장소의 단위·통합·E2E·인코딩·빌드 검사를 통과한다.", "required_stage": "INTEGRATED", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox-rnd/apps/inference_api/routes/health.py", "wellnessbox/app/api/internal/rnd/health/route.ts", "wellnessbox/lib/server/wb-rnd-health.ts"], "test_files": ["wellnessbox-rnd/tests/test_deployment_contract.py", "wellnessbox-rnd/scripts/run_test_matrix_health_alias_smoke.py", "wellnessbox/scripts/qa/check-rnd-health-alias.cts", "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"]}},
-        {"requirement_id": "OP-116", "title": "프로덕션 배포 후 R&D health와 WellnessBox alias를 확인한다.", "claimed_stage": "INTEGRATED", "evidence": {"implementation_files": ["wellnessbox-rnd/apps/inference_api/routes/health.py", "wellnessbox/app/api/internal/rnd/health/route.ts", "wellnessbox/lib/server/wb-rnd-health.ts"], "test_files": ["wellnessbox-rnd/scripts/run_deployment_contract_endpoint_smoke.py", "wellnessbox/scripts/qa/check-rnd-health-alias.cts", "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"], "integration_evidence": ["wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"]}},
-        {"requirement_id": "OP-117", "title": "브라우저에서 사용자, 약사, 관리자 핵심 경로를 재현한다.", "claimed_stage": "IMPLEMENTED", "evidence": {"implementation_files": ["wellnessbox/scripts/qa/check-rnd-role-browser-paths.cjs"], "test_files": ["wellnessbox-rnd/scripts/run_browser_operational_evidence_smoke.py", "wellnessbox-rnd/data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json", "wellnessbox-rnd/data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json"]}},
-        {"requirement_id": "OP-118", "title": "모든 비외부 요구사항에 운영 증거를 연결한다.", "claimed_stage": "IMPLEMENTED", "evidence": {"implementation_files": ["wellnessbox-rnd/scripts/run_browser_operational_evidence_smoke.py"], "test_files": ["wellnessbox-rnd/data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json", "wellnessbox-rnd/data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json"]}},
-        {"requirement_id": "OP-119", "title": "외부 항목별 책임자, 입력, 교체 계약, 차단 사유를 기록한다.", "required_stage": "IMPLEMENTED", "claimed_stage": "IMPLEMENTED", "evidence": {"implementation_files": ["wellnessbox-rnd/src/wellnessbox_rnd/governance/external_dependency_registry.py", "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_v1.json"], "test_files": ["wellnessbox-rnd/tests/test_external_dependency_registry.py", "wellnessbox-rnd/scripts/run_external_dependency_registry_smoke.py", "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_cases_v1.json", "wellnessbox-rnd/data/original_plan/evidence/op119_external_dependency_registry_smoke_v1.json"]}},
-        {"requirement_id": "OP-120", "title": "독립 최종 감사가 100% 완료를 증명한 뒤 전체 목표를 완료 처리한다.", "claimed_stage": "IMPLEMENTED", "evidence": {"implementation_files": ["wellnessbox-rnd/src/wellnessbox_rnd/governance/final_completion_audit.py", "wellnessbox-rnd/src/wellnessbox_rnd/governance/final_session_console.py", "wellnessbox-rnd/scripts/run_final_session_console.py", "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json"], "test_files": ["wellnessbox-rnd/tests/test_final_completion_audit.py", "wellnessbox-rnd/tests/test_final_session_console.py", "wellnessbox-rnd/scripts/run_final_completion_audit.py", "wellnessbox-rnd/scripts/run_final_session_console_smoke.py", "wellnessbox-rnd/data/original_plan/op120_final_completion_audit_cases_v1.json", "wellnessbox-rnd/data/original_plan/evidence/final_session_console_rehearsal_v1.json"]}}
+        {
+          "requirement_id": "OP-111",
+          "title": "내부 API 인증과 사용자·약국·관리자 권한을 회귀 테스트한다.",
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/route-auth.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts",
+              "wellnessbox-rnd/apps/inference_api/routes/interim.py"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-security-boundary.cts",
+              "wellnessbox-rnd/scripts/run_security_boundary_integration_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-112",
+          "title": "개인정보 최소수집, 가명처리, 로그 마스킹을 검증한다.",
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/contracts/wb-rnd/profile-adapter-v1.json",
+              "wellnessbox/lib/server/wb-rnd-profile-adapter.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+              "wellnessbox/lib/server/wb-rnd-security.ts"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-profile-adapter.cts",
+              "wellnessbox/scripts/qa/check-rnd-security-boundary.cts",
+              "wellnessbox-rnd/scripts/run_security_boundary_integration_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op111_op112_security_boundary_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-113",
+          "title": "timeout, 재시도, circuit breaker, fallback을 장애 주입으로 검증한다.",
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/lib/server/wb-rnd-interim-client.ts",
+              "wellnessbox/lib/server/wb-rnd-interim-route.ts"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-resilience-contract.cts",
+              "wellnessbox-rnd/scripts/run_resilience_openapi_contract_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-114",
+          "title": "R&D와 서비스 OpenAPI·TypeScript 계약 차이를 CI에서 차단한다.",
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/scripts/build_interim_openapi_contract.py",
+              "wellnessbox-rnd/data/contracts/wb_rnd_interim_openapi_surface_v1.json",
+              "wellnessbox/lib/server/wb-rnd-interim-contract.ts",
+              "wellnessbox/contracts/wb-rnd/interim-openapi-surface-v1.json"
+            ],
+            "test_files": [
+              "wellnessbox/scripts/qa/check-rnd-openapi-contract.cts",
+              "wellnessbox-rnd/scripts/run_resilience_openapi_contract_smoke.py",
+              "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op113_op114_resilience_contract_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-115",
+          "title": "두 저장소의 단위·통합·E2E·인코딩·빌드 검사를 통과한다.",
+          "required_stage": "INTEGRATED",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/health.py",
+              "wellnessbox/app/api/internal/rnd/health/route.ts",
+              "wellnessbox/lib/server/wb-rnd-health.ts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_deployment_contract.py",
+              "wellnessbox-rnd/scripts/run_test_matrix_health_alias_smoke.py",
+              "wellnessbox/scripts/qa/check-rnd-health-alias.cts",
+              "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-116",
+          "title": "프로덕션 배포 후 R&D health와 WellnessBox alias를 확인한다.",
+          "claimed_stage": "INTEGRATED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/apps/inference_api/routes/health.py",
+              "wellnessbox/app/api/internal/rnd/health/route.ts",
+              "wellnessbox/lib/server/wb-rnd-health.ts"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/scripts/run_deployment_contract_endpoint_smoke.py",
+              "wellnessbox/scripts/qa/check-rnd-health-alias.cts",
+              "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
+            ],
+            "integration_evidence": [
+              "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-117",
+          "title": "브라우저에서 사용자, 약사, 관리자 핵심 경로를 재현한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox/scripts/qa/check-rnd-role-browser-paths.cjs"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/scripts/run_browser_operational_evidence_smoke.py",
+              "wellnessbox-rnd/data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json",
+              "wellnessbox-rnd/data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-118",
+          "title": "모든 비외부 요구사항에 운영 증거를 연결한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/scripts/run_browser_operational_evidence_smoke.py"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json",
+              "wellnessbox-rnd/data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-119",
+          "title": "외부 항목별 책임자, 입력, 교체 계약, 차단 사유를 기록한다.",
+          "required_stage": "IMPLEMENTED",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/governance/external_dependency_registry.py",
+              "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_external_dependency_registry.py",
+              "wellnessbox-rnd/scripts/run_external_dependency_registry_smoke.py",
+              "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_cases_v1.json",
+              "wellnessbox-rnd/data/original_plan/evidence/op119_external_dependency_registry_smoke_v1.json"
+            ]
+          }
+        },
+        {
+          "requirement_id": "OP-120",
+          "title": "독립 최종 감사가 100% 완료를 증명한 뒤 전체 목표를 완료 처리한다.",
+          "claimed_stage": "IMPLEMENTED",
+          "evidence": {
+            "implementation_files": [
+              "wellnessbox-rnd/src/wellnessbox_rnd/governance/final_completion_audit.py",
+              "wellnessbox-rnd/src/wellnessbox_rnd/governance/final_session_console.py",
+              "wellnessbox-rnd/scripts/run_final_session_console.py",
+              "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json"
+            ],
+            "test_files": [
+              "wellnessbox-rnd/tests/test_final_completion_audit.py",
+              "wellnessbox-rnd/tests/test_final_session_console.py",
+              "wellnessbox-rnd/scripts/run_final_completion_audit.py",
+              "wellnessbox-rnd/scripts/run_final_session_console_smoke.py",
+              "wellnessbox-rnd/data/original_plan/op120_final_completion_audit_cases_v1.json",
+              "wellnessbox-rnd/data/original_plan/evidence/final_session_console_rehearsal_v1.json"
+            ]
+          }
+        }
       ]
     }
   ]
