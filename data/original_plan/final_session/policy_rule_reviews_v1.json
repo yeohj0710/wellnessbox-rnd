@@ -1,0 +1,59 @@
+{
+  "schema_version": "policy_rule_reviews_v1",
+  "reviews": {
+    "NA-001": {
+      "reviewer_id": "웰니스박스",
+      "decision": "approved",
+      "change_proposal": null,
+      "reviewed_at": "2026-07-23T04:13:35.582247Z"
+    },
+    "NA-002": {
+      "reviewer_id": "웰니스박스",
+      "decision": "approved",
+      "change_proposal": null,
+      "reviewed_at": "2026-07-23T04:13:35.583247Z"
+    },
+    "NA-003": {
+      "reviewer_id": "웰니스박스",
+      "decision": "approved",
+      "change_proposal": null,
+      "reviewed_at": "2026-07-23T04:13:35.584247Z"
+    },
+    "NA-005": {
+      "reviewer_id": "웰니스박스",
+      "decision": "approved",
+      "change_proposal": null,
+      "reviewed_at": "2026-07-23T04:13:35.586749Z"
+    },
+    "NA-004": {
+      "reviewer_id": "웰니스박스",
+      "decision": "approved",
+      "change_proposal": null,
+      "reviewed_at": "2026-07-23T04:13:35.585247Z"
+    },
+    "NA-006": {
+      "reviewer_id": "웰니스박스",
+      "decision": "approved",
+      "change_proposal": null,
+      "reviewed_at": "2026-07-23T04:13:35.587752Z"
+    },
+    "NA-007": {
+      "reviewer_id": "웰니스박스",
+      "decision": "approved",
+      "change_proposal": null,
+      "reviewed_at": "2026-07-23T04:13:35.588752Z"
+    },
+    "NA-008": {
+      "reviewer_id": "웰니스박스",
+      "decision": "approved",
+      "change_proposal": null,
+      "reviewed_at": "2026-07-23T04:13:35.589752Z"
+    },
+    "NA-009": {
+      "reviewer_id": "웰니스박스",
+      "decision": "approved",
+      "change_proposal": null,
+      "reviewed_at": "2026-07-23T04:13:35.590753Z"
+    }
+  }
+}

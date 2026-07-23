@@ -1,0 +1,12 @@
+{
+  "schema_version": "report_tone_signoff_v1",
+  "owner_id": "웰니스박스",
+  "approved": true,
+  "comment": "",
+  "sample_report_ids": [
+    "OP-081",
+    "OP-028",
+    "OP-117"
+  ],
+  "reviewed_at": "2026-07-23T04:13:39.254448Z"
+}
