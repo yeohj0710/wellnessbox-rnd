@@ -258,8 +258,8 @@
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-020.md": "d8198e4d2ab494927bb898af6719f4d794ee2992",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-021.md": "638739c1ba707449f46925a233a8f6dfc1122b00",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-022.md": "0ecc2cb925eb122e6d2450ab19c1f3d7d475e4e3",
-      "wellnessbox-rnd/docs/original_plan/research_reports/OP-023.md": "eabba1d01eb4f022c5deea92389993a200f617f7",
-      "wellnessbox-rnd/docs/original_plan/research_reports/OP-024.md": "65d88737e48ccb11c5b536ce535b2c3ef2eb1614",
+      "wellnessbox-rnd/docs/original_plan/research_reports/OP-023.md": "25ba488abdf01b59025363cf6226d077b89f8ff3",
+      "wellnessbox-rnd/docs/original_plan/research_reports/OP-024.md": "8bd6be81e4c725413893200e455a5cec225b1a26",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-079.md": "95bafcd30f90cd655d8969290405bb8be0c8a0e8",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-080.md": "e38d566a261911f495e7e7abfdf03589e9dc55f1",
       "wellnessbox-rnd/docs/original_plan/research_reports/OP-081.md": "d704779a8ab11c7591bc943ca88d0157ace1df9f",
@@ -555,7 +555,7 @@
     },
     "repository_commits": {
       "wellnessbox": "8b9e2df62c998147ef045390909f7244501ef6e8",
-      "wellnessbox-rnd": "24819090d10e3be6b75f9fef01a1ca7df18211b7"
+      "wellnessbox-rnd": "e4e3d1446d30ae290f5f8406ceb031c5c376b3bd"
     }
   },
   "dataset": {
