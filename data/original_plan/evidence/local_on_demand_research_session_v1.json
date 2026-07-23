@@ -1,0 +1,23 @@
+{
+  "schema_version": "local_on_demand_research_session_v1",
+  "status": "PASS",
+  "recorded_at": "2026-07-23T05:23:54.970236Z",
+  "checks": {
+    "rnd_api_health": "PASS",
+    "final_console": "PASS",
+    "wellnessbox_roundtrip": "PASS",
+    "sqlite_write": "PASS",
+    "sqlite_restart_persistence": "PASS"
+  },
+  "runtime": {
+    "mode": "local_on_demand",
+    "always_on": false,
+    "additional_cloud_cost": 0,
+    "database": "etc/local_research_runtime/interim.sqlite3"
+  },
+  "stage_boundary": {
+    "local_integration_proven": true,
+    "production_deployment_proven": false,
+    "operated_claim_allowed": false
+  }
+}
