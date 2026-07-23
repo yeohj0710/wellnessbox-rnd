@@ -23,11 +23,11 @@ class FinalSessionConsoleTest(unittest.TestCase):
             url = console.view_state()["operational_urls"]["user_session"]
             self.assertEqual(
                 url,
-                "http://127.0.0.1:3001/api/auth/local-research-login?redirect=/tips",
+                "http://127.0.0.1:3001/research-login?redirect=/tips",
             )
             self.assertEqual(
                 console.view_state()["operational_urls"]["pharmacist_review"],
-                "http://127.0.0.1:3001/api/auth/local-research-login?redirect=/pharm/tips",
+                "http://127.0.0.1:3001/research-login?redirect=/pharm/tips",
             )
 
     def test_final_audit_button_shows_immediate_progress_feedback(self) -> None:
