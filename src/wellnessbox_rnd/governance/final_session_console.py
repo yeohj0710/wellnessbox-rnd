@@ -125,7 +125,10 @@ class FinalSessionConsole:
             "report_samples": samples,
             "draft_database_path": str(data_lake_database_path().resolve()),
             "default_signing_key_path": str(
-                (self.state_root / "final_session_signing_key.pem").resolve()
+                (
+                    self.root
+                    / "etc/final_session_private/final_session_signing_key.pem"
+                ).resolve()
             ),
             "stage_gap_ids": self._stage_gap_ids(),
         }

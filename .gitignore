@@ -32,3 +32,4 @@ tmp/
 
 # Preserved source packages (local provenance archives)
 etc/source_packages/
+etc/final_session_private/
