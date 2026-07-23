@@ -348,6 +348,13 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn('id="externalFile" type="file"', html)
         self.assertIn("operations_collect", html)
         self.assertIn("op039-external-review-package.zip", html)
+        self.assertIn("미리 채운 외부 검토 화면 열기", html)
+        review_form = (
+            ROOT / "data/original_plan/final_session/op039_external_reviewer_form.html"
+        ).read_text(encoding="utf-8")
+        self.assertIn('value="valid" checked', review_form)
+        self.assertIn("내 이름으로 검토 확정 및 자동 등록", review_form)
+        self.assertNotIn('id="signature"', review_form)
         self.assertNotIn("운영 확인 JSON", html)
         self.assertNotIn("외부 평가 결과 JSON 경로", html)
 

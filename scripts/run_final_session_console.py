@@ -39,7 +39,7 @@ function controls(id){
  if(id==='H-002')return `<p class="help">아래 정책 규칙 9개를 확인한 뒤 한 번만 누르세요.</p>${state.policy_rules.map(rule=>`<div class="rule"><strong>${rule.rule_id}</strong> ${esc(rule.plain_language)}</div>`).join('')}<button onclick="act('policy_all',{reviewer_id:defaultActor})">정책 전체 확인</button><details><summary>규칙 수정 의견 남기기</summary><select id="rule">${state.policy_rules.map(rule=>`<option>${rule.rule_id}</option>`).join('')}</select><textarea id="proposal" placeholder="수정 의견"></textarea><button class="secondary" onclick="reviewRule('change_requested')">수정 의견 저장</button></details>`;
  if(id==='H-003')return `<p class="help">내부 검토 원장은 자동으로 연결했습니다. 검토 시작을 누르면 첫 대기 건이 열립니다.</p><input id="draftDb" type="hidden" value="${esc(state.draft_database_path)}"><input id="draftReviewer" type="hidden" value="${defaultActor}"><button onclick="loadDraftQueue()">웰니스박스로 검토 시작</button><div id="draftCard" class="draft">검토 시작을 누르면 첫 대기 건을 표시합니다.</div>`;
  if(id==='H-004')return `<p class="help">이번 세션에서 무작위로 고른 세 편입니다.</p>${state.report_samples.map(report=>`<details><summary>${report.report_id} 읽기</summary><pre>${esc(report.excerpt)}</pre></details>`).join('')}<textarea id="toneComment" placeholder="문체 의견"></textarea><div class="row"><button onclick="tone(true)">웰니스박스로 문체 확인</button><button class="secondary" onclick="tone(false)">의견 저장 후 보류</button></div>`;
- if(id==='H-005'){const deferred=state.steps[id].status==='deferred';return `<p><strong>외부 약사 한 명이 아래 패키지만 작성하면 됩니다.</strong></p><p class="risk">AI 초안을 검토한 약사와 다른 독립 외부 약사가 작성해야 합니다.</p><div class="row"><a href="${state.op039_package.download_path}" download><button>외부 검증 패키지 내려받기</button></a></div><p class="help">압축을 풀고 external_reviewer_form.html을 여세요. 모든 사례를 판정한 뒤 내려받은 결과 JSON을 아래에 올리면 저장 위치와 검증은 시스템이 처리합니다.</p><div class="row"><input id="externalFile" type="file" accept="application/json,.json"><button onclick="uploadExternal()">작성 결과 확인 및 등록</button></div>${deferred?'<p class="help">결과가 아직 없으면 다음을 눌러 보류할 수 있습니다.</p>':''}`}
+ if(id==='H-005'){const deferred=state.steps[id].status==='deferred';return `<p><strong>시스템이 권장 판정 10건을 미리 채웠습니다.</strong></p><p class="risk">AI 초안을 검토한 약사와 다른 독립 외부 약사가 읽고 다른 항목만 수정해야 합니다.</p><div class="row"><a href="/op039-review" target="_blank"><button>미리 채운 외부 검토 화면 열기</button></a><a href="${state.op039_package.download_path}" download><button class="secondary">오프라인 패키지 내려받기</button></a></div><p class="help">외부 약사는 성명·소속·면허 식별정보만 입력하고, 권장 판정을 확인한 뒤 한 번 눌러 자동 등록합니다. 별도 파일 업로드는 필요 없습니다.</p><details><summary>이미 받은 결과 JSON 등록</summary><div class="row"><input id="externalFile" type="file" accept="application/json,.json"><button onclick="uploadExternal()">작성 결과 확인 및 등록</button></div></details>${deferred?'<p class="help">외부 약사가 아직 없으면 다음을 눌러 보류할 수 있습니다.</p>':''}`}
  if(id==='H-006'){const saved=state.steps['H-006'];return `<p class="help">서명 키 경로와 발급자는 자동으로 설정했습니다.</p><input id="keyPath" type="hidden" value="${esc(generatedKeyPath||saved.key_path||state.default_signing_key_path)}"><input id="issuer" type="hidden" value="${defaultActor}"><button onclick="prepareAndSignReceipts()">키 준비 및 영수증 2종 서명</button>`}
  return operationControls();
 }
@@ -89,6 +89,9 @@ def handler(console: FinalSessionConsole):
                 self.send_header("content-length", str(len(raw)))
                 self.end_headers()
                 self.wfile.write(raw)
+            elif self.path == "/op039-review":
+                path = ROOT / "data/original_plan/final_session/op039_external_reviewer_form.html"
+                self.reply(200, path.read_text(encoding="utf-8"), "text/html")
             else:
                 self.reply(404, {"error": "not_found"})
 
