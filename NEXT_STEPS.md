@@ -1,5 +1,13 @@
 # NEXT_STEPS
 
+## OP-027/028 이후 다음 bounded loop
+
+1. OP-029/030의 deterministic session replay와 WellnessBox 서비스·UI 조회 연결을 기존 구현, smoke, 커밋과 대조해 두 장문 보고서로 작성한다.
+2. OP-031/032의 안전 규칙 우선순위와 구조화 입력 정규화를 검토하고 현재 증거보다 높은 stage를 주장하지 않는다.
+3. OP-033/034의 특수집단·질환 안전 규칙과 fail-closed 동작을 같은 기준으로 backfill한다.
+
+현재 물리 연구보고서는 70개, 유효 연구보고서는 48/120이며 누락·부적합 72개가 남는다. 전체 글자 수는 327,598자다. completion은 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, OP-120 evidence SHA-256은 `e9d00582015a0ea0581d107eb212601ded346468030004641304c486ddba281d`다. GitHub Actions `29970576517`이 성공했다. 현재 병목은 보고서 72개, required-stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt다.
+
 ## OP-025/026 이후 다음 bounded loop
 
 1. OP-027/028의 event idempotency와 사용자 데이터 정정·삭제 mutation 이력을 조사해 두 장문 보고서를 작성한다.

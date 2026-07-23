@@ -1,5 +1,15 @@
 # SESSION_HANDOFF
 
+## 2026-07-23 OP-027/028 최종 handoff
+
+- 단계/과제: 이벤트 중복 방지와 사용자 데이터 정정·삭제 계보 연구보고서 backfill. OP-027/028은 `IMPLEMENTED / COMPLETE`다.
+- dataset: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `d32cfd1b8830f5c727696556bc6ecc247abc01ca54e3c2f5d461ea76cdf077da`; mutation smoke 3건 SHA-256 `980e5677adcb54db684679a3111b0a6927b4e5fc47d6ddc7c9cc8bf6ab19dfb8`; OP-120 evidence `e9d00582015a0ea0581d107eb212601ded346468030004641304c486ddba281d`.
+- 변경: OP-027/028 장문 보고서, schema 14 canonical smoke, 증거 현재성 회귀 테스트, OP-120 보고서 재고와 evidence를 갱신했다.
+- 결과: 물리 70개, 유효 48/120, 누락·부적합 72개, 327,598자. completion `76/43/0/1/0`, OP-120 `BLOCKED`.
+- 검증: focused pytest 106건, tracked Ruff, manifest audit, completion check PASS. 독립 검토 `Critical 0 / Important 0 / Minor 0`; CI `29970576517` 성공.
+- R&D 증거 HEAD `e7e0d3918035a24a4a7cd40da6f24b68ba1b94f6`은 `origin/main`에 있다. 서비스는 `8b9e2df62c998147ef045390909f7244501ef6e8`을 유지했고 기존 사용자 변경을 보존했다.
+- 코드 변경은 증거 현재성 테스트뿐이다. production·서비스·원천/frozen/학습 데이터·모델·simulation 변경 없음; frozen/replay/slice delta 0. 다음: OP-029/030, OP-031/032, OP-033/034.
+
 ## 2026-07-23 OP-025/026 최종 handoff
 
 - 단계/과제: 사용자 행동·연구평가 로그 분리와 model·engine·code·dataset·config 실행 identity 보고서 backfill. OP-025/026 `IMPLEMENTED / COMPLETE`.

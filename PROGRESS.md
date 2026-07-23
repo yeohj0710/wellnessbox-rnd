@@ -1,5 +1,15 @@
 # PROGRESS
 
+## 2026-07-23 OP-027/028 연구보고서 backfill 완료
+
+- OP-027 이벤트 idempotency와 OP-028 정정·삭제 mutation 계보를 구현·테스트·원문 PDF와 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 production 운영은 주장하지 않는다.
+- 주 데이터셋은 `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `d32cfd1b8830f5c727696556bc6ecc247abc01ca54e3c2f5d461ea76cdf077da`다. event mutation smoke는 3건, SHA-256 `980e5677adcb54db684679a3111b0a6927b4e5fc47d6ddc7c9cc8bf6ab19dfb8`이다.
+- stale database schema 8 증거를 현재 schema 14로 재생성하고 canonical evidence 현재성 회귀 테스트를 추가했다. 동일 smoke를 두 번 생성한 결과는 byte-identical이다.
+- 물리 보고서 70개, 유효 48/120, 누락·부적합 72개, 총 327,598자다. completion은 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`; OP-120은 `BLOCKED`, evidence SHA-256은 `e9d00582015a0ea0581d107eb212601ded346468030004641304c486ddba281d`다.
+- focused pytest 106건, tracked Ruff, manifest audit, completion check가 통과했다. 독립 검토는 `Critical 0 / Important 0 / Minor 0`, GitHub Actions `29970576517`은 성공했다.
+- 서비스·production·원천/frozen/학습 데이터·모델·simulation은 변경하지 않았다. frozen 256건의 7개 지표, replay와 weakest-slice 입력이 그대로여서 delta는 모두 0이다.
+- 병목 5개: 보고서 72개, required-stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt. 다음 loop: OP-029/030, OP-031/032, OP-033/034.
+
 ## 2026-07-23 OP-025/026 연구보고서 backfill 완료
 
 - OP-025 행동·연구평가 로그의 table·vocabulary·API 분리와 OP-026 model·engine·commit·dataset·config 실행 identity를 원본 PDF 16쪽, schema, recorder, identity builder, trace와 테스트에 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 production 운영은 주장하지 않는다.
