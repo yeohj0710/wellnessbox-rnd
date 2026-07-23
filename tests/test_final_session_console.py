@@ -347,6 +347,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn("receipts_prepare", html)
         self.assertIn('id="externalFile" type="file"', html)
         self.assertIn("operations_collect", html)
+        self.assertNotIn("`이번 실행에서 감지`", html)
         self.assertIn("op039-external-review-package.zip", html)
         self.assertIn("미리 채운 외부 검토 화면 열기", html)
         review_form = (
