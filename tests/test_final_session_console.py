@@ -15,6 +15,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class FinalSessionConsoleTest(unittest.TestCase):
+    def test_final_audit_button_shows_immediate_progress_feedback(self) -> None:
+        page = (ROOT / "scripts/run_final_session_console.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('id="auditButton"', page)
+        self.assertIn('aria-live="polite"', page)
+        self.assertIn("완료 상태를 확인하고 있습니다. 약 30초만 기다려 주세요.", page)
+        self.assertIn("auditButton.disabled=true", page)
+        self.assertIn("auditButton.disabled=false", page)
+
     def test_console_persists_policy_reviews_and_deferrals(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
