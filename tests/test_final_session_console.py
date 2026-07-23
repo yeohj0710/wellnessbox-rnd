@@ -57,6 +57,33 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertEqual(result["summary"]["approved"], 1)
             self.assertEqual(console.state["steps"]["H-003"]["status"], "pending")
 
+    def test_external_validation_rejects_arbitrary_file_in_production_state(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            fake_root = Path(temp) / "project"
+            fake_root.mkdir()
+            console = FinalSessionConsole(fake_root)
+            invalid = Path(temp) / "not-an-external-result.json"
+            invalid.write_text('{"status":"PASS"}', encoding="utf-8")
+            with self.assertRaises(ValueError):
+                console.register_external_validation(str(invalid))
+
+    def test_operations_require_pass_status_and_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
+            console.record_operations(
+                "operator",
+                {
+                    key: {"status": "FAIL", "evidence": "probe failed"}
+                    for key in (
+                        "rnd_api",
+                        "wellnessbox_environment",
+                        "health_check",
+                        "browser_roundtrip",
+                    )
+                },
+            )
+            self.assertEqual(console.state["steps"]["H-007"]["status"], "deferred")
+
     def test_rehearsal_completes_all_steps_without_production_writes(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             production_state = ROOT / "data/original_plan/final_session/session_state_v1.json"
