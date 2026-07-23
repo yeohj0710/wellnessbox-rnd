@@ -57,6 +57,18 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertIsNotNone(result["next_draft"])
             self.assertEqual(result["summary"]["approved"], 1)
             self.assertEqual(console.state["steps"]["H-003"]["status"], "pending")
+            second = result["next_draft"]
+            console.decide_draft(
+                database_path=str(database),
+                draft_id=second["draft_id"],
+                reviewer_id="pharmacist-1",
+                decision="approved",
+            )
+            cycle_path = root / "session/ai_draft_downstream_cycle_v1.json"
+            cycle = json.loads(cycle_path.read_text(encoding="utf-8"))
+            self.assertEqual(cycle["training_consumed_count"], 2)
+            self.assertEqual(cycle["evaluation_consumed_count"], 2)
+            self.assertEqual(console.state["steps"]["H-003"]["status"], "completed")
 
     def test_external_validation_rejects_arbitrary_file_in_production_state(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

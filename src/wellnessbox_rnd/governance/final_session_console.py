@@ -21,6 +21,7 @@ from wellnessbox_rnd.interim.ai_drafts import (
     AiDraftCreateV1,
     AiDraftDecisionV1,
     AiDraftService,
+    DownstreamPurpose,
     DraftReviewStatus,
 )
 from wellnessbox_rnd.interim.data_lake import data_lake_database_path
@@ -154,16 +155,6 @@ class FinalSessionConsole:
             {"reviewed_rule_count": len(ledger["reviews"]), "rule_count": len(rules)},
         )
 
-    def record_draft_review_summary(self, ledger_path: str, reviewer_id: str) -> dict[str, Any]:
-        path = Path(ledger_path).resolve()
-        if not path.is_file():
-            raise FileNotFoundError(path)
-        return self._record(
-            "H-003",
-            "completed",
-            {"reviewer_id": reviewer_id, "draft_ledger_path": str(path)},
-        )
-
     def draft_queue(self, database_path: str) -> dict[str, Any]:
         store = InterimStore(Path(database_path).resolve())
         store.migrate()
@@ -195,6 +186,34 @@ class FinalSessionConsole:
         )
         queue = service.queue()
         summary = service.summary()
+        downstream_cycle_path = None
+        if not queue:
+            approved_ids = [
+                str(row["draft_id"])
+                for row in store.rows(
+                    "select draft_id from ai_drafts "
+                    "where review_status in ('approved', 'approved_with_edits') "
+                    "order by created_at"
+                )
+            ]
+            cycle = {
+                "schema_version": "ai_draft_downstream_cycle_v1",
+                "draft_ledger_path": str(Path(database_path).resolve()),
+                "review_counts": summary,
+                "training_consumed_count": len(
+                    service.consume_approved(
+                        draft_ids=approved_ids, purpose=DownstreamPurpose.TRAINING
+                    )
+                ),
+                "evaluation_consumed_count": len(
+                    service.consume_approved(
+                        draft_ids=approved_ids, purpose=DownstreamPurpose.EVALUATION
+                    )
+                ),
+                "executed_at": _now(),
+            }
+            downstream_cycle_path = self.state_root / "ai_draft_downstream_cycle_v1.json"
+            _write_json(downstream_cycle_path, cycle)
         self._record(
             "H-003",
             "completed" if not queue else "pending",
@@ -202,6 +221,9 @@ class FinalSessionConsole:
                 "reviewer_id": reviewer_id,
                 "draft_ledger_path": str(Path(database_path).resolve()),
                 "review_counts": summary,
+                "downstream_cycle_path": (
+                    str(downstream_cycle_path) if downstream_cycle_path else None
+                ),
             },
         )
         return {"decided": decided, "next_draft": queue[0] if queue else None, "summary": summary}

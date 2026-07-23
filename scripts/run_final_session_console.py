@@ -83,9 +83,6 @@ def handler(console: FinalSessionConsole):
                 actions = {
                     "alignment": console.confirm_alignment,
                     "policy": console.review_policy_rule,
-                    "drafts": lambda ledger_path, reviewer_id: console.record_draft_review_summary(
-                        ledger_path, reviewer_id
-                    ),
                     "draft_queue": console.draft_queue,
                     "draft_decision": console.decide_draft,
                     "tone": console.record_report_tone,
