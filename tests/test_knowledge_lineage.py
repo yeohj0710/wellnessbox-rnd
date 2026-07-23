@@ -1,8 +1,35 @@
+import json
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from apps.inference_api.main import app
+from wellnessbox_rnd.ingestion.reference_ingestion import KnowledgeBaseArtifact
 from wellnessbox_rnd.interim.knowledge_lineage import KnowledgeLineageRegistry
-from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore
+
+ROOT = Path(__file__).parents[1]
+LINEAGE_EVIDENCE_PATH = (
+    ROOT / "data/original_plan/evidence/op023_op024_knowledge_lineage_smoke_v1.json"
+)
+
+
+def test_canonical_knowledge_lineage_evidence_matches_current_sources() -> None:
+    evidence = json.loads(LINEAGE_EVIDENCE_PATH.read_text(encoding="utf-8"))
+    artifact = KnowledgeBaseArtifact.model_validate_json(
+        (ROOT / "data/knowledge/reference_knowledge_base_v1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    assert evidence["database_schema_version"] == SCHEMA_VERSION
+    assert evidence["source_count"] == len(artifact.references)
+    assert evidence["passage_count"] == len(artifact.parsed_claims)
+    assert evidence["claim_count"] == len(artifact.parsed_claims)
+    assert evidence["rule_count"] == len(artifact.rule_candidates)
+    assert evidence["claim_rule_link_count"] == len(artifact.rule_candidates)
+    assert evidence["checks"]["database_schema_version_matches_current"] is True
+    assert evidence["checks"]["canonical_artifact_counts_match"] is True
 
 
 def test_reference_artifact_sync_persists_complete_claim_rule_chain(tmp_path) -> None:

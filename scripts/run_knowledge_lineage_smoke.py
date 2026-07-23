@@ -15,6 +15,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from apps.inference_api.main import app  # noqa: E402
+from wellnessbox_rnd.ingestion.reference_ingestion import (  # noqa: E402
+    KnowledgeBaseArtifact,
+)
 from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore  # noqa: E402
 
 INTERNAL_TOKEN = "op023-op024-knowledge-lineage-smoke-token"
@@ -73,6 +76,18 @@ def _require_status(response, expected: int, label: str) -> dict[str, Any]:
 
 
 def run_smoke() -> dict[str, Any]:
+    artifact = KnowledgeBaseArtifact.model_validate_json(
+        (ROOT / "data/knowledge/reference_knowledge_base_v1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    expected_counts = (
+        len(artifact.references),
+        len(artifact.parsed_claims),
+        len(artifact.parsed_claims),
+        len(artifact.rule_candidates),
+        len(artifact.rule_candidates),
+    )
     previous_database = os.environ.get("WB_RND_INTERIM_DATABASE")
     previous_token = os.environ.get("WB_RND_INTERIM_INTERNAL_TOKEN")
     try:
@@ -112,7 +127,7 @@ def run_smoke() -> dict[str, Any]:
                 ),
                 "canonical_artifact_counts_match": (
                     (source_count, passage_count, claim_count, rule_count, link_count)
-                    == (3, 5, 5, 5, 5)
+                    == expected_counts
                 ),
                 "actual_response_is_blocked": response["status"] == "blocked",
                 "rule_and_decision_outputs_connected": output_types
