@@ -1,0 +1,30 @@
+{
+  "schema_version": "final_session_console_rehearsal_v1",
+  "data_class": "SIMULATION",
+  "step_statuses": {
+    "H-001": "completed",
+    "H-002": "completed",
+    "H-003": "completed",
+    "H-004": "completed",
+    "H-005": "completed",
+    "H-006": "completed",
+    "H-007": "completed"
+  },
+  "audit": {
+    "status": "READY",
+    "goal_complete": true,
+    "facts": {
+      "requirement_count": 120,
+      "claimed_requirement_count": 120,
+      "nonexternal_stage_gap_ids": [],
+      "external_validation_gap_ids": [],
+      "report_count": 120,
+      "missing_report_ids": [],
+      "canonical_evidence_audit_passed": true,
+      "validation_receipt_valid": true,
+      "independent_review_receipt_valid": true
+    },
+    "blockers": []
+  },
+  "production_paths_touched": false
+}
