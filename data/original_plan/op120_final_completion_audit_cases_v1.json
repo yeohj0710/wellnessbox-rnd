@@ -5,7 +5,7 @@
     {"case_id": "claimed_inventory", "expected": {"claimed_requirement_count": 119}},
     {"case_id": "required_stage_gaps", "expected": {"nonexternal_stage_gap_count": 43}},
     {"case_id": "external_validation", "expected": {"external_validation_gap_ids": ["OP-039"]}},
-    {"case_id": "research_reports", "expected": {"report_count": 58, "missing_report_count": 62}},
+    {"case_id": "research_reports", "expected": {"report_count": 59, "missing_report_count": 61}},
     {"case_id": "canonical_evidence", "expected": {"audit_passed": true}},
     {"case_id": "completion_receipts", "expected": {"validation": false, "independent_review": false}},
     {"case_id": "completion_decision", "expected": {"status": "BLOCKED", "goal_complete": false}}
