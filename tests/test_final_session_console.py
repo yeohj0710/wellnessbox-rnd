@@ -122,6 +122,8 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn("data.next_draft", html)
         self.assertIn("draftReviewerId", html)
         self.assertIn('type="checkbox" id="check-${id}"', html)
+        self.assertIn("registered[id]?'checked':''", html)
+        self.assertIn("saved.operator_id", html)
         self.assertNotIn("운영 확인 JSON", html)
 
     def test_finalize_registers_policy_before_resigning_receipts(self) -> None:
