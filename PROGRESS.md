@@ -1,5 +1,15 @@
 # PROGRESS
 
+## 2026-07-23 OP-025/026 연구보고서 backfill 완료
+
+- OP-025 행동·연구평가 로그의 table·vocabulary·API 분리와 OP-026 model·engine·commit·dataset·config 실행 identity를 원본 PDF 16쪽, schema, recorder, identity builder, trace와 테스트에 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 production 운영은 주장하지 않는다.
+- 데이터셋은 `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `99245ed22d1401e07898138da4efd1b8853edf085e1e6c4fec443dd2ee2198a1`다. 물리 보고서 68개, 유효 46/120, 누락·부적합 74개, 총 316,581자다.
+- schema 8 stale smoke를 schema 14로 재생하고 dataset identity 기대값을 `RUNTIME_DATASET_ARTIFACTS`에서 계산하도록 고쳤다. evidence 현재성 회귀 테스트를 추가했으며 smoke 2건 SHA-256은 `4bda8974a6eba797d9d585a2eff8fd15611cdffdf169dee27be95540041ac221`이다.
+- 독립 검토 Minor 1건은 OP-025가 `occurred_at`·`data_class`를 두 table 공통 열로 잘못 설명한 문제였다. behavior 전용 열과 공통 열을 바로잡은 뒤 최종 `Critical 0 / Important 0 / Minor 0`이다.
+- OP-120 evidence는 수정 뒤 두 번 byte-identical로 재생됐고 SHA-256은 `68aaa12d6c0541324fe27f888b9392d30ddff03dcbbf8a432b0ff11a2bca426b`다. completion은 `76/43/0/1/0`, 최종 감사는 `BLOCKED`다.
+- focused pytest 92건, tracked Ruff, manifest audit, completion check가 통과했다. GitHub Actions `29969740776`도 성공했다. production·서비스·원천/frozen/학습 데이터·모델·simulation 변경 없음; frozen/replay/slice delta 0.
+- 병목 5개: 보고서 74개, stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt. 다음: OP-027/028, OP-029/030, OP-031/032.
+
 ## 2026-07-23 OP-023/024 연구보고서 backfill 완료
 
 - OP-023 source→passage→claim→rule→execution output 계보와 OP-024 source type·license·effective/retired metadata 저장을 원본 PDF 16쪽, parser, runtime DB, normalized registry, API trace와 테스트에 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 production 운영은 주장하지 않는다.

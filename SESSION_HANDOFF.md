@@ -1,5 +1,16 @@
 # SESSION_HANDOFF
 
+## 2026-07-23 OP-025/026 최종 handoff
+
+- 단계/과제: 사용자 행동·연구평가 로그 분리와 model·engine·code·dataset·config 실행 identity 보고서 backfill. OP-025/026 `IMPLEMENTED / COMPLETE`.
+- dataset 8건 SHA-256 `99245ed22d1401e07898138da4efd1b8853edf085e1e6c4fec443dd2ee2198a1`; log identity smoke 2건 SHA-256 `4bda8974a6eba797d9d585a2eff8fd15611cdffdf169dee27be95540041ac221`; OP-120 evidence `68aaa12d6c0541324fe27f888b9392d30ddff03dcbbf8a432b0ff11a2bca426b`.
+- 결과: 물리 68개, 유효 46/120, 누락·부적합 74개, 316,581자. completion `76/43/0/1/0`, OP-120 `BLOCKED`.
+- 결함 수정: smoke schema 8을 14로 재생하고 dataset ID 목록을 현재 코드 상수에서 계산하게 했다. evidence 현재성 테스트도 추가했다.
+- 독립 검토 Minor 1건은 OP-025의 공통·behavior 전용 열 설명을 수정한 뒤 `Critical 0 / Important 0 / Minor 0`으로 종료했다.
+- 검증: focused pytest 92, tracked Ruff, manifest audit, completion check PASS. CI `29969740776` 성공.
+- R&D 증거 HEAD `bddfb09da5dab94d41abdafc9bf30cb11b58f170`은 `origin/main`에 있다. 서비스는 `8b9e2df62c998147ef045390909f7244501ef6e8`에 유지했고 기존 사용자 변경을 보존했다.
+- production·서비스·원천/frozen/학습 데이터·모델·simulation 변경 없음. frozen/replay/slice delta 0. 다음: OP-027/028, OP-029/030, OP-031/032.
+
 ## 2026-07-23 OP-023/024 최종 handoff
 
 - 단계/과제: 원문·파싱 구간·주장·규칙·추천 결과 계보와 지식 source lifecycle·type·license 저장 보고서 backfill. OP-023/024 `IMPLEMENTED / COMPLETE`.
