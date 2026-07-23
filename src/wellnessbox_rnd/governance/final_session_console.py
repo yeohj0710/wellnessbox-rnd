@@ -145,8 +145,8 @@ class FinalSessionConsole:
             },
             "operational_coverage": self.operational_coverage_summary(),
             "operational_urls": {
-                "user_session": f"{wellnessbox_url}/test-login?redirect=/tips",
-                "pharmacist_review": f"{wellnessbox_url}/pharm/tips",
+                "user_session": f"{wellnessbox_url}/api/auth/local-research-login?redirect=/tips",
+                "pharmacist_review": f"{wellnessbox_url}/api/auth/local-research-login?redirect=/pharm/tips",
             },
         }
 

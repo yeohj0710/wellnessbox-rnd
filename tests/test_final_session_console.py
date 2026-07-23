@@ -17,6 +17,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class FinalSessionConsoleTest(unittest.TestCase):
+    def test_local_operational_session_uses_automatic_research_login(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
+            url = console.view_state()["operational_urls"]["user_session"]
+            self.assertEqual(
+                url,
+                "http://127.0.0.1:3001/api/auth/local-research-login?redirect=/tips",
+            )
+            self.assertEqual(
+                console.view_state()["operational_urls"]["pharmacist_review"],
+                "http://127.0.0.1:3001/api/auth/local-research-login?redirect=/pharm/tips",
+            )
+
     def test_final_audit_button_shows_immediate_progress_feedback(self) -> None:
         page = (ROOT / "scripts/run_final_session_console.py").read_text(
             encoding="utf-8"
