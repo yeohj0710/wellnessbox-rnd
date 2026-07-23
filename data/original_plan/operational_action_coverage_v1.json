@@ -1,0 +1,19 @@
+{
+  "schema_version": "operational_action_coverage_v1",
+  "environment_id": "wellnessbox-local-research-pc",
+  "required_stage": "OPERATED",
+  "actions": {
+    "profile_or_survey": ["OP-021", "OP-022", "OP-023", "OP-024", "OP-025", "OP-026", "OP-027", "OP-028", "OP-029", "OP-030"],
+    "recommendation": ["OP-040", "OP-071", "OP-072", "OP-079", "OP-080", "OP-096", "OP-098", "OP-099", "OP-101", "OP-102", "OP-107", "OP-108", "OP-109", "OP-110", "OP-117", "OP-118"],
+    "followup": ["OP-053", "OP-058", "OP-073", "OP-074", "OP-075", "OP-076", "OP-077", "OP-078"],
+    "pharmacist_review": ["OP-087", "OP-103", "OP-104", "OP-105", "OP-106"],
+    "completed_session": ["OP-116", "OP-120"]
+  },
+  "signals": {
+    "profile_or_survey": ["user_profiles", "profile_snapshots", "behavior_events"],
+    "recommendation": ["recommendation_runs", "recommendation_items", "agent_runs", "agent_steps"],
+    "followup": ["followups", "pro_observations", "adverse_events", "workflow_jobs"],
+    "pharmacist_review": ["review_tasks", "ai_drafts"],
+    "completed_session": []
+  }
+}

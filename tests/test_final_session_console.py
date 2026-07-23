@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import tempfile
 import unittest
@@ -148,6 +149,37 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertTrue(registered.is_file())
             self.assertTrue(registered.is_relative_to(Path(temp)))
 
+    def test_external_review_package_requires_a_different_independent_pharmacist(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
+            cases_path = ROOT / "data/original_plan/op039_external_review_cases_v1.json"
+            cases = json.loads(cases_path.read_text(encoding="utf-8"))
+            document = {
+                "schema_version": "op039_external_review_result_v1",
+                "package_id": cases["package_id"],
+                "cases_sha256": hashlib.sha256(cases_path.read_bytes()).hexdigest(),
+                "reviewer": {
+                    "name": "외부약사",
+                    "organization": "독립약국",
+                    "pharmacist_license_id": "license-actual-value",
+                    "contact": "reviewer@example.test",
+                    "independent_of_implementation_team": True,
+                    "was_ai_draft_reviewer": False,
+                },
+                "decisions": [
+                    {"case_id": item["case_id"], "decision": "valid", "comment": ""}
+                    for item in cases["cases"]
+                ],
+                "reviewed_at": "2026-07-23T06:00:00Z",
+                "signature_name": "외부약사",
+            }
+            console.register_external_validation_upload(document)
+            self.assertEqual(console.state["steps"]["H-005"]["status"], "completed")
+            document["reviewer"]["name"] = "웰니스박스"
+            document["signature_name"] = "웰니스박스"
+            with self.assertRaises(ValueError):
+                console.register_external_validation_upload(document)
+
     def test_operations_require_pass_status_and_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
@@ -261,7 +293,8 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn('id="draftDb" type="hidden"', html)
         self.assertIn("receipts_prepare", html)
         self.assertIn('id="externalFile" type="file"', html)
-        self.assertIn('id="operationFiles" type="file"', html)
+        self.assertIn("operations_collect", html)
+        self.assertIn("op039-external-review-package.zip", html)
         self.assertNotIn("운영 확인 JSON", html)
         self.assertNotIn("외부 평가 결과 JSON 경로", html)
 

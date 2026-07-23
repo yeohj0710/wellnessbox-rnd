@@ -27,7 +27,7 @@ const defaultActor='웰니스박스';
 const stepIds=['H-001','H-002','H-003','H-004','H-005','H-006','H-007'];
 const labels={"H-001":"정렬 감사 확인","H-002":"정책 규칙 승인","H-003":"AI 초안 검토","H-004":"보고서 문체 확인","H-005":"외부 검증 등록","H-006":"Ed25519 영수증","H-007":"운영 환경 확인"};
 const statusLabel={pending:'대기',completed:'완료',deferred:'보류'};
-const operationLabels={rnd_api:'R&D API 배포',wellnessbox_environment:'WellnessBox 환경변수',health_check:'health 응답',browser_roundtrip:'브라우저 왕복'};
+const operationLabels={rnd_api:'로컬 R&D API',wellnessbox_environment:'로컬 WellnessBox',health_check:'health 응답',browser_roundtrip:'브라우저 왕복'};
 const $=id=>document.getElementById(id);const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function api(action,payload){$('result').textContent=action==='audit'?'완료 상태를 확인하고 있습니다. 약 30초만 기다려 주세요.':'처리하고 있습니다. 잠시만 기다려 주세요.';const response=await fetch('/api/action',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action,...payload})});const data=await response.json();$('result').textContent=JSON.stringify(data,null,2);if(!response.ok)throw new Error(data.message||'요청을 처리하지 못했습니다.');return data}
 async function act(action,payload){const auditButton=$('auditButton');if(action==='audit'){auditButton.disabled=true;auditButton.textContent='완료 상태 확인 중…'}try{await api(action,payload);await load();return true}catch(error){$('result').textContent=error.message;console.error(error);return false}finally{if(action==='audit'){auditButton.disabled=false;auditButton.textContent='현재 완료 상태 확인'}}}
@@ -39,7 +39,7 @@ function controls(id){
  if(id==='H-002')return `<p class="help">아래 정책 규칙 9개를 확인한 뒤 한 번만 누르세요.</p>${state.policy_rules.map(rule=>`<div class="rule"><strong>${rule.rule_id}</strong> ${esc(rule.plain_language)}</div>`).join('')}<button onclick="act('policy_all',{reviewer_id:defaultActor})">정책 전체 확인</button><details><summary>규칙 수정 의견 남기기</summary><select id="rule">${state.policy_rules.map(rule=>`<option>${rule.rule_id}</option>`).join('')}</select><textarea id="proposal" placeholder="수정 의견"></textarea><button class="secondary" onclick="reviewRule('change_requested')">수정 의견 저장</button></details>`;
  if(id==='H-003')return `<p class="help">내부 검토 원장은 자동으로 연결했습니다. 검토 시작을 누르면 첫 대기 건이 열립니다.</p><input id="draftDb" type="hidden" value="${esc(state.draft_database_path)}"><input id="draftReviewer" type="hidden" value="${defaultActor}"><button onclick="loadDraftQueue()">웰니스박스로 검토 시작</button><div id="draftCard" class="draft">검토 시작을 누르면 첫 대기 건을 표시합니다.</div>`;
  if(id==='H-004')return `<p class="help">이번 세션에서 무작위로 고른 세 편입니다.</p>${state.report_samples.map(report=>`<details><summary>${report.report_id} 읽기</summary><pre>${esc(report.excerpt)}</pre></details>`).join('')}<textarea id="toneComment" placeholder="문체 의견"></textarea><div class="row"><button onclick="tone(true)">웰니스박스로 문체 확인</button><button class="secondary" onclick="tone(false)">의견 저장 후 보류</button></div>`;
- if(id==='H-005'){const deferred=state.steps[id].status==='deferred';return `<p><strong>외부 검증 기관의 결과가 아직 없습니다.</strong> 지금 사용자가 준비하거나 선택할 파일은 없습니다.</p><p class="help">${deferred?'대기 상태 확인 완료. 더 누를 버튼이 없습니다.':'아래 버튼으로 현재 상태만 확인하세요.'}</p><button style="${deferred?'display:none':''}" onclick="act('external_upload',{document:null})">외부 결과 대기 상태 확인</button><details><summary>외부 결과를 이미 받은 경우</summary><p class="help">결과 JSON만 선택하세요. 저장 위치와 검증은 시스템이 처리합니다.</p><div class="row"><input id="externalFile" type="file" accept="application/json,.json"><button onclick="uploadExternal()">결과 확인 및 등록</button></div></details>`}
+ if(id==='H-005'){const deferred=state.steps[id].status==='deferred';return `<p><strong>외부 약사 한 명이 아래 패키지만 작성하면 됩니다.</strong></p><p class="risk">AI 초안을 검토한 약사와 다른 독립 외부 약사가 작성해야 합니다.</p><div class="row"><a href="${state.op039_package.download_path}" download><button>외부 검증 패키지 내려받기</button></a></div><p class="help">압축을 풀고 external_reviewer_form.html을 여세요. 모든 사례를 판정한 뒤 내려받은 결과 JSON을 아래에 올리면 저장 위치와 검증은 시스템이 처리합니다.</p><div class="row"><input id="externalFile" type="file" accept="application/json,.json"><button onclick="uploadExternal()">작성 결과 확인 및 등록</button></div>${deferred?'<p class="help">결과가 아직 없으면 다음을 눌러 보류할 수 있습니다.</p>':''}`}
  if(id==='H-006'){const saved=state.steps['H-006'];return `<p class="help">서명 키 경로와 발급자는 자동으로 설정했습니다.</p><input id="keyPath" type="hidden" value="${esc(generatedKeyPath||saved.key_path||state.default_signing_key_path)}"><input id="issuer" type="hidden" value="${defaultActor}"><button onclick="prepareAndSignReceipts()">키 준비 및 영수증 2종 서명</button>`}
  return operationControls();
 }
@@ -55,7 +55,7 @@ async function decideDraft(decision){if(!activeDraft)return;draftReviewerId=$('d
 async function generateKey(){try{const data=await api('key',{key_path:$('keyPath').value});generatedKeyPath=data.key_path;$('keyPath').value=data.key_path}catch(error){console.error(error)}}
 function signReceipts(){act('receipts',{key_path:$('keyPath').value,issuer_id:$('issuer').value})}
 async function prepareAndSignReceipts(){try{await api('receipts_prepare',{key_path:$('keyPath').value,issuer_id:defaultActor});await load()}catch(error){console.error(error)}}
-function operationControls(){const saved=state.steps['H-007'];const registered=saved.registered_requirement_evidence||{};const deferred=saved.status==='deferred';return `<p><strong>실제 운영 배포가 아직 끝나지 않았습니다.</strong> 지금 사용자가 준비하거나 선택할 파일은 없습니다.</p><p>${Object.keys(registered).length}/${state.stage_gap_ids.length}개 운영 요구 증거 등록됨</p><p class="help">${deferred?'대기 상태 확인 완료. 더 누를 버튼이 없습니다.':'아래 버튼으로 현재 상태만 확인하세요.'}</p><button style="${deferred?'display:none':''}" onclick="act('operations_upload',{operator_id:defaultActor,documents:[]})">운영 증거 대기 상태 확인</button><details><summary>운영 증거 묶음을 이미 받은 경우</summary><p class="help">JSON 파일을 모두 선택하세요. 분류·저장·검증은 시스템이 처리합니다.</p><input id="operationFiles" type="file" accept="application/json,.json" multiple><button onclick="uploadOperations()">운영 증거 자동 분류 및 확인</button></details>`}
+function operationControls(){const coverage=state.operational_coverage;return `<p><strong>이 컴퓨터에서 실제 연구 기능을 사용하면 영수증은 자동으로 쌓입니다.</strong></p><p>${coverage.covered_count}/${coverage.required_count}개 운영 요구사항 커버 · 유효 영수증 ${coverage.valid_receipt_count}개</p><progress value="${coverage.covered_count}" max="${coverage.required_count}" style="width:100%"></progress><p class="help">서버를 켜기만 한 세션은 증거로 세지 않습니다. 설문, 추천, 후속평가, 약사 검토 중 실제로 사용한 경로만 누적합니다.</p><button onclick="act('operations_collect',{operator_id:defaultActor})">운영 영수증 다시 확인</button><details><summary>아직 남은 OP 보기</summary><p>${coverage.missing_requirement_ids.join(', ')||'없음'}</p></details>`}
 async function uploadOperations(){try{const documents=[];for(const file of $('operationFiles').files)documents.push(await readJsonFile(file));await api('operations_upload',{operator_id:defaultActor,documents});await load()}catch(error){$('result').textContent=error.message;console.error(error)}}
 load();</script></body></html>"""
 
@@ -80,6 +80,15 @@ def handler(console: FinalSessionConsole):
                 self.reply(204, "", "image/x-icon")
             elif self.path == "/api/state":
                 self.reply(200, console.view_state())
+            elif self.path == "/downloads/op039-external-review-package.zip":
+                path = ROOT / "data/original_plan/final_session/op039_external_review_package.zip"
+                raw = path.read_bytes()
+                self.send_response(200)
+                self.send_header("content-type", "application/zip")
+                self.send_header("content-disposition", 'attachment; filename="op039-external-review-package.zip"')
+                self.send_header("content-length", str(len(raw)))
+                self.end_headers()
+                self.wfile.write(raw)
             else:
                 self.reply(404, {"error": "not_found"})
 
@@ -103,6 +112,7 @@ def handler(console: FinalSessionConsole):
                     "receipts_prepare": console.prepare_and_sign_receipts,
                     "operations": console.record_operations,
                     "operations_upload": console.record_uploaded_operations,
+                    "operations_collect": console.collect_operational_receipts,
                     "audit": console.finalize_and_audit,
                 }
                 self.reply(200, actions[action](**body))

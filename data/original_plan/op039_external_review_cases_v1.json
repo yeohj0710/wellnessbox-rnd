@@ -1,0 +1,17 @@
+{
+  "schema_version": "op039_external_review_cases_v1",
+  "package_id": "op039-independent-high-risk-review-2026-07-23",
+  "case_count": 10,
+  "cases": [
+    {"case_id":"pregnancy","hazard":"금기·특수집단","input":"임신 중 ashwagandha·berberine 후보","system_disposition":"BLOCK","system_rule_ids":["SAFE-PREG-001"],"source_evidence":"data/original_plan/evidence/op033_op034_special_population_condition_safety_smoke_v1.json"},
+    {"case_id":"lactation","hazard":"금기·특수집단","input":"수유 중 ashwagandha·berberine 후보","system_disposition":"BLOCK","system_rule_ids":["SAFE-LACT-001"],"source_evidence":"data/original_plan/evidence/op033_op034_special_population_condition_safety_smoke_v1.json"},
+    {"case_id":"severe_renal_block","hazard":"금기·특수집단","input":"중증 신장 상태와 magnesium glycinate 후보","system_disposition":"BLOCK","system_rule_ids":["SAFE-RENAL-001"],"source_evidence":"data/original_plan/evidence/op033_op034_special_population_condition_safety_smoke_v1.json"},
+    {"case_id":"hepatic_review_block","hazard":"금기·특수집단","input":"간 기능 고위험 상태","system_disposition":"BLOCK","system_rule_ids":["SAFE-HEPATIC-001"],"source_evidence":"data/original_plan/evidence/op033_op034_special_population_condition_safety_smoke_v1.json"},
+    {"case_id":"hemochromatosis_contraindication","hazard":"금기·특수집단","input":"혈색소침착증과 iron·vitamin C 후보","system_disposition":"BLOCK","system_rule_ids":["SAFE-HEMO-001"],"source_evidence":"data/original_plan/evidence/op033_op034_special_population_condition_safety_smoke_v1.json"},
+    {"case_id":"warfarin_glucosamine","hazard":"약물 상호작용","input":"warfarin과 glucosamine 병용","system_disposition":"BLOCK","system_rule_ids":["KB-SAFETY-ANTICOAG-001"],"source_evidence":"data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json"},
+    {"case_id":"warfarin_omega3","hazard":"약물 상호작용","input":"warfarin과 omega-3 병용","system_disposition":"NEEDS_REVIEW","system_rule_ids":["SAFETY-ANTICOAG-001"],"source_evidence":"data/original_plan/evidence/op035_op036_interaction_dose_aggregation_smoke_v1.json"},
+    {"case_id":"vitamin_c_above_limit","hazard":"용량 초과","input":"vitamin C 합산 2,200 mg/day","system_disposition":"BLOCK","system_rule_ids":["SAFETY-DOSE-VITC-001"],"source_evidence":"data/original_plan/evidence/op037_op038_dose_limit_rule_metadata_smoke_v1.json"},
+    {"case_id":"emergency_final_authority","hazard":"응급 신호","input":"응급 신호가 포함된 추천 요청","system_disposition":"STOP_AND_ESCALATE","system_rule_ids":["SAFE-EMERGENCY-001"],"source_evidence":"data/original_plan/evidence/op040_final_safety_authority_integration_smoke_v1.json"},
+    {"case_id":"emergency_zero_recommendations","hazard":"응급 신호","input":"응급 신호 최종 차단 후 추천 결과","system_disposition":"BLOCKED_ZERO_RECOMMENDATIONS","system_rule_ids":["SAFE-EMERGENCY-001"],"source_evidence":"data/original_plan/evidence/op040_final_safety_authority_integration_smoke_v1.json"}
+  ]
+}

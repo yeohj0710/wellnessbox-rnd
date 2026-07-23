@@ -1774,7 +1774,7 @@
           "title": "서비스 채팅이 R&D 상담 API를 호출하는 얇은 어댑터를 사용한다.",
           "owners": ["wellnessbox-rnd", "wellnessbox"],
           "required_stage": "INTEGRATED",
-          "claimed_stage": "IMPLEMENTED",
+          "claimed_stage": "INTEGRATED",
           "evidence": {
             "implementation_files": [
               "wellnessbox-rnd/apps/inference_api/routes/interim.py",
@@ -1789,7 +1789,8 @@
               "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
             ],
             "integration_evidence": [
-              "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
+              "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json",
+              "wellnessbox-rnd/data/original_plan/evidence/op088_op090_full_service_roundtrip_v1.json"
             ]
           }
         },
@@ -1816,7 +1817,7 @@
           "title": "질문 유형별 frozen QA와 실제 API E2E를 통과한다.",
           "owners": ["wellnessbox-rnd", "wellnessbox"],
           "required_stage": "INTEGRATED",
-          "claimed_stage": "IMPLEMENTED",
+          "claimed_stage": "INTEGRATED",
           "evidence": {
             "implementation_files": [
               "wellnessbox-rnd/apps/inference_api/routes/interim.py",
@@ -1830,7 +1831,8 @@
               "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
             ],
             "integration_evidence": [
-              "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
+              "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json",
+              "wellnessbox-rnd/data/original_plan/evidence/op088_op090_full_service_roundtrip_v1.json"
             ]
           }
         }

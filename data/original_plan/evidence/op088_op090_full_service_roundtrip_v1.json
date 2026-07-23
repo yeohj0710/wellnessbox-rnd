@@ -1,0 +1,59 @@
+{
+  "schema_version": "op088_op090_full_service_roundtrip_v1",
+  "status": "PASS",
+  "recorded_at": "2026-07-23T06:25:19.081922Z",
+  "requirements": [
+    "OP-088",
+    "OP-090"
+  ],
+  "actual_paths": [
+    "wellnessbox POST /api/chat",
+    "wellnessbox-rnd POST /v1/interim/counseling/turn",
+    "wellnessbox ChatSession/ChatMessage persistence",
+    "wellnessbox GET /api/chat/save"
+  ],
+  "checks": {
+    "real_wellnessbox_route": true,
+    "real_rnd_http_api": true,
+    "real_service_database_persistence": true,
+    "cookie_bound_read_after_write": true,
+    "prior_frozen_qa_pass": true,
+    "prior_deterministic_replay_pass": true,
+    "cases": [
+      {
+        "case_id": "interaction",
+        "service_session_id_sha256": "9960f6a3560c6d8c40dc7cbf3467e3d33b80f55269a897bbf7ca869bf63901e5",
+        "route_status": 200,
+        "saved_session_observed": true,
+        "saved_assistant_message_observed": true,
+        "answer_sha256": "6223d9079b1b075b337cea07141056075be0a616821d217e71fa9440beb895a5"
+      },
+      {
+        "case_id": "emergency",
+        "service_session_id_sha256": "906e4306e3979ebdef7428feb84e3ac8970451e6f2da0fb9ba00fb7439bbf6a9",
+        "route_status": 200,
+        "saved_session_observed": true,
+        "saved_assistant_message_observed": true,
+        "answer_sha256": "c5bb7705a47d54616f18038c7f0127f191c8e34054c5cac9eab353298a3629b5"
+      }
+    ]
+  },
+  "prior_evidence": {
+    "OP-088": {
+      "path": "data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json",
+      "sha256": "34203d29492d82f043a06202b61264c10285078955bce6b652fdbf6f69551de2"
+    },
+    "OP-090": {
+      "path": "data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json",
+      "sha256": "f00d76667dd27fbaef1d7009fddd698db40a31cb4a71a7a31dfe1fcff9bd4ab5"
+    }
+  },
+  "source_identity": {
+    "wellnessbox_rnd_commit": "b62c14e522bbdcdf171d7056f5b0907ea8d0b63e",
+    "wellnessbox_commit": "11986031756d5071d46ad41cb147d5a47ef65d5c"
+  },
+  "stage_boundary": {
+    "claimed_stage": "INTEGRATED",
+    "production_operation_observed": false
+  }
+}

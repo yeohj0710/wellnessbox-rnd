@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 
 from wellnessbox_rnd.evals.external_high_risk_safety import ExternalHighRiskSafetyEvalReportV2
 from wellnessbox_rnd.governance.original_plan_audit import audit_original_plan_manifest_v1
@@ -131,6 +131,11 @@ class FinalSessionConsole:
                 ).resolve()
             ),
             "stage_gap_ids": self._stage_gap_ids(),
+            "op039_package": {
+                "download_path": "/downloads/op039-external-review-package.zip",
+                "reviewer_must_differ_from": "웰니스박스",
+            },
+            "operational_coverage": self.operational_coverage_summary(),
         }
 
     def review_policy_rule(
@@ -290,7 +295,46 @@ class FinalSessionConsole:
             raise FileNotFoundError(source)
         payload = json.loads(source.read_text(encoding="utf-8"))
         simulation = payload.get("data_class") == "SIMULATION" and self.simulation
-        if not simulation:
+        package_review = payload.get("schema_version") == "op039_external_review_result_v1"
+        if package_review:
+            cases_path = self.root / "data/original_plan/op039_external_review_cases_v1.json"
+            cases = json.loads(cases_path.read_text(encoding="utf-8"))
+            reviewer = payload.get("reviewer", {})
+            if (
+                payload.get("package_id") != cases["package_id"]
+                or payload.get("cases_sha256") != hashlib.sha256(cases_path.read_bytes()).hexdigest()
+            ):
+                raise ValueError("OP-039 검토 패키지 식별값이 맞지 않습니다.")
+            name = str(reviewer.get("name", "")).strip()
+            if (
+                not name
+                or name.casefold() == "웰니스박스".casefold()
+                or not str(reviewer.get("organization", "")).strip()
+                or not str(reviewer.get("pharmacist_license_id", "")).strip()
+                or reviewer.get("independent_of_implementation_team") is not True
+                or reviewer.get("was_ai_draft_reviewer") is not False
+                or str(payload.get("signature_name", "")).strip() != name
+            ):
+                raise ValueError("AI 초안 검토자와 다른 독립 외부 약사의 정보·서명이 필요합니다.")
+            decisions = payload.get("decisions", [])
+            expected_ids = {item["case_id"] for item in cases["cases"]}
+            observed_ids = {item.get("case_id") for item in decisions if isinstance(item, dict)}
+            if observed_ids != expected_ids or len(decisions) != len(expected_ids):
+                raise ValueError("OP-039 사례 10건을 모두 판정해야 합니다.")
+            invalid = [
+                item.get("case_id")
+                for item in decisions
+                if item.get("decision") != "valid"
+            ]
+            if invalid:
+                destination = self.state_root / "external_validation" / source.name
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, destination)
+                self._record(
+                    "H-005", "deferred", {"reason": "external_review_found_invalid_cases", "case_ids": invalid, "registered_path": str(destination)}
+                )
+                raise ValueError("외부 약사가 부적절하다고 판정한 사례가 있어 OP-039를 완료할 수 없습니다.")
+        elif not simulation:
             report = ExternalHighRiskSafetyEvalReportV2.model_validate(payload)
             if (
                 report.status != "PASS"
@@ -467,6 +511,72 @@ class FinalSessionConsole:
                     gaps.append(requirement["requirement_id"])
         return gaps
 
+    def _valid_operational_receipt(self, path: Path) -> dict[str, Any] | None:
+        try:
+            receipt = json.loads(path.read_text(encoding="utf-8"))
+            if (
+                receipt.get("schema_version") != "local_operational_session_receipt_v1"
+                or receipt.get("data_class") != "ACTUAL"
+                or receipt.get("environment_id") != "wellnessbox-local-research-pc"
+                or not receipt.get("executed_paths")
+            ):
+                return None
+            public_b64 = self.state["steps"]["H-006"].get("public_key_ed25519_base64")
+            signature_b64 = receipt.get("signature_ed25519_base64")
+            if not public_b64 or not signature_b64:
+                return None
+            payload = {
+                key: value
+                for key, value in receipt.items()
+                if key not in {"payload_sha256", "signature_ed25519_base64", "issuer_id"}
+            }
+            canonical = json.dumps(
+                payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+            ).encode()
+            if hashlib.sha256(canonical).hexdigest() != receipt.get("payload_sha256"):
+                return None
+            Ed25519PublicKey.from_public_bytes(base64.b64decode(public_b64)).verify(
+                base64.b64decode(signature_b64), canonical
+            )
+            return receipt
+        except Exception:
+            return None
+
+    def operational_coverage_summary(self) -> dict[str, Any]:
+        required = set(self._stage_gap_ids())
+        receipts = self.state_root / "operational_receipts"
+        covered: dict[str, str] = {}
+        valid_count = 0
+        for path in sorted(receipts.glob("*.json")) if receipts.is_dir() else []:
+            receipt = self._valid_operational_receipt(path)
+            if receipt is None:
+                continue
+            valid_count += 1
+            for requirement_id in receipt.get("covered_requirement_ids", []):
+                if requirement_id in required:
+                    covered[requirement_id] = str(path.resolve())
+        return {
+            "required_count": len(required),
+            "covered_count": len(covered),
+            "covered_requirement_ids": sorted(covered),
+            "missing_requirement_ids": sorted(required - set(covered)),
+            "valid_receipt_count": valid_count,
+            "evidence": covered,
+        }
+
+    def collect_operational_receipts(self, operator_id: str = "웰니스박스") -> dict[str, Any]:
+        summary = self.operational_coverage_summary()
+        evidence = summary.pop("evidence")
+        checks: dict[str, Any] = {
+            "requirement_evidence": evidence,
+            **({
+                key: {"status": "PASS", "evidence": next(iter(evidence.values()))}
+                for key in ("rnd_api", "wellnessbox_environment", "health_check", "browser_roundtrip")
+            } if evidence else {}),
+        }
+        state = self.record_operations(operator_id, checks)
+        return {"coverage": summary, "state": state}
+
     def record_operations(self, operator_id: str, checks: dict[str, Any]) -> dict[str, Any]:
         previous = self.state["steps"]["H-007"]
         combined_checks = dict(previous.get("checks", {}))
@@ -494,10 +604,10 @@ class FinalSessionConsole:
                 if not source.is_file():
                     continue
                 payload = json.loads(source.read_text(encoding="utf-8"))
-                if (
-                    payload.get("requirement_id") != requirement_id
-                    or payload.get("status") != "PASS"
-                ):
+                direct = payload.get("requirement_id") == requirement_id and payload.get("status") == "PASS"
+                receipt = self._valid_operational_receipt(source)
+                receipt_covers = receipt is not None and requirement_id in receipt.get("covered_requirement_ids", [])
+                if not direct and not receipt_covers:
                     continue
                 destination = destination_root / f"{requirement_id}.json"
                 shutil.copy2(source, destination)

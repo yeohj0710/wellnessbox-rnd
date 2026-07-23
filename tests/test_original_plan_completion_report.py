@@ -63,8 +63,8 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
 
     assert report.requirement_count == 120
     assert report.disposition_counts == {
-        CompletionDisposition.COMPLETE: 76,
-        CompletionDisposition.PARTIAL: 43,
+        CompletionDisposition.COMPLETE: 78,
+        CompletionDisposition.PARTIAL: 41,
         CompletionDisposition.PENDING: 0,
         CompletionDisposition.EXTERNAL: 1,
         CompletionDisposition.CONTRADICTED: 0,
@@ -126,9 +126,9 @@ def test_current_report_covers_all_requirements_without_inflating_completion() -
     assert _completion_by_id(report, "OP-085").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-086").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-087").disposition == CompletionDisposition.PARTIAL
-    assert _completion_by_id(report, "OP-088").disposition == CompletionDisposition.PARTIAL
+    assert _completion_by_id(report, "OP-088").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-089").disposition == CompletionDisposition.COMPLETE
-    assert _completion_by_id(report, "OP-090").disposition == CompletionDisposition.PARTIAL
+    assert _completion_by_id(report, "OP-090").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-091").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-092").disposition == CompletionDisposition.COMPLETE
     assert _completion_by_id(report, "OP-093").disposition == CompletionDisposition.COMPLETE
@@ -219,8 +219,8 @@ def test_markdown_uses_audited_korean_status_language() -> None:
     markdown = render_original_plan_completion_report_markdown_v1(report)
 
     assert "원계획 요구사항 포함: **120/120건**" in markdown
-    assert "| 완료 | 76 |" in markdown
-    assert "| 부분 완료 | 43 |" in markdown
+    assert "| 완료 | 78 |" in markdown
+    assert "| 부분 완료 | 41 |" in markdown
     assert "| 대기 | 0 |" in markdown
     assert "전체 완료: **100%**" not in markdown
 

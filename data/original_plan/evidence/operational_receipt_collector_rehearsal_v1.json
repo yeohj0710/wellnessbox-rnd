@@ -1,0 +1,8 @@
+{
+  "schema_version": "operational_receipt_collector_rehearsal_v1",
+  "status": "PASS",
+  "data_class": "SIMULATION",
+  "covered_requirement_count": 41,
+  "production_receipt_path_touched": false,
+  "production_receipt_path": "data\\original_plan\\final_session\\operational_receipts"
+}

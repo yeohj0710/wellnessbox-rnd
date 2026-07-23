@@ -16,6 +16,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from wellnessbox_rnd.governance.operational_receipts import begin_session, finish_session
+
 ROOT = Path(__file__).resolve().parents[1]
 WELLNESSBOX_ROOT = ROOT.parent / "wellnessbox"
 RUNTIME_ROOT = ROOT / "etc/local_research_runtime"
@@ -23,6 +25,9 @@ DATABASE_PATH = RUNTIME_ROOT / "interim.sqlite3"
 STATE_PATH = RUNTIME_ROOT / "session_processes.json"
 STOP_PATH = RUNTIME_ROOT / "stop.request"
 SECRET_PATH = RUNTIME_ROOT / "local_secrets.json"
+CAPTURE_PATH = RUNTIME_ROOT / "operational_capture.json"
+OPERATIONAL_RECEIPTS = ROOT / "data/original_plan/final_session/operational_receipts"
+SIGNING_KEY = ROOT / "etc/final_session_private/final_session_signing_key.pem"
 EVIDENCE_PATH = (
     ROOT / "data/original_plan/evidence/local_on_demand_research_session_v1.json"
 )
@@ -262,6 +267,10 @@ def main() -> int:
         if not args.api_only:
             urls["wellnessbox"] = web_url
         _write_state(processes, urls)
+        capture = begin_session(ROOT, DATABASE_PATH, urls)
+        CAPTURE_PATH.write_text(
+            json.dumps(capture, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
         print("로컬 연구 서버가 준비됐습니다.")
         print(f"최종 확인 화면: {console_url}")
         if not args.api_only:
@@ -344,6 +353,17 @@ def main() -> int:
             _stop(process)
         for log in logs:
             log.close()
+        if CAPTURE_PATH.is_file():
+            capture = json.loads(CAPTURE_PATH.read_text(encoding="utf-8"))
+            receipt = finish_session(
+                ROOT,
+                DATABASE_PATH,
+                capture,
+                OPERATIONAL_RECEIPTS,
+                key_path=SIGNING_KEY,
+            )
+            print(f"운영 영수증: {receipt['receipt_path']}")
+            CAPTURE_PATH.unlink(missing_ok=True)
         STATE_PATH.unlink(missing_ok=True)
         STOP_PATH.unlink(missing_ok=True)
     return 0
