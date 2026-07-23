@@ -11,20 +11,20 @@
     "H-007": "completed"
   },
   "audit": {
-    "status": "READY",
-    "goal_complete": true,
+    "blockers": [],
     "facts": {
-      "requirement_count": 120,
-      "claimed_requirement_count": 120,
-      "nonexternal_stage_gap_ids": [],
-      "external_validation_gap_ids": [],
-      "report_count": 120,
-      "missing_report_ids": [],
       "canonical_evidence_audit_passed": true,
-      "validation_receipt_valid": true,
-      "independent_review_receipt_valid": true
+      "claimed_requirement_count": 120,
+      "external_validation_gap_ids": [],
+      "independent_review_receipt_valid": true,
+      "missing_report_ids": [],
+      "nonexternal_stage_gap_ids": [],
+      "report_count": 120,
+      "requirement_count": 120,
+      "validation_receipt_valid": true
     },
-    "blockers": []
+    "goal_complete": true,
+    "status": "READY"
   },
   "production_paths_touched": false
 }
