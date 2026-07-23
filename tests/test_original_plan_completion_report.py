@@ -263,5 +263,5 @@ def test_report_cli_writes_and_checks_deterministic_artifacts(tmp_path: Path) ->
     assert generated.returncode == 0
     assert checked.returncode == 0
     assert stale.returncode == 1
-    assert json.loads(generated.stdout)["disposition_counts"]["COMPLETE"] == 76
+    assert json.loads(generated.stdout)["disposition_counts"]["COMPLETE"] == 78
     assert str(markdown_output) in json.loads(stale.stdout)["stale_outputs"]
