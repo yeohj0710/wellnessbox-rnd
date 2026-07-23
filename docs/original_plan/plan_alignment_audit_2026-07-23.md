@@ -58,3 +58,9 @@
 ## 남은 일
 
 사용자 확인 후 Phase 2를 시작한다. 첫 작업은 master context 19.3 형식의 선언적 정책 파일을 만들고, 기존 `ClosedLoopState`/`BoundedAgent` 안에 유지·재최적화·감량·교체·중단·에스컬레이션 전이를 통합하는 것이다. 그 뒤 100개 이상 결정적 시나리오와 자동 채점기로 다음 수행 작업 정확도 80% 이상을 증명한다.
+
+## Phase 2 처리 결과
+
+사용자는 2026-07-23에 중대 어긋남 4건을 확정 설계대로 처리하는 방침을 승인했다. `ClosedLoopState`와 `BoundedAgent`에 후속 판단 전이를 통합했고, `data/original_plan/closed_loop_next_action_policy_v1.json`을 기준 정책으로 추가했다. 활성 에이전트 실행이 있으면 기존 `PlanLifecycleService`의 수동 전이를 거부해 이중 쓰기 경로도 막았다.
+
+`data/original_plan/closed_loop_next_action_scenarios_v1.json`은 결정적 사례 130개를 담는다. 자동 채점 결과는 `data/original_plan/evidence/op071_op080_closed_loop_next_action_policy_v1.json`에 있으며 130개가 모두 정답 행동과 일치해 다음 수행 작업 정확도 100%를 기록했다. KPI 기준 80%를 넘었고, 유효 보고서 수도 50편에서 58편으로 늘었다. 따라서 감사에서 지적한 중대 어긋남 4건은 구현 기준으로 해소됐다.
