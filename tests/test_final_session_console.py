@@ -354,7 +354,10 @@ class FinalSessionConsoleTest(unittest.TestCase):
             ROOT / "data/original_plan/final_session/op039_external_reviewer_form.html"
         ).read_text(encoding="utf-8")
         self.assertIn('value="valid" checked', review_form)
-        self.assertIn("내 이름으로 검토 확정 및 자동 등록", review_form)
+        self.assertIn("독립성 확인 및 검토 결과 등록", review_form)
+        self.assertIn("판정 10건과 판정 이유는 모두 작성되어 있습니다", review_form)
+        self.assertNotIn('id="email"', review_form)
+        self.assertNotIn('id="independent"', review_form)
         self.assertNotIn('id="signature"', review_form)
         self.assertNotIn("운영 확인 JSON", html)
         self.assertNotIn("외부 평가 결과 JSON 경로", html)
