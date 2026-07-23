@@ -15,6 +15,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from apps.inference_api.main import app  # noqa: E402
+from wellnessbox_rnd.interim.execution_identity import (  # noqa: E402
+    RUNTIME_DATASET_ARTIFACTS,
+)
 from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore  # noqa: E402
 
 INTERNAL_TOKEN = "op025-op026-log-separation-identity-smoke-token"
@@ -210,12 +213,7 @@ def run_smoke() -> dict[str, Any]:
                 ),
                 "dataset_identities_are_hashed": (
                     dataset_ids
-                    == [
-                        "ingredient_catalog_v1",
-                        "reference_knowledge_base_v1",
-                        "runtime_knowledge_db_v1",
-                        "safety_rules_v1",
-                    ]
+                    == sorted(dataset_id for dataset_id, _ in RUNTIME_DATASET_ARTIFACTS)
                     and all(
                         len(str(item["sha256"])) == 64
                         for item in first_identity["datasets"]

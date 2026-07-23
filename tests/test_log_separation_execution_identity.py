@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -13,11 +16,26 @@ from wellnessbox_rnd.interim.execution_identity import (
     RUNTIME_DATASET_ARTIFACTS,
     resolve_code_commit,
 )
-from wellnessbox_rnd.interim.store import InterimStore
+from wellnessbox_rnd.interim.store import SCHEMA_VERSION, InterimStore
 
 SUBJECT_ID = "usr_feedfacefeedfacefeedfacefeedface"
 INTERNAL_TOKEN = "log-separation-identity-test-token"
 CODE_COMMIT_OVERRIDE = "0123456789abcdef0123456789abcdef01234567"
+IDENTITY_EVIDENCE_PATH = (
+    Path(__file__).parents[1]
+    / "data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json"
+)
+
+
+def test_canonical_log_identity_evidence_matches_current_sources() -> None:
+    evidence = json.loads(IDENTITY_EVIDENCE_PATH.read_text(encoding="utf-8"))
+
+    assert evidence["database_schema_version"] == SCHEMA_VERSION
+    assert evidence["dataset_identity_ids"] == sorted(
+        dataset_id for dataset_id, _ in RUNTIME_DATASET_ARTIFACTS
+    )
+    assert evidence["checks"]["database_schema_version_matches_current"] is True
+    assert evidence["checks"]["dataset_identities_are_hashed"] is True
 
 
 def _headers() -> dict[str, str]:
