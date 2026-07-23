@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sqlite3
 import tempfile
 import unittest
 from datetime import UTC, datetime
@@ -196,6 +197,58 @@ class FinalSessionConsoleTest(unittest.TestCase):
                 },
             )
             self.assertEqual(console.state["steps"]["H-007"]["status"], "deferred")
+
+    def test_operational_coverage_shows_current_session_as_provisional_only(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            runtime = root / "etc/local_research_runtime"
+            runtime.mkdir(parents=True)
+            database = runtime / "interim.sqlite3"
+            connection = sqlite3.connect(database)
+            try:
+                connection.execute("create table user_profiles(id text)")
+                connection.execute("insert into user_profiles values ('actual-use')")
+                connection.commit()
+            finally:
+                connection.close()
+            (runtime / "operational_capture.json").write_text(
+                json.dumps({"database_counts_before": {"user_profiles": 0}}),
+                encoding="utf-8",
+            )
+            mapping = root / "data/original_plan/operational_action_coverage_v1.json"
+            mapping.parent.mkdir(parents=True)
+            mapping.write_text(
+                json.dumps(
+                    {
+                        "signals": {"profile_or_survey": ["user_profiles"], "completed_session": []},
+                        "actions": {"profile_or_survey": ["OP-001"], "completed_session": ["OP-002"]},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            manifest = root / "manifest.json"
+            manifest.write_text(
+                json.dumps(
+                    {
+                        "groups": [
+                            {
+                                "default_required_stage": "OPERATED",
+                                "requirements": [
+                                    {"requirement_id": "OP-001", "claimed_stage": "IMPLEMENTED"},
+                                    {"requirement_id": "OP-002", "claimed_stage": "IMPLEMENTED"},
+                                ],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            console = FinalSessionConsole(ROOT, state_root=root / "session")
+            console.root = root
+            console.manifest_path = manifest
+            summary = console.operational_coverage_summary()
+            self.assertEqual(summary["covered_count"], 0)
+            self.assertEqual(summary["current_session_provisional_count"], 2)
 
     def test_operations_keep_previously_registered_requirement_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

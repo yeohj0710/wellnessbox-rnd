@@ -17,6 +17,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey,
 
 from wellnessbox_rnd.evals.external_high_risk_safety import ExternalHighRiskSafetyEvalReportV2
 from wellnessbox_rnd.governance.original_plan_audit import audit_original_plan_manifest_v1
+from wellnessbox_rnd.governance.operational_receipts import TABLES, database_counts
 from wellnessbox_rnd.interim.ai_drafts import (
     AiDraftCreateV1,
     AiDraftDecisionV1,
@@ -566,12 +567,35 @@ class FinalSessionConsole:
             for requirement_id in receipt.get("covered_requirement_ids", []):
                 if requirement_id in required:
                     covered[requirement_id] = str(path.resolve())
+        provisional: list[str] = []
+        capture_path = self.root / "etc/local_research_runtime/operational_capture.json"
+        database_path = self.root / "etc/local_research_runtime/interim.sqlite3"
+        if capture_path.is_file():
+            capture = json.loads(capture_path.read_text(encoding="utf-8"))
+            before = capture.get("database_counts_before", {})
+            after = database_counts(database_path)
+            delta = {table: after.get(table, 0) - int(before.get(table, 0)) for table in TABLES}
+            mapping = json.loads(
+                (self.root / "data/original_plan/operational_action_coverage_v1.json").read_text(encoding="utf-8")
+            )
+            actions = [
+                action
+                for action, signals in mapping["signals"].items()
+                if action != "completed_session" and any(delta.get(table, 0) > 0 for table in signals)
+            ]
+            if actions:
+                actions.append("completed_session")
+            provisional = sorted(
+                required & {op for action in actions for op in mapping["actions"][action]}
+            )
         return {
             "required_count": len(required),
             "covered_count": len(covered),
             "covered_requirement_ids": sorted(covered),
             "missing_requirement_ids": sorted(required - set(covered)),
             "valid_receipt_count": valid_count,
+            "current_session_provisional_count": len(provisional),
+            "current_session_provisional_ids": provisional,
             "evidence": covered,
         }
 
