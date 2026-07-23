@@ -4,6 +4,7 @@ import base64
 import hashlib
 import json
 import os
+import random
 import shutil
 import subprocess
 import sys
@@ -22,6 +23,7 @@ from wellnessbox_rnd.interim.ai_drafts import (
     AiDraftService,
     DraftReviewStatus,
 )
+from wellnessbox_rnd.interim.data_lake import data_lake_database_path
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.schemas.original_plan_manifest import load_original_plan_manifest_v1
 
@@ -50,6 +52,10 @@ class FinalSessionConsole:
         self.manifest_path = self.root / "data/original_plan/requirements_manifest_v1.json"
         self.simulation = simulation
         self.state = self._load_state()
+        if "report_sample_ids" not in self.state:
+            report_ids = [f"OP-{number:03}" for number in range(1, 121)]
+            self.state["report_sample_ids"] = random.SystemRandom().sample(report_ids, 3)
+            _write_json(self.state_path, self.state)
 
     def _load_state(self) -> dict[str, Any]:
         if self.state_path.is_file():
@@ -105,7 +111,7 @@ class FinalSessionConsole:
                 }
             )
         samples = []
-        for report_id in ("OP-023", "OP-078", "OP-106"):
+        for report_id in self.state["report_sample_ids"]:
             path = self.root / f"docs/original_plan/research_reports/{report_id}.md"
             samples.append(
                 {"report_id": report_id, "excerpt": path.read_text(encoding="utf-8")[:1200]}
@@ -116,6 +122,8 @@ class FinalSessionConsole:
             "progress": {"completed": completed, "total": len(STEPS)},
             "policy_rules": readable_rules,
             "report_samples": samples,
+            "draft_database_path": str(data_lake_database_path().resolve()),
+            "stage_gap_ids": self._stage_gap_ids(),
         }
 
     def review_policy_rule(
@@ -201,7 +209,7 @@ class FinalSessionConsole:
     def record_report_tone(
         self, owner_id: str, approved: bool, comment: str = ""
     ) -> dict[str, Any]:
-        samples = ["OP-023", "OP-078", "OP-106"]
+        samples = list(self.state["report_sample_ids"])
         record = {
             "schema_version": "report_tone_signoff_v1",
             "owner_id": owner_id,
@@ -370,17 +378,22 @@ class FinalSessionConsole:
         return gaps
 
     def record_operations(self, operator_id: str, checks: dict[str, Any]) -> dict[str, Any]:
+        previous = self.state["steps"]["H-007"]
+        combined_checks = dict(previous.get("checks", {}))
+        combined_checks.update(
+            {key: value for key, value in checks.items() if key != "requirement_evidence"}
+        )
         required = {"rnd_api", "wellnessbox_environment", "health_check", "browser_roundtrip"}
-        environment_complete = required.issubset(checks) and all(
-            isinstance(checks[key], dict)
-            and checks[key].get("status") == "PASS"
-            and isinstance(checks[key].get("evidence"), str)
-            and Path(checks[key]["evidence"]).resolve().is_file()
+        environment_complete = required.issubset(combined_checks) and all(
+            isinstance(combined_checks[key], dict)
+            and combined_checks[key].get("status") == "PASS"
+            and isinstance(combined_checks[key].get("evidence"), str)
+            and Path(combined_checks[key]["evidence"]).resolve().is_file()
             for key in required
         )
         required_gaps = set(self._stage_gap_ids())
         supplied = checks.get("requirement_evidence", {})
-        registered: dict[str, str] = {}
+        registered: dict[str, str] = dict(previous.get("registered_requirement_evidence", {}))
         if isinstance(supplied, dict):
             destination_root = self.state_root / "operational_evidence"
             destination_root.mkdir(parents=True, exist_ok=True)
@@ -403,7 +416,7 @@ class FinalSessionConsole:
         record = {
             "schema_version": "operational_environment_signoff_v1",
             "operator_id": operator_id,
-            "checks": checks,
+            "checks": combined_checks,
             "registered_requirement_evidence": registered,
             "required_requirement_ids": sorted(required_gaps),
             "recorded_at": _now(),

@@ -85,6 +85,33 @@ class FinalSessionConsoleTest(unittest.TestCase):
             )
             self.assertEqual(console.state["steps"]["H-007"]["status"], "deferred")
 
+    def test_operations_keep_previously_registered_requirement_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            temp_path = Path(temp)
+            console = FinalSessionConsole(ROOT, state_root=temp_path / "session")
+            requirement_id = console._stage_gap_ids()[0]
+            evidence = temp_path / "requirement.json"
+            evidence.write_text(
+                json.dumps({"requirement_id": requirement_id, "status": "PASS"}),
+                encoding="utf-8",
+            )
+            console.record_operations(
+                "operator",
+                {"requirement_evidence": {requirement_id: str(evidence)}},
+            )
+            console.record_operations("operator", {})
+            registered = console.state["steps"]["H-007"][
+                "registered_requirement_evidence"
+            ]
+            self.assertIn(requirement_id, registered)
+
+    def test_console_html_has_automatic_draft_queue_and_structured_operations(self) -> None:
+        html = (ROOT / "scripts/run_final_session_console.py").read_text(encoding="utf-8")
+        self.assertIn("data.next_draft", html)
+        self.assertIn("draftReviewerId", html)
+        self.assertIn('type="checkbox" id="check-${id}"', html)
+        self.assertNotIn("운영 확인 JSON", html)
+
     def test_finalize_registers_policy_before_resigning_receipts(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp) / "project"
