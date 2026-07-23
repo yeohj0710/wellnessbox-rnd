@@ -511,8 +511,14 @@ class FinalSessionConsole:
             "required_requirement_ids": sorted(required_gaps),
             "recorded_at": _now(),
         }
-        _write_json(self.state_root / "operational_environment_signoff_v1.json", record)
-        return self._record("H-007", "completed" if complete else "deferred", record)
+        operations_path = self.state_root / "operational_environment_signoff_v1.json"
+        _write_json(operations_path, record)
+        result = self._record("H-007", "completed" if complete else "deferred", record)
+        if complete and self._production_state():
+            paths = self._register_operational_signoffs()
+            self._git_commit(paths, "docs: register operational environment evidence")
+            return {**result, "audit": self.run_final_audit()}
+        return result
 
     def record_uploaded_operations(
         self, operator_id: str, documents: list[dict[str, Any]]
@@ -582,30 +588,13 @@ class FinalSessionConsole:
         manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
         external_path = Path(external).resolve()
         external_ref = f"wellnessbox-rnd/{external_path.relative_to(self.root).as_posix()}"
-        registered = self.state["steps"]["H-007"].get("registered_requirement_evidence", {})
         for group in manifest["groups"]:
-            group_required = group.get("default_required_stage")
             for requirement in group["requirements"]:
-                required = requirement.get("required_stage", group_required)
                 if requirement["requirement_id"] == "OP-039":
                     requirement["claimed_stage"] = "EXTERNAL"
                     test_files = requirement["evidence"].setdefault("test_files", [])
                     if external_ref not in test_files:
                         test_files.append(external_ref)
-                elif requirement["requirement_id"] in registered:
-                    requirement["claimed_stage"] = required
-                    evidence_path = Path(registered[requirement["requirement_id"]]).resolve()
-                    evidence_ref = (
-                        f"wellnessbox-rnd/{evidence_path.relative_to(self.root).as_posix()}"
-                    )
-                    if required in {"INTEGRATED", "OPERATED"}:
-                        integrated = requirement["evidence"].setdefault("integration_evidence", [])
-                        if evidence_ref not in integrated:
-                            integrated.append(evidence_ref)
-                    if required == "OPERATED":
-                        operational = requirement["evidence"].setdefault("operational_evidence", [])
-                        if evidence_ref not in operational:
-                            operational.append(evidence_ref)
         _write_json(self.manifest_path, manifest)
         cases_path = self.root / "data/original_plan/op120_final_completion_audit_cases_v1.json"
         cases = json.loads(cases_path.read_text(encoding="utf-8"))
@@ -634,7 +623,7 @@ class FinalSessionConsole:
                     + closed_items.lstrip()
                 )
                 checklist_path.write_text(checklist, encoding="utf-8")
-        operational_evidence = [Path(value) for value in registered.values()]
+        operational_paths = self._register_operational_signoffs()
         return [
             self.manifest_path,
             cases_path,
@@ -643,7 +632,47 @@ class FinalSessionConsole:
             operations,
             external_path,
             self.state_path,
-            *operational_evidence,
+            *operational_paths,
+        ]
+
+    def _register_operational_signoffs(self) -> list[Path]:
+        operations = self.state_root / "operational_environment_signoff_v1.json"
+        registered = self.state["steps"]["H-007"].get(
+            "registered_requirement_evidence", {}
+        )
+        if not operations.is_file() or not isinstance(registered, dict):
+            raise ValueError("operations evidence is required")
+        manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+        for group in manifest["groups"]:
+            group_required = group.get("default_required_stage")
+            for requirement in group["requirements"]:
+                requirement_id = requirement["requirement_id"]
+                if requirement_id not in registered:
+                    continue
+                required = requirement.get("required_stage", group_required)
+                requirement["claimed_stage"] = required
+                evidence_path = Path(registered[requirement_id]).resolve()
+                evidence_ref = (
+                    f"wellnessbox-rnd/{evidence_path.relative_to(self.root).as_posix()}"
+                )
+                if required in {"INTEGRATED", "OPERATED"}:
+                    integrated = requirement["evidence"].setdefault(
+                        "integration_evidence", []
+                    )
+                    if evidence_ref not in integrated:
+                        integrated.append(evidence_ref)
+                if required == "OPERATED":
+                    operational = requirement["evidence"].setdefault(
+                        "operational_evidence", []
+                    )
+                    if evidence_ref not in operational:
+                        operational.append(evidence_ref)
+        _write_json(self.manifest_path, manifest)
+        return [
+            self.manifest_path,
+            operations,
+            self.state_path,
+            *(Path(value) for value in registered.values()),
         ]
 
     def _register_receipt_policy(self, receipt: dict[str, Any]) -> Path:

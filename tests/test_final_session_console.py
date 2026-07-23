@@ -160,6 +160,58 @@ class FinalSessionConsoleTest(unittest.TestCase):
             ]
             self.assertIn(requirement_id, registered)
 
+    def test_operational_signoffs_promote_without_external_validation(self) -> None:
+        etc_root = ROOT / "etc"
+        etc_root.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=etc_root) as temp:
+            temp_path = Path(temp)
+            console = FinalSessionConsole(ROOT, state_root=temp_path / "session")
+            evidence = temp_path / "OP-001.json"
+            evidence.write_text(
+                json.dumps({"requirement_id": "OP-001", "status": "PASS"}),
+                encoding="utf-8",
+            )
+            operations = console.state_root / "operational_environment_signoff_v1.json"
+            operations.write_text("{}", encoding="utf-8")
+            manifest = temp_path / "manifest.json"
+            manifest.write_text(
+                json.dumps(
+                    {
+                        "groups": [
+                            {
+                                "default_required_stage": "OPERATED",
+                                "requirements": [
+                                    {
+                                        "requirement_id": "OP-001",
+                                        "claimed_stage": "INTEGRATED",
+                                        "evidence": {},
+                                    },
+                                    {
+                                        "requirement_id": "OP-039",
+                                        "claimed_stage": "IMPLEMENTED",
+                                        "required_stage": "EXTERNAL",
+                                        "evidence": {},
+                                    },
+                                ],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            console.manifest_path = manifest
+            console.state["steps"]["H-007"] = {
+                "status": "completed",
+                "registered_requirement_evidence": {"OP-001": str(evidence)},
+            }
+
+            console._register_operational_signoffs()
+
+            updated = json.loads(manifest.read_text(encoding="utf-8"))
+            requirements = updated["groups"][0]["requirements"]
+            self.assertEqual(requirements[0]["claimed_stage"], "OPERATED")
+            self.assertEqual(requirements[1]["claimed_stage"], "IMPLEMENTED")
+
     def test_uploaded_operations_are_classified_without_user_paths(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
