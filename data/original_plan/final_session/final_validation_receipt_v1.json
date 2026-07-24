@@ -4,6 +4,6 @@
   "manifest_sha256": "ee614e571a75da5bec9dbf523801744cfc02db87e12abbd1ae17353a3cf560f7",
   "canonical_audit_sha256": "99d48ef479c5fb30909df10bb1bf73947a44eadd01f65265e026d718e9e7c166",
   "source_commit": "2be0753182d4164ec82a41a09d46f4948fef151d",
-  "issuer_id": "?????",
-  "signature_ed25519_base64": "kr8iF3P+72EyrGHbx+xR9Gb0ISpaeTWzOe+zcg+5sI0g3MgNl0Sk69mhSAxC06sYKYmDzptJFRIYMUllIz/2DQ=="
+  "issuer_id": "웰니스박스",
+  "signature_ed25519_base64": "IYd9ERoewuD/MEdjmq9tMxI37gZABP4CVJyUjwPMik2b/zKNHAj3rfvt5NyUvh3djxjL8OwS3iNGYwTD/1CQBQ=="
 }
