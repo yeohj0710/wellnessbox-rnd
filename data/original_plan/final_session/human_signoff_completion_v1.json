@@ -49,7 +49,7 @@
     },
     "H-006": {
       "status": "completed",
-      "updated_at": "2026-07-24T05:22:35.779713Z",
+      "updated_at": "2026-07-24T05:22:43.845946Z",
       "issuer_id": "웰니스박스",
       "key_path": "C:\\dev\\wellnessbox-rnd\\etc\\final_session_private\\final_session_signing_key.pem",
       "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g=",
@@ -168,5 +168,5 @@
       "recorded_at": "2026-07-24T01:35:10.604834Z"
     }
   },
-  "completed_at": "2026-07-24T05:22:43.302543Z"
+  "completed_at": "2026-07-24T06:46:55.387576Z"
 }
