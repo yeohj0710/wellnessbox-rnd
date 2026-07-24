@@ -1,0 +1,56 @@
+{
+  "schema_version": "local_operational_session_receipt_v1",
+  "data_class": "ACTUAL",
+  "environment_id": "wellnessbox-local-research-pc",
+  "session_id": "local-20260724T013205980126Z",
+  "started_at": "2026-07-24T01:32:05.980126Z",
+  "ended_at": "2026-07-24T01:35:10.494269Z",
+  "source_commits": {
+    "wellnessbox-rnd": "eea659269cc9937877be7cbd63af4bdaf61d0da3",
+    "wellnessbox": "85487e0debe11982c37a6f2884e546053b7a75c4"
+  },
+  "executed_paths": [
+    "recommendation"
+  ],
+  "database_count_delta": {
+    "user_profiles": 0,
+    "profile_snapshots": 0,
+    "behavior_events": 0,
+    "recommendation_runs": 1,
+    "recommendation_items": 1,
+    "agent_runs": 0,
+    "agent_steps": 0,
+    "followups": 0,
+    "pro_observations": 0,
+    "adverse_events": 0,
+    "workflow_jobs": 0,
+    "review_tasks": 0,
+    "ai_drafts": 0,
+    "review_tasks_completed": 0,
+    "ai_drafts_reviewed": 0
+  },
+  "covered_requirement_ids": [
+    "OP-040",
+    "OP-071",
+    "OP-072",
+    "OP-079",
+    "OP-080",
+    "OP-096",
+    "OP-098",
+    "OP-099",
+    "OP-101",
+    "OP-102",
+    "OP-107",
+    "OP-108",
+    "OP-109",
+    "OP-110",
+    "OP-116",
+    "OP-117",
+    "OP-118",
+    "OP-120"
+  ],
+  "coverage_mapping_path": "data/original_plan/operational_action_coverage_v1.json",
+  "payload_sha256": "0f94912123bb256ad217f1852d846ba19698d8e625b576c5890552c44463859e",
+  "signature_ed25519_base64": "GJOHI3oi1+qBZUnfJK0KOZa21LqW5fqw/HTHRYyCQMRPbbHx7L6kh1B2AV6Fgi5+SETtrrN6LLfzdPDyYUJkCw==",
+  "issuer_id": "웰니스박스"
+}
