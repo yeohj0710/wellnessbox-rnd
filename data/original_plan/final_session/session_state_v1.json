@@ -50,8 +50,8 @@
     },
     "H-006": {
       "status": "completed",
-      "updated_at": "2026-07-23T06:36:30.143023Z",
-      "issuer_id": "웰니스박스",
+      "updated_at": "2026-07-24T00:21:33.605589Z",
+      "issuer_id": "?????",
       "key_path": "C:\\dev\\wellnessbox-rnd\\etc\\final_session_private\\final_session_signing_key.pem",
       "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g=",
       "validation_receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\final_validation_receipt_v1.json",
@@ -112,7 +112,7 @@
       "recorded_at": "2026-07-23T04:13:48.018080Z"
     }
   },
-  "updated_at": "2026-07-23T07:35:37.975677Z",
+  "updated_at": "2026-07-24T00:21:33.605609Z",
   "report_sample_ids": [
     "OP-081",
     "OP-028",
