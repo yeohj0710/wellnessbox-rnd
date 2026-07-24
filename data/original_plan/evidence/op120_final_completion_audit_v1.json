@@ -134,8 +134,8 @@
       "wellnessbox-rnd/data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json": "1c7a3629c10ba048e5d6498090271a1a68150bbb",
       "wellnessbox-rnd/data/original_plan/evidence/op119_external_dependency_registry_smoke_v1.json": "556c191dec48423a1e8f457963c987f3164fcef0",
       "wellnessbox-rnd/data/original_plan/final_session/external_validation/op039_external_validation.json": "aeb3b38c402d762b20baca4062aa109eb8c7cd81",
-      "wellnessbox-rnd/data/original_plan/final_session/final_validation_receipt_v1.json": "76c0c214d8d19a815c1f01a65c6091acfae36af9",
-      "wellnessbox-rnd/data/original_plan/final_session/independent_final_review_receipt_v1.json": "cc7e41922e324d4eb05b0532603c72eac2b85a90",
+      "wellnessbox-rnd/data/original_plan/final_session/final_validation_receipt_v1.json": "de432512005f40c445ae10713187c26dbfb007b0",
+      "wellnessbox-rnd/data/original_plan/final_session/independent_final_review_receipt_v1.json": "9666677f0d255de7b211fdaedadab918960ea1b0",
       "wellnessbox-rnd/data/original_plan/fixtures/op049_learned_replay_artifact_v1.json": "e8f84c2de7c662a60273bdaa6cd7db266c9168a4",
       "wellnessbox-rnd/data/original_plan/op089_op090_counseling_frozen_qa_v1.json": "93e581e671948ce7c5787e8c75f0437ee74e1c66",
       "wellnessbox-rnd/data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json": "a18fbadf46e9b99868c68da818883d54409e3360",
@@ -473,7 +473,7 @@
       "wellnessbox/app/api/tips/route.ts": "c29cc1c268e935db33b434d82c18a74c42686d2a",
       "wellnessbox/components/tips/InterimRoleConsole.tsx": "4c15195e68854037948c37d3adba88c8012a42f3",
       "wellnessbox/components/tips/InterimUserConsole.tsx": "2634b646b368c85799a6e4b61734751c36453546",
-      "wellnessbox/components/tips/ProStudySimulation.tsx": "80195ce4f2182e58eb65fa365f3234990b74c5ee",
+      "wellnessbox/components/tips/ProStudySimulation.tsx": "6d9effb3acf5ca6fc42989b4da9ed477132009f5",
       "wellnessbox/components/tips/interim.module.css": "5b6af6414e965600792483e26078480e21622600",
       "wellnessbox/contracts/wb-rnd/ingredient-identifier-map-v1.json": "79fd9ff42633c3cd3213ba3d4abbe0b13a07ace9",
       "wellnessbox/contracts/wb-rnd/interim-openapi-surface-v1.json": "b4c7a5c72e86f6f41d974b0e910642da6c9be0a4",
@@ -523,7 +523,7 @@
       "wellnessbox/scripts/qa/check-rnd-security-boundary.cts": "2d5f57c89065a9aff2681b6cde647d439431e199",
       "wellnessbox/scripts/qa/check-tips-interim-modules.cts": "1efdc4b5153d18283b11b3c7ec3a4a44989a828f",
       "wellnessbox/scripts/qa/check-tips-pro-correction-route.cts": "c79b8ec06c7f987ea10ddc212a222ae8f3870022",
-      "wellnessbox/scripts/qa/check-tips-pro-study-rnd-client.cts": "730a356709cb62de765a518b5627af69b9760b90",
+      "wellnessbox/scripts/qa/check-tips-pro-study-rnd-client.cts": "4484e2ca0d6bf3ddfc2ea9a17deaac5e123d8ca9",
       "wellnessbox/scripts/qa/check-tips-rnd-session-replay.cts": "fe9464441562c13ed6bd2080c031fb5b5dd1785c",
       "wellnessbox/scripts/qa/check-tips-web-lab.cts": "873e23ece851cc894e0684cdb9df008749b2995f",
       "wellnessbox/scripts/qa/run-rnd-counseling-frozen-api-e2e.cts": "e0672792563360012f8ad917431d01cd6b6206c1",
@@ -531,8 +531,8 @@
       "wellnessbox/scripts/qa/run-tips-pro-correction-client.cts": "19da112e8a781853a5096878a9e14ed3b75b7014"
     },
     "repository_commits": {
-      "wellnessbox": "0fe5e7d0ce41e344a17f5d5f1ef0595387408d9c",
-      "wellnessbox-rnd": "9a66168e0209d43ae1d7db1b57f00d6b696f2cc6"
+      "wellnessbox": "7354016924eb67cef8d7064c8a1e0d216f98aa36",
+      "wellnessbox-rnd": "f451ee065b523998945281a9aefa5f9f7020c537"
     }
   },
   "dataset": {
