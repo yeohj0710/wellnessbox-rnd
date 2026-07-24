@@ -49,7 +49,7 @@
     },
     "H-006": {
       "status": "completed",
-      "updated_at": "2026-07-24T06:52:41.848586Z",
+      "updated_at": "2026-07-24T06:54:31.144776Z",
       "issuer_id": "웰니스박스",
       "key_path": "C:\\dev\\wellnessbox-rnd\\etc\\final_session_private\\final_session_signing_key.pem",
       "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g=",
@@ -58,9 +58,9 @@
     },
     "H-007": {
       "status": "completed",
-      "updated_at": "2026-07-24T01:35:10.605303Z",
+      "updated_at": "2026-07-24T07:38:06.540247Z",
       "schema_version": "operational_environment_signoff_v1",
-      "operator_id": "웰니스박스",
+      "operator_id": "?????",
       "checks": {
         "rnd_api": {
           "status": "PASS",
@@ -122,51 +122,13 @@
         "OP-117": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-117.json",
         "OP-118": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-118.json"
       },
-      "required_requirement_ids": [
-        "OP-021",
-        "OP-022",
-        "OP-023",
-        "OP-024",
-        "OP-025",
-        "OP-026",
-        "OP-027",
-        "OP-028",
-        "OP-029",
-        "OP-030",
-        "OP-040",
-        "OP-053",
-        "OP-058",
-        "OP-071",
-        "OP-072",
-        "OP-073",
-        "OP-074",
-        "OP-075",
-        "OP-076",
-        "OP-077",
-        "OP-078",
-        "OP-079",
-        "OP-080",
-        "OP-087",
-        "OP-096",
-        "OP-098",
-        "OP-099",
-        "OP-101",
-        "OP-102",
-        "OP-103",
-        "OP-104",
-        "OP-105",
-        "OP-106",
-        "OP-107",
-        "OP-108",
-        "OP-109",
-        "OP-110",
-        "OP-116",
-        "OP-117",
-        "OP-118",
-        "OP-120"
-      ],
-      "recorded_at": "2026-07-24T01:35:10.604834Z"
+      "required_requirement_ids": [],
+      "cumulative_session_count": 7,
+      "distinct_profile_count": 5,
+      "target_distinct_profile_count": 5,
+      "profile_target_complete": true,
+      "recorded_at": "2026-07-24T07:38:06.539806Z"
     }
   },
-  "completed_at": "2026-07-24T06:54:30.659010Z"
+  "completed_at": "2026-07-24T07:39:10.667407Z"
 }
