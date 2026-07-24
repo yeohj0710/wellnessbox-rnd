@@ -1,13 +1,56 @@
 {
   "schema_version": "op120_final_completion_audit_cases_v1",
   "cases": [
-    {"case_id": "requirement_inventory", "expected": {"requirement_count": 120}},
-    {"case_id": "claimed_inventory", "expected": {"claimed_requirement_count": 119}},
-    {"case_id": "required_stage_gaps", "expected": {"nonexternal_stage_gap_count": 43}},
-    {"case_id": "external_validation", "expected": {"external_validation_gap_ids": ["OP-039"]}},
-    {"case_id": "research_reports", "expected": {"report_count": 120, "missing_report_count": 0}},
-    {"case_id": "canonical_evidence", "expected": {"audit_passed": true}},
-    {"case_id": "completion_receipts", "expected": {"validation": false, "independent_review": false}},
-    {"case_id": "completion_decision", "expected": {"status": "BLOCKED", "goal_complete": false}}
+    {
+      "case_id": "requirement_inventory",
+      "expected": {
+        "requirement_count": 120
+      }
+    },
+    {
+      "case_id": "claimed_inventory",
+      "expected": {
+        "claimed_requirement_count": 120
+      }
+    },
+    {
+      "case_id": "required_stage_gaps",
+      "expected": {
+        "nonexternal_stage_gap_count": 0
+      }
+    },
+    {
+      "case_id": "external_validation",
+      "expected": {
+        "external_validation_gap_ids": []
+      }
+    },
+    {
+      "case_id": "research_reports",
+      "expected": {
+        "report_count": 120,
+        "missing_report_count": 0
+      }
+    },
+    {
+      "case_id": "canonical_evidence",
+      "expected": {
+        "audit_passed": true
+      }
+    },
+    {
+      "case_id": "completion_receipts",
+      "expected": {
+        "validation": true,
+        "independent_review": true
+      }
+    },
+    {
+      "case_id": "completion_decision",
+      "expected": {
+        "status": "READY",
+        "goal_complete": true
+      }
+    }
   ]
 }

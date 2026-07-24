@@ -1,0 +1,172 @@
+{
+  "schema_version": "human_signoff_completion_v1",
+  "steps": {
+    "H-001": {
+      "status": "completed",
+      "updated_at": "2026-07-23T04:13:34.436677Z",
+      "reviewer_id": "웰니스박스"
+    },
+    "H-002": {
+      "status": "completed",
+      "updated_at": "2026-07-23T04:13:35.590753Z",
+      "reviewed_rule_count": 9,
+      "rule_count": 9
+    },
+    "H-003": {
+      "status": "completed",
+      "updated_at": "2026-07-23T04:13:37.541397Z",
+      "reviewer_id": "웰니스박스",
+      "draft_ledger_path": "C:\\dev\\wellnessbox-rnd\\artifacts\\tips\\interim\\interim.sqlite3",
+      "review_counts": {
+        "generated": 0,
+        "reviewed": 0,
+        "pending": 0,
+        "approved": 0,
+        "approved_with_edits": 0,
+        "rejected": 0
+      },
+      "downstream_cycle_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\ai_draft_downstream_cycle_v1.json"
+    },
+    "H-004": {
+      "status": "completed",
+      "updated_at": "2026-07-23T04:13:39.254448Z",
+      "schema_version": "report_tone_signoff_v1",
+      "owner_id": "웰니스박스",
+      "approved": true,
+      "comment": "",
+      "sample_report_ids": [
+        "OP-081",
+        "OP-028",
+        "OP-117"
+      ],
+      "reviewed_at": "2026-07-23T04:13:39.254448Z"
+    },
+    "H-005": {
+      "status": "completed",
+      "updated_at": "2026-07-23T07:35:37.975660Z",
+      "registered_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\external_validation\\op039_external_validation.json",
+      "sha256": "1311d8cc304c36aa7d3bd34f8c7b9deac144b922f754805c779604ede2295869"
+    },
+    "H-006": {
+      "status": "completed",
+      "updated_at": "2026-07-24T00:59:11.311739Z",
+      "issuer_id": "웰니스박스",
+      "key_path": "C:\\dev\\wellnessbox-rnd\\etc\\final_session_private\\final_session_signing_key.pem",
+      "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g=",
+      "validation_receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\final_validation_receipt_v1.json",
+      "independent_review_receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\independent_final_review_receipt_v1.json"
+    },
+    "H-007": {
+      "status": "completed",
+      "updated_at": "2026-07-24T01:35:10.605303Z",
+      "schema_version": "operational_environment_signoff_v1",
+      "operator_id": "웰니스박스",
+      "checks": {
+        "rnd_api": {
+          "status": "PASS",
+          "evidence": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T010245964049Z.json"
+        },
+        "wellnessbox_environment": {
+          "status": "PASS",
+          "evidence": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T010245964049Z.json"
+        },
+        "health_check": {
+          "status": "PASS",
+          "evidence": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T010245964049Z.json"
+        },
+        "browser_roundtrip": {
+          "status": "PASS",
+          "evidence": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T010245964049Z.json"
+        }
+      },
+      "registered_requirement_evidence": {
+        "OP-021": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-021.json",
+        "OP-022": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-022.json",
+        "OP-023": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-023.json",
+        "OP-024": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-024.json",
+        "OP-025": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-025.json",
+        "OP-026": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-026.json",
+        "OP-027": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-027.json",
+        "OP-028": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-028.json",
+        "OP-029": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-029.json",
+        "OP-030": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-030.json",
+        "OP-053": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-053.json",
+        "OP-058": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-058.json",
+        "OP-073": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-073.json",
+        "OP-074": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-074.json",
+        "OP-075": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-075.json",
+        "OP-076": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-076.json",
+        "OP-077": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-077.json",
+        "OP-078": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-078.json",
+        "OP-087": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-087.json",
+        "OP-103": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-103.json",
+        "OP-104": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-104.json",
+        "OP-105": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-105.json",
+        "OP-106": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-106.json",
+        "OP-116": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-116.json",
+        "OP-120": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-120.json",
+        "OP-040": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-040.json",
+        "OP-071": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-071.json",
+        "OP-072": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-072.json",
+        "OP-079": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-079.json",
+        "OP-080": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-080.json",
+        "OP-096": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-096.json",
+        "OP-098": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-098.json",
+        "OP-099": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-099.json",
+        "OP-101": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-101.json",
+        "OP-102": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-102.json",
+        "OP-107": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-107.json",
+        "OP-108": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-108.json",
+        "OP-109": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-109.json",
+        "OP-110": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-110.json",
+        "OP-117": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-117.json",
+        "OP-118": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_evidence\\OP-118.json"
+      },
+      "required_requirement_ids": [
+        "OP-021",
+        "OP-022",
+        "OP-023",
+        "OP-024",
+        "OP-025",
+        "OP-026",
+        "OP-027",
+        "OP-028",
+        "OP-029",
+        "OP-030",
+        "OP-040",
+        "OP-053",
+        "OP-058",
+        "OP-071",
+        "OP-072",
+        "OP-073",
+        "OP-074",
+        "OP-075",
+        "OP-076",
+        "OP-077",
+        "OP-078",
+        "OP-079",
+        "OP-080",
+        "OP-087",
+        "OP-096",
+        "OP-098",
+        "OP-099",
+        "OP-101",
+        "OP-102",
+        "OP-103",
+        "OP-104",
+        "OP-105",
+        "OP-106",
+        "OP-107",
+        "OP-108",
+        "OP-109",
+        "OP-110",
+        "OP-116",
+        "OP-117",
+        "OP-118",
+        "OP-120"
+      ],
+      "recorded_at": "2026-07-24T01:35:10.604834Z"
+    }
+  },
+  "completed_at": "2026-07-24T01:37:43.898251Z"
+}
