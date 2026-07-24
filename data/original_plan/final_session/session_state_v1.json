@@ -67,7 +67,7 @@
     },
     "H-006": {
       "status": "completed",
-      "updated_at": "2026-07-24T04:42:18.022359Z",
+      "updated_at": "2026-07-24T05:11:46.352008Z",
       "issuer_id": "?????",
       "key_path": "C:\\dev\\wellnessbox-rnd\\etc\\final_session_private\\final_session_signing_key.pem",
       "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g=",
@@ -186,7 +186,7 @@
       "recorded_at": "2026-07-24T01:35:10.604834Z"
     }
   },
-  "updated_at": "2026-07-24T05:02:49.851254Z",
+  "updated_at": "2026-07-24T05:11:46.352024Z",
   "report_sample_ids": [
     "OP-081",
     "OP-028",
