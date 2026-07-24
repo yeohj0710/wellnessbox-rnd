@@ -65,6 +65,43 @@ class FinalSessionConsoleTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "후속평가 저장 확인"):
                 console.confirm_operational_pharmacist()
 
+    def test_pharmacist_confirmation_finalizes_and_collects_production_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
+            wizard = console._load_operational_wizard()
+            wizard["baseline"] = {
+                "status": "completed", "execution_id": "exec_1", "plan_id": "plan_1"
+            }
+            wizard["followup"] = {"status": "completed"}
+            console.operational_wizard_path.parent.mkdir(parents=True, exist_ok=True)
+            console.operational_wizard_path.write_text(
+                json.dumps(wizard, ensure_ascii=False), encoding="utf-8"
+            )
+            replies = [
+                {
+                    "items": [{
+                        "draft_id": "draft_" + "5" * 32,
+                        "record_type": "actual_recommendation_review",
+                        "review_status": "pending",
+                    }]
+                },
+                {"review_status": "approved", "reviewer_id": "웰니스박스"},
+            ]
+            with (
+                patch.object(console, "_wellnessbox_json", side_effect=replies),
+                patch.object(console, "_production_state", return_value=True),
+                patch.object(
+                    console,
+                    "_finalize_current_operational_capture",
+                    return_value={"status": "completed", "covered_requirement_count": 41},
+                ) as finalize,
+                patch.object(console, "collect_operational_receipts") as collect,
+            ):
+                result = console.confirm_operational_pharmacist()
+            finalize.assert_called_once_with()
+            collect.assert_called_once_with(operator_id="웰니스박스")
+            self.assertEqual(result["operational_receipt"]["covered_requirement_count"], 41)
+
     def test_h007_page_uses_three_prefilled_confirmation_buttons(self) -> None:
         page = (ROOT / "scripts/run_final_session_console.py").read_text(encoding="utf-8")
         self.assertIn("복용 전 저장 확인", page)

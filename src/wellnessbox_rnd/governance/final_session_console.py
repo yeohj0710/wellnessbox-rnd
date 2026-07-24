@@ -20,7 +20,11 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey,
 
 from wellnessbox_rnd.evals.external_high_risk_safety import ExternalHighRiskSafetyEvalReportV2
 from wellnessbox_rnd.governance.original_plan_audit import audit_original_plan_manifest_v1
-from wellnessbox_rnd.governance.operational_receipts import database_counts
+from wellnessbox_rnd.governance.operational_receipts import (
+    begin_session,
+    database_counts,
+    finish_session,
+)
 from wellnessbox_rnd.interim.ai_drafts import (
     AiDraftCreateV1,
     AiDraftDecisionV1,
@@ -281,7 +285,36 @@ class FinalSessionConsole:
             "reviewer_id": result.get("reviewer_id", "웰니스박스"), "confirmed_at": _now(),
         }
         _write_json(self.operational_wizard_path, wizard)
+        if self._production_state():
+            wizard["operational_receipt"] = self._finalize_current_operational_capture()
+            self.collect_operational_receipts(operator_id="웰니스박스")
+            _write_json(self.operational_wizard_path, wizard)
         return wizard
+
+    def _finalize_current_operational_capture(self) -> dict[str, Any]:
+        runtime_root = self.root / "etc/local_research_runtime"
+        capture_path = runtime_root / "operational_capture.json"
+        database_path = runtime_root / "interim.sqlite3"
+        if not capture_path.is_file():
+            raise RuntimeError("현재 운영 세션 기록을 찾지 못했습니다. 연구 서버를 다시 시작하세요.")
+        capture = json.loads(capture_path.read_text(encoding="utf-8"))
+        receipt = finish_session(
+            self.root,
+            database_path,
+            capture,
+            self.state_root / "operational_receipts",
+            key_path=self.root / "etc/final_session_private/final_session_signing_key.pem",
+        )
+        runtime_path = runtime_root / "session_processes.json"
+        runtime = json.loads(runtime_path.read_text(encoding="utf-8"))
+        next_capture = begin_session(self.root, database_path, runtime.get("urls", {}))
+        _write_json(capture_path, next_capture)
+        return {
+            "status": "completed",
+            "receipt_path": receipt["receipt_path"],
+            "covered_requirement_count": len(receipt["covered_requirement_ids"]),
+            "covered_requirement_ids": receipt["covered_requirement_ids"],
+        }
 
     def review_policy_rule(
         self, rule_id: str, reviewer_id: str, decision: str, comment: str = ""
