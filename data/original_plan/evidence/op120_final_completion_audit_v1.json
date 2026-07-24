@@ -141,7 +141,7 @@
       "wellnessbox-rnd/data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json": "a18fbadf46e9b99868c68da818883d54409e3360",
       "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_cases_v1.json": "04b5cc664f616f6107196934a521a078ca0d6261",
       "wellnessbox-rnd/data/original_plan/op119_external_dependency_registry_v1.json": "5e010238687e22a105753bc5d91fbe39a321f50b",
-      "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json": "489cb4978656d2e6f386536e07adfeab13b2758e",
+      "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json": "42c43be5de8807ca84473c13202a243ab042eb9d",
       "wellnessbox-rnd/data/original_plan/op120_final_completion_audit_cases_v1.json": "34b9478240eb49dca779dc0a53456967aa0b833a",
       "wellnessbox-rnd/data/original_plan/requirements_manifest_v1.json": "bb5f98812ba73242ae9db03662ebb75ae614e82d",
       "wellnessbox-rnd/data/parsed_references/reference_claims_v1.jsonl": "c50a8c7e9708d68804ff6f1c12dde9fc4d78a659",
@@ -532,7 +532,7 @@
     },
     "repository_commits": {
       "wellnessbox": "2be0753182d4164ec82a41a09d46f4948fef151d",
-      "wellnessbox-rnd": "9daab83f8503467c5cf517daa13f696f124a1f5a"
+      "wellnessbox-rnd": "0316dd882e5139e46fc09e3e792cbaaa61a89f7e"
     }
   },
   "dataset": {
@@ -579,7 +579,7 @@
   "schema_version": "op120_final_completion_audit_v1",
   "source_identity": {
     "blobs": {
-      "data/original_plan/op120_final_audit_policy_v1.json": "489cb4978656d2e6f386536e07adfeab13b2758e",
+      "data/original_plan/op120_final_audit_policy_v1.json": "42c43be5de8807ca84473c13202a243ab042eb9d",
       "data/original_plan/op120_final_completion_audit_cases_v1.json": "34b9478240eb49dca779dc0a53456967aa0b833a",
       "data/original_plan/requirements_manifest_v1.json": "bb5f98812ba73242ae9db03662ebb75ae614e82d",
       "docs/original_plan/research_reports/OP-120.md": "dd2f132d6977fe9818c3e2e5eb497d82a2dd562a",
@@ -588,7 +588,7 @@
       "src/wellnessbox_rnd/governance/final_completion_audit.py": "a8dfa82bd61ab5eff88dd08e5c4ca46648400d31",
       "tests/test_final_completion_audit.py": "3ddf4d070607830ecffde959301bc44077c496d1"
     },
-    "commit": "31eb7516207198ff98bdef75141b6caf4ed62ef2"
+    "commit": "0316dd882e5139e46fc09e3e792cbaaa61a89f7e"
   },
   "stage_boundary": {
     "final_audit_ready": false,
