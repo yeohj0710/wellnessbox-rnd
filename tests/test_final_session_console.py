@@ -14,13 +14,60 @@ from wellnessbox_rnd.governance.final_session_console import (
     FinalSessionConsole,
     run_rehearsal,
 )
-from wellnessbox_rnd.interim.ai_drafts import AiDraftCreateV1, AiDraftService
+from wellnessbox_rnd.interim.ai_drafts import (
+    AiDraftCreateV1,
+    AiDraftDecisionV1,
+    AiDraftService,
+    DraftReviewStatus,
+)
 from wellnessbox_rnd.interim.store import InterimStore
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class FinalSessionConsoleTest(unittest.TestCase):
+    def test_reconcile_completes_h003_after_direct_pharmacist_review(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            temp_path = Path(temp)
+            console = FinalSessionConsole(ROOT, state_root=temp_path / "session")
+            database = temp_path / "interim.sqlite3"
+            store = InterimStore(database)
+            store.migrate()
+            service = AiDraftService(store)
+            draft = service.create(
+                AiDraftCreateV1(
+                    record_type="actual_recommendation_review",
+                    model_identifier="test-model",
+                    prompt_version="test-v1",
+                    content={"recommendations": []},
+                    rationale={"source_execution_id": "exec_test"},
+                    idempotency_key="direct-review-reconcile",
+                ),
+                created_at=datetime.now(UTC),
+            )
+            service.decide(
+                draft_id=draft["draft_id"],
+                decision=AiDraftDecisionV1(
+                    review_status=DraftReviewStatus.APPROVED,
+                    reviewer_id="권혁찬",
+                ),
+                reviewed_at=datetime.now(UTC),
+            )
+            console._record(
+                "H-003",
+                "pending",
+                {"reason": "project_pharmacist_review_pending"},
+            )
+
+            with patch.object(console, "_operational_database_path", return_value=database):
+                console._reconcile_draft_queue_state()
+
+            step = console.state["steps"]["H-003"]
+            self.assertEqual(step["status"], "completed")
+            self.assertEqual(step["reviewer_id"], "권혁찬")
+            self.assertEqual(step["review_counts"]["pending"], 0)
+            self.assertTrue(Path(step["downstream_cycle_path"]).is_file())
+
     def test_operational_wizard_submits_prefilled_actual_records_in_order(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")

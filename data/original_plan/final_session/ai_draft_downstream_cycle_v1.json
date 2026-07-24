@@ -1,15 +1,15 @@
 {
   "schema_version": "ai_draft_downstream_cycle_v1",
-  "draft_ledger_path": "C:\\dev\\wellnessbox-rnd\\artifacts\\tips\\interim\\interim.sqlite3",
+  "draft_ledger_path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3",
   "review_counts": {
-    "generated": 0,
-    "reviewed": 0,
+    "generated": 2,
+    "reviewed": 2,
     "pending": 0,
-    "approved": 0,
+    "approved": 2,
     "approved_with_edits": 0,
     "rejected": 0
   },
-  "training_consumed_count": 0,
-  "evaluation_consumed_count": 0,
-  "executed_at": "2026-07-23T04:13:37.538394Z"
+  "training_consumed_count": 2,
+  "evaluation_consumed_count": 2,
+  "executed_at": "2026-07-24T05:18:45.396922Z"
 }

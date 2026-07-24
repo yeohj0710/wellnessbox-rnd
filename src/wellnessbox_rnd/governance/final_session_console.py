@@ -113,9 +113,33 @@ class FinalSessionConsole:
         store.migrate()
         service = AiDraftService(store)
         summary = service.summary()
-        if summary["pending"] <= 0 or self.state["steps"]["H-003"]["status"] != "completed":
+        step = self.state["steps"]["H-003"]
+        if summary["pending"] <= 0 and step["status"] == "pending":
+            connection = sqlite3.connect(database_path)
+            try:
+                row = connection.execute(
+                    "select reviewer_id from ai_drafts "
+                    "where reviewer_id is not null and reviewer_id != '' "
+                    "order by reviewed_at desc limit 1"
+                ).fetchone()
+            finally:
+                connection.close()
+            reviewer_id = row[0] if row else "reviewer_not_recorded"
+            cycle_path = self._run_draft_downstream_cycle(store, str(database_path))
+            self._record(
+                "H-003",
+                "completed",
+                {
+                    "reviewer_id": reviewer_id,
+                    "draft_ledger_path": str(database_path),
+                    "review_counts": summary,
+                    "downstream_cycle_path": str(cycle_path),
+                },
+            )
             return
-        previous = self.state["steps"]["H-003"]
+        if summary["pending"] <= 0 or step["status"] != "completed":
+            return
+        previous = step
         self._record(
             "H-003",
             "pending",
@@ -987,13 +1011,26 @@ class FinalSessionConsole:
                 destination = destination_root / f"{requirement_id}.json"
                 shutil.copy2(source, destination)
                 registered[requirement_id] = str(destination)
-        complete = environment_complete and set(registered) == required_gaps
+        coverage = self.operational_coverage_summary()
+        profile_target_complete = (
+            coverage["distinct_profile_count"]
+            >= coverage["target_distinct_profile_count"]
+        )
+        complete = (
+            environment_complete
+            and set(registered) == required_gaps
+            and profile_target_complete
+        )
         record = {
             "schema_version": "operational_environment_signoff_v1",
             "operator_id": operator_id,
             "checks": combined_checks,
             "registered_requirement_evidence": registered,
             "required_requirement_ids": sorted(required_gaps),
+            "cumulative_session_count": coverage["cumulative_session_count"],
+            "distinct_profile_count": coverage["distinct_profile_count"],
+            "target_distinct_profile_count": coverage["target_distinct_profile_count"],
+            "profile_target_complete": profile_target_complete,
             "recorded_at": _now(),
         }
         operations_path = self.state_root / "operational_environment_signoff_v1.json"
