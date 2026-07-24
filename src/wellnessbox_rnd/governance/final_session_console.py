@@ -97,6 +97,8 @@ class FinalSessionConsole:
         self.audit_policy_path = self.root / "data/original_plan/op120_final_audit_policy_v1.json"
         self.manifest_path = self.root / "data/original_plan/requirements_manifest_v1.json"
         self.operational_wizard_path = self.state_root / "operational_wizard_v1.json"
+        self._wellnessbox_opener = build_opener(HTTPCookieProcessor(CookieJar()))
+        self._wellnessbox_logged_in = False
         self.simulation = simulation
         self.state = self._load_state()
         if "report_sample_ids" not in self.state:
@@ -284,15 +286,18 @@ class FinalSessionConsole:
         redirect: str = "/tips",
     ) -> dict[str, Any]:
         base = self._wellnessbox_url().rstrip("/")
-        opener = build_opener(HTTPCookieProcessor(CookieJar()))
         try:
-            opener.open(f"{base}/research-login?redirect={redirect}", timeout=15).read()
+            if not self._wellnessbox_logged_in:
+                self._wellnessbox_opener.open(
+                    f"{base}/research-login?redirect={redirect}", timeout=15
+                ).read()
+                self._wellnessbox_logged_in = True
             payload = None if body is None else json.dumps(body, ensure_ascii=False).encode("utf-8")
             request = Request(
                 f"{base}{path}", data=payload, method=method,
                 headers={"content-type": "application/json"},
             )
-            raw = opener.open(request, timeout=30).read()
+            raw = self._wellnessbox_opener.open(request, timeout=30).read()
             return json.loads(raw.decode("utf-8"))
         except HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")
@@ -349,6 +354,7 @@ class FinalSessionConsole:
             "/api/tips/pro/effects", method="POST",
             body={
                 "executionId": baseline["execution_id"], "planId": baseline["plan_id"],
+                "researchProfileId": wizard["prefill"]["profile_id"],
                 "timepoint": "week_2", "answers": {"instrument": "PSQI", "item_scores": [1] * 7},
                 "observedAt": _now(), "actualDayIndex": 14, "plannedDoseCount": 14,
                 "takenDoseCount": 12, "adverseEvents": [],

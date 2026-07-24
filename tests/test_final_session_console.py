@@ -90,6 +90,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertEqual(baseline_body["baseline"]["item_scores"], [2] * 7)
             self.assertEqual(baseline_body["dataClass"], "REAL_WORLD_OUTCOME")
             followup_body = request.call_args_list[1].kwargs["body"]
+            self.assertEqual(followup_body["researchProfileId"], "profile-01")
             self.assertEqual(followup_body["answers"]["item_scores"], [1] * 7)
             self.assertEqual(followup_body["takenDoseCount"], 12)
             self.assertEqual(followup_body["adverseEvents"], [])
