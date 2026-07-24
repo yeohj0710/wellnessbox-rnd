@@ -51,11 +51,13 @@ def _load_or_create_secrets() -> dict[str, str]:
     RUNTIME_ROOT.mkdir(parents=True, exist_ok=True)
     STOP_PATH.unlink(missing_ok=True)
     if SECRET_PATH.is_file():
-        return json.loads(SECRET_PATH.read_text(encoding="utf-8"))
-    value = {
-        "token": secrets.token_urlsafe(48),
-        "pseudonym_salt": secrets.token_urlsafe(48),
-    }
+        value = json.loads(SECRET_PATH.read_text(encoding="utf-8"))
+    else:
+        value = {}
+    value.setdefault("token", secrets.token_urlsafe(48))
+    value.setdefault("pseudonym_salt", secrets.token_urlsafe(48))
+    value.setdefault("cookie_password", secrets.token_urlsafe(48))
+    value.setdefault("jwt_secret", secrets.token_urlsafe(48))
     SECRET_PATH.write_text(
         json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
@@ -148,6 +150,8 @@ def _api_environment(port: int, secrets_value: dict[str, str]) -> dict[str, str]
 def _web_environment(port: int, api_url: str, secrets_value: dict[str, str]) -> dict[str, str]:
     return os.environ.copy() | {
         "PORT": str(port),
+        "COOKIE_PASSWORD": secrets_value["cookie_password"],
+        "JWT_SECRET": secrets_value["jwt_secret"],
         "WB_RND_RECOMMEND_ENABLED": "1",
         "WB_RND_SERVICE_BASE_URL": api_url,
         "WB_RND_SERVICE_TOKEN": secrets_value["token"],
