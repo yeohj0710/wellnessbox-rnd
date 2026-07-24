@@ -1,21 +1,41 @@
 {
   "schema_version": "operational_wizard_v2",
-  "profile_index": 1,
+  "profile_index": 4,
   "profile_count": 5,
   "baseline": {
     "status": "completed",
-    "observed_at": "2026-07-24T05:20:19.345892Z",
-    "request_id": "pro_bd2627dbba6c1b2e01dca274785e3670",
-    "execution_id": "exec_fa6fcac7f56a488cbca402b617fe613e",
-    "plan_id": "plan_06ef98d12f279a9625bf2312fedb0cc5",
-    "baseline_event_id": "event_f0bf8b29c9bc4f168e9c11038c6342e7",
-    "confirmed_at": "2026-07-24T05:20:23.633805Z"
+    "observed_at": "2026-07-24T07:33:59.093298Z",
+    "request_id": "pro_1aac28fd0f06936ed91ae2d9e0c7f0f4",
+    "execution_id": "exec_16f5b03d8aaa4104800937cfa41dc3ec",
+    "plan_id": "plan_1f20626f49103a5aca7622704d902fd8",
+    "baseline_event_id": "event_c3d336afcd4d449ab832e6ac43d49180",
+    "confirmed_at": "2026-07-24T07:33:59.550704Z"
   },
   "followup": {
-    "status": "pending"
+    "status": "completed",
+    "event_id": "event_087459d3fb744df483919b740bc9172d",
+    "action_decision": {
+      "schema_version": "pro_plan_action_decision_v1",
+      "policy_version": "2026-07-21.1",
+      "source_observed_change_status": "improved",
+      "source_interpretation_status": "limited_by_missed_doses",
+      "source_adverse_event_count": 0,
+      "source_serious_adverse_event_present": false,
+      "action": "maintain",
+      "next_action": "continue_plan",
+      "projected_workflow_state": "followup_due",
+      "reason_code": "non_worsening_maintain",
+      "causal_effect_claim_allowed": false
+    },
+    "confirmed_at": "2026-07-24T07:34:00.145203Z"
   },
   "pharmacist_review": {
-    "status": "pending"
+    "status": "completed",
+    "draft_id": "draft_17f9dc84f1845ea72e01ff30",
+    "review_status": "approved",
+    "reviewer_id": "권혁찬",
+    "reviewed_at": "2026-07-24T07:34:01.076419+00:00",
+    "confirmed_at": "2026-07-24T07:34:01.395629Z"
   },
   "completed_profiles": [
     {
@@ -48,20 +68,274 @@
         ]
       },
       "completed_at": "2026-07-24T05:16:58.658751Z"
+    },
+    {
+      "profile_id": "profile-02",
+      "participant_name": "연구 프로필 02",
+      "age": 58,
+      "goal": "심혈관 건강",
+      "medications": [
+        "warfarin"
+      ],
+      "execution_id": "exec_3ccccd4b9b604667b5cc4dc4b2412caa",
+      "pharmacist_review": {
+        "status": "completed",
+        "draft_id": "draft_7c5765280ee6257f5fca2bbc",
+        "review_status": "approved",
+        "reviewer_id": "권혁찬",
+        "reviewed_at": "2026-07-24T07:33:49.595254+00:00",
+        "confirmed_at": "2026-07-24T07:33:50.820439Z"
+      },
+      "operational_receipt": {
+        "status": "completed",
+        "receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T051658581055Z.json",
+        "covered_requirement_count": 25,
+        "covered_requirement_ids": [
+          "OP-021",
+          "OP-022",
+          "OP-023",
+          "OP-024",
+          "OP-025",
+          "OP-026",
+          "OP-027",
+          "OP-028",
+          "OP-029",
+          "OP-030",
+          "OP-053",
+          "OP-058",
+          "OP-073",
+          "OP-074",
+          "OP-075",
+          "OP-076",
+          "OP-077",
+          "OP-078",
+          "OP-087",
+          "OP-103",
+          "OP-104",
+          "OP-105",
+          "OP-106",
+          "OP-116",
+          "OP-120"
+        ]
+      },
+      "completed_at": "2026-07-24T07:33:50.899099Z"
+    },
+    {
+      "profile_id": "profile-03",
+      "participant_name": "연구 프로필 03",
+      "age": 29,
+      "goal": "에너지",
+      "medications": [
+        "levothyroxine"
+      ],
+      "execution_id": "exec_dfcbc049ce134aeca42c04b46997b6e9",
+      "pharmacist_review": {
+        "status": "completed",
+        "draft_id": "draft_be6d2ad9b0a14fca31bf5bf3",
+        "review_status": "approved",
+        "reviewer_id": "권혁찬",
+        "reviewed_at": "2026-07-24T07:33:55.077801+00:00",
+        "confirmed_at": "2026-07-24T07:33:55.882037Z"
+      },
+      "operational_receipt": {
+        "status": "completed",
+        "receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T073350824287Z.json",
+        "covered_requirement_count": 25,
+        "covered_requirement_ids": [
+          "OP-021",
+          "OP-022",
+          "OP-023",
+          "OP-024",
+          "OP-025",
+          "OP-026",
+          "OP-027",
+          "OP-028",
+          "OP-029",
+          "OP-030",
+          "OP-053",
+          "OP-058",
+          "OP-073",
+          "OP-074",
+          "OP-075",
+          "OP-076",
+          "OP-077",
+          "OP-078",
+          "OP-087",
+          "OP-103",
+          "OP-104",
+          "OP-105",
+          "OP-106",
+          "OP-116",
+          "OP-120"
+        ]
+      },
+      "completed_at": "2026-07-24T07:33:55.961258Z"
+    },
+    {
+      "profile_id": "profile-04",
+      "participant_name": "연구 프로필 04",
+      "age": 67,
+      "goal": "뼈·관절",
+      "medications": [
+        "metformin"
+      ],
+      "execution_id": "exec_72e954c3508a47408eacf1571c9b06b8",
+      "pharmacist_review": {
+        "status": "completed",
+        "draft_id": "draft_3858dafe0487a8fce506e5ef",
+        "review_status": "approved",
+        "reviewer_id": "권혁찬",
+        "reviewed_at": "2026-07-24T07:33:58.568599+00:00",
+        "confirmed_at": "2026-07-24T07:33:58.896844Z"
+      },
+      "operational_receipt": {
+        "status": "completed",
+        "receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T073355885523Z.json",
+        "covered_requirement_count": 25,
+        "covered_requirement_ids": [
+          "OP-021",
+          "OP-022",
+          "OP-023",
+          "OP-024",
+          "OP-025",
+          "OP-026",
+          "OP-027",
+          "OP-028",
+          "OP-029",
+          "OP-030",
+          "OP-053",
+          "OP-058",
+          "OP-073",
+          "OP-074",
+          "OP-075",
+          "OP-076",
+          "OP-077",
+          "OP-078",
+          "OP-087",
+          "OP-103",
+          "OP-104",
+          "OP-105",
+          "OP-106",
+          "OP-116",
+          "OP-120"
+        ]
+      },
+      "completed_at": "2026-07-24T07:33:58.987273Z"
+    },
+    {
+      "profile_id": "profile-05",
+      "participant_name": "연구 프로필 05",
+      "age": 36,
+      "goal": "장 건강",
+      "medications": [
+        "omeprazole"
+      ],
+      "execution_id": "exec_16f5b03d8aaa4104800937cfa41dc3ec",
+      "pharmacist_review": {
+        "status": "completed",
+        "draft_id": "draft_17f9dc84f1845ea72e01ff30",
+        "review_status": "approved",
+        "reviewer_id": "권혁찬",
+        "reviewed_at": "2026-07-24T07:34:01.076419+00:00",
+        "confirmed_at": "2026-07-24T07:34:01.395629Z"
+      },
+      "operational_receipt": {
+        "status": "completed",
+        "receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T073358900837Z.json",
+        "covered_requirement_count": 25,
+        "covered_requirement_ids": [
+          "OP-021",
+          "OP-022",
+          "OP-023",
+          "OP-024",
+          "OP-025",
+          "OP-026",
+          "OP-027",
+          "OP-028",
+          "OP-029",
+          "OP-030",
+          "OP-053",
+          "OP-058",
+          "OP-073",
+          "OP-074",
+          "OP-075",
+          "OP-076",
+          "OP-077",
+          "OP-078",
+          "OP-087",
+          "OP-103",
+          "OP-104",
+          "OP-105",
+          "OP-106",
+          "OP-116",
+          "OP-120"
+        ]
+      },
+      "completed_at": "2026-07-24T07:34:01.477271Z"
     }
   ],
   "prefill": {
-    "profile_id": "profile-02",
-    "participant_name": "연구 프로필 02",
-    "age": 58,
-    "sex": "male",
-    "goal": "심혈관 건강",
-    "goal_alias": "heart health",
+    "profile_id": "profile-05",
+    "participant_name": "연구 프로필 05",
+    "age": 36,
+    "sex": "other",
+    "goal": "장 건강",
+    "goal_alias": "gut health",
     "medications": [
-      "warfarin"
+      "omeprazole"
     ],
     "baseline": "PSQI 14점(7문항 각 2점)",
     "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
     "reviewer_id": "권혁찬"
-  }
+  },
+  "abandoned_attempts": [
+    {
+      "profile_id": "profile-02",
+      "reason": "followup_identity_contract_mismatch_before_fix",
+      "baseline": {
+        "status": "completed",
+        "observed_at": "2026-07-24T05:20:19.345892Z",
+        "request_id": "pro_bd2627dbba6c1b2e01dca274785e3670",
+        "execution_id": "exec_fa6fcac7f56a488cbca402b617fe613e",
+        "plan_id": "plan_06ef98d12f279a9625bf2312fedb0cc5",
+        "baseline_event_id": "event_f0bf8b29c9bc4f168e9c11038c6342e7",
+        "confirmed_at": "2026-07-24T05:20:23.633805Z"
+      },
+      "failed_followup_status": 422,
+      "preserved_at": "2026-07-24T07:12:28.7771814Z"
+    }
+  ],
+  "operational_receipt": {
+    "status": "completed",
+    "receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T073358900837Z.json",
+    "covered_requirement_count": 25,
+    "covered_requirement_ids": [
+      "OP-021",
+      "OP-022",
+      "OP-023",
+      "OP-024",
+      "OP-025",
+      "OP-026",
+      "OP-027",
+      "OP-028",
+      "OP-029",
+      "OP-030",
+      "OP-053",
+      "OP-058",
+      "OP-073",
+      "OP-074",
+      "OP-075",
+      "OP-076",
+      "OP-077",
+      "OP-078",
+      "OP-087",
+      "OP-103",
+      "OP-104",
+      "OP-105",
+      "OP-106",
+      "OP-116",
+      "OP-120"
+    ]
+  },
+  "all_profiles_completed": true
 }

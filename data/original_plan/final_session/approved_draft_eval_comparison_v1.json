@@ -1,0 +1,134 @@
+{
+  "baseline_report_path": "etc/final_cycle/pre_eval/eval_report.json",
+  "candidate_report_path": "artifacts\\reports\\eval_report.json",
+  "baseline_case_count": 256,
+  "candidate_case_count": 256,
+  "case_count_delta": 0.0,
+  "metric_deltas": {
+    "adverse_event_count_yearly": {
+      "baseline_score": 0.0,
+      "candidate_score": 0.0,
+      "delta": 0.0,
+      "baseline_passed": true,
+      "candidate_passed": true,
+      "pass_changed": false,
+      "target": 5.0,
+      "comparison": "max",
+      "unit": "count_per_year"
+    },
+    "efficacy_improvement_pp": {
+      "baseline_score": 9.90291632090153,
+      "candidate_score": 9.90291632090153,
+      "delta": 0.0,
+      "baseline_passed": true,
+      "candidate_passed": true,
+      "pass_changed": false,
+      "target": 0.0,
+      "comparison": "positive",
+      "unit": "percentage_points"
+    },
+    "explanation_quality_accuracy_pct": {
+      "baseline_score": 99.47916666666667,
+      "candidate_score": 99.47916666666667,
+      "delta": 0.0,
+      "baseline_passed": true,
+      "candidate_passed": true,
+      "pass_changed": false,
+      "target": 91.0,
+      "comparison": "min",
+      "unit": "percent"
+    },
+    "next_action_accuracy_pct": {
+      "baseline_score": 99.21875,
+      "candidate_score": 99.21875,
+      "delta": 0.0,
+      "baseline_passed": true,
+      "candidate_passed": true,
+      "pass_changed": false,
+      "target": 80.0,
+      "comparison": "min",
+      "unit": "percent"
+    },
+    "recommendation_coverage_pct": {
+      "baseline_score": 100.0,
+      "candidate_score": 100.0,
+      "delta": 0.0,
+      "baseline_passed": true,
+      "candidate_passed": true,
+      "pass_changed": false,
+      "target": 80.0,
+      "comparison": "min",
+      "unit": "percent"
+    },
+    "safety_reference_accuracy_pct": {
+      "baseline_score": 99.86979166666667,
+      "candidate_score": 99.86979166666667,
+      "delta": 0.0,
+      "baseline_passed": true,
+      "candidate_passed": true,
+      "pass_changed": false,
+      "target": 95.0,
+      "comparison": "min",
+      "unit": "percent"
+    },
+    "sensor_genetic_integration_rate_pct": {
+      "baseline_score": 90.40247678018576,
+      "candidate_score": 90.40247678018576,
+      "delta": 0.0,
+      "baseline_passed": true,
+      "candidate_passed": true,
+      "pass_changed": false,
+      "target": 90.0,
+      "comparison": "min",
+      "unit": "percent"
+    }
+  },
+  "weakest_slice_delta": {
+    "both_available": true,
+    "baseline_overall_category": "safety_blocked",
+    "candidate_overall_category": "safety_blocked",
+    "overall_category_changed": false,
+    "metric_category_changes": {
+      "adverse_event_count_yearly": {
+        "baseline_category": "bone_joint",
+        "candidate_category": "bone_joint",
+        "changed": false
+      },
+      "efficacy_improvement_pp": {
+        "baseline_category": "safety_warning",
+        "candidate_category": "safety_warning",
+        "changed": false
+      },
+      "explanation_quality_accuracy_pct": {
+        "baseline_category": "safety_blocked",
+        "candidate_category": "safety_blocked",
+        "changed": false
+      },
+      "next_action_accuracy_pct": {
+        "baseline_category": "safety_blocked",
+        "candidate_category": "safety_blocked",
+        "changed": false
+      },
+      "recommendation_coverage_pct": {
+        "baseline_category": "bone_joint",
+        "candidate_category": "bone_joint",
+        "changed": false
+      },
+      "safety_reference_accuracy_pct": {
+        "baseline_category": "safety_blocked",
+        "candidate_category": "safety_blocked",
+        "changed": false
+      },
+      "sensor_genetic_integration_rate_pct": {
+        "baseline_category": "free_text_alias",
+        "candidate_category": "free_text_alias",
+        "changed": false
+      }
+    }
+  },
+  "changed_metric_summary": {
+    "metric_count": 7,
+    "nonzero_metric_delta_count": 0,
+    "pass_changed_count": 0
+  }
+}

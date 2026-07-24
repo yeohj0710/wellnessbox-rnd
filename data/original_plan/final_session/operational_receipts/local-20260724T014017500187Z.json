@@ -1,0 +1,45 @@
+{
+  "schema_version": "local_operational_session_receipt_v1",
+  "data_class": "ACTUAL",
+  "environment_id": "wellnessbox-local-research-pc",
+  "session_id": "local-20260724T014017500187Z",
+  "started_at": "2026-07-24T01:40:17.500187Z",
+  "ended_at": "2026-07-24T05:16:58.579203Z",
+  "source_commits": {
+    "wellnessbox-rnd": "4efc12a0dbfb01d28590a37c96b201d7db5e7971",
+    "wellnessbox": "85487e0debe11982c37a6f2884e546053b7a75c4"
+  },
+  "executed_paths": [
+    "pharmacist_review"
+  ],
+  "database_count_delta": {
+    "user_profiles": 0,
+    "profile_snapshots": 0,
+    "behavior_events": 0,
+    "recommendation_runs": 0,
+    "recommendation_items": 0,
+    "agent_runs": 0,
+    "agent_steps": 0,
+    "followups": 0,
+    "pro_observations": 0,
+    "adverse_events": 0,
+    "workflow_jobs": 0,
+    "review_tasks": 0,
+    "ai_drafts": 1,
+    "review_tasks_completed": 0,
+    "ai_drafts_reviewed": 1
+  },
+  "covered_requirement_ids": [
+    "OP-087",
+    "OP-103",
+    "OP-104",
+    "OP-105",
+    "OP-106",
+    "OP-116",
+    "OP-120"
+  ],
+  "coverage_mapping_path": "data/original_plan/operational_action_coverage_v1.json",
+  "payload_sha256": "2fe128935b0ba8291cc0df956cddeb5955ae3d30b9b07bcfb346a842a9204f79",
+  "signature_ed25519_base64": "SUmUYtm+L5VejuIrbAIOrW1bW2TL4iDHKeuLj45v61lN0x0eDMjJzjEIe15adOY6fFVcbWcmYZwti8o/pqWiCg==",
+  "issuer_id": "웰니스박스"
+}

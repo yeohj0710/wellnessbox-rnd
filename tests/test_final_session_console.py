@@ -458,6 +458,39 @@ class FinalSessionConsoleTest(unittest.TestCase):
             ]
             self.assertIn(requirement_id, registered)
 
+    def test_operations_stale_registered_evidence_does_not_block_current_empty_gap_set(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            temp_path = Path(temp)
+            console = FinalSessionConsole(ROOT, state_root=temp_path / "session")
+            evidence = temp_path / "environment.json"
+            evidence.write_text("{}", encoding="utf-8")
+            checks = {
+                key: {"status": "PASS", "evidence": str(evidence)}
+                for key in (
+                    "rnd_api",
+                    "wellnessbox_environment",
+                    "health_check",
+                    "browser_roundtrip",
+                )
+            }
+            console.state["steps"]["H-007"] = {
+                "status": "deferred",
+                "checks": checks,
+                "registered_requirement_evidence": {"OP-OLD": str(evidence)},
+            }
+            coverage = {
+                "cumulative_session_count": 5,
+                "distinct_profile_count": 5,
+                "target_distinct_profile_count": 5,
+            }
+            with (
+                patch.object(console, "_stage_gap_ids", return_value=[]),
+                patch.object(console, "operational_coverage_summary", return_value=coverage),
+            ):
+                result = console.record_operations("operator", {})
+
+            self.assertEqual(result["steps"]["H-007"]["status"], "completed")
+
     def test_operational_signoffs_promote_without_external_validation(self) -> None:
         etc_root = ROOT / "etc"
         etc_root.mkdir(exist_ok=True)

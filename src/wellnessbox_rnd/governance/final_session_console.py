@@ -512,18 +512,35 @@ class FinalSessionConsole:
     ) -> Path:
         service = AiDraftService(store)
         summary = service.summary()
+        approved_rows = store.rows(
+            "select draft_id, reviewer_id from ai_drafts "
+            "where review_status in ('approved', 'approved_with_edits') "
+            "order by created_at"
+        )
+        excluded_reviewer_ids = {"웰니스박스", "여형준"}
         approved_ids = [
             str(row["draft_id"])
+            for row in approved_rows
+            if str(row["reviewer_id"] or "").strip() not in excluded_reviewer_ids
+        ]
+        excluded_ids = [
+            str(row["draft_id"])
             for row in store.rows(
-                "select draft_id from ai_drafts "
-                "where review_status in ('approved', 'approved_with_edits') "
-                "order by created_at"
+                "select draft_id from ai_drafts where review_status in "
+                "('approved', 'approved_with_edits') and reviewer_id in (?, ?) "
+                "order by created_at",
+                tuple(sorted(excluded_reviewer_ids)),
             )
         ]
         cycle = {
             "schema_version": "ai_draft_downstream_cycle_v1",
             "draft_ledger_path": str(Path(database_path).resolve()),
             "review_counts": summary,
+            "eligibility": {
+                "rule": "human_reviewer_required_owner_and_system_excluded",
+                "eligible_draft_ids": approved_ids,
+                "excluded_draft_ids": excluded_ids,
+            },
             "training_consumed_count": len(
                 service.consume_approved(
                     draft_ids=approved_ids, purpose=DownstreamPurpose.TRAINING
@@ -1020,7 +1037,7 @@ class FinalSessionConsole:
         )
         complete = (
             environment_complete
-            and set(registered) == required_gaps
+            and required_gaps.issubset(registered)
             and profile_target_complete
         )
         record = {

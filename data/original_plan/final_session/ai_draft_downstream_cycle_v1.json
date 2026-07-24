@@ -2,14 +2,42 @@
   "schema_version": "ai_draft_downstream_cycle_v1",
   "draft_ledger_path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3",
   "review_counts": {
-    "generated": 2,
-    "reviewed": 2,
+    "generated": 7,
+    "reviewed": 7,
     "pending": 0,
-    "approved": 2,
+    "approved": 7,
     "approved_with_edits": 0,
     "rejected": 0
   },
-  "training_consumed_count": 2,
-  "evaluation_consumed_count": 2,
-  "executed_at": "2026-07-24T05:18:45.396922Z"
+  "eligibility": {
+    "rule": "human_reviewer_required_owner_and_system_excluded",
+    "eligible_draft_ids": [
+      "draft_ace3019fbbfec5a73299653f",
+      "draft_633df16103fa748e6e0b2f67",
+      "draft_7c5765280ee6257f5fca2bbc",
+      "draft_be6d2ad9b0a14fca31bf5bf3",
+      "draft_3858dafe0487a8fce506e5ef",
+      "draft_17f9dc84f1845ea72e01ff30"
+    ],
+    "excluded_draft_ids": [
+      "draft_8390d56610ebbf8241b019f7"
+    ]
+  },
+  "training_consumed_count": 6,
+  "evaluation_consumed_count": 6,
+  "model_replacement": {
+    "performed": false,
+    "reason": "승인 초안은 학습·평가 입력으로 등록했지만 이 사이클에서 새 모델을 학습하거나 교체하지 않았습니다."
+  },
+  "frozen_evaluation": {
+    "dataset_path": "data/frozen_eval/frozen_eval_v1.jsonl",
+    "sha256_before": "ba134edbade51d02ad4014a7a66626559eb454967736495d1e60fbcf95b3a960",
+    "sha256_after": "ba134edbade51d02ad4014a7a66626559eb454967736495d1e60fbcf95b3a960",
+    "regenerated": false,
+    "baseline_case_count": 256,
+    "candidate_case_count": 256,
+    "nonzero_metric_delta_count": 0,
+    "comparison_path": "data/original_plan/final_session/approved_draft_eval_comparison_v1.json"
+  },
+  "executed_at": "2026-07-24T07:36:01.228142Z"
 }
