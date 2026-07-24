@@ -154,13 +154,15 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertEqual(result["profile_index"], 1)
             self.assertEqual(result["prefill"]["profile_id"], "profile-02")
 
-    def test_h007_page_uses_three_prefilled_confirmation_buttons(self) -> None:
+    def test_h007_page_uses_one_fixed_primary_action(self) -> None:
         page = (ROOT / "scripts/run_final_session_console.py").read_text(encoding="utf-8")
-        self.assertIn("복용 전 저장 확인", page)
-        self.assertIn("후속평가 저장 확인", page)
-        self.assertIn("약사 판정 저장 여부 확인", page)
+        self.assertIn('class="action-dock"', page)
+        self.assertIn('id="primaryAction"', page)
+        self.assertIn("복용 전 상태 저장", page)
+        self.assertIn("후속평가 저장", page)
+        self.assertIn("약사 승인 완료 확인", page)
         self.assertNotIn("웰니스박스 명의로 승인", page)
-        self.assertIn("프로필입니다", page)
+        self.assertIn("버튼은 항상 같은 자리에 있습니다", page)
         self.assertIn('"operational_baseline": console.confirm_operational_baseline', page)
 
     def test_local_operational_session_uses_automatic_research_login(self) -> None:
@@ -180,23 +182,23 @@ class FinalSessionConsoleTest(unittest.TestCase):
         page = (ROOT / "scripts/run_final_session_console.py").read_text(
             encoding="utf-8"
         )
-        self.assertIn('id="auditButton"', page)
+        self.assertIn('id="primaryAction"', page)
         self.assertIn('aria-live="polite"', page)
         self.assertIn("완료 상태를 확인하고 있습니다. 약 30초만 기다려 주세요.", page)
         self.assertIn("initialStepSelected", page)
-        self.assertIn("1. 설문·추천·후속평가 시작", page)
-        self.assertIn("로그인은 자동으로 처리됩니다.", page)
-        self.assertIn("auditButton.disabled=true", page)
-        self.assertIn("auditButton.disabled=false", page)
+        self.assertIn("최종 감사 실행", page)
+        self.assertIn("primary.disabled=true", page)
+        self.assertIn("syncActionDock()", page)
 
-    def test_console_renders_one_step_wizard_with_next_only_navigation(self) -> None:
+    def test_console_renders_one_step_wizard_with_fixed_action_navigation(self) -> None:
         page = (ROOT / "scripts/run_final_session_console.py").read_text(
             encoding="utf-8"
         )
         self.assertIn("const stepIds=['H-001','H-002','H-003','H-004','H-005','H-006','H-007']", page)
-        self.assertIn('button onclick="nextStep()">다음</button>', page)
-        self.assertIn("이 단계의 확인 버튼을 먼저 눌러 주세요.", page)
-        self.assertIn("currentStepIndex++;await load()", page)
+        self.assertIn('class="action-dock"', page)
+        self.assertIn("function dockAction()", page)
+        self.assertIn("function syncActionDock()", page)
+        self.assertNotIn('button onclick="nextStep()">다음</button>', page)
         self.assertIn("$('finalAudit').style.display='block'", page)
 
     def test_normal_local_launcher_does_not_rewrite_canonical_evidence(self) -> None:
@@ -555,7 +557,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn("operations_collect", html)
         self.assertNotIn("`이번 실행에서 감지`", html)
         self.assertIn("op039-external-review-package.zip", html)
-        self.assertIn("약사 전문가 검토 화면 열기", html)
+        self.assertIn("약사 안전 검토 열기", html)
         review_form = (
             ROOT / "data/original_plan/final_session/op039_external_reviewer_form.html"
         ).read_text(encoding="utf-8")
