@@ -1,6 +1,6 @@
 {
   "schema_version": "wb_rnd_ingredient_identifier_map_v1",
-  "mapping_version": "2026-07-16.1",
+  "mapping_version": "2026-07-24.1",
   "effective_at": "2026-07-16T00:00:00Z",
   "service_namespace": "wellnessbox_tips_lab_proxy_model_v1",
   "service_candidate_source": "wellnessbox/data/tips/proxy-recommendation-model.json",
@@ -26,6 +26,12 @@
       "allowed_directions": ["rnd_to_service"]
     },
     {
+      "service_ingredient_id": "ING:L_THEANINE",
+      "rnd_ingredient_key": "l_theanine",
+      "relationship": "equivalent",
+      "allowed_directions": ["rnd_to_service", "service_to_rnd"]
+    },
+    {
       "service_ingredient_id": "ING:OMEGA3",
       "rnd_ingredient_key": "omega3",
       "relationship": "equivalent",
@@ -36,6 +42,12 @@
       "rnd_ingredient_key": "probiotics",
       "relationship": "equivalent",
       "allowed_directions": ["rnd_to_service", "service_to_rnd"]
+    },
+    {
+      "service_ingredient_id": "ING:PSYLLIUM",
+      "rnd_ingredient_key": "soluble_fiber",
+      "relationship": "service_narrower",
+      "allowed_directions": ["rnd_to_service"]
     },
     {
       "service_ingredient_id": "ING:VITAMIN_C",
@@ -74,10 +86,6 @@
       "reason": "no_equivalent_rnd_catalog_key"
     },
     {
-      "service_ingredient_id": "ING:PSYLLIUM",
-      "reason": "semantic_scope_mismatch_with_rnd_soluble_fiber"
-    },
-    {
       "service_ingredient_id": "ING:VITAMIN_B12",
       "reason": "service_vitamin_b12_not_equivalent_to_rnd_b_complex"
     }
@@ -86,14 +94,6 @@
     {
       "rnd_ingredient_key": "berberine",
       "reason": "no_service_candidate_identifier"
-    },
-    {
-      "rnd_ingredient_key": "l_theanine",
-      "reason": "no_service_candidate_identifier"
-    },
-    {
-      "rnd_ingredient_key": "soluble_fiber",
-      "reason": "semantic_scope_mismatch_with_service_psyllium"
     },
     {
       "rnd_ingredient_key": "vitamin_b_complex",

@@ -720,7 +720,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertTrue(
                 all(result["steps"][step]["status"] == "completed" for step in STEPS[:-1])
             )
-            self.assertEqual(result["steps"]["H-007"]["status"], "deferred")
+            self.assertEqual(result["steps"]["H-007"]["status"], "completed")
             self.assertFalse(result["production_paths_touched"])
             self.assertEqual(after, before)
             saved = json.loads((Path(temp) / "rehearsal/rehearsal_result_v1.json").read_text())

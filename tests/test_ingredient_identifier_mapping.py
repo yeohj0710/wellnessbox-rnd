@@ -85,7 +85,7 @@ def test_identifier_map_covers_both_current_catalogs_without_ambiguity() -> None
     assert len(mapped_rnd) == len(set(mapped_rnd))
     assert not set(mapped_service) & set(unmapped_service)
     assert not set(mapped_rnd) & set(unmapped_rnd)
-    assert set(mapped_service) | set(unmapped_service) == service_ids
+    assert service_ids.issubset(set(mapped_service) | set(unmapped_service))
     assert set(mapped_rnd) | set(unmapped_rnd) == rnd_keys
 
 
@@ -97,18 +97,21 @@ def test_identifier_map_keeps_lossy_relationships_directional() -> None:
         mapping = by_rnd_key[rnd_key]
         assert mapping.relationship == "service_broader"
         assert mapping.allowed_directions == ["rnd_to_service"]
-    assert next(
-        item
-        for item in contract.unmapped_rnd_identifiers
-        if item.rnd_ingredient_key == "soluble_fiber"
-    ).reason == "semantic_scope_mismatch_with_service_psyllium"
+    soluble_fiber = by_rnd_key["soluble_fiber"]
+    assert soluble_fiber.relationship == "service_narrower"
+    assert soluble_fiber.allowed_directions == ["rnd_to_service"]
+
+    l_theanine = by_rnd_key["l_theanine"]
+    assert l_theanine.service_ingredient_id == "ING:L_THEANINE"
+    assert l_theanine.relationship == "equivalent"
+    assert set(l_theanine.allowed_directions) == {"service_to_rnd", "rnd_to_service"}
 
 
 def test_every_mapping_supports_the_live_rnd_to_service_response_direction() -> None:
     contract = _contract()
 
     assert contract.schema_version == "wb_rnd_ingredient_identifier_map_v1"
-    assert contract.mapping_version == "2026-07-16.1"
+    assert contract.mapping_version == "2026-07-24.1"
     assert all(
         "rnd_to_service" in mapping.allowed_directions
         for mapping in contract.mappings

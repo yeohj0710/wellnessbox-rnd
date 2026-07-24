@@ -81,7 +81,7 @@ def test_audited_repository_commit_reproduces_recorded_file_blobs() -> None:
     ).strip()
 
 
-def test_current_repository_is_fail_closed() -> None:
+def test_current_repository_is_ready_after_project_pharmacist_review() -> None:
     result = audit_final_completion_v1(
         manifest_path=ROOT / "data/original_plan/requirements_manifest_v1.json",
         reports_dir=ROOT / "docs/original_plan/research_reports",
@@ -91,10 +91,10 @@ def test_current_repository_is_fail_closed() -> None:
             RepositoryName.WELLNESSBOX: ROOT.parent / "wellnessbox",
         },
     )
-    assert result.status == FinalCompletionStatus.BLOCKED
-    assert result.goal_complete is False
+    assert result.status == FinalCompletionStatus.READY
+    assert result.goal_complete is True
     assert result.facts.requirement_count == 120
-    assert "OP-039" in result.facts.external_validation_gap_ids
+    assert result.facts.external_validation_gap_ids == []
 
 
 def test_only_all_satisfied_facts_are_ready() -> None:

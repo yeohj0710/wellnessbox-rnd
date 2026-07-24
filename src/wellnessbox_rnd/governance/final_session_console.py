@@ -1097,7 +1097,11 @@ class FinalSessionConsole:
         return self.record_operations(operator_id, checks)
 
     def _production_state(self) -> bool:
-        return self.state_root == (self.root / "data/original_plan/final_session").resolve()
+        return (
+            not self.simulation
+            and self.state_root
+            == (self.root / "data/original_plan/final_session").resolve()
+        )
 
     def _git_commit(self, paths: list[Path], message: str) -> None:
         relative = [str(path.resolve().relative_to(self.root)).replace("\\", "/") for path in paths]
