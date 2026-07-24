@@ -8,6 +8,10 @@
     {
       "issuer_id": "웰니스박스",
       "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g="
+    },
+    {
+      "issuer_id": "?????",
+      "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g="
     }
   ]
 }
