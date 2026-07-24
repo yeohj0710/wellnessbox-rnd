@@ -913,21 +913,17 @@ class FinalSessionConsole:
         provisional: list[str] = []
         capture_path = self.root / "etc/local_research_runtime/operational_capture.json"
         database_path = self.root / "etc/local_research_runtime/interim.sqlite3"
-        distinct_profile_count = 0
-        if database_path.is_file():
-            try:
-                connection = sqlite3.connect(database_path)
-                try:
-                    distinct_profile_count = int(
-                        connection.execute(
-                            "select count(distinct profile_id) from profile_snapshots "
-                            "where data_class = 'INTERIM_RUNTIME_EVENT'"
-                        ).fetchone()[0]
-                    )
-                finally:
-                    connection.close()
-            except sqlite3.Error:
-                distinct_profile_count = 0
+        wizard = (
+            json.loads(self.operational_wizard_path.read_text(encoding="utf-8"))
+            if self.operational_wizard_path.is_file()
+            else {}
+        )
+        completed_profile_ids = {
+            item.get("profile_id")
+            for item in wizard.get("completed_profiles", [])
+            if isinstance(item, dict) and isinstance(item.get("profile_id"), str)
+        }
+        distinct_profile_count = len(completed_profile_ids)
         if capture_path.is_file():
             capture = json.loads(capture_path.read_text(encoding="utf-8"))
             before = capture.get("database_counts_before", {})
