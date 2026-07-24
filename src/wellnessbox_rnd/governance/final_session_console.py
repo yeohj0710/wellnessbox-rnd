@@ -20,6 +20,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 
 from wellnessbox_rnd.evals.external_high_risk_safety import ExternalHighRiskSafetyEvalReportV2
+from wellnessbox_rnd.governance.final_completion_audit import audit_final_completion_v1
 from wellnessbox_rnd.governance.original_plan_audit import audit_original_plan_manifest_v1
 from wellnessbox_rnd.governance.operational_receipts import (
     begin_session,
@@ -35,7 +36,10 @@ from wellnessbox_rnd.interim.ai_drafts import (
 )
 from wellnessbox_rnd.interim.data_lake import data_lake_database_path
 from wellnessbox_rnd.interim.store import InterimStore
-from wellnessbox_rnd.schemas.original_plan_manifest import load_original_plan_manifest_v1
+from wellnessbox_rnd.schemas.original_plan_manifest import (
+    RepositoryName,
+    load_original_plan_manifest_v1,
+)
 
 STEPS = [f"H-{number:03}" for number in range(1, 8)]
 OPERATIONAL_PROFILES = [
@@ -1297,8 +1301,16 @@ def run_rehearsal(root: Path, rehearsal_root: Path) -> dict[str, Any]:
         "simulation-operator",
         {**environment_files, "requirement_evidence": requirement_evidence},
     )
-    finalized = console.finalize_and_audit()
-    audit = finalized["audit"]["audit"]
+    console.finalize_and_audit()
+    audit = audit_final_completion_v1(
+        manifest_path=rehearsal_rnd / "data/original_plan/requirements_manifest_v1.json",
+        reports_dir=rehearsal_rnd / "docs/original_plan/research_reports",
+        policy_path=rehearsal_rnd / "data/original_plan/op120_final_audit_policy_v1.json",
+        repository_roots={
+            RepositoryName.WELLNESSBOX_RND: rehearsal_rnd,
+            RepositoryName.WELLNESSBOX: rehearsal_web,
+        },
+    ).model_dump(mode="json")
     result = {
         "schema_version": "final_session_console_rehearsal_v1",
         "data_class": "SIMULATION",

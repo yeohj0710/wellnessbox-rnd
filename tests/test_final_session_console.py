@@ -9,7 +9,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import patch
 
-from wellnessbox_rnd.governance.final_session_console import FinalSessionConsole, run_rehearsal
+from wellnessbox_rnd.governance.final_session_console import (
+    STEPS,
+    FinalSessionConsole,
+    run_rehearsal,
+)
 from wellnessbox_rnd.interim.ai_drafts import AiDraftCreateV1, AiDraftService
 from wellnessbox_rnd.interim.store import InterimStore
 
@@ -627,12 +631,17 @@ class FinalSessionConsoleTest(unittest.TestCase):
             result = run_rehearsal(ROOT, Path(temp) / "rehearsal")
             after = production_state.read_bytes() if production_state.exists() else None
             self.assertEqual(result["data_class"], "SIMULATION")
-            self.assertEqual(result["audit"]["status"], "READY")
-            self.assertTrue(all(item["status"] == "completed" for item in result["steps"].values()))
+            self.assertEqual(result["audit"]["status"], "BLOCKED")
+            self.assertFalse(result["audit"]["facts"]["validation_receipt_valid"])
+            self.assertFalse(result["audit"]["facts"]["independent_review_receipt_valid"])
+            self.assertTrue(
+                all(result["steps"][step]["status"] == "completed" for step in STEPS[:-1])
+            )
+            self.assertEqual(result["steps"]["H-007"]["status"], "deferred")
             self.assertFalse(result["production_paths_touched"])
             self.assertEqual(after, before)
             saved = json.loads((Path(temp) / "rehearsal/rehearsal_result_v1.json").read_text())
-            self.assertTrue(saved["audit"]["goal_complete"])
+            self.assertFalse(saved["audit"]["goal_complete"])
 
 
 if __name__ == "__main__":
