@@ -20,6 +20,7 @@ TABLES = (
     "followups", "pro_observations", "adverse_events", "workflow_jobs",
     "review_tasks", "ai_drafts",
 )
+DERIVED_COUNTERS = ("review_tasks_completed", "ai_drafts_reviewed")
 
 
 def now() -> str:
@@ -28,14 +29,33 @@ def now() -> str:
 
 def database_counts(path: Path) -> dict[str, int]:
     if not path.is_file():
-        return {table: 0 for table in TABLES}
+        return {name: 0 for name in (*TABLES, *DERIVED_COUNTERS)}
     with closing(sqlite3.connect(path)) as connection:
         existing = {row[0] for row in connection.execute("select name from sqlite_master where type='table'")}
-        return {
+        counts = {
             table: int(connection.execute(f"select count(*) from {table}").fetchone()[0])
             if table in existing else 0
             for table in TABLES
         }
+        counts["review_tasks_completed"] = (
+            int(
+                connection.execute(
+                    "select count(*) from review_tasks where status != 'OPEN'"
+                ).fetchone()[0]
+            )
+            if "review_tasks" in existing
+            else 0
+        )
+        counts["ai_drafts_reviewed"] = (
+            int(
+                connection.execute(
+                    "select count(*) from ai_drafts where review_status != 'pending'"
+                ).fetchone()[0]
+            )
+            if "ai_drafts" in existing
+            else 0
+        )
+        return counts
 
 
 def source_commits(root: Path) -> dict[str, str]:
@@ -72,7 +92,10 @@ def finish_session(
     mapping = json.loads(mapping_path.read_text(encoding="utf-8"))
     before = capture["database_counts_before"]
     after = database_counts(database)
-    delta = {table: after[table] - int(before.get(table, 0)) for table in TABLES}
+    delta = {
+        name: after[name] - int(before.get(name, 0))
+        for name in (*TABLES, *DERIVED_COUNTERS)
+    }
     observed: list[str] = []
     for action, signals in mapping["signals"].items():
         if action != "completed_session" and any(delta.get(table, 0) > 0 for table in signals):

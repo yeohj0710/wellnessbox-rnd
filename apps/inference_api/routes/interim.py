@@ -1281,14 +1281,36 @@ def correct_pro_followup(payload: PROCorrectionRequest) -> dict[str, Any]:
 )
 def enroll_pro_plan(payload: PROPlanEnrollmentRequest) -> dict[str, Any]:
     try:
-        return enroll_pro_plan_v1(
-            _store(),
+        store = _store()
+        result = enroll_pro_plan_v1(
+            store,
             recommendation_request=payload.recommendation_request,
             instrument=payload.baseline.instrument,
             item_scores=payload.baseline.item_scores,
             observed_at=payload.observed_at,
             data_class=payload.data_class,
         )
+        if payload.data_class == "REAL_WORLD_OUTCOME":
+            AiDraftService(store).create(
+                AiDraftCreateV1(
+                    record_type="actual_recommendation_review",
+                    model_identifier="deterministic-draft-model-v1",
+                    prompt_version="actual-recommendation-review-v1",
+                    content={
+                        "plan_id": result["plan_id"],
+                        "recommendations": result["recommendation"]["recommendations"],
+                    },
+                    rationale={
+                        "source_execution_id": result["execution_id"],
+                        "baseline_event_id": result["baseline_event_id"],
+                        "data_class": payload.data_class,
+                        "generation_note": "실제 추천 결과를 약사 검토용 초안으로 정리했습니다.",
+                    },
+                    idempotency_key=f"actual-recommendation:{result['execution_id']}",
+                ),
+                created_at=datetime.now(UTC),
+            )
+        return result
     except ConsentStorageDeniedError as error:
         raise HTTPException(status_code=403, detail=str(error)) from error
     except IdempotencyConflictError as error:

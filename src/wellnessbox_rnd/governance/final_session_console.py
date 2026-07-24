@@ -17,7 +17,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey,
 
 from wellnessbox_rnd.evals.external_high_risk_safety import ExternalHighRiskSafetyEvalReportV2
 from wellnessbox_rnd.governance.original_plan_audit import audit_original_plan_manifest_v1
-from wellnessbox_rnd.governance.operational_receipts import TABLES, database_counts
+from wellnessbox_rnd.governance.operational_receipts import database_counts
 from wellnessbox_rnd.interim.ai_drafts import (
     AiDraftCreateV1,
     AiDraftDecisionV1,
@@ -594,7 +594,10 @@ class FinalSessionConsole:
             capture = json.loads(capture_path.read_text(encoding="utf-8"))
             before = capture.get("database_counts_before", {})
             after = database_counts(database_path)
-            delta = {table: after.get(table, 0) - int(before.get(table, 0)) for table in TABLES}
+            delta = {
+                name: after.get(name, 0) - int(before.get(name, 0))
+                for name in after
+            }
             mapping = json.loads(
                 (self.root / "data/original_plan/operational_action_coverage_v1.json").read_text(encoding="utf-8")
             )

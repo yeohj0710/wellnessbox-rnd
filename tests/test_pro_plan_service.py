@@ -548,6 +548,13 @@ def test_pro_plan_api_accepts_only_outcome_data_classes(tmp_path, monkeypatch) -
     )
     assert accepted.status_code == 200
     assert accepted.json()["baseline"]["data_class"] == "REAL_WORLD_OUTCOME"
+    drafts = client.get(
+        "/v1/interim/admin/ai-drafts",
+        headers={"x-wb-rnd-token": "test-token"},
+    ).json()
+    assert drafts["summary"]["pending"] == 1
+    assert drafts["items"][0]["record_type"] == "actual_recommendation_review"
+    assert drafts["items"][0]["rationale"]["source_execution_id"] == accepted.json()["execution_id"]
 
     payload["recommendation_request"]["request_id"] = "other-request"
     payload["recommendation_request"]["plan_id"] = "plan_other_001"

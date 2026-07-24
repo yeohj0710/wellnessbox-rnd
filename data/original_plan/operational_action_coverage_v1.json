@@ -13,7 +13,7 @@
     "profile_or_survey": ["user_profiles", "profile_snapshots", "behavior_events"],
     "recommendation": ["recommendation_runs", "recommendation_items", "agent_runs", "agent_steps"],
     "followup": ["followups", "pro_observations", "adverse_events", "workflow_jobs"],
-    "pharmacist_review": ["review_tasks", "ai_drafts"],
+    "pharmacist_review": ["review_tasks_completed", "ai_drafts_reviewed"],
     "completed_session": []
   }
 }
