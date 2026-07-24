@@ -17,6 +17,62 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class FinalSessionConsoleTest(unittest.TestCase):
+    def test_operational_wizard_submits_prefilled_actual_records_in_order(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
+            replies = [
+                {
+                    "execution_id": "exec_" + "1" * 32,
+                    "plan_id": "plan_" + "2" * 32,
+                    "baseline_event_id": "event_" + "3" * 32,
+                },
+                {"event_id": "event_" + "4" * 32, "action_decision": "maintain"},
+                {
+                    "items": [
+                        {
+                            "draft_id": "draft_" + "5" * 32,
+                            "record_type": "actual_recommendation_review",
+                            "review_status": "pending",
+                        }
+                    ]
+                },
+                {"review_status": "approved", "reviewer_id": "웰니스박스"},
+            ]
+            with patch.object(console, "_wellnessbox_json", side_effect=replies) as request:
+                console.confirm_operational_baseline()
+                console.confirm_operational_followup()
+                wizard = console.confirm_operational_pharmacist()
+
+            baseline_body = request.call_args_list[0].kwargs["body"]
+            self.assertEqual(baseline_body["profile"]["name"], "연구 참여자 01")
+            self.assertEqual(baseline_body["baseline"]["item_scores"], [2] * 7)
+            self.assertEqual(baseline_body["dataClass"], "REAL_WORLD_OUTCOME")
+            followup_body = request.call_args_list[1].kwargs["body"]
+            self.assertEqual(followup_body["answers"]["item_scores"], [1] * 7)
+            self.assertEqual(followup_body["takenDoseCount"], 12)
+            self.assertEqual(followup_body["adverseEvents"], [])
+            self.assertEqual(
+                request.call_args_list[3].kwargs["body"],
+                {"review_status": "approved"},
+            )
+            self.assertEqual(wizard["pharmacist_review"]["reviewer_id"], "웰니스박스")
+
+    def test_operational_wizard_requires_confirmation_order(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
+            with self.assertRaisesRegex(ValueError, "복용 전 저장 확인"):
+                console.confirm_operational_followup()
+            with self.assertRaisesRegex(ValueError, "후속평가 저장 확인"):
+                console.confirm_operational_pharmacist()
+
+    def test_h007_page_uses_three_prefilled_confirmation_buttons(self) -> None:
+        page = (ROOT / "scripts/run_final_session_console.py").read_text(encoding="utf-8")
+        self.assertIn("복용 전 저장 확인", page)
+        self.assertIn("후속평가 저장 확인", page)
+        self.assertIn("약사 승인", page)
+        self.assertIn("입력할 값과 파일 경로는 없습니다", page)
+        self.assertIn('"operational_baseline": console.confirm_operational_baseline', page)
+
     def test_local_operational_session_uses_automatic_research_login(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")

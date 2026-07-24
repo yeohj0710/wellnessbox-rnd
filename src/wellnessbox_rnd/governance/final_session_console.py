@@ -8,9 +8,12 @@ import random
 import shutil
 import subprocess
 import sys
+from http.cookiejar import CookieJar
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError, URLError
+from urllib.request import HTTPCookieProcessor, Request, build_opener
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
@@ -52,6 +55,7 @@ class FinalSessionConsole:
         self.policy_path = self.root / "data/original_plan/closed_loop_next_action_policy_v1.json"
         self.audit_policy_path = self.root / "data/original_plan/op120_final_audit_policy_v1.json"
         self.manifest_path = self.root / "data/original_plan/requirements_manifest_v1.json"
+        self.operational_wizard_path = self.state_root / "operational_wizard_v1.json"
         self.simulation = simulation
         self.state = self._load_state()
         if "report_sample_ids" not in self.state:
@@ -144,11 +148,140 @@ class FinalSessionConsole:
                 "reviewer_must_differ_from": "웰니스박스",
             },
             "operational_coverage": self.operational_coverage_summary(),
+            "operational_wizard": self._load_operational_wizard(),
             "operational_urls": {
                 "user_session": f"{wellnessbox_url}/research-login?redirect=/tips",
                 "pharmacist_review": f"{wellnessbox_url}/research-login?redirect=/pharm/tips",
             },
         }
+
+    def _load_operational_wizard(self) -> dict[str, Any]:
+        default = {
+            "schema_version": "operational_wizard_v1",
+            "baseline": {"status": "pending"},
+            "followup": {"status": "pending"},
+            "pharmacist_review": {"status": "pending"},
+            "prefill": {
+                "participant_name": "연구 참여자 01",
+                "age": 41,
+                "goal": "수면의 질",
+                "baseline": "PSQI 14점(7문항 각 2점)",
+                "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
+                "reviewer_id": "웰니스박스",
+            },
+        }
+        if not self.operational_wizard_path.is_file():
+            return default
+        saved = json.loads(self.operational_wizard_path.read_text(encoding="utf-8"))
+        return {**default, **saved, "prefill": {**default["prefill"], **saved.get("prefill", {})}}
+
+    def _wellnessbox_url(self) -> str:
+        runtime_path = self.root / "etc/local_research_runtime/session_processes.json"
+        if runtime_path.is_file():
+            runtime = json.loads(runtime_path.read_text(encoding="utf-8"))
+            return runtime.get("urls", {}).get("wellnessbox", "http://127.0.0.1:3001")
+        return "http://127.0.0.1:3001"
+
+    def _wellnessbox_json(
+        self, path: str, *, method: str = "GET", body: dict[str, Any] | None = None,
+        redirect: str = "/tips",
+    ) -> dict[str, Any]:
+        base = self._wellnessbox_url().rstrip("/")
+        opener = build_opener(HTTPCookieProcessor(CookieJar()))
+        try:
+            opener.open(f"{base}/research-login?redirect={redirect}", timeout=15).read()
+            payload = None if body is None else json.dumps(body, ensure_ascii=False).encode("utf-8")
+            request = Request(
+                f"{base}{path}", data=payload, method=method,
+                headers={"content-type": "application/json"},
+            )
+            raw = opener.open(request, timeout=30).read()
+            return json.loads(raw.decode("utf-8"))
+        except HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")
+            raise RuntimeError(f"웰니스박스가 요청을 처리하지 못했습니다({exc.code}): {detail}") from exc
+        except URLError as exc:
+            raise RuntimeError("로컬 웰니스박스 서버에 연결하지 못했습니다. 서버를 다시 시작하세요.") from exc
+
+    def confirm_operational_baseline(self) -> dict[str, Any]:
+        wizard = self._load_operational_wizard()
+        if wizard["baseline"]["status"] == "completed":
+            return wizard
+        observed_at = wizard["baseline"].get("observed_at", _now())
+        request_id = "pro_" + hashlib.sha256(
+            f"final-session:{observed_at}".encode()
+        ).hexdigest()[:32]
+        wizard["baseline"] = {
+            "status": "submitting", "observed_at": observed_at, "request_id": request_id
+        }
+        _write_json(self.operational_wizard_path, wizard)
+        result = self._wellnessbox_json(
+            "/api/tips/pro/plans", method="POST",
+            body={
+                "requestId": request_id,
+                "profile": {"name": "연구 참여자 01", "age": 41, "sex": "other", "goals": ["sleep quality"]},
+                "baseline": {"instrument": "PSQI", "item_scores": [2] * 7},
+                "observedAt": observed_at,
+                "consentAccepted": True,
+                "dataClass": "REAL_WORLD_OUTCOME",
+            },
+        )
+        wizard["baseline"] = {
+            **wizard["baseline"], "status": "completed",
+            "execution_id": result["execution_id"], "plan_id": result["plan_id"],
+            "baseline_event_id": result.get("baseline_event_id"), "confirmed_at": _now(),
+        }
+        _write_json(self.operational_wizard_path, wizard)
+        return wizard
+
+    def confirm_operational_followup(self) -> dict[str, Any]:
+        wizard = self._load_operational_wizard()
+        baseline = wizard["baseline"]
+        if baseline["status"] != "completed":
+            raise ValueError("복용 전 저장 확인을 먼저 누르세요.")
+        if wizard["followup"]["status"] == "completed":
+            return wizard
+        result = self._wellnessbox_json(
+            "/api/tips/pro/effects", method="POST",
+            body={
+                "executionId": baseline["execution_id"], "planId": baseline["plan_id"],
+                "timepoint": "week_2", "answers": {"instrument": "PSQI", "item_scores": [1] * 7},
+                "observedAt": _now(), "actualDayIndex": 14, "plannedDoseCount": 14,
+                "takenDoseCount": 12, "adverseEvents": [],
+            },
+        )
+        wizard["followup"] = {
+            "status": "completed", "event_id": result.get("event_id"),
+            "action_decision": result.get("action_decision"), "confirmed_at": _now(),
+        }
+        _write_json(self.operational_wizard_path, wizard)
+        return wizard
+
+    def confirm_operational_pharmacist(self) -> dict[str, Any]:
+        wizard = self._load_operational_wizard()
+        if wizard["followup"]["status"] != "completed":
+            raise ValueError("후속평가 저장 확인을 먼저 누르세요.")
+        if wizard["pharmacist_review"]["status"] == "completed":
+            return wizard
+        queue = self._wellnessbox_json("/api/pharm/tips/ai-drafts", redirect="/pharm/tips")
+        draft = next(
+            (item for item in queue.get("items", []) if item.get("review_status") == "pending"
+             and item.get("record_type") == "actual_recommendation_review"),
+            None,
+        )
+        if draft is None:
+            raise ValueError("승인할 실제 추천 초안이 없습니다. 복용 전 저장 결과를 확인하세요.")
+        result = self._wellnessbox_json(
+            f"/api/pharm/tips/ai-drafts/{draft['draft_id']}", method="POST",
+            body={"review_status": "approved"}, redirect="/pharm/tips",
+        )
+        wizard["pharmacist_review"] = {
+            "status": "completed", "draft_id": draft["draft_id"],
+            "review_status": result.get("review_status", "approved"),
+            "reviewer_id": result.get("reviewer_id", "웰니스박스"), "confirmed_at": _now(),
+        }
+        _write_json(self.operational_wizard_path, wizard)
+        return wizard
 
     def review_policy_rule(
         self, rule_id: str, reviewer_id: str, decision: str, comment: str = ""
