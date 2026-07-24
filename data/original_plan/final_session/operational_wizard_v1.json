@@ -1,0 +1,77 @@
+{
+  "schema_version": "operational_wizard_v1",
+  "baseline": {
+    "status": "completed",
+    "observed_at": "2026-07-24T01:31:13.082457Z",
+    "request_id": "pro_0264085f3df8a5aa5ae98784aae78708",
+    "execution_id": "exec_bb28fde394e64419b5e7d459f8b23151",
+    "plan_id": "plan_0f9ebbf67bb0fec0913d08ddd81ae466",
+    "baseline_event_id": "event_284164ee7a554461b3216e7711c0deca",
+    "confirmed_at": "2026-07-24T01:31:23.501016Z"
+  },
+  "followup": {
+    "status": "completed",
+    "event_id": "event_6ab936d6b9a9422eaf7f6f6712410855",
+    "action_decision": {
+      "schema_version": "pro_plan_action_decision_v1",
+      "policy_version": "2026-07-21.1",
+      "source_observed_change_status": "improved",
+      "source_interpretation_status": "limited_by_missed_doses",
+      "source_adverse_event_count": 0,
+      "source_serious_adverse_event_present": false,
+      "action": "maintain",
+      "next_action": "continue_plan",
+      "projected_workflow_state": "followup_due",
+      "reason_code": "non_worsening_maintain",
+      "causal_effect_claim_allowed": false
+    },
+    "confirmed_at": "2026-07-24T01:32:03.866213Z"
+  },
+  "pharmacist_review": {
+    "status": "completed",
+    "draft_id": "draft_8390d56610ebbf8241b019f7",
+    "review_status": "approved",
+    "reviewer_id": "웰니스박스",
+    "confirmed_at": "2026-07-24T01:32:05.975465Z"
+  },
+  "prefill": {
+    "participant_name": "연구 참여자 01",
+    "age": 41,
+    "goal": "수면의 질",
+    "baseline": "PSQI 14점(7문항 각 2점)",
+    "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
+    "reviewer_id": "웰니스박스"
+  },
+  "operational_receipt": {
+    "status": "completed",
+    "receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T010245964049Z.json",
+    "covered_requirement_count": 25,
+    "covered_requirement_ids": [
+      "OP-021",
+      "OP-022",
+      "OP-023",
+      "OP-024",
+      "OP-025",
+      "OP-026",
+      "OP-027",
+      "OP-028",
+      "OP-029",
+      "OP-030",
+      "OP-053",
+      "OP-058",
+      "OP-073",
+      "OP-074",
+      "OP-075",
+      "OP-076",
+      "OP-077",
+      "OP-078",
+      "OP-087",
+      "OP-103",
+      "OP-104",
+      "OP-105",
+      "OP-106",
+      "OP-116",
+      "OP-120"
+    ]
+  }
+}
