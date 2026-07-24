@@ -37,6 +37,9 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn('id="auditButton"', page)
         self.assertIn('aria-live="polite"', page)
         self.assertIn("완료 상태를 확인하고 있습니다. 약 30초만 기다려 주세요.", page)
+        self.assertIn("initialStepSelected", page)
+        self.assertIn("1. 설문·추천·후속평가 시작", page)
+        self.assertIn("로그인은 자동으로 처리됩니다.", page)
         self.assertIn("auditButton.disabled=true", page)
         self.assertIn("auditButton.disabled=false", page)
 
