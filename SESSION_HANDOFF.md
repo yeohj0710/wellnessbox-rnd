@@ -767,3 +767,10 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - frozen/replay/slice delta: 모두 `0`. 이 반복은 문서와 감사 사례만 바꿨다.
 - 병목 5개: 보고서 96개, 단계 미달 43개, OP-039 외부 검증, 전체 검증 영수증, 독립 검토 영수증.
 - 다음 세 반복: OP-005/006, OP-007/008, OP-009/010 보고서 보강.
+
+## 2026-07-24 인계
+
+- 현재 최종 감사 차단은 `external_validation_gaps:1` 하나다. OP-039은 권혁찬 실제 검토 전까지 의도적으로 BLOCKED다.
+- 운영 준비 확인 명령: `.\.venv-interim\Scripts\python.exe scripts\report_operational_session_readiness.py`.
+- 현재 관측: 서로 다른 실제 프로필 1/5개, 대기 약사 초안 0건. 실제 운영 입력 없이 초안이나 영수증을 만들지 않는다.
+- 상품 매핑 계약은 `l_theanine→ING:L_THEANINE`, `soluble_fiber→ING:PSYLLIUM`을 포함한 `2026-07-24.1`이다. 미매핑은 성분 키와 실패 이유를 반환하고 차단한다.

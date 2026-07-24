@@ -86,7 +86,13 @@ def evaluate_final_completion_facts_v1(
     blockers: list[str] = []
     if facts.requirement_count != 120:
         blockers.append(f"requirement_count:{facts.requirement_count}!=120")
-    if facts.claimed_requirement_count != 120:
+    # An unclaimed EXTERNAL requirement is already represented by the specific
+    # external-validation blocker. Do not report the same honest pending state
+    # a second time as a generic inventory defect.
+    if (
+        facts.claimed_requirement_count + len(facts.external_validation_gap_ids)
+        != facts.requirement_count
+    ):
         blockers.append(f"claimed_requirement_count:{facts.claimed_requirement_count}!=120")
     if facts.nonexternal_stage_gap_ids:
         blockers.append(f"nonexternal_stage_gaps:{len(facts.nonexternal_stage_gap_ids)}")

@@ -1,5 +1,7 @@
 {
-  "schema_version": "operational_wizard_v1",
+  "schema_version": "operational_wizard_v2",
+  "profile_index": 0,
+  "profile_count": 5,
   "baseline": {
     "status": "completed",
     "observed_at": "2026-07-24T01:31:13.082457Z",
@@ -28,20 +30,31 @@
     "confirmed_at": "2026-07-24T01:32:03.866213Z"
   },
   "pharmacist_review": {
-    "status": "completed",
-    "draft_id": "draft_8390d56610ebbf8241b019f7",
-    "review_status": "approved",
-    "reviewer_id": "웰니스박스",
-    "confirmed_at": "2026-07-24T01:32:05.975465Z"
+    "status": "pending",
+    "pending_draft_id": "draft_ace3019fbbfec5a73299653f",
+    "required_reviewer_id": "권혁찬",
+    "prior_owner_self_review": {
+      "draft_id": "draft_8390d56610ebbf8241b019f7",
+      "review_status": "approved",
+      "reviewer_id": "웰니스박스",
+      "confirmed_at": "2026-07-24T01:32:05.975465Z",
+      "classification": "self_review",
+      "excluded_from_project_pharmacist_evidence": true
+    }
   },
   "prefill": {
-    "participant_name": "연구 참여자 01",
+    "profile_id": "profile-01",
+    "participant_name": "연구 프로필 01",
     "age": 41,
+    "sex": "other",
     "goal": "수면의 질",
+    "goal_alias": "sleep quality",
+    "medications": [],
     "baseline": "PSQI 14점(7문항 각 2점)",
     "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
-    "reviewer_id": "웰니스박스"
+    "reviewer_id": "권혁찬"
   },
+  "completed_profiles": [],
   "operational_receipt": {
     "status": "completed",
     "receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\operational_receipts\\local-20260724T010245964049Z.json",

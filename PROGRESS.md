@@ -754,3 +754,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - frozen 평가와 replay/slice 변화: 코드·데이터·모델을 바꾸지 않아 기존 256건 평가의 일곱 지표 delta와 weakest-slice delta는 모두 `0`이다.
 - 병목 5개: 누락·부적합 보고서 96개, 비외부 단계 미달 43개, OP-039 외부 검증, 전체 검증 영수증, 독립 검토 영수증.
 - 다음 세 반복: OP-005/006 보고서 보강, OP-007/008 보고서 보강, OP-009/010 보고서 보강.
+
+## 2026-07-24 최종 감사 정직성 보정
+
+- OP-039 오너 판정을 `self_review`로 보존하고 EXTERNAL 근거에서 제외했다. 권혁찬의 10개 판정은 모두 `pending`이다.
+- 콘솔은 오너 등록을 차단하고 과제 공동연구원에게 `independent_of_implementation_team=false`를 강제한다. AI 초안 검토자와 동일인이면 경고를 기록한다.
+- 운영 현황은 서로 다른 실제 프로필 1/5개, 새 대기 약사 초안 0건이다. 자동 데이터나 영수증은 생성하지 않았다.
+- 최종 감사: `BLOCKED`, 비외부 단계 부족 0, 유효 보고서 120, 영수증 2종 유효, 차단 사유 `external_validation_gaps:1`만 남았다.

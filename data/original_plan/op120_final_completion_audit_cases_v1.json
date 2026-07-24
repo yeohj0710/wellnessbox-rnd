@@ -10,7 +10,7 @@
     {
       "case_id": "claimed_inventory",
       "expected": {
-        "claimed_requirement_count": 120
+        "claimed_requirement_count": 119
       }
     },
     {
@@ -22,7 +22,9 @@
     {
       "case_id": "external_validation",
       "expected": {
-        "external_validation_gap_ids": []
+        "external_validation_gap_ids": [
+          "OP-039"
+        ]
       }
     },
     {
@@ -48,8 +50,8 @@
     {
       "case_id": "completion_decision",
       "expected": {
-        "status": "READY",
-        "goal_complete": true
+        "status": "BLOCKED",
+        "goal_complete": false
       }
     }
   ]

@@ -42,10 +42,13 @@
       "reviewed_at": "2026-07-23T04:13:39.254448Z"
     },
     "H-005": {
-      "status": "completed",
-      "updated_at": "2026-07-23T07:35:37.975660Z",
-      "registered_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\external_validation\\op039_external_validation.json",
-      "sha256": "1311d8cc304c36aa7d3bd34f8c7b9deac144b922f754805c779604ede2295869"
+      "status": "deferred",
+      "updated_at": "2026-07-24T00:00:00Z",
+      "reason": "project_pharmacist_actual_review_pending",
+      "reviewer_name": "권혁찬",
+      "reviewer_role": "project_pharmacist",
+      "independent_of_implementation_team": false,
+      "pending_case_count": 10
     },
     "H-006": {
       "status": "completed",

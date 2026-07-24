@@ -27,35 +27,22 @@ class FinalSessionConsoleTest(unittest.TestCase):
                     "baseline_event_id": "event_" + "3" * 32,
                 },
                 {"event_id": "event_" + "4" * 32, "action_decision": "maintain"},
-                {
-                    "items": [
-                        {
-                            "draft_id": "draft_" + "5" * 32,
-                            "record_type": "actual_recommendation_review",
-                            "review_status": "pending",
-                        }
-                    ]
-                },
-                {"review_status": "approved", "reviewer_id": "웰니스박스"},
             ]
             with patch.object(console, "_wellnessbox_json", side_effect=replies) as request:
                 console.confirm_operational_baseline()
                 console.confirm_operational_followup()
-                wizard = console.confirm_operational_pharmacist()
 
             baseline_body = request.call_args_list[0].kwargs["body"]
-            self.assertEqual(baseline_body["profile"]["name"], "연구 참여자 01")
+            self.assertEqual(baseline_body["profile"]["name"], "연구 프로필 01")
+            self.assertEqual(baseline_body["researchProfileId"], "profile-01")
+            self.assertEqual(baseline_body["profile"]["medications"], [])
             self.assertEqual(baseline_body["baseline"]["item_scores"], [2] * 7)
             self.assertEqual(baseline_body["dataClass"], "REAL_WORLD_OUTCOME")
             followup_body = request.call_args_list[1].kwargs["body"]
             self.assertEqual(followup_body["answers"]["item_scores"], [1] * 7)
             self.assertEqual(followup_body["takenDoseCount"], 12)
             self.assertEqual(followup_body["adverseEvents"], [])
-            self.assertEqual(
-                request.call_args_list[3].kwargs["body"],
-                {"review_status": "approved"},
-            )
-            self.assertEqual(wizard["pharmacist_review"]["reviewer_id"], "웰니스박스")
+            self.assertEqual(request.call_count, 2)
 
     def test_operational_wizard_requires_confirmation_order(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -77,18 +64,28 @@ class FinalSessionConsoleTest(unittest.TestCase):
             console.operational_wizard_path.write_text(
                 json.dumps(wizard, ensure_ascii=False), encoding="utf-8"
             )
-            replies = [
-                {
-                    "items": [{
-                        "draft_id": "draft_" + "5" * 32,
-                        "record_type": "actual_recommendation_review",
-                        "review_status": "pending",
-                    }]
-                },
-                {"review_status": "approved", "reviewer_id": "웰니스박스"},
-            ]
+            database = Path(temp) / "interim.sqlite3"
+            connection = sqlite3.connect(database)
+            connection.execute(
+                "create table ai_drafts (draft_id text, record_type text, rationale_json text, "
+                "review_status text, reviewer_id text, reviewed_at text, created_at text)"
+            )
+            connection.execute(
+                "insert into ai_drafts values (?, ?, ?, ?, ?, ?, ?)",
+                (
+                    "draft_" + "5" * 32,
+                    "actual_recommendation_review",
+                    json.dumps({"source_execution_id": "exec_1"}),
+                    "approved",
+                    "권혁찬",
+                    "2026-07-24T06:00:00Z",
+                    "2026-07-24T05:00:00Z",
+                ),
+            )
+            connection.commit()
+            connection.close()
             with (
-                patch.object(console, "_wellnessbox_json", side_effect=replies),
+                patch.object(console, "_operational_database_path", return_value=database),
                 patch.object(console, "_production_state", return_value=True),
                 patch.object(
                     console,
@@ -100,14 +97,19 @@ class FinalSessionConsoleTest(unittest.TestCase):
                 result = console.confirm_operational_pharmacist()
             finalize.assert_called_once_with()
             collect.assert_called_once_with(operator_id="웰니스박스")
-            self.assertEqual(result["operational_receipt"]["covered_requirement_count"], 41)
+            completed = result["completed_profiles"][0]
+            self.assertEqual(completed["operational_receipt"]["covered_requirement_count"], 41)
+            self.assertEqual(completed["pharmacist_review"]["reviewer_id"], "권혁찬")
+            self.assertEqual(result["profile_index"], 1)
+            self.assertEqual(result["prefill"]["profile_id"], "profile-02")
 
     def test_h007_page_uses_three_prefilled_confirmation_buttons(self) -> None:
         page = (ROOT / "scripts/run_final_session_console.py").read_text(encoding="utf-8")
         self.assertIn("복용 전 저장 확인", page)
         self.assertIn("후속평가 저장 확인", page)
-        self.assertIn("약사 승인", page)
-        self.assertIn("입력할 값과 파일 경로는 없습니다", page)
+        self.assertIn("약사 판정 저장 여부 확인", page)
+        self.assertNotIn("웰니스박스 명의로 승인", page)
+        self.assertIn("프로필입니다", page)
         self.assertIn('"operational_baseline": console.confirm_operational_baseline', page)
 
     def test_local_operational_session_uses_automatic_research_login(self) -> None:
@@ -259,7 +261,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertTrue(registered.is_file())
             self.assertTrue(registered.is_relative_to(Path(temp)))
 
-    def test_external_review_package_requires_a_different_independent_pharmacist(self) -> None:
+    def test_external_review_package_requires_project_pharmacist_actual_decisions(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
             cases_path = ROOT / "data/original_plan/op039_external_review_cases_v1.json"
@@ -273,7 +275,10 @@ class FinalSessionConsoleTest(unittest.TestCase):
                     "organization": "독립약국",
                     "pharmacist_license_id": "license-actual-value",
                     "contact": "reviewer@example.test",
-                    "independent_of_implementation_team": True,
+                    "reviewer_role": "project_pharmacist",
+                    "relationship_to_project": "project_co_researcher",
+                    "credential_verification_method": "license_document_checked",
+                    "independent_of_implementation_team": False,
                     "was_ai_draft_reviewer": False,
                 },
                 "decisions": [
@@ -285,8 +290,8 @@ class FinalSessionConsoleTest(unittest.TestCase):
             }
             console.register_external_validation_upload(document)
             self.assertEqual(console.state["steps"]["H-005"]["status"], "completed")
-            document["reviewer"]["name"] = "웰니스박스"
-            document["signature_name"] = "웰니스박스"
+            document["reviewer"]["name"] = "여형준"
+            document["signature_name"] = "여형준"
             with self.assertRaises(ValueError):
                 console.register_external_validation_upload(document)
 
@@ -363,6 +368,26 @@ class FinalSessionConsoleTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             temp_path = Path(temp)
             console = FinalSessionConsole(ROOT, state_root=temp_path / "session")
+            manifest = temp_path / "manifest.json"
+            manifest.write_text(
+                json.dumps(
+                    {
+                        "groups": [
+                            {
+                                "default_required_stage": "OPERATED",
+                                "requirements": [
+                                    {
+                                        "requirement_id": "OP-001",
+                                        "claimed_stage": "INTEGRATED",
+                                    }
+                                ],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            console.manifest_path = manifest
             requirement_id = console._stage_gap_ids()[0]
             evidence = temp_path / "requirement.json"
             evidence.write_text(
@@ -433,7 +458,28 @@ class FinalSessionConsoleTest(unittest.TestCase):
 
     def test_uploaded_operations_are_classified_without_user_paths(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
-            console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
+            temp_path = Path(temp)
+            console = FinalSessionConsole(ROOT, state_root=temp_path / "session")
+            manifest = temp_path / "manifest.json"
+            manifest.write_text(
+                json.dumps(
+                    {
+                        "groups": [
+                            {
+                                "default_required_stage": "OPERATED",
+                                "requirements": [
+                                    {
+                                        "requirement_id": "OP-001",
+                                        "claimed_stage": "INTEGRATED",
+                                    }
+                                ],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            console.manifest_path = manifest
             requirement_id = console._stage_gap_ids()[0]
             console.record_uploaded_operations(
                 "웰니스박스",
@@ -458,19 +504,17 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn("operations_collect", html)
         self.assertNotIn("`이번 실행에서 감지`", html)
         self.assertIn("op039-external-review-package.zip", html)
-        self.assertIn("미리 채운 외부 검토 화면 열기", html)
+        self.assertIn("약사 전문가 검토 화면 열기", html)
         review_form = (
             ROOT / "data/original_plan/final_session/op039_external_reviewer_form.html"
         ).read_text(encoding="utf-8")
         self.assertIn('value="valid" checked', review_form)
-        self.assertIn("독립성 확인 및 검토 결과 등록", review_form)
-        self.assertIn("판정 10건과 판정 이유는 모두 작성되어 있습니다", review_form)
-        self.assertIn('value="여형준"', review_form)
-        self.assertIn('value="연세대학교 약학대학"', review_form)
-        self.assertIn("약사 면허번호는 수집하지 않습니다", review_form)
-        self.assertIn("not-collected:self-attested-pharmacist", review_form)
-        self.assertIn("area.style.display='none'", review_form)
+        self.assertIn("AI 제안", review_form)
+        self.assertIn("수정하거나 그대로 제출해야 등록", review_form)
+        self.assertIn("기존 오너의 판정은 자기검토", review_form)
+        self.assertIn('value="권혁찬"', review_form)
         self.assertNotIn('id="license"', review_form)
+        self.assertNotIn('id="credential"', review_form)
         self.assertNotIn('id="email"', review_form)
         self.assertNotIn('id="independent"', review_form)
         self.assertNotIn('id="signature"', review_form)

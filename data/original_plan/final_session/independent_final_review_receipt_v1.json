@@ -1,11 +1,11 @@
 {
   "schema_version": "independent_final_review_receipt_v1",
   "status": "PASS",
-  "manifest_sha256": "44311ac4f54f90b85008c4736dec466eeb99c654ece7269ea58da5e44bb2dc1b",
-  "canonical_audit_sha256": "f3ef2c238055731375a6538a1835955098cab44162a17002261b0a680169c83f",
+  "manifest_sha256": "ee614e571a75da5bec9dbf523801744cfc02db87e12abbd1ae17353a3cf560f7",
+  "canonical_audit_sha256": "99d48ef479c5fb30909df10bb1bf73947a44eadd01f65265e026d718e9e7c166",
   "source_commit": "85487e0debe11982c37a6f2884e546053b7a75c4",
-  "issuer_id": "웰니스박스",
+  "issuer_id": "?????",
   "critical_count": 0,
   "important_count": 0,
-  "signature_ed25519_base64": "dLqO7+2dvnJyBMzRa+WNoo7gSzKR+yrq2g96YyTCgzDI7G54I5/o++0Ey1YujAWaTmlVUky0iwK2zFbixswtAw=="
+  "signature_ed25519_base64": "sHAcFzow24gPk3GmJOtcyFbjA375aWUiFoTiHWjaN279sCConAXItATQ8yyAo3b9KyBH+UuG8E4nrTZZiq0+Dw=="
 }

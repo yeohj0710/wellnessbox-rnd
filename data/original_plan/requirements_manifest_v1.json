@@ -837,8 +837,7 @@
               "wellnessbox-rnd/docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md"
             ],
             "test_files": [
-              "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py",
-              "wellnessbox-rnd/data/original_plan/final_session/external_validation/op039_external_validation.json"
+              "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py"
             ],
             "external_dependencies": [
               "Independent organization supplies a frozen high-risk dataset labeled under the pre-approved coverage and labeling protocols",
@@ -849,7 +848,7 @@
               "wellnessbox-rnd/data/original_plan/contracts/op039_external_attestation_trust_roots_v1.json"
             ]
           },
-          "claimed_stage": "EXTERNAL"
+          "claimed_stage": null
         },
         {
           "requirement_id": "OP-040",

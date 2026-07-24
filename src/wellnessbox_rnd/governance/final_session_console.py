@@ -6,6 +6,7 @@ import json
 import os
 import random
 import shutil
+import sqlite3
 import subprocess
 import sys
 from http.cookiejar import CookieJar
@@ -37,6 +38,38 @@ from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.schemas.original_plan_manifest import load_original_plan_manifest_v1
 
 STEPS = [f"H-{number:03}" for number in range(1, 8)]
+OPERATIONAL_PROFILES = [
+    {
+        "profile_id": "profile-01", "participant_name": "연구 프로필 01",
+        "age": 41, "sex": "other", "goal": "수면의 질", "goal_alias": "sleep quality",
+        "medications": [], "baseline": "PSQI 14점(7문항 각 2점)",
+        "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
+    },
+    {
+        "profile_id": "profile-02", "participant_name": "연구 프로필 02",
+        "age": 58, "sex": "male", "goal": "심혈관 건강", "goal_alias": "heart health",
+        "medications": ["warfarin"], "baseline": "PSQI 14점(7문항 각 2점)",
+        "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
+    },
+    {
+        "profile_id": "profile-03", "participant_name": "연구 프로필 03",
+        "age": 29, "sex": "female", "goal": "에너지", "goal_alias": "energy",
+        "medications": ["levothyroxine"], "baseline": "PSQI 14점(7문항 각 2점)",
+        "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
+    },
+    {
+        "profile_id": "profile-04", "participant_name": "연구 프로필 04",
+        "age": 67, "sex": "female", "goal": "뼈·관절", "goal_alias": "bone joint",
+        "medications": ["metformin"], "baseline": "PSQI 14점(7문항 각 2점)",
+        "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
+    },
+    {
+        "profile_id": "profile-05", "participant_name": "연구 프로필 05",
+        "age": 36, "sex": "other", "goal": "장 건강", "goal_alias": "gut health",
+        "medications": ["omeprazole"], "baseline": "PSQI 14점(7문항 각 2점)",
+        "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
+    },
+]
 
 
 def _now() -> str:
@@ -66,6 +99,29 @@ class FinalSessionConsole:
             report_ids = [f"OP-{number:03}" for number in range(1, 121)]
             self.state["report_sample_ids"] = random.SystemRandom().sample(report_ids, 3)
             _write_json(self.state_path, self.state)
+        self._reconcile_draft_queue_state()
+
+    def _reconcile_draft_queue_state(self) -> None:
+        database_path = self._operational_database_path()
+        if not database_path.is_file():
+            return
+        store = InterimStore(database_path)
+        store.migrate()
+        service = AiDraftService(store)
+        summary = service.summary()
+        if summary["pending"] <= 0 or self.state["steps"]["H-003"]["status"] != "completed":
+            return
+        previous = self.state["steps"]["H-003"]
+        self._record(
+            "H-003",
+            "pending",
+            {
+                "reason": "project_pharmacist_review_pending",
+                "draft_ledger_path": str(database_path),
+                "review_counts": summary,
+                "previous_completion": previous,
+            },
+        )
 
     def _load_state(self) -> dict[str, Any]:
         if self.state_path.is_file():
@@ -139,7 +195,13 @@ class FinalSessionConsole:
             "progress": {"completed": completed, "total": len(STEPS)},
             "policy_rules": readable_rules,
             "report_samples": samples,
-            "draft_database_path": str(data_lake_database_path().resolve()),
+            "draft_database_path": str(
+                (
+                    self._operational_database_path()
+                    if self._operational_database_path().is_file()
+                    else data_lake_database_path().resolve()
+                )
+            ),
             "default_signing_key_path": str(
                 (
                     self.root
@@ -160,23 +222,23 @@ class FinalSessionConsole:
         }
 
     def _load_operational_wizard(self) -> dict[str, Any]:
+        saved = (
+            json.loads(self.operational_wizard_path.read_text(encoding="utf-8"))
+            if self.operational_wizard_path.is_file()
+            else {}
+        )
+        profile_index = max(0, min(int(saved.get("profile_index", 0)), len(OPERATIONAL_PROFILES) - 1))
+        profile = OPERATIONAL_PROFILES[profile_index]
         default = {
-            "schema_version": "operational_wizard_v1",
+            "schema_version": "operational_wizard_v2",
+            "profile_index": profile_index,
+            "profile_count": len(OPERATIONAL_PROFILES),
             "baseline": {"status": "pending"},
             "followup": {"status": "pending"},
             "pharmacist_review": {"status": "pending"},
-            "prefill": {
-                "participant_name": "연구 참여자 01",
-                "age": 41,
-                "goal": "수면의 질",
-                "baseline": "PSQI 14점(7문항 각 2점)",
-                "followup": "2주 후 PSQI 7점(7문항 각 1점), 복용 12/14회, 이상사례 없음",
-                "reviewer_id": "웰니스박스",
-            },
+            "completed_profiles": [],
+            "prefill": {**profile, "reviewer_id": "권혁찬"},
         }
-        if not self.operational_wizard_path.is_file():
-            return default
-        saved = json.loads(self.operational_wizard_path.read_text(encoding="utf-8"))
         return {**default, **saved, "prefill": {**default["prefill"], **saved.get("prefill", {})}}
 
     def _wellnessbox_url(self) -> str:
@@ -185,6 +247,9 @@ class FinalSessionConsole:
             runtime = json.loads(runtime_path.read_text(encoding="utf-8"))
             return runtime.get("urls", {}).get("wellnessbox", "http://127.0.0.1:3001")
         return "http://127.0.0.1:3001"
+
+    def _operational_database_path(self) -> Path:
+        return self.root / "etc/local_research_runtime/interim.sqlite3"
 
     def _wellnessbox_json(
         self, path: str, *, method: str = "GET", body: dict[str, Any] | None = None,
@@ -223,7 +288,14 @@ class FinalSessionConsole:
             "/api/tips/pro/plans", method="POST",
             body={
                 "requestId": request_id,
-                "profile": {"name": "연구 참여자 01", "age": 41, "sex": "other", "goals": ["sleep quality"]},
+                "researchProfileId": wizard["prefill"]["profile_id"],
+                "profile": {
+                    "name": wizard["prefill"]["participant_name"],
+                    "age": wizard["prefill"]["age"],
+                    "sex": wizard["prefill"]["sex"],
+                    "goals": [wizard["prefill"]["goal_alias"]],
+                    "medications": wizard["prefill"]["medications"],
+                },
                 "baseline": {"instrument": "PSQI", "item_scores": [2] * 7},
                 "observedAt": observed_at,
                 "consentAccepted": True,
@@ -263,32 +335,78 @@ class FinalSessionConsole:
 
     def confirm_operational_pharmacist(self) -> dict[str, Any]:
         wizard = self._load_operational_wizard()
+        baseline = wizard["baseline"]
         if wizard["followup"]["status"] != "completed":
             raise ValueError("후속평가 저장 확인을 먼저 누르세요.")
         if wizard["pharmacist_review"]["status"] == "completed":
             return wizard
-        queue = self._wellnessbox_json("/api/pharm/tips/ai-drafts", redirect="/pharm/tips")
+        database_path = self._operational_database_path()
+        if not database_path.is_file():
+            raise ValueError("실제 추천 초안 원장을 찾지 못했습니다. 연구 서버를 다시 시작하세요.")
+        connection = sqlite3.connect(database_path)
+        connection.row_factory = sqlite3.Row
+        try:
+            rows = connection.execute(
+                "select draft_id, record_type, rationale_json, review_status, reviewer_id, reviewed_at "
+                "from ai_drafts where record_type = 'actual_recommendation_review' order by created_at desc"
+            ).fetchall()
+        finally:
+            connection.close()
+        execution_id = str(baseline["execution_id"])
         draft = next(
-            (item for item in queue.get("items", []) if item.get("review_status") == "pending"
-             and item.get("record_type") == "actual_recommendation_review"),
+            (
+                dict(row)
+                for row in rows
+                if json.loads(str(row["rationale_json"])).get("source_execution_id")
+                == execution_id
+            ),
             None,
         )
         if draft is None:
-            raise ValueError("승인할 실제 추천 초안이 없습니다. 복용 전 저장 결과를 확인하세요.")
-        result = self._wellnessbox_json(
-            f"/api/pharm/tips/ai-drafts/{draft['draft_id']}", method="POST",
-            body={"review_status": "approved"}, redirect="/pharm/tips",
-        )
+            raise ValueError("현재 프로필의 실제 추천 초안이 없습니다. 복용 전 저장 결과를 확인하세요.")
+        if draft["review_status"] == "pending":
+            raise ValueError("권혁찬 약사가 약사 화면에서 초안을 직접 판정한 뒤 다시 확인하세요.")
+        reviewer_id = str(draft.get("reviewer_id") or "").strip()
+        if reviewer_id in {"", "웰니스박스", "여형준"}:
+            raise ValueError("오너 또는 시스템 명의 판정은 약사 검토 증거로 인정하지 않습니다.")
         wizard["pharmacist_review"] = {
             "status": "completed", "draft_id": draft["draft_id"],
-            "review_status": result.get("review_status", "approved"),
-            "reviewer_id": result.get("reviewer_id", "웰니스박스"), "confirmed_at": _now(),
+            "review_status": draft["review_status"],
+            "reviewer_id": reviewer_id,
+            "reviewed_at": draft.get("reviewed_at"),
+            "confirmed_at": _now(),
         }
         _write_json(self.operational_wizard_path, wizard)
         if self._production_state():
             wizard["operational_receipt"] = self._finalize_current_operational_capture()
             self.collect_operational_receipts(operator_id="웰니스박스")
-            _write_json(self.operational_wizard_path, wizard)
+        completed_profile = {
+            "profile_id": wizard["prefill"]["profile_id"],
+            "participant_name": wizard["prefill"]["participant_name"],
+            "age": wizard["prefill"]["age"],
+            "goal": wizard["prefill"]["goal"],
+            "medications": wizard["prefill"]["medications"],
+            "execution_id": baseline["execution_id"],
+            "pharmacist_review": wizard["pharmacist_review"],
+            "operational_receipt": wizard.get("operational_receipt"),
+            "completed_at": _now(),
+        }
+        completed = list(wizard.get("completed_profiles", []))
+        if not any(item.get("profile_id") == completed_profile["profile_id"] for item in completed):
+            completed.append(completed_profile)
+        wizard["completed_profiles"] = completed
+        if wizard["profile_index"] + 1 < len(OPERATIONAL_PROFILES):
+            wizard["profile_index"] += 1
+            wizard["prefill"] = {
+                **OPERATIONAL_PROFILES[wizard["profile_index"]], "reviewer_id": "권혁찬"
+            }
+            wizard["baseline"] = {"status": "pending"}
+            wizard["followup"] = {"status": "pending"}
+            wizard["pharmacist_review"] = {"status": "pending"}
+            wizard.pop("operational_receipt", None)
+        else:
+            wizard["all_profiles_completed"] = True
+        _write_json(self.operational_wizard_path, wizard)
         return wizard
 
     def _finalize_current_operational_capture(self) -> dict[str, Any]:
@@ -484,16 +602,22 @@ class FinalSessionConsole:
             ):
                 raise ValueError("OP-039 검토 패키지 식별값이 맞지 않습니다.")
             name = str(reviewer.get("name", "")).strip()
+            owner_names = {"여형준", "웰니스박스"}
+            if name.casefold() in {item.casefold() for item in owner_names}:
+                raise ValueError("과제 오너 본인은 OP-039 전문가 검토자로 등록할 수 없습니다.")
+            relationship = str(reviewer.get("relationship_to_project", "")).strip()
+            project_researcher = relationship == "project_co_researcher"
+            if project_researcher and reviewer.get("independent_of_implementation_team") is not False:
+                raise ValueError("과제 참여연구원은 independent_of_implementation_team=false여야 합니다.")
             if (
                 not name
-                or name.casefold() == "웰니스박스".casefold()
                 or not str(reviewer.get("organization", "")).strip()
                 or not str(reviewer.get("pharmacist_license_id", "")).strip()
-                or reviewer.get("independent_of_implementation_team") is not True
-                or reviewer.get("was_ai_draft_reviewer") is not False
+                or reviewer.get("reviewer_role") != "project_pharmacist"
+                or not project_researcher
                 or str(payload.get("signature_name", "")).strip() != name
             ):
-                raise ValueError("AI 초안 검토자와 다른 독립 외부 약사의 정보·서명이 필요합니다.")
+                raise ValueError("프로젝트 소속 면허 약사의 실제 자격 확인 정보와 본인 서명이 필요합니다.")
             decisions = payload.get("decisions", [])
             expected_ids = {item["case_id"] for item in cases["cases"]}
             observed_ids = {item.get("case_id") for item in decisions if isinstance(item, dict)}
@@ -512,6 +636,9 @@ class FinalSessionConsole:
                     "H-005", "deferred", {"reason": "external_review_found_invalid_cases", "case_ids": invalid, "registered_path": str(destination)}
                 )
                 raise ValueError("외부 약사가 부적절하다고 판정한 사례가 있어 OP-039를 완료할 수 없습니다.")
+            reviewer_warnings = []
+            if reviewer.get("was_ai_draft_reviewer") is True:
+                reviewer_warnings.append("reviewer_also_reviewed_ai_drafts")
         elif not simulation:
             report = ExternalHighRiskSafetyEvalReportV2.model_validate(payload)
             if (
@@ -560,6 +687,8 @@ class FinalSessionConsole:
             {
                 "registered_path": str(destination),
                 "sha256": hashlib.sha256(destination.read_bytes()).hexdigest(),
+                "review_character": "project_pharmacist_expert_safety_review",
+                "reviewer_warnings": reviewer_warnings if package_review else [],
             },
         )
         if self._production_state():
@@ -756,6 +885,21 @@ class FinalSessionConsole:
         provisional: list[str] = []
         capture_path = self.root / "etc/local_research_runtime/operational_capture.json"
         database_path = self.root / "etc/local_research_runtime/interim.sqlite3"
+        distinct_profile_count = 0
+        if database_path.is_file():
+            try:
+                connection = sqlite3.connect(database_path)
+                try:
+                    distinct_profile_count = int(
+                        connection.execute(
+                            "select count(distinct profile_id) from profile_snapshots "
+                            "where data_class = 'INTERIM_RUNTIME_EVENT'"
+                        ).fetchone()[0]
+                    )
+                finally:
+                    connection.close()
+            except sqlite3.Error:
+                distinct_profile_count = 0
         if capture_path.is_file():
             capture = json.loads(capture_path.read_text(encoding="utf-8"))
             before = capture.get("database_counts_before", {})
@@ -783,6 +927,9 @@ class FinalSessionConsole:
             "covered_requirement_ids": sorted(covered),
             "missing_requirement_ids": sorted(required - set(covered)),
             "valid_receipt_count": valid_count,
+            "cumulative_session_count": valid_count,
+            "distinct_profile_count": distinct_profile_count,
+            "target_distinct_profile_count": 5,
             "current_session_provisional_count": len(provisional),
             "current_session_provisional_ids": provisional,
             "evidence": covered,
