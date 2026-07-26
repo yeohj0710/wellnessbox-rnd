@@ -100,3 +100,25 @@
 - `tests/test_synthetic_validity_followup_single_item.py::test_write_synthetic_validity_followup_single_item_files_creates_outputs`
 - `tests/test_training_readiness_gate.py::test_build_training_readiness_gate_returns_strict_no_go_v2`
 - `tests/test_training_readiness_gate.py::test_write_training_readiness_gate_files_creates_outputs`
+
+## 2026-07-27 보고서 53편 재작성 품질 검사
+
+- 대상: OP-031~OP-078, OP-105, OP-106, OP-117~OP-119의 정본 보고서 53편
+- 결과: 53편 모두 정규화한 본문이 1,500자 이상이고, 절이 3개 이상이며, 각 절 본문이 80자 이상이다.
+- 근거 연결: 53편 모두 현재 manifest에 등록된 증거 경로 원문을 한 번 이상 인용한다.
+- 중복 검사: 3편 이상에서 반복된 문단 0개, 3편 이상에서 반복된 문장 0개다.
+- `확인되지 않음` 원문은 41회, 같은 뜻의 변형까지 합치면 75회다. 각 표현은 운영 자료·외부 승인·변경 전 장애 기록처럼 실제로 찾지 못한 항목을 특정하므로 삭제하지 않았다.
+- 직접 읽기: 53편을 샤드 순서로 다시 읽었으며 자동 검사에서 잡히지 않은 공통 복사 문단, 제목 불일치, 근거 없는 완료 주장은 추가로 찾지 못했다.
+
+### 증거와 manifest 사이에서 확인한 불일치
+
+- OP-039: 외부 검토 자료의 검토자는 과제 공동연구자이고 `independent_of_implementation_team=false`다. 신뢰 기준의 승인 목록도 비어 있어 현재 `EXTERNAL` 승격을 독립 검증 완료로 해석할 수 없다.
+- OP-041: 현재 식별자 변환표는 `2026-07-24.1`이지만 등록 smoke와 생성기는 `2026-07-16.1`을 기대한다. 현행 변환표의 통합 증거를 다시 만들어야 한다.
+- OP-059~OP-065: 등록 smoke 네 개의 저장 소스 지문이 현재 소스 지문과 다르다. 현재 구현을 대상으로 새 smoke를 만들기 전에는 과거 실행 범위를 넘겨 해석하지 않는다.
+- OP-071, OP-072: 범용 운영 영수증에는 `agent_runs=0`, `agent_steps=0`이 기록돼 있다. 이 영수증만으로 에이전트 실행을 직접 입증할 수 없다.
+- OP-074~OP-078: 범용 영수증은 요구사항별 크론 실행, 입력 인과관계, 이상사례, 특정 실패와 검토 작업을 직접 보여 주지 않는다.
+- OP-105: 운영 영수증은 `user_profiles` 1건 증가만 보여 주고 `recommendation_runs`와 `recommendation_items` 증가는 0건이다. 프로필 저장 뒤 추천 왕복의 운영 관찰이 더 필요하다.
+- OP-106: 실제 화면은 `ai_drafts` 큐를 사용하지만 등록 smoke는 `review_tasks` 큐를 왕복한다. 두 큐의 검증 대상을 분리해야 한다.
+- OP-117: 브라우저 생성기는 현재 manifest의 `OPERATED` 41건과 충돌하는 `operated_requirement_count=0` 가정을 가진다.
+- OP-118: 현재 비외부 요구사항 119건의 단계별 증거 내용을 다시 대조한 최신 집계 자료가 없다. 추천 행 1건을 여러 요구사항에 연결한 범용 매핑은 개별 행동의 직접 증거가 아니다.
+- OP-119: 외부 의존성 원장과 신뢰 기준은 OP-039를 계속 `BLOCKED`로 판정한다. manifest의 `EXTERNAL` 승격과 원장 판정을 맞춰야 한다.
