@@ -57,7 +57,7 @@
 
 ## 세션 전에 이 명령만 순서대로 실행한다
 
-아래 명령은 실행 순서를 기록한 것이다. 이 실행서를 만들면서 실행하지 않았다. PowerShell에서 한 줄씩 실행하고, 앞 단계가 정상일 때만 다음 단계로 간다.
+아래 명령은 실제 사전 점검으로 검증한 순서다. PowerShell에서 한 줄씩 실행하고, 앞 단계가 정상일 때만 다음 단계로 간다.
 
 ### 1. 작업 폴더로 이동한다
 
@@ -104,40 +104,101 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
 
 정상 결과: `True`. `False`면 세션을 멈춘다. 현재 구현에서는 H-006이 키를 만들지만, 요청된 실행 순서는 H-007을 먼저 둔다. 오너가 **기존 키를 쓸지, H-006의 키 준비만 앞당길지** 결정해야 한다. 이 문서는 키를 만들거나 선택하지 않는다.
 
-### 5. 로컬 연구 서버를 시작한다
+### 5. 운영 영수증을 만들지 않는 사전 점검을 실행한다
 
 ```powershell
-.\research-server-start.cmd
+.\.venv-interim\Scripts\python.exe scripts\run_final_session_preflight.py
 ```
 
-정상 출력:
+이 명령은 운영 DB를 임시 폴더로 복사하고 최종 확인 상태도 임시 폴더에 만든다. R&D API, 최종 확인 화면, WellnessBox 사용자·약사 화면에 GET 요청만 보낸 뒤 이 명령이 시작한 PID 트리만 종료한다. 실행 전후의 운영 DB hash와 운영 영수증 파일 목록·hash가 같지 않으면 `ERROR`로 끝난다. 사람 입력, 약사 판정, 승인, 서명, 실제 운영 영수증은 만들지 않는다.
 
-```text
-로컬 연구 서버가 준비됐습니다.
-최종 확인 화면: http://127.0.0.1:<포트>
-웰니스박스: http://127.0.0.1:<포트>
-이 창에서 Ctrl+C를 누르면 모든 연구 서버가 종료됩니다.
-```
+`status: "READY"`, `exit_code: 0`, 빈 `blockers`, 아래 세 저장 불변 값이 모두 `true`일 때만 정상이다.
 
-포트 번호는 실행 때 정해진다. 시작 창을 닫지 않는다. `로컬 연구 서버가 준비됐습니다.`가 나오기 전에 프로필을 입력하지 않는다.
+- `database_unchanged`
+- `receipt_file_list_unchanged`
+- `receipt_hashes_unchanged`
 
-### 6. 화면을 연 뒤 실제 입력 전 마지막 확인을 한다
+**사전 점검에서는 `.\research-server-start.cmd`를 실행하지 않는다.** 현재 구현은 이 명령이 서버를 정상 종료할 때 DB 변화가 0건이어도 `data_class: "ACTUAL"` 운영 영수증을 만든다. 기존 운영 영수증을 나중에 삭제하는 방식도 허용하지 않는다.
 
-- 최종 확인 화면에 접속된다.
-- `고급 기능`에서 `전체 사용자 화면 열기`와 약사 화면 링크가 보인다.
-- H-005 화면의 10개 선택과 의견이 모두 비어 있다. 현재 저장된 HTML을 그대로 열면 이 조건을 충족하지 못한다.
+### 6. 사전 점검 출력과 실제 자료를 마지막으로 확인한다
+
+- R&D health, 최종 확인 화면, 최종 확인 상태, WellnessBox health가 모두 200이다.
+- 사용자 화면과 약사 화면의 로그인 응답이 307이고, 이동한 화면이 각각 200이다.
+- H-005의 사례와 의견란은 각각 10개이며, `preselected_count`와 `prefilled_comment_count`가 모두 0이다.
+- 운영 DB와 운영 영수증의 세 불변 값이 모두 `true`다.
 - 5개 프로필마다 실제 복용 전 자료, 실제 후속평가 자료, 동의 근거가 준비돼 있다.
 
-하나라도 아니면 실제 입력을 시작하지 않는다.
+하나라도 아니면 실제 입력을 시작하지 않는다. `BLOCKED`는 서버 고장이 아니라 사람이 해결해야 할 시작 조건이 남았다는 뜻이다. `ERROR`는 서버·UI 점검 실패 또는 운영 저장 변경을 뜻한다.
 
-### 2026-07-27 실제 사전 점검 결과
+사전 점검이 `READY`이고 실제 자료까지 준비된 뒤에만 H-007 실제 운영을 시작한다. 그때 별도 창에서 `.\research-server-start.cmd`를 실행한다. 이 시점부터는 사전 점검이 아니며, 정상 종료 시 실제 운영 영수증이 생성된다.
 
-- 실행용 Python: `True`
-- 운영 DB: 서로 다른 `INTERIM_RUNTIME_EVENT` 프로필 5/5개, 대기 약사 초안 0개, 자동 영수증 생성 `false`
-- 운영 영수증용 서명 키: `True`
-- 로컬 서버: R&D `/health` 200, 최종 확인 화면 200, WellnessBox 연구 로그인 307 이동을 확인했다.
-- 시작·종료 중 사용자 입력, 약사 판단, 승인과 서명은 수행하지 않았다. 점검 세션이 만든 저장 변화 0건의 임시 운영 영수증은 제출 증거로 사용하지 않고 점검 뒤 삭제했다.
-- 종료 명령은 서버를 정상 종료한 뒤 `timeout /t 2`가 비대화형 실행에서 `Input redirection is not supported`로 종료 코드 1을 냈다. `research-server-stop.cmd`의 대기 명령을 `ping 127.0.0.1 -n 3 >nul`로 바꿔 같은 환경에서도 종료 코드 0을 반환하게 했다.
+### 2026-07-27 무영수증 사전 점검 실제 출력
+
+실행 명령은 위 5번 한 줄이며 프로세스 종료 코드는 `2`였다.
+
+```json
+{
+  "schema_version": "final_session_preflight_v1",
+  "status": "BLOCKED",
+  "exit_code": 2,
+  "operational_receipt_generation": false,
+  "human_actions_performed": false,
+  "temporary_database": true,
+  "temporary_final_state": true,
+  "checks": {
+    "rnd_health": 200,
+    "console_home": 200,
+    "console_state": 200,
+    "wellnessbox_health": 200,
+    "tips": {
+      "login_status": 307,
+      "page_status": 200,
+      "final_url": "http://127.0.0.1:3001/tips"
+    },
+    "pharmacist": {
+      "login_status": 307,
+      "page_status": 200,
+      "final_url": "http://127.0.0.1:3001/pharm/tips"
+    },
+    "h005": {
+      "status": 200,
+      "case_count": 10,
+      "preselected_count": 10,
+      "comment_count": 10,
+      "prefilled_comment_count": 10
+    }
+  },
+  "storage": {
+    "database_unchanged": true,
+    "receipt_file_list_unchanged": true,
+    "receipt_hashes_unchanged": true
+  },
+  "storage_evidence": {
+    "database_before": {
+      "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3",
+      "sha256": "856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87",
+      "size": 761856
+    },
+    "database_after": {
+      "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3",
+      "sha256": "856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87",
+      "size": 761856
+    },
+    "receipt_file_count_before": 15,
+    "receipt_file_count_after": 15,
+    "receipt_manifest_sha256_before": "107e7b952b32f851cdda2f191dc7fed7694c9ab77441e6f12c1804ece0474d49",
+    "receipt_manifest_sha256_after": "107e7b952b32f851cdda2f191dc7fed7694c9ab77441e6f12c1804ece0474d49"
+  },
+  "blockers": [
+    {
+      "id": "H005_FORM_NOT_NEUTRAL",
+      "message": "H-005 10/10 cases are preselected and 10/10 comments are prefilled."
+    }
+  ]
+}
+```
+
+서버와 두 화면은 모두 응답했지만 H-005는 10건 모두 `타당`으로 미리 선택됐고 의견란 10개도 모두 채워져 있었다. 따라서 실제 입력을 시작하지 않는다. 운영 DB와 기존 운영 영수증 15개는 실행 전후 동일했고 새 운영 영수증은 생기지 않았다.
 
 ## H-007: 자동 저장 없이 실제 5개 프로필을 입력한다
 
@@ -212,6 +273,16 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
 
 `scripts/run_interim_pipeline.py retrain`은 별도 패키지의 `run_interim_proxy_research.py`를 실행한다. 이 명령이 H-003 승인 초안을 입력으로 읽는 계보는 확인되지 않았다. 따라서 이 실행서에는 학습 명령을 제시하지 않는다.
 
+현재 저장소에서 안전하게 확정할 수 있는 명령은 고정 평가 세트 확인, 현재 기준 모델 평가, 이미 만들어진 두 평가 보고서의 산술 비교뿐이다. 아래 명령은 H-003 승인 데이터가 준비돼도 누락된 학습 계보가 구현되기 전에는 실행하지 않는다.
+
+```powershell
+(Get-FileHash -Algorithm SHA256 data\frozen_eval\frozen_eval_v1.jsonl).Hash
+python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir <baseline-output-dir>
+python scripts/compare_eval_reports.py --baseline-report <baseline-report.json> --candidate-report <candidate-report.json> --output-json <comparison.json> --output-md <comparison.md>
+```
+
+고정 평가 세트는 256건이고 현재 SHA-256은 `ba134edbade51d02ad4014a7a66626559eb454967736495d1e60fbcf95b3a960`이다. `run_eval.py`는 후보 모델이나 artifact 인자를 받지 않고 항상 같은 `recommend` 함수를 호출한다. 따라서 두 번째 후보 모델 평가 명령은 현재 만들 수 없다. `compare_eval_reports.py`도 차이만 계산하고 안전 지표가 나빠졌을 때 실패시키지 않는다.
+
 다음 항목을 구현 담당자가 확인하기 전에는 “승인 초안으로 학습·평가 1회를 완료했다”고 승인하지 않는다.
 
 - 승인 초안 ID가 학습 입력 레코드로 연결되는 코드와 명령
@@ -219,6 +290,9 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
 - 학습 데이터셋 ID, 모델 ID, 코드 버전, 설정 hash
 - 고정 평가셋 1회 결과와 기준 모델 비교
 - 모델을 교체하지 않았으면 그 결정과 이유
+- 승인 초안만 담은 데이터셋 manifest와 초안 ID 계보
+- 후보 artifact를 입력받는 고정 평가 실행기와 안전 회귀 실패 조건
+- 모델 교체·유지 결정과 rollback 영수증
 
 확인 범위:
 
@@ -277,6 +351,17 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
 - `reviewer_role=project_pharmacist`, `relationship_to_project=project_co_researcher`, `independent_of_implementation_team=false`가 사실대로 기록된다.
 - 권혁찬 약사가 H-003도 검토했다면 `was_ai_draft_reviewer=true`로 기록하고 시스템 경고를 보존한다.
 - 실제 서명 이름은 권혁찬 약사가 제출 직전에 입력한다.
+
+현재 백엔드 검증도 중립 화면을 대신하지 못한다.
+
+- 오너 차단은 이름이 `여형준` 또는 `웰니스박스`와 정확히 같은 경우만 거부한다. 인증 계정이나 오너 원장과 연결하지 않아 별칭을 막지 못한다.
+- 프로젝트 공동연구자와 `independent_of_implementation_team=false` 강제는 현재 체크리스트와 일치한다.
+- `was_ai_draft_reviewer=true`는 거부가 아니라 경고이며 H-003 검토자 원장과 대조하지 않는다.
+- 면허 ID는 빈 문자열만 거부해 `not_collected`도 통과한다. 자격 확인 방법은 검증하지 않는다.
+- 서명은 별도 전자서명이 아니라 검토자 이름과 같은 문자열인지 확인한다. 현재 HTML에는 별도 서명 입력도 없다.
+- 신뢰 원장 기반 대체 보고서는 검토자 면허와 서명 없이도 H-005 완료 경로에 들어갈 수 있다.
+
+따라서 화면의 사전 선택만 지워서는 충분하지 않다. 실제 검토 전에 검토자 신원 연결, 면허와 자격 확인 방법, 별도 서명 입력, H-003 검토자 대조, 대체 경로의 같은 자격 검증을 구현하고 시험해야 한다. 이번 실행에서는 코드를 만들거나 판정 데이터를 채우지 않았다.
 
 ### 10건에서 약사가 볼 정보
 
