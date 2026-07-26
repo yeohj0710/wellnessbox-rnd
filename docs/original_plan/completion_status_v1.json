@@ -1,15 +1,15 @@
 {
   "schema_version": "original_plan_completion_v1",
   "manifest_schema_version": "original_plan_requirements_v1",
-  "audited_manifest_sha256": "d682e41a94ec664e98489804cec95e1191bf7b4e7e3a3cd89c22a61c5316916b",
+  "audited_manifest_sha256": "44311ac4f54f90b85008c4736dec466eeb99c654ece7269ea58da5e44bb2dc1b",
   "original_plan_path": "wellnessbox-rnd/docs/context/original_plan.pdf",
   "original_plan_sha256": "31291e6f93977fa2d5d083d0161743c49debef25caf12dccf6edc7fa1c2197d4",
   "audit_status": "PASS",
   "audit_issue_count": 0,
   "requirement_count": 120,
   "disposition_counts": {
-    "COMPLETE": 76,
-    "PARTIAL": 43,
+    "COMPLETE": 119,
+    "PARTIAL": 0,
     "PENDING": 0,
     "EXTERNAL": 1,
     "CONTRADICTED": 0
@@ -44,8 +44,8 @@
       "title": "Data Lake와 근거 계보",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 0,
-        "PARTIAL": 10,
+        "COMPLETE": 10,
+        "PARTIAL": 0,
         "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
@@ -56,8 +56,8 @@
       "title": "개인화 안전 검증 엔진",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 8,
-        "PARTIAL": 1,
+        "COMPLETE": 9,
+        "PARTIAL": 0,
         "PENDING": 0,
         "EXTERNAL": 1,
         "CONTRADICTED": 0
@@ -80,8 +80,8 @@
       "title": "복용 전후 효과 수치화와 PRO",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 8,
-        "PARTIAL": 2,
+        "COMPLETE": 10,
+        "PARTIAL": 0,
         "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
@@ -104,8 +104,8 @@
       "title": "Closed-loop 상태기계와 후속 실행",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 0,
-        "PARTIAL": 10,
+        "COMPLETE": 10,
+        "PARTIAL": 0,
         "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
@@ -116,8 +116,8 @@
       "title": "상담과 근거 검색",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 7,
-        "PARTIAL": 3,
+        "COMPLETE": 10,
+        "PARTIAL": 0,
         "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
@@ -128,8 +128,8 @@
       "title": "웨어러블·CGM·유전자 연동",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 7,
-        "PARTIAL": 3,
+        "COMPLETE": 10,
+        "PARTIAL": 0,
         "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
@@ -140,8 +140,8 @@
       "title": "프로덕션 서비스 통합",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 0,
-        "PARTIAL": 10,
+        "COMPLETE": 10,
+        "PARTIAL": 0,
         "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
@@ -152,8 +152,8 @@
       "title": "배포·보안·최종 완료 감사",
       "requirement_count": 10,
       "disposition_counts": {
-        "COMPLETE": 6,
-        "PARTIAL": 4,
+        "COMPLETE": 10,
+        "PARTIAL": 0,
         "PENDING": 0,
         "EXTERNAL": 0,
         "CONTRADICTED": 0
@@ -769,10 +769,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -790,8 +790,12 @@
           "wellnessbox-rnd/data/contracts/wellnessbox_profile_adapter_v1.json",
           "wellnessbox-rnd/tests/test_wellnessbox_profile_adapter_contract.py"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-021.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-021.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -804,10 +808,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -824,8 +828,12 @@
           "wellnessbox-rnd/scripts/run_data_lake_lineage_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op021_op022_data_lake_lineage_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-022.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-022.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -838,10 +846,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -857,8 +865,12 @@
           "wellnessbox-rnd/scripts/run_knowledge_lineage_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op023_op024_knowledge_lineage_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-023.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-023.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -871,10 +883,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -890,8 +902,12 @@
           "wellnessbox-rnd/tests/test_knowledge_lineage.py",
           "wellnessbox-rnd/data/original_plan/evidence/op023_op024_knowledge_lineage_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-024.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-024.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -904,10 +920,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -922,8 +938,12 @@
           "wellnessbox-rnd/scripts/run_log_separation_identity_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-025.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-025.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -936,10 +956,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -954,8 +974,12 @@
           "wellnessbox-rnd/scripts/run_log_separation_identity_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op025_op026_log_separation_identity_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-026.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-026.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -968,10 +992,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -986,8 +1010,12 @@
           "wellnessbox-rnd/scripts/run_event_idempotency_data_mutation_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op027_op028_event_idempotency_data_mutation_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-027.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-027.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -1000,10 +1028,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -1019,8 +1047,12 @@
           "wellnessbox-rnd/scripts/run_event_idempotency_data_mutation_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op027_op028_event_idempotency_data_mutation_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-028.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-028.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -1033,10 +1065,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -1052,8 +1084,12 @@
           "wellnessbox-rnd/scripts/run_session_replay_service_ui_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op029_op030_session_replay_service_ui_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-029.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-029.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -1066,10 +1102,10 @@
         "docs/context/original_plan.pdf#page=16"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -1087,8 +1123,12 @@
           "wellnessbox/scripts/qa/check-tips-interim-modules.cts",
           "wellnessbox/scripts/qa/check-tips-web-lab.cts"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-030.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-030.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -1372,7 +1412,7 @@
         "docs/context/original_plan.pdf#page=25"
       ],
       "required_stage": "EXTERNAL",
-      "claimed_stage": null,
+      "claimed_stage": "EXTERNAL",
       "disposition": "EXTERNAL",
       "reasons": [
         "external_validation_required"
@@ -1384,7 +1424,8 @@
           "wellnessbox-rnd/docs/original_plan/OP039_EXTERNAL_HIGH_RISK_EVAL_CONTRACT.md"
         ],
         "test_files": [
-          "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py"
+          "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py",
+          "wellnessbox-rnd/data/original_plan/final_session/external_validation/op039_external_validation.json"
         ],
         "integration_evidence": [],
         "operational_evidence": [],
@@ -1406,10 +1447,10 @@
         "docs/context/original_plan.pdf#page=17"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -1428,9 +1469,12 @@
         "integration_evidence": [
           "wellnessbox-rnd/data/original_plan/evidence/op040_final_safety_authority_integration_smoke_v1.json",
           "wellnessbox-rnd/.github/workflows/original-plan-evidence.yml",
-          "wellnessbox/.github/workflows/encoding-guard.yml"
+          "wellnessbox/.github/workflows/encoding-guard.yml",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-040.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-040.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -1855,10 +1899,10 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -1874,8 +1918,12 @@
           "wellnessbox-rnd/scripts/run_pro_followup_adherence_interpretation_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op053_op054_pro_followup_interpretation_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-053.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-053.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2025,10 +2073,10 @@
         "docs/context/original_plan.pdf#page=19"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2048,9 +2096,12 @@
           "wellnessbox/lib/server/wb-rnd-interim-route.ts",
           "wellnessbox/app/api/tips/pro/plans/route.ts",
           "wellnessbox/app/api/tips/pro/effects/route.ts",
-          "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op057_op058_pro_correction_plan_lineage_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-058.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-058.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2484,10 +2535,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2498,8 +2549,12 @@
           "wellnessbox-rnd/tests/test_interim_workflow_contract.py",
           "wellnessbox-rnd/data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-071.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-071.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2513,10 +2568,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2529,8 +2584,12 @@
           "wellnessbox-rnd/scripts/run_closed_loop_state_order_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op071_op072_closed_loop_state_order_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-072.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-072.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2544,10 +2603,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2560,8 +2619,12 @@
           "wellnessbox-rnd/tests/test_interim_agent.py",
           "wellnessbox-rnd/data/original_plan/evidence/op073_op074_followup_job_queue_cron_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-073.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-073.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2575,10 +2638,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2592,8 +2655,12 @@
           "wellnessbox-rnd/scripts/run_followup_job_queue_cron_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op073_op074_followup_job_queue_cron_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-074.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-074.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2607,10 +2674,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2625,8 +2692,12 @@
           "wellnessbox-rnd/scripts/run_followup_input_serious_ae_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op075_op076_followup_input_serious_ae_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-075.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-075.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2640,10 +2711,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2658,8 +2729,12 @@
           "wellnessbox-rnd/scripts/run_followup_input_serious_ae_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op075_op076_followup_input_serious_ae_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-076.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-076.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2673,10 +2748,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2690,8 +2765,12 @@
           "wellnessbox-rnd/scripts/run_fail_closed_job_pharmacist_review_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op077_op078_fail_closed_job_review_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-077.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-077.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2705,10 +2784,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2724,8 +2803,12 @@
           "wellnessbox-rnd/scripts/run_fail_closed_job_pharmacist_review_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op077_op078_fail_closed_job_review_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-078.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-078.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2739,10 +2822,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2756,8 +2839,12 @@
           "wellnessbox-rnd/scripts/run_plan_lifecycle_order_boundary_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op079_op080_plan_lifecycle_order_boundary_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-079.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-079.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -2771,10 +2858,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -2789,8 +2876,12 @@
           "wellnessbox-rnd/scripts/run_plan_lifecycle_order_boundary_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op079_op080_plan_lifecycle_order_boundary_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-080.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-080.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3000,10 +3091,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3018,9 +3109,12 @@
           "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-087.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-087.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3034,10 +3128,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3053,7 +3147,8 @@
           "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op087_op088_counseling_session_service_adapter_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/evidence/op088_op090_full_service_roundtrip_v1.json"
         ],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -3101,10 +3196,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "INTEGRATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "INTEGRATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3119,7 +3214,8 @@
           "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op089_op090_counseling_fallback_api_e2e_v1.json",
+          "wellnessbox-rnd/data/original_plan/evidence/op088_op090_full_service_roundtrip_v1.json"
         ],
         "operational_evidence": [],
         "external_dependencies": [],
@@ -3294,10 +3390,10 @@
         "docs/context/original_plan.pdf#page=24"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3310,8 +3406,12 @@
           "wellnessbox-rnd/scripts/run_sensor_file_ingestion_lineage_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op095_op096_sensor_file_ingestion_lineage_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-096.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-096.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3358,10 +3458,10 @@
         "docs/context/original_plan.pdf#page=24"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3374,8 +3474,12 @@
           "wellnessbox-rnd/scripts/run_device_followup_data_class_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op097_op098_device_followup_data_class_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-098.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-098.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3389,10 +3493,10 @@
         "docs/context/original_plan.pdf#page=24"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3404,8 +3508,12 @@
           "wellnessbox-rnd/scripts/run_device_dedup_linkage_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op099_op100_device_dedup_linkage_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-099.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-099.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3450,10 +3558,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3467,9 +3575,12 @@
           "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-101.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-101.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3484,10 +3595,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3501,9 +3612,12 @@
           "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op101_op102_deployment_contract_endpoint_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-102.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-102.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3518,10 +3632,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3532,8 +3646,12 @@
           "wellnessbox-rnd/scripts/run_environment_result_origin_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-103.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-103.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3548,10 +3666,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3565,9 +3683,12 @@
           "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op103_op104_environment_result_origin_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-104.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-104.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3582,10 +3703,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3598,9 +3719,12 @@
           "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-105.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-105.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3615,10 +3739,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3631,9 +3755,12 @@
           "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op105_op106_profile_review_roundtrip_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-106.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-106.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3648,10 +3775,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3666,9 +3793,12 @@
           "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-107.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-107.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3683,10 +3813,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3699,9 +3829,12 @@
           "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op107_op108_admin_product_integration_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-108.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-108.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3716,10 +3849,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3734,8 +3867,12 @@
           "wellnessbox-rnd/scripts/run_order_plan_context_integration_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-109.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-109.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3750,10 +3887,10 @@
         "docs/context/original_plan.pdf#page=22"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3769,8 +3906,12 @@
           "wellnessbox-rnd/scripts/run_order_plan_context_integration_smoke.py",
           "wellnessbox-rnd/data/original_plan/evidence/op109_op110_order_plan_context_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-110.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-110.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3947,10 +4088,10 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "INTEGRATED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3964,9 +4105,12 @@
           "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
         ],
         "integration_evidence": [
-          "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json"
+          "wellnessbox-rnd/data/original_plan/evidence/op115_op116_test_matrix_health_alias_smoke_v1.json",
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-116.json"
         ],
-        "operational_evidence": [],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-116.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -3979,10 +4123,10 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -3993,8 +4137,12 @@
           "wellnessbox-rnd/data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json",
           "wellnessbox-rnd/data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-117.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-117.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -4007,10 +4155,10 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
@@ -4020,8 +4168,12 @@
           "wellnessbox-rnd/data/original_plan/op117_op118_browser_operational_evidence_cases_v1.json",
           "wellnessbox-rnd/data/original_plan/evidence/op117_op118_browser_operational_evidence_smoke_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-118.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-118.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }
@@ -4064,23 +4216,32 @@
         "docs/context/original_plan.pdf#page=15-26"
       ],
       "required_stage": "OPERATED",
-      "claimed_stage": "IMPLEMENTED",
-      "disposition": "PARTIAL",
+      "claimed_stage": "OPERATED",
+      "disposition": "COMPLETE",
       "reasons": [
-        "claimed_stage_below_required_stage"
+        "audited_evidence_meets_required_stage"
       ],
       "evidence": {
         "implementation_files": [
           "wellnessbox-rnd/src/wellnessbox_rnd/governance/final_completion_audit.py",
+          "wellnessbox-rnd/src/wellnessbox_rnd/governance/final_session_console.py",
+          "wellnessbox-rnd/scripts/run_final_session_console.py",
           "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json"
         ],
         "test_files": [
           "wellnessbox-rnd/tests/test_final_completion_audit.py",
+          "wellnessbox-rnd/tests/test_final_session_console.py",
           "wellnessbox-rnd/scripts/run_final_completion_audit.py",
-          "wellnessbox-rnd/data/original_plan/op120_final_completion_audit_cases_v1.json"
+          "wellnessbox-rnd/scripts/run_final_session_console_smoke.py",
+          "wellnessbox-rnd/data/original_plan/op120_final_completion_audit_cases_v1.json",
+          "wellnessbox-rnd/data/original_plan/evidence/final_session_console_rehearsal_v1.json"
         ],
-        "integration_evidence": [],
-        "operational_evidence": [],
+        "integration_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-120.json"
+        ],
+        "operational_evidence": [
+          "wellnessbox-rnd/data/original_plan/final_session/operational_evidence/OP-120.json"
+        ],
         "external_dependencies": [],
         "replacement_contracts": []
       }

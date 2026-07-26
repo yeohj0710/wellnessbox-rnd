@@ -29,6 +29,8 @@ dist/
 artifacts/
 logs/
 tmp/
+.playwright-cli/
+etc/
 
 # Preserved source packages (local provenance archives)
 etc/source_packages/
