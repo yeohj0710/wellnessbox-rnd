@@ -154,3 +154,57 @@
 - 결과: 종료 코드 1, 기존 Python 파일 5개에서 32개 오류. 자동 정렬 가능 항목은 5개다.
 - 범위: 실패 파일은 `scripts/build_op039_external_review_package.py`, `scripts/run_counseling_full_service_roundtrip_smoke.py`, `src/wellnessbox_rnd/governance/final_session_console.py`, `src/wellnessbox_rnd/governance/operational_receipts.py`, `tests/test_final_session_console.py`다. 이번 작업에서 수정한 파일은 없다.
 - 판단: 문서 품질 작업과 무관한 기존 import 순서·100자 초과 문제이므로 자동 수정이나 광범위 서식 변경을 하지 않았다.
+
+## 2026-07-27 근거 심화와 최종 감사 정본 기록
+
+이 절은 위에 남아 있는 같은 날짜의 보고서 분포, 감사 실패, 런북 점검 기록을 현재 실행 결과로 대체한다. 과거 기록은 당시 판단의 이력으로 보존한다.
+
+### 보고서 53편 최종 검사
+
+- 최종 분포는 최소 2,830자, 중앙값 4,203자, 최대 7,242자, 평균 4,439.2자, 모집단 표준편차 910.4자다. 구간별로 2,500자 미만 0편, 2,500~3,499자 8편, 3,500~4,499자 21편, 4,500자 이상 24편이다.
+- manifest의 파일 경로는 중복 포함 492건, OP-경로 고유 조합은 447건, 실제 고유 파일은 189개다. 파일 경로 492건은 모두 존재한다.
+- 근거 재검증에서 32편의 단계, 버전, 해시, 함수명, 입력 조건 또는 저장 증거 해석을 바로잡았다. 최종 보고서와 현재 근거 사이의 남은 내용 불일치는 0건이다.
+- 3편 이상에서 반복된 문단은 0개, 반복된 문장은 0개다. `검사한다`, `확인한다`, `검증한다`가 세 문장 연속 이어지는 문형도 0개다.
+- 정확한 문자열 `확인되지 않음`은 0회다. 찾지 못한 운영·외부 근거는 모호한 표현 대신 부족한 증거와 필요한 다음 확인을 구체적으로 적었다.
+- OP-039 manifest의 문자열 두 개는 저장소 경로가 아니라 외부 자료 제공과 독립 검증 영수증 조건이다. 두 조건은 파일 경로 집계에서 제외했고, 여전히 충족되지 않은 의존 조건으로 기록했다.
+
+### 최종 감사 두 번의 결과
+
+- 첫 번째 실행은 종료 코드 1이었다. 감사기는 OP-060이 요구사항 의미 단어군을 충족하지 못한다고 판정해 보고서를 119/120편, 상태를 `BLOCKED`로 계산했다. OP-060 첫 문단에 실제 요구를 명시하고 `821a5a5`로 커밋했다.
+- 두 번째 실행은 2026-07-27 08:24:56+09:00에 끝났다. 결과는 요구사항 120/120, 보고서 120/120, 누락 0, 비외부 단계 격차 0, 외부 격차 0, 차단 사유 0, `status=READY`, `goal_complete=true`다.
+- 감사 데이터셋은 `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `5a2fc3d6549062ba919567d89273bd953391f324091538f8f621ab1eccbf7c29`다.
+- 감사 입력은 파일 blob 509개다. 저장소 식별자는 wellnessbox-rnd `821a5a5a4e4512f015ec798b70b0922a1b0992c1`, wellnessbox `f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`다. 감사기 소스 식별 커밋은 `558d70340aa2a1c5c1656d2f60aa6efc4db3a1a6`다.
+- 새 감사 JSON의 SHA-256은 `7b155568dbe684b6448725b96d030e918c9f77fbeb0ce1f1008a4e14b9c168ca`다.
+- `READY`는 현재 정책과 등록 영수증으로 감사 조건을 통과했다는 뜻이다. 이번 근거 검증에서 확인한 H-003 학습 계보와 H-005 중립성 결함, 개별 OP의 직접 운영 증거 부족을 새로 해결했다는 뜻은 아니다.
+
+### Ruff 32건의 출처
+
+- `python -m ruff check .`은 기존 파일 5개에서 32건으로 실패했다. 규칙별로 E501 27건, I001 4건, UP034 1건이며 5건은 자동 수정 가능하다.
+- 파일별 건수는 `scripts/build_op039_external_review_package.py` 3건, `scripts/run_counseling_full_service_roundtrip_smoke.py` 2건, `src/wellnessbox_rnd/governance/final_session_console.py` 20건, `src/wellnessbox_rnd/governance/operational_receipts.py` 3건, `tests/test_final_session_console.py` 4건이다.
+- 다섯 파일은 `main...HEAD`와 작업 트리에서 차이가 없다. 각 진단 줄의 blame 커밋 8개(`89dad25`, `fa0dbd9`, `eeaba1d`, `c34b154`, `eea6592`, `2e9791d`, `c7f88df`, `30b956a`)도 모두 main의 조상이다. 이번 브랜치가 새로 만든 Ruff 오류는 0건이므로 기존 코드를 고치지 않았다.
+
+### 영수증 없는 세션 전 점검
+
+- 기존 `research-server-start.cmd`는 정상 종료 때도 `begin_session`과 `finish_session`을 호출해 ACTUAL 영수증을 만든다. 따라서 영수증을 만들면 안 되는 사전 점검에는 사용할 수 없다.
+- `scripts/run_final_session_preflight.py`는 운영 DB를 임시 파일로 복사하고 최종 콘솔 상태도 임시 루트에 둔다. 스크립트가 시작한 프로세스 ID만 종료하며, 실제 DB 해시·크기와 영수증 파일별 해시를 실행 전후 비교한다.
+- 실제 점검에서 R&D health, 콘솔, state, WellnessBox health는 200을 반환했다. 사용자·약사 로그인은 307 이동 뒤 화면 200을 반환했다.
+- 실제 DB는 실행 전후 SHA-256 `856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87`, 크기 761,856바이트로 같았다. 영수증은 15개, manifest SHA-256 `107e7b952b32f851cdda2f191dc7fed7694c9ab77441e6f12c1804ece0474d49`로 같았다. 새 영수증, 잔류 상태 파일, 잔류 포트는 없었다.
+- H-005 양식은 10건 모두 `valid`가 선택돼 있고 의견 10건도 채워져 있었다. 사전 선택과 기존 의견 복사를 금지한 규칙을 위반하므로 사전 점검은 의도대로 `BLOCKED`, 종료 코드 2를 반환한다.
+
+### H-005 중립성 규칙의 실제 구현
+
+- 프로젝트 공동연구자만 허용하고 `independent_of_implementation_team=false`를 강제하는 현재 규칙은 `human_signoff_checklist.md`와 일치한다.
+- 오너 차단은 자유 입력 이름이 `여형준` 또는 `웰니스박스`와 정확히 같을 때만 작동한다. 인증 계정이나 오너 원장과 연결하지 않아 별칭을 막지 못한다.
+- 동일 AI 초안 검토자 표시는 거부가 아니라 경고다. 체크리스트의 경고 규칙과는 맞지만 H-003 검토자 원장과 대조하지 않고 자기 신고 값만 믿는다.
+- 생성기와 현재 HTML은 10개 판정을 모두 `valid`로 미리 고르고 AI 의견도 채운다. 현재 테스트는 이 사전 입력을 필수로 고정해 기존 판정 복사 금지와 사전 선택 금지를 위반한다.
+- 면허 ID는 빈 문자열만 거부해 `not_collected`를 허용한다. 자격 확인 방법은 검증하지 않고, 서명은 별도 전자서명이 아니라 이름 문자열을 자동 복사한다. 신뢰 원장 기반 대체 경로도 사람 검토자 자격 없이 H-005를 완료할 수 있다.
+- 따라서 H-005 상태가 `completed`여도 중립적 외부 검토가 끝났다고 판단하면 안 된다. 코드는 새로 만들지 않았고 판정 데이터도 생성하지 않았다.
+
+### H-003 이후 학습·평가 명령의 빈 구간
+
+- 고정 평가 세트 `data/frozen_eval/frozen_eval_v1.jsonl`은 256건이며 SHA-256은 `ba134edbade51d02ad4014a7a66626559eb454967736495d1e60fbcf95b3a960`다.
+- 현재 기준 모델 평가는 `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir <baseline-output-dir>`로 실행할 수 있다. 두 보고서의 산술 비교는 `python scripts/compare_eval_reports.py --baseline-report <baseline-report.json> --candidate-report <candidate-report.json> --output-json <comparison.json> --output-md <comparison.md>`로 만들 수 있다.
+- 그러나 승인 초안 소비 함수는 `approved`와 `approved_with_edits` 행만 반환하고 목적과 초안 ID 계보를 학습 데이터셋으로 남기지 않는다. 최종 콘솔도 반환 행 수만 기록하며 학습을 호출하지 않는다.
+- `run_eval.py`는 후보 모델이나 artifact 인자를 받지 않고 항상 같은 `recommend` 함수를 호출한다. 비교 스크립트는 차이만 계산하며 안전 지표가 나빠졌을 때 실패시키지 않는다.
+- H-003 승인 초안 변환기, approved-only 데이터셋 manifest, 후보 artifact 학습 명령, 후보 모델을 주입하는 고정 평가 실행기, 안전 회귀 게이트, 교체·유지와 rollback 영수증이 없다. 별도 합성 자료용 학습 스크립트는 H-003 체인으로 사용할 수 없다.
+- 학습과 평가는 실행하지 않았다. 위 빈 구간이 구현되기 전에는 승인 초안 → 학습 → 후보 평가 → 안전 게이트 → 교체 또는 유지로 이어지는 실제 명령 체인을 확정할 수 없다.
