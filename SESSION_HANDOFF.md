@@ -1,5 +1,17 @@
 # SESSION_HANDOFF
 
+## 2026-07-27 보고서 품질·제출 준비 handoff
+
+- **선택 단계와 과제:** OP 연구보고서 53편 품질 재작성, 시간순 연구 활동 원장, 비전문가용 요약, 최종 사람 세션 실행서와 직렬 마무리 검증이다. 브랜치 `report-quality-pass`; push·배포·실제 트래픽·사람 판정·서명 없음.
+- **주 데이터셋과 사례 수:** `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `5a2fc3d6549062ba919567d89273bd953391f324091538f8f621ab1eccbf7c29`.
+- **변경 파일:** `_REWRITE_TARGETS.md`, `_REWRITE_PROGRESS.md`, `_OPEN_QUESTIONS.md`, 대상 OP 보고서 53편, `COMPLETION_STATUS.md`, `completion_status_v1.json`, `RESEARCH_ACTIVITY_LEDGER.md`, `PROJECT_SUMMARY_PLAIN.md`, `FINAL_SESSION_RUNBOOK.md`, `.gitignore`, `research-server-stop.cmd`, 이 세 인계 문서.
+- **핵심 변경:** 53편을 OP별 직접 근거로 다시 쓰고 3편 이상 반복 문장·문단을 0개로 만들었다. 과거 연구 활동 31건과 오늘 실시간 기록을 분리했다. 최종 세션의 실제 5개 프로필, 약사 초안 전수 검토, 정책 9개, 고위험 10건, 영수증 순서와 중단 조건을 한 문서로 묶었다. H-005 판단은 모두 미선택이다.
+- **검증:** 보고서 정적 판정 120/120. 세션 전 Python·DB·키·세 서버 점검 통과. `python -m pytest`는 `1,134 passed / 89 failed / 5 warnings`로 기준선과 같고 새 실패군이 없다. Ruff는 기존 5개 파일의 32개 오류로 실패했다.
+- **최종 감사 경계:** 지정된 1회 실행은 수정 전 OP-050·074 때문에 보고서 118편, `BLOCKED`, `goal_complete=false`로 끝났다. 두 문서 수정 뒤 같은 읽기 전용 규칙은 120/120편을 통과하지만, 한 번만 실행 조건 때문에 정본 감사는 갱신하지 않았다. 현재 저장된 OP-120 JSON의 READY는 이전 실행 결과다.
+- **공식 평가 delta:** 데이터·모델·학습·추천·안전·시뮬레이션 산출물을 바꾸지 않았다. frozen 256건의 7개 지표, replay, weakest slice delta는 모두 0이다.
+- **병목 5개:** OP-039의 구현팀 독립 외부 검토 부재, H-005 중립 입력 화면 부재, H-003 승인 초안→학습·고정 평가 명령 계보 부재, 오늘 수정 후 OP-120 정본 감사 미실행, 기존 Ruff 32건.
+- **다음 세 반복:** 중립 H-005 화면과 독립 외부 검토 계약, 승인 초안 학습·평가 계보와 통제된 사람 세션, 별도 승인된 최종 감사·Ruff 정리 순서다.
+
 ## 2026-07-23 OP-027/028 최종 handoff
 
 - 단계/과제: 이벤트 중복 방지와 사용자 데이터 정정·삭제 계보 연구보고서 backfill. OP-027/028은 `IMPLEMENTED / COMPLETE`다.

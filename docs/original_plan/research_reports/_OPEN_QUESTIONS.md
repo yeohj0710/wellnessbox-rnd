@@ -130,3 +130,27 @@
 - 원인: OP-050과 OP-074는 본문 길이·절 수·절 길이·등록 증거 경로를 충족했지만, 감사기가 요구하는 네 의미 단어군 중 정확한 `요구` 또는 `문제`라는 단어가 없어 두 단어군만 충족했다.
 - 수정: 두 보고서 첫 문단에 각 OP의 구체적인 요구를 한 문장으로 명시했다. 감사기와 같은 읽기 전용 판정식을 120편에 적용한 결과는 유효 120편, 부적합 0편이다.
 - 재실행 여부: 목표가 최종 감사 스크립트를 한 번만 실행하라고 정했으므로 스크립트는 다시 실행하지 않았다. 실패가 출력 파일 쓰기 전에 발생해 `op120_final_completion_audit_v1.json`은 이번 실행 결과로 갱신되지 않았다.
+
+## 2026-07-27 마무리 검사 결과
+
+### 세션 전 점검
+
+- 실행용 Python과 Ed25519 서명 키는 모두 존재했다.
+- 운영 DB는 서로 다른 실제 자료 분류 프로필 5/5개, 대기 약사 초안 0개를 반환했다.
+- 로컬 연구 서버를 한 번 시작해 R&D `/health` 200, 최종 확인 화면 200, WellnessBox 연구 로그인 307 이동을 확인한 뒤 종료했다. 사람 입력·판정·승인·서명은 수행하지 않았다.
+- 종료 래퍼는 서버를 정상 종료한 뒤 비대화형 `timeout /t 2`에서 종료 코드 1을 냈다. 대기 명령을 호환되는 `ping` 방식으로 바꾼 뒤 종료 코드 0을 확인했다.
+
+### 전체 pytest 비교
+
+- 실행 명령: `python -m pytest`
+- 결과: 1,134개 통과, 89개 실패, 경고 5개, 183.45초
+- 기준선 대비: 통과·실패·경고 수가 모두 같다. 실제 실패 요약의 89개도 같은 실패군이다.
+- 기준선 문서 보정: `test_non_cgm_threshold_duration_sensitive_diagnostic.py`의 실제 함수명은 `test_build_non_cgm_threshold_duration_sensitive_diagnostic_matches_narrowing_target`이다. 기준선 목록에는 함수명 중 두 번째 `non_cgm`이 빠져 있었다. 이 시험 파일의 마지막 변경은 2026-03-17 커밋 `1e113e9`이므로 이번 작업에서 생긴 실패가 아니다.
+- 캐시 주의: 전체 실행 뒤에도 `.pytest_cache/v/cache/lastfailed`에는 현재 실행 요약에 없는 과거 항목 22개가 남아 있어 비교 근거로 쓰지 않았다.
+
+### Ruff
+
+- 실행 명령: `python -m ruff check .`
+- 결과: 종료 코드 1, 기존 Python 파일 5개에서 32개 오류. 자동 정렬 가능 항목은 5개다.
+- 범위: 실패 파일은 `scripts/build_op039_external_review_package.py`, `scripts/run_counseling_full_service_roundtrip_smoke.py`, `src/wellnessbox_rnd/governance/final_session_console.py`, `src/wellnessbox_rnd/governance/operational_receipts.py`, `tests/test_final_session_console.py`다. 이번 작업에서 수정한 파일은 없다.
+- 판단: 문서 품질 작업과 무관한 기존 import 순서·100자 초과 문제이므로 자동 수정이나 광범위 서식 변경을 하지 않았다.

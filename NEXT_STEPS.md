@@ -1,12 +1,22 @@
 # NEXT_STEPS
 
+## 2026-07-27 보고서 품질 작업 이후 우선순위
+
+1. 권혁찬 약사에게 사전 선택이 없는 H-005 중립 화면을 제공하고, 구현팀과 독립된 외부 검토 요건·신뢰 기준 등록 여부를 사람이 확정한다. 현재 공동연구원 검토 자료만으로 독립 외부 검증 완료를 주장하지 않는다.
+2. H-003 승인 초안 ID가 실제 학습 입력과 고정 평가 결과로 이어지는 검증된 명령·계보를 마련한다. 대기·반려 초안이 제외되는지 확인한 뒤 `FINAL_SESSION_RUNBOOK.md` 순서로 통제된 최종 세션을 수행한다.
+3. 사람 증거와 기존 Ruff 32건을 별도 범위에서 정리한 뒤, 새 bounded loop에서 OP-120 최종 감사를 한 번 실행해 이번에 수정한 보고서 120/120 상태를 정본 JSON으로 기록한다.
+
+현재 연구보고서는 120편이며 이번 대상 53편은 모두 1,500자 이상이다. 전체 보고서 글자 수는 468,674자다. manifest 기반 완료 현황은 `119 COMPLETE / 0 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`다. 2026-07-27 최종 감사 명령은 수정 전 OP-050·074 때문에 118편, `BLOCKED`로 끝났고 스크립트는 재실행하지 않았다. 수정 뒤 같은 정적 판정 규칙은 120/120편 유효다.
+
+> 아래 항목은 과거 시점의 기록이다. 과거 항목의 보고서 수와 완료 수치를 현재 우선순위로 사용하지 않는다.
+
 ## OP-027/028 이후 다음 bounded loop
 
 1. OP-029/030의 deterministic session replay와 WellnessBox 서비스·UI 조회 연결을 기존 구현, smoke, 커밋과 대조해 두 장문 보고서로 작성한다.
 2. OP-031/032의 안전 규칙 우선순위와 구조화 입력 정규화를 검토하고 현재 증거보다 높은 stage를 주장하지 않는다.
 3. OP-033/034의 특수집단·질환 안전 규칙과 fail-closed 동작을 같은 기준으로 backfill한다.
 
-현재 물리 연구보고서는 70개, 유효 연구보고서는 48/120이며 누락·부적합 72개가 남는다. 전체 글자 수는 327,598자다. completion은 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, OP-120 evidence SHA-256은 `e9d00582015a0ea0581d107eb212601ded346468030004641304c486ddba281d`다. GitHub Actions `29970576517`이 성공했다. 현재 병목은 보고서 72개, required-stage gap 43개, OP-039 외부 검증, validation receipt, independent-review receipt다.
+2026-07-23 당시 물리 연구보고서는 70개, 유효 연구보고서는 48/120이며 누락·부적합 72개가 남았다. 전체 글자 수는 327,598자였다. completion은 `76 COMPLETE / 43 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`, OP-120 evidence SHA-256은 `e9d00582015a0ea0581d107eb212601ded346468030004641304c486ddba281d`였다. GitHub Actions `29970576517`이 성공했다. 이 수치는 과거 기록이며 현재 상태가 아니다.
 
 ## OP-025/026 이후 다음 bounded loop
 

@@ -1,5 +1,16 @@
 # PROGRESS
 
+## 2026-07-27 보고서 품질과 최종 제출 준비 완료
+
+- 선택 단계·과제: OP-031~078, OP-105·106, OP-117~119의 짧은 연구보고서 53편 재작성과 사람 심사용 제출 문서 준비다. 브랜치는 `report-quality-pass`이며 push·배포·외부 서명은 수행하지 않았다.
+- 산출물 A: LF 정규화·앞뒤 공백 제거 기준 1,500자 미만이던 53편을 모두 다시 썼다. 최종 길이는 1,992~3,334자다. 53편 직접 통독, manifest 증거 경로 인용, 절 수·절 길이, 3편 이상 반복 문장·문단 검사를 통과했다.
+- 산출물 B~D: `docs/original_plan/RESEARCH_ACTIVITY_LEDGER.md`, `PROJECT_SUMMARY_PLAIN.md`, `FINAL_SESSION_RUNBOOK.md`를 추가했다. 연구 활동 원장은 과거 31건과 실시간 1건을 구분하고, 실행서는 H-005 10건을 모두 미선택 상태로 정리했다.
+- 세션 전 점검: `.venv-interim` Python과 서명 키가 존재했고 운영 DB는 서로 다른 프로필 5/5개, 대기 초안 0개였다. 로컬 R&D health와 최종 확인 화면은 200, WellnessBox 연구 로그인은 307 이동이었다. 비대화형 종료 래퍼의 종료 코드 1은 `research-server-stop.cmd`의 대기 명령만 바꿔 0으로 고쳤다.
+- 최종 감사 1회: `python scripts/run_final_completion_audit.py`는 OP-050·074가 의미 단어 규칙을 두 개만 충족해 보고서 118편, `BLOCKED`로 중단됐다. 두 보고서에 구체적인 요구 문장을 보완했고 같은 읽기 전용 판정식은 120/120편 유효를 반환했다. 한 번만 실행하라는 조건 때문에 최종 감사 스크립트는 재실행하지 않았다.
+- 전체 검증: `python -m pytest`는 기준선과 같은 `1,134 passed / 89 failed / 5 warnings`, 183.45초였다. 새 실패군은 없다. `python -m ruff check .`은 이번 작업에서 수정하지 않은 기존 Python 파일 5개의 32개 오류로 실패했다.
+- 현재 자동 완료 현황은 manifest 감사 PASS, `119 COMPLETE / 0 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`다. 저장된 OP-120 JSON은 이전 READY 결과이며 이번 실패 실행은 파일 쓰기 전에 끝났으므로 오늘 결과로 오해하면 안 된다.
+- 데이터·모델·추천·안전·학습·시뮬레이션 코드는 바꾸지 않았다. frozen 256건, replay와 slice의 입력·산출물을 수정하지 않아 지표 delta는 0이다.
+
 ## 2026-07-23 OP-027/028 연구보고서 backfill 완료
 
 - OP-027 이벤트 idempotency와 OP-028 정정·삭제 mutation 계보를 구현·테스트·원문 PDF와 대조했다. 둘 다 `IMPLEMENTED / COMPLETE`이며 production 운영은 주장하지 않는다.
