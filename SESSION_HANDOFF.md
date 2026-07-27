@@ -1,16 +1,19 @@
 # SESSION_HANDOFF
 
-## 2026-07-27 보고서 품질·제출 준비 handoff
+## 2026-07-27 근거 심화·감사 정본·사전 점검 최종 handoff
 
-- **선택 단계와 과제:** OP 연구보고서 53편 품질 재작성, 시간순 연구 활동 원장, 비전문가용 요약, 최종 사람 세션 실행서와 직렬 마무리 검증이다. 브랜치 `report-quality-pass`; push·배포·실제 트래픽·사람 판정·서명 없음.
+- **선택 단계와 과제:** 목표의 단계 0~5 전체다. 보고서 53편의 등록 근거를 끝까지 다시 읽고, 내용과 증거 단계를 바로잡은 뒤 OP-120 감사, Ruff 출처, 런북, H-005, H-003과 전체 회귀를 확인했다.
 - **주 데이터셋과 사례 수:** `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `5a2fc3d6549062ba919567d89273bd953391f324091538f8f621ab1eccbf7c29`.
-- **변경 파일:** `_REWRITE_TARGETS.md`, `_REWRITE_PROGRESS.md`, `_OPEN_QUESTIONS.md`, 대상 OP 보고서 53편, `COMPLETION_STATUS.md`, `completion_status_v1.json`, `RESEARCH_ACTIVITY_LEDGER.md`, `PROJECT_SUMMARY_PLAIN.md`, `FINAL_SESSION_RUNBOOK.md`, `.gitignore`, `research-server-stop.cmd`, 이 세 인계 문서.
-- **핵심 변경:** 53편을 OP별 직접 근거로 다시 쓰고 3편 이상 반복 문장·문단을 0개로 만들었다. 과거 연구 활동 31건과 오늘 실시간 기록을 분리했다. 최종 세션의 실제 5개 프로필, 약사 초안 전수 검토, 정책 9개, 고위험 10건, 영수증 순서와 중단 조건을 한 문서로 묶었다. H-005 판단은 모두 미선택이다.
-- **검증:** 보고서 정적 판정 120/120. 세션 전 Python·DB·키·세 서버 점검 통과. `python -m pytest`는 `1,134 passed / 89 failed / 5 warnings`로 기준선과 같고 새 실패군이 없다. Ruff는 기존 5개 파일의 32개 오류로 실패했다.
-- **최종 감사 경계:** 지정된 1회 실행은 수정 전 OP-050·074 때문에 보고서 118편, `BLOCKED`, `goal_complete=false`로 끝났다. 두 문서 수정 뒤 같은 읽기 전용 규칙은 120/120편을 통과하지만, 한 번만 실행 조건 때문에 정본 감사는 갱신하지 않았다. 현재 저장된 OP-120 JSON의 READY는 이전 실행 결과다.
-- **공식 평가 delta:** 데이터·모델·학습·추천·안전·시뮬레이션 산출물을 바꾸지 않았다. frozen 256건의 7개 지표, replay, weakest slice delta는 모두 0이다.
-- **병목 5개:** OP-039의 구현팀 독립 외부 검토 부재, H-005 중립 입력 화면 부재, H-003 승인 초안→학습·고정 평가 명령 계보 부재, 오늘 수정 후 OP-120 정본 감사 미실행, 기존 Ruff 32건.
-- **다음 세 반복:** 중립 H-005 화면과 독립 외부 검토 계약, 승인 초안 학습·평가 계보와 통제된 사람 세션, 별도 승인된 최종 감사·Ruff 정리 순서다.
+- **변경 파일:** 대상 OP 보고서 53편, `docs/original_plan/EVIDENCE_VERIFICATION_REPORT.md`, 연구보고서의 `_REWRITE_TARGETS.md`·`_REWRITE_PROGRESS.md`·`_OPEN_QUESTIONS.md`, OP-120 감사 JSON, `scripts/run_final_session_preflight.py`, 전용 테스트, 새 `data/original_plan/evidence/evidence_verification_ledger_v1.json`과 `scripts/verify_evidence_verification_ledger.py`, `FINAL_SESSION_RUNBOOK.md`, 연구 활동 원장·요약과 이 세 인계 문서다. `COMPLETION_STATUS.md`와 추적되지 않은 과거 영수증·uploads는 건드리지 않았다.
+- **핵심 변경:** 보고서 32편의 단계·버전·해시·함수·입력 또는 증거 해석을 고쳤다. manifest 파일 경로 492건은 모두 존재하고 최종 내용 불일치는 0건이다. 447개 OP-경로 판정을 행 단위 원장(SHA-256 `21d1388ed3912174126ae435a85aa80baa991ebd65d1b6aeb3ad0b9816319257`)과 전용 검증기로 재현할 수 있게 했다. 무영수증 preflight는 임시 DB·상태만 사용하고, DB 세 파일·제어 파일·최종 세션 직접 파일·운영 영수증의 다섯 저장 경계를 각각 비교한다. H-005 검사는 Chromium이 렌더링한 DOM을 읽어 동적으로 주입된 선택·의견도 잡는다.
+- **코드·데이터·학습·시뮬레이션:** 새 코드는 사전 점검 스크립트, 근거 원장 검증기와 전용 테스트뿐이다. 추천·안전·학습·시뮬레이션 코드는 바꾸지 않았다. 원천·frozen·학습 데이터와 모델도 바꾸지 않았고 훈련·배포·사람 판정·서명을 실행하지 않았다.
+- **검증 명령과 결과:** `python scripts/run_final_completion_audit.py` → 120/120, 누락·단계·외부 격차 0, `READY`, `goal_complete=true`, `blockers []`; `python scripts/verify_evidence_verification_ledger.py` → `READY`, 447/447, 누락·불일치 0; `python -m pytest tests/test_final_session_preflight.py -q` → 10 passed; 전용 Ruff와 `python -m py_compile` 통과; 실제 preflight는 서버·화면 정상에 다섯 저장 경계 모두 `true`, H-005 선입력 때문에 예상된 `BLOCKED`(종료 코드 2, 차단 1건); 전체 pytest `1,144 passed / 89 failed / 5 warnings`, 실측 177초, 새 실패 0건; 전체 Ruff는 기존 32건이다.
+- **공식 frozen eval delta:** 256건 데이터와 7개 공식 지표를 바꾸거나 다시 평가하지 않았다. 입력·산출물 delta는 0이다.
+- **replay·slice delta:** replay와 weakest slice 입력·산출물을 바꾸지 않았다. delta는 0이다.
+- **병목 5개:** H-005 판정·의견 선입력, 면허·자격 확인·별도 서명 검증 부재, H-003 승인 초안→학습→후보 평가 계보 부재, DB 5/5를 유효한 사람 세션 5건으로 볼 수 없는 점, 기존 Ruff 32건과 전체 pytest 89건의 장기 부채다.
+- **다음 세 반복:** H-005 중립성과 자격 gate 구현, H-003 approved-only 학습·후보 평가·안전 회귀 gate 구현, 실제 후속 자료를 사용한 통제된 사람 최종 세션 순서다.
+- **병합 판정:** OP-120 120/120 `READY`, 보고서 내용 불일치 0건, pytest 새 실패 0건을 모두 충족했다. 이 handoff 커밋 뒤 `report-quality-pass`를 `main`에 fast-forward 병합하며 push는 하지 않는다.
+- **아침에 사람이 확인할 세 가지:** H-005 화면의 모든 선택과 의견이 비어 있는지, 검토자의 실제 면허·자격 확인 방법·별도 서명을 받을 수 있는지, 서로 다른 실제 프로필 5건에 실제 후속 자료와 동의 근거가 준비됐는지 확인한다.
 
 ## 2026-07-23 OP-027/028 최종 handoff
 

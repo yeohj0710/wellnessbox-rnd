@@ -1,15 +1,17 @@
 # PROGRESS
 
-## 2026-07-27 보고서 품질과 최종 제출 준비 완료
+## 2026-07-27 보고서 근거 심화와 사람 세션 직전 정리 완료
 
-- 선택 단계·과제: OP-031~078, OP-105·106, OP-117~119의 짧은 연구보고서 53편 재작성과 사람 심사용 제출 문서 준비다. 브랜치는 `report-quality-pass`이며 push·배포·외부 서명은 수행하지 않았다.
-- 산출물 A: LF 정규화·앞뒤 공백 제거 기준 1,500자 미만이던 53편을 모두 다시 썼다. 최종 길이는 1,992~3,334자다. 53편 직접 통독, manifest 증거 경로 인용, 절 수·절 길이, 3편 이상 반복 문장·문단 검사를 통과했다.
-- 산출물 B~D: `docs/original_plan/RESEARCH_ACTIVITY_LEDGER.md`, `PROJECT_SUMMARY_PLAIN.md`, `FINAL_SESSION_RUNBOOK.md`를 추가했다. 연구 활동 원장은 과거 31건과 실시간 1건을 구분하고, 실행서는 H-005 10건을 모두 미선택 상태로 정리했다.
-- 세션 전 점검: `.venv-interim` Python과 서명 키가 존재했고 운영 DB는 서로 다른 프로필 5/5개, 대기 초안 0개였다. 로컬 R&D health와 최종 확인 화면은 200, WellnessBox 연구 로그인은 307 이동이었다. 비대화형 종료 래퍼의 종료 코드 1은 `research-server-stop.cmd`의 대기 명령만 바꿔 0으로 고쳤다.
-- 최종 감사 1회: `python scripts/run_final_completion_audit.py`는 OP-050·074가 의미 단어 규칙을 두 개만 충족해 보고서 118편, `BLOCKED`로 중단됐다. 두 보고서에 구체적인 요구 문장을 보완했고 같은 읽기 전용 판정식은 120/120편 유효를 반환했다. 한 번만 실행하라는 조건 때문에 최종 감사 스크립트는 재실행하지 않았다.
-- 전체 검증: `python -m pytest`는 기준선과 같은 `1,134 passed / 89 failed / 5 warnings`, 183.45초였다. 새 실패군은 없다. `python -m ruff check .`은 이번 작업에서 수정하지 않은 기존 Python 파일 5개의 32개 오류로 실패했다.
-- 현재 자동 완료 현황은 manifest 감사 PASS, `119 COMPLETE / 0 PARTIAL / 0 PENDING / 1 EXTERNAL / 0 CONTRADICTED`다. 저장된 OP-120 JSON은 이전 READY 결과이며 이번 실패 실행은 파일 쓰기 전에 끝났으므로 오늘 결과로 오해하면 안 된다.
-- 데이터·모델·추천·안전·학습·시뮬레이션 코드는 바꾸지 않았다. frozen 256건, replay와 slice의 입력·산출물을 수정하지 않아 지표 delta는 0이다.
+- 선택 단계·과제: 단계 0~5 전체다. OP-031~078, OP-105·106, OP-117~119 보고서 53편의 모든 등록 근거를 다시 읽고, 감사 정본화와 사람 세션 사전 점검까지 마쳤다.
+- 보고서 결과: 53편의 총 분량은 235,277자다. 최소 2,830자, 중앙값 4,203자, 최대 7,242자이며 3편 이상 반복 문장·문단은 0개다. `docs/original_plan/EVIDENCE_VERIFICATION_REPORT.md`는 등록 파일 경로 492건 모두 존재, 바로잡은 보고서 32편, 최종 내용 불일치 0건을 기록한다.
+- 감사 결과: 첫 실행은 OP-060 의미 단어 누락 때문에 119/120 `BLOCKED`였다. OP-060의 실제 요구를 명시하고 커밋한 뒤 두 번째 실행이 120/120, 누락·단계·외부 격차 0, `READY`, `goal_complete=true`를 반환했다. 감사 입력의 R&D 커밋은 `821a5a5`, 감사 JSON 커밋은 `8ee93cc`다.
+- 사전 점검: `scripts/run_final_session_preflight.py`는 실제 DB의 본체와 WAL을 임시 복사하고 임시 상태 루트만 사용한다. 복사 전후 본체·WAL·SHM 해시가 다르면 멈추고 임시 DB에 `PRAGMA integrity_check`를 돌린다. 저장 불변은 DB 세 파일, 제어 파일 3종, 최종 세션 직접 파일 13개, 운영 영수증 15개의 다섯 경계를 각각 비교한다. 서버·콘솔·사용자·약사 화면은 모두 정상 응답했고 다섯 경계가 모두 `true`였다. H-005는 원본 HTML이 아니라 Chromium이 렌더링한 DOM을 읽으며, 10건이 모두 사전 선택되고 의견도 10건 채워져 있어 결과는 의도대로 `BLOCKED`, 차단 항목은 `H005_FORM_NOT_NEUTRAL` 하나였다.
+- 근거 추적: 447개 OP-경로 판정을 행 단위로 담은 `data/original_plan/evidence/evidence_verification_ledger_v1.json`(SHA-256 `21d1388ed3912174126ae435a85aa80baa991ebd65d1b6aeb3ad0b9816319257`)과 검증기 `scripts/verify_evidence_verification_ledger.py`를 추가했다. 현재 결과는 `READY`, 보고서 53편, 등록 경로 492건, 고유 경로 447건, 고유 파일 189개, 누락 0건, 내용 불일치 0건이다.
+- 사람 검증 경계: DB의 서로 다른 프로필 5/5와 감사 `READY`는 다섯 건의 유효한 사람 세션을 입증하지 않는다. H-005는 면허·자격 확인 방법·별도 서명 검증이 부족하고, H-003은 승인 초안에서 학습·후보 평가·안전 회귀·교체 또는 유지로 이어지는 실제 명령 계보가 없다.
+- 최종 pytest: `1,144 passed / 89 failed / 5 warnings`, 실측 177초다. 연속 2회 실행에서 수치와 실패 함수 목록이 같았다. 사전 점검 전용 시험을 4개에서 10개로 늘려 통과 수가 6개 늘었다. 새 실패 0건은 `main`(`bebed41`) worktree에서 같은 72개 시험 파일을 돌려 함수 단위로 대조했다. main은 96개가 실패했고 이번 브랜치의 89개는 그 부분집합이다.
+- Ruff: 기존 파일 5개의 32건(E501 27, I001 4, UP034 1)이 그대로다. 모든 진단 줄은 main 조상 커밋에서 들어왔고 이번 브랜치 신규 오류는 0건이다.
+- 변경 경계: 공개 배포, push, 실제 트래픽, 사람 판정·서명, 훈련, frozen eval, 모델, 추천·안전 규칙과 replay·slice 산출물은 바꾸지 않았다. 공식 frozen/replay/slice delta는 0이다.
+- 병합 판정: 감사 120/120 `READY`, 보고서 내용 불일치 0건, pytest 새 실패 0건의 세 조건을 모두 충족했다. 최종 문서 커밋 뒤 `main`에 fast-forward 병합하며 push는 하지 않는다.
 
 ## 2026-07-23 OP-027/028 연구보고서 backfill 완료
 

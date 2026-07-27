@@ -110,11 +110,15 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
 .\.venv-interim\Scripts\python.exe scripts\run_final_session_preflight.py
 ```
 
-이 명령은 운영 DB를 임시 폴더로 복사하고 최종 확인 상태도 임시 폴더에 만든다. R&D API, 최종 확인 화면, WellnessBox 사용자·약사 화면에 GET 요청만 보낸 뒤 이 명령이 시작한 PID 트리만 종료한다. 실행 전후의 운영 DB hash와 운영 영수증 파일 목록·hash가 같지 않으면 `ERROR`로 끝난다. 사람 입력, 약사 판정, 승인, 서명, 실제 운영 영수증은 만들지 않는다.
+이 명령은 SQLite 본체와 WAL을 파일 단위로 복사하고 복사 전후의 본체·WAL·SHM hash가 같은지 확인한다. 복사 중 원본이 바뀌거나 임시 DB의 `PRAGMA integrity_check`가 실패하면 즉시 `ERROR`로 끝난다. 최종 확인 상태는 임시 폴더에 만들며, R&D API와 최종 확인 화면, WellnessBox 사용자·약사 화면에는 GET 요청만 보낸다. H-005는 Chromium이 실제로 렌더링한 DOM의 선택값과 의견값을 검사한다. 이 명령이 시작한 PID 트리만 종료한다.
 
-`status: "READY"`, `exit_code: 0`, 빈 `blockers`, 아래 세 저장 불변 값이 모두 `true`일 때만 정상이다.
+실행 전후에는 실제 DB 본체·WAL·SHM, 운영 캡처와 프로세스 제어 파일, 최종 세션 루트의 직접 파일, 운영 영수증 전체를 파일별 hash로 비교한다. 사람 입력, 약사 판정, 승인, 서명, 실제 운영 영수증은 만들지 않는다.
+
+`status: "READY"`, `exit_code: 0`, 빈 `blockers`, 아래 다섯 저장 불변 값이 모두 `true`일 때만 정상이다.
 
 - `database_unchanged`
+- `runtime_controls_unchanged`
+- `final_state_unchanged`
 - `receipt_file_list_unchanged`
 - `receipt_hashes_unchanged`
 
@@ -124,8 +128,8 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
 
 - R&D health, 최종 확인 화면, 최종 확인 상태, WellnessBox health가 모두 200이다.
 - 사용자 화면과 약사 화면의 로그인 응답이 307이고, 이동한 화면이 각각 200이다.
-- H-005의 사례와 의견란은 각각 10개이며, `preselected_count`와 `prefilled_comment_count`가 모두 0이다.
-- 운영 DB와 운영 영수증의 세 불변 값이 모두 `true`다.
+- H-005의 사례와 의견란은 각각 10개이며, 렌더링된 DOM의 `preselected_count`와 `prefilled_comment_count`가 모두 0이다.
+- 실제 DB·제어 파일·최종 세션 상태·운영 영수증의 다섯 불변 값이 모두 `true`다.
 - 5개 프로필마다 실제 복용 전 자료, 실제 후속평가 자료, 동의 근거가 준비돼 있다.
 
 하나라도 아니면 실제 입력을 시작하지 않는다. `BLOCKED`는 서버 고장이 아니라 사람이 해결해야 할 시작 조건이 남았다는 뜻이다. `ERROR`는 서버·UI 점검 실패 또는 운영 저장 변경을 뜻한다.
@@ -170,24 +174,62 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
   },
   "storage": {
     "database_unchanged": true,
+    "runtime_controls_unchanged": true,
+    "final_state_unchanged": true,
     "receipt_file_list_unchanged": true,
     "receipt_hashes_unchanged": true
   },
   "storage_evidence": {
-    "database_before": {
-      "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3",
-      "sha256": "856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87",
-      "size": 761856
+    "database_family_before": {
+      "interim.sqlite3": {
+        "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3",
+        "exists": true,
+        "sha256": "856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87",
+        "size": 761856
+      },
+      "interim.sqlite3-wal": {
+        "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3-wal",
+        "exists": true,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "interim.sqlite3-shm": {
+        "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3-shm",
+        "exists": true,
+        "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "size": 32768
+      }
     },
-    "database_after": {
-      "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3",
-      "sha256": "856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87",
-      "size": 761856
+    "database_family_after": {
+      "interim.sqlite3": {
+        "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3",
+        "exists": true,
+        "sha256": "856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87",
+        "size": 761856
+      },
+      "interim.sqlite3-wal": {
+        "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3-wal",
+        "exists": true,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "interim.sqlite3-shm": {
+        "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3-shm",
+        "exists": true,
+        "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "size": 32768
+      }
     },
+    "runtime_control_manifest_sha256_before": "45d2d47b8b9c61f14c8dd74ddd0ee96160744ce4a752f87d193dab2de0a9e1bb",
+    "runtime_control_manifest_sha256_after": "45d2d47b8b9c61f14c8dd74ddd0ee96160744ce4a752f87d193dab2de0a9e1bb",
+    "final_state_file_count_before": 13,
+    "final_state_file_count_after": 13,
+    "final_state_manifest_sha256_before": "fcd74398346da0200b8cf6bd1fc628255abea63a2750d90e75e8a44b37b76a35",
+    "final_state_manifest_sha256_after": "fcd74398346da0200b8cf6bd1fc628255abea63a2750d90e75e8a44b37b76a35",
     "receipt_file_count_before": 15,
     "receipt_file_count_after": 15,
-    "receipt_manifest_sha256_before": "107e7b952b32f851cdda2f191dc7fed7694c9ab77441e6f12c1804ece0474d49",
-    "receipt_manifest_sha256_after": "107e7b952b32f851cdda2f191dc7fed7694c9ab77441e6f12c1804ece0474d49"
+    "receipt_manifest_sha256_before": "a73f8e25c2b3fdefe956635ca7092a3f071d4ac10155b6b7e28a69dcc13bf39a",
+    "receipt_manifest_sha256_after": "a73f8e25c2b3fdefe956635ca7092a3f071d4ac10155b6b7e28a69dcc13bf39a"
   },
   "blockers": [
     {
@@ -198,7 +240,7 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
 }
 ```
 
-서버와 두 화면은 모두 응답했지만 H-005는 10건 모두 `타당`으로 미리 선택됐고 의견란 10개도 모두 채워져 있었다. 따라서 실제 입력을 시작하지 않는다. 운영 DB와 기존 운영 영수증 15개는 실행 전후 동일했고 새 운영 영수증은 생기지 않았다.
+서버와 두 화면은 모두 응답했지만 H-005의 렌더링된 DOM은 10건 모두 `타당`으로 미리 선택됐고 의견란 10개도 모두 채워져 있었다. 따라서 실제 입력을 시작하지 않는다. 실제 DB 본체·WAL·SHM, 운영 캡처·프로세스 제어 파일, 최종 세션 직접 파일 13개, 기존 운영 영수증 15개는 실행 전후 동일했고 새 운영 영수증은 생기지 않았다.
 
 ## H-007: 자동 저장 없이 실제 5개 프로필을 입력한다
 
@@ -450,7 +492,7 @@ H-006 전에 다음을 확인한다.
 .\.venv-interim\Scripts\python.exe scripts\run_final_completion_audit.py
 ```
 
-정상 결과는 `status: "READY"`, `goal_complete: true`, `blockers: []`, 외부 검증 공백 0, 유효한 최종 검증·독립 검토 영수증이다. 이 명령도 이 실행서를 만들면서 실행하지 않았다. 결과가 다르면 H-006을 다시 누르지 말고 차단 항목의 근거 경로부터 조사한다.
+정상 결과는 `status: "READY"`, `goal_complete: true`, `blockers: []`, 외부 검증 공백 0, 유효한 최종 검증·독립 검토 영수증이다. 2026-07-27 사람 세션 전 현재 입력으로는 120/120 `READY`를 확인했다. 사람 최종 세션은 실행하지 않았으므로 세션 뒤 새 입력·상태·영수증을 대상으로 반드시 다시 실행해야 한다. 결과가 다르면 H-006을 다시 누르지 말고 차단 항목의 근거 경로부터 조사한다.
 
 ## 실제 로그에 기록된 오류만 이렇게 대응한다
 

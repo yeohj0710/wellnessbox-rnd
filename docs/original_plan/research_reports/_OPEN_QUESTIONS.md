@@ -186,10 +186,21 @@
 ### 영수증 없는 세션 전 점검
 
 - 기존 `research-server-start.cmd`는 정상 종료 때도 `begin_session`과 `finish_session`을 호출해 ACTUAL 영수증을 만든다. 따라서 영수증을 만들면 안 되는 사전 점검에는 사용할 수 없다.
-- `scripts/run_final_session_preflight.py`는 운영 DB를 임시 파일로 복사하고 최종 콘솔 상태도 임시 루트에 둔다. 스크립트가 시작한 프로세스 ID만 종료하며, 실제 DB 해시·크기와 영수증 파일별 해시를 실행 전후 비교한다.
+- `scripts/run_final_session_preflight.py`는 운영 DB를 임시 파일로 복사하고 최종 콘솔 상태도 임시 루트에 둔다. 스크립트가 시작한 프로세스 ID만 종료한다.
+- SQLite 임시 복사는 본체와 WAL을 파일 단위로 복사한다. 복사 전후 원본의 본체·WAL·SHM 해시가 다르면 즉시 멈추고, 임시 DB에 `PRAGMA integrity_check`를 실행해 손상 여부를 확인한다.
+- 저장 불변 검사는 DB 하나가 아니라 다섯 경계를 본다. 실제 `interim.sqlite3`·`-wal`·`-shm`, `operational_capture.json`·`session_processes.json`·`stop.request`, `data/original_plan/final_session` 바로 아래 모든 파일, `operational_receipts` 아래 모든 파일이다. 결과는 `database_unchanged`, `runtime_controls_unchanged`, `final_state_unchanged`, `receipt_file_list_unchanged`, `receipt_hashes_unchanged`로 나온다.
 - 실제 점검에서 R&D health, 콘솔, state, WellnessBox health는 200을 반환했다. 사용자·약사 로그인은 307 이동 뒤 화면 200을 반환했다.
-- 실제 DB는 실행 전후 SHA-256 `856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87`, 크기 761,856바이트로 같았다. 영수증은 15개, manifest SHA-256 `107e7b952b32f851cdda2f191dc7fed7694c9ab77441e6f12c1804ece0474d49`로 같았다. 새 영수증, 잔류 상태 파일, 잔류 포트는 없었다.
-- H-005 양식은 10건 모두 `valid`가 선택돼 있고 의견 10건도 채워져 있었다. 사전 선택과 기존 의견 복사를 금지한 규칙을 위반하므로 사전 점검은 의도대로 `BLOCKED`, 종료 코드 2를 반환한다.
+- 실제 DB는 실행 전후 SHA-256 `856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87`, 크기 761,856바이트로 같았다. WAL은 크기 0, SHM은 32,768바이트로 같았다. 제어 파일 manifest는 `45d2d47b8b9c61f14c8dd74ddd0ee96160744ce4a752f87d193dab2de0a9e1bb`, 최종 세션 직접 파일 13개의 manifest는 `fcd74398346da0200b8cf6bd1fc628255abea63a2750d90e75e8a44b37b76a35`, 영수증 15개의 manifest는 `a73f8e25c2b3fdefe956635ca7092a3f071d4ac10155b6b7e28a69dcc13bf39a`로 전후 동일했다. 새 영수증, 잔류 상태 파일, 잔류 포트(8000·8765·3001)는 없었다.
+- H-005 검사는 원본 HTML 정규식이 아니라 연결 저장소 `C:\dev\wellnessbox`의 Playwright/Chromium이 실제로 렌더링한 DOM을 읽는다. 따라서 정적 `checked`와 정적 textarea 값뿐 아니라 JavaScript로 나중에 넣은 선택·의견도 잡아낸다.
+- 렌더링된 DOM에서 10건 모두 선택돼 있었고 의견 10건도 채워져 있었다. 사전 선택과 기존 의견 복사를 금지한 규칙을 위반하므로 사전 점검은 의도대로 `BLOCKED`, 종료 코드 2를 반환하며 차단 항목은 `H005_FORM_NOT_NEUTRAL` 하나뿐이다.
+- 전용 회귀 테스트는 4개에서 10개로 늘렸다. WAL에 커밋된 행이 임시 DB에 실제로 포함되는지, 다섯 저장 경계 각각에 대한 변경이 차단되는지, 렌더링 DOM 검사가 동적으로 주입된 선택·의견을 잡는지를 각각 확인한다. `python -m pytest tests/test_final_session_preflight.py -q`는 10건 통과다.
+
+### 447개 OP-경로 판정 원장
+
+- `docs/original_plan/EVIDENCE_VERIFICATION_REPORT.md`는 OP별 합계만 담았고 447개 경로 각각의 판정 근거는 남아 있지 않았다. 그래서 상세 원장 `data/original_plan/evidence/evidence_verification_ledger_v1.json`을 새로 만들었다.
+- 원장의 447개 행에는 OP, 인용·등록 경로, 증거 유형, 존재 여부, 파일 SHA-256, 보고서의 경로 원문 인용 여부, 내용 일치 여부, 판정 비고가 들어 있다. 원장 SHA-256은 `21d1388ed3912174126ae435a85aa80baa991ebd65d1b6aeb3ad0b9816319257`이다.
+- `python scripts/verify_evidence_verification_ledger.py`는 현재 manifest와 53편 보고서, 189개 파일의 SHA-256을 원장과 대조하고 요약 수치를 447개 행에서 다시 계산한다. 현재 결과는 status `READY`, 보고서 53편, 등록 경로 492건, 고유 OP-경로 447건, 고유 파일 189개, 누락 0건, 내용 불일치 0건, 경로 원문 인용 339건이다.
+- OP-039의 등록 경로 수는 구현·테스트 파일 5개와 대체 계약 파일 2개를 합친 7개다. 외부 의존 조건 2개는 저장소 경로가 아니므로 존재 집계에서 제외했다.
 
 ### H-005 중립성 규칙의 실제 구현
 
@@ -208,3 +219,13 @@
 - `run_eval.py`는 후보 모델이나 artifact 인자를 받지 않고 항상 같은 `recommend` 함수를 호출한다. 비교 스크립트는 차이만 계산하며 안전 지표가 나빠졌을 때 실패시키지 않는다.
 - H-003 승인 초안 변환기, approved-only 데이터셋 manifest, 후보 artifact 학습 명령, 후보 모델을 주입하는 고정 평가 실행기, 안전 회귀 게이트, 교체·유지와 rollback 영수증이 없다. 별도 합성 자료용 학습 스크립트는 H-003 체인으로 사용할 수 없다.
 - 학습과 평가는 실행하지 않았다. 위 빈 구간이 구현되기 전에는 승인 초안 → 학습 → 후보 평가 → 안전 게이트 → 교체 또는 유지로 이어지는 실제 명령 체인을 확정할 수 없다.
+
+### 최종 회귀와 병합 판정
+
+- `python -m pytest` 최종 결과는 1,144개 통과, 89개 실패, 경고 5개다. 실측 벽시계 시간은 177초이며, 연속 2회 실행에서 통과·실패 수와 실패한 시험 함수 목록이 완전히 같았다. 이 환경의 pytest는 합계 줄을 파일로 내보내지 않으므로 수치는 진행 표시 문자와 `FAILED` 줄에서 세었다.
+- 통과 수가 이전 기록 1,138개보다 6개 많은 이유는 사전 점검 전용 시험을 4개에서 10개로 늘렸기 때문이다. 늘어난 6개는 WAL 커밋 행의 임시 DB 포함, 저장 경계별 변경 차단, 렌더링 DOM의 동적 선택·의견 검출을 확인한다.
+- 새 실패 0건은 함수 단위로 확인했다. `main`(`bebed41`)을 별도 worktree로 꺼내 같은 72개 시험 파일을 돌린 결과 96개가 실패했고, 이번 브랜치의 실패 89개는 그 96개의 부분집합이었다. 브랜치에만 있는 실패는 0개다. main에만 있는 7개는 worktree에 없는 미추적 실행 자료 때문이므로 브랜치가 만든 실패가 아니다.
+- 이번 브랜치는 `src/` 아래를 전혀 바꾸지 않았고 시험 파일도 `tests/test_final_session_preflight.py` 하나만 건드렸다. 이 파일은 실패 목록에 없다.
+- `python -m ruff check .`은 기존 파일 5개의 같은 32건으로 실패했다. 규칙별 내역도 E501 27건, I001 4건, UP034 1건으로 같다. 새 사전 점검 스크립트, 근거 원장 검증기, 전용 시험은 Ruff를 통과한다.
+- 조건부 병합 세 조건은 모두 참이다. OP-120 감사 120/120 `READY`, `EVIDENCE_VERIFICATION_REPORT.md`의 최종 내용 불일치 0건, pytest 새 실패 0건이다.
+- 따라서 최종 문서 커밋 뒤 `report-quality-pass`를 `main`에 fast-forward 병합한다. push, 배포, 훈련, 사람 판정·승인·서명은 하지 않는다.
