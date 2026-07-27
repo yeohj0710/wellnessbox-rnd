@@ -4,10 +4,10 @@ import hashlib
 import http.cookiejar
 import json
 import os
-import re
 import secrets
 import shutil
 import socket
+import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -21,6 +21,53 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 WEB_ROOT = ROOT.parent / "wellnessbox"
 PORTS = (8000, 8765, 3001)
+RUNTIME_CONTROL_FILES = (
+    "operational_capture.json",
+    "session_processes.json",
+    "stop.request",
+)
+H005_RENDERED_DOM_SCRIPT = r"""
+const { chromium } = require('playwright');
+(async () => {
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const page = await browser.newPage();
+    const response = await page.goto(process.argv[1], { waitUntil: 'networkidle' });
+    const status = response ? response.status() : 0;
+    const result = await page.evaluate(status => {
+      const cases = Array.from(document.querySelectorAll('section')).filter(
+        section => section.querySelector('h2')
+      );
+      const selected = section => {
+        const toggles = Array.from(
+          section.querySelectorAll('input[type="radio"], input[type="checkbox"]')
+        );
+        const selects = Array.from(section.querySelectorAll('select'));
+        return toggles.some(control => control.checked) ||
+          selects.some(control => control.value.trim() !== '');
+      };
+      const comments = section => Array.from(
+        section.querySelectorAll('textarea, input[type="text"]')
+      );
+      return {
+        status,
+        case_count: cases.length,
+        preselected_count: cases.filter(selected).length,
+        comment_count: cases.filter(section => comments(section).length > 0).length,
+        prefilled_comment_count: cases.filter(
+          section => comments(section).some(control => control.value.trim() !== '')
+        ).length,
+      };
+    }, status);
+    process.stdout.write(JSON.stringify(result));
+  } finally {
+    await browser.close();
+  }
+})().catch(error => {
+  console.error(error && error.stack ? error.stack : String(error));
+  process.exit(1);
+});
+"""
 FINAL_CONSOLE_READ_ONLY_BOOTSTRAP = (
     "import os;from pathlib import Path;"
     "import scripts.run_final_session_console as module;"
@@ -47,23 +94,72 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _path_snapshot(path: Path) -> dict[str, Any]:
+    snapshot: dict[str, Any] = {
+        "path": str(path.resolve()),
+        "exists": path.is_file(),
+    }
+    if snapshot["exists"]:
+        snapshot |= {"sha256": _sha256(path), "size": path.stat().st_size}
+    return snapshot
+
+
+def _file_manifest(files: dict[str, Any]) -> str:
+    return hashlib.sha256(
+        json.dumps(files, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+
+
+def _database_family_snapshot(database: Path) -> dict[str, Any]:
+    return {
+        name: _path_snapshot(database.with_name(name))
+        for name in ("interim.sqlite3", "interim.sqlite3-wal", "interim.sqlite3-shm")
+    }
+
+
+def copy_sqlite_database(source: Path, target: Path) -> None:
+    before = _database_family_snapshot(source)
+    shutil.copy2(source, target)
+    source_wal = source.with_name(f"{source.name}-wal")
+    if source_wal.is_file():
+        shutil.copy2(source_wal, target.with_name(f"{target.name}-wal"))
+    after = _database_family_snapshot(source)
+    if before != after:
+        raise RuntimeError("운영 DB 파일이 임시 복사 중 바뀌었습니다.")
+
+    target_connection = sqlite3.connect(target)
+    try:
+        integrity = target_connection.execute("PRAGMA integrity_check").fetchone()
+    finally:
+        target_connection.close()
+    if integrity != ("ok",):
+        raise RuntimeError(f"운영 DB 임시 복사본이 손상됐습니다: {integrity!r}")
+
+
 def snapshot_storage(root: Path) -> dict[str, Any]:
     database = root / "etc/local_research_runtime/interim.sqlite3"
     if not database.is_file():
         raise FileNotFoundError(f"운영 DB가 없습니다: {database}")
+    runtime_root = database.parent
+    database_family = _database_family_snapshot(database)
+    runtime_controls = {name: _path_snapshot(runtime_root / name) for name in RUNTIME_CONTROL_FILES}
+    final_state_root = root / "data/original_plan/final_session"
+    final_state = {
+        path.name: _path_snapshot(path)
+        for path in sorted(final_state_root.iterdir())
+        if path.is_file()
+    }
     receipts = root / "data/original_plan/final_session/operational_receipts"
-    receipt_hashes = {
-        path.name: _sha256(path)
-        for path in sorted(receipts.glob("*.json"))
+    receipt_files = {
+        path.relative_to(receipts).as_posix(): _path_snapshot(path)
+        for path in sorted(receipts.rglob("*"))
         if path.is_file()
     }
     return {
-        "database": {
-            "path": str(database.resolve()),
-            "sha256": _sha256(database),
-            "size": database.stat().st_size,
-        },
-        "receipts": receipt_hashes,
+        "database_family": database_family,
+        "runtime_controls": runtime_controls,
+        "final_state": final_state,
+        "receipts": receipt_files,
     }
 
 
@@ -111,13 +207,17 @@ def classify_result(
     before: dict[str, Any],
     after: dict[str, Any],
 ) -> dict[str, Any]:
-    database_unchanged = before["database"] == after["database"]
+    database_unchanged = before["database_family"] == after["database_family"]
+    runtime_controls_unchanged = before["runtime_controls"] == after["runtime_controls"]
+    final_state_unchanged = before["final_state"] == after["final_state"]
     before_receipts = before["receipts"]
     after_receipts = after["receipts"]
     receipt_file_list_unchanged = list(before_receipts) == list(after_receipts)
     receipt_hashes_unchanged = before_receipts == after_receipts
     storage = {
         "database_unchanged": database_unchanged,
+        "runtime_controls_unchanged": runtime_controls_unchanged,
+        "final_state_unchanged": final_state_unchanged,
         "receipt_file_list_unchanged": receipt_file_list_unchanged,
         "receipt_hashes_unchanged": receipt_hashes_unchanged,
     }
@@ -128,6 +228,20 @@ def classify_result(
         blocker = {
             "id": "OPERATIONAL_DATABASE_CHANGED",
             "message": "사전 점검 중 운영 DB의 hash 또는 크기가 바뀌었습니다.",
+        }
+        blockers.append(blocker)
+        error_ids.add(blocker["id"])
+    if not runtime_controls_unchanged:
+        blocker = {
+            "id": "RUNTIME_CONTROL_FILES_CHANGED",
+            "message": "사전 점검 중 운영 캡처 또는 프로세스 제어 파일이 바뀌었습니다.",
+        }
+        blockers.append(blocker)
+        error_ids.add(blocker["id"])
+    if not final_state_unchanged:
+        blocker = {
+            "id": "FINAL_SESSION_STATE_CHANGED",
+            "message": "사전 점검 중 실제 최종 세션 상태 파일이 바뀌었습니다.",
         }
         blockers.append(blocker)
         error_ids.add(blocker["id"])
@@ -171,12 +285,6 @@ def classify_result(
         status, exit_code = "BLOCKED", 2
     else:
         status, exit_code = "READY", 0
-    before_manifest = hashlib.sha256(
-        json.dumps(before_receipts, sort_keys=True, separators=(",", ":")).encode()
-    ).hexdigest()
-    after_manifest = hashlib.sha256(
-        json.dumps(after_receipts, sort_keys=True, separators=(",", ":")).encode()
-    ).hexdigest()
     return {
         "schema_version": "final_session_preflight_v1",
         "status": status,
@@ -188,12 +296,18 @@ def classify_result(
         "checks": checks,
         "storage": storage,
         "storage_evidence": {
-            "database_before": before["database"],
-            "database_after": after["database"],
+            "database_family_before": before["database_family"],
+            "database_family_after": after["database_family"],
+            "runtime_control_manifest_sha256_before": _file_manifest(before["runtime_controls"]),
+            "runtime_control_manifest_sha256_after": _file_manifest(after["runtime_controls"]),
+            "final_state_file_count_before": len(before["final_state"]),
+            "final_state_file_count_after": len(after["final_state"]),
+            "final_state_manifest_sha256_before": _file_manifest(before["final_state"]),
+            "final_state_manifest_sha256_after": _file_manifest(after["final_state"]),
             "receipt_file_count_before": len(before_receipts),
             "receipt_file_count_after": len(after_receipts),
-            "receipt_manifest_sha256_before": before_manifest,
-            "receipt_manifest_sha256_after": after_manifest,
+            "receipt_manifest_sha256_before": _file_manifest(before_receipts),
+            "receipt_manifest_sha256_after": _file_manifest(after_receipts),
         },
         "blockers": blockers,
     }
@@ -290,8 +404,7 @@ def _wait_ready(
             last_error = str(exc)
             time.sleep(0.5)
     raise RuntimeError(
-        f"서버 준비 시간을 초과했습니다: {url}; error={last_error}; "
-        f"log={_log_tail(log, log_path)}"
+        f"서버 준비 시간을 초과했습니다: {url}; error={last_error}; log={_log_tail(log, log_path)}"
     )
 
 
@@ -321,6 +434,31 @@ def _logged_in_page(url: str) -> tuple[int, str, str]:
         urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar())
     )
     return _get(url, opener=opener, timeout=20.0)
+
+
+def inspect_rendered_h005(url: str, *, web_root: Path) -> dict[str, int]:
+    node = shutil.which("node")
+    if node is None:
+        raise FileNotFoundError("node 실행 파일을 찾지 못했습니다.")
+    completed = subprocess.run(
+        [node, "-e", H005_RENDERED_DOM_SCRIPT, url],
+        cwd=web_root,
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=45,
+    )
+    value = json.loads(completed.stdout)
+    required = {
+        "status",
+        "case_count",
+        "preselected_count",
+        "comment_count",
+        "prefilled_comment_count",
+    }
+    if set(value) != required or not all(isinstance(value[key], int) for key in required):
+        raise ValueError(f"H-005 렌더링 검사 결과가 잘못됐습니다: {value!r}")
+    return value
 
 
 def probe_servers(
@@ -361,9 +499,7 @@ def probe_servers(
             temporary_root=temporary_root,
         )
         processes.append(api)
-        checks["rnd_health"] = _wait_ready(
-            "http://127.0.0.1:8000/health", *api
-        )[0]
+        checks["rnd_health"] = _wait_ready("http://127.0.0.1:8000/health", *api)[0]
 
         console = _start_process(
             "final_console",
@@ -386,9 +522,7 @@ def probe_servers(
             temporary_root=temporary_root,
         )
         processes.append(console)
-        checks["console_home"] = _wait_ready(
-            "http://127.0.0.1:8765/", *console
-        )[0]
+        checks["console_home"] = _wait_ready("http://127.0.0.1:8765/", *console)[0]
         checks["console_state"] = _get("http://127.0.0.1:8765/api/state")[0]
 
         web_environment = os.environ.copy() | {
@@ -418,9 +552,7 @@ def probe_servers(
         )[0]
 
         tips_login = "http://127.0.0.1:3001/research-login?redirect=/tips"
-        pharmacist_login = (
-            "http://127.0.0.1:3001/research-login?redirect=/pharm/tips"
-        )
+        pharmacist_login = "http://127.0.0.1:3001/research-login?redirect=/pharm/tips"
         tips = _logged_in_page(tips_login)
         pharmacist = _logged_in_page(pharmacist_login)
         checks["tips"] = {
@@ -434,21 +566,9 @@ def probe_servers(
             "final_url": pharmacist[1],
         }
 
-        h005_status, _, h005_html = _get("http://127.0.0.1:8765/op039-review")
-        checked = re.findall(r"<input[^>]+checked", h005_html, flags=re.IGNORECASE)
-        comments = re.findall(
-            r"<textarea[^>]*>(.*?)</textarea>",
-            h005_html,
-            flags=re.IGNORECASE | re.DOTALL,
+        checks["h005"] = inspect_rendered_h005(
+            "http://127.0.0.1:8765/op039-review", web_root=web_root
         )
-        cases = re.findall(r"<section><h2>", h005_html, flags=re.IGNORECASE)
-        checks["h005"] = {
-            "status": h005_status,
-            "case_count": len(cases),
-            "preselected_count": len(checked),
-            "comment_count": len(comments),
-            "prefilled_comment_count": sum(bool(value.strip()) for value in comments),
-        }
     finally:
         for process, _, _ in reversed(processes):
             _stop_owned_process(process)
@@ -472,9 +592,7 @@ def run_preflight(
         temporary_root = Path(temp)
         temporary_database = temporary_root / "interim.sqlite3"
         temporary_state_root = temporary_root / "final-session-state"
-        shutil.copy2(database, temporary_database)
-        if _sha256(database) != _sha256(temporary_database):
-            raise RuntimeError("운영 DB 임시 복사본의 hash가 원본과 다릅니다.")
+        copy_sqlite_database(database, temporary_database)
         try:
             checks = probe(
                 root,
