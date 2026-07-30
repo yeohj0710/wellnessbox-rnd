@@ -22,6 +22,11 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey,
 from wellnessbox_rnd.evals.external_high_risk_safety import ExternalHighRiskSafetyEvalReportV2
 from wellnessbox_rnd.governance.final_completion_audit import audit_final_completion_v1
 from wellnessbox_rnd.governance.original_plan_audit import audit_original_plan_manifest_v1
+from wellnessbox_rnd.governance.reviewer_credentials import (
+    audit_reviewer_credentials,
+    load_draft_reviewer_ids,
+    load_registry,
+)
 from wellnessbox_rnd.governance.operational_receipts import (
     begin_session,
     database_counts,
@@ -653,9 +658,16 @@ class FinalSessionConsole:
             ):
                 raise ValueError("OP-039 검토 패키지 식별값이 맞지 않습니다.")
             name = str(reviewer.get("name", "")).strip()
-            owner_names = {"여형준", "웰니스박스"}
-            if name.casefold() in {item.casefold() for item in owner_names}:
-                raise ValueError("과제 오너 본인은 OP-039 전문가 검토자로 등록할 수 없습니다.")
+            credential_audit = audit_reviewer_credentials(
+                reviewer,
+                registry=load_registry(self.root),
+                draft_reviewer_ids=load_draft_reviewer_ids(self._operational_database_path()),
+            )
+            if credential_audit["status"] != "READY":
+                raise ValueError(
+                    "OP-039 검토자 자격 확인에 실패했습니다: "
+                    + ", ".join(credential_audit["problems"])
+                )
             relationship = str(reviewer.get("relationship_to_project", "")).strip()
             project_researcher = relationship == "project_co_researcher"
             if project_researcher and reviewer.get("independent_of_implementation_team") is not False:
@@ -663,7 +675,6 @@ class FinalSessionConsole:
             if (
                 not name
                 or not str(reviewer.get("organization", "")).strip()
-                or not str(reviewer.get("pharmacist_license_id", "")).strip()
                 or reviewer.get("reviewer_role") != "project_pharmacist"
                 or not project_researcher
                 or str(payload.get("signature_name", "")).strip() != name
@@ -687,9 +698,7 @@ class FinalSessionConsole:
                     "H-005", "deferred", {"reason": "external_review_found_invalid_cases", "case_ids": invalid, "registered_path": str(destination)}
                 )
                 raise ValueError("외부 약사가 부적절하다고 판정한 사례가 있어 OP-039를 완료할 수 없습니다.")
-            reviewer_warnings = []
-            if reviewer.get("was_ai_draft_reviewer") is True:
-                reviewer_warnings.append("reviewer_also_reviewed_ai_drafts")
+            reviewer_warnings = credential_audit["warnings"]
         elif not simulation:
             report = ExternalHighRiskSafetyEvalReportV2.model_validate(payload)
             if (
@@ -738,7 +747,11 @@ class FinalSessionConsole:
             {
                 "registered_path": str(destination),
                 "sha256": hashlib.sha256(destination.read_bytes()).hexdigest(),
-                "review_character": "project_pharmacist_expert_safety_review",
+                "review_character": (
+                    "project_pharmacist_expert_safety_review"
+                    if package_review
+                    else "post_completion_independent_organization_evaluation"
+                ),
                 "reviewer_warnings": reviewer_warnings if package_review else [],
             },
         )

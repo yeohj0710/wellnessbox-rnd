@@ -327,11 +327,11 @@ class FinalSessionConsoleTest(unittest.TestCase):
                 "reviewer": {
                     "name": "외부약사",
                     "organization": "독립약국",
-                    "pharmacist_license_id": "license-actual-value",
+                    "pharmacist_license_id": "제34567호",
                     "contact": "reviewer@example.test",
                     "reviewer_role": "project_pharmacist",
                     "relationship_to_project": "project_co_researcher",
-                    "credential_verification_method": "license_document_checked",
+                    "credential_verification_method": "면허증 원본을 대면 확인함",
                     "independent_of_implementation_team": False,
                     "was_ai_draft_reviewer": False,
                 },

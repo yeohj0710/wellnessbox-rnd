@@ -1,0 +1,65 @@
+{
+  "schema_version": "op039_reviewer_identity_registry_v1",
+  "purpose": "H-005 프로젝트 소속 약사 검토에서 오너 본인이 검토자로 등록되는 것을 막는다. 이름 문자열을 정규화한 뒤 아래 목록과 대조한다.",
+  "normalization": "앞뒤 공백 제거, 내부 공백 삭제, 제로폭 문자 삭제, 대소문자 무시",
+  "blocked_identities": [
+    {
+      "canonical_name": "여형준",
+      "role": "project_owner",
+      "aliases": [
+        "여 형준",
+        "Yeo Hyeongjun",
+        "Yeo Hyung Jun",
+        "hyeongjun yeo",
+        "hjyeo",
+        "wellnessbox.tips@gmail.com"
+      ]
+    },
+    {
+      "canonical_name": "웰니스박스",
+      "role": "system_account",
+      "aliases": [
+        "wellnessbox",
+        "wellness box",
+        "웰니스 박스",
+        "WellnessBox TIPS",
+        "웰니스박스TIPS"
+      ]
+    }
+  ],
+  "placeholder_license_ids": [
+    "not_collected",
+    "notcollected",
+    "n/a",
+    "na",
+    "none",
+    "null",
+    "unknown",
+    "tbd",
+    "pending",
+    "미수집",
+    "없음",
+    "미확인",
+    "추후",
+    "-",
+    "0",
+    "00000",
+    "12345"
+  ],
+  "rejected_credential_methods": [
+    "project_owner_attestation",
+    "self_attestation",
+    "self attestation",
+    "none",
+    "n/a",
+    "na",
+    "unknown",
+    "tbd",
+    "미확인",
+    "없음",
+    "본인확인",
+    "오너확인"
+  ],
+  "license_id_minimum_digits": 4,
+  "credential_method_minimum_length": 8
+}
