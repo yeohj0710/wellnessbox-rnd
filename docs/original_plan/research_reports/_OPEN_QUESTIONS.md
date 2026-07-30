@@ -195,6 +195,15 @@
 - 렌더링된 DOM에서 10건 모두 선택돼 있었고 의견 10건도 채워져 있었다. 사전 선택과 기존 의견 복사를 금지한 규칙을 위반하므로 사전 점검은 의도대로 `BLOCKED`, 종료 코드 2를 반환하며 차단 항목은 `H005_FORM_NOT_NEUTRAL` 하나뿐이다.
 - 전용 회귀 테스트는 4개에서 10개로 늘렸다. WAL에 커밋된 행이 임시 DB에 실제로 포함되는지, 다섯 저장 경계 각각에 대한 변경이 차단되는지, 렌더링 DOM 검사가 동적으로 주입된 선택·의견을 잡는지를 각각 확인한다. `python -m pytest tests/test_final_session_preflight.py -q`는 10건 통과다.
 
+### 검토자 자격 단계 (2026-07-30 재설정)
+
+- 과제 참여 검토자 두 사람은 2026-07 현재 약사 면허를 받지 않았다. 두 사람 모두 2027-01 취득 예정이며 최종 연구 마감은 2027-10이다. 2차년도에는 연구를 완료할 의무가 없다.
+- 따라서 2차년도 검토는 예비 약사 사전 검토로 기록한다. 저장소 어디에서도 지금 "약사가 검토했다"고 쓰지 않는다. 3차년도에 면허를 받은 뒤 같은 사례를 약사 자격으로 다시 검토해야 그 표현을 쓸 수 있다.
+- 2차년도 입력은 성명·소속·서명 세 개만 받는다. 면허 번호와 자격 확인 방법 칸은 없앴다. 존재하지 않는 값을 받으면 `not_collected` 같은 자리표시자가 남고 그것이 자격 확인 근거로 잘못 읽히기 때문이다. 실제로 2026-07-24 기록에 그 두 자리표시자가 남아 있었다.
+- 백엔드는 오너·시스템 계정 차단, 등록 참여자 확인, 소속 일치, H-003 초안 원장 교차확인, `licensed_pharmacist` 허위 주장 차단을 수행한다. 자격 단계 계약은 `data/original_plan/contracts/op039_reviewer_identity_registry_v1.json`이며 3차년도에는 이 파일의 `qualification_stage`만 바꾸면 된다.
+- 예비 약사 검토는 OP-039를 `EXTERNAL`로 올리지 않는다. 완료 기록에 `requires_licensed_reconfirmation: true`가 남는다.
+- 남은 미확인 사항: 3차년도 재검토 일정이 아직 잡히지 않았다. 정책 전문은 `docs/original_plan/REVIEWER_QUALIFICATION_POLICY.md`에 있다.
+
 ### 447개 OP-경로 판정 원장
 
 - `docs/original_plan/EVIDENCE_VERIFICATION_REPORT.md`는 OP별 합계만 담았고 447개 경로 각각의 판정 근거는 남아 있지 않았다. 그래서 상세 원장 `data/original_plan/evidence/evidence_verification_ledger_v1.json`을 새로 만들었다.

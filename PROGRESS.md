@@ -1,5 +1,16 @@
 # PROGRESS
 
+## 2026-07-30 검토자 자격 구조를 예비 약사 기준으로 재설정
+
+- 선택 단계·과제: 안전 검토자의 자격 표현을 사실에 맞게 다시 세웠다. 과제 참여자 두 사람은 2026-07 현재 약사 면허가 없고 2027-01 취득 예정이다. 브랜치는 `pre-licensure-reviewer-model`다.
+- 사실 기준: 2차년도인 지금 수행하는 검토는 예비 약사 사전 검토다. 3차년도에 면허를 받은 뒤 같은 사례를 약사 자격으로 다시 검토한다. 최종 마감 2027-10 안에 재검토를 마칠 수 있다. 2차년도에는 연구를 완료할 의무가 없으므로 지금 "약사가 검토했다"고 쓰지 않는다.
+- 입력 간소화: H-005 화면에서 면허 번호와 자격 확인 방법 칸을 없앴다. 아직 존재하지 않는 값을 받으면 `not_collected` 같은 자리표시자가 남고 그것이 자격 확인 근거로 잘못 읽히기 때문이다. 남은 입력은 검토자 성명, 소속, 서명 세 개뿐이며 이름과 소속은 과제 등록 정보와 대조한다.
+- 자격 게이트: `reviewer_credentials.py`가 오너·시스템 계정 차단, 등록 참여자 확인, 소속 일치, H-003 초안 원장 교차확인, `licensed_pharmacist` 허위 주장 차단을 수행한다. 자격 단계 계약은 `op039_reviewer_identity_registry_v1.json`에 있고 3차년도에는 이 파일의 `qualification_stage`만 바꾸면 된다.
+- 단계 승격 차단: 예비 약사 검토는 OP-039를 `EXTERNAL`로 올리지 않는다. 완료 기록에 `review_character=pharmacist_candidate_preliminary_safety_review`와 `requires_licensed_reconfirmation=true`가 남는다.
+- 문서: 새 `docs/original_plan/REVIEWER_QUALIFICATION_POLICY.md`가 두 단계의 구분과 3차년도 전환 절차를 정한다. 실행서, 체크리스트, 운영 절차, 빠른 안내, 비전문가 요약, OP-039 보고서를 모두 예비 약사 기준으로 고쳤다.
+- 검증: `pytest tests/test_reviewer_credentials.py` 30건, `tests/test_op039_reviewer_form_neutrality.py` 7건, `tests/test_final_session_console.py` 27건이 통과했다. 전체 pytest와 사전 점검 결과는 아래 최종 항목에 적는다.
+- 경계: push, 배포, 훈련, 사람 판정·서명 생성은 하지 않았다. 과거 운영 영수증과 저장된 검토 기록은 이력으로 보존했고 고치지 않았다.
+
 ## 2026-07-27 H-005 중립화와 H-003 학습 계보 구현 완료
 
 - 선택 단계·과제: 사람 최종 세션을 막고 있던 두 결함을 실제로 고쳤다. H-005 검토 화면 중립화와 H-003 승인 초안→학습→후보 평가→안전 회귀→교체·rollback 계보 구현이다. 브랜치는 `h005-neutral-h003-lineage`다.

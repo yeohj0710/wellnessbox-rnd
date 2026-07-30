@@ -1,5 +1,20 @@
 # SESSION_HANDOFF
 
+## 2026-07-30 예비 약사 자격 구조 handoff
+
+- **선택 단계와 과제:** 안전 검토자의 자격 표현을 사실에 맞게 재설정했다. 과제 참여자 두 사람은 2026-07 현재 약사 면허가 없고 2027-01 취득 예정이므로, 2차년도 검토를 예비 약사 사전 검토로 기록하도록 코드·데이터·문서를 모두 바꿨다. 브랜치 `pre-licensure-reviewer-model`; push·배포·훈련·사람 판정·서명 없음.
+- **주 데이터셋과 사례 수:** OP-039 고위험 검토 `data/original_plan/op039_external_review_cases_v1.json` 10건, OP-120 감사 `data/original_plan/op120_final_completion_audit_cases_v1.json` 8건.
+- **변경 파일:** `src/wellnessbox_rnd/governance/reviewer_credentials.py`, `final_session_console.py`, `data/original_plan/contracts/op039_reviewer_identity_registry_v1.json`, `scripts/build_op039_external_review_package.py`와 생성된 검토 화면·패키지, 새 `docs/original_plan/REVIEWER_QUALIFICATION_POLICY.md`, `FINAL_SESSION_RUNBOOK.md`, `human_signoff_checklist.md`, `OPERATIONAL_AND_PHARMACIST_SESSION_PROCEDURE.md`, `OPERATIONAL_SESSION_QUICK_GUIDE.md`, `PROJECT_SUMMARY_PLAIN.md`, `research_reports/OP-039.md`, `_OPEN_QUESTIONS.md`, 연구 활동 원장, OP-120 감사 JSON, 시험 3종과 이 세 인계 문서다.
+- **핵심 변경:** 검토 화면 입력을 성명·소속·서명 세 개로 줄였다. 면허 번호와 자격 확인 방법은 2차년도에 받지 않는다. 존재하지 않는 값이기 때문이다. 백엔드는 오너·시스템 계정 차단, 등록 참여자 확인, 소속 일치, H-003 원장 교차확인, `licensed_pharmacist` 허위 주장 차단을 수행한다. 예비 약사 검토는 OP-039를 `EXTERNAL`로 올리지 않고 `requires_licensed_reconfirmation=true`를 남긴다.
+- **코드·데이터·학습·시뮬레이션:** 자격 검증 모듈과 신원 원장, 검토 화면 생성기만 바꿨다. 추천·안전·학습·시뮬레이션 코드와 모델, 원천·frozen 데이터는 그대로다. 훈련과 고정 평가를 실행하지 않았다.
+- **검증 명령과 결과:** `pytest tests/test_reviewer_credentials.py` 30 passed; `tests/test_op039_reviewer_form_neutrality.py` 7 passed; `tests/test_final_session_console.py` 27 passed; 실제 preflight `READY`·종료 코드 0·차단 0건, 저장 경계 5개 불변; `run_final_completion_audit.py` 120/120 `READY`; 전체 pytest는 아래 최종 수치를 따른다.
+- **공식 frozen eval delta:** 256건 데이터와 7개 지표를 바꾸거나 다시 평가하지 않았다. delta는 0이다.
+- **replay·slice delta:** 입력·산출물을 바꾸지 않았다. delta는 0이다.
+- **병목 5개:** 학습 게이트가 NO-GO라 후보 모델을 못 만드는 점, 서로 다른 실제 프로필 5건의 전체 경로가 아직 실행되지 않은 점, 3차년도 약사 자격 재검토가 남은 점, 기존 pytest 실패 89건, 기존 Ruff 28건이다.
+- **다음 세 반복:** CGM 기하 blocker 해소, 실제 프로필 5건 실행, 2차년도 최종 세션을 예비 약사 검토로 완료 순서다.
+- **3차년도 전환 방법:** `op039_reviewer_identity_registry_v1.json`의 `qualification_stage`를 `licensed_pharmacist`로 바꾸고 각 참여자 항목의 자격 단계도 함께 올린다. 코드 수정은 필요 없다. 그 뒤 같은 10개 사례를 다시 검토하면 증거 성격이 `licensed_pharmacist_expert_safety_review`로 바뀐다.
+- **아침에 사람이 확인할 세 가지:** `data/original_plan/final_session/op039_external_reviewer_form.html`을 열어 입력란이 성명·소속·서명 셋뿐인지, `REVIEWER_QUALIFICATION_POLICY.md`의 면허 취득 시기(2027-01)와 마감(2027-10)이 실제 일정과 맞는지, 두 참여자의 소속 표기가 과제 등록 정보와 같은지다.
+
 ## 2026-07-27 H-005 중립화·H-003 학습 계보 handoff
 
 - **선택 단계와 과제:** 사람 최종 세션을 막던 두 결함을 실제로 고쳤다. H-005 검토 화면 중립화와 H-003 승인 초안 학습·평가 계보 구현이다. 브랜치 `h005-neutral-h003-lineage`; push·배포·훈련·사람 판정·서명 없음.
