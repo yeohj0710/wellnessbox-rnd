@@ -1,3 +1,4 @@
+import hashlib
 import json
 from collections import Counter, defaultdict
 from datetime import UTC, datetime
@@ -68,6 +69,13 @@ class EvalCase(BaseModel):
     adverse_event_reported: bool = False
 
 
+def _artifact_digest(artifact_path: str | None) -> str | None:
+    if not artifact_path:
+        return None
+    target = Path(artifact_path)
+    return hashlib.sha256(target.read_bytes()).hexdigest() if target.is_file() else None
+
+
 def load_eval_cases(dataset_path: str | Path) -> list[EvalCase]:
     path = Path(dataset_path)
     cases: list[EvalCase] = []
@@ -78,9 +86,17 @@ def load_eval_cases(dataset_path: str | Path) -> list[EvalCase]:
     return cases
 
 
-def run_eval(dataset_path: str | Path) -> dict[str, object]:
+def run_eval(
+    dataset_path: str | Path,
+    *,
+    candidate_artifact_path: str | Path | None = None,
+    enable_learned_reranking: bool = False,
+) -> dict[str, object]:
     path = Path(dataset_path)
     cases = load_eval_cases(path)
+    artifact_path = str(candidate_artifact_path) if candidate_artifact_path else None
+    if artifact_path and not enable_learned_reranking:
+        raise ValueError("candidate_artifact_requires_enable_learned_reranking")
 
     aggregates: dict[str, list[float]] = {
         "recommendation_coverage_pct": [],
@@ -105,7 +121,11 @@ def run_eval(dataset_path: str | Path) -> dict[str, object]:
     case_results: list[dict[str, object]] = []
 
     for case in cases:
-        response = recommend(case.request)
+        response = recommend(
+            case.request,
+            enable_learned_reranking=enable_learned_reranking,
+            learned_efficacy_artifact_path=artifact_path,
+        )
         actual_ingredients = [item.ingredient_key for item in response.recommendations]
         actual_rule_ids = [item.rule_id for item in response.safety_summary.rule_refs]
         actual_excluded = response.safety_summary.excluded_ingredients
@@ -235,6 +255,11 @@ def run_eval(dataset_path: str | Path) -> dict[str, object]:
         "dataset_path": str(path),
         "generated_at": datetime.now(UTC).isoformat(),
         "case_count": len(cases),
+        "model_selection": {
+            "enable_learned_reranking": enable_learned_reranking,
+            "candidate_artifact_path": artifact_path,
+            "candidate_artifact_sha256": _artifact_digest(artifact_path),
+        },
         "summary": summary,
         "weakest_slice_summary": weakest_slice_summary,
         "case_results": case_results,

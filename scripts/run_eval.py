@@ -31,10 +31,24 @@ def main() -> None:
         default=None,
         help="Optional output path for comparison markdown; defaults under output-dir",
     )
+    parser.add_argument(
+        "--candidate-artifact",
+        default=None,
+        help="Optional learned efficacy artifact to evaluate instead of the deterministic default",
+    )
+    parser.add_argument(
+        "--enable-learned-reranking",
+        action="store_true",
+        help="Required together with --candidate-artifact; off by default",
+    )
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
-    report = run_eval(args.dataset)
+    report = run_eval(
+        args.dataset,
+        candidate_artifact_path=args.candidate_artifact,
+        enable_learned_reranking=args.enable_learned_reranking,
+    )
     outputs = write_eval_outputs(
         report=report,
         output_dir=output_dir,
