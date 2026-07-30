@@ -10,10 +10,10 @@
 - **검증 명령과 결과:** 실제 preflight → `READY`, 종료 코드 0, 차단 0건, H-005 0/0 선입력, 다섯 저장 경계 모두 `true`, 잔류 listener 없음; `pytest tests/test_op039_reviewer_form_neutrality.py` → 6 passed; `pytest tests/test_approved_draft_training_lineage.py` → 20 passed; `pytest tests/test_final_session_console.py` → 27 passed; `python scripts/run_final_completion_audit.py` → 120/120 `READY`, `goal_complete=true`, 차단 0건; 실제 원장 manifest → `READY`, 승인 6건 전부 권혁찬, 오너 계정 1건 제외, DB 해시 불변; 전체 pytest `1,170 passed / 89 failed / 5 warnings`, 167초, 새 실패 0건; 전체 Ruff 29건(기존 32건에서 3건 감소, 신규 0건).
 - **공식 frozen eval delta:** 256건 데이터와 7개 공식 지표를 바꾸거나 다시 평가하지 않았다. delta는 0이다.
 - **replay·slice delta:** 입력·산출물을 바꾸지 않았다. delta는 0이다.
-- **병목 5개:** 오너 차단이 이름 두 개 문자열 비교라 별칭을 못 막는 점, 동일 AI 초안 검토자가 거부가 아니라 경고이며 H-003 원장과 대조되지 않는 점, 면허 ID의 형식·실재를 검증하지 않는 점, 신뢰 원장 대체 경로가 자격 없이 H-005를 완료할 수 있는 점, 학습 게이트가 NO-GO라 후보 모델을 아직 만들 수 없는 점이다.
-- **다음 세 반복:** 백엔드 자격 검증 강화(오너 원장 연결·H-003 검토자 대조·대체 경로 차단), 학습 게이트를 여는 CGM 기하 blocker 해소, 실제 후속 자료로 통제된 사람 최종 세션 수행 순서다.
+- **병목 5개:** 면허 번호의 실제 발급 여부를 조회하지 못해 현장 확인에 의존하는 점, 학습 게이트가 NO-GO라 후보 모델을 아직 만들 수 없는 점, 서로 다른 실제 프로필 5건의 전체 경로가 아직 실행되지 않은 점, 기존 pytest 실패 89건, 기존 Ruff 29건이다.
+- **다음 세 반복:** 학습 게이트를 여는 CGM 기하 blocker 해소, 실제 후속 자료로 통제된 사람 최종 세션 수행, 그 뒤 연구 종료 단계에서 외부 기관 평가 접수 순서다.
 - **병합 판정:** preflight `READY`, 감사 120/120 `READY`, pytest 새 실패 0건, Ruff 신규 0건을 모두 충족했다. 이 handoff 커밋 뒤 `main`에 fast-forward 병합하며 push는 하지 않는다.
-- **아침에 사람이 확인할 세 가지:** 검토 화면을 직접 열어 10건이 정말 비어 있는지, 권혁찬 약사의 실제 면허 번호와 자격 확인 방법을 현장에서 받을 준비가 됐는지, OP-039 외부 독립 검토 기관 섭외를 언제 시작할지다.
+- **아침에 사람이 확인할 세 가지:** `data/original_plan/final_session/op039_external_reviewer_form.html`을 직접 열어 10건이 정말 비어 있는지, 권혁찬 약사의 실제 면허 번호와 자격 확인 방법을 현장에서 받을 준비가 됐는지, 학습 게이트를 여는 CGM 기하 blocker를 언제 다룰지다. OP-039 외부 기관 평가는 연구 종료 후 단계이므로 지금 준비할 항목이 아니다.
 
 ## 2026-07-27 근거 심화·감사 정본·사전 점검 최종 handoff
 
