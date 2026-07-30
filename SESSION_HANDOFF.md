@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-30 원스텝 실행기 handoff
+
+- **선택 단계와 과제:** 남은 연구 과정을 사람이 켜서 다음다음만 눌러 끝낼 수 있게 안내 실행기를 만들었다. 브랜치 `one-step-completion-wizard`; push·배포·훈련·사람 판정·서명 없음.
+- **주 데이터셋과 사례 수:** OP-039 고위험 검토 10건, OP-120 감사 8건. 새 데이터셋은 만들지 않았다.
+- **변경 파일:** 새 `src/wellnessbox_rnd/governance/completion_wizard.py`, `scripts/run_research_completion_wizard.py`, `research-complete.cmd`, `docs/original_plan/ONE_STEP_COMPLETION_GUIDE.md`, `tests/test_completion_wizard.py`와 이 세 인계 문서다.
+- **핵심 변경:** 12단계를 하나의 흐름으로 묶었다. 자동 단계는 스스로 실행하고 사람 단계는 화면을 띄운 뒤 기다린다. Enter를 눌러도 저장이 확인되지 않으면 넘어가지 않고 무엇이 빠졌는지 알려 준다. 세션 시작 시각 이전 기록은 이번 세션 근거로 세지 않는다.
+- **코드·데이터·학습·시뮬레이션:** 새 코드는 마법사 모듈과 실행기, 런처뿐이다. 추천·안전·학습·시뮬레이션 코드와 모델, 원천·frozen 데이터는 그대로다. 운영 DB에도 쓰지 않는다.
+- **검증 명령과 결과:** `pytest tests/test_completion_wizard.py` 34 passed; `research-complete.cmd --status` 실행 결과 2/12 단계 완료로 과거 기록을 정확히 제외; 전체 pytest `1,235 passed / 89 failed`, 새 실패 0건; 전체 Ruff 28건으로 신규 0건.
+- **공식 frozen eval delta:** 데이터와 지표를 바꾸거나 다시 평가하지 않았다. delta는 0이다.
+- **replay·slice delta:** 입력·산출물을 바꾸지 않았다. delta는 0이다.
+- **병목 5개:** 학습 게이트 NO-GO, 실제 프로필 5건 미실행, 3차년도 약사 자격 재검토, 기존 pytest 실패 89건, 기존 Ruff 28건이다.
+- **다음 세 반복:** `research-complete.cmd` 로 2차년도 세션을 끝까지 수행, CGM 기하 blocker 해소, 3차년도 자격 단계 전환 순서다.
+- **아침에 사람이 확인할 세 가지:** `research-complete.cmd --status` 를 한 번 실행해 12단계 목록이 이해되는지, 과거 기록이 제외된 이유가 납득되는지, 실제 참여자 5명의 자료가 준비됐는지다.
+
 ## 2026-07-30 예비 약사 자격 구조 handoff
 
 - **선택 단계와 과제:** 안전 검토자의 자격 표현을 사실에 맞게 재설정했다. 과제 참여자 두 사람은 2026-07 현재 약사 면허가 없고 2027-01 취득 예정이므로, 2차년도 검토를 예비 약사 사전 검토로 기록하도록 코드·데이터·문서를 모두 바꿨다. 브랜치 `pre-licensure-reviewer-model`; push·배포·훈련·사람 판정·서명 없음.
