@@ -417,7 +417,7 @@
       "wellnessbox-rnd/tests/test_external_dependency_registry.py": "82ee7c0f26e2be63136f88fe4506271c8f77f939",
       "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py": "affdaae1b512ed7021d03230f1250e0791ba71e1",
       "wellnessbox-rnd/tests/test_final_completion_audit.py": "0969e0115b4fef0350459f51ad32c5146ade6555",
-      "wellnessbox-rnd/tests/test_final_session_console.py": "4d8a66a80caf3aebfc0563d37d9ff2ed50a5f50b",
+      "wellnessbox-rnd/tests/test_final_session_console.py": "8ce02e4edbb0d713b999df9fbd5fdd41098e157e",
       "wellnessbox-rnd/tests/test_goal_ingredient_priors.py": "1150947521af5bae52709a5afadffa8d5cb158c8",
       "wellnessbox-rnd/tests/test_health_input_contracts.py": "06ee3a817c09f04a32dcc69e3b5dfec263a21703",
       "wellnessbox-rnd/tests/test_inference_api.py": "1bfddb80992fbedf3f5effec70b489269b08a36c",
@@ -529,7 +529,7 @@
     },
     "repository_commits": {
       "wellnessbox": "f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f",
-      "wellnessbox-rnd": "821a5a5a4e4512f015ec798b70b0922a1b0992c1"
+      "wellnessbox-rnd": "4b5b9e92f49aea5ea6d404c5dbe9f03be8be3415"
     }
   },
   "dataset": {
