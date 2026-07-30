@@ -207,9 +207,21 @@
 - 프로젝트 공동연구자만 허용하고 `independent_of_implementation_team=false`를 강제하는 현재 규칙은 `human_signoff_checklist.md`와 일치한다.
 - 오너 차단은 자유 입력 이름이 `여형준` 또는 `웰니스박스`와 정확히 같을 때만 작동한다. 인증 계정이나 오너 원장과 연결하지 않아 별칭을 막지 못한다.
 - 동일 AI 초안 검토자 표시는 거부가 아니라 경고다. 체크리스트의 경고 규칙과는 맞지만 H-003 검토자 원장과 대조하지 않고 자기 신고 값만 믿는다.
-- 생성기와 현재 HTML은 10개 판정을 모두 `valid`로 미리 고르고 AI 의견도 채운다. 현재 테스트는 이 사전 입력을 필수로 고정해 기존 판정 복사 금지와 사전 선택 금지를 위반한다.
-- 면허 ID는 빈 문자열만 거부해 `not_collected`를 허용한다. 자격 확인 방법은 검증하지 않고, 서명은 별도 전자서명이 아니라 이름 문자열을 자동 복사한다. 신뢰 원장 기반 대체 경로도 사람 검토자 자격 없이 H-005를 완료할 수 있다.
-- 따라서 H-005 상태가 `completed`여도 중립적 외부 검토가 끝났다고 판단하면 안 된다. 코드는 새로 만들지 않았고 판정 데이터도 생성하지 않았다.
+- 신뢰 원장 기반 대체 경로는 사람 검토자 자격 없이 H-005를 완료할 수 있다. 이 우회 경로는 아직 막지 않았다.
+- 따라서 H-005 상태가 `completed`여도 중립적 외부 검토가 끝났다고 판단하면 안 된다.
+
+#### 2026-07-27 오후에 해소한 부분
+
+화면의 선입력은 걷어냈다. 백엔드 검증 규칙은 손대지 않았다.
+
+- 생성기와 HTML이 10개 판정을 모두 `valid`로 미리 고르고 AI 의견도 채우던 문제를 없앴다. 라디오 20개가 모두 미선택으로 열리고 의견란 10개가 모두 비어 있다.
+- 하드코딩하던 `pharmacist_license_id: "not_collected"`와 `credential_verification_method: "project_owner_attestation"`을 실제 입력란으로 바꿨다. 두 칸이 비면 제출이 막힌다.
+- 서명은 검토자 성명에서 자동 복사하지 않는다. 제출 직전에 따로 입력하며 성명과 다르면 제출이 막힌다.
+- `was_ai_draft_reviewer`는 하드코딩 false 대신 검토자가 직접 체크하는 미선택 항목이다.
+- 사전 입력을 필수로 고정하던 시험 단언을 중립성 단언으로 뒤집고, DOM 파서로 미선택·공백을 확인하는 전용 시험 6건을 추가했다.
+- 실제 사전 점검이 처음으로 `READY`, 종료 코드 0, 차단 0건을 반환했다. 선택은 10/10에서 0/0, 의견은 10/10에서 0/0으로 바뀌었다.
+
+여전히 남은 것: 오너 차단이 이름 두 개 문자열 비교라는 점, 동일 AI 초안 검토자가 경고에 그치고 H-003 원장과 대조되지 않는 점, 면허 ID의 형식·실재를 검증하지 않는 점, 신뢰 원장 대체 경로다. 사람 판정 데이터는 이번에도 만들지 않았다.
 
 ### H-003 이후 학습·평가 명령의 빈 구간
 
@@ -217,8 +229,20 @@
 - 현재 기준 모델 평가는 `python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir <baseline-output-dir>`로 실행할 수 있다. 두 보고서의 산술 비교는 `python scripts/compare_eval_reports.py --baseline-report <baseline-report.json> --candidate-report <candidate-report.json> --output-json <comparison.json> --output-md <comparison.md>`로 만들 수 있다.
 - 그러나 승인 초안 소비 함수는 `approved`와 `approved_with_edits` 행만 반환하고 목적과 초안 ID 계보를 학습 데이터셋으로 남기지 않는다. 최종 콘솔도 반환 행 수만 기록하며 학습을 호출하지 않는다.
 - `run_eval.py`는 후보 모델이나 artifact 인자를 받지 않고 항상 같은 `recommend` 함수를 호출한다. 비교 스크립트는 차이만 계산하며 안전 지표가 나빠졌을 때 실패시키지 않는다.
-- H-003 승인 초안 변환기, approved-only 데이터셋 manifest, 후보 artifact 학습 명령, 후보 모델을 주입하는 고정 평가 실행기, 안전 회귀 게이트, 교체·유지와 rollback 영수증이 없다. 별도 합성 자료용 학습 스크립트는 H-003 체인으로 사용할 수 없다.
-- 학습과 평가는 실행하지 않았다. 위 빈 구간이 구현되기 전에는 승인 초안 → 학습 → 후보 평가 → 안전 게이트 → 교체 또는 유지로 이어지는 실제 명령 체인을 확정할 수 없다.
+- 학습과 평가는 실행하지 않았다.
+
+#### 2026-07-27 오후에 채운 빈 구간
+
+여섯 개 구간을 모두 구현했다. 훈련은 여전히 실행하지 않았고, 게이트가 열리기 전에는 실행되지 않도록 막았다.
+
+- 승인 전용 데이터셋 manifest: `src/wellnessbox_rnd/training/approved_draft_dataset.py`와 `scripts/build_approved_draft_dataset.py`. 원장을 읽기 전용으로 열어 `approved`·`approved_with_edits` 행만 남기고, 대기·반려·오너 계정 검토 행은 사유와 함께 제외 목록에 남긴다. 포함 행의 정본 형태로 `dataset_sha256`을 계산한다.
+- 후보 artifact 학습 명령: `scripts/train_approved_draft_candidate.py`. 게이트 보고서의 `authorized_now`가 참일 때만 학습을 호출한다. NO-GO거나 보고서가 없으면 종료 코드 2로 멈추고 초안 ID 목록·`dataset_sha256`·argv·`config_sha256`을 담은 실행 계획만 남긴다.
+- 후보 모델을 주입하는 고정 평가: `run_eval`이 `candidate_artifact_path`와 `enable_learned_reranking`을 받아 `recommend`로 넘긴다. `scripts/run_eval.py`에 `--candidate-artifact`와 `--enable-learned-reranking`을 추가했고, 보고서에 사용한 artifact 경로와 SHA-256이 `model_selection`으로 남는다.
+- 안전 회귀 게이트: `src/wellnessbox_rnd/training/candidate_promotion.py`. 안전 지표 4개 중 하나라도 나빠지거나 통과에서 실패로 바뀌면 `BLOCKED`다. 지표가 아예 없어도 실패로 본다.
+- 교체·유지 판정과 rollback 영수증: `scripts/decide_candidate_promotion.py`. 회귀가 있으면 종료 코드 1이다. 영수증에는 판정, 차단 사유, 되돌릴 artifact 경로와 SHA-256, 복원 절차가 들어간다. 게이트가 닫혀 있거나 승인 초안이 0건이면 판정은 항상 `keep_current_model`이다.
+- 전용 시험 20건이 통과한다(`tests/test_approved_draft_training_lineage.py`).
+
+실제 원장으로 manifest를 만들어 본 결과 승인 6건은 모두 권혁찬 검토였고 웰니스박스 계정 검토 1건이 제외됐다. DB SHA-256은 실행 전후 동일했다. 학습 게이트는 여전히 NO-GO이므로 후보 모델은 만들지 않았고, 따라서 후보 평가와 교체 판정도 실제 값으로 실행하지 않았다.
 
 ### 최종 회귀와 병합 판정
 

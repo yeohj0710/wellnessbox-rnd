@@ -8,7 +8,7 @@
 
 1. 5개 프로필의 실제 복용 전 자료와 실제 후속평가 자료가 준비돼 있다. 후속 자료가 아직 없으면 관찰 기간이 끝날 때까지 H-007을 완료할 수 없다.
 2. `etc/final_session_private/final_session_signing_key.pem`이 이미 있다. H-007 운영 영수증 검증에는 이 키가 필요하지만, 새 키를 만드는 H-006은 요청된 순서상 마지막이다.
-3. H-005 입력 화면의 선택과 의견이 모두 비어 있다. 현재 `data/original_plan/final_session/op039_external_reviewer_form.html`은 10건을 `타당`으로 선택하고 의견까지 채워 두므로 이번 세션에 그대로 쓰면 안 된다.
+3. H-005 입력 화면의 선택과 의견이 모두 비어 있다. `data/original_plan/final_session/op039_external_reviewer_form.html`은 2026-07-27에 중립화했다. 10건 모두 미선택, 의견란 10개 모두 공백이며 면허 번호·자격 확인 방법·서명도 빈칸이다. 사전 점검이 이 상태를 렌더링된 DOM으로 확인한다.
 
 이 문서는 판단 결과, 승인, 서명, 실제 사용 값을 대신 입력하지 않는다. 표에 적은 H-007 프로필은 입력 분산을 확인하기 위한 **제안안**이다. 운영자는 실제 참여자 자료와 대조해 고쳐야 한다. H-005의 `시스템 신호`도 약사의 결론이 아니다.
 
@@ -46,14 +46,14 @@
 | 1 | H-007 실제 프로필 5개 | 운영 보조자 | 실제 복용 전·후속 자료 | 50~75분 | 서로 다른 실제 프로필 5개가 전체 경로를 마치고 영수증 대상이 됨 | 가상값·자동 저장·후속 자료 부재 |
 | 2 | AI 초안 생성·대기열 확인 | 운영 보조자 | H-007 결과 | 5분 | 실제 생성 초안 수와 대기 수를 기록 | 생성돼야 할 초안이 0건 |
 | 3 | H-003 전수 검토 | 권혁찬 약사 | 대기열과 근거 표시 | 60~120분 | 모든 초안이 승인·수정 승인·반려 중 하나이며 대기 0건 | 빈 대기열을 실제 검토로 확인하려는 경우 |
-| 4 | 승인 초안 학습·평가 1회 | 운영 보조자, 결과는 약사에게 보고 | H-003 대기 0건 | **확인 필요** | 승인 초안만 입력되고 평가 결과·모델 변경 여부가 기록됨 | 실행 명령과 입력 계보가 확인되지 않음 |
+| 4 | 승인 초안 학습·평가 1회 | 운영 보조자, 결과는 약사에게 보고 | H-003 대기 0건, 학습 게이트 GO | 30~60분 | 승인 초안만 입력되고 평가 결과·모델 변경 여부가 기록됨 | 학습 게이트가 NO-GO, 안전 회귀 발생 |
 | 5 | H-002 정책 승인 | 권혁찬 약사 | H-003과 1회 평가 결과 | 10분 | 9개 규칙을 모두 확인하고 실제 승인 또는 수정 의견 저장 | 불리한 상태를 완화하는 임의 변경 |
 | 6 | H-004 보고서 문체 승인 | 오너 | 검토할 실제 보고서 2~3편 | 10~15분 | 표본 2~3편에 실제 승인 또는 의견 저장 | 표본 본문이 열리지 않음 |
 | 7 | H-005 고위험 10건 검토 | 권혁찬 약사 | 중립 화면, 자격 확인 방법 | 30~45분 | 10건 각각 실제 판정·근거, 자격 확인 방법, 실제 서명 저장 | 선택·의견이 미리 채워짐 |
 | 8 | H-006 최종 영수증 | 오너 | H-002~H-005 완료, H-007 영수증 유효 | 5~10분 | 최종 검증·독립 검토 영수증과 서명 검증 완료 | 감사 차단 목록이 비어 있지 않음 |
 | 9 | 종료·최종 감사 | 운영 보조자 | H-006 완료 | 5~10분 | 운영 영수증 경로와 감사 `READY` 확인 | 종료 전에 영수증 경로가 없음 |
 
-모든 입력이 미리 준비됐을 때 사람과 운영 보조자의 합산 활동 시간은 **약 185~305분(3시간 5분~5시간 5분)**이다. 실제 후속 관찰 기간과 실행 방법이 확인되지 않은 학습·평가 시간은 제외했다. 권혁찬 약사의 예상 활동 시간은 100~175분, 오너의 예상 활동 시간은 15~25분이다.
+모든 입력이 미리 준비됐고 학습 게이트가 열렸을 때 사람과 운영 보조자의 합산 활동 시간은 **약 215~365분(3시간 35분~6시간 5분)**이다. 학습 게이트가 NO-GO면 4단계는 실행 계획만 남기고 멈추므로 그만큼 짧아진다. 권혁찬 약사의 예상 활동 시간은 100~175분, 오너의 예상 활동 시간은 15~25분이다.
 
 ## 세션 전에 이 명령만 순서대로 실행한다
 
@@ -102,7 +102,7 @@ Test-Path .\.venv-interim\Scripts\python.exe
 Test-Path .\etc\final_session_private\final_session_signing_key.pem
 ```
 
-정상 결과: `True`. `False`면 세션을 멈춘다. 현재 구현에서는 H-006이 키를 만들지만, 요청된 실행 순서는 H-007을 먼저 둔다. 오너가 **기존 키를 쓸지, H-006의 키 준비만 앞당길지** 결정해야 한다. 이 문서는 키를 만들거나 선택하지 않는다.
+정상 결과: `True`. `False`면 세션을 멈춘다. 현재 구현에서는 H-006이 키를 만들지만, 요청된 실행 순서는 H-007을 먼저 둔다. 2026-07-27에 오너가 **기존 키를 그대로 쓴다**고 정했다. 새 키를 만들지 않으며 H-006의 키 준비를 앞당기지도 않는다.
 
 ### 5. 운영 영수증을 만들지 않는 사전 점검을 실행한다
 
@@ -138,13 +138,13 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
 
 ### 2026-07-27 무영수증 사전 점검 실제 출력
 
-실행 명령은 위 5번 한 줄이며 프로세스 종료 코드는 `2`였다.
+실행 명령은 위 5번 한 줄이며 프로세스 종료 코드는 `0`이었다. H-005 화면을 중립화한 뒤 처음으로 `READY`가 나왔다.
 
 ```json
 {
   "schema_version": "final_session_preflight_v1",
-  "status": "BLOCKED",
-  "exit_code": 2,
+  "status": "READY",
+  "exit_code": 0,
   "operational_receipt_generation": false,
   "human_actions_performed": false,
   "temporary_database": true,
@@ -167,9 +167,9 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
     "h005": {
       "status": 200,
       "case_count": 10,
-      "preselected_count": 10,
+      "preselected_count": 0,
       "comment_count": 10,
-      "prefilled_comment_count": 10
+      "prefilled_comment_count": 0
     }
   },
   "storage": {
@@ -189,15 +189,11 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
       },
       "interim.sqlite3-wal": {
         "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3-wal",
-        "exists": true,
-        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "size": 0
+        "exists": false
       },
       "interim.sqlite3-shm": {
         "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3-shm",
-        "exists": true,
-        "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
-        "size": 32768
+        "exists": false
       }
     },
     "database_family_after": {
@@ -209,38 +205,31 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
       },
       "interim.sqlite3-wal": {
         "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3-wal",
-        "exists": true,
-        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "size": 0
+        "exists": false
       },
       "interim.sqlite3-shm": {
         "path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3-shm",
-        "exists": true,
-        "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
-        "size": 32768
+        "exists": false
       }
     },
     "runtime_control_manifest_sha256_before": "45d2d47b8b9c61f14c8dd74ddd0ee96160744ce4a752f87d193dab2de0a9e1bb",
     "runtime_control_manifest_sha256_after": "45d2d47b8b9c61f14c8dd74ddd0ee96160744ce4a752f87d193dab2de0a9e1bb",
     "final_state_file_count_before": 13,
     "final_state_file_count_after": 13,
-    "final_state_manifest_sha256_before": "fcd74398346da0200b8cf6bd1fc628255abea63a2750d90e75e8a44b37b76a35",
-    "final_state_manifest_sha256_after": "fcd74398346da0200b8cf6bd1fc628255abea63a2750d90e75e8a44b37b76a35",
+    "final_state_manifest_sha256_before": "9d7bdf3f7c6f9476dbfd7cf2f645545d90a070fc38fb900e5e5dd8400e0b433d",
+    "final_state_manifest_sha256_after": "9d7bdf3f7c6f9476dbfd7cf2f645545d90a070fc38fb900e5e5dd8400e0b433d",
     "receipt_file_count_before": 15,
     "receipt_file_count_after": 15,
     "receipt_manifest_sha256_before": "a73f8e25c2b3fdefe956635ca7092a3f071d4ac10155b6b7e28a69dcc13bf39a",
     "receipt_manifest_sha256_after": "a73f8e25c2b3fdefe956635ca7092a3f071d4ac10155b6b7e28a69dcc13bf39a"
   },
-  "blockers": [
-    {
-      "id": "H005_FORM_NOT_NEUTRAL",
-      "message": "H-005 10/10 cases are preselected and 10/10 comments are prefilled."
-    }
-  ]
+  "blockers": []
 }
 ```
 
-서버와 두 화면은 모두 응답했지만 H-005의 렌더링된 DOM은 10건 모두 `타당`으로 미리 선택됐고 의견란 10개도 모두 채워져 있었다. 따라서 실제 입력을 시작하지 않는다. 실제 DB 본체·WAL·SHM, 운영 캡처·프로세스 제어 파일, 최종 세션 직접 파일 13개, 기존 운영 영수증 15개는 실행 전후 동일했고 새 운영 영수증은 생기지 않았다.
+서버와 두 화면이 모두 응답했고, 렌더링된 DOM에서 사례 10건이 모두 미선택, 의견란 10개가 모두 공백이었다. 실제 DB 본체·WAL·SHM, 운영 캡처·프로세스 제어 파일, 최종 세션 직접 파일 13개, 기존 운영 영수증 15개는 실행 전후 동일했고 새 운영 영수증은 생기지 않았다. 8000·8765·3001 포트에 잔류 listener도 없었다.
+
+직전 실행(선입력이 남아 있던 상태)은 종료 코드 `2`, `BLOCKED`, 차단 항목 `H005_FORM_NOT_NEUTRAL` 하나였다. 최종 세션 직접 파일의 manifest SHA-256이 `fcd74398346da0200b8cf6bd1fc628255abea63a2750d90e75e8a44b37b76a35`에서 위 값으로 바뀐 것은 중립화한 검토 화면 HTML과 검토 패키지 zip이 그 폴더에 있기 때문이다.
 
 ## H-007: 자동 저장 없이 실제 5개 프로필을 입력한다
 
@@ -313,33 +302,47 @@ Test-Path .\etc\final_session_private\final_session_signing_key.pem
 
 `src/wellnessbox_rnd/governance/final_session_console.py`의 `_run_draft_downstream_cycle`은 승인 초안을 학습·평가 입력으로 등록하고 소비 건수를 기록한다. 현재 `data/original_plan/final_session/ai_draft_downstream_cycle_v1.json`은 승인 초안 6건을 학습·평가 입력으로 등록했지만, 새 모델 학습·교체는 하지 않았다고 명시한다. `approved_draft_eval_comparison_v1.json`도 기준 모델과 후보 모델의 256건 평가 결과가 같다고 기록한다.
 
-`scripts/run_interim_pipeline.py retrain`은 별도 패키지의 `run_interim_proxy_research.py`를 실행한다. 이 명령이 H-003 승인 초안을 입력으로 읽는 계보는 확인되지 않았다. 따라서 이 실행서에는 학습 명령을 제시하지 않는다.
+2026-07-27에 승인 초안에서 교체 판정까지 이어지는 명령 체인을 구현했다. **학습 게이트는 여전히 NO-GO이므로 4단계는 게이트가 열린 뒤에만 실행한다.** 아래 명령은 순서대로 실행한다.
 
-현재 저장소에서 안전하게 확정할 수 있는 명령은 고정 평가 세트 확인, 현재 기준 모델 평가, 이미 만들어진 두 평가 보고서의 산술 비교뿐이다. 아래 명령은 H-003 승인 데이터가 준비돼도 누락된 학습 계보가 구현되기 전에는 실행하지 않는다.
+```powershell
+python scripts/build_approved_draft_dataset.py --database etc\local_research_runtime\interim.sqlite3
+python scripts/build_training_readiness_gate.py
+python scripts/train_approved_draft_candidate.py
+python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/baseline
+python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir artifacts/reports/candidate --enable-learned-reranking --candidate-artifact artifacts/models/effect_model_candidate_approved_drafts.json
+python scripts/decide_candidate_promotion.py --baseline-report artifacts/reports/baseline/eval_report.json --candidate-report artifacts/reports/candidate/eval_report.json --candidate-artifact artifacts/models/effect_model_candidate_approved_drafts.json --current-artifact artifacts/models/effect_model_v3.json --decided-by <실명>
+```
+
+각 명령이 무엇을 보증하는지는 다음과 같다.
+
+| 명령 | 보증하는 것 | 실패 신호 |
+|---|---|---|
+| `build_approved_draft_dataset.py` | 승인·수정 승인 행만 남기고 대기·반려·오너 계정 검토 행은 사유와 함께 제외한다. 포함 행으로 `dataset_sha256`을 계산한다 | 위반 행이 있으면 종료 코드 2 |
+| `build_training_readiness_gate.py` | 현재 학습 인가 여부를 GO/NO-GO로 다시 계산한다 | `authorized_now=false` |
+| `train_approved_draft_candidate.py` | 게이트가 GO일 때만 학습을 호출한다. NO-GO면 초안 ID·`dataset_sha256`·argv·`config_sha256`을 담은 실행 계획만 남긴다 | 종료 코드 2, `executed=false` |
+| `run_eval.py --candidate-artifact` | 후보 artifact를 실제로 주입해 256건을 다시 평가하고 `model_selection`에 경로와 SHA-256을 남긴다 | artifact만 주고 재순위를 켜지 않으면 거부 |
+| `decide_candidate_promotion.py` | 안전 지표 4개 중 하나라도 나빠지면 실패한다. 교체·유지와 되돌릴 artifact를 영수증에 남긴다 | 회귀 시 종료 코드 1, 유지 판정 시 2 |
+
+고정 평가 세트는 256건이고 현재 SHA-256은 `ba134edbade51d02ad4014a7a66626559eb454967736495d1e60fbcf95b3a960`이다. 실행 전 아래로 확인한다.
 
 ```powershell
 (Get-FileHash -Algorithm SHA256 data\frozen_eval\frozen_eval_v1.jsonl).Hash
-python scripts/run_eval.py --dataset data/frozen_eval/frozen_eval_v1.jsonl --output-dir <baseline-output-dir>
-python scripts/compare_eval_reports.py --baseline-report <baseline-report.json> --candidate-report <candidate-report.json> --output-json <comparison.json> --output-md <comparison.md>
 ```
 
-고정 평가 세트는 256건이고 현재 SHA-256은 `ba134edbade51d02ad4014a7a66626559eb454967736495d1e60fbcf95b3a960`이다. `run_eval.py`는 후보 모델이나 artifact 인자를 받지 않고 항상 같은 `recommend` 함수를 호출한다. 따라서 두 번째 후보 모델 평가 명령은 현재 만들 수 없다. `compare_eval_reports.py`도 차이만 계산하고 안전 지표가 나빠졌을 때 실패시키지 않는다.
+안전 회귀 판정 대상은 `safety_reference_accuracy_pct`, `adverse_event_count_yearly`, `recommendation_coverage_pct`, `next_action_accuracy_pct` 네 가지다. 값이 나빠지거나 통과에서 실패로 바뀌면 차단하며, 지표가 아예 없어도 차단한다. 기존 `compare_eval_reports.py`는 차이만 계산하므로 교체 판정 근거로 쓰지 않는다.
 
-다음 항목을 구현 담당자가 확인하기 전에는 “승인 초안으로 학습·평가 1회를 완료했다”고 승인하지 않는다.
+“승인 초안으로 학습·평가 1회를 완료했다”고 승인하기 전에 다음 산출물이 모두 있어야 한다.
 
-- 승인 초안 ID가 학습 입력 레코드로 연결되는 코드와 명령
-- 대기·반려 초안을 제외하는 실행 로그
-- 학습 데이터셋 ID, 모델 ID, 코드 버전, 설정 hash
-- 고정 평가셋 1회 결과와 기준 모델 비교
-- 모델을 교체하지 않았으면 그 결정과 이유
-- 승인 초안만 담은 데이터셋 manifest와 초안 ID 계보
-- 후보 artifact를 입력받는 고정 평가 실행기와 안전 회귀 실패 조건
-- 모델 교체·유지 결정과 rollback 영수증
+- `approved_draft_dataset_manifest_v1.json`의 포함 초안 ID 목록과 `dataset_sha256`
+- `approved_draft_training_plan_v1.json`의 `executed=true`와 `trainer_returncode=0`
+- 기준·후보 두 `eval_report.json`과 두 `model_selection` 블록
+- `candidate_promotion_decision_v1.json`의 판정, 차단 사유, rollback 경로와 SHA-256
 
 확인 범위:
 
+- `src/wellnessbox_rnd/training/approved_draft_dataset.py`
+- `src/wellnessbox_rnd/training/candidate_promotion.py`
 - `src/wellnessbox_rnd/governance/final_session_console.py::_run_draft_downstream_cycle`
-- `scripts/run_interim_pipeline.py`
 - `data/original_plan/final_session/ai_draft_downstream_cycle_v1.json`
 - `data/original_plan/final_session/approved_draft_eval_comparison_v1.json`
 
@@ -380,30 +383,28 @@ python scripts/compare_eval_reports.py --baseline-report <baseline-report.json> 
 
 ## H-005: 권혁찬 약사가 고위험 10건을 빈 선택지에서 판단한다
 
-### 현재 화면을 그대로 쓰지 않는다
+### 화면은 중립화됐고, 백엔드 검증은 아직 남아 있다
 
-`data/original_plan/final_session/op039_external_reviewer_form.html`에는 10건 모두 `타당`이 선택돼 있고 AI 의견도 입력돼 있다. 자격 정보도 `pharmacist_license_id: "not_collected"`, `credential_verification_method: "project_owner_attestation"`로 고정돼 있다. 이 상태는 중립 검토 요건을 충족하지 못한다.
+`data/original_plan/final_session/op039_external_reviewer_form.html`은 2026-07-27에 중립화했다. 화면 자체는 이제 다음 조건을 충족한다.
 
-중립 화면이 준비되기 전에는 `약사 안전 검토 열기`를 누르지 않는다. 중립 화면은 다음 조건을 충족해야 한다.
+- 각 사례의 `타당`·`부적절`이 모두 미선택이다. 라디오 20개 전부 `checked`가 없다.
+- 의견 칸 10개가 모두 비어 있다. 채워 넣던 AI 제안 문장을 없앴다.
+- 시스템 판정, 규칙 ID, 근거 경로는 읽기 전용 안내로만 보이며 "검토 결론이 아니다"라고 적혀 있다.
+- 면허 번호와 자격 확인 방법이 빈 입력란이다. 하드코딩하던 `not_collected`와 `project_owner_attestation`을 없앴다.
+- 서명이 별도 입력란이며 제출 직전에 본인이 입력한다. 성명과 다르면 제출이 막힌다.
+- `was_ai_draft_reviewer`가 검토자가 직접 체크하는 미선택 항목이다.
+- `reviewer_role=project_pharmacist`, `relationship_to_project=project_co_researcher`, `independent_of_implementation_team=false`는 사실대로 고정 기록된다.
 
-- 각 사례의 `타당`·`부적절`이 모두 미선택이다.
-- 의견 칸이 비어 있다.
-- 시스템 판정, 규칙 ID, 근거 경로만 읽기 전용으로 보인다.
-- 권혁찬 약사가 실제 자격 확인 방법을 입력할 수 있다.
-- `reviewer_role=project_pharmacist`, `relationship_to_project=project_co_researcher`, `independent_of_implementation_team=false`가 사실대로 기록된다.
-- 권혁찬 약사가 H-003도 검토했다면 `was_ai_draft_reviewer=true`로 기록하고 시스템 경고를 보존한다.
-- 실제 서명 이름은 권혁찬 약사가 제출 직전에 입력한다.
+사전 점검이 이 상태를 실제 렌더링된 DOM으로 확인한다. 2026-07-27 실행에서 `case_count` 10, `preselected_count` 0, `comment_count` 10, `prefilled_comment_count` 0이었고 결과는 `READY`, 종료 코드 0이었다.
 
-현재 백엔드 검증도 중립 화면을 대신하지 못한다.
+**그래도 백엔드 검증은 아직 사람 자격을 보증하지 못한다.** 아래는 이번에 고치지 않았다.
 
 - 오너 차단은 이름이 `여형준` 또는 `웰니스박스`와 정확히 같은 경우만 거부한다. 인증 계정이나 오너 원장과 연결하지 않아 별칭을 막지 못한다.
-- 프로젝트 공동연구자와 `independent_of_implementation_team=false` 강제는 현재 체크리스트와 일치한다.
 - `was_ai_draft_reviewer=true`는 거부가 아니라 경고이며 H-003 검토자 원장과 대조하지 않는다.
-- 면허 ID는 빈 문자열만 거부해 `not_collected`도 통과한다. 자격 확인 방법은 검증하지 않는다.
-- 서명은 별도 전자서명이 아니라 검토자 이름과 같은 문자열인지 확인한다. 현재 HTML에는 별도 서명 입력도 없다.
+- 면허 ID는 빈 문자열만 거부한다. 형식이나 실재를 확인하지 않는다.
 - 신뢰 원장 기반 대체 보고서는 검토자 면허와 서명 없이도 H-005 완료 경로에 들어갈 수 있다.
 
-따라서 화면의 사전 선택만 지워서는 충분하지 않다. 실제 검토 전에 검토자 신원 연결, 면허와 자격 확인 방법, 별도 서명 입력, H-003 검토자 대조, 대체 경로의 같은 자격 검증을 구현하고 시험해야 한다. 이번 실행에서는 코드를 만들거나 판정 데이터를 채우지 않았다.
+따라서 운영 보조자는 권혁찬 약사의 실제 면허 번호와 자격 확인 방법을 세션 현장에서 직접 확인하고 기록해야 한다. 시스템이 대신 확인해 주지 않는다. 판정 데이터는 이번에도 만들지 않았다.
 
 ### 10건에서 약사가 볼 정보
 
@@ -511,12 +512,18 @@ H-006 전에 다음을 확인한다.
 ## 세션 전에 답이 필요한 항목
 
 1. 기존 `session_state_v1.json`과 영수증을 보존하면서 새 세션을 분리하는 방법은 무엇인가?
-2. H-007 전에 사용할 기존 Ed25519 키가 승인된 키인가, 아니면 H-006의 키 준비만 앞당길 것인가?
-3. 5개 실제 프로필의 실제 후속평가 자료가 이미 있는가? 없다면 최종 세션 날짜를 후속 관찰 뒤로 옮겨야 한다.
-4. 사용자 화면 내부의 실제 필드명과 저장 버튼명은 무엇인가? 연결 저장소 화면 코드와 실제 브라우저에서 확인해야 한다.
-5. H-003 승인 초안을 실제 학습 데이터로 연결하고 고정 평가를 1회 실행하는 검증된 명령은 무엇인가?
-6. H-005의 선택·의견·자격 정보가 빈 중립 화면은 언제 제공되는가?
-7. `hepatic_review_block`, `vitamin_c_above_limit`, 두 응급 사례의 누락된 외부 근거 또는 정확한 입력 사례는 어디에 기록할 것인가?
+2. 사용자 화면 내부의 실제 필드명과 저장 버튼명은 무엇인가? 연결 저장소 화면 코드와 실제 브라우저에서 확인해야 한다.
+3. 권혁찬 약사의 실제 면허 번호와 자격 확인 방법을 현장에서 어떻게 확인해 기록할 것인가? 화면은 빈칸을 받지만 값의 진위는 검증하지 않는다.
+4. 학습 게이트는 언제 열리는가? 게이트가 NO-GO인 동안 후보 모델 학습 명령은 실행 계획만 남기고 멈춘다.
+5. `hepatic_review_block`, `vitamin_c_above_limit`, 두 응급 사례의 누락된 외부 근거 또는 정확한 입력 사례는 어디에 기록할 것인가?
+6. OP-039 외부 독립 검토 기관을 언제 어디에 섭외할 것인가? 섭외 전까지 manifest의 `EXTERNAL` 표시는 미충족 조건에 걸려 있다.
+
+2026-07-27에 답이 정해진 항목은 아래와 같다.
+
+- H-007 서명 키: 기존 `etc/final_session_private/final_session_signing_key.pem`을 그대로 쓴다. H-006의 키 준비를 앞당기지 않는다.
+- 5개 실제 프로필의 후속평가 자료: 다섯 건 모두 준비돼 있다. 관찰 기간 때문에 세션을 미룰 필요는 없다.
+- H-005 중립 화면: 제공 완료다. 선택·의견·면허·자격 확인 방법·서명이 모두 빈칸이며 사전 점검이 `READY`를 반환한다.
+- H-003 학습·평가 명령: 위 "학습·평가 1회" 절의 여섯 명령으로 확정했다. 게이트가 열린 뒤 실행한다.
 
 하나라도 해결되지 않으면 해당 단계는 `확인 필요`로 남긴다. 사람의 판단이나 실제 자료를 추정해 빈칸을 채우지 않는다.
 

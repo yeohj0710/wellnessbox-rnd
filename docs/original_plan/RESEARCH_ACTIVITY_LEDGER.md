@@ -437,6 +437,18 @@
 - **다음 작업:** H-005 중립 화면과 자격 gate, H-003 approved-only 학습·후보 평가·안전 회귀 gate를 구현한다. 실제 후속 자료와 동의 근거가 준비된 뒤에만 통제된 사람 세션을 시작한다.
 - **작성자 / 검토자:** 작성자 Claude Code 작업팀(자동, 실시간 기록); 사람 검토자 `미검토`.
 
+### 2026-07-27 10:20~12:10 +09:00 — H-005 화면 중립화와 H-003 학습 계보 구현
+
+- **작업 일자·근거:** 2026-07-27. 시작 HEAD `34c69f2`, 커밋 `4b5b9e9`·`318b501`·`3245cf3`; 이번 실행에서 직접 얻은 명령 출력.
+- **작업 목적:** 오너 결정에 따라 사람 최종 세션을 막고 있던 두 결함을 실제로 고치는 것이었다. H-005 검토 화면의 선입력 제거와, 승인 초안에서 후보 모델 교체까지 이어지는 H-003 명령 체인 구현이다.
+- **확인한 원자료와 구현 파일:** `scripts/build_op039_external_review_package.py`와 생성된 검토 화면 HTML, `src/wellnessbox_rnd/governance/final_session_console.py`의 `register_external_validation`과 `_run_draft_downstream_cycle`, `src/wellnessbox_rnd/interim/ai_drafts.py`와 `store.py`의 `ai_drafts` 스키마, `src/wellnessbox_rnd/evals/runner.py`, `scripts/run_eval.py`, `scripts/train_effect_model_v3.py`, `src/wellnessbox_rnd/evals/training_readiness_gate.py`, `src/wellnessbox_rnd/metrics/definitions.py`.
+- **수행한 변경 또는 실험:** 검토 화면 생성기를 다시 써서 `타당` 선택, AI 의견 문장, `not_collected` 면허, `project_owner_attestation` 자격 확인, 이름 복사 서명, 하드코딩 `was_ai_draft_reviewer=false`를 모두 제거하고 빈 입력란으로 바꿨다. H-003 쪽에는 승인 전용 데이터셋 manifest 빌더와 검증기, 게이트로 잠긴 후보 학습 명령, 후보 artifact를 받는 고정 평가 인자, 안전 회귀 gate, 교체·유지 판정과 rollback 영수증을 새로 만들었다. 훈련과 고정 평가는 실행하지 않았다.
+- **실패와 수정:** 전체 회귀에서 `test_audited_repository_commit_reproduces_recorded_file_blobs` 하나가 새로 실패했다. 원인은 감사 JSON이 기록한 509개 파일 중 `tests/test_final_session_console.py`를 고쳤는데 아직 커밋하지 않아 blob이 재현되지 않은 것이었다. 두 작업을 커밋한 뒤 감사를 다시 실행해 정본을 갱신하니 통과했다. 기존 시험 중 선입력을 필수로 고정하던 단언 10개도 중립성 단언으로 뒤집어야 했다.
+- **테스트·검증 결과:** 실제 사전 점검이 처음으로 `READY`, 종료 코드 0, 차단 0건을 반환했다. H-005는 사례 10건에 선택 0건·선입력 의견 0건이었다. 다섯 저장 경계가 모두 `true`였고 영수증 15개의 manifest SHA-256 `a73f8e25c2b3fdefe956635ca7092a3f071d4ac10155b6b7e28a69dcc13bf39a`, 제어 파일 `45d2d47b8b9c61f14c8dd74ddd0ee96160744ce4a752f87d193dab2de0a9e1bb`가 전후 동일했다. 최종 세션 직접 파일 manifest는 중립화한 HTML과 zip 때문에 `9d7bdf3f7c6f9476dbfd7cf2f645545d90a070fc38fb900e5e5dd8400e0b433d`로 바뀌었다. OP-120 감사는 120/120 `READY`, `goal_complete=true`, 차단 0건이다. 실제 원장으로 만든 승인 전용 manifest는 `READY`, 포함 6건 전부 권혁찬 검토, 웰니스박스 계정 검토 1건 제외였고 DB SHA-256은 불변이었다. 전체 pytest는 `1,170 passed / 89 failed / 5 warnings`, 실측 167초이며 실패 89건은 `main` 기준선과 같은 집합이라 새 실패는 0건이다. 전체 Ruff는 32건에서 29건으로 줄었고 신규 오류는 0건이다.
+- **그 시점의 미확인 사항:** 백엔드 자격 검증은 손대지 않았다. 오너 차단은 여전히 이름 두 개 문자열 비교이고, 동일 AI 초안 검토자 표시는 경고에 그치며 H-003 원장과 대조되지 않는다. 면허 ID의 형식과 실재도 확인하지 않고, 신뢰 원장 대체 경로는 자격 없이 H-005 완료 경로에 들어갈 수 있다. 학습 게이트가 NO-GO라 후보 모델을 만들지 못했으므로 후보 평가와 교체 판정은 실제 값으로 검증하지 못했다.
+- **다음 작업:** H-005 백엔드 자격 검증 강화, 학습 게이트를 여는 CGM 기하 blocker 해소, 실제 후속 자료로 통제된 사람 최종 세션 수행이다.
+- **작성자 / 검토자:** 작성자 Claude Code 작업팀(자동, 실시간 기록); 사람 검토자 `미검토`.
+
 ## 공식 연구노트 작성 전에 사람이 확인할 미확인 사항
 
 1. 2026-03-08 초기 scaffold와 일부 3월 루프는 정확한 pytest 통과 건수·실행 로그가 현재 문서에 남아 있지 않다.
@@ -446,6 +458,6 @@
 5. OP-039 권혁찬 검토는 이름·소속·10건 판정은 있으나 면허 번호는 수집하지 않았고 프로젝트 공동연구원이며 구현팀 독립 검토자가 아니다.
 6. H-007 운영자 ID는 현재 JSON에서 깨져 있어 사람 이름을 확인할 수 없다.
 7. `final_validation_receipt_v1.json`과 `independent_final_review_receipt_v1.json`에는 issuer ID만 있고 사람 검토자 실명이 없다. 이 원장에서는 사람 검토로 간주하지 않았다.
-8. 2026-07-27 현재 파일로 다시 실행한 최종 감사는 120/120 `READY`다. 다만 이 판정은 H-005 중립 입력·자격 결함, H-003 학습 계보 부재와 DB 5/5의 사람 세션 진위를 해결하지 않는다. 전체 pytest의 기존 실패 89개와 Ruff 32개도 별도 기술 부채로 남아 있다.
+8. 2026-07-27 현재 파일로 다시 실행한 최종 감사는 120/120 `READY`이고 사전 점검도 `READY`다. 다만 이 두 신호는 H-005 백엔드 자격 검증 결함과 DB 5/5의 사람 세션 진위를 해결하지 않는다. H-005 화면 선입력과 H-003 명령 체인은 같은 날 고쳤으나 학습 게이트가 NO-GO라 후보 모델은 아직 없다. 전체 pytest의 기존 실패 89개와 Ruff 29개도 별도 기술 부채로 남아 있다.
 
 Reference basis: Toss 공식 블로그의 사례 중심 금융 설명 글 3편. 질문형 도입, 구체적 수치와 결과의 직접 연결, 확인된 사실과 한계의 분리를 문장 기준으로 삼았다.

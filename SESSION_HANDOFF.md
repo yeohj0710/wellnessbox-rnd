@@ -1,5 +1,20 @@
 # SESSION_HANDOFF
 
+## 2026-07-27 H-005 중립화·H-003 학습 계보 handoff
+
+- **선택 단계와 과제:** 사람 최종 세션을 막던 두 결함을 실제로 고쳤다. H-005 검토 화면 중립화와 H-003 승인 초안 학습·평가 계보 구현이다. 브랜치 `h005-neutral-h003-lineage`; push·배포·훈련·사람 판정·서명 없음.
+- **주 데이터셋과 사례 수:** OP-039 고위험 검토 `data/original_plan/op039_external_review_cases_v1.json` 10건, OP-120 감사 `data/original_plan/op120_final_completion_audit_cases_v1.json` 8건, 고정 평가 256건(실행하지 않음).
+- **변경 파일:** `scripts/build_op039_external_review_package.py`, `data/original_plan/final_session/op039_external_reviewer_form.html`과 검토 패키지 zip, `tests/test_final_session_console.py`, 새 `tests/test_op039_reviewer_form_neutrality.py`, 새 `src/wellnessbox_rnd/training/approved_draft_dataset.py`·`candidate_promotion.py`, 새 `scripts/build_approved_draft_dataset.py`·`train_approved_draft_candidate.py`·`decide_candidate_promotion.py`, `src/wellnessbox_rnd/evals/runner.py`, `scripts/run_eval.py`, 새 `tests/test_approved_draft_training_lineage.py`, OP-120 감사 JSON, `FINAL_SESSION_RUNBOOK.md`, `_OPEN_QUESTIONS.md`, 연구 활동 원장과 이 세 인계 문서다. 추적되지 않은 과거 영수증·uploads는 건드리지 않았다.
+- **핵심 변경:** H-005 화면이 어떤 판정도 미리 고르지 않는다. 라디오 20개 미선택, 의견란 10개 공백, 면허·자격 확인 방법·서명이 빈 입력란이며 서명은 성명과 일치해야 한다. H-003은 승인 전용 manifest → 게이트로 잠긴 학습 → 후보 artifact 주입 평가 → 안전 회귀 gate → 교체·유지와 rollback 영수증으로 이어지는 여섯 구간을 모두 채웠다.
+- **코드·데이터·학습·시뮬레이션:** 새 코드는 검토 화면 생성기 재작성, 학습 계보 모듈 2개, CLI 3개, 시험 2개다. 추천·안전·시뮬레이션 로직은 바꾸지 않았다. `run_eval`에 후보 artifact 인자를 더했으나 기본 동작은 그대로다. 훈련·frozen eval을 실행하지 않았고 모델과 원천 데이터도 바꾸지 않았다.
+- **검증 명령과 결과:** 실제 preflight → `READY`, 종료 코드 0, 차단 0건, H-005 0/0 선입력, 다섯 저장 경계 모두 `true`, 잔류 listener 없음; `pytest tests/test_op039_reviewer_form_neutrality.py` → 6 passed; `pytest tests/test_approved_draft_training_lineage.py` → 20 passed; `pytest tests/test_final_session_console.py` → 27 passed; `python scripts/run_final_completion_audit.py` → 120/120 `READY`, `goal_complete=true`, 차단 0건; 실제 원장 manifest → `READY`, 승인 6건 전부 권혁찬, 오너 계정 1건 제외, DB 해시 불변; 전체 pytest `1,170 passed / 89 failed / 5 warnings`, 167초, 새 실패 0건; 전체 Ruff 29건(기존 32건에서 3건 감소, 신규 0건).
+- **공식 frozen eval delta:** 256건 데이터와 7개 공식 지표를 바꾸거나 다시 평가하지 않았다. delta는 0이다.
+- **replay·slice delta:** 입력·산출물을 바꾸지 않았다. delta는 0이다.
+- **병목 5개:** 오너 차단이 이름 두 개 문자열 비교라 별칭을 못 막는 점, 동일 AI 초안 검토자가 거부가 아니라 경고이며 H-003 원장과 대조되지 않는 점, 면허 ID의 형식·실재를 검증하지 않는 점, 신뢰 원장 대체 경로가 자격 없이 H-005를 완료할 수 있는 점, 학습 게이트가 NO-GO라 후보 모델을 아직 만들 수 없는 점이다.
+- **다음 세 반복:** 백엔드 자격 검증 강화(오너 원장 연결·H-003 검토자 대조·대체 경로 차단), 학습 게이트를 여는 CGM 기하 blocker 해소, 실제 후속 자료로 통제된 사람 최종 세션 수행 순서다.
+- **병합 판정:** preflight `READY`, 감사 120/120 `READY`, pytest 새 실패 0건, Ruff 신규 0건을 모두 충족했다. 이 handoff 커밋 뒤 `main`에 fast-forward 병합하며 push는 하지 않는다.
+- **아침에 사람이 확인할 세 가지:** 검토 화면을 직접 열어 10건이 정말 비어 있는지, 권혁찬 약사의 실제 면허 번호와 자격 확인 방법을 현장에서 받을 준비가 됐는지, OP-039 외부 독립 검토 기관 섭외를 언제 시작할지다.
+
 ## 2026-07-27 근거 심화·감사 정본·사전 점검 최종 handoff
 
 - **선택 단계와 과제:** 목표의 단계 0~5 전체다. 보고서 53편의 등록 근거를 끝까지 다시 읽고, 내용과 증거 단계를 바로잡은 뒤 OP-120 감사, Ruff 출처, 런북, H-005, H-003과 전체 회귀를 확인했다.
