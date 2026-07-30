@@ -25,9 +25,15 @@ STYLE = (
 )
 
 NEUTRALITY_NOTICE = (
-    "이 화면은 어떤 판정도 미리 고르지 않습니다. 의견란, 면허 번호, 자격 확인 방법, "
-    "서명도 비어 있습니다. 기존 오너 판정과 과거 검토 결과는 이 화면에 복사되지 않았습니다. "
-    "10건의 판정과 근거는 검토 약사가 직접 입력해야 등록됩니다."
+    "이 화면은 어떤 판정도 미리 고르지 않습니다. 의견란과 서명도 비어 있습니다. "
+    "기존 오너 판정과 과거 검토 결과는 이 화면에 복사되지 않았습니다. "
+    "10건의 판정과 근거는 검토자가 직접 입력해야 등록됩니다."
+)
+
+QUALIFICATION_NOTICE = (
+    "2차년도 기준 검토자는 아직 면허를 받지 않은 예비 약사입니다. 이 검토는 "
+    "예비 약사 사전 검토로 기록되며, 면허를 받는 3차년도에 같은 사례를 약사 자격으로 "
+    "다시 검토해야 최종 근거가 됩니다. 이름과 소속은 과제 등록 정보와 대조합니다."
 )
 
 
@@ -63,16 +69,13 @@ def _script(cases: dict[str, object], case_hash: str) -> str:
         f"const caseHash={hash_json};"
         "function value(id){return document.getElementById(id).value.trim()}"
         "function buildResult(){"
-        "const name=value('name'),organization=value('org'),license=value('license'),"
-        "credential=value('credential'),contact=value('contact'),signature=value('signature');"
+        "const name=value('name'),organization=value('org'),signature=value('signature');"
         "const draftReviewer=document.getElementById('draftReviewer').checked;"
         "const decisions=cases.map(c=>{"
         "const checked=document.querySelector(`input[name=\"${c.case_id}\"]:checked`);"
         "return{case_id:c.case_id,decision:checked?checked.value:null,"
         "comment:document.getElementById('comment-'+c.case_id).value.trim()}});"
         "if(!name||!organization)throw new Error('검토자 성명과 소속을 입력하세요.');"
-        "if(!license)throw new Error('실제 약사 면허 번호를 입력하세요.');"
-        "if(!credential)throw new Error('자격을 어떻게 확인했는지 입력하세요.');"
         "if(decisions.some(d=>!d.decision))"
         "throw new Error('10건의 판정을 모두 직접 선택해야 합니다.');"
         "if(decisions.some(d=>!d.comment))"
@@ -80,9 +83,9 @@ def _script(cases: dict[str, object], case_hash: str) -> str:
         "if(!signature)throw new Error('제출 직전에 서명란에 본인 이름을 입력하세요.');"
         "if(signature!==name)throw new Error('서명은 검토자 성명과 같아야 합니다.');"
         "return{schema_version:'op039_external_review_result_v1',package_id:packageId,"
-        "cases_sha256:caseHash,reviewer:{name,organization,pharmacist_license_id:license,"
-        "credential_verification_method:credential,contact,"
-        "reviewer_role:'project_pharmacist',"
+        "cases_sha256:caseHash,reviewer:{name,organization,"
+        "reviewer_role:'project_pharmacist_candidate',"
+        "qualification_stage:'pharmacist_candidate',"
         "relationship_to_project:'project_co_researcher',implemented_system:false,"
         "independent_of_implementation_team:false,was_ai_draft_reviewer:draftReviewer},"
         "prefilled_by_system:false,decisions,reviewed_at:new Date().toISOString(),"
@@ -104,15 +107,13 @@ def build_form(cases: dict[str, object], case_hash: str) -> str:
     cards = "".join(_case_card(item) for item in cases["cases"])
     return (
         '<!doctype html><html lang="ko"><head><meta charset="utf-8">'
-        "<title>OP-039 프로젝트 소속 약사 전문가 검토</title>"
+        "<title>OP-039 과제 참여 예비 약사 안전 검토</title>"
         f"<style>{STYLE}</style></head><body>"
-        "<h1>OP-039 프로젝트 소속 약사 전문가 안전 검토</h1>"
+        "<h1>OP-039 과제 참여 예비 약사 안전 검토</h1>"
         f'<p class="warn">{NEUTRALITY_NOTICE}</p>'
+        f'<p class="readonly">{QUALIFICATION_NOTICE}</p>'
         '<label class="field">검토자 성명</label><input id="name" type="text">'
         '<label class="field">소속</label><input id="org" type="text">'
-        '<label class="field">약사 면허 번호</label><input id="license" type="text">'
-        '<label class="field">자격 확인 방법</label><input id="credential" type="text">'
-        '<label class="field">연락처</label><input id="contact" type="text">'
         f"{cards}"
         "<section>"
         "<p>검토자는 과제 공동연구원이므로 구현팀 독립 여부는 false로 기록됩니다.</p>"

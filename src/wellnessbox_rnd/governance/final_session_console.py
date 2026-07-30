@@ -26,6 +26,7 @@ from wellnessbox_rnd.governance.reviewer_credentials import (
     audit_reviewer_credentials,
     load_draft_reviewer_ids,
     load_registry,
+    review_character_for,
 )
 from wellnessbox_rnd.governance.operational_receipts import (
     begin_session,
@@ -673,13 +674,13 @@ class FinalSessionConsole:
             if project_researcher and reviewer.get("independent_of_implementation_team") is not False:
                 raise ValueError("과제 참여연구원은 independent_of_implementation_team=false여야 합니다.")
             if (
-                not name
-                or not str(reviewer.get("organization", "")).strip()
-                or reviewer.get("reviewer_role") != "project_pharmacist"
+                reviewer.get("reviewer_role") != "project_pharmacist_candidate"
                 or not project_researcher
                 or str(payload.get("signature_name", "")).strip() != name
             ):
-                raise ValueError("프로젝트 소속 면허 약사의 실제 자격 확인 정보와 본인 서명이 필요합니다.")
+                raise ValueError(
+                    "과제 참여 예비 약사의 이름·소속과 본인 서명이 필요합니다."
+                )
             decisions = payload.get("decisions", [])
             expected_ids = {item["case_id"] for item in cases["cases"]}
             observed_ids = {item.get("case_id") for item in decisions if isinstance(item, dict)}
@@ -741,21 +742,41 @@ class FinalSessionConsole:
         destination = self.state_root / "external_validation" / source.name
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
+        qualification: dict[str, Any] = {}
+        if package_review:
+            stage = credential_audit["qualification_stage"]
+            review_character = review_character_for(stage)
+            qualification = {
+                "qualification_stage": stage,
+                "license_status": credential_audit["license_status"],
+                "expected_licensure_period": credential_audit["expected_licensure_period"],
+                "requires_licensed_reconfirmation": credential_audit[
+                    "requires_licensed_reconfirmation"
+                ],
+                "reconfirmation_note": (
+                    "면허 취득 전 예비 약사가 미리 수행한 검토다. 3차년도에 같은 사례를 "
+                    "약사 자격으로 다시 검토해야 최종 근거가 된다."
+                )
+                if credential_audit["requires_licensed_reconfirmation"]
+                else "면허 취득 뒤 약사 자격으로 수행한 검토다.",
+            }
+        else:
+            review_character = "post_completion_independent_organization_evaluation"
         result = self._record(
             "H-005",
             "completed",
             {
                 "registered_path": str(destination),
                 "sha256": hashlib.sha256(destination.read_bytes()).hexdigest(),
-                "review_character": (
-                    "project_pharmacist_expert_safety_review"
-                    if package_review
-                    else "post_completion_independent_organization_evaluation"
-                ),
+                "review_character": review_character,
                 "reviewer_warnings": reviewer_warnings if package_review else [],
+                **qualification,
             },
         )
-        if self._production_state():
+        promotes_external_stage = not package_review or not qualification.get(
+            "requires_licensed_reconfirmation", True
+        )
+        if self._production_state() and promotes_external_stage:
             manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
             external_ref = (
                 "wellnessbox-rnd/"

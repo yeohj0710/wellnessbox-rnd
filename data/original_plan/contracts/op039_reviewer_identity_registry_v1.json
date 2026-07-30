@@ -1,6 +1,36 @@
 {
   "schema_version": "op039_reviewer_identity_registry_v1",
-  "purpose": "H-005 프로젝트 소속 약사 검토에서 오너 본인이 검토자로 등록되는 것을 막는다. 이름 문자열을 정규화한 뒤 아래 목록과 대조한다.",
+  "purpose": "H-005 안전 검토자의 신원과 자격 단계를 기록한다. 2차년도에는 과제 참여 예비 약사가 미리 검토하고, 3차년도에 면허 취득 뒤 같은 사람이 약사 자격으로 다시 검토한다.",
+  "qualification_stage": {
+    "current_period": "year2",
+    "current_stage": "pharmacist_candidate",
+    "current_stage_label_ko": "예비 약사",
+    "license_status": "not_yet_licensed",
+    "expected_licensure_period": "2027-01",
+    "licensed_review_period": "year3",
+    "research_deadline": "2027-10",
+    "note": "2차년도에는 연구를 완료할 의무가 없다. 예비 약사 검토는 사전 수행 기록이며, 면허 취득 뒤 3차년도 재검토가 최종 근거가 된다."
+  },
+  "registered_reviewers": [
+    {
+      "name": "여형준",
+      "organization": "웰니스박스 TIPS 과제 책임연구원",
+      "qualification_stage": "pharmacist_candidate",
+      "expected_licensure_period": "2027-01",
+      "role_in_project": "project_owner",
+      "may_review_h005": false,
+      "reason": "과제 오너 본인은 자기검토가 되므로 H-005 검토자로 등록하지 않는다."
+    },
+    {
+      "name": "권혁찬",
+      "organization": "웰니스박스 TIPS 과제 참여연구원",
+      "qualification_stage": "pharmacist_candidate",
+      "expected_licensure_period": "2027-01",
+      "role_in_project": "project_co_researcher",
+      "may_review_h005": true,
+      "reason": "구현에 참여하지 않은 과제 참여연구원이다. 신원과 소속은 과제 등록 정보로 확인한다."
+    }
+  ],
   "normalization": "앞뒤 공백 제거, 내부 공백 삭제, 제로폭 문자 삭제, 대소문자 무시",
   "blocked_identities": [
     {
@@ -26,40 +56,5 @@
         "웰니스박스TIPS"
       ]
     }
-  ],
-  "placeholder_license_ids": [
-    "not_collected",
-    "notcollected",
-    "n/a",
-    "na",
-    "none",
-    "null",
-    "unknown",
-    "tbd",
-    "pending",
-    "미수집",
-    "없음",
-    "미확인",
-    "추후",
-    "-",
-    "0",
-    "00000",
-    "12345"
-  ],
-  "rejected_credential_methods": [
-    "project_owner_attestation",
-    "self_attestation",
-    "self attestation",
-    "none",
-    "n/a",
-    "na",
-    "unknown",
-    "tbd",
-    "미확인",
-    "없음",
-    "본인확인",
-    "오너확인"
-  ],
-  "license_id_minimum_digits": 4,
-  "credential_method_minimum_length": 8
+  ]
 }

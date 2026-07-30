@@ -60,14 +60,21 @@ class Op039ReviewerFormNeutralityTest(unittest.TestCase):
         self.assertEqual(len(reader.textarea_bodies), case_count)
         self.assertEqual([body for body in reader.textarea_bodies if body.strip()], [])
 
-    def test_credential_fields_exist_and_are_empty(self) -> None:
+    def test_identity_fields_exist_and_are_empty(self) -> None:
         reader = _read_form()
         by_id = {item.get("id"): item for item in reader.inputs if item.get("id")}
 
-        for field in ("name", "org", "license", "credential", "signature"):
+        for field in ("name", "org", "signature"):
             with self.subTest(field=field):
                 self.assertIn(field, by_id)
                 self.assertIsNone(by_id[field].get("value"))
+
+    def test_no_licence_fields_are_asked_for_before_licensure(self) -> None:
+        reader = _read_form()
+        by_id = {item.get("id") for item in reader.inputs if item.get("id")}
+
+        self.assertNotIn("license", by_id)
+        self.assertNotIn("credential", by_id)
 
     def test_ai_draft_reviewer_flag_is_an_unchecked_self_report(self) -> None:
         reader = _read_form()

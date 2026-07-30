@@ -315,7 +315,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertTrue(registered.is_file())
             self.assertTrue(registered.is_relative_to(Path(temp)))
 
-    def test_external_review_package_requires_project_pharmacist_actual_decisions(self) -> None:
+    def test_external_review_package_requires_candidate_actual_decisions(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             console = FinalSessionConsole(ROOT, state_root=Path(temp) / "session")
             cases_path = ROOT / "data/original_plan/op039_external_review_cases_v1.json"
@@ -325,25 +325,28 @@ class FinalSessionConsoleTest(unittest.TestCase):
                 "package_id": cases["package_id"],
                 "cases_sha256": hashlib.sha256(cases_path.read_bytes()).hexdigest(),
                 "reviewer": {
-                    "name": "외부약사",
-                    "organization": "독립약국",
-                    "pharmacist_license_id": "제34567호",
-                    "contact": "reviewer@example.test",
-                    "reviewer_role": "project_pharmacist",
+                    "name": "권혁찬",
+                    "organization": "웰니스박스 TIPS 과제 참여연구원",
+                    "reviewer_role": "project_pharmacist_candidate",
+                    "qualification_stage": "pharmacist_candidate",
                     "relationship_to_project": "project_co_researcher",
-                    "credential_verification_method": "면허증 원본을 대면 확인함",
                     "independent_of_implementation_team": False,
-                    "was_ai_draft_reviewer": False,
+                    "was_ai_draft_reviewer": True,
                 },
                 "decisions": [
                     {"case_id": item["case_id"], "decision": "valid", "comment": ""}
                     for item in cases["cases"]
                 ],
-                "reviewed_at": "2026-07-23T06:00:00Z",
-                "signature_name": "외부약사",
+                "reviewed_at": "2026-07-30T06:00:00Z",
+                "signature_name": "권혁찬",
             }
             console.register_external_validation_upload(document)
-            self.assertEqual(console.state["steps"]["H-005"]["status"], "completed")
+            step = console.state["steps"]["H-005"]
+            self.assertEqual(step["status"], "completed")
+            self.assertEqual(
+                step["review_character"], "pharmacist_candidate_preliminary_safety_review"
+            )
+            self.assertTrue(step["requires_licensed_reconfirmation"])
             document["reviewer"]["name"] = "여형준"
             document["signature_name"] = "여형준"
             with self.assertRaises(ValueError):
@@ -602,11 +605,13 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertNotIn("project_owner_attestation", review_form)
         self.assertNotIn('value="권혁찬"', review_form)
         self.assertIn("어떤 판정도 미리 고르지 않습니다", review_form)
-        self.assertIn('id="license"', review_form)
-        self.assertIn('id="credential"', review_form)
+        self.assertIn("예비 약사", review_form)
+        self.assertNotIn('id="license"', review_form)
+        self.assertNotIn('id="credential"', review_form)
         self.assertIn('id="signature"', review_form)
         self.assertIn('id="draftReviewer"', review_form)
         self.assertIn("signature_name:signature", review_form)
+        self.assertIn("qualification_stage:'pharmacist_candidate'", review_form)
         self.assertNotIn("운영 확인 JSON", html)
         self.assertNotIn("외부 평가 결과 JSON 경로", html)
 
