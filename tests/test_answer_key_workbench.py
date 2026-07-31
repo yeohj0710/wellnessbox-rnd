@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
+import scripts.run_answer_key_workbench as workbench_cli
 from wellnessbox_rnd.evals.answer_key_drafters import (
     DRAFT_SOURCE,
     DRAFTERS,
@@ -17,7 +21,9 @@ from wellnessbox_rnd.evals.answer_key_workbench import (
     assert_source_is_independent,
     build_drafts,
     build_provenance,
+    build_seal_disposal_record,
     decide,
+    discard_seal_with_audit_trail,
     load_workbench,
     save_workbench,
     summarise_adjudication,
@@ -218,6 +224,98 @@ class PersistenceTest(unittest.TestCase):
         self.assertEqual(len(restored.drafts), 2)
         self.assertEqual(restored.decisions["c0"].action, "edited")
         self.assertEqual(restored.pending()[0].case_id, "c1")
+
+
+class SealDisposalTest(unittest.TestCase):
+    def test_disposal_requires_a_named_person_and_reason(self) -> None:
+        fields = {
+            "indicator_id": "KPI-1",
+            "seal_sha256": "abc",
+            "discarded_by": "권혁찬",
+            "reason": "과속 검토",
+            "original_seal_path": "active.json",
+            "archived_seal_path": "archive/seal.json",
+            "archived_workbench_path": "archive/workbench.json",
+        }
+        with self.assertRaises(ValueError):
+            build_seal_disposal_record(**{**fields, "discarded_by": " "})
+        with self.assertRaises(ValueError):
+            build_seal_disposal_record(**{**fields, "reason": " "})
+
+    def test_confirmed_disposal_archives_and_resets_review(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            seal_path = root / "active.json"
+            bench_path = root / "workbench.json"
+            history_path = root / "history.json"
+            archive_dir = root / "archive"
+            bench = _bench(2)
+            for draft in bench.drafts:
+                bench.decisions[draft.case_id] = decide(
+                    draft=draft,
+                    final_answer=list(draft.draft_answer),
+                    decided_by="권혁찬",
+                    decided_at="2026-07-31T08:20:00Z",
+                )
+            save_workbench(bench_path, bench)
+            seal_path.write_text(
+                json.dumps(
+                    {
+                        "indicator_id": "KPI-1",
+                        "seal_sha256": "abc123",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            record = discard_seal_with_audit_trail(
+                active_seal_path=seal_path,
+                workbench_path=bench_path,
+                history_path=history_path,
+                archive_dir=archive_dir,
+                record_root=root,
+                discarded_by="여형준",
+                reason="과속 자동 수락 검토를 무효화",
+                discarded_at="2026-07-31T09:00:00Z",
+            )
+
+            restored = load_workbench(bench_path)
+            provenance = build_provenance(restored, summarise_adjudication(restored))
+            self.assertFalse(seal_path.exists())
+            self.assertEqual(len(restored.decisions), 0)
+            self.assertEqual(restored.seal_disposals, [record])
+            self.assertEqual(provenance["prior_seal_disposals"], [record])
+            self.assertTrue(Path(root / record["archived_seal_path"]).is_file())
+            self.assertTrue(Path(root / record["archived_workbench_path"]).is_file())
+            history = json.loads(history_path.read_text(encoding="utf-8"))
+            self.assertEqual(history["events"], [record])
+
+    def test_cli_cancels_without_exact_human_confirmation(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            seal_path = root / "active.json"
+            bench_path = root / "workbench.json"
+            seal_path.write_text(
+                json.dumps({"indicator_id": "KPI-1", "seal_sha256": "abc123"}),
+                encoding="utf-8",
+            )
+            save_workbench(bench_path, _bench(1))
+            args = SimpleNamespace(
+                indicator="KPI-1",
+                by="여형준",
+                reason="과속 자동 수락 검토를 무효화",
+            )
+
+            with (
+                patch.object(workbench_cli, "seal_path", return_value=seal_path),
+                patch.object(workbench_cli, "workbench_path", return_value=bench_path),
+                patch("builtins.input", return_value="아니오"),
+            ):
+                result = workbench_cli.cmd_discard_seal(args)
+
+            self.assertEqual(result, 2)
+            self.assertTrue(seal_path.is_file())
+            self.assertEqual(load_workbench(bench_path).decisions, {})
 
 
 class Kpi1DrafterTest(unittest.TestCase):

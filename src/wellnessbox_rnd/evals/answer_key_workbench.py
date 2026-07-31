@@ -25,10 +25,13 @@ import json
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
+from shutil import copy2
 from typing import Any, Literal
 
 DRAFT_SCHEMA = "answer_key_draft_v1"
 ADJUDICATION_SCHEMA = "answer_key_adjudication_v1"
+SEAL_DISPOSAL_SCHEMA = "answer_key_seal_disposal_v1"
+SEAL_DISPOSAL_HISTORY_SCHEMA = "answer_key_seal_disposal_history_v1"
 
 # Sources that must never draft an answer key: they are the thing being scored.
 FORBIDDEN_DRAFT_SOURCES = frozenset(
@@ -67,6 +70,7 @@ class Workbench:
     indicator_id: str
     drafts: list[CaseDraft]
     decisions: dict[str, Decision] = field(default_factory=dict)
+    seal_disposals: list[dict[str, Any]] = field(default_factory=list)
 
     def pending(self) -> list[CaseDraft]:
         return [
@@ -202,6 +206,7 @@ def build_provenance(workbench: Workbench, summary: dict[str, Any]) -> dict[str,
         "answer_key_method": "independent_draft_then_human_adjudication",
         "draft_source": workbench.drafts[0].draft_source if workbench.drafts else None,
         "engine_output_consulted_before_sealing": False,
+        "prior_seal_disposals": list(workbench.seal_disposals),
         "adjudication": {
             "counts": summary["counts"],
             "edit_rate_pct": summary["edit_rate_pct"],
@@ -215,6 +220,145 @@ def build_provenance(workbench: Workbench, summary: dict[str, Any]) -> dict[str,
     }
 
 
+def build_seal_disposal_record(
+    *,
+    indicator_id: str,
+    seal_sha256: str,
+    discarded_by: str,
+    reason: str,
+    original_seal_path: str,
+    archived_seal_path: str,
+    archived_workbench_path: str,
+    discarded_at: str | None = None,
+) -> dict[str, Any]:
+    """Build the append-only event that explains why an active seal was retired."""
+    actor = discarded_by.strip()
+    explanation = reason.strip()
+    if not actor:
+        raise ValueError("seal_disposal_requires_a_named_person")
+    if not explanation:
+        raise ValueError("seal_disposal_requires_a_reason")
+    if not seal_sha256.strip():
+        raise ValueError("seal_disposal_requires_seal_sha256")
+
+    return {
+        "schema_version": SEAL_DISPOSAL_SCHEMA,
+        "indicator_id": indicator_id,
+        "discarded_seal_sha256": seal_sha256,
+        "discarded_by": actor,
+        "discarded_at": (
+            discarded_at or datetime.now(UTC).isoformat().replace("+00:00", "Z")
+        ),
+        "reason": explanation,
+        "original_seal_path": original_seal_path,
+        "archived_seal_path": archived_seal_path,
+        "archived_workbench_path": archived_workbench_path,
+        "review_required_before_resealing": True,
+    }
+
+
+def _record_path(path: Path, root: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(root.resolve())).replace("\\", "/")
+    except ValueError:
+        return str(path.resolve()).replace("\\", "/")
+
+
+def discard_seal_with_audit_trail(
+    *,
+    active_seal_path: Path,
+    workbench_path: Path,
+    history_path: Path,
+    archive_dir: Path,
+    record_root: Path,
+    discarded_by: str,
+    reason: str,
+    discarded_at: str | None = None,
+) -> dict[str, Any]:
+    """Archive a seal and its decisions, then reset review with rollback on failure."""
+    active = Path(active_seal_path)
+    bench_path = Path(workbench_path)
+    history = Path(history_path)
+    archive = Path(archive_dir)
+    if not active.is_file():
+        raise FileNotFoundError(f"active_seal_missing:{active}")
+    if not bench_path.is_file():
+        raise FileNotFoundError(f"workbench_missing:{bench_path}")
+
+    seal = json.loads(active.read_text(encoding="utf-8"))
+    indicator_id = str(seal.get("indicator_id", "")).strip()
+    seal_sha256 = str(seal.get("seal_sha256", "")).strip()
+    if not indicator_id:
+        raise ValueError("active_seal_indicator_missing")
+    if not seal_sha256:
+        raise ValueError("active_seal_sha256_missing")
+
+    slug = indicator_id.lower().replace("-", "")
+    archived_seal = archive / "seals" / f"{slug}_reference_seal_{seal_sha256}.json"
+    archived_workbench = (
+        archive / "workbenches" / f"{slug}_workbench_{seal_sha256}.json"
+    )
+    if archived_seal.exists() or archived_workbench.exists():
+        raise FileExistsError(f"seal_disposal_archive_exists:{seal_sha256}")
+
+    record = build_seal_disposal_record(
+        indicator_id=indicator_id,
+        seal_sha256=seal_sha256,
+        discarded_by=discarded_by,
+        reason=reason,
+        original_seal_path=_record_path(active, record_root),
+        archived_seal_path=_record_path(archived_seal, record_root),
+        archived_workbench_path=_record_path(archived_workbench, record_root),
+        discarded_at=discarded_at,
+    )
+    previous_history = history.read_bytes() if history.is_file() else None
+    previous_workbench = bench_path.read_bytes()
+    workbench = load_workbench(bench_path)
+    if workbench.indicator_id != indicator_id:
+        raise ValueError(
+            f"seal_workbench_indicator_mismatch:{indicator_id}:{workbench.indicator_id}"
+        )
+
+    history_payload = (
+        json.loads(previous_history.decode("utf-8"))
+        if previous_history is not None
+        else {
+            "schema_version": SEAL_DISPOSAL_HISTORY_SCHEMA,
+            "indicator_id": indicator_id,
+            "events": [],
+        }
+    )
+    if history_payload.get("indicator_id") != indicator_id:
+        raise ValueError("seal_disposal_history_indicator_mismatch")
+    history_payload.setdefault("events", []).append(record)
+
+    archived_seal.parent.mkdir(parents=True, exist_ok=True)
+    archived_workbench.parent.mkdir(parents=True, exist_ok=True)
+    history.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        active.replace(archived_seal)
+        copy2(bench_path, archived_workbench)
+        workbench.decisions = {}
+        workbench.seal_disposals.append(record)
+        save_workbench(bench_path, workbench)
+        history.write_text(
+            json.dumps(history_payload, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+    except Exception:
+        bench_path.write_bytes(previous_workbench)
+        if previous_history is None:
+            history.unlink(missing_ok=True)
+        else:
+            history.write_bytes(previous_history)
+        if archived_seal.is_file() and not active.exists():
+            archived_seal.replace(active)
+        archived_workbench.unlink(missing_ok=True)
+        raise
+
+    return record
+
+
 def load_workbench(path: Path) -> Workbench:
     payload = json.loads(Path(path).read_text(encoding="utf-8"))
     drafts = [CaseDraft(**item) for item in payload["drafts"]]
@@ -222,7 +366,12 @@ def load_workbench(path: Path) -> Workbench:
         case_id: Decision(**item)
         for case_id, item in payload.get("decisions", {}).items()
     }
-    return Workbench(payload["indicator_id"], drafts, decisions)
+    return Workbench(
+        payload["indicator_id"],
+        drafts,
+        decisions,
+        list(payload.get("seal_disposals", [])),
+    )
 
 
 def save_workbench(path: Path, workbench: Workbench) -> Path:
@@ -233,6 +382,7 @@ def save_workbench(path: Path, workbench: Workbench) -> Path:
         "indicator_id": workbench.indicator_id,
         "drafts": [vars(draft) for draft in workbench.drafts],
         "decisions": {case_id: vars(value) for case_id, value in workbench.decisions.items()},
+        "seal_disposals": list(workbench.seal_disposals),
     }
     target.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

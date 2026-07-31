@@ -38,6 +38,7 @@ from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
     build_drafts,
     build_provenance,
     decide,
+    discard_seal_with_audit_trail,
     load_workbench,
     save_workbench,
     summarise_adjudication,
@@ -51,6 +52,7 @@ from wellnessbox_rnd.evals.reference_standard import (  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
 SEAL_DIR = ROOT / "data/original_plan/kpi/seals"
+SEAL_DISPOSAL_DIR = ROOT / "data/original_plan/kpi/seal_disposals"
 BAR = "─" * 68
 MIN_SECONDS_PER_CASE = 1.5
 COMMAND_MARKERS = ("python ", "scripts/", "scripts\\", "cd ", "--indicator", "git ")
@@ -76,6 +78,10 @@ def workbench_path(indicator_id: str) -> Path:
 
 def seal_path(indicator_id: str) -> Path:
     return SEAL_DIR / f"{slug(indicator_id)}_reference_seal_v1.json"
+
+
+def seal_disposal_history_path(indicator_id: str) -> Path:
+    return SEAL_DISPOSAL_DIR / f"{slug(indicator_id)}_seal_disposals_v1.json"
 
 
 def say(message: str = "") -> None:
@@ -265,6 +271,84 @@ def cmd_seal(args) -> int:
     return 0 if seal["meets_minimum_sample"] else 2
 
 
+def cmd_discard_seal(args) -> int:
+    destination = seal_path(args.indicator)
+    target = workbench_path(args.indicator)
+    if not destination.is_file():
+        say(f"활성 봉인이 없습니다: {destination}")
+        return 2
+    if not target.is_file():
+        say(f"워크벤치가 없습니다: {target}")
+        return 2
+
+    seal = json.loads(destination.read_text(encoding="utf-8"))
+    if seal.get("indicator_id") != args.indicator:
+        say(json.dumps(
+            {
+                "status": "BLOCKED",
+                "reason": "seal_indicator_mismatch",
+                "requested": args.indicator,
+                "found": seal.get("indicator_id"),
+            },
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+
+    confirmation = f"{args.indicator} 봉인 폐기"
+    say(BAR)
+    say(f"활성 봉인: {destination}")
+    say(f"봉인 SHA-256: {seal.get('seal_sha256', '(없음)')}")
+    say(f"폐기자: {args.by}")
+    say(f"폐기 사유: {args.reason}")
+    say("기존 봉인과 판단 기록은 archive에 보존하고 현재 판단 기록은 초기화합니다.")
+    say(f"계속하려면 정확히 입력하세요: {confirmation}")
+    try:
+        answer = input("  > ").strip()
+    except EOFError:
+        answer = ""
+    if answer != confirmation:
+        say(json.dumps(
+            {"status": "CANCELLED", "reason": "human_confirmation_not_received"},
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+
+    try:
+        record = discard_seal_with_audit_trail(
+            active_seal_path=destination,
+            workbench_path=target,
+            history_path=seal_disposal_history_path(args.indicator),
+            archive_dir=SEAL_DISPOSAL_DIR / "archive",
+            record_root=ROOT,
+            discarded_by=args.by,
+            reason=args.reason,
+        )
+    except (FileNotFoundError, FileExistsError, ValueError) as exc:
+        say(json.dumps(
+            {"status": "BLOCKED", "reason": str(exc)},
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+
+    say(json.dumps(
+        {
+            "status": "DISCARDED",
+            "indicator_id": args.indicator,
+            "record": record,
+            "next": (
+                "python scripts/run_answer_key_workbench.py review "
+                f"--indicator {args.indicator} --by <이름>"
+            ),
+        },
+        ensure_ascii=False,
+        indent=2,
+    ))
+    return 0
+
+
 def build_parser() -> ArgumentParser:
     parser = ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -289,6 +373,12 @@ def build_parser() -> ArgumentParser:
     seal = sub.add_parser("seal", help="확정된 정답을 봉인한다")
     seal.add_argument("--indicator", required=True)
     seal.set_defaults(func=cmd_seal)
+
+    discard = sub.add_parser("discard-seal", help="사람 확인 후 봉인과 판단 기록을 폐기한다")
+    discard.add_argument("--indicator", required=True)
+    discard.add_argument("--by", required=True, help="폐기하는 사람 이름")
+    discard.add_argument("--reason", required=True, help="폐기 사유")
+    discard.set_defaults(func=cmd_discard_seal)
     return parser
 
 
