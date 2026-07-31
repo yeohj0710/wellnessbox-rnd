@@ -1,5 +1,21 @@
 # SESSION_HANDOFF
 
+## 2026-07-31 KPI 정답지 무결성 게이트 handoff
+
+- **선택 단계:** TIPS KPI-1·3·4·5 reference-standard integrity.
+- **선택 과제:** 실제 파일 읽기 기반 출처 감사, 감사 가능한 봉인 폐기 명령, 과속 판단 저장 차단, 두 봉인 CLI·완료 마법사·최종 감사의 fail-closed 게이트, 초안 에이전트 provenance를 구현했다.
+- **주 데이터셋과 사례 수:** `data/original_plan/kpi/workbench/`의 KPI-1·3·4·5 각 100건, 총 400건. 현재 판단 기록은 0건이며 사람이 검토해야 한다. `engine_input_registry_v1.json`은 입력 10개를 `engine_logic` 9개와 `vocabulary` 1개로 분류한다.
+- **변경 파일:** 무결성·워크벤치 모듈, 두 봉인 CLI, 두 draft builder, 완료 마법사와 최종 감사 실행기, 계약, workbench 4종, CI workflow, 관련 시험, KPI 전략 문서와 인계 문서 3종이다.
+- **핵심 변경:** AST가 실제 읽기 호출로 이어지는 경로만 찾고 선언 전용 `BLINDED_FROM`을 제외한다. 선언 목록을 반복문이나 컴프리헨션이 실제 읽으면 위반으로 잡는다. 출처 인덱스는 지표와 모듈이 붙은 출처를 함께 사용한다. 1.0초 미만 검토 입력은 저장하지 않는다. 봉인은 현재 감사 PASS·전 건 판단·검토 시간 PASS를 요구한다. 새 봉인은 폐기 이력, `drafting_agent`, `blinded_from`, 감사 스냅샷을 보존한다. KPI-4는 OpenAI 계열처럼 초안 에이전트와 상담 모듈 제공자 계열이 같으면 봉인하지 않는다.
+- **폐기 상태:** KPI-1·5 오류 봉인 파일은 `seals/discarded/`에 남아 있지만 폐기자·시각·사유가 있는 사람 확인 기록은 없다. 이 이동은 정식 폐기가 아니다. `discard-seal`은 활성 봉인과 이 사전 이동 파일을 모두 찾으며, 사람이 정확한 확인 문구를 입력해야 append-only 이력을 만든다. 파일과 판단을 임의로 복원하거나 폐기 승인을 대신 만들지 않았다.
+- **검증 명령과 결과:** `python scripts/audit_answer_key_integrity.py --json`은 출처 감사 4/4 PASS, 실패 0건, 완료 상태 `BLOCKED`를 반환했다. 전체 `python -m pytest -q --tb=no`는 기준선과 같은 90건 실패로 신규 실패 0건이다. 전체 `python -m ruff check .`은 기준선과 같은 28건으로 신규 오류 0건이다. 변경 파일 Ruff, YAML 파싱, 엔진 입력 레지스트리 재생성과 diff 확인도 통과했다.
+- **커밋과 브랜치:** `1700616`, `e9bf924`, `f8a272d`; 최종 브랜치는 `fix/kpi-answer-key-integrity-clean`이다. 사람 확인 없는 봉인 파일을 포함한 다른 작업 브랜치 커밋은 main에 병합하지 않는다.
+- **공식 frozen eval metric delta:** 엔진 입력·frozen eval·채점 로직을 바꾸거나 다시 평가하지 않았다. delta 0이다.
+- **replay·slice delta:** replay와 slice 데이터·산출물을 바꾸지 않았다. delta 0이다.
+- **가장 큰 병목 5개:** KPI-1·5 사람 폐기 확인, 사람 판단 400건, 새 봉인 4종, KPI-4 에이전트 분리 증거, KPI-2 실제 사용자 100명 전·후 PRO다.
+- **권장 다음 반복 3개:** 사람이 KPI-1·5 폐기를 확인, 사람이 400건 검토, 감사 PASS를 확인한 지표부터 봉인하는 순서다.
+- **감사 한계:** 파일을 읽고 정답에 쓰지 않은 경우를 구분하지 못한다. 1.0초 하한은 임의 기준이다. 이 두 한계를 조용한 예외로 숨기지 않는다.
+
 ## 2026-07-31 KPI-3·4 초안 감사 + KPI-2 경로 확정 handoff
 
 - **선택 단계와 과제:** 정답 400건 확정을 요청받았으나 확정은 사람의 행위여서 수행하지 않았다. 대신 `NEXT_STEPS.md` 3번(KPI-3·4 출처 독립성 감사)을 수행하고 KPI-2 경로를 기록했다. 브랜치 `kpi2-decision-record`; push·배포·훈련·사람 판정·서명·봉인 없음.
