@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-31 KPI-3·4 초안 감사 + KPI-2 경로 확정 handoff
+
+- **선택 단계와 과제:** 정답 400건 확정을 요청받았으나 확정은 사람의 행위여서 수행하지 않았다. 대신 `NEXT_STEPS.md` 3번(KPI-3·4 출처 독립성 감사)을 수행하고 KPI-2 경로를 기록했다. 브랜치 `kpi2-decision-record`; push·배포·훈련·사람 판정·서명·봉인 없음.
+- **주 데이터셋과 사례 수:** 워크벤치 4종 각 100건(총 400건, 전부 pending 유지). 감사 대상은 `kpi3_workbench_v1.json`, `kpi4_workbench_v1.json`.
+- **변경 파일:** `data/original_plan/contracts/kpi_measurement_contract_v1.json`, `docs/original_plan/KPI_COMPLIANCE_STRATEGY.md`, `NEXT_STEPS.md`, `PROGRESS.md`, `SESSION_HANDOFF.md`. 코드·초안·봉인 파일은 건드리지 않았다.
+- **핵심 변경:** 두 가지다. (1) **KPI-3·4 초안이 봉인 부적합임을 확인했다.** KPI-3의 정답은 엔진이 `interim/next_action.py:79`에서 읽는 바로 그 정책 파일의 `action` 값이고 문항은 그 규칙 자신의 `when` 절로 생성돼, 정확도가 구조적으로 100%가 된다(고유 정답 9개). KPI-4는 고유 문항이 57개뿐이라 100문항 요건에 미달하고 고유 정답은 5개다. 두 워크벤치의 `draft_source` 라벨도 실제 출처와 다르다. (2) KPI-2 경로를 A(운영 사용자 확보) + 측정 3차년도로 기록했다.
+- **코드·데이터·학습·시뮬레이션:** 코드 변경 0건. 엔진·안전 규칙·채점 로직·학습·시뮬레이션·초안 데이터 모두 그대로다. 워크벤치 400건은 전부 pending이고 `reviewers`는 비어 있다.
+- **검증 명령과 결과:** 전체 `pytest -q --tb=no` **90 failed**(기준선 89 + 옆 저장소 이동으로 깨진 영수증 1건), 신규 실패 0건. `ruff check .` 28건으로 신규 0건. 계약 JSON 파싱과 `chosen` 필드 확인 통과.
+- **공식 frozen eval delta:** frozen eval 데이터와 지표를 바꾸지 않았다. delta는 0이다.
+- **replay·slice delta:** 엔진 입력·산출물을 바꾸지 않았다. delta는 0이다.
+- **병목 5개:** KPI-3·4 초안 교체용 독립 출처 미정, KPI-1·5 사람 확정 미실행, KPI-2 전·후 PRO 수집 미착수, 학습 게이트 NO-GO, 최종 영수증이 옆 저장소 커밋에 묶여 깨진 상태다.
+- **다음 세 반복:** KPI-3·4 독립 출처 결정, KPI-1·5 사람 확정과 봉인, KPI-2 수집 흐름 부착 순서다.
+- **아침에 사람이 확인할 세 가지:** KPI-3·4를 어떤 출처로 다시 만들지, KPI-2 경로 A 기록에 이의가 없는지(계약 파일 `chosen_detail` 한 필드만 바꾸면 됨), KPI-1·5 확정을 누가 언제 앉아서 할지다.
+
 ## 2026-07-31 독립 참조 코퍼스 handoff
 
 - **선택 단계와 과제:** KPI-1·5 정답 초안이 측정 대상 엔진과 출처를 공유하는지 감사하고, 겹치지 않는 출판 저작물로 교체했다. 브랜치 `book-corpus-answer-keys`; push·배포·훈련·사람 판정·봉인 없음.

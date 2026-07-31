@@ -1,5 +1,15 @@
 # PROGRESS
 
+## 2026-07-31 KPI-3·4 초안 감사와 KPI-2 경로 기록
+
+- 선택 단계·과제: `NEXT_STEPS.md` 3번 "KPI-3·4 초안도 같은 기준으로 출처 독립성을 감사한다"를 수행했다. 브랜치는 `kpi2-decision-record`다.
+- 요청받은 정답 400건 확정은 수행하지 않았다. `review` 는 각 건을 `decided_by` 로 사람 이름에 귀속시켜 저장하므로, 세션이 대신 누르면 있지도 않은 사람의 판정이 기록된다. 워크벤치 400건은 전부 `pending` 이고 `reviewers` 는 비어 있다.
+- 감사 결과 2건. (1) **KPI-3 무효.** 정답이 `closed_loop_next_action_policy_v1.json` 의 `action` 값이고, 엔진도 `src/wellnessbox_rnd/interim/next_action.py:79` 에서 같은 파일을 읽는다. 문항은 `_describe_condition(rule["when"])` 으로 그 규칙 자신의 발동 조건을 서술해 만든다. 규칙 9개 → 고유 정답 9개이며 정책 action 집합의 부분집합이다. 정확도가 구조적으로 100%가 된다. 기존 근거 `op071_op080_closed_loop_next_action_policy_v1.json` 의 130/130 100%는 성능이 아니라 이 자기 참조의 지문이다. KPI-5가 탈락한 것과 같은 구조다. (2) **KPI-4 미달.** 고유 문항이 57개뿐이라 계약의 100문항 요건을 못 채운다. 고유 정답은 5개로, 템플릿에 하드코딩된 채점 기준 문구가 20건씩 반복된다. 문항별 라벨 정답이 아니다.
+- 부수 확인: KPI-3·4 워크벤치의 `draft_source` 가 둘 다 `goal_ingredient_priors_v1+ingredient_catalog` 로 실제 출처와 다르다. `assert_source_is_independent` 는 출처 문자열만 보므로 이 라벨 오류가 있으면 독립성 검사가 실제 출처를 못 본다.
+- KPI-2: 경로를 A(운영 서비스 사용자 확보) + 측정 시점 3차년도로 계약 파일 `KPI-2.open_decision.chosen` 과 `chosen_detail` 에 기록했다. 오너가 판단을 세션에 위임해 `decision_mode: owner_delegated_to_ai_session` 으로 남겼고, 이의가 있으면 그 필드만 바꾸면 된다. 100명 요건 자체는 바뀌지 않으며 수집은 아직 착수되지 않았다.
+- 경계: 코드 변경 0건. 초안·봉인·엔진·안전 규칙·채점 로직·frozen eval 모두 그대로다. push·배포·훈련 없음. 미추적 영수증과 `uploads/` 는 건드리지 않았다.
+- 검증: 전체 `pytest -q --tb=no` 90 failed로 기준선(89 + 영수증 1) 대비 신규 0건. `ruff check .` 28건으로 신규 0건.
+
 ## 2026-07-31 KPI-1·5 정답 초안을 독립 참조 코퍼스로 교체
 
 - 선택 단계·과제: KPI-1과 KPI-5 정답 초안의 출처 독립성을 감사하고 대체 출처를 붙였다. 브랜치는 `book-corpus-answer-keys`다.

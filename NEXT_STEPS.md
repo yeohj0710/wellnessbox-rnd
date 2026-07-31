@@ -1,5 +1,13 @@
 # NEXT_STEPS
 
+## 2026-07-31 KPI-3·4 초안 감사 이후 다음 세 반복
+
+1. **KPI-3·4 초안의 독립 출처를 사람이 정한다.** 감사 결과 KPI-3은 엔진이 읽는 `closed_loop_next_action_policy_v1.json`이 그대로 정답이라 정확도가 구조적으로 100%가 되고, KPI-4는 고유 문항이 57개뿐이라 100문항 요건에 미달한다. 출처를 정하기 전에는 두 지표를 확정·봉인하지 않는다. 근거는 `docs/original_plan/KPI_COMPLIANCE_STRATEGY.md`의 "KPI-3·4 초안도 같은 감사에서 탈락했다" 절.
+2. **KPI-1·5만 먼저 확정한다.** 이 둘은 독립 참조 코퍼스 기반이라 지금 상태로 유효하다. `python scripts/run_answer_key_workbench.py review --indicator KPI-1 --by <이름>` 을 사람이 직접 실행한다. 한 번에 한 명령씩 실행한다. 전부 Enter로 넘기면 수정률 0%가 기록에 남는다.
+3. **KPI-2 전·후 PRO 수집을 운영 서비스에 붙인다.** 경로는 A로 확정됐고(계약 파일 `KPI-2.open_decision.chosen`), 아직 착수되지 않았다. 복용 전 PRO와 2주 후 후속 PRO 흐름을 지금 붙여야 3차년도 측정 시점에 표본이 있다.
+
+KPI-1 67개 / KPI-5 27개인 고유 정답 수에 비해 KPI-3은 9개, KPI-4는 5개다. 이 수치가 유효 표본의 실질이며, 봉인 전에 봐야 할 신호다.
+
 ## 2026-07-31 독립 참조 코퍼스 이후 다음 세 반복
 
 1. KPI-1·5 초안 각 100건을 사람이 확정한다. `python scripts/run_answer_key_workbench.py review --indicator KPI-1 --by <이름>` 이며 KPI-5도 같다. 확정이 끝나야 `seal` 로 넘어간다. 봉인 전에는 엔진을 돌리지 않는다.
