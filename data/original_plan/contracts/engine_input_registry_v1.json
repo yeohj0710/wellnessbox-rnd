@@ -1,0 +1,121 @@
+{
+  "schema_version": "engine_input_registry_v1",
+  "system_under_test": "wellnessbox_rnd_engine",
+  "engine_packages": [
+    "chat",
+    "domain",
+    "efficacy",
+    "ingestion",
+    "interim",
+    "knowledge",
+    "models",
+    "optimizer",
+    "orchestration",
+    "policy",
+    "safety",
+    "simulation",
+    "training"
+  ],
+  "excluded_packages": [
+    "evals",
+    "governance"
+  ],
+  "measurement_prefixes": [
+    "data/original_plan/kpi/",
+    "data/frozen_eval/",
+    "data/knowledge/external/"
+  ],
+  "note": "정답 초안 생성기가 role=engine_logic 파일을 읽으면 그 정답은 엔진 자신의 값이다. role=vocabulary 는 대조에 필요한 공용 식별자라 읽어도 된다.",
+  "entry_count": 10,
+  "engine_logic_count": 9,
+  "entries": [
+    {
+      "path": "data/catalog/ingredients.json",
+      "role": "vocabulary",
+      "sha256": "5d49514d779204ec377da98afa7e9a5718e90a09879151b6cf6af8b28fa11c3c",
+      "read_by": [
+        "domain/loaders.py",
+        "interim/execution_identity.py"
+      ]
+    },
+    {
+      "path": "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "role": "engine_logic",
+      "sha256": "12d71723887094714241425b5cfdc88621cf6a21ffdb1bd66d4d89a5e4c927de",
+      "read_by": [
+        "chat/verifier.py"
+      ]
+    },
+    {
+      "path": "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "role": "engine_logic",
+      "sha256": "a4bbfc0e2bdc85befe5d7ae6e4383cecd2ce942ade90b02eeeec94e86cb43d19",
+      "read_by": [
+        "chat/retrieval.py"
+      ]
+    },
+    {
+      "path": "data/knowledge/goal_ingredient_priors_v1.json",
+      "role": "engine_logic",
+      "sha256": "be5363b266ca5a84ea539c18e7617d1110597115caeba46794266aabc6cbc0a0",
+      "read_by": [
+        "knowledge/goal_priors.py"
+      ]
+    },
+    {
+      "path": "data/knowledge/reference_knowledge_base_v1.json",
+      "role": "engine_logic",
+      "sha256": "faa1541b11cc42b6ff2abae46521a794d4289fef2d623b87517aa183c8ae29dc",
+      "read_by": [
+        "interim/execution_identity.py",
+        "interim/knowledge_lineage.py",
+        "knowledge/candidate_signals.py",
+        "knowledge/goal_priors.py",
+        "knowledge/runtime_db.py"
+      ]
+    },
+    {
+      "path": "data/knowledge/runtime_knowledge_db_v1.json",
+      "role": "engine_logic",
+      "sha256": "bce8d28461e283fd50db19ed8a58a8261c43ed1cfb68e786098d819d33650452",
+      "read_by": [
+        "interim/execution_identity.py",
+        "knowledge/runtime_db.py"
+      ]
+    },
+    {
+      "path": "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "role": "engine_logic",
+      "sha256": "636a8504785e51a7847c791cf03e6c39e3c3dae38a12e46809acb5a4974d38c4",
+      "read_by": [
+        "interim/next_action.py"
+      ]
+    },
+    {
+      "path": "data/rules/candidate_signal_scoring_rules_v1.json",
+      "role": "engine_logic",
+      "sha256": "f8b757c32226b315662013e14d98d0affa900f68904d847df21e02418b339ba8",
+      "read_by": [
+        "knowledge/candidate_signals.py"
+      ]
+    },
+    {
+      "path": "data/rules/safety_rules.json",
+      "role": "engine_logic",
+      "sha256": "79292baa710b924b6e617e336f750c0967d5ef20c3d624e546bda0e5cf8aa5e4",
+      "read_by": [
+        "domain/loaders.py",
+        "interim/execution_identity.py",
+        "knowledge/runtime_db.py"
+      ]
+    },
+    {
+      "path": "data/synthetic/synthetic_longitudinal_v4.jsonl",
+      "role": "engine_logic",
+      "sha256": "ae3e40df27e7954f20de844a7e518a8a8c8e70196dd37644931cdcb3e0ab6567",
+      "read_by": [
+        "training/effect_model_v1.py"
+      ]
+    }
+  ]
+}
