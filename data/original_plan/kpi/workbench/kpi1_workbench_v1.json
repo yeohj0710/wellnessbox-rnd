@@ -1,0 +1,996 @@
+{
+  "schema_version": "answer_key_draft_v1",
+  "indicator_id": "KPI-1",
+  "drafts": [
+    {
+      "case_id": "kpi1-001",
+      "prompt": "목표 blood_glucose / 나이 24 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-002",
+      "prompt": "목표 bone_joint / 나이 33 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-003",
+      "prompt": "목표 energy_support / 나이 41 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-004",
+      "prompt": "목표 general_wellness / 나이 52 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-005",
+      "prompt": "목표 gut_health / 나이 58 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-006",
+      "prompt": "목표 heart_health / 나이 63 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-007",
+      "prompt": "목표 immunity_support / 나이 67 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-008",
+      "prompt": "목표 sleep_support / 나이 71 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-009",
+      "prompt": "목표 stress_support / 나이 24 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-010",
+      "prompt": "목표 blood_glucose / 나이 33 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-011",
+      "prompt": "목표 bone_joint / 나이 41 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-012",
+      "prompt": "목표 energy_support / 나이 52 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-013",
+      "prompt": "목표 general_wellness / 나이 58 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-014",
+      "prompt": "목표 gut_health / 나이 63 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-015",
+      "prompt": "목표 heart_health / 나이 67 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-016",
+      "prompt": "목표 immunity_support / 나이 71 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-017",
+      "prompt": "목표 sleep_support / 나이 24 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-018",
+      "prompt": "목표 stress_support / 나이 33 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-019",
+      "prompt": "목표 blood_glucose / 나이 41 / 복용약 levothyroxine / 상태 없음 (levothyroxine 복용)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-020",
+      "prompt": "목표 bone_joint / 나이 52 / 복용약 levothyroxine / 상태 없음 (levothyroxine 복용)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-021",
+      "prompt": "목표 energy_support / 나이 58 / 복용약 levothyroxine / 상태 없음 (levothyroxine 복용)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-022",
+      "prompt": "목표 general_wellness / 나이 63 / 복용약 levothyroxine / 상태 없음 (levothyroxine 복용)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-023",
+      "prompt": "목표 gut_health / 나이 67 / 복용약 levothyroxine / 상태 없음 (levothyroxine 복용)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-024",
+      "prompt": "목표 heart_health / 나이 71 / 복용약 levothyroxine / 상태 없음 (levothyroxine 복용)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-025",
+      "prompt": "목표 immunity_support / 나이 24 / 복용약 levothyroxine / 상태 없음 (levothyroxine 복용)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-026",
+      "prompt": "목표 sleep_support / 나이 33 / 복용약 levothyroxine / 상태 없음 (levothyroxine 복용)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-027",
+      "prompt": "목표 stress_support / 나이 41 / 복용약 levothyroxine / 상태 없음 (levothyroxine 복용)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-028",
+      "prompt": "목표 blood_glucose / 나이 52 / 복용약 metformin / 상태 없음 (metformin 복용)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-029",
+      "prompt": "목표 bone_joint / 나이 58 / 복용약 metformin / 상태 없음 (metformin 복용)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-030",
+      "prompt": "목표 energy_support / 나이 63 / 복용약 metformin / 상태 없음 (metformin 복용)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-031",
+      "prompt": "목표 general_wellness / 나이 67 / 복용약 metformin / 상태 없음 (metformin 복용)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-032",
+      "prompt": "목표 gut_health / 나이 71 / 복용약 metformin / 상태 없음 (metformin 복용)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-033",
+      "prompt": "목표 heart_health / 나이 24 / 복용약 metformin / 상태 없음 (metformin 복용)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-034",
+      "prompt": "목표 immunity_support / 나이 33 / 복용약 metformin / 상태 없음 (metformin 복용)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-035",
+      "prompt": "목표 sleep_support / 나이 41 / 복용약 metformin / 상태 없음 (metformin 복용)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-036",
+      "prompt": "목표 stress_support / 나이 52 / 복용약 metformin / 상태 없음 (metformin 복용)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-037",
+      "prompt": "목표 blood_glucose / 나이 58 / 복용약 omeprazole / 상태 없음 (omeprazole 복용)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-038",
+      "prompt": "목표 bone_joint / 나이 63 / 복용약 omeprazole / 상태 없음 (omeprazole 복용)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-039",
+      "prompt": "목표 energy_support / 나이 67 / 복용약 omeprazole / 상태 없음 (omeprazole 복용)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-040",
+      "prompt": "목표 general_wellness / 나이 71 / 복용약 omeprazole / 상태 없음 (omeprazole 복용)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-041",
+      "prompt": "목표 gut_health / 나이 24 / 복용약 omeprazole / 상태 없음 (omeprazole 복용)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-042",
+      "prompt": "목표 heart_health / 나이 33 / 복용약 omeprazole / 상태 없음 (omeprazole 복용)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-043",
+      "prompt": "목표 immunity_support / 나이 41 / 복용약 omeprazole / 상태 없음 (omeprazole 복용)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-044",
+      "prompt": "목표 sleep_support / 나이 52 / 복용약 omeprazole / 상태 없음 (omeprazole 복용)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-045",
+      "prompt": "목표 stress_support / 나이 58 / 복용약 omeprazole / 상태 없음 (omeprazole 복용)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-046",
+      "prompt": "목표 blood_glucose / 나이 63 / 복용약 없음 / 상태 pregnancy (임신 중)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-047",
+      "prompt": "목표 bone_joint / 나이 67 / 복용약 없음 / 상태 pregnancy (임신 중)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-048",
+      "prompt": "목표 energy_support / 나이 71 / 복용약 없음 / 상태 pregnancy (임신 중)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-049",
+      "prompt": "목표 general_wellness / 나이 24 / 복용약 없음 / 상태 pregnancy (임신 중)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-050",
+      "prompt": "목표 gut_health / 나이 33 / 복용약 없음 / 상태 pregnancy (임신 중)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-051",
+      "prompt": "목표 heart_health / 나이 41 / 복용약 없음 / 상태 pregnancy (임신 중)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-052",
+      "prompt": "목표 immunity_support / 나이 52 / 복용약 없음 / 상태 pregnancy (임신 중)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-053",
+      "prompt": "목표 sleep_support / 나이 58 / 복용약 없음 / 상태 pregnancy (임신 중)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-054",
+      "prompt": "목표 stress_support / 나이 63 / 복용약 없음 / 상태 pregnancy (임신 중)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-055",
+      "prompt": "목표 blood_glucose / 나이 67 / 복용약 없음 / 상태 lactation (수유 중)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-056",
+      "prompt": "목표 bone_joint / 나이 71 / 복용약 없음 / 상태 lactation (수유 중)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-057",
+      "prompt": "목표 energy_support / 나이 24 / 복용약 없음 / 상태 lactation (수유 중)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-058",
+      "prompt": "목표 general_wellness / 나이 33 / 복용약 없음 / 상태 lactation (수유 중)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-059",
+      "prompt": "목표 gut_health / 나이 41 / 복용약 없음 / 상태 lactation (수유 중)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-060",
+      "prompt": "목표 heart_health / 나이 52 / 복용약 없음 / 상태 lactation (수유 중)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-061",
+      "prompt": "목표 immunity_support / 나이 58 / 복용약 없음 / 상태 lactation (수유 중)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-062",
+      "prompt": "목표 sleep_support / 나이 63 / 복용약 없음 / 상태 lactation (수유 중)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-063",
+      "prompt": "목표 stress_support / 나이 67 / 복용약 없음 / 상태 lactation (수유 중)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-064",
+      "prompt": "목표 blood_glucose / 나이 71 / 복용약 없음 / 상태 severe_renal_impairment (중증 신장질환)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-065",
+      "prompt": "목표 bone_joint / 나이 24 / 복용약 없음 / 상태 severe_renal_impairment (중증 신장질환)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-066",
+      "prompt": "목표 energy_support / 나이 33 / 복용약 없음 / 상태 severe_renal_impairment (중증 신장질환)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-067",
+      "prompt": "목표 general_wellness / 나이 41 / 복용약 없음 / 상태 severe_renal_impairment (중증 신장질환)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-068",
+      "prompt": "목표 gut_health / 나이 52 / 복용약 없음 / 상태 severe_renal_impairment (중증 신장질환)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-069",
+      "prompt": "목표 heart_health / 나이 58 / 복용약 없음 / 상태 severe_renal_impairment (중증 신장질환)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-070",
+      "prompt": "목표 immunity_support / 나이 63 / 복용약 없음 / 상태 severe_renal_impairment (중증 신장질환)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-071",
+      "prompt": "목표 sleep_support / 나이 67 / 복용약 없음 / 상태 severe_renal_impairment (중증 신장질환)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-072",
+      "prompt": "목표 stress_support / 나이 71 / 복용약 없음 / 상태 severe_renal_impairment (중증 신장질환)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-073",
+      "prompt": "목표 blood_glucose / 나이 24 / 복용약 없음 / 상태 hepatic_impairment (간질환)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-074",
+      "prompt": "목표 bone_joint / 나이 33 / 복용약 없음 / 상태 hepatic_impairment (간질환)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-075",
+      "prompt": "목표 energy_support / 나이 41 / 복용약 없음 / 상태 hepatic_impairment (간질환)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-076",
+      "prompt": "목표 general_wellness / 나이 52 / 복용약 없음 / 상태 hepatic_impairment (간질환)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-077",
+      "prompt": "목표 gut_health / 나이 58 / 복용약 없음 / 상태 hepatic_impairment (간질환)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-078",
+      "prompt": "목표 heart_health / 나이 63 / 복용약 없음 / 상태 hepatic_impairment (간질환)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-079",
+      "prompt": "목표 immunity_support / 나이 67 / 복용약 없음 / 상태 hepatic_impairment (간질환)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-080",
+      "prompt": "목표 sleep_support / 나이 71 / 복용약 없음 / 상태 hepatic_impairment (간질환)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-081",
+      "prompt": "목표 stress_support / 나이 24 / 복용약 없음 / 상태 hepatic_impairment (간질환)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-082",
+      "prompt": "목표 blood_glucose / 나이 33 / 복용약 없음 / 상태 hemochromatosis (혈색소침착증)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-083",
+      "prompt": "목표 bone_joint / 나이 41 / 복용약 없음 / 상태 hemochromatosis (혈색소침착증)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-084",
+      "prompt": "목표 energy_support / 나이 52 / 복용약 없음 / 상태 hemochromatosis (혈색소침착증)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-085",
+      "prompt": "목표 general_wellness / 나이 58 / 복용약 없음 / 상태 hemochromatosis (혈색소침착증)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-086",
+      "prompt": "목표 gut_health / 나이 63 / 복용약 없음 / 상태 hemochromatosis (혈색소침착증)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-087",
+      "prompt": "목표 heart_health / 나이 67 / 복용약 없음 / 상태 hemochromatosis (혈색소침착증)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-088",
+      "prompt": "목표 immunity_support / 나이 71 / 복용약 없음 / 상태 hemochromatosis (혈색소침착증)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-089",
+      "prompt": "목표 sleep_support / 나이 24 / 복용약 없음 / 상태 hemochromatosis (혈색소침착증)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-090",
+      "prompt": "목표 stress_support / 나이 33 / 복용약 없음 / 상태 hemochromatosis (혈색소침착증)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-091",
+      "prompt": "목표 blood_glucose / 나이 41 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-092",
+      "prompt": "목표 bone_joint / 나이 52 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 bone_joint 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-093",
+      "prompt": "목표 energy_support / 나이 58 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 energy_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-094",
+      "prompt": "목표 general_wellness / 나이 63 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 general_wellness 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-095",
+      "prompt": "목표 gut_health / 나이 67 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 gut_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-096",
+      "prompt": "목표 heart_health / 나이 71 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 heart_health 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-097",
+      "prompt": "목표 immunity_support / 나이 24 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 immunity_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-098",
+      "prompt": "목표 sleep_support / 나이 33 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 sleep_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-099",
+      "prompt": "목표 stress_support / 나이 41 / 복용약 없음 / 상태 없음 (성인 일반)",
+      "draft_answer": [
+        "l_theanine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 stress_support 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    },
+    {
+      "case_id": "kpi1-100",
+      "prompt": "목표 blood_glucose / 나이 52 / 복용약 warfarin / 상태 없음 (warfarin 복용)",
+      "draft_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "goal_ingredient_priors_v1의 blood_glucose 상위 근거 성분. 안전 규칙과 개인 상태는 검토자가 직접 반영한다."
+    }
+  ],
+  "decisions": {}
+}

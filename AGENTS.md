@@ -43,9 +43,11 @@ Rationale and approved internal-only routes: `docs/original_plan/KPI_COMPLIANCE_
 - KPI-2 is the only indicator still open. Its 100-person minimum comes from the funded
   plan, so changing the number in this repo changes nothing. See `open_decision` in the
   contract.
-- KPI-1/3/4/5 compare the engine against a human answer key. Seal the answer key
-  BEFORE running the engine (`scripts/seal_reference_standard.py`). Never derive an
-  answer key from engine output — the score becomes self-referential.
+- KPI-1/3/4/5 compare the engine against a human answer key. Build it with
+  `scripts/run_answer_key_workbench.py`: an independent source drafts, a named person
+  decides each case, then it is sealed BEFORE the engine runs. AI drafting is fine —
+  only the system under test may not draft its own answer key. The edit rate is
+  recorded and a 0% rate is flagged; do not suppress that.
 - Synthetic data is allowed as training input. It is NOT allowed as a KPI answer key
   (KPI-1/3/4/5) or as the measured values for KPI-2 and KPI-6.
 - KPI-2 needs pre/post PRO from at least 100 real people. KPI-6 needs 12 months of real

@@ -31,9 +31,9 @@
       "internal_only_possible": true,
       "internal_condition": "약사가 엔진 출력을 보기 전에 R_i를 확정하고 봉인해야 한다.",
       "fulfilment_plan": {
-        "approach": "약사가 정답 100건을 먼저 봉인한 뒤 엔진 대조",
-        "tool": "scripts/seal_reference_standard.py",
-        "status": "tool_ready_content_pending"
+        "approach": "독립 출처 AI 초안 → 사람이 건별 확정 → 봉인 → 엔진 대조",
+        "tool": "scripts/run_answer_key_workbench.py",
+        "status": "drafts_ready"
       },
       "internal_measurement_is_valid_during_research": true
     },
@@ -105,9 +105,9 @@
       "internal_only_possible": true,
       "internal_condition": "정답 작업을 먼저 확정하고 봉인한 뒤 시스템을 실행한다.",
       "fulfilment_plan": {
-        "approach": "정답 작업 100건을 먼저 봉인한 뒤 시스템 대조",
-        "tool": "scripts/seal_reference_standard.py",
-        "status": "tool_ready_content_pending"
+        "approach": "독립 출처 AI 초안 → 사람이 건별 확정 → 봉인 → 엔진 대조",
+        "tool": "scripts/run_answer_key_workbench.py",
+        "status": "drafter_pending"
       },
       "internal_measurement_is_valid_during_research": true
     },
@@ -131,9 +131,9 @@
       "internal_only_possible": true,
       "internal_condition": "문항과 정답을 먼저 확정하고 봉인한 뒤 상담 모듈을 실행한다.",
       "fulfilment_plan": {
-        "approach": "문항·정답 100건을 먼저 봉인한 뒤 상담 모듈 대조",
-        "tool": "scripts/seal_reference_standard.py",
-        "status": "tool_ready_content_pending"
+        "approach": "독립 출처 AI 초안 → 사람이 건별 확정 → 봉인 → 엔진 대조",
+        "tool": "scripts/run_answer_key_workbench.py",
+        "status": "drafter_pending"
       },
       "internal_measurement_is_valid_during_research": true
     },
@@ -157,9 +157,9 @@
       "internal_only_possible": true,
       "internal_condition": "참조 규칙을 외부 근거(문헌·규제 자료)에서 먼저 도출하고 봉인한다.",
       "fulfilment_plan": {
-        "approach": "참조 규칙 100건을 외부 근거에서 도출해 봉인",
-        "tool": "scripts/seal_reference_standard.py",
-        "status": "tool_ready_content_pending"
+        "approach": "독립 출처 AI 초안 → 사람이 건별 확정 → 봉인 → 엔진 대조",
+        "tool": "scripts/run_answer_key_workbench.py",
+        "status": "drafter_pending"
       },
       "internal_measurement_is_valid_during_research": true
     },
@@ -231,5 +231,32 @@
       "note": "문헌 기반 생성 자료가 실제 분포와 유사함을 통계적으로 보이는 것은 가능하고 논문화도 된다. 다만 분포 유사성은 실제 복용 효과를 대신하지 않으므로 KPI-2의 근거로 쓸 수 없다.",
       "must_not_claim": "합성 자료의 유사도를 근거로 실제 효과 개선을 주장하는 것"
     }
+  },
+  "answer_key_construction": {
+    "method": "independent_draft_then_human_adjudication",
+    "who_may_draft": "측정 대상 엔진이 아닌 독립 출처. AI가 초안을 만들어도 된다.",
+    "who_may_not_draft": [
+      "recommendation_engine",
+      "wellnessbox_rnd.orchestration.recommendation_service",
+      "engine_output",
+      "system_under_test"
+    ],
+    "who_decides": "지명된 사람이 각 건을 수락·수정·반려로 확정한다. 최종 결정권자는 사람이다.",
+    "recorded": [
+      "draft_source",
+      "engine_output_consulted_before_sealing (항상 false)",
+      "건별 action (accepted / edited / rejected)",
+      "edit_rate_pct",
+      "reviewers"
+    ],
+    "rubber_stamp_signal": "전부 그대로 수락하면 edit_rate_pct가 0이 되고 edit_rate_zero_every_draft_was_accepted_unchanged 경고가 남는다. 숨기지 않고 기록에 그대로 남긴다.",
+    "tool": "scripts/run_answer_key_workbench.py",
+    "applies_to": [
+      "KPI-1",
+      "KPI-3",
+      "KPI-4",
+      "KPI-5"
+    ],
+    "why_this_is_valid": "문제는 'AI가 만들었다'가 아니라 '측정 대상이 자기 정답을 만들었다'였다. 초안 출처가 엔진과 다른 파생 경로이고, 엔진 출력을 보기 전에 사람이 확정해 봉인하므로 측정이 자기 참조가 되지 않는다."
   }
 }

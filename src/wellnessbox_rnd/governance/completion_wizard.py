@@ -285,6 +285,35 @@ def verify_promotion(root: Path, artifacts: dict[str, Any]) -> StepResult:
     )
 
 
+def verify_answer_keys(root: Path, artifacts: dict[str, Any]) -> StepResult:
+    """Every answer-key indicator needs a sealed, fully adjudicated key."""
+    indicators = ("KPI-1", "KPI-3", "KPI-4", "KPI-5")
+    missing: list[str] = []
+    short: list[str] = []
+    for indicator_id in indicators:
+        slug = indicator_id.lower().replace("-", "")
+        seal = _read_json(
+            root / f"data/original_plan/kpi/seals/{slug}_reference_seal_v1.json"
+        )
+        if seal is None:
+            missing.append(indicator_id)
+        elif not seal.get("meets_minimum_sample"):
+            short.append(f"{indicator_id}({seal.get('case_count', 0)}/100)")
+    if not missing and not short:
+        return StepResult("ANSWER_KEYS", "done", "정답 4종이 모두 봉인됐습니다.")
+    parts = []
+    if missing:
+        parts.append(f"미착수 {', '.join(missing)}")
+    if short:
+        parts.append(f"건수 부족 {', '.join(short)}")
+    return StepResult(
+        "ANSWER_KEYS",
+        "todo",
+        "정답 봉인이 남았습니다: " + " / ".join(parts),
+        missing + short,
+    )
+
+
 def verify_policy(root: Path, artifacts: dict[str, Any]) -> StepResult:
     return _human_step_result(
         root, "H-002", label="정책 9개 규칙 확인", session_started_at=_session_start(artifacts)
@@ -399,6 +428,16 @@ STEPS: tuple[Step, ...] = (
         gated_by_training=True,
     ),
     Step(
+        "ANSWER_KEYS",
+        "KPI 정답 4종 확정",
+        "human",
+        "AI가 만든 초안을 한 건씩 수락·수정·반려로 확정합니다. Enter만 누르면 수락입니다. "
+        "별도 창에서 아래를 지표마다 실행하세요.\\n"
+        "  python scripts/run_answer_key_workbench.py draft  --indicator KPI-1\\n"
+        "  python scripts/run_answer_key_workbench.py review --indicator KPI-1 --by <이름>\\n"
+        "  python scripts/run_answer_key_workbench.py seal   --indicator KPI-1",
+    ),
+    Step(
         "H-002",
         "정책 9개 규칙 확인",
         "human",
@@ -448,6 +487,7 @@ VERIFIERS: dict[str, Verifier] = {
     "DATASET": verify_dataset,
     "TRAIN": verify_training,
     "PROMOTION": verify_promotion,
+    "ANSWER_KEYS": verify_answer_keys,
     "H-002": verify_policy,
     "H-004": verify_tone,
     "H-005": verify_safety_review,
