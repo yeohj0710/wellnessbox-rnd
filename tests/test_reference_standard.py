@@ -27,11 +27,12 @@ def _seal(cases=None, sealed_by="권혁찬", indicator_id="KPI-1"):
 
 
 class ContractTest(unittest.TestCase):
-    def test_every_indicator_records_its_measurement_environment(self) -> None:
-        self.assertIn("KOLAS", CONTRACT["global_constraint"]["evaluation_environment"])
-        self.assertEqual(
-            CONTRACT["global_constraint"]["applies_to"], "all_seven_indicators"
-        )
+    def test_the_accredited_lab_test_is_after_research_not_a_gate(self) -> None:
+        final = CONTRACT["final_verification"]
+
+        self.assertIn("KOLAS", final["evaluation_environment"])
+        self.assertEqual(final["when"], "after_research_completion")
+        self.assertFalse(final["is_a_research_phase_gate"])
 
     def test_the_contract_covers_all_seven_indicators(self) -> None:
         ids = [item["id"] for item in CONTRACT["indicators"]]
@@ -153,11 +154,13 @@ class ScoringTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             score_against_seal(seal=seal, engine_output={"case-1": ["omega3"]})
 
-    def test_the_result_states_it_is_only_an_internal_pre_check(self) -> None:
+    def test_the_result_is_labelled_a_research_phase_measurement(self) -> None:
         result = score_against_seal(seal=_seal(), engine_output={"case-1": ["omega3"]})
 
-        self.assertEqual(result["measurement_environment"], "internal_pre_check_only")
-        self.assertIn("KOLAS", result["note"])
+        self.assertEqual(
+            result["measurement_environment"], "research_phase_internal_measurement"
+        )
+        self.assertIn("연구 기간", result["note"])
 
     def test_the_result_carries_the_seal_provenance(self) -> None:
         seal = _seal()

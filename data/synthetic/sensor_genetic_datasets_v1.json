@@ -1,0 +1,1995 @@
+{
+  "schema_version": "sensor_genetic_synthetic_datasets_v1",
+  "data_class": "SYNTHETIC",
+  "generated_by": "scripts/build_sensor_genetic_datasets.py",
+  "generator_config": {
+    "wearable_count": 34,
+    "cgm_count": 33,
+    "genetic_count": 33,
+    "seed_label": "kpi7-v1"
+  },
+  "disclosure": "이 데이터는 실제 측정값이 아니라 시중 기기 스키마를 참고해 생성한 합성 자료다. KPI-7은 연동 성공률을 재는 지표이므로 합성 사용이 허용되며, 보고서와 시험 제출물에 생성 사실을 반드시 명시한다. 실제 사용자 측정값으로 보고하면 안 된다.",
+  "schema_sources": {
+    "wearable": "Apple HealthKit HKQuantityType/HKCategoryType, Samsung Health data types",
+    "cgm": "Dexcom API v3 /users/self/egvs (mg/dL, trend, trendRate)",
+    "genetic": "SNP panel rsid/genotype/phenotype call"
+  },
+  "counts": {
+    "wearable": 34,
+    "cgm": 33,
+    "genetic": 33,
+    "total": 100
+  },
+  "kpi7_requirement": {
+    "minimum_total": 100,
+    "minimum_per_family": 10,
+    "meets_minimum_total": true,
+    "meets_minimum_per_family": true
+  },
+  "datasets": [
+    {
+      "dataset_id": "W-9d55633a3a1d",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 300,
+        "step_count": "3200",
+        "restingHR": "48"
+      }
+    },
+    {
+      "dataset_id": "W-516208da835a",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 315,
+        "step_count": "3925",
+        "restingHR": "51"
+      }
+    },
+    {
+      "dataset_id": "W-ae741c294246",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 330,
+        "step_count": "4650",
+        "restingHR": "54"
+      }
+    },
+    {
+      "dataset_id": "W-09c90163fe11",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 345,
+        "step_count": "5375",
+        "restingHR": "57"
+      }
+    },
+    {
+      "dataset_id": "W-10203787c2c1",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 360,
+        "step_count": "6100",
+        "restingHR": "60"
+      }
+    },
+    {
+      "dataset_id": "W-c60942ff7d70",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 375,
+        "step_count": "6825",
+        "restingHR": "63"
+      }
+    },
+    {
+      "dataset_id": "W-4fc7af9b2d12",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 390,
+        "step_count": "7550",
+        "restingHR": "66"
+      }
+    },
+    {
+      "dataset_id": "W-30a74869cad9",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 405,
+        "step_count": "8275",
+        "restingHR": "69"
+      }
+    },
+    {
+      "dataset_id": "W-db84e8c0dd5a",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 420,
+        "step_count": "9000",
+        "restingHR": "72"
+      }
+    },
+    {
+      "dataset_id": "W-c2ec4cde7377",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 435,
+        "step_count": "9725",
+        "restingHR": "75"
+      }
+    },
+    {
+      "dataset_id": "W-08a2d68dbe26",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 450,
+        "step_count": "10450",
+        "restingHR": "78"
+      }
+    },
+    {
+      "dataset_id": "W-f7c6509d7b00",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 465,
+        "step_count": "11175",
+        "restingHR": "48"
+      }
+    },
+    {
+      "dataset_id": "W-9489b9b869f6",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 480,
+        "step_count": "11900",
+        "restingHR": "51"
+      }
+    },
+    {
+      "dataset_id": "W-ec6feb93356d",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 495,
+        "step_count": "12625",
+        "restingHR": "54"
+      }
+    },
+    {
+      "dataset_id": "W-d5e8aa8baa44",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 510,
+        "step_count": "13350",
+        "restingHR": "57"
+      }
+    },
+    {
+      "dataset_id": "W-e46d5e19ff8c",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 300,
+        "step_count": "14075",
+        "restingHR": "60"
+      }
+    },
+    {
+      "dataset_id": "W-c5071765b486",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 315,
+        "step_count": "14800",
+        "restingHR": "63"
+      }
+    },
+    {
+      "dataset_id": "W-bbb62f944fde",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 330,
+        "step_count": "3200",
+        "restingHR": "66"
+      }
+    },
+    {
+      "dataset_id": "W-de46b5ff06d3",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 345,
+        "step_count": "3925",
+        "restingHR": "69"
+      }
+    },
+    {
+      "dataset_id": "W-4f92e2a804b4",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 360,
+        "step_count": "4650",
+        "restingHR": "72"
+      }
+    },
+    {
+      "dataset_id": "W-82157d187589",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 375,
+        "step_count": "5375",
+        "restingHR": "75"
+      }
+    },
+    {
+      "dataset_id": "W-c2c8c1706a4f",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 390,
+        "step_count": "6100",
+        "restingHR": "78"
+      }
+    },
+    {
+      "dataset_id": "W-7439ed9a981f",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 405,
+        "step_count": "6825",
+        "restingHR": "48"
+      }
+    },
+    {
+      "dataset_id": "W-069af2212705",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 420,
+        "step_count": "7550",
+        "restingHR": "51"
+      }
+    },
+    {
+      "dataset_id": "W-cfbafb2b14d7",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 435,
+        "step_count": "8275",
+        "restingHR": "54"
+      }
+    },
+    {
+      "dataset_id": "W-afdb2f62c7b3",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 450,
+        "step_count": "9000",
+        "restingHR": "57"
+      }
+    },
+    {
+      "dataset_id": "W-8b22a80a3168",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 465,
+        "step_count": "9725",
+        "restingHR": "60"
+      }
+    },
+    {
+      "dataset_id": "W-0cf1e4eb38cf",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 480,
+        "step_count": "10450",
+        "restingHR": "63"
+      }
+    },
+    {
+      "dataset_id": "W-2975d7dd46f3",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 495,
+        "step_count": "11175",
+        "restingHR": "66"
+      }
+    },
+    {
+      "dataset_id": "W-62dc462c1f1f",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 510,
+        "step_count": "11900",
+        "restingHR": "69"
+      }
+    },
+    {
+      "dataset_id": "W-ed8522c0e666",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 300,
+        "step_count": "12625",
+        "restingHR": "72"
+      }
+    },
+    {
+      "dataset_id": "W-b2ddf4c1e5fc",
+      "family": "wearable",
+      "vendor_schema": "samsung_health",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "com.samsung.shealth.step_count",
+        "com.samsung.shealth.sleep",
+        "com.samsung.shealth.heart_rate"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 315,
+        "step_count": "13350",
+        "restingHR": "75"
+      }
+    },
+    {
+      "dataset_id": "W-760ca017cb31",
+      "family": "wearable",
+      "vendor_schema": "fitbit_web_api",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 330,
+        "step_count": "14075",
+        "restingHR": "78"
+      }
+    },
+    {
+      "dataset_id": "W-19d43e80bee3",
+      "family": "wearable",
+      "vendor_schema": "apple_healthkit",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "HKQuantityTypeIdentifierStepCount",
+        "HKQuantityTypeIdentifierRestingHeartRate",
+        "HKCategoryTypeIdentifierSleepAnalysis"
+      ],
+      "wearable_payload": {
+        "sleepMinutes": 345,
+        "step_count": "14800",
+        "restingHR": "48"
+      }
+    },
+    {
+      "dataset_id": "C-1036af4792fe",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "52",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 118.0,
+        "postprandial_rise_mg_dl": 22.0,
+        "avg_glucose": 96.0,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-9d840a4b8a03",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "55",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 129.67,
+        "postprandial_rise_mg_dl": 28.5,
+        "avg_glucose": 101.17,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-65c26bb43ac8",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "58",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 141.33,
+        "postprandial_rise_mg_dl": 35.0,
+        "avg_glucose": 5.9,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-77511b1b0897",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "61",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 153.0,
+        "postprandial_rise_mg_dl": 41.5,
+        "avg_glucose": 111.5,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-dc47ed17c22b",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "64",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 164.67,
+        "postprandial_rise_mg_dl": 48.0,
+        "avg_glucose": 116.67,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-442739517a2c",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "67",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 176.33,
+        "postprandial_rise_mg_dl": 54.5,
+        "avg_glucose": 6.76,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-68710f32ae42",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "70",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 188.0,
+        "postprandial_rise_mg_dl": 61.0,
+        "avg_glucose": 127.0,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-5855bb7e4f92",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "73",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 154.17,
+        "postprandial_rise_mg_dl": 22.0,
+        "avg_glucose": 132.17,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-14aa1a57d647",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "76",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 165.83,
+        "postprandial_rise_mg_dl": 28.5,
+        "avg_glucose": 7.62,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-6900c1bfdd93",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "79",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 177.5,
+        "postprandial_rise_mg_dl": 35.0,
+        "avg_glucose": 142.5,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-6336e068acd6",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "82",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 189.17,
+        "postprandial_rise_mg_dl": 41.5,
+        "avg_glucose": 147.67,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-8eb371a5f636",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "85",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 200.83,
+        "postprandial_rise_mg_dl": 48.0,
+        "avg_glucose": 8.48,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-b9ff740fdb69",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "88",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 212.5,
+        "postprandial_rise_mg_dl": 54.5,
+        "avg_glucose": 158.0,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-6b8eb8f8905f",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "91",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 157.0,
+        "postprandial_rise_mg_dl": 61.0,
+        "avg_glucose": 96.0,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-47890b9e6df6",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "94",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 123.17,
+        "postprandial_rise_mg_dl": 22.0,
+        "avg_glucose": 5.61,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-ea4a1f9b1570",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "52",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 134.83,
+        "postprandial_rise_mg_dl": 28.5,
+        "avg_glucose": 106.33,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-813cc0570d4f",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "55",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 146.5,
+        "postprandial_rise_mg_dl": 35.0,
+        "avg_glucose": 111.5,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-e8425a6b652c",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "58",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 158.17,
+        "postprandial_rise_mg_dl": 41.5,
+        "avg_glucose": 6.48,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-7fb69937d256",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "61",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 169.83,
+        "postprandial_rise_mg_dl": 48.0,
+        "avg_glucose": 121.83,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-18794cbaf39b",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "64",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 181.5,
+        "postprandial_rise_mg_dl": 54.5,
+        "avg_glucose": 127.0,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-fddb7979a8e0",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "67",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 193.17,
+        "postprandial_rise_mg_dl": 61.0,
+        "avg_glucose": 7.34,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-1a570fab6d1d",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "70",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 159.33,
+        "postprandial_rise_mg_dl": 22.0,
+        "avg_glucose": 137.33,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-8b2a28590f25",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "73",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 171.0,
+        "postprandial_rise_mg_dl": 28.5,
+        "avg_glucose": 142.5,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-98dd40fe5ed8",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "76",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 182.67,
+        "postprandial_rise_mg_dl": 35.0,
+        "avg_glucose": 8.2,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-e5ad621b5b6b",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "79",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 194.33,
+        "postprandial_rise_mg_dl": 41.5,
+        "avg_glucose": 152.83,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-492c0c0e858c",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "82",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 206.0,
+        "postprandial_rise_mg_dl": 48.0,
+        "avg_glucose": 158.0,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-ffc255e52eba",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "85",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 150.5,
+        "postprandial_rise_mg_dl": 54.5,
+        "avg_glucose": 5.33,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-9706dbd58e30",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "88",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 162.17,
+        "postprandial_rise_mg_dl": 61.0,
+        "avg_glucose": 101.17,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-c92ef6f25207",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "91",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 128.33,
+        "postprandial_rise_mg_dl": 22.0,
+        "avg_glucose": 106.33,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-7bffb6da1b20",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "94",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 140.0,
+        "postprandial_rise_mg_dl": 28.5,
+        "avg_glucose": 6.19,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "C-5dedf5128d75",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g6",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "52",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 151.67,
+        "postprandial_rise_mg_dl": 35.0,
+        "avg_glucose": 116.67,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-8cb462aea57b",
+      "family": "cgm",
+      "vendor_schema": "dexcom_g7",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "55",
+        "postMealSpike": false,
+        "postprandial_peak_mg_dl": 163.33,
+        "postprandial_rise_mg_dl": 41.5,
+        "avg_glucose": 121.83,
+        "avg_glucose_unit": "mg/dL"
+      }
+    },
+    {
+      "dataset_id": "C-aee9bcd70a1e",
+      "family": "cgm",
+      "vendor_schema": "freestyle_libre",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "dexcom /v3/users/self/egvs",
+        "value (mg/dL)",
+        "trend",
+        "trendRate (mg/dL/min)"
+      ],
+      "cgm_payload": {
+        "timeInRangePct": "58",
+        "postMealSpike": true,
+        "postprandial_peak_mg_dl": 175.0,
+        "postprandial_rise_mg_dl": 48.0,
+        "avg_glucose": 7.05,
+        "avg_glucose_unit": "mmol/L"
+      }
+    },
+    {
+      "dataset_id": "G-94f2c31b1e6b",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "MTHFR C677T",
+          "LCT -13910C>T"
+        ],
+        "phenotypes": [
+          "folate_metabolism_reduced",
+          "lactose_intolerance"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-4033fed9c65c",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "LCT -13910C>T",
+          "CYP1A2 rs762551",
+          "FTO rs9939609"
+        ],
+        "phenotypes": [
+          "lactose_intolerance",
+          "slow_caffeine_metabolism",
+          "weight_gain_tendency"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-1538b15770bc",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "CYP1A2 rs762551",
+          "FTO rs9939609",
+          "TCF7L2 rs7903146",
+          "LPL rs328"
+        ],
+        "phenotypes": [
+          "slow_caffeine_metabolism",
+          "weight_gain_tendency",
+          "glycemic_risk",
+          "triglyceride_tendency"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-ca1341e0e65a",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "FTO rs9939609",
+          "TCF7L2 rs7903146"
+        ],
+        "phenotypes": [
+          "weight_gain_tendency",
+          "glycemic_risk"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-5970bf44d04d",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "TCF7L2 rs7903146",
+          "LPL rs328",
+          "APOE-e4"
+        ],
+        "phenotypes": [
+          "glycemic_risk",
+          "triglyceride_tendency",
+          "lipid_risk"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-2275fc483913",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "LPL rs328",
+          "APOE-e4",
+          "VDR rs2228570",
+          "MTHFR C677T"
+        ],
+        "phenotypes": [
+          "triglyceride_tendency",
+          "lipid_risk",
+          "low_sun_exposure",
+          "folate_metabolism_reduced"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-955f543f088b",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "APOE-e4",
+          "VDR rs2228570"
+        ],
+        "phenotypes": [
+          "lipid_risk",
+          "low_sun_exposure"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-b5fe3ac5dd47",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "VDR rs2228570",
+          "MTHFR C677T",
+          "LCT -13910C>T"
+        ],
+        "phenotypes": [
+          "low_sun_exposure",
+          "folate_metabolism_reduced",
+          "lactose_intolerance"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-3d9500fcab28",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "MTHFR C677T",
+          "LCT -13910C>T",
+          "CYP1A2 rs762551",
+          "FTO rs9939609"
+        ],
+        "phenotypes": [
+          "folate_metabolism_reduced",
+          "lactose_intolerance",
+          "slow_caffeine_metabolism",
+          "weight_gain_tendency"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-526ce965658e",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "LCT -13910C>T",
+          "CYP1A2 rs762551"
+        ],
+        "phenotypes": [
+          "lactose_intolerance",
+          "slow_caffeine_metabolism"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-186b57dc2618",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "CYP1A2 rs762551",
+          "FTO rs9939609",
+          "TCF7L2 rs7903146"
+        ],
+        "phenotypes": [
+          "slow_caffeine_metabolism",
+          "weight_gain_tendency",
+          "glycemic_risk"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-0d0eaa7f7e66",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "FTO rs9939609",
+          "TCF7L2 rs7903146",
+          "LPL rs328",
+          "APOE-e4"
+        ],
+        "phenotypes": [
+          "weight_gain_tendency",
+          "glycemic_risk",
+          "triglyceride_tendency",
+          "lipid_risk"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-23812480a2cd",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "TCF7L2 rs7903146",
+          "LPL rs328"
+        ],
+        "phenotypes": [
+          "glycemic_risk",
+          "triglyceride_tendency"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-2db4ca6bc5f9",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "LPL rs328",
+          "APOE-e4",
+          "VDR rs2228570"
+        ],
+        "phenotypes": [
+          "triglyceride_tendency",
+          "lipid_risk",
+          "low_sun_exposure"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-6855bb426357",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "APOE-e4",
+          "VDR rs2228570",
+          "MTHFR C677T",
+          "LCT -13910C>T"
+        ],
+        "phenotypes": [
+          "lipid_risk",
+          "low_sun_exposure",
+          "folate_metabolism_reduced",
+          "lactose_intolerance"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-24e4300edb54",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "VDR rs2228570",
+          "MTHFR C677T"
+        ],
+        "phenotypes": [
+          "low_sun_exposure",
+          "folate_metabolism_reduced"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-f4c1a0aa9139",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "MTHFR C677T",
+          "LCT -13910C>T",
+          "CYP1A2 rs762551"
+        ],
+        "phenotypes": [
+          "folate_metabolism_reduced",
+          "lactose_intolerance",
+          "slow_caffeine_metabolism"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-f86954a27a76",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "LCT -13910C>T",
+          "CYP1A2 rs762551",
+          "FTO rs9939609",
+          "TCF7L2 rs7903146"
+        ],
+        "phenotypes": [
+          "lactose_intolerance",
+          "slow_caffeine_metabolism",
+          "weight_gain_tendency",
+          "glycemic_risk"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-f113b8367d83",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "CYP1A2 rs762551",
+          "FTO rs9939609"
+        ],
+        "phenotypes": [
+          "slow_caffeine_metabolism",
+          "weight_gain_tendency"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-99a8f230a20b",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "FTO rs9939609",
+          "TCF7L2 rs7903146",
+          "LPL rs328"
+        ],
+        "phenotypes": [
+          "weight_gain_tendency",
+          "glycemic_risk",
+          "triglyceride_tendency"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-01bd1b4e1705",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "TCF7L2 rs7903146",
+          "LPL rs328",
+          "APOE-e4",
+          "VDR rs2228570"
+        ],
+        "phenotypes": [
+          "glycemic_risk",
+          "triglyceride_tendency",
+          "lipid_risk",
+          "low_sun_exposure"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-d1d04291ff25",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "LPL rs328",
+          "APOE-e4"
+        ],
+        "phenotypes": [
+          "triglyceride_tendency",
+          "lipid_risk"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-13a6ae8bd995",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "APOE-e4",
+          "VDR rs2228570",
+          "MTHFR C677T"
+        ],
+        "phenotypes": [
+          "lipid_risk",
+          "low_sun_exposure",
+          "folate_metabolism_reduced"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-121add379311",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "VDR rs2228570",
+          "MTHFR C677T",
+          "LCT -13910C>T",
+          "CYP1A2 rs762551"
+        ],
+        "phenotypes": [
+          "low_sun_exposure",
+          "folate_metabolism_reduced",
+          "lactose_intolerance",
+          "slow_caffeine_metabolism"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-c23e18f2cadd",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "MTHFR C677T",
+          "LCT -13910C>T"
+        ],
+        "phenotypes": [
+          "folate_metabolism_reduced",
+          "lactose_intolerance"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-55f25411b531",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "LCT -13910C>T",
+          "CYP1A2 rs762551",
+          "FTO rs9939609"
+        ],
+        "phenotypes": [
+          "lactose_intolerance",
+          "slow_caffeine_metabolism",
+          "weight_gain_tendency"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-b66efe879a8a",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "CYP1A2 rs762551",
+          "FTO rs9939609",
+          "TCF7L2 rs7903146",
+          "LPL rs328"
+        ],
+        "phenotypes": [
+          "slow_caffeine_metabolism",
+          "weight_gain_tendency",
+          "glycemic_risk",
+          "triglyceride_tendency"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-6493361d354e",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "FTO rs9939609",
+          "TCF7L2 rs7903146"
+        ],
+        "phenotypes": [
+          "weight_gain_tendency",
+          "glycemic_risk"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-6bc92189b4f1",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "TCF7L2 rs7903146",
+          "LPL rs328",
+          "APOE-e4"
+        ],
+        "phenotypes": [
+          "glycemic_risk",
+          "triglyceride_tendency",
+          "lipid_risk"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-8dd1172d33da",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "LPL rs328",
+          "APOE-e4",
+          "VDR rs2228570",
+          "MTHFR C677T"
+        ],
+        "phenotypes": [
+          "triglyceride_tendency",
+          "lipid_risk",
+          "low_sun_exposure",
+          "folate_metabolism_reduced"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-aeb3aafb1f98",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "APOE-e4",
+          "VDR rs2228570"
+        ],
+        "phenotypes": [
+          "lipid_risk",
+          "low_sun_exposure"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-d95378290990",
+      "family": "genetic",
+      "vendor_schema": "generic_snp_array",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "VDR rs2228570",
+          "MTHFR C677T",
+          "LCT -13910C>T"
+        ],
+        "phenotypes": [
+          "low_sun_exposure",
+          "folate_metabolism_reduced",
+          "lactose_intolerance"
+        ]
+      }
+    },
+    {
+      "dataset_id": "G-3f70174a58ca",
+      "family": "genetic",
+      "vendor_schema": "genoplan",
+      "data_class": "SYNTHETIC",
+      "source_schema_reference": [
+        "rsid",
+        "genotype",
+        "phenotype_call"
+      ],
+      "genetic_payload": {
+        "markers": [
+          "MTHFR C677T",
+          "LCT -13910C>T",
+          "CYP1A2 rs762551",
+          "FTO rs9939609"
+        ],
+        "phenotypes": [
+          "folate_metabolism_reduced",
+          "lactose_intolerance",
+          "slow_caffeine_metabolism",
+          "weight_gain_tendency"
+        ]
+      }
+    }
+  ],
+  "collection_sha256": "71158db4899d316806187d8f772024c9b0d85edd5dfb6fa67a61aa8010731661"
+}

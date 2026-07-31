@@ -137,10 +137,10 @@ def score_against_seal(
         "cases_not_in_reference": extra_cases,
         "mean_score_pct": round(mean_score, 4),
         "per_case": per_case,
-        "measurement_environment": "internal_pre_check_only",
+        "measurement_environment": "research_phase_internal_measurement",
         "note": (
-            "이 값은 사전 점검용이다. 계획서는 이 지표를 KOLAS 인정 시험기관에서 "
-            "측정하도록 규정한다."
+            "연구 기간의 내부 측정값이다. 연구를 마친 뒤 공인시험기관 최종 검증을 "
+            "별도로 받는다."
         ),
     }
 

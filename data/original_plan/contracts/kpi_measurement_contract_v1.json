@@ -2,11 +2,13 @@
   "schema_version": "kpi_measurement_contract_v1",
   "source": "TIPS 연구개발계획서 전체본 p.25~26 (docs/context/original_plan.pdf)",
   "purpose": "각 KPI를 어떤 표본으로 누가 어디서 측정해야 하는지 기계가 읽을 수 있게 고정한다. 합성 데이터로 대체할 수 있는 자리와 그럴 수 없는 자리를 구분하는 것이 이 파일의 핵심이다.",
-  "global_constraint": {
+  "final_verification": {
     "evaluation_environment": "TTA, 와이즈스톤 등 KOLAS 인정 시험기관",
-    "applies_to": "all_seven_indicators",
-    "note": "7개 지표 전부 공인시험기관 측정으로 규정돼 있다. 내부 측정값은 사전 점검용이며 최종 근거가 아니다. 이 제약은 우회 대상이 아니라 일정·비용으로 잡아야 할 항목이다.",
-    "internal_measurement_role": "pre_check_only"
+    "when": "after_research_completion",
+    "is_a_research_phase_gate": false,
+    "note": "계획서 p.26의 '평가 환경'은 연구를 마친 뒤 결과물을 공인시험기관에 가져가 최종 성능을 검증받는 단계다. 연구 과정 중에 통과해야 하는 게이트가 아니다.",
+    "do_not": "KOLAS 시험을 연구 단계의 선행 조건이나 차단 조건으로 취급하지 말 것. 연구 진행을 막는 용도로 쓰면 안 된다.",
+    "research_phase_measurement": "연구 기간에는 내부 측정으로 진행하고 그 값을 연구 결과로 사용한다. 시험 의뢰는 연구 완료 후 별도 단계다."
   },
   "indicators": [
     {
@@ -22,9 +24,18 @@
         "must_precede_engine_output": true,
         "reason": "R_i를 엔진 출력에서 파생하면 교집합 비율이 인위적으로 100%에 수렴해 측정이 무의미해진다."
       },
-      "minimum_sample": {"unit": "test_case", "count": 100},
+      "minimum_sample": {
+        "unit": "test_case",
+        "count": 100
+      },
       "internal_only_possible": true,
-      "internal_condition": "약사가 엔진 출력을 보기 전에 R_i를 확정하고 봉인해야 한다."
+      "internal_condition": "약사가 엔진 출력을 보기 전에 R_i를 확정하고 봉인해야 한다.",
+      "fulfilment_plan": {
+        "approach": "약사가 정답 100건을 먼저 봉인한 뒤 엔진 대조",
+        "tool": "scripts/seal_reference_standard.py",
+        "status": "tool_ready_content_pending"
+      },
+      "internal_measurement_is_valid_during_research": true
     },
     {
       "id": "KPI-2",
@@ -39,9 +50,40 @@
         "must_precede_engine_output": false,
         "reason": "지표 정의가 '실제 효과 측정치'다. 합성 자료로 대체하면 지표 자체를 충족하지 못한다."
       },
-      "minimum_sample": {"unit": "person", "count": 100},
+      "minimum_sample": {
+        "unit": "person",
+        "count": 100
+      },
       "internal_only_possible": false,
-      "internal_condition": "실제 사용자 100명 이상의 복용 전·후 PRO가 필요하다. 운영 중인 웰니스박스 서비스 사용자에서 확보하는 것이 현실적 경로다."
+      "internal_condition": "실제 사용자 100명 이상의 복용 전·후 PRO가 필요하다. 운영 중인 웰니스박스 서비스 사용자에서 확보하는 것이 현실적 경로다.",
+      "fulfilment_plan": {
+        "approach": "미정 — 아래 open_decision 참고",
+        "tool": null,
+        "status": "decision_required"
+      },
+      "internal_measurement_is_valid_during_research": true,
+      "open_decision": {
+        "question": "복용 전·후 PRO 100명을 어떻게 채울 것인가",
+        "why_it_cannot_be_changed_in_this_repo": "100명은 연구개발계획서 p.26의 통과 조건이다. 저장소 파일을 고쳐도 협약상 요건이 바뀌지 않는다. 지표나 목표치 변경은 전문기관 협약 변경 승인 사안이다.",
+        "options": [
+          {
+            "id": "A",
+            "label": "운영 중인 서비스 사용자에게서 확보",
+            "note": "계획서 p.31에 실 운영과 고객 피드백 수집이 이미 기재돼 있다. 새 모집이 아니라 기존 사용자 대상 전·후 설문이다."
+          },
+          {
+            "id": "B",
+            "label": "협약 변경 신청으로 지표·표본 조정",
+            "note": "전문기관 승인이 필요하다. 승인 전에는 기존 조건이 유효하다."
+          },
+          {
+            "id": "C",
+            "label": "3차년도로 이월",
+            "note": "표본 수집에 시간이 걸리므로 지금부터 쌓아야 3차년도 측정이 가능하다."
+          }
+        ],
+        "chosen": null
+      }
     },
     {
       "id": "KPI-3",
@@ -56,9 +98,18 @@
         "must_precede_engine_output": true,
         "reason": "정답 작업 집합을 시스템 출력에서 만들면 정확도가 자기 참조가 된다."
       },
-      "minimum_sample": {"unit": "test_case", "count": 100},
+      "minimum_sample": {
+        "unit": "test_case",
+        "count": 100
+      },
       "internal_only_possible": true,
-      "internal_condition": "정답 작업을 먼저 확정하고 봉인한 뒤 시스템을 실행한다."
+      "internal_condition": "정답 작업을 먼저 확정하고 봉인한 뒤 시스템을 실행한다.",
+      "fulfilment_plan": {
+        "approach": "정답 작업 100건을 먼저 봉인한 뒤 시스템 대조",
+        "tool": "scripts/seal_reference_standard.py",
+        "status": "tool_ready_content_pending"
+      },
+      "internal_measurement_is_valid_during_research": true
     },
     {
       "id": "KPI-4",
@@ -73,9 +124,18 @@
         "must_precede_engine_output": true,
         "reason": "정답 문항과 판정 기준(사실성·적절성·완결성)을 답변을 본 뒤에 만들면 측정이 무효다."
       },
-      "minimum_sample": {"unit": "question", "count": 100},
+      "minimum_sample": {
+        "unit": "question",
+        "count": 100
+      },
       "internal_only_possible": true,
-      "internal_condition": "문항과 정답을 먼저 확정하고 봉인한 뒤 상담 모듈을 실행한다."
+      "internal_condition": "문항과 정답을 먼저 확정하고 봉인한 뒤 상담 모듈을 실행한다.",
+      "fulfilment_plan": {
+        "approach": "문항·정답 100건을 먼저 봉인한 뒤 상담 모듈 대조",
+        "tool": "scripts/seal_reference_standard.py",
+        "status": "tool_ready_content_pending"
+      },
+      "internal_measurement_is_valid_during_research": true
     },
     {
       "id": "KPI-5",
@@ -90,9 +150,18 @@
         "must_precede_engine_output": true,
         "reason": "참조 규칙을 엔진 출력에서 만들면 일치율이 항상 100%가 된다."
       },
-      "minimum_sample": {"unit": "rule", "count": 100},
+      "minimum_sample": {
+        "unit": "rule",
+        "count": 100
+      },
       "internal_only_possible": true,
-      "internal_condition": "참조 규칙을 외부 근거(문헌·규제 자료)에서 먼저 도출하고 봉인한다."
+      "internal_condition": "참조 규칙을 외부 근거(문헌·규제 자료)에서 먼저 도출하고 봉인한다.",
+      "fulfilment_plan": {
+        "approach": "참조 규칙 100건을 외부 근거에서 도출해 봉인",
+        "tool": "scripts/seal_reference_standard.py",
+        "status": "tool_ready_content_pending"
+      },
+      "internal_measurement_is_valid_during_research": true
     },
     {
       "id": "KPI-6",
@@ -107,9 +176,18 @@
         "must_precede_engine_output": false,
         "reason": "실제 사용자 보고 집계다. 합성으로 만들 수 없다."
       },
-      "minimum_sample": {"unit": "months_of_operation", "count": 12},
+      "minimum_sample": {
+        "unit": "months_of_operation",
+        "count": 12
+      },
       "internal_only_possible": false,
-      "internal_condition": "실제 서비스 운영 12개월치 이상반응 집계 체계가 필요하다."
+      "internal_condition": "실제 서비스 운영 12개월치 이상반응 집계 체계가 필요하다.",
+      "fulfilment_plan": {
+        "approach": "12개월 창 집계. 엔진 추천 연결 보고만 집계하며 노출 0이면 측정 불가로 표시",
+        "tool": "scripts/build_adverse_event_report.py",
+        "status": "ready"
+      },
+      "internal_measurement_is_valid_during_research": true
     },
     {
       "id": "KPI-7",
@@ -124,9 +202,19 @@
         "must_precede_engine_output": false,
         "reason": "연동 성공률 측정이므로 데이터 출처보다 연동 파이프라인의 동작이 대상이다. 다만 합성 사용 시 그 사실을 명시해야 한다."
       },
-      "minimum_sample": {"unit": "dataset", "count": 100, "note": "W, C, G 각 10세트 이상 포함"},
+      "minimum_sample": {
+        "unit": "dataset",
+        "count": 100,
+        "note": "W, C, G 각 10세트 이상 포함"
+      },
       "internal_only_possible": true,
-      "internal_condition": "합성 데이터 사용을 시험성적서와 보고서에 명시한다."
+      "internal_condition": "합성 데이터 사용을 시험성적서와 보고서에 명시한다.",
+      "fulfilment_plan": {
+        "approach": "시중 기기 스키마 기반 합성 100세트(W34/C33/G33) 생성 후 실제 파서로 연동율 측정",
+        "tool": "scripts/build_sensor_genetic_datasets.py",
+        "status": "ready"
+      },
+      "internal_measurement_is_valid_during_research": true
     }
   ],
   "synthetic_data_policy": {
