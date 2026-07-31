@@ -206,7 +206,7 @@ def test_openai_adapter_config_uses_defaults_and_missing_key_state(monkeypatch) 
     config = load_openai_chat_adapter_config_from_env()
 
     assert config.api_key_present is False
-    assert config.model == "gpt-5-mini"
+    assert config.model == "gpt-5.6-luna"
     assert config.base_url == "https://api.openai.com/v1"
     assert config.timeout_seconds == 20.0
 
