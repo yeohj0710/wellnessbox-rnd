@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import sys
+import time
 from argparse import ArgumentParser
 from datetime import UTC, datetime
 from pathlib import Path
@@ -51,6 +52,18 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
 SEAL_DIR = ROOT / "data/original_plan/kpi/seals"
 BAR = "─" * 68
+MIN_SECONDS_PER_CASE = 1.5
+COMMAND_MARKERS = ("python ", "scripts/", "scripts\\", "cd ", "--indicator", "git ")
+
+
+def looks_like_a_shell_command(answer: str) -> bool:
+    """Catch a pasted command line being swallowed as a review answer.
+
+    Pasting several commands at once feeds every line after the first into this
+    prompt, which would silently accept case after case. Better to stop.
+    """
+    folded = answer.strip().casefold()
+    return any(marker in folded for marker in COMMAND_MARKERS)
 
 
 def slug(indicator_id: str) -> str:
@@ -120,8 +133,10 @@ def cmd_review(args) -> int:
     say(f" {args.indicator} 정답 확정  —  남은 {len(pending)}건 / 전체 {len(workbench.drafts)}건")
     say(BAR)
     say("Enter = 초안 그대로 수락 | e = 수정 | r = 반려 | q = 저장하고 종료")
+    say("명령은 한 줄씩 실행하세요. 여러 줄을 붙여넣으면 답변으로 먹혀 중단됩니다.")
     say("수정은 성분을 쉼표로 구분해 입력합니다. 예: omega3, vitaminD, magnesium")
 
+    rushed = 0
     for position, draft in enumerate(pending, start=1):
         say()
         say(f"[{position}/{len(pending)}] {draft.case_id}")
@@ -129,10 +144,21 @@ def cmd_review(args) -> int:
         say(f"  초안: {', '.join(draft.draft_answer)}")
         if draft.draft_rationale:
             say(f"  근거: {draft.draft_rationale}")
+        started = time.monotonic()
         try:
             answer = input("  > ").strip()
         except EOFError:
-            answer = "q"
+            say("  입력이 끊겼습니다. 여기까지 저장하고 종료합니다.")
+            break
+
+        if looks_like_a_shell_command(answer):
+            say("  ! 명령어가 입력됐습니다. 여러 줄을 한 번에 붙여넣지 마세요.")
+            say("  ! 이 건은 저장하지 않고 종료합니다. 한 명령씩 따로 실행하세요.")
+            break
+
+        elapsed = time.monotonic() - started
+        if elapsed < MIN_SECONDS_PER_CASE:
+            rushed += 1
 
         if answer.lower() == "q":
             break
@@ -158,12 +184,16 @@ def cmd_review(args) -> int:
         save_workbench(target, workbench)
 
     summary = summarise_adjudication(workbench)
+    summary["rushed_decision_count"] = rushed
     say()
     say(BAR)
     say(json.dumps(summary, ensure_ascii=False, indent=2))
-    if summary["warnings"]:
+    warnings = list(summary["warnings"])
+    if rushed:
+        warnings.append(f"{rushed}건이 {MIN_SECONDS_PER_CASE}초 미만에 처리됨")
+    if warnings:
         say()
-        say("주의: " + ", ".join(summary["warnings"]))
+        say("주의: " + ", ".join(warnings))
     return 0
 
 
