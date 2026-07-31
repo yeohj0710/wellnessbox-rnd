@@ -118,11 +118,11 @@ python scripts/seal_reference_standard.py compare --indicator KPI-1 --engine-out
 
 | 지표 | 최소 표본 | 내부 수행 | 현재 상태 |
 |---|---|---|---|
-| KPI-1 추천 정확도 80% | 100 case | 가능 | **초안 100건 완료** — 사람 확정만 남음 |
+| KPI-1 추천 정확도 80% | 100 case | 가능 | **초안 100건 완료** — 독립 참조 코퍼스 기반으로 교체, 사람 확정만 남음 |
 | KPI-2 효과 개선도 >0pp | **100명** | 불가 | **결정 필요** (아래 참고) |
 | KPI-3 다음 작업 정확도 80% | 100 case | 가능 | 작업대 완료, 초안 생성기 필요 |
 | KPI-4 상담 답변 정확도 91% | 100 문항 | 가능 | 작업대 완료, 초안 생성기 필요 |
-| KPI-5 레퍼런스 정확도 95% | 100 규칙 | 가능 | 작업대 완료, 초안 생성기 필요 |
+| KPI-5 레퍼런스 정확도 95% | 100 규칙 | 가능 | **초안 100건 완료** — 엔진 규칙 파일 대신 독립 참조 코퍼스 기반, 사람 확정만 남음 |
 | KPI-6 이상반응 ≤5건/year | 12개월 운영 | 가능 | **해결** — 12개월 창 0건, 노출 5세션 |
 | KPI-7 연동율 90% | 100 데이터집합 | 가능 | **해결** — 합성 100세트, 연동율 100% |
 
@@ -155,6 +155,30 @@ python scripts/seal_reference_standard.py compare --indicator KPI-1 --engine-out
 | C | 3차년도로 이월 | 수집에 시간이 걸리므로 지금부터 쌓아야 함 |
 
 선택하면 계약 파일의 `KPI-2.open_decision.chosen` 에 기록한다.
+
+## 독립 참조 코퍼스 — KPI-1·5 정답 초안의 출처를 엔진 밖으로 옮겼다
+
+정답을 엔진이 읽는 파일에서 뽑으면 대조가 성립하지 않는다. 2026-07-31 감사에서 KPI-1과 KPI-5 초안이 이 조건을 만족하지 못하는 것을 확인했다.
+
+**KPI-1 — 맥락이 정답을 바꾸지 않았다.** `goal_ingredient_priors_v1` 기반 초안 100건의 서로 다른 정답 조합은 7개뿐이었고 사용된 성분은 11종이었다. 정답이 목표 하나만의 함수라서 `복용약 warfarin`, `임신 중`, `중증 신장질환`을 적어도 정답이 바뀌지 않았다. warfarin 사례 10건 중 1건은 정답에 omega3가 남아 있는데, 엔진의 `SAFETY-ANTICOAG-001` 은 그 조합을 배제한다. 즉 **엔진이 안전하게 행동할수록 점수가 깎이는** 정답지였다. 유효 표본도 100이 아니라 7이다.
+
+**KPI-5 — 엔진 자신의 규칙 파일이 정답이었다.** 초안이 `data/rules/safety_rules.json` 의 등록값을 그대로 물어보는 형태였다(`SAFETY-ANTICOAG-001 의 severity 참조값은?`). 엔진은 정의상 100%를 맞힌다. `assert_source_is_independent` 는 출처 문자열만 보므로 이 경우를 잡지 못한다.
+
+**대체 출처.** `건강상담 Checker` 는 프로젝트 오너가 저술해 이 엔진보다 먼저 출판한 약사 상담 저작물이다. 근거층이 엔진과 겹치지 않는다 — 엔진 지식베이스 19건은 NIH ODS·NCCIH·CDC·ADA·PubMed·master_context뿐이고 저장소 전체에서 이 저작물 인용은 0건이다. 저작권자가 오너와 동일해 연구 내부 이용에 제약이 없다.
+
+| 항목 | 값 |
+|---|---|
+| 추출기 | `scripts/build_health_checker_reference_extract.py` |
+| 추출물 | `data/knowledge/external/health_checker_reference_extract_v1.json` (원본 SHA-256 기록) |
+| 초안 생성기 | `src/wellnessbox_rnd/evals/reference_corpus_drafters.py` |
+| 초안 파일 | `data/original_plan/kpi/drafts/kpi{1,5}_reference_corpus_cases_v1.json` |
+| 매핑된 성분 | 25종 → 카탈로그 12키 전부 커버 |
+| 판정 사례 | 138건 (영역·판정 상태별 권장 성분, 쪽수 인용) |
+| 약물 맥락 | 7종 (원문 약물표의 고갈·흡수간섭 근거) |
+
+**정답이 맥락을 따라 움직인다.** 판정 상태의 권장 성분에 그 사례가 명시한 약물의 고갈 성분을 더한다. Furosemide 사례는 원문 권장 `probiotics, zinc` 에 루프이뇨제가 고갈시키는 `calcium_citrate, magnesium_glycinate, vitamin_b_complex` 가 붙는다(p236). Levothyroxine은 흡수 간섭형이라 배제하지 않고 원문 상담 문구인 4시간 간격 안내를 근거에 남긴다(p239). 그 결과 100건의 서로 다른 정답 조합이 7개에서 **67개**로 늘었다.
+
+**남는 한계.** 원문 성분 234종 중 카탈로그에 없는 209종은 채점에서 빠지고 `out_of_catalog_nutrients` 로만 기록된다. 이 목록이 카탈로그 확장 우선순위다. 소아·임신 영역과 성인 약물이 기계적으로 교차된 사례는 `검토자 확인 필요` 로 표시하며, 임상적 타당성 판단은 검토자 몫으로 남긴다.
 
 ## 추가 개선안
 

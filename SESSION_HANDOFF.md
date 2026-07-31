@@ -1,5 +1,19 @@
 # SESSION_HANDOFF
 
+## 2026-07-31 독립 참조 코퍼스 handoff
+
+- **선택 단계와 과제:** KPI-1·5 정답 초안이 측정 대상 엔진과 출처를 공유하는지 감사하고, 겹치지 않는 출판 저작물로 교체했다. 브랜치 `book-corpus-answer-keys`; push·배포·훈련·사람 판정·봉인 없음.
+- **주 데이터셋과 사례 수:** `data/knowledge/external/health_checker_reference_extract_v1.json` — 판정 사례 138건, 약물 맥락 7종, 성분 매핑 25종. 초안은 KPI-1 100건, KPI-5 100건.
+- **변경 파일:** 새 `scripts/build_health_checker_reference_extract.py`, `scripts/build_reference_corpus_answer_key_drafts.py`, `src/wellnessbox_rnd/evals/reference_corpus_drafters.py`, `tests/test_reference_corpus_drafters.py`, 추출물·초안 데이터, `docs/original_plan/KPI_COMPLIANCE_STRATEGY.md` 갱신, 인계 문서 3종.
+- **핵심 변경:** 정답 초안 출처를 엔진 밖으로 옮겼다. 판정 상태의 원문 권장 성분에 그 사례가 명시한 약물의 고갈 성분을 더하므로 정답이 맥락을 따라 움직인다. 서로 다른 정답 조합 7 → 67.
+- **코드·데이터·학습·시뮬레이션:** 엔진 지식베이스, 안전 규칙, 채점 로직, 학습·시뮬레이션 코드는 건드리지 않았다. 기존 `answer_key_drafters.py` 와 작업대 CLI도 그대로 두고 `--cases` 경로로만 연결했다.
+- **검증 명령과 결과:** `pytest tests/test_reference_corpus_drafters.py` 12 passed; `pytest tests/test_answer_key_workbench.py` 32 passed; `pytest -k "answer_key or reference_standard or reference_corpus"` 66 passed; 신규 파일 `ruff check` 0건.
+- **공식 frozen eval delta:** frozen eval 데이터와 지표를 바꾸지 않았다. delta는 0이다.
+- **replay·slice delta:** 엔진 입력·산출물을 바꾸지 않았다. delta는 0이다.
+- **병목 5개:** KPI-1·5 사람 확정 미실행, 카탈로그 12종 한계로 원문 성분 209종 채점 제외, KPI-3·4 초안 출처 미감사, KPI-2 실사용자 100명, 학습 게이트 NO-GO다.
+- **다음 세 반복:** KPI-1·5 확정과 봉인, 카탈로그 확장, KPI-3·4 출처 감사 순서다.
+- **아침에 사람이 확인할 세 가지:** KPI-1 초안 한 건의 근거 문구가 원문 쪽수와 맞는지, 소아·임신 교차 사례를 남길지 반려할지, 카탈로그 확장을 어디까지 할지다.
+
 ## 2026-07-30 원스텝 실행기 handoff
 
 - **선택 단계와 과제:** 남은 연구 과정을 사람이 켜서 다음다음만 눌러 끝낼 수 있게 안내 실행기를 만들었다. 브랜치 `one-step-completion-wizard`; push·배포·훈련·사람 판정·서명 없음.

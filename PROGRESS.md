@@ -1,5 +1,16 @@
 # PROGRESS
 
+## 2026-07-31 KPI-1·5 정답 초안을 독립 참조 코퍼스로 교체
+
+- 선택 단계·과제: KPI-1과 KPI-5 정답 초안의 출처 독립성을 감사하고 대체 출처를 붙였다. 브랜치는 `book-corpus-answer-keys`다.
+- 감사 결과 2건: (1) KPI-1 초안 100건의 서로 다른 정답 조합이 7개뿐이었고, 사례가 `복용약 warfarin`·`임신 중`을 적어도 정답이 바뀌지 않았다. warfarin 사례 1건은 정답에 omega3가 남아 있어 `SAFETY-ANTICOAG-001` 로 올바르게 배제하는 엔진이 오히려 감점된다. (2) KPI-5 초안이 엔진 자신의 `data/rules/safety_rules.json` 등록값을 되묻는 형태라 엔진이 정의상 100%를 맞힌다.
+- 대체 출처: `건강상담 Checker`. 프로젝트 오너 저술, 엔진보다 먼저 출판, 저작권자 동일. 엔진 지식베이스 19건(NIH ODS·NCCIH·CDC·ADA·PubMed·master_context)과 근거가 겹치지 않고 저장소 전체 인용 0건임을 확인했다.
+- 추출: `scripts/build_health_checker_reference_extract.py` 가 원본 SHA-256과 함께 성분 매핑 25종, 판정 사례 138건, 약물 맥락 7종을 `data/knowledge/external/health_checker_reference_extract_v1.json` 에 쓴다. 카탈로그 12키를 모두 커버한다.
+- 초안: `reference_corpus_drafters.py` 가 판정 상태 × 약물 맥락을 교차해 KPI-1·5 각 100건을 만든다. 정답이 맥락을 따라 움직인다 — Furosemide 사례는 원문 권장에 루프이뇨제 고갈 성분 3종이 붙고(p236), Levothyroxine은 흡수 간섭형이라 배제 대신 4시간 간격 상담 문구를 근거에 남긴다(p239). 서로 다른 정답 조합이 7개에서 67개로 늘었다.
+- 경계: 기존 `answer_key_drafters.py` 와 작업대 CLI는 건드리지 않았다. 기존 CLI의 `--cases` 경로로 초안 파일만 넘긴다. 엔진 지식베이스·안전 규칙·채점 로직·frozen eval은 그대로다. 사람 확정과 봉인은 하지 않았다.
+- 한계: 원문 성분 234종 중 카탈로그에 없는 209종은 채점에서 빠지고 `out_of_catalog_nutrients` 로만 남는다. 소아·임신 영역과 성인 약물의 기계적 교차는 `검토자 확인 필요` 로 표시했고 임상 판단은 검토자 몫이다.
+- 검증: `pytest tests/test_reference_corpus_drafters.py` 12건 통과, `tests/test_answer_key_workbench.py` 32건 통과, `-k "answer_key or reference_standard or reference_corpus"` 66건 통과. 신규 파일 Ruff 0건.
+
 ## 2026-07-30 연구 마감 원스텝 실행기 추가
 
 - 선택 단계·과제: 사람이 켜서 Enter만 누르며 끝까지 갈 수 있는 안내 실행기를 만들었다. 브랜치는 `one-step-completion-wizard`다.

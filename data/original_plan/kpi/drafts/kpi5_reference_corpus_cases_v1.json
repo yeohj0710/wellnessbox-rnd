@@ -1,0 +1,902 @@
+[
+  {
+    "case_id": "kpi5-ref-001",
+    "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-002",
+    "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "coq10"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-003",
+    "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-004",
+    "prompt": "Esomeprazole 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-005",
+    "prompt": "Esomeprazole 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-006",
+    "prompt": "Esomeprazole 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-007",
+    "prompt": "Esomeprazole 복용자에게 zinc 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "zinc"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-008",
+    "prompt": "Furosemide 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-009",
+    "prompt": "Furosemide 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-010",
+    "prompt": "Furosemide 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-011",
+    "prompt": "Furosemide 복용자에게 zinc 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "zinc"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-012",
+    "prompt": "Levothyroxine 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "absorption_interaction",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-013",
+    "prompt": "Levothyroxine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "absorption_interaction",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-014",
+    "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "coq10"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-015",
+    "prompt": "Metformin 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-016",
+    "prompt": "Prednisolone 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-017",
+    "prompt": "Prednisolone 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-018",
+    "prompt": "Prednisolone 복용자에게 vitamin_c 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_c"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-019",
+    "prompt": "Prednisolone 복용자에게 vitamin_d3 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-020",
+    "prompt": "Prednisolone 복용자에게 zinc 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "zinc"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-021",
+    "prompt": "Amlodipine 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "마그네슘"
+    ],
+    "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-022",
+    "prompt": "Atorvastatin 와 coq10 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-023",
+    "prompt": "Atorvastatin 와 vitamin_d3 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "비타민 D"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-024",
+    "prompt": "Esomeprazole 와 calcium_citrate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "칼슘"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-025",
+    "prompt": "Esomeprazole 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "마그네슘"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-026",
+    "prompt": "Esomeprazole 와 vitamin_b_complex 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "비타민 B1"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-027",
+    "prompt": "Esomeprazole 와 zinc 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "아연"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-028",
+    "prompt": "Furosemide 와 calcium_citrate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "칼슘"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-029",
+    "prompt": "Furosemide 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "마그네슘"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-030",
+    "prompt": "Furosemide 와 vitamin_b_complex 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "비타민 B1"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-031",
+    "prompt": "Furosemide 와 zinc 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "아연"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-032",
+    "prompt": "Levothyroxine 와 calcium_citrate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p239",
+      "칼슘"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-033",
+    "prompt": "Levothyroxine 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p239",
+      "마그네슘"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-034",
+    "prompt": "Metformin 와 coq10 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-035",
+    "prompt": "Metformin 와 vitamin_b_complex 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "비타민 B12"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-036",
+    "prompt": "Prednisolone 와 calcium_citrate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "칼슘"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-037",
+    "prompt": "Prednisolone 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "마그네슘"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-038",
+    "prompt": "Prednisolone 와 vitamin_c 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "비타민 C"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-039",
+    "prompt": "Prednisolone 와 vitamin_d3 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "비타민 D"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-040",
+    "prompt": "Prednisolone 와 zinc 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "아연"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-041",
+    "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-042",
+    "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "coq10"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-043",
+    "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-044",
+    "prompt": "Esomeprazole 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-045",
+    "prompt": "Esomeprazole 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-046",
+    "prompt": "Esomeprazole 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-047",
+    "prompt": "Esomeprazole 복용자에게 zinc 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "zinc"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-048",
+    "prompt": "Furosemide 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-049",
+    "prompt": "Furosemide 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-050",
+    "prompt": "Furosemide 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-051",
+    "prompt": "Furosemide 복용자에게 zinc 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "zinc"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-052",
+    "prompt": "Levothyroxine 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "absorption_interaction",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-053",
+    "prompt": "Levothyroxine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "absorption_interaction",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-054",
+    "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "coq10"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-055",
+    "prompt": "Metformin 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-056",
+    "prompt": "Prednisolone 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-057",
+    "prompt": "Prednisolone 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-058",
+    "prompt": "Prednisolone 복용자에게 vitamin_c 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_c"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-059",
+    "prompt": "Prednisolone 복용자에게 vitamin_d3 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-060",
+    "prompt": "Prednisolone 복용자에게 zinc 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "zinc"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-061",
+    "prompt": "Amlodipine 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "마그네슘"
+    ],
+    "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-062",
+    "prompt": "Atorvastatin 와 coq10 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-063",
+    "prompt": "Atorvastatin 와 vitamin_d3 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "비타민 D"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-064",
+    "prompt": "Esomeprazole 와 calcium_citrate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "칼슘"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-065",
+    "prompt": "Esomeprazole 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "마그네슘"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-066",
+    "prompt": "Esomeprazole 와 vitamin_b_complex 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "비타민 B1"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-067",
+    "prompt": "Esomeprazole 와 zinc 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p237",
+      "아연"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-068",
+    "prompt": "Furosemide 와 calcium_citrate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "칼슘"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-069",
+    "prompt": "Furosemide 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "마그네슘"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-070",
+    "prompt": "Furosemide 와 vitamin_b_complex 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "비타민 B1"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-071",
+    "prompt": "Furosemide 와 zinc 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "아연"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-072",
+    "prompt": "Levothyroxine 와 calcium_citrate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p239",
+      "칼슘"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-073",
+    "prompt": "Levothyroxine 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p239",
+      "마그네슘"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-074",
+    "prompt": "Metformin 와 coq10 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-075",
+    "prompt": "Metformin 와 vitamin_b_complex 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p236",
+      "비타민 B12"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-076",
+    "prompt": "Prednisolone 와 calcium_citrate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "칼슘"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-077",
+    "prompt": "Prednisolone 와 magnesium_glycinate 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "마그네슘"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-078",
+    "prompt": "Prednisolone 와 vitamin_c 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "비타민 C"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-079",
+    "prompt": "Prednisolone 와 vitamin_d3 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "비타민 D"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-080",
+    "prompt": "Prednisolone 와 zinc 관계의 근거 쪽수는?",
+    "draft_answer": [
+      "p238",
+      "아연"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-081",
+    "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-082",
+    "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "coq10"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-083",
+    "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-084",
+    "prompt": "Esomeprazole 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-085",
+    "prompt": "Esomeprazole 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-086",
+    "prompt": "Esomeprazole 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-087",
+    "prompt": "Esomeprazole 복용자에게 zinc 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "zinc"
+    ],
+    "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+  },
+  {
+    "case_id": "kpi5-ref-088",
+    "prompt": "Furosemide 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-089",
+    "prompt": "Furosemide 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-090",
+    "prompt": "Furosemide 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-091",
+    "prompt": "Furosemide 복용자에게 zinc 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "zinc"
+    ],
+    "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-092",
+    "prompt": "Levothyroxine 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "absorption_interaction",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-093",
+    "prompt": "Levothyroxine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "absorption_interaction",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+  },
+  {
+    "case_id": "kpi5-ref-094",
+    "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "coq10"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-095",
+    "prompt": "Metformin 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+  },
+  {
+    "case_id": "kpi5-ref-096",
+    "prompt": "Prednisolone 복용자에게 calcium_citrate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "calcium_citrate"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-097",
+    "prompt": "Prednisolone 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-098",
+    "prompt": "Prednisolone 복용자에게 vitamin_c 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_c"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-099",
+    "prompt": "Prednisolone 복용자에게 vitamin_d3 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  },
+  {
+    "case_id": "kpi5-ref-100",
+    "prompt": "Prednisolone 복용자에게 zinc 는 어떤 관계인가?",
+    "draft_answer": [
+      "depletion",
+      "zinc"
+    ],
+    "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+  }
+]
