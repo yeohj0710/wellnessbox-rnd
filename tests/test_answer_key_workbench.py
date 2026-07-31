@@ -6,6 +6,7 @@ from pathlib import Path
 
 from wellnessbox_rnd.evals.answer_key_drafters import (
     DRAFT_SOURCE,
+    DRAFTERS,
     draft_cases,
     draft_kpi1_cases,
 )
@@ -247,6 +248,54 @@ class Kpi1DrafterTest(unittest.TestCase):
     def test_an_indicator_without_a_drafter_says_so(self) -> None:
         with self.assertRaises(KeyError):
             draft_cases("KPI-9", ROOT)
+
+
+class AllDraftersTest(unittest.TestCase):
+    """Every answer-key indicator must reach its 100-case minimum."""
+
+    INDICATORS = ("KPI-1", "KPI-3", "KPI-4", "KPI-5")
+
+    def test_each_indicator_has_a_drafter(self) -> None:
+        self.assertEqual(set(DRAFTERS), set(self.INDICATORS))
+
+    def test_each_drafter_reaches_one_hundred_cases(self) -> None:
+        for indicator_id in self.INDICATORS:
+            with self.subTest(indicator=indicator_id):
+                self.assertEqual(len(draft_cases(indicator_id, ROOT, case_count=100)), 100)
+
+    def test_no_drafter_emits_an_empty_answer(self) -> None:
+        for indicator_id in self.INDICATORS:
+            cases = draft_cases(indicator_id, ROOT, case_count=100)
+            with self.subTest(indicator=indicator_id):
+                self.assertTrue(all(case["draft_answer"] for case in cases))
+
+    def test_case_ids_are_unique_per_indicator(self) -> None:
+        for indicator_id in self.INDICATORS:
+            ids = [case["case_id"] for case in draft_cases(indicator_id, ROOT, case_count=100)]
+            with self.subTest(indicator=indicator_id):
+                self.assertEqual(len(ids), len(set(ids)))
+
+    def test_every_case_carries_a_rationale(self) -> None:
+        for indicator_id in self.INDICATORS:
+            cases = draft_cases(indicator_id, ROOT, case_count=100)
+            with self.subTest(indicator=indicator_id):
+                self.assertTrue(all(case["draft_rationale"] for case in cases))
+
+    def test_each_drafter_is_deterministic(self) -> None:
+        for indicator_id in self.INDICATORS:
+            with self.subTest(indicator=indicator_id):
+                self.assertEqual(
+                    draft_cases(indicator_id, ROOT, case_count=30),
+                    draft_cases(indicator_id, ROOT, case_count=30),
+                )
+
+    def test_kpi3_covers_every_next_action_rule(self) -> None:
+        actions = {
+            case["draft_answer"][0] for case in draft_cases("KPI-3", ROOT, case_count=100)
+        }
+
+        self.assertGreaterEqual(len(actions), 9)
+        self.assertIn("stop_and_escalate", actions)
 
 
 if __name__ == "__main__":

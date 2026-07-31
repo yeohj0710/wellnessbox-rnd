@@ -1,0 +1,907 @@
+{
+  "schema_version": "answer_key_draft_v1",
+  "indicator_id": "KPI-3",
+  "drafts": [
+    {
+      "case_id": "kpi3-001",
+      "prompt": "40대 수면 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-002",
+      "prompt": "40대 수면 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-003",
+      "prompt": "40대 수면 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-004",
+      "prompt": "40대 수면 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-005",
+      "prompt": "40대 수면 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-006",
+      "prompt": "40대 수면 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-007",
+      "prompt": "40대 수면 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-008",
+      "prompt": "40대 수면 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-009",
+      "prompt": "40대 수면 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-010",
+      "prompt": "50대 심혈관 목표, warfarin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-011",
+      "prompt": "50대 심혈관 목표, warfarin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-012",
+      "prompt": "50대 심혈관 목표, warfarin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-013",
+      "prompt": "50대 심혈관 목표, warfarin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-014",
+      "prompt": "50대 심혈관 목표, warfarin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-015",
+      "prompt": "50대 심혈관 목표, warfarin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-016",
+      "prompt": "50대 심혈관 목표, warfarin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-017",
+      "prompt": "50대 심혈관 목표, warfarin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-018",
+      "prompt": "50대 심혈관 목표, warfarin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-019",
+      "prompt": "20대 에너지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-020",
+      "prompt": "20대 에너지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-021",
+      "prompt": "20대 에너지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-022",
+      "prompt": "20대 에너지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-023",
+      "prompt": "20대 에너지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-024",
+      "prompt": "20대 에너지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-025",
+      "prompt": "20대 에너지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-026",
+      "prompt": "20대 에너지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-027",
+      "prompt": "20대 에너지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-028",
+      "prompt": "60대 뼈·관절 목표, metformin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-029",
+      "prompt": "60대 뼈·관절 목표, metformin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-030",
+      "prompt": "60대 뼈·관절 목표, metformin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-031",
+      "prompt": "60대 뼈·관절 목표, metformin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-032",
+      "prompt": "60대 뼈·관절 목표, metformin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-033",
+      "prompt": "60대 뼈·관절 목표, metformin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-034",
+      "prompt": "60대 뼈·관절 목표, metformin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-035",
+      "prompt": "60대 뼈·관절 목표, metformin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-036",
+      "prompt": "60대 뼈·관절 목표, metformin 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-037",
+      "prompt": "30대 장 건강 목표, omeprazole 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-038",
+      "prompt": "30대 장 건강 목표, omeprazole 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-039",
+      "prompt": "30대 장 건강 목표, omeprazole 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-040",
+      "prompt": "30대 장 건강 목표, omeprazole 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-041",
+      "prompt": "30대 장 건강 목표, omeprazole 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-042",
+      "prompt": "30대 장 건강 목표, omeprazole 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-043",
+      "prompt": "30대 장 건강 목표, omeprazole 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-044",
+      "prompt": "30대 장 건강 목표, omeprazole 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-045",
+      "prompt": "30대 장 건강 목표, omeprazole 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-046",
+      "prompt": "40대 혈당 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-047",
+      "prompt": "40대 혈당 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-048",
+      "prompt": "40대 혈당 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-049",
+      "prompt": "40대 혈당 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-050",
+      "prompt": "40대 혈당 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-051",
+      "prompt": "40대 혈당 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-052",
+      "prompt": "40대 혈당 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-053",
+      "prompt": "40대 혈당 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-054",
+      "prompt": "40대 혈당 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-055",
+      "prompt": "50대 면역 목표, levothyroxine 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-056",
+      "prompt": "50대 면역 목표, levothyroxine 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-057",
+      "prompt": "50대 면역 목표, levothyroxine 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-058",
+      "prompt": "50대 면역 목표, levothyroxine 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-059",
+      "prompt": "50대 면역 목표, levothyroxine 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-060",
+      "prompt": "50대 면역 목표, levothyroxine 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-061",
+      "prompt": "50대 면역 목표, levothyroxine 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-062",
+      "prompt": "50대 면역 목표, levothyroxine 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-063",
+      "prompt": "50대 면역 목표, levothyroxine 복용 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-064",
+      "prompt": "60대 인지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-065",
+      "prompt": "60대 인지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-066",
+      "prompt": "60대 인지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-067",
+      "prompt": "60대 인지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-068",
+      "prompt": "60대 인지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-069",
+      "prompt": "60대 인지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-070",
+      "prompt": "60대 인지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-071",
+      "prompt": "60대 인지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-072",
+      "prompt": "60대 인지 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-073",
+      "prompt": "30대 피부 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-074",
+      "prompt": "30대 피부 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-075",
+      "prompt": "30대 피부 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-076",
+      "prompt": "30대 피부 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-077",
+      "prompt": "30대 피부 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-078",
+      "prompt": "30대 피부 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-079",
+      "prompt": "30대 피부 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-080",
+      "prompt": "30대 피부 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-081",
+      "prompt": "30대 피부 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-082",
+      "prompt": "40대 체중 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-083",
+      "prompt": "40대 체중 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-084",
+      "prompt": "40대 체중 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-085",
+      "prompt": "40대 체중 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-086",
+      "prompt": "40대 체중 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-087",
+      "prompt": "40대 체중 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-088",
+      "prompt": "40대 체중 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-089",
+      "prompt": "40대 체중 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-090",
+      "prompt": "40대 체중 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-091",
+      "prompt": "50대 간 건강 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    },
+    {
+      "case_id": "kpi3-092",
+      "prompt": "50대 간 건강 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ingredient_intolerance=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "replace"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-002 우선순위 20, 사유 코드 INGREDIENT_INTOLERANCE_REPLACE"
+    },
+    {
+      "case_id": "kpi3-093",
+      "prompt": "50대 간 건강 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / dose_related_issue=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reduce"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-003 우선순위 30, 사유 코드 DOSE_RELATED_ISSUE_REDUCE"
+    },
+    {
+      "case_id": "kpi3-094",
+      "prompt": "50대 간 건강 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / safety_review_required=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_safety_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-004 우선순위 40, 사유 코드 SAFETY_REVIEW_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-095",
+      "prompt": "50대 간 건강 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / followup_submitted=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_followup"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-005 우선순위 50, 사유 코드 FOLLOWUP_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-096",
+      "prompt": "50대 간 건강 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / measurement_complete=False / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "request_measurement"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-006 우선순위 60, 사유 코드 MEASUREMENT_REQUIRED"
+    },
+    {
+      "case_id": "kpi3-097",
+      "prompt": "50대 간 건강 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / ambiguous=True / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "hold_for_review"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-007 우선순위 70, 사유 코드 AMBIGUOUS_HOLD"
+    },
+    {
+      "case_id": "kpi3-098",
+      "prompt": "50대 간 건강 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_gt=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "maintain"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-008 우선순위 80, 사유 코드 IMPROVED_MAINTAIN"
+    },
+    {
+      "case_id": "kpi3-099",
+      "prompt": "50대 간 건강 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / score_delta_lte=0 / adverse_event=False — 다음 수행 작업은?",
+      "draft_answer": [
+        "reoptimize"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-009 우선순위 90, 사유 코드 NOT_IMPROVED_REOPTIMIZE"
+    },
+    {
+      "case_id": "kpi3-100",
+      "prompt": "20대 스트레스 목표 / 관찰 신호: 상태 FOLLOWUP_ACTIVE / adverse_event=True — 다음 수행 작업은?",
+      "draft_answer": [
+        "stop_and_escalate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "NA-001 우선순위 10, 사유 코드 ADVERSE_EVENT_STOP_ESCALATE"
+    }
+  ],
+  "decisions": {}
+}

@@ -1,0 +1,913 @@
+{
+  "schema_version": "answer_key_draft_v1",
+  "indicator_id": "KPI-5",
+  "drafts": [
+    {
+      "case_id": "kpi5-001",
+      "prompt": "input_requirements / INTAKE-SURVEY-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "INTAKE-SURVEY-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json input_requirements 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-002",
+      "prompt": "risk_flag_rules / SAFETY-URGENT-SYMPTOM-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-URGENT-SYMPTOM-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json risk_flag_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-003",
+      "prompt": "allergy_rules / SAFETY-ALLERGY-FISH-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-ALLERGY-FISH-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json allergy_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-004",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-ANTICOAG-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-005",
+      "prompt": "special_population_rules / SAFETY-PREG-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-PREG-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-006",
+      "prompt": "special_population_rules / SAFETY-LACT-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-LACT-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-007",
+      "prompt": "condition_rules / SAFETY-RENAL-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-RENAL-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-008",
+      "prompt": "condition_rules / SAFETY-RENAL-SEVERE-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-RENAL-SEVERE-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-009",
+      "prompt": "condition_rules / SAFETY-HEPATIC-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-HEPATIC-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-010",
+      "prompt": "condition_rules / SAFETY-HEMO-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-HEMO-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-011",
+      "prompt": "dose_limits / SAFETY-DOSE-VITD3-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-VITD3-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-012",
+      "prompt": "dose_limits / SAFETY-DOSE-VITC-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-VITC-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-013",
+      "prompt": "dose_limits / SAFETY-DOSE-ZINC-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-ZINC-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-014",
+      "prompt": "dose_limits / SAFETY-DOSE-MAG-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-MAG-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-015",
+      "prompt": "dose_limits / SAFETY-DOSE-CAL-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-CAL-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-016",
+      "prompt": "input_requirements / INTAKE-SURVEY-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json input_requirements 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-017",
+      "prompt": "risk_flag_rules / SAFETY-URGENT-SYMPTOM-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json risk_flag_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-018",
+      "prompt": "allergy_rules / SAFETY-ALLERGY-FISH-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json allergy_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-019",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-020",
+      "prompt": "special_population_rules / SAFETY-PREG-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-021",
+      "prompt": "special_population_rules / SAFETY-LACT-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-022",
+      "prompt": "condition_rules / SAFETY-RENAL-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-023",
+      "prompt": "condition_rules / SAFETY-RENAL-SEVERE-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-024",
+      "prompt": "condition_rules / SAFETY-HEPATIC-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-025",
+      "prompt": "condition_rules / SAFETY-HEMO-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-026",
+      "prompt": "dose_limits / SAFETY-DOSE-VITD3-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-027",
+      "prompt": "dose_limits / SAFETY-DOSE-VITC-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-028",
+      "prompt": "dose_limits / SAFETY-DOSE-ZINC-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-029",
+      "prompt": "dose_limits / SAFETY-DOSE-MAG-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-030",
+      "prompt": "dose_limits / SAFETY-DOSE-CAL-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-031",
+      "prompt": "allergy_rules / SAFETY-ALLERGY-FISH-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json allergy_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-032",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-033",
+      "prompt": "special_population_rules / SAFETY-PREG-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "ashwagandha",
+        "berberine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-034",
+      "prompt": "special_population_rules / SAFETY-LACT-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "ashwagandha",
+        "berberine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-035",
+      "prompt": "condition_rules / SAFETY-RENAL-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "magnesium_glycinate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-036",
+      "prompt": "condition_rules / SAFETY-RENAL-SEVERE-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "magnesium_glycinate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-037",
+      "prompt": "condition_rules / SAFETY-HEMO-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "iron",
+        "vitamin_c"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-038",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 reference_ids 참조값은?",
+      "draft_answer": [
+        "REF-NIH-ODS-OMEGA3-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-039",
+      "prompt": "input_requirements / INTAKE-SURVEY-001 의 message 참조값은?",
+      "draft_answer": [
+        "Survey input is the minimum contract for recommendation."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json input_requirements 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-040",
+      "prompt": "risk_flag_rules / SAFETY-URGENT-SYMPTOM-001 의 message 참조값은?",
+      "draft_answer": [
+        "Urgent symptom input blocks supplement recommendation."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json risk_flag_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-041",
+      "prompt": "allergy_rules / SAFETY-ALLERGY-FISH-001 의 message 참조값은?",
+      "draft_answer": [
+        "Fish allergy input requires conservative omega-3 exclusion."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json allergy_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-042",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 message 참조값은?",
+      "draft_answer": [
+        "Potential medication interaction triggers conservative exclusion."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-043",
+      "prompt": "special_population_rules / SAFETY-PREG-001 의 message 참조값은?",
+      "draft_answer": [
+        "Pregnancy input requires conservative exclusion and human review."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-044",
+      "prompt": "special_population_rules / SAFETY-LACT-001 의 message 참조값은?",
+      "draft_answer": [
+        "Lactation input requires conservative exclusion and human review."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-045",
+      "prompt": "condition_rules / SAFETY-RENAL-001 의 message 참조값은?",
+      "draft_answer": [
+        "Condition-specific exclusion was applied conservatively."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-046",
+      "prompt": "condition_rules / SAFETY-RENAL-SEVERE-001 의 message 참조값은?",
+      "draft_answer": [
+        "Severe renal impairment is outside the automated recommendation range."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-047",
+      "prompt": "condition_rules / SAFETY-HEPATIC-001 의 message 참조값은?",
+      "draft_answer": [
+        "Hepatic impairment requires human review before recommendation."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-048",
+      "prompt": "condition_rules / SAFETY-HEMO-001 의 message 참조값은?",
+      "draft_answer": [
+        "Hemochromatosis input contraindicates iron and vitamin C supplements in the automated recommendation range."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-049",
+      "prompt": "dose_limits / SAFETY-DOSE-VITD3-001 의 message 참조값은?",
+      "draft_answer": [
+        "Vitamin D3 daily intake is evaluated against the structured adult upper limit."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-050",
+      "prompt": "dose_limits / SAFETY-DOSE-VITC-001 의 message 참조값은?",
+      "draft_answer": [
+        "Vitamin C daily intake is evaluated against the structured adult upper limit."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-051",
+      "prompt": "dose_limits / SAFETY-DOSE-ZINC-001 의 message 참조값은?",
+      "draft_answer": [
+        "Zinc daily intake is evaluated against the structured adult upper limit."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-052",
+      "prompt": "dose_limits / SAFETY-DOSE-MAG-001 의 message 참조값은?",
+      "draft_answer": [
+        "Magnesium glycinate daily intake is evaluated against the structured adult supplemental upper limit."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-053",
+      "prompt": "dose_limits / SAFETY-DOSE-CAL-001 의 message 참조값은?",
+      "draft_answer": [
+        "Calcium citrate daily intake is evaluated against the structured adult upper limit."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-054",
+      "prompt": "input_requirements / INTAKE-SURVEY-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "INTAKE-SURVEY-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json input_requirements 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-055",
+      "prompt": "risk_flag_rules / SAFETY-URGENT-SYMPTOM-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-URGENT-SYMPTOM-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json risk_flag_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-056",
+      "prompt": "allergy_rules / SAFETY-ALLERGY-FISH-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-ALLERGY-FISH-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json allergy_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-057",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-ANTICOAG-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-058",
+      "prompt": "special_population_rules / SAFETY-PREG-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-PREG-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-059",
+      "prompt": "special_population_rules / SAFETY-LACT-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-LACT-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-060",
+      "prompt": "condition_rules / SAFETY-RENAL-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-RENAL-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-061",
+      "prompt": "condition_rules / SAFETY-RENAL-SEVERE-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-RENAL-SEVERE-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-062",
+      "prompt": "condition_rules / SAFETY-HEPATIC-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-HEPATIC-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-063",
+      "prompt": "condition_rules / SAFETY-HEMO-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-HEMO-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-064",
+      "prompt": "dose_limits / SAFETY-DOSE-VITD3-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-VITD3-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-065",
+      "prompt": "dose_limits / SAFETY-DOSE-VITC-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-VITC-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-066",
+      "prompt": "dose_limits / SAFETY-DOSE-ZINC-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-ZINC-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-067",
+      "prompt": "dose_limits / SAFETY-DOSE-MAG-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-MAG-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-068",
+      "prompt": "dose_limits / SAFETY-DOSE-CAL-001 의 rule_id 참조값은?",
+      "draft_answer": [
+        "SAFETY-DOSE-CAL-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-069",
+      "prompt": "input_requirements / INTAKE-SURVEY-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json input_requirements 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-070",
+      "prompt": "risk_flag_rules / SAFETY-URGENT-SYMPTOM-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json risk_flag_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-071",
+      "prompt": "allergy_rules / SAFETY-ALLERGY-FISH-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json allergy_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-072",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-073",
+      "prompt": "special_population_rules / SAFETY-PREG-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-074",
+      "prompt": "special_population_rules / SAFETY-LACT-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-075",
+      "prompt": "condition_rules / SAFETY-RENAL-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-076",
+      "prompt": "condition_rules / SAFETY-RENAL-SEVERE-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-077",
+      "prompt": "condition_rules / SAFETY-HEPATIC-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-078",
+      "prompt": "condition_rules / SAFETY-HEMO-001 의 severity 참조값은?",
+      "draft_answer": [
+        "warning"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-079",
+      "prompt": "dose_limits / SAFETY-DOSE-VITD3-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-080",
+      "prompt": "dose_limits / SAFETY-DOSE-VITC-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-081",
+      "prompt": "dose_limits / SAFETY-DOSE-ZINC-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-082",
+      "prompt": "dose_limits / SAFETY-DOSE-MAG-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-083",
+      "prompt": "dose_limits / SAFETY-DOSE-CAL-001 의 severity 참조값은?",
+      "draft_answer": [
+        "blocker"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json dose_limits 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-084",
+      "prompt": "allergy_rules / SAFETY-ALLERGY-FISH-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json allergy_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-085",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "omega3"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-086",
+      "prompt": "special_population_rules / SAFETY-PREG-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "ashwagandha",
+        "berberine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-087",
+      "prompt": "special_population_rules / SAFETY-LACT-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "ashwagandha",
+        "berberine"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-088",
+      "prompt": "condition_rules / SAFETY-RENAL-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "magnesium_glycinate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-089",
+      "prompt": "condition_rules / SAFETY-RENAL-SEVERE-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "magnesium_glycinate"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-090",
+      "prompt": "condition_rules / SAFETY-HEMO-001 의 excluded_ingredients 참조값은?",
+      "draft_answer": [
+        "iron",
+        "vitamin_c"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-091",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 reference_ids 참조값은?",
+      "draft_answer": [
+        "REF-NIH-ODS-OMEGA3-001"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-092",
+      "prompt": "input_requirements / INTAKE-SURVEY-001 의 message 참조값은?",
+      "draft_answer": [
+        "Survey input is the minimum contract for recommendation."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json input_requirements 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-093",
+      "prompt": "risk_flag_rules / SAFETY-URGENT-SYMPTOM-001 의 message 참조값은?",
+      "draft_answer": [
+        "Urgent symptom input blocks supplement recommendation."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json risk_flag_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-094",
+      "prompt": "allergy_rules / SAFETY-ALLERGY-FISH-001 의 message 참조값은?",
+      "draft_answer": [
+        "Fish allergy input requires conservative omega-3 exclusion."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json allergy_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-095",
+      "prompt": "medication_rules / SAFETY-ANTICOAG-001 의 message 참조값은?",
+      "draft_answer": [
+        "Potential medication interaction triggers conservative exclusion."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json medication_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-096",
+      "prompt": "special_population_rules / SAFETY-PREG-001 의 message 참조값은?",
+      "draft_answer": [
+        "Pregnancy input requires conservative exclusion and human review."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-097",
+      "prompt": "special_population_rules / SAFETY-LACT-001 의 message 참조값은?",
+      "draft_answer": [
+        "Lactation input requires conservative exclusion and human review."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json special_population_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-098",
+      "prompt": "condition_rules / SAFETY-RENAL-001 의 message 참조값은?",
+      "draft_answer": [
+        "Condition-specific exclusion was applied conservatively."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-099",
+      "prompt": "condition_rules / SAFETY-RENAL-SEVERE-001 의 message 참조값은?",
+      "draft_answer": [
+        "Severe renal impairment is outside the automated recommendation range."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    },
+    {
+      "case_id": "kpi5-100",
+      "prompt": "condition_rules / SAFETY-HEPATIC-001 의 message 참조값은?",
+      "draft_answer": [
+        "Hepatic impairment requires human review before recommendation."
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "safety_rules.json condition_rules 항목의 등록값. 검토자가 외부 근거와 대조한다."
+    }
+  ],
+  "decisions": {}
+}

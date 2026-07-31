@@ -1,0 +1,907 @@
+{
+  "schema_version": "answer_key_draft_v1",
+  "indicator_id": "KPI-4",
+  "drafts": [
+    {
+      "case_id": "kpi4-001",
+      "prompt": "magnesium_glycinate을(를) warfarin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-002",
+      "prompt": "l_theanine은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-003",
+      "prompt": "임신 중에 vitamin_c 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-004",
+      "prompt": "zinc 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-005",
+      "prompt": "gut_health에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-006",
+      "prompt": "coq10을(를) levothyroxine과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-007",
+      "prompt": "probiotics은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-008",
+      "prompt": "임신 중에 soluble_fiber 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-009",
+      "prompt": "vitamin_d3 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-010",
+      "prompt": "blood_glucose에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-011",
+      "prompt": "omega3을(를) metformin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-012",
+      "prompt": "berberine은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-013",
+      "prompt": "임신 중에 magnesium_glycinate 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-014",
+      "prompt": "l_theanine 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-015",
+      "prompt": "heart_health에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-016",
+      "prompt": "zinc을(를) omeprazole과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-017",
+      "prompt": "vitamin_b_complex은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-018",
+      "prompt": "임신 중에 coq10 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-019",
+      "prompt": "probiotics 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-020",
+      "prompt": "bone_joint에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-021",
+      "prompt": "vitamin_d3을(를) warfarin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-022",
+      "prompt": "calcium_citrate은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-023",
+      "prompt": "임신 중에 omega3 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-024",
+      "prompt": "berberine 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-025",
+      "prompt": "immunity_support에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-026",
+      "prompt": "l_theanine을(를) levothyroxine과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-027",
+      "prompt": "vitamin_c은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-028",
+      "prompt": "임신 중에 zinc 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-029",
+      "prompt": "vitamin_b_complex 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-030",
+      "prompt": "energy_support에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-031",
+      "prompt": "probiotics을(를) metformin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-032",
+      "prompt": "soluble_fiber은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-033",
+      "prompt": "임신 중에 vitamin_d3 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-034",
+      "prompt": "calcium_citrate 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-035",
+      "prompt": "sleep_support에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-036",
+      "prompt": "berberine을(를) omeprazole과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-037",
+      "prompt": "magnesium_glycinate은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-038",
+      "prompt": "임신 중에 l_theanine 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-039",
+      "prompt": "vitamin_c 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-040",
+      "prompt": "general_wellness에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-041",
+      "prompt": "vitamin_b_complex을(를) warfarin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-042",
+      "prompt": "coq10은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-043",
+      "prompt": "임신 중에 probiotics 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-044",
+      "prompt": "soluble_fiber 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-045",
+      "prompt": "stress_support에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-046",
+      "prompt": "calcium_citrate을(를) levothyroxine과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-047",
+      "prompt": "omega3은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-048",
+      "prompt": "임신 중에 berberine 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-049",
+      "prompt": "magnesium_glycinate 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-050",
+      "prompt": "gut_health에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-051",
+      "prompt": "vitamin_c을(를) metformin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-052",
+      "prompt": "zinc은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-053",
+      "prompt": "임신 중에 vitamin_b_complex 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-054",
+      "prompt": "coq10 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-055",
+      "prompt": "blood_glucose에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-056",
+      "prompt": "soluble_fiber을(를) omeprazole과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-057",
+      "prompt": "vitamin_d3은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-058",
+      "prompt": "임신 중에 calcium_citrate 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-059",
+      "prompt": "omega3 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-060",
+      "prompt": "heart_health에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-061",
+      "prompt": "magnesium_glycinate을(를) warfarin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-062",
+      "prompt": "l_theanine은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-063",
+      "prompt": "임신 중에 vitamin_c 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-064",
+      "prompt": "zinc 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-065",
+      "prompt": "bone_joint에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-066",
+      "prompt": "coq10을(를) levothyroxine과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-067",
+      "prompt": "probiotics은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-068",
+      "prompt": "임신 중에 soluble_fiber 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-069",
+      "prompt": "vitamin_d3 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-070",
+      "prompt": "immunity_support에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-071",
+      "prompt": "omega3을(를) metformin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-072",
+      "prompt": "berberine은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-073",
+      "prompt": "임신 중에 magnesium_glycinate 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-074",
+      "prompt": "l_theanine 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-075",
+      "prompt": "energy_support에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-076",
+      "prompt": "zinc을(를) omeprazole과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-077",
+      "prompt": "vitamin_b_complex은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-078",
+      "prompt": "임신 중에 coq10 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-079",
+      "prompt": "probiotics 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-080",
+      "prompt": "sleep_support에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-081",
+      "prompt": "vitamin_d3을(를) warfarin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-082",
+      "prompt": "calcium_citrate은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-083",
+      "prompt": "임신 중에 omega3 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-084",
+      "prompt": "berberine 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-085",
+      "prompt": "general_wellness에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-086",
+      "prompt": "l_theanine을(를) levothyroxine과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-087",
+      "prompt": "vitamin_c은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-088",
+      "prompt": "임신 중에 zinc 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-089",
+      "prompt": "vitamin_b_complex 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-090",
+      "prompt": "stress_support에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-091",
+      "prompt": "probiotics을(를) metformin과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-092",
+      "prompt": "soluble_fiber은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-093",
+      "prompt": "임신 중에 vitamin_d3 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-094",
+      "prompt": "calcium_citrate 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-095",
+      "prompt": "gut_health에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-096",
+      "prompt": "berberine을(를) omeprazole과 같이 먹어도 되나요?",
+      "draft_answer": [
+        "상호작용 여부와 근거를 밝히고, 불확실하면 확정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-097",
+      "prompt": "magnesium_glycinate은(는) 하루 최대 얼마까지 먹을 수 있나요?",
+      "draft_answer": [
+        "상한 수치와 근거 규칙을 제시한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-098",
+      "prompt": "임신 중에 l_theanine 복용해도 되나요?",
+      "draft_answer": [
+        "특수집단 차단 규칙을 적용하고 전문가 상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-099",
+      "prompt": "vitamin_c 먹고 속이 불편한데 계속 먹어야 하나요?",
+      "draft_answer": [
+        "이상반응 가능성을 알리고 중단·상담을 안내한다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    },
+    {
+      "case_id": "kpi4-100",
+      "prompt": "blood_glucose에 도움이 되는 성분이 뭔가요?",
+      "draft_answer": [
+        "근거가 있는 성분만 제시하고 효과를 단정하지 않는다"
+      ],
+      "draft_source": "goal_ingredient_priors_v1+ingredient_catalog",
+      "draft_rationale": "적절성 판정 기준 초안. 검토자가 사실성·적절성·완결성 기준으로 확정한다."
+    }
+  ],
+  "decisions": {}
+}
