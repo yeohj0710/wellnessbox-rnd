@@ -1,0 +1,147 @@
+{
+  "schema_version": "kpi_measurement_contract_v1",
+  "source": "TIPS 연구개발계획서 전체본 p.25~26 (docs/context/original_plan.pdf)",
+  "purpose": "각 KPI를 어떤 표본으로 누가 어디서 측정해야 하는지 기계가 읽을 수 있게 고정한다. 합성 데이터로 대체할 수 있는 자리와 그럴 수 없는 자리를 구분하는 것이 이 파일의 핵심이다.",
+  "global_constraint": {
+    "evaluation_environment": "TTA, 와이즈스톤 등 KOLAS 인정 시험기관",
+    "applies_to": "all_seven_indicators",
+    "note": "7개 지표 전부 공인시험기관 측정으로 규정돼 있다. 내부 측정값은 사전 점검용이며 최종 근거가 아니다. 이 제약은 우회 대상이 아니라 일정·비용으로 잡아야 할 항목이다.",
+    "internal_measurement_role": "pre_check_only"
+  },
+  "indicators": [
+    {
+      "id": "KPI-1",
+      "name": "건강기능식품 추천 정확도",
+      "target": "80%",
+      "weight": 20,
+      "formula": "s_i = 100 * |R_i ∩ T_i| / |R_i|",
+      "reference_standard": {
+        "symbol": "R_i",
+        "produced_by": "약사 그룹",
+        "synthetic_allowed": false,
+        "must_precede_engine_output": true,
+        "reason": "R_i를 엔진 출력에서 파생하면 교집합 비율이 인위적으로 100%에 수렴해 측정이 무의미해진다."
+      },
+      "minimum_sample": {"unit": "test_case", "count": 100},
+      "internal_only_possible": true,
+      "internal_condition": "약사가 엔진 출력을 보기 전에 R_i를 확정하고 봉인해야 한다."
+    },
+    {
+      "id": "KPI-2",
+      "name": "엔진 추천 복용을 통한 실제 효과 측정치의 개선도",
+      "target": "> 0pp (효과량 유의함)",
+      "weight": 20,
+      "formula": "p_i = 100 * [Φ(z_post,i) - Φ(z_pre,i)] / Φ(z_pre,i), SCGI = 평균 p_i",
+      "reference_standard": {
+        "symbol": "z_pre,i / z_post,i",
+        "produced_by": "실제 개인의 복용 전·후 PRO 측정",
+        "synthetic_allowed": false,
+        "must_precede_engine_output": false,
+        "reason": "지표 정의가 '실제 효과 측정치'다. 합성 자료로 대체하면 지표 자체를 충족하지 못한다."
+      },
+      "minimum_sample": {"unit": "person", "count": 100},
+      "internal_only_possible": false,
+      "internal_condition": "실제 사용자 100명 이상의 복용 전·후 PRO가 필요하다. 운영 중인 웰니스박스 서비스 사용자에서 확보하는 것이 현실적 경로다."
+    },
+    {
+      "id": "KPI-3",
+      "name": "Closed-loop AI의 다음 수행 작업 판단 및 수행 정확도",
+      "target": "80%",
+      "weight": 20,
+      "formula": "Accuracy = 100 * Σ 1(a_s = a*_s ∧ e_s = 1) / |S|",
+      "reference_standard": {
+        "symbol": "a*_s",
+        "produced_by": "사전에 정의한 정답 작업",
+        "synthetic_allowed": false,
+        "must_precede_engine_output": true,
+        "reason": "정답 작업 집합을 시스템 출력에서 만들면 정확도가 자기 참조가 된다."
+      },
+      "minimum_sample": {"unit": "test_case", "count": 100},
+      "internal_only_possible": true,
+      "internal_condition": "정답 작업을 먼저 확정하고 봉인한 뒤 시스템을 실행한다."
+    },
+    {
+      "id": "KPI-4",
+      "name": "상담 모듈(대화형 LLM)의 답변 정확도",
+      "target": "91%",
+      "weight": 20,
+      "formula": "Accuracy = 100 * Σ g(answer_q) / |Q|",
+      "reference_standard": {
+        "symbol": "g(answer_q)",
+        "produced_by": "사전에 라벨링한 정답과 적절성 판정 함수",
+        "synthetic_allowed": false,
+        "must_precede_engine_output": true,
+        "reason": "정답 문항과 판정 기준(사실성·적절성·완결성)을 답변을 본 뒤에 만들면 측정이 무효다."
+      },
+      "minimum_sample": {"unit": "question", "count": 100},
+      "internal_only_possible": true,
+      "internal_condition": "문항과 정답을 먼저 확정하고 봉인한 뒤 상담 모듈을 실행한다."
+    },
+    {
+      "id": "KPI-5",
+      "name": "안전 검증 엔진 제공 데이터 및 데이터 레이크 레퍼런스 정확도",
+      "target": "95%",
+      "weight": 10,
+      "formula": "Accuracy = 100 * Σ 1(l_r = l_ref ∧ f_r = f_ref) / R",
+      "reference_standard": {
+        "symbol": "참조 규칙 (l_ref, f_ref)",
+        "produced_by": "사전에 정의한 참조 규칙",
+        "synthetic_allowed": false,
+        "must_precede_engine_output": true,
+        "reason": "참조 규칙을 엔진 출력에서 만들면 일치율이 항상 100%가 된다."
+      },
+      "minimum_sample": {"unit": "rule", "count": 100},
+      "internal_only_possible": true,
+      "internal_condition": "참조 규칙을 외부 근거(문헌·규제 자료)에서 먼저 도출하고 봉인한다."
+    },
+    {
+      "id": "KPI-6",
+      "name": "엔진 추천 복용으로 인한 약물이상반응 보고 건수",
+      "target": "≤ 5건/year",
+      "weight": 5,
+      "formula": "Count_12 = Σ 1(AE_reported(i))",
+      "reference_standard": {
+        "symbol": "AE_reported(i)",
+        "produced_by": "최근 12개월 누적 실제 사용자의 이상반응 보고",
+        "synthetic_allowed": false,
+        "must_precede_engine_output": false,
+        "reason": "실제 사용자 보고 집계다. 합성으로 만들 수 없다."
+      },
+      "minimum_sample": {"unit": "months_of_operation", "count": 12},
+      "internal_only_possible": false,
+      "internal_condition": "실제 서비스 운영 12개월치 이상반응 집계 체계가 필요하다."
+    },
+    {
+      "id": "KPI-7",
+      "name": "바이오센서·유전자 데이터 연동율",
+      "target": "90%",
+      "weight": 5,
+      "formula": "R = (r_W + r_C + r_G) / 3",
+      "reference_standard": {
+        "symbol": "데이터 집합 s ∈ {W, C, G}",
+        "produced_by": "웨어러블·연속혈당·유전자 데이터 집합",
+        "synthetic_allowed": true,
+        "must_precede_engine_output": false,
+        "reason": "연동 성공률 측정이므로 데이터 출처보다 연동 파이프라인의 동작이 대상이다. 다만 합성 사용 시 그 사실을 명시해야 한다."
+      },
+      "minimum_sample": {"unit": "dataset", "count": 100, "note": "W, C, G 각 10세트 이상 포함"},
+      "internal_only_possible": true,
+      "internal_condition": "합성 데이터 사용을 시험성적서와 보고서에 명시한다."
+    }
+  ],
+  "synthetic_data_policy": {
+    "training_input": {
+      "allowed": true,
+      "note": "계획서는 학습 데이터의 출처를 제약하지 않는다. 합성 자료로 모델을 학습하는 것은 가능하며, 생성 사실과 생성 방법을 명시한다."
+    },
+    "kpi_reference_standard": {
+      "allowed": false,
+      "note": "KPI-1·3·4·5의 정답 집합과 KPI-2·6의 실측값은 합성으로 대체할 수 없다."
+    },
+    "distribution_similarity_claim": {
+      "allowed": true,
+      "note": "문헌 기반 생성 자료가 실제 분포와 유사함을 통계적으로 보이는 것은 가능하고 논문화도 된다. 다만 분포 유사성은 실제 복용 효과를 대신하지 않으므로 KPI-2의 근거로 쓸 수 없다.",
+      "must_not_claim": "합성 자료의 유사도를 근거로 실제 효과 개선을 주장하는 것"
+    }
+  }
+}
