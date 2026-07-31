@@ -79,10 +79,18 @@ class DraftSourceIndependenceTest(unittest.TestCase):
             indicator_id="KPI-1",
             cases=[{"case_id": "c1", "draft_answer": ["a"]}],
             draft_source=DRAFT_SOURCE,
+            drafting_agent="codex",
+            blinded_from=["data/rules/safety_rules.json"],
         )
 
         self.assertFalse(packaged["engine_output_consulted"])
         self.assertEqual(packaged["draft_source"], DRAFT_SOURCE)
+        self.assertEqual(packaged["drafting_agent"], "codex")
+        self.assertEqual(
+            packaged["blinded_from"],
+            ["data/rules/safety_rules.json"],
+        )
+        self.assertEqual(packaged["drafts"][0]["drafting_agent"], "codex")
 
     def test_an_empty_draft_answer_is_rejected(self) -> None:
         with self.assertRaises(ValueError):
@@ -210,6 +218,81 @@ class AdjudicationSummaryTest(unittest.TestCase):
         self.assertFalse(provenance["engine_output_consulted_before_sealing"])
         self.assertEqual(provenance["adjudication"]["edit_rate_pct"], 100.0)
 
+    def test_provenance_carries_drafting_agent_and_blinded_files(self) -> None:
+        bench = Workbench(
+            "KPI-1",
+            [
+                CaseDraft(
+                    case_id="c1",
+                    prompt="질문",
+                    draft_answer=["a"],
+                    draft_source="reference",
+                    drafting_agent="codex",
+                    blinded_from=["engine/policy.json"],
+                )
+            ],
+            {},
+        )
+        provenance = build_provenance(bench, summarise_adjudication(bench))
+
+        self.assertEqual(provenance["drafting_agent"], "codex")
+        self.assertEqual(provenance["blinded_from"], ["engine/policy.json"])
+
+    def test_kpi4_requires_a_different_system_under_test_agent(self) -> None:
+        bench = Workbench(
+            "KPI-4",
+            [
+                CaseDraft(
+                    case_id="c1",
+                    prompt="질문",
+                    draft_answer=["a"],
+                    draft_source="reference",
+                    drafting_agent="codex",
+                    blinded_from=["engine/policy.json"],
+                )
+            ],
+            {},
+        )
+        summary = summarise_adjudication(bench)
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "kpi4_system_under_test_agent_required",
+        ):
+            build_provenance(bench, summary)
+        with self.assertRaisesRegex(
+            ValueError,
+            "kpi4_drafting_agent_matches_system_under_test_agent",
+        ):
+            build_provenance(
+                bench,
+                summary,
+                system_under_test_agent="CODEX",
+            )
+        with self.assertRaisesRegex(
+            ValueError,
+            "kpi4_drafting_agent_matches_system_under_test_agent",
+        ):
+            build_provenance(
+                bench,
+                summary,
+                system_under_test_agent="OpenAI GPT-5",
+            )
+        provenance = build_provenance(
+            bench,
+            summary,
+            system_under_test_agent="claude",
+        )
+        self.assertTrue(provenance["agent_separation"]["separated"])
+        self.assertEqual(
+            provenance["agent_separation"]["drafting_agent_family"],
+            "openai",
+        )
+        self.assertEqual(
+            provenance["agent_separation"]["system_under_test_agent_family"],
+            "anthropic",
+        )
+
 
 class PersistenceTest(unittest.TestCase):
     def test_a_saved_workbench_round_trips(self) -> None:
@@ -224,6 +307,31 @@ class PersistenceTest(unittest.TestCase):
         self.assertEqual(len(restored.drafts), 2)
         self.assertEqual(restored.decisions["c0"].action, "edited")
         self.assertEqual(restored.pending()[0].case_id, "c1")
+
+    def test_legacy_workbench_without_new_provenance_fields_still_loads(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "legacy.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "indicator_id": "KPI-1",
+                        "drafts": [
+                            {
+                                "case_id": "c1",
+                                "prompt": "질문",
+                                "draft_answer": ["a"],
+                                "draft_source": "reference",
+                            }
+                        ],
+                        "decisions": {},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            restored = load_workbench(path)
+
+        self.assertEqual(restored.drafts[0].drafting_agent, "")
+        self.assertEqual(restored.drafts[0].blinded_from, [])
 
 
 class SealDisposalTest(unittest.TestCase):
@@ -316,6 +424,108 @@ class SealDisposalTest(unittest.TestCase):
             self.assertEqual(result, 2)
             self.assertTrue(seal_path.is_file())
             self.assertEqual(load_workbench(bench_path).decisions, {})
+
+    def test_cli_can_confirm_a_seal_relocated_before_audited_disposal(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            active_path = root / "active.json"
+            legacy_path = root / "discarded" / "legacy.json"
+            legacy_path.parent.mkdir()
+            bench_path = root / "workbench.json"
+            legacy_path.write_text(
+                json.dumps({"indicator_id": "KPI-1", "seal_sha256": "abc123"}),
+                encoding="utf-8",
+            )
+            save_workbench(bench_path, _bench(1))
+            args = SimpleNamespace(
+                indicator="KPI-1",
+                by="여형준",
+                reason="사람 확인 없이 옮겨진 과속 검토 봉인을 정식 폐기함",
+            )
+
+            with (
+                patch.object(workbench_cli, "seal_path", return_value=active_path),
+                patch.object(
+                    workbench_cli,
+                    "legacy_discarded_seal_path",
+                    return_value=legacy_path,
+                ),
+                patch.object(workbench_cli, "workbench_path", return_value=bench_path),
+                patch.object(
+                    workbench_cli,
+                    "seal_disposal_history_path",
+                    return_value=root / "history.json",
+                ),
+                patch.object(workbench_cli, "SEAL_DISPOSAL_DIR", root / "disposals"),
+                patch("builtins.input", return_value="KPI-1 봉인 폐기"),
+                patch.object(workbench_cli, "say"),
+            ):
+                result = workbench_cli.cmd_discard_seal(args)
+
+            self.assertEqual(result, 0)
+            self.assertFalse(legacy_path.exists())
+            self.assertTrue((root / "history.json").is_file())
+            restored = load_workbench(bench_path)
+            self.assertEqual(len(restored.seal_disposals), 1)
+            self.assertEqual(restored.seal_disposals[0]["discarded_by"], "여형준")
+
+
+class ReviewPacingTest(unittest.TestCase):
+    def test_rushed_decision_is_not_saved(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = save_workbench(Path(temp) / "workbench.json", _bench(1))
+            args = SimpleNamespace(indicator="KPI-1", by="권혁찬")
+            with (
+                patch.object(workbench_cli, "workbench_path", return_value=path),
+                patch.object(
+                    workbench_cli.time,
+                    "monotonic",
+                    side_effect=[0.0, workbench_cli.MIN_SECONDS_PER_CASE / 2],
+                ),
+                patch("builtins.input", return_value=""),
+                patch.object(workbench_cli, "say"),
+            ):
+                result = workbench_cli.cmd_review(args)
+
+            restored = load_workbench(path)
+            self.assertEqual(result, 0)
+            self.assertEqual(restored.decisions, {})
+            self.assertEqual(len(restored.pending()), 1)
+
+
+class DraftCliRoutingTest(unittest.TestCase):
+    def test_kpi3_uses_the_blinded_drafter_and_records_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "workbench.json"
+            args = SimpleNamespace(
+                indicator="KPI-3",
+                count=1,
+                cases=None,
+                draft_source=None,
+                drafting_agent=None,
+                blinded_from=None,
+                blinded_from_registry=False,
+                overwrite=False,
+            )
+            with (
+                patch.object(workbench_cli, "workbench_path", return_value=path),
+                patch.object(workbench_cli, "say"),
+            ):
+                result = workbench_cli.cmd_draft(args)
+
+            restored = load_workbench(path)
+            draft = restored.drafts[0]
+            self.assertEqual(result, 0)
+            self.assertEqual(
+                draft.draft_source,
+                workbench_cli.BLINDED_DRAFT_SOURCES["KPI-3"],
+            )
+            self.assertEqual(draft.drafting_agent, "codex")
+            self.assertIn(
+                "data/original_plan/closed_loop_next_action_policy_v1.json",
+                draft.blinded_from,
+            )
+            self.assertEqual(draft.draft_answer, ["미정_검토자가_판단"])
 
 
 class Kpi1DrafterTest(unittest.TestCase):

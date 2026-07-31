@@ -264,6 +264,8 @@
     "who_decides": "지명된 사람이 각 건을 수락·수정·반려로 확정한다. 최종 결정권자는 사람이다.",
     "recorded": [
       "draft_source",
+      "drafting_agent",
+      "blinded_from",
       "engine_output_consulted_before_sealing (항상 false)",
       "건별 action (accepted / edited / rejected)",
       "edit_rate_pct",

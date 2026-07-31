@@ -5,6 +5,7 @@ import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from wellnessbox_rnd.governance.completion_wizard import (
     STEPS,
@@ -15,6 +16,7 @@ from wellnessbox_rnd.governance.completion_wizard import (
     save_progress,
     step_belongs_to_this_session,
     training_gate_is_open,
+    verify_answer_keys,
     verify_audit,
     verify_dataset,
     verify_draft_review,
@@ -92,6 +94,28 @@ def _write_gate(root: Path, *, authorized: bool) -> None:
     (root / "artifacts/reports/training_readiness_gate_v2.json").write_text(
         json.dumps({"gate_decision": {"authorized_now": authorized}}), encoding="utf-8"
     )
+
+
+def _write_answer_key_seals(root: Path, *, audited: bool = True) -> None:
+    directory = root / "data/original_plan/kpi/seals"
+    directory.mkdir(parents=True, exist_ok=True)
+    for indicator_id in ("KPI-1", "KPI-3", "KPI-4", "KPI-5"):
+        slug = indicator_id.lower().replace("-", "")
+        payload = {
+            "indicator_id": indicator_id,
+            "case_count": 100,
+            "meets_minimum_sample": True,
+            "provenance": {
+                "integrity_audit": {
+                    "indicator_id": indicator_id,
+                    "verdict": "PASS" if audited else "FAIL",
+                }
+            },
+        }
+        (directory / f"{slug}_reference_seal_v1.json").write_text(
+            json.dumps(payload, ensure_ascii=False),
+            encoding="utf-8",
+        )
 
 
 class StepCatalogueTest(unittest.TestCase):
@@ -280,6 +304,76 @@ class AutoStepVerificationTest(unittest.TestCase):
         artifacts = {"audit": {"audit": {"status": "READY", "goal_complete": True}}}
 
         self.assertEqual(verify_audit(ROOT, artifacts).verdict, "done")
+
+    def test_answer_keys_block_when_the_integrity_audit_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = _fake_root(temp)
+            _write_answer_key_seals(root)
+            report = {
+                "status": "BLOCKED",
+                "completion_status": "BLOCKED",
+                "completion_blockers": ["KPI-1"],
+                "indicators": [
+                    {"indicator_id": "KPI-1", "verdict": "FAIL"},
+                    *[
+                        {"indicator_id": indicator_id, "verdict": "PASS"}
+                        for indicator_id in ("KPI-3", "KPI-4", "KPI-5")
+                    ],
+                ],
+            }
+            with patch(
+                "wellnessbox_rnd.governance.completion_wizard.audit_repository",
+                return_value=report,
+            ):
+                result = verify_answer_keys(root, {})
+
+        self.assertEqual(result.verdict, "blocked")
+        self.assertIn("KPI-1", result.missing)
+
+    def test_answer_keys_require_current_and_recorded_audit_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = _fake_root(temp)
+            _write_answer_key_seals(root)
+            report = {
+                "status": "READY",
+                "completion_status": "READY",
+                "completion_blockers": [],
+                "indicators": [
+                    {"indicator_id": indicator_id, "verdict": "PASS"}
+                    for indicator_id in ("KPI-1", "KPI-3", "KPI-4", "KPI-5")
+                ],
+            }
+            with patch(
+                "wellnessbox_rnd.governance.completion_wizard.audit_repository",
+                return_value=report,
+            ):
+                result = verify_answer_keys(root, {})
+
+        self.assertEqual(result.verdict, "done")
+
+    def test_answer_keys_block_when_workbench_or_seal_completion_is_pending(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = _fake_root(temp)
+            _write_answer_key_seals(root)
+            report = {
+                "status": "READY",
+                "completion_status": "BLOCKED",
+                "completion_blockers": ["KPI-5"],
+                "indicators": [
+                    {"indicator_id": indicator_id, "verdict": "PASS"}
+                    for indicator_id in ("KPI-1", "KPI-3", "KPI-4", "KPI-5")
+                ],
+            }
+            with patch(
+                "wellnessbox_rnd.governance.completion_wizard.audit_repository",
+                return_value=report,
+            ):
+                result = verify_answer_keys(root, {})
+
+        self.assertEqual(result.verdict, "blocked")
+        self.assertIn("KPI-5", result.missing)
 
 
 class ResumeTest(unittest.TestCase):

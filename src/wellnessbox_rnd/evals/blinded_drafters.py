@@ -35,7 +35,7 @@ from pathlib import Path
 from typing import Any
 
 EXTRACT_PATH = "data/knowledge/external/health_checker_reference_extract_v1.json"
-DRAFT_SOURCE_KPI4 = "health_checker_reference_extract_v1"
+DRAFT_SOURCE_KPI4 = "health_checker_reference_extract_v1@blinded_drafters"
 DRAFT_SOURCE_KPI3 = "blinded_scenarios_reviewer_supplied_actions"
 
 # Engine files that must not be read to produce these drafts. Recorded on the

@@ -28,6 +28,10 @@ on:
       - "docs/original_plan/**"
       - "docs/plans/2026-07-15-original-plan-completion-program.md"
       - "scripts/audit_original_plan_requirements.py"
+      - "scripts/audit_answer_key_integrity.py"
+      - "scripts/build_engine_input_registry.py"
+      - "scripts/run_answer_key_workbench.py"
+      - "scripts/seal_reference_standard.py"
       - "scripts/build_original_plan_completion_report.py"
       - "scripts/run_data_lake_lineage_smoke.py"
       - "scripts/run_knowledge_lineage_smoke.py"
@@ -78,6 +82,7 @@ on:
       - "data/samples/cgm_summary_v1.csv"
       - "src/wellnessbox_rnd/domain/sensor_parser.py"
       - "src/wellnessbox_rnd/governance/**"
+      - "src/wellnessbox_rnd/evals/**"
       - "src/wellnessbox_rnd/knowledge/runtime_db.py"
       - "src/wellnessbox_rnd/knowledge/goal_priors.py"
       - "src/wellnessbox_rnd/knowledge/candidate_signals.py"
@@ -88,6 +93,8 @@ on:
       - "src/wellnessbox_rnd/interim/**"
       - "src/wellnessbox_rnd/chat/**"
       - "src/wellnessbox_rnd/domain/catalog.py"
+      - "tests/test_answer_key_integrity.py"
+      - "tests/test_completion_wizard.py"
       - "src/wellnessbox_rnd/domain/loaders.py"
       - "src/wellnessbox_rnd/domain/intake.py"
       - "src/wellnessbox_rnd/domain/sensor_parser.py"
@@ -380,6 +387,12 @@ jobs:
           cache-dependency-path: _evidence/wellnessbox/package-lock.json
       - name: Install audit dependencies
         run: python -m pip install -e ".[dev,interim]"
+      - name: Check KPI answer-key integrity
+        run: |
+          python scripts/build_engine_input_registry.py
+          git diff --exit-code -- data/original_plan/contracts/engine_input_registry_v1.json
+          python scripts/audit_answer_key_integrity.py
+          python -m pytest tests/test_answer_key_integrity.py -q
       - name: Install WellnessBox service dependencies
         working-directory: _evidence/wellnessbox
         run: npm ci

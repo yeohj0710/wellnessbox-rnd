@@ -10,8 +10,20 @@
         "supplement_depleted_nutrient",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (26_대사_및_순환_6._당독소_AGEs_관리.md p142) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (26_대사_및_순환_6._당독소_AGEs_관리.md p142) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-002",
@@ -20,8 +32,20 @@
         "probiotics",
         "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (26_대사_및_순환_6._당독소_AGEs_관리.md p143)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (26_대사_및_순환_6._당독소_AGEs_관리.md p143)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-003",
@@ -32,8 +56,20 @@
         "magnesium_glycinate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p231) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p231) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-004",
@@ -47,8 +83,20 @@
         "vitamin_d3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p231) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다 · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p231) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다 · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-005",
@@ -58,8 +106,20 @@
         "probiotics",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p232) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p232) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-006",
@@ -72,8 +132,20 @@
         "vitamin_b_complex",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p232) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p232) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-007",
@@ -86,8 +158,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-008",
@@ -95,8 +179,20 @@
       "draft_answer": [
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-009",
@@ -106,8 +202,20 @@
         "magnesium_glycinate",
         "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-010",
@@ -120,8 +228,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-011",
@@ -131,8 +251,20 @@
         "magnesium_glycinate",
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p51)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p51)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-012",
@@ -141,8 +273,20 @@
         "magnesium_glycinate",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-013",
@@ -154,8 +298,20 @@
         "separate_dosing",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-014",
@@ -164,8 +320,20 @@
         "vitamin_b_complex",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-015",
@@ -174,8 +342,20 @@
         "coq10",
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-016",
@@ -187,8 +367,20 @@
         "vitamin_b_complex",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-017",
@@ -197,8 +389,20 @@
         "magnesium_glycinate",
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-018",
@@ -207,8 +411,20 @@
         "vitamin_b_complex",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-019",
@@ -221,8 +437,20 @@
         "vitamin_d3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (41_기타_1._치과질환.md p215) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (41_기타_1._치과질환.md p215) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-020",
@@ -233,8 +461,20 @@
         "magnesium_glycinate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (41_기타_1._치과질환.md p215)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (41_기타_1._치과질환.md p215)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-021",
@@ -243,8 +483,20 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-022",
@@ -254,8 +506,20 @@
         "supplement_depleted_nutrient",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-023",
@@ -264,8 +528,20 @@
         "probiotics",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-024",
@@ -275,8 +551,20 @@
         "vitamin_c",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-025",
@@ -288,8 +576,20 @@
         "supplement_depleted_nutrient",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-026",
@@ -297,8 +597,20 @@
       "draft_answer": [
         "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-027",
@@ -307,8 +619,20 @@
         "omega3",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-028",
@@ -322,8 +646,20 @@
         "vitamin_d3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-029",
@@ -332,8 +668,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-030",
@@ -342,8 +690,20 @@
         "omega3",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-031",
@@ -356,8 +716,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p79) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p79) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-032",
@@ -365,8 +737,20 @@
       "draft_answer": [
         "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p120)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p120)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-033",
@@ -376,8 +760,20 @@
         "omega3",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p120)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p120)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-034",
@@ -389,8 +785,20 @@
         "separate_dosing",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p121) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p121) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-035",
@@ -400,8 +808,20 @@
         "magnesium_glycinate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p121)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p121)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-036",
@@ -412,8 +832,20 @@
         "vitamin_b_complex",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-037",
@@ -425,8 +857,20 @@
         "vitamin_b_complex",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-038",
@@ -436,8 +880,20 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-039",
@@ -446,8 +902,20 @@
         "coq10",
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-040",
@@ -462,8 +930,20 @@
         "vitamin_d3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-041",
@@ -471,8 +951,20 @@
       "draft_answer": [
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-042",
@@ -480,8 +972,20 @@
       "draft_answer": [
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-043",
@@ -492,8 +996,20 @@
         "supplement_depleted_nutrient",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-044",
@@ -502,8 +1018,20 @@
         "omega3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-045",
@@ -511,8 +1039,20 @@
       "draft_answer": [
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-046",
@@ -525,8 +1065,20 @@
         "vitamin_d3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-047",
@@ -535,8 +1087,20 @@
         "probiotics",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-048",
@@ -545,8 +1109,20 @@
         "omega3",
         "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p188)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p188)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-049",
@@ -559,8 +1135,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p172) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p172) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-050",
@@ -568,8 +1156,20 @@
       "draft_answer": [
         "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p172)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p172)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-051",
@@ -579,8 +1179,20 @@
         "magnesium_glycinate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p173)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p173)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-052",
@@ -593,8 +1205,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p173) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p173) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-053",
@@ -603,8 +1227,20 @@
         "magnesium_glycinate",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (18_소화기계_1._위.md p93)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (18_소화기계_1._위.md p93)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-054",
@@ -614,8 +1250,20 @@
         "magnesium_glycinate",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (18_소화기계_1._위.md p93)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (18_소화기계_1._위.md p93)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-055",
@@ -625,8 +1273,20 @@
         "magnesium_glycinate",
         "separate_dosing"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (29_대사_및_순환_9._통풍.md p153) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (29_대사_및_순환_9._통풍.md p153) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-056",
@@ -634,8 +1294,20 @@
       "draft_answer": [
         "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (29_대사_및_순환_9._통풍.md p153)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (29_대사_및_순환_9._통풍.md p153)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-057",
@@ -645,8 +1317,20 @@
         "magnesium_glycinate",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-058",
@@ -659,8 +1343,20 @@
         "supplement_depleted_nutrient",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-059",
@@ -669,8 +1365,20 @@
         "l_theanine",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-060",
@@ -678,8 +1386,20 @@
       "draft_answer": [
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-061",
@@ -694,8 +1414,20 @@
         "vitamin_d3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (27_대사_및_순환_7._치질.md p145) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (27_대사_및_순환_7._치질.md p145) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-062",
@@ -704,8 +1436,20 @@
         "calcium_citrate",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p113)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p113)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-063",
@@ -713,8 +1457,20 @@
       "draft_answer": [
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p113)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p113)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-064",
@@ -724,8 +1480,20 @@
         "magnesium_glycinate",
         "supplement_depleted_nutrient"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-065",
@@ -735,8 +1503,20 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-066",
@@ -745,8 +1525,20 @@
         "vitamin_b_complex",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-067",
@@ -758,8 +1550,20 @@
         "vitamin_b_complex",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-068",
@@ -767,8 +1571,20 @@
       "draft_answer": [
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-069",
@@ -776,8 +1592,20 @@
       "draft_answer": [
         "coq10"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-070",
@@ -790,8 +1618,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-071",
@@ -800,8 +1640,20 @@
         "calcium_citrate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-072",
@@ -809,8 +1661,20 @@
       "draft_answer": [
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-073",
@@ -823,8 +1687,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-074",
@@ -832,8 +1708,20 @@
       "draft_answer": [
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-075",
@@ -842,8 +1730,20 @@
         "coq10",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-076",
@@ -854,8 +1754,20 @@
         "probiotics",
         "separate_dosing"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-077",
@@ -863,8 +1775,20 @@
       "draft_answer": [
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p157)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p157)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-078",
@@ -874,8 +1798,20 @@
         "probiotics",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p157)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p157)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-079",
@@ -886,8 +1822,20 @@
         "supplement_depleted_nutrient",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p158) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p158) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-080",
@@ -896,8 +1844,20 @@
         "soluble_fiber",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p158)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p158)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-081",
@@ -907,8 +1867,20 @@
         "magnesium_glycinate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p193)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p193)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-082",
@@ -922,8 +1894,20 @@
         "vitamin_d3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p193) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p193) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-083",
@@ -934,8 +1918,20 @@
         "vitamin_c",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p194)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p194)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-084",
@@ -944,8 +1940,20 @@
         "probiotics",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p194)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p194)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-085",
@@ -955,8 +1963,20 @@
         "magnesium_glycinate",
         "supplement_depleted_nutrient"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-086",
@@ -964,8 +1984,20 @@
       "draft_answer": [
         "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-087",
@@ -973,8 +2005,20 @@
       "draft_answer": [
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-088",
@@ -985,8 +2029,20 @@
         "vitamin_d3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-089",
@@ -996,8 +2052,20 @@
         "soluble_fiber",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p99)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p99)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-090",
@@ -1006,8 +2074,20 @@
         "probiotics",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p99)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p99)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-091",
@@ -1019,8 +2099,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-092",
@@ -1029,8 +2121,20 @@
         "magnesium_glycinate",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-093",
@@ -1039,8 +2143,20 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-094",
@@ -1053,8 +2169,20 @@
         "vitamin_b_complex",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-095",
@@ -1062,8 +2190,20 @@
       "draft_answer": [
         "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-096",
@@ -1071,8 +2211,20 @@
       "draft_answer": [
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-097",
@@ -1083,8 +2235,20 @@
         "separate_dosing",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-098",
@@ -1092,8 +2256,20 @@
       "draft_answer": [
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-099",
@@ -1101,8 +2277,20 @@
       "draft_answer": [
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi4-100",
@@ -1112,9 +2300,22 @@
         "supplement_depleted_nutrient",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "원문 권장 성분 (20_소화기계_3._간.md p105) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
+      "draft_rationale": "원문 권장 성분 (20_소화기계_3._간.md p105) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     }
   ],
-  "decisions": {}
+  "decisions": {},
+  "seal_disposals": []
 }

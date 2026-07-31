@@ -27,9 +27,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from wellnessbox_rnd.evals.answer_key_drafters import (  # noqa: E402
-    DRAFT_SOURCE,
-    draft_cases,
+from wellnessbox_rnd.evals.answer_key_integrity import (  # noqa: E402
+    MIN_SECONDS_PER_DECISION,
+    audit_sealing_readiness,
+    load_registry,
 )
 from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
     CaseDraft,
@@ -43,6 +44,18 @@ from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
     save_workbench,
     summarise_adjudication,
 )
+from wellnessbox_rnd.evals.blinded_drafters import (  # noqa: E402
+    DRAFT_SOURCES as BLINDED_DRAFT_SOURCES,
+)
+from wellnessbox_rnd.evals.blinded_drafters import (
+    draft_cases as draft_blinded_cases,
+)
+from wellnessbox_rnd.evals.reference_corpus_drafters import (  # noqa: E402
+    DRAFT_SOURCE as REFERENCE_DRAFT_SOURCE,
+)
+from wellnessbox_rnd.evals.reference_corpus_drafters import (
+    draft_cases as draft_reference_cases,
+)
 from wellnessbox_rnd.evals.reference_standard import (  # noqa: E402
     load_contract,
     seal_reference_standard,
@@ -54,8 +67,14 @@ WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
 SEAL_DIR = ROOT / "data/original_plan/kpi/seals"
 SEAL_DISPOSAL_DIR = ROOT / "data/original_plan/kpi/seal_disposals"
 BAR = "─" * 68
-MIN_SECONDS_PER_CASE = 1.5
+MIN_SECONDS_PER_CASE = MIN_SECONDS_PER_DECISION
 COMMAND_MARKERS = ("python ", "scripts/", "scripts\\", "cd ", "--indicator", "git ")
+BUILTIN_DRAFTERS = {
+    "KPI-1": (draft_reference_cases, REFERENCE_DRAFT_SOURCE),
+    "KPI-3": (draft_blinded_cases, BLINDED_DRAFT_SOURCES["KPI-3"]),
+    "KPI-4": (draft_blinded_cases, BLINDED_DRAFT_SOURCES["KPI-4"]),
+    "KPI-5": (draft_reference_cases, REFERENCE_DRAFT_SOURCE),
+}
 
 
 def looks_like_a_shell_command(answer: str) -> bool:
@@ -80,12 +99,30 @@ def seal_path(indicator_id: str) -> Path:
     return SEAL_DIR / f"{slug(indicator_id)}_reference_seal_v1.json"
 
 
+def legacy_discarded_seal_path(indicator_id: str) -> Path:
+    """Return a seal that was relocated before an audited disposal existed."""
+    return (
+        SEAL_DIR
+        / "discarded"
+        / f"{slug(indicator_id)}_reference_seal_v1.json"
+    )
+
+
 def seal_disposal_history_path(indicator_id: str) -> Path:
     return SEAL_DISPOSAL_DIR / f"{slug(indicator_id)}_seal_disposals_v1.json"
 
 
 def say(message: str = "") -> None:
     print(message, flush=True)
+
+
+def engine_logic_blinded_from() -> list[str]:
+    registry = load_registry(ROOT)
+    return sorted(
+        entry["path"]
+        for entry in registry["entries"]
+        if entry["role"] == "engine_logic"
+    )
 
 
 def cmd_draft(args) -> int:
@@ -96,13 +133,40 @@ def cmd_draft(args) -> int:
         return 2
 
     if args.cases:
+        if not args.drafting_agent:
+            say("--cases 사용 시 --drafting-agent 를 입력해야 합니다.")
+            return 2
+        if not args.blinded_from_registry and not args.blinded_from:
+            say(
+                "--cases 사용 시 --blinded-from-registry 또는 "
+                "--blinded-from <엔진 파일>을 입력해야 합니다."
+            )
+            return 2
         cases = json.loads(Path(args.cases).read_text(encoding="utf-8"))
         source = args.draft_source or "external_draft_file"
+        drafting_agent = args.drafting_agent
+        blinded_from = (
+            engine_logic_blinded_from()
+            if args.blinded_from_registry
+            else args.blinded_from
+        )
     else:
-        cases = draft_cases(args.indicator, ROOT, case_count=args.count)
-        source = args.draft_source or DRAFT_SOURCE
+        if args.indicator not in BUILTIN_DRAFTERS:
+            say(f"지원하지 않는 지표입니다: {args.indicator}")
+            return 2
+        drafter, default_source = BUILTIN_DRAFTERS[args.indicator]
+        cases = drafter(args.indicator, ROOT, case_count=args.count)
+        source = args.draft_source or default_source
+        drafting_agent = args.drafting_agent or "codex"
+        blinded_from = args.blinded_from or engine_logic_blinded_from()
 
-    packaged = build_drafts(indicator_id=args.indicator, cases=cases, draft_source=source)
+    packaged = build_drafts(
+        indicator_id=args.indicator,
+        cases=cases,
+        draft_source=source,
+        drafting_agent=drafting_agent,
+        blinded_from=blinded_from,
+    )
     workbench = Workbench(
         args.indicator, [CaseDraft(**item) for item in packaged["drafts"]], {}
     )
@@ -114,6 +178,8 @@ def cmd_draft(args) -> int:
             "workbench_path": str(target),
             "case_count": packaged["case_count"],
             "draft_source": source,
+            "drafting_agent": packaged["drafting_agent"],
+            "blinded_from": packaged["blinded_from"],
             "next": (
                 "python scripts/run_answer_key_workbench.py review "
                 f"--indicator {args.indicator} --by <이름>"
@@ -162,20 +228,12 @@ def cmd_review(args) -> int:
             say("  ! 이 건은 저장하지 않고 종료합니다. 한 명령씩 따로 실행하세요.")
             break
 
-        elapsed = time.monotonic() - started
-        if elapsed < MIN_SECONDS_PER_CASE:
-            rushed += 1
-
         if answer.lower() == "q":
             break
         if answer.lower() == "r":
             note = input("  반려 사유: ").strip()
-            workbench.decisions[draft.case_id] = decide(
-                draft=draft, final_answer=None, decided_by=args.by, note=note
-            )
-            save_workbench(target, workbench)
-            continue
-        if answer.lower() == "e":
+            final = None
+        elif answer.lower() == "e":
             edited = input("  수정할 성분(쉼표 구분): ").strip()
             final = [item.strip() for item in edited.split(",") if item.strip()]
             if not final:
@@ -184,8 +242,20 @@ def cmd_review(args) -> int:
         else:
             final = list(draft.draft_answer)
 
+        elapsed = time.monotonic() - started
+        if elapsed < MIN_SECONDS_PER_CASE:
+            rushed += 1
+            say(
+                f"  ! {elapsed:.2f}초 만에 입력돼 저장하지 않았습니다. "
+                f"사례를 읽고 최소 {MIN_SECONDS_PER_CASE:.1f}초 뒤 다시 판단하세요."
+            )
+            continue
+
         workbench.decisions[draft.case_id] = decide(
-            draft=draft, final_answer=final, decided_by=args.by
+            draft=draft,
+            final_answer=final,
+            decided_by=args.by,
+            note=note if answer.lower() == "r" else "",
         )
         save_workbench(target, workbench)
 
@@ -229,6 +299,11 @@ def cmd_seal(args) -> int:
         ))
         return 2
 
+    integrity = audit_sealing_readiness(ROOT, args.indicator)
+    if integrity["status"] != "READY":
+        say(json.dumps(integrity, ensure_ascii=False, indent=2))
+        return 2
+
     destination = seal_path(args.indicator)
     if destination.is_file():
         say(json.dumps(
@@ -246,6 +321,20 @@ def cmd_seal(args) -> int:
         ))
         return 2
 
+    try:
+        provenance = build_provenance(
+            workbench,
+            summary,
+            system_under_test_agent=getattr(args, "system_under_test_agent", ""),
+        )
+    except ValueError as exc:
+        say(json.dumps(
+            {"status": "BLOCKED", "reason": str(exc)},
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+
     seal = seal_reference_standard(
         indicator_id=args.indicator,
         cases=adjudicated_answer_key(workbench),
@@ -253,7 +342,8 @@ def cmd_seal(args) -> int:
         sealed_at=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         contract=load_contract(ROOT),
     )
-    seal["provenance"] = build_provenance(workbench, summary)
+    seal["provenance"] = provenance
+    seal["provenance"]["integrity_audit"] = integrity["integrity_audit"]
     write_json(destination, seal)
 
     say(json.dumps(
@@ -273,9 +363,13 @@ def cmd_seal(args) -> int:
 
 def cmd_discard_seal(args) -> int:
     destination = seal_path(args.indicator)
+    if not destination.is_file():
+        legacy_destination = legacy_discarded_seal_path(args.indicator)
+        if legacy_destination.is_file():
+            destination = legacy_destination
     target = workbench_path(args.indicator)
     if not destination.is_file():
-        say(f"활성 봉인이 없습니다: {destination}")
+        say(f"폐기할 봉인이 없습니다: {seal_path(args.indicator)}")
         return 2
     if not target.is_file():
         say(f"워크벤치가 없습니다: {target}")
@@ -358,6 +452,22 @@ def build_parser() -> ArgumentParser:
     draft.add_argument("--count", type=int, default=100)
     draft.add_argument("--cases", default=None, help="외부 초안 파일 경로")
     draft.add_argument("--draft-source", default=None)
+    draft.add_argument(
+        "--drafting-agent",
+        default=None,
+        help="초안을 만든 주체(예: codex, claude, 사람)",
+    )
+    draft.add_argument(
+        "--blinded-from",
+        action="append",
+        default=None,
+        help="초안 작성 때 읽지 않은 엔진 파일. 여러 번 입력할 수 있습니다.",
+    )
+    draft.add_argument(
+        "--blinded-from-registry",
+        action="store_true",
+        help="모든 engine_logic 파일을 blinded_from에 기록합니다.",
+    )
     draft.add_argument("--overwrite", action="store_true")
     draft.set_defaults(func=cmd_draft)
 
@@ -372,6 +482,11 @@ def build_parser() -> ArgumentParser:
 
     seal = sub.add_parser("seal", help="확정된 정답을 봉인한다")
     seal.add_argument("--indicator", required=True)
+    seal.add_argument(
+        "--system-under-test-agent",
+        default="",
+        help="KPI-4 상담 모듈 에이전트 계열. 초안 에이전트와 달라야 합니다.",
+    )
     seal.set_defaults(func=cmd_seal)
 
     discard = sub.add_parser("discard-seal", help="사람 확인 후 봉인과 판단 기록을 폐기한다")

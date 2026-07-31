@@ -9,8 +9,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-002",
@@ -19,8 +31,20 @@
         "coq10",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-003",
@@ -29,8 +53,20 @@
         "depletion",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-004",
@@ -39,8 +75,20 @@
         "calcium_citrate",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-005",
@@ -49,8 +97,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-006",
@@ -59,8 +119,20 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-007",
@@ -69,8 +141,20 @@
         "depletion",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-008",
@@ -79,8 +163,20 @@
         "calcium_citrate",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-009",
@@ -89,8 +185,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-010",
@@ -99,8 +207,20 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-011",
@@ -109,8 +229,20 @@
         "depletion",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-012",
@@ -119,8 +251,20 @@
         "absorption_interaction",
         "calcium_citrate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-013",
@@ -129,8 +273,20 @@
         "absorption_interaction",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-014",
@@ -139,8 +295,20 @@
         "coq10",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-015",
@@ -149,8 +317,20 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-016",
@@ -159,8 +339,20 @@
         "calcium_citrate",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-017",
@@ -169,8 +361,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-018",
@@ -179,8 +383,20 @@
         "depletion",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-019",
@@ -189,8 +405,20 @@
         "depletion",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-020",
@@ -199,8 +427,20 @@
         "depletion",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-021",
@@ -209,8 +449,20 @@
         "p237",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-022",
@@ -219,8 +471,20 @@
         "p236",
         "코엔자임Q10"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-023",
@@ -229,8 +493,20 @@
         "p236",
         "비타민 D"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-024",
@@ -239,8 +515,20 @@
         "p237",
         "칼슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-025",
@@ -249,8 +537,20 @@
         "p237",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-026",
@@ -259,8 +559,20 @@
         "p237",
         "비타민 B1"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-027",
@@ -269,8 +581,20 @@
         "p237",
         "아연"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-028",
@@ -279,8 +603,20 @@
         "p236",
         "칼슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-029",
@@ -289,8 +625,20 @@
         "p236",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-030",
@@ -299,8 +647,20 @@
         "p236",
         "비타민 B1"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-031",
@@ -309,8 +669,20 @@
         "p236",
         "아연"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-032",
@@ -319,8 +691,20 @@
         "p239",
         "칼슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-033",
@@ -329,8 +713,20 @@
         "p239",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-034",
@@ -339,8 +735,20 @@
         "p236",
         "코엔자임Q10"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-035",
@@ -349,8 +757,20 @@
         "p236",
         "비타민 B12"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-036",
@@ -359,8 +779,20 @@
         "p238",
         "칼슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-037",
@@ -369,8 +801,20 @@
         "p238",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-038",
@@ -379,8 +823,20 @@
         "p238",
         "비타민 C"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-039",
@@ -389,8 +845,20 @@
         "p238",
         "비타민 D"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-040",
@@ -399,8 +867,20 @@
         "p238",
         "아연"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-041",
@@ -409,8 +889,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-042",
@@ -419,8 +911,20 @@
         "coq10",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-043",
@@ -429,8 +933,20 @@
         "depletion",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-044",
@@ -439,8 +955,20 @@
         "calcium_citrate",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-045",
@@ -449,8 +977,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-046",
@@ -459,8 +999,20 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-047",
@@ -469,8 +1021,20 @@
         "depletion",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-048",
@@ -479,8 +1043,20 @@
         "calcium_citrate",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-049",
@@ -489,8 +1065,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-050",
@@ -499,8 +1087,20 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-051",
@@ -509,8 +1109,20 @@
         "depletion",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-052",
@@ -519,8 +1131,20 @@
         "absorption_interaction",
         "calcium_citrate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-053",
@@ -529,8 +1153,20 @@
         "absorption_interaction",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-054",
@@ -539,8 +1175,20 @@
         "coq10",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-055",
@@ -549,8 +1197,20 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-056",
@@ -559,8 +1219,20 @@
         "calcium_citrate",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-057",
@@ -569,8 +1241,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-058",
@@ -579,8 +1263,20 @@
         "depletion",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-059",
@@ -589,8 +1285,20 @@
         "depletion",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-060",
@@ -599,8 +1307,20 @@
         "depletion",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-061",
@@ -609,8 +1329,20 @@
         "p237",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-062",
@@ -619,8 +1351,20 @@
         "p236",
         "코엔자임Q10"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-063",
@@ -629,8 +1373,20 @@
         "p236",
         "비타민 D"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-064",
@@ -639,8 +1395,20 @@
         "p237",
         "칼슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-065",
@@ -649,8 +1417,20 @@
         "p237",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-066",
@@ -659,8 +1439,20 @@
         "p237",
         "비타민 B1"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-067",
@@ -669,8 +1461,20 @@
         "p237",
         "아연"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-068",
@@ -679,8 +1483,20 @@
         "p236",
         "칼슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-069",
@@ -689,8 +1505,20 @@
         "p236",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-070",
@@ -699,8 +1527,20 @@
         "p236",
         "비타민 B1"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-071",
@@ -709,8 +1549,20 @@
         "p236",
         "아연"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-072",
@@ -719,8 +1571,20 @@
         "p239",
         "칼슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-073",
@@ -729,8 +1593,20 @@
         "p239",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-074",
@@ -739,8 +1615,20 @@
         "p236",
         "코엔자임Q10"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-075",
@@ -749,8 +1637,20 @@
         "p236",
         "비타민 B12"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-076",
@@ -759,8 +1659,20 @@
         "p238",
         "칼슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-077",
@@ -769,8 +1681,20 @@
         "p238",
         "마그네슘"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-078",
@@ -779,8 +1703,20 @@
         "p238",
         "비타민 C"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-079",
@@ -789,8 +1725,20 @@
         "p238",
         "비타민 D"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-080",
@@ -799,8 +1747,20 @@
         "p238",
         "아연"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-081",
@@ -809,8 +1769,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-082",
@@ -819,8 +1791,20 @@
         "coq10",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-083",
@@ -829,8 +1813,20 @@
         "depletion",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-084",
@@ -839,8 +1835,20 @@
         "calcium_citrate",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-085",
@@ -849,8 +1857,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-086",
@@ -859,8 +1879,20 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-087",
@@ -869,8 +1901,20 @@
         "depletion",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-088",
@@ -879,8 +1923,20 @@
         "calcium_citrate",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-089",
@@ -889,8 +1945,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-090",
@@ -899,8 +1967,20 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-091",
@@ -909,8 +1989,20 @@
         "depletion",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-092",
@@ -919,8 +2011,20 @@
         "absorption_interaction",
         "calcium_citrate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-093",
@@ -929,8 +2033,20 @@
         "absorption_interaction",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-094",
@@ -939,8 +2055,20 @@
         "coq10",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-095",
@@ -949,8 +2077,20 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-096",
@@ -959,8 +2099,20 @@
         "calcium_citrate",
         "depletion"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-097",
@@ -969,8 +2121,20 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-098",
@@ -979,8 +2143,20 @@
         "depletion",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-099",
@@ -989,8 +2165,20 @@
         "depletion",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi5-ref-100",
@@ -999,9 +2187,22 @@
         "depletion",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1",
-      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)"
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     }
   ],
-  "decisions": {}
+  "decisions": {},
+  "seal_disposals": []
 }

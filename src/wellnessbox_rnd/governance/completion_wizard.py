@@ -18,6 +18,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
 
+from wellnessbox_rnd.evals.answer_key_integrity import audit_repository
+
 PROGRESS_RELATIVE_PATH = "artifacts/final_session/completion_wizard_progress_v1.json"
 PROGRESS_SCHEMA = "completion_wizard_progress_v1"
 CONSOLE_URL = "http://127.0.0.1:8765/"
@@ -286,10 +288,31 @@ def verify_promotion(root: Path, artifacts: dict[str, Any]) -> StepResult:
 
 
 def verify_answer_keys(root: Path, artifacts: dict[str, Any]) -> StepResult:
-    """Every answer-key indicator needs a sealed, fully adjudicated key."""
+    """Every answer key needs a current audit pass recorded in its seal."""
     indicators = ("KPI-1", "KPI-3", "KPI-4", "KPI-5")
+    try:
+        audit = audit_repository(root)
+    except (FileNotFoundError, json.JSONDecodeError) as exc:
+        return StepResult(
+            "ANSWER_KEYS",
+            "blocked",
+            f"KPI 정답지 무결성 감사를 실행하지 못했습니다: {exc}",
+            ["answer_key_integrity_audit_failed"],
+        )
+
+    audit_by_indicator = {
+        item["indicator_id"]: item
+        for item in audit.get("indicators", [])
+    }
+    completion_blockers = audit.get("completion_blockers", [])
+    audit_failed = [
+        indicator_id
+        for indicator_id in indicators
+        if audit_by_indicator.get(indicator_id, {}).get("verdict") != "PASS"
+    ]
     missing: list[str] = []
     short: list[str] = []
+    seal_audit_missing: list[str] = []
     for indicator_id in indicators:
         slug = indicator_id.lower().replace("-", "")
         seal = _read_json(
@@ -299,8 +322,51 @@ def verify_answer_keys(root: Path, artifacts: dict[str, Any]) -> StepResult:
             missing.append(indicator_id)
         elif not seal.get("meets_minimum_sample"):
             short.append(f"{indicator_id}({seal.get('case_count', 0)}/100)")
+        elif (
+            seal.get("provenance", {})
+            .get("integrity_audit", {})
+            .get("verdict")
+            != "PASS"
+        ):
+            seal_audit_missing.append(indicator_id)
+
+    if (
+        audit.get("completion_status") != "READY"
+        or audit_failed
+        or seal_audit_missing
+    ):
+        blockers = sorted(
+            set(completion_blockers + audit_failed + seal_audit_missing)
+        )
+        parts = []
+        if completion_blockers:
+            parts.append(
+                "현재 워크벤치·봉인 미완료 "
+                + ", ".join(completion_blockers)
+            )
+        if audit_failed:
+            parts.append(f"현재 감사 미통과 {', '.join(audit_failed)}")
+        if seal_audit_missing:
+            parts.append(
+                "봉인에 감사 PASS 기록 없음 "
+                + ", ".join(seal_audit_missing)
+            )
+        if not parts:
+            parts.append("현재 감사의 완료 상태가 READY가 아님")
+        return StepResult(
+            "ANSWER_KEYS",
+            "blocked",
+            "KPI 정답지 무결성 게이트가 봉인을 인정하지 않았습니다: "
+            + " / ".join(parts),
+            blockers,
+        )
+
     if not missing and not short:
-        return StepResult("ANSWER_KEYS", "done", "정답 4종이 모두 봉인됐습니다.")
+        return StepResult(
+            "ANSWER_KEYS",
+            "done",
+            "정답 4종의 현재 감사와 봉인 시점 감사 기록이 모두 PASS입니다.",
+        )
     parts = []
     if missing:
         parts.append(f"미착수 {', '.join(missing)}")

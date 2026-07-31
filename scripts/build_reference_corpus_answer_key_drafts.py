@@ -5,7 +5,8 @@ only produces the file. Feed it in with:
 
   python scripts/run_answer_key_workbench.py draft --indicator KPI-1 \\
       --cases data/original_plan/kpi/drafts/kpi1_reference_corpus_cases_v1.json \\
-      --draft-source health_checker_reference_extract_v1 --overwrite
+      --draft-source health_checker_reference_extract_v1@reference_corpus_drafters \\
+      --drafting-agent codex --blinded-from-registry --overwrite
 
 Usage:
   python scripts/build_reference_corpus_answer_key_drafts.py

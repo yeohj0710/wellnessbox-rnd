@@ -53,6 +53,8 @@ class CaseDraft:
     draft_answer: list[str]
     draft_source: str
     draft_rationale: str = ""
+    drafting_agent: str = ""
+    blinded_from: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -96,11 +98,15 @@ def build_drafts(
     indicator_id: str,
     cases: list[dict[str, Any]],
     draft_source: str,
+    drafting_agent: str = "",
+    blinded_from: list[str] | tuple[str, ...] = (),
 ) -> dict[str, Any]:
     """Package drafts with their provenance, before any engine has run."""
     assert_source_is_independent(draft_source)
     if not cases:
         raise ValueError("no_cases_to_draft")
+    agent = drafting_agent.strip()
+    blinded = sorted({str(path).strip() for path in blinded_from if str(path).strip()})
 
     drafts = []
     for case in cases:
@@ -114,6 +120,8 @@ def build_drafts(
                 "draft_answer": answer,
                 "draft_source": draft_source,
                 "draft_rationale": str(case.get("draft_rationale", "")),
+                "drafting_agent": agent,
+                "blinded_from": blinded,
             }
         )
 
@@ -121,6 +129,8 @@ def build_drafts(
         "schema_version": DRAFT_SCHEMA,
         "indicator_id": indicator_id,
         "draft_source": draft_source,
+        "drafting_agent": agent,
+        "blinded_from": blinded,
         "engine_output_consulted": False,
         "case_count": len(drafts),
         "drafts": drafts,
@@ -200,13 +210,69 @@ def adjudicated_answer_key(workbench: Workbench) -> dict[str, list[str]]:
     return key
 
 
-def build_provenance(workbench: Workbench, summary: dict[str, Any]) -> dict[str, Any]:
+def _agent_family(agent: str) -> str:
+    """Normalize common agent names to the model-provider family being tested."""
+    folded = agent.strip().casefold()
+    families = {
+        "openai": ("openai", "chatgpt", "codex", "gpt-", "o1", "o3", "o4"),
+        "anthropic": ("anthropic", "claude"),
+        "google": ("google", "gemini", "bard"),
+        "meta": ("meta", "llama"),
+        "human": ("human", "사람"),
+    }
+    for family, markers in families.items():
+        if any(marker in folded for marker in markers):
+            return family
+    return folded
+
+
+def build_provenance(
+    workbench: Workbench,
+    summary: dict[str, Any],
+    *,
+    system_under_test_agent: str = "",
+) -> dict[str, Any]:
     """Provenance that travels with the seal so the method stays auditable."""
+    drafting_agents = {draft.drafting_agent.strip() for draft in workbench.drafts}
+    blinded_sets = {
+        tuple(sorted(set(draft.blinded_from))) for draft in workbench.drafts
+    }
+    if len(drafting_agents) > 1:
+        raise ValueError("inconsistent_drafting_agent_across_cases")
+    if len(blinded_sets) > 1:
+        raise ValueError("inconsistent_blinded_from_across_cases")
+    drafting_agent = next(iter(drafting_agents), "")
+    blinded_from = list(next(iter(blinded_sets), ()))
+    evaluated_agent = system_under_test_agent.strip()
+    drafting_family = _agent_family(drafting_agent)
+    evaluated_family = _agent_family(evaluated_agent)
+    separation_required = workbench.indicator_id == "KPI-4"
+    separated = bool(
+        drafting_family
+        and evaluated_family
+        and drafting_family != evaluated_family
+    )
+    if separation_required and not drafting_agent:
+        raise ValueError("kpi4_drafting_agent_required")
+    if separation_required and not evaluated_agent:
+        raise ValueError("kpi4_system_under_test_agent_required")
+    if separation_required and not separated:
+        raise ValueError("kpi4_drafting_agent_matches_system_under_test_agent")
+
     return {
         "answer_key_method": "independent_draft_then_human_adjudication",
         "draft_source": workbench.drafts[0].draft_source if workbench.drafts else None,
+        "drafting_agent": drafting_agent or None,
+        "blinded_from": blinded_from,
         "engine_output_consulted_before_sealing": False,
         "prior_seal_disposals": list(workbench.seal_disposals),
+        "agent_separation": {
+            "required": separation_required,
+            "system_under_test_agent": evaluated_agent or None,
+            "drafting_agent_family": drafting_family or None,
+            "system_under_test_agent_family": evaluated_family or None,
+            "separated": separated if separation_required else None,
+        },
         "adjudication": {
             "counts": summary["counts"],
             "edit_rate_pct": summary["edit_rate_pct"],

@@ -9,7 +9,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 26_대사_및_순환_6._당독소_AGEs_관리.md p142)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 26_대사_및_순환_6._당독소_AGEs_관리.md p142)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-002",
@@ -18,7 +30,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-003",
@@ -27,7 +51,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-004",
@@ -36,7 +72,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-005",
@@ -45,7 +93,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-006",
@@ -54,7 +114,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-007",
@@ -63,7 +135,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p186)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p186)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-008",
@@ -72,7 +156,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p172)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p172)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-009",
@@ -81,7 +177,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 09_신경계_및_뇌기능_5._두통·편두통.md p43)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 09_신경계_및_뇌기능_5._두통·편두통.md p43)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-010",
@@ -90,7 +198,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p114)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p114)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-011",
@@ -99,7 +219,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-012",
@@ -108,7 +240,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p157)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p157)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-013",
@@ -117,7 +261,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p98)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p98)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-014",
@@ -126,7 +282,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p29)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p29)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-015",
@@ -135,7 +303,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-016",
@@ -144,7 +324,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 34_성호르몬·비뇨기계_2._남성_갱년기.md p177)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 34_성호르몬·비뇨기계_2._남성_갱년기.md p177)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-017",
@@ -153,7 +345,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 31_근골격계_1._근골격계_통증.md p164)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 31_근골격계_1._근골격계_통증.md p164)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-018",
@@ -162,7 +366,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 35_성호르몬·비뇨기계_3._전립선.md p180)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 35_성호르몬·비뇨기계_3._전립선.md p180)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-019",
@@ -171,7 +387,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p87)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p87)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-020",
@@ -180,7 +408,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 17_에너지_생성_및_부신·갑상선_기능_6._이명_귀울림.md p83)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 17_에너지_생성_및_부신·갑상선_기능_6._이명_귀울림.md p83)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-021",
@@ -189,7 +429,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 43_기타_3._어린이.md p231)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 43_기타_3._어린이.md p231)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-022",
@@ -198,7 +450,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-023",
@@ -207,7 +471,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-024",
@@ -216,7 +492,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-025",
@@ -225,7 +513,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p79)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p79)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-026",
@@ -234,7 +534,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-027",
@@ -243,7 +555,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p187)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p187)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-028",
@@ -252,7 +576,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p173)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p173)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-029",
@@ -261,7 +597,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 09_신경계_및_뇌기능_5._두통·편두통.md p43)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 09_신경계_및_뇌기능_5._두통·편두통.md p43)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-030",
@@ -270,7 +618,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p114)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p114)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-031",
@@ -279,7 +639,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-032",
@@ -288,7 +660,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p158)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p158)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-033",
@@ -297,7 +681,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p98)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p98)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-034",
@@ -306,7 +702,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p29)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p29)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-035",
@@ -315,7 +723,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 20_소화기계_3._간.md p105)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 20_소화기계_3._간.md p105)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-036",
@@ -324,7 +744,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 24_대사_및_순환_4._대사증후군.md p134)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 24_대사_및_순환_4._대사증후군.md p134)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-037",
@@ -333,7 +765,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 25_대사_및_순환_5._체지방·비만.md p139)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 25_대사_및_순환_5._체지방·비만.md p139)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-038",
@@ -342,7 +786,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 05_신경계_및_뇌기능_1._수면.md p33)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 05_신경계_및_뇌기능_1._수면.md p33)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-039",
@@ -351,7 +807,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p88)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p88)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-040",
@@ -360,7 +828,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 17_에너지_생성_및_부신·갑상선_기능_6._이명_귀울림.md p84)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 17_에너지_생성_및_부신·갑상선_기능_6._이명_귀울림.md p84)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-041",
@@ -369,7 +849,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 43_기타_3._어린이.md p232)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 43_기타_3._어린이.md p232)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-042",
@@ -378,7 +870,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-043",
@@ -387,7 +891,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 41_기타_1._치과질환.md p215)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 41_기타_1._치과질환.md p215)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-044",
@@ -396,7 +912,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 23_대사_및_순환_3._당뇨·인슐린저항성.md p128)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 23_대사_및_순환_3._당뇨·인슐린저항성.md p128)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-045",
@@ -405,7 +933,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 22_대사_및_순환_2._이상지질혈증.md p120)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 22_대사_및_순환_2._이상지질혈증.md p120)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-046",
@@ -414,7 +954,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-047",
@@ -423,7 +975,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p187)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p187)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-048",
@@ -432,7 +996,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p93)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p93)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-049",
@@ -441,7 +1017,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 27_대사_및_순환_7._치질.md p145)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 27_대사_및_순환_7._치질.md p145)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-050",
@@ -450,7 +1038,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-051",
@@ -459,7 +1059,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-052",
@@ -468,7 +1080,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 37_임신_1._난임.md p193)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 37_임신_1._난임.md p193)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-053",
@@ -477,7 +1101,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p99)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p99)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-054",
@@ -486,7 +1122,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-055",
@@ -495,7 +1143,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 20_소화기계_3._간.md p107)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 20_소화기계_3._간.md p107)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-056",
@@ -504,7 +1164,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 31_근골격계_1._근골격계_통증.md p164)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 31_근골격계_1._근골격계_통증.md p164)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-057",
@@ -513,7 +1185,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 32_근골격계_2._골다공증.md p167)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 32_근골격계_2._골다공증.md p167)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-058",
@@ -522,7 +1206,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 05_신경계_및_뇌기능_1._수면.md p34)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 05_신경계_및_뇌기능_1._수면.md p34)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-059",
@@ -531,7 +1227,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 07_신경계_및_뇌기능_3._스트레스.md p38)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 07_신경계_및_뇌기능_3._스트레스.md p38)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-060",
@@ -540,7 +1248,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 28_대사_및_순환_8._하지정맥류.md p149)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 28_대사_및_순환_8._하지정맥류.md p149)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-061",
@@ -549,7 +1269,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-062",
@@ -558,7 +1290,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-063",
@@ -567,7 +1311,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-064",
@@ -576,7 +1332,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 23_대사_및_순환_3._당뇨·인슐린저항성.md p128)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 23_대사_및_순환_3._당뇨·인슐린저항성.md p128)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-065",
@@ -585,7 +1353,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 22_대사_및_순환_2._이상지질혈증.md p121)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 22_대사_및_순환_2._이상지질혈증.md p121)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-066",
@@ -594,7 +1374,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p186)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p186)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-067",
@@ -603,7 +1395,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p172)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p172)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-068",
@@ -612,7 +1416,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 29_대사_및_순환_9._통풍.md p153)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 29_대사_및_순환_9._통풍.md p153)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-069",
@@ -621,7 +1437,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p113)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p113)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-070",
@@ -630,7 +1458,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-071",
@@ -639,7 +1479,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p157)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p157)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-072",
@@ -648,7 +1500,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 37_임신_1._난임.md p194)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 37_임신_1._난임.md p194)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-073",
@@ -657,7 +1521,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-074",
@@ -666,7 +1542,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-075",
@@ -675,7 +1563,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 34_성호르몬·비뇨기계_2._남성_갱년기.md p177)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 34_성호르몬·비뇨기계_2._남성_갱년기.md p177)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-076",
@@ -684,7 +1584,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 31_근골격계_1._근골격계_통증.md p164)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 31_근골격계_1._근골격계_통증.md p164)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-077",
@@ -693,7 +1605,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 35_성호르몬·비뇨기계_3._전립선.md p180)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 35_성호르몬·비뇨기계_3._전립선.md p180)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-078",
@@ -702,7 +1626,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p91)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p91)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-079",
@@ -711,7 +1647,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 07_신경계_및_뇌기능_3._스트레스.md p38)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 07_신경계_및_뇌기능_3._스트레스.md p38)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-080",
@@ -720,7 +1668,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 26_대사_및_순환_6._당독소_AGEs_관리.md p143)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 26_대사_및_순환_6._당독소_AGEs_관리.md p143)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-081",
@@ -729,7 +1689,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-082",
@@ -738,7 +1710,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-083",
@@ -747,7 +1731,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-084",
@@ -756,7 +1752,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-085",
@@ -765,7 +1773,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-086",
@@ -774,7 +1794,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p186)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p186)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-087",
@@ -783,7 +1815,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p173)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p173)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-088",
@@ -792,7 +1836,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 09_신경계_및_뇌기능_5._두통·편두통.md p43)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 09_신경계_및_뇌기능_5._두통·편두통.md p43)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-089",
@@ -801,7 +1857,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p114)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p114)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-090",
@@ -810,7 +1878,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-091",
@@ -819,7 +1899,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p158)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p158)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-092",
@@ -828,7 +1920,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p98)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p98)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-093",
@@ -837,7 +1941,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p29)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p29)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-094",
@@ -846,7 +1962,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 20_소화기계_3._간.md p105)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 20_소화기계_3._간.md p105)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-095",
@@ -855,7 +1983,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 24_대사_및_순환_4._대사증후군.md p133)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 24_대사_및_순환_4._대사증후군.md p133)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-096",
@@ -864,7 +2004,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 25_대사_및_순환_5._체지방·비만.md p138)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 25_대사_및_순환_5._체지방·비만.md p138)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-097",
@@ -873,7 +2025,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 05_신경계_및_뇌기능_1._수면.md p33)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 05_신경계_및_뇌기능_1._수면.md p33)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-098",
@@ -882,7 +2046,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p88)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p88)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-099",
@@ -891,7 +2067,19 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 17_에너지_생성_및_부신·갑상선_기능_6._이명_귀울림.md p84)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 17_에너지_생성_및_부신·갑상선_기능_6._이명_귀울림.md p84)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     },
     {
       "case_id": "kpi3-100",
@@ -900,8 +2088,21 @@
         "미정_검토자가_판단"
       ],
       "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 43_기타_3._어린이.md p231)"
+      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 43_기타_3._어린이.md p231)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
     }
   ],
-  "decisions": {}
+  "decisions": {},
+  "seal_disposals": []
 }

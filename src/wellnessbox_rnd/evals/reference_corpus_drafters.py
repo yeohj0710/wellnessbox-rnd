@@ -31,7 +31,7 @@ from pathlib import Path
 from typing import Any
 
 EXTRACT_PATH = "data/knowledge/external/health_checker_reference_extract_v1.json"
-DRAFT_SOURCE = "health_checker_reference_extract_v1"
+DRAFT_SOURCE = "health_checker_reference_extract_v1@reference_corpus_drafters"
 
 # Ages are fixed per position so a regenerated draft set is byte-identical.
 AGE_BANDS: tuple[int, ...] = (28, 34, 41, 47, 53, 58, 64, 69, 72, 76)

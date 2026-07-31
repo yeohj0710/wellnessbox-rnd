@@ -24,7 +24,17 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from wellnessbox_rnd.evals.answer_key_integrity import (  # noqa: E402
+    audit_sealing_readiness,
+)
+from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
+    adjudicated_answer_key,
+    build_provenance,
+    load_workbench,
+    summarise_adjudication,
+)
 from wellnessbox_rnd.evals.reference_standard import (  # noqa: E402
+    canonical_digest,
     load_contract,
     score_against_seal,
     seal_reference_standard,
@@ -34,11 +44,17 @@ from wellnessbox_rnd.evals.reference_standard import (  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 SEAL_DIR = ROOT / "data/original_plan/kpi/seals"
+WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
 COMPARISON_DIR = ROOT / "artifacts/kpi"
 
 
 def seal_path(indicator_id: str) -> Path:
     return SEAL_DIR / f"{indicator_id.lower().replace('-', '')}_reference_seal_v1.json"
+
+
+def workbench_path(indicator_id: str) -> Path:
+    name = f"{indicator_id.lower().replace('-', '')}_workbench_v1.json"
+    return WORKBENCH_DIR / name
 
 
 def build_parser() -> ArgumentParser:
@@ -49,6 +65,11 @@ def build_parser() -> ArgumentParser:
     seal.add_argument("--indicator", required=True)
     seal.add_argument("--cases", required=True, help="사례별 정답 JSON 경로")
     seal.add_argument("--by", required=True, help="정답을 만든 사람 이름")
+    seal.add_argument(
+        "--system-under-test-agent",
+        default="",
+        help="KPI-4 상담 모듈 에이전트 계열. 초안 에이전트와 달라야 합니다.",
+    )
 
     check = sub.add_parser("verify", help="봉인이 그대로인지 확인한다")
     check.add_argument("--indicator", required=True)
@@ -78,7 +99,50 @@ def main() -> int:
                 ensure_ascii=False, indent=2,
             ))
             return 2
+        integrity = audit_sealing_readiness(ROOT, args.indicator)
+        if integrity["status"] != "READY":
+            print(json.dumps(integrity, ensure_ascii=False, indent=2))
+            return 2
+
+        workbench = load_workbench(workbench_path(args.indicator))
+        summary = summarise_adjudication(workbench)
+        canonical_cases = adjudicated_answer_key(workbench)
         cases = json.loads(Path(args.cases).read_text(encoding="utf-8"))
+        if canonical_digest(cases) != canonical_digest(canonical_cases):
+            print(json.dumps(
+                {
+                    "status": "BLOCKED",
+                    "reason": "cases_do_not_match_adjudicated_workbench",
+                    "indicator_id": args.indicator,
+                    "workbench_path": str(workbench_path(args.indicator)),
+                },
+                ensure_ascii=False, indent=2,
+            ))
+            return 2
+        if summary["reviewers"] != [args.by.strip()]:
+            print(json.dumps(
+                {
+                    "status": "BLOCKED",
+                    "reason": "sealer_does_not_match_workbench_reviewer",
+                    "sealed_by": args.by.strip(),
+                    "reviewers": summary["reviewers"],
+                },
+                ensure_ascii=False, indent=2,
+            ))
+            return 2
+        try:
+            provenance = build_provenance(
+                workbench,
+                summary,
+                system_under_test_agent=args.system_under_test_agent,
+            )
+        except ValueError as exc:
+            print(json.dumps(
+                {"status": "BLOCKED", "reason": str(exc)},
+                ensure_ascii=False,
+                indent=2,
+            ))
+            return 2
         seal = seal_reference_standard(
             indicator_id=args.indicator,
             cases=cases,
@@ -86,6 +150,8 @@ def main() -> int:
             sealed_at=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
             contract=contract,
         )
+        seal["provenance"] = provenance
+        seal["provenance"]["integrity_audit"] = integrity["integrity_audit"]
         write_json(target, seal)
         print(json.dumps(
             {

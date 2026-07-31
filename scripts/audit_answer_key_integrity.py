@@ -13,7 +13,6 @@ Usage:
 
 from __future__ import annotations
 
-import importlib
 import json
 import sys
 from argparse import ArgumentParser
@@ -24,93 +23,20 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from wellnessbox_rnd.evals.answer_key_integrity import (  # noqa: E402
-    audit_indicator,
-    load_registry,
+    audit_repository,
 )
-
-WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
-SEAL_DIR = ROOT / "data/original_plan/kpi/seals"
-DRAFTER_PACKAGE = "wellnessbox_rnd.evals"
-DRAFTER_MODULES = ("answer_key_drafters", "reference_corpus_drafters", "blinded_drafters")
-INDICATORS = ("KPI-1", "KPI-3", "KPI-4", "KPI-5")
-
-
-def slug(indicator_id: str) -> str:
-    return indicator_id.lower().replace("-", "")
+from wellnessbox_rnd.evals.answer_key_integrity import (  # noqa: E402
+    drafter_source_index as build_drafter_source_index,
+)
 
 
 def drafter_source_index() -> dict[tuple[str, str], set[Path]]:
-    """Map each indicator and draft source to its actual drafter module.
-
-    Modules announce their source in a `DRAFT_SOURCE` constant or a
-    `DRAFT_SOURCES` mapping and their supported indicators in `DRAFTERS`.
-    Indicator-aware keys prevent modules that use the same reference corpus for
-    different KPIs from being audited as if every module drafted every KPI.
-    """
-    index: dict[tuple[str, str], set[Path]] = {}
-    for name in DRAFTER_MODULES:
-        try:
-            module = importlib.import_module(f"{DRAFTER_PACKAGE}.{name}")
-        except ImportError:
-            continue
-        path = ROOT / "src" / DRAFTER_PACKAGE.replace(".", "/") / f"{name}.py"
-        sources = getattr(module, "DRAFT_SOURCES", None)
-        if isinstance(sources, dict):
-            for indicator_id, source in sources.items():
-                if isinstance(indicator_id, str) and isinstance(source, str):
-                    index.setdefault((indicator_id, source), set()).add(path)
-            continue
-
-        source = getattr(module, "DRAFT_SOURCE", None)
-        drafters = getattr(module, "DRAFTERS", {})
-        if isinstance(source, str) and isinstance(drafters, dict):
-            for indicator_id in drafters:
-                if isinstance(indicator_id, str):
-                    index.setdefault((indicator_id, source), set()).add(path)
-    return index
+    """Compatibility wrapper for callers that audit this repository."""
+    return build_drafter_source_index(ROOT)
 
 
 def audit_all() -> dict[str, Any]:
-    registry = load_registry(ROOT)
-    index = drafter_source_index()
-    results: list[dict[str, Any]] = []
-
-    for indicator_id in INDICATORS:
-        path = WORKBENCH_DIR / f"{slug(indicator_id)}_workbench_v1.json"
-        if not path.is_file():
-            continue
-        workbench = json.loads(path.read_text(encoding="utf-8"))
-        sources = {draft.get("draft_source", "") for draft in workbench.get("drafts", [])}
-        modules = sorted(
-            {
-                path
-                for source in sources
-                for path in index.get((indicator_id, source), set())
-            }
-        )
-        results.append(
-            audit_indicator(
-                indicator_id=indicator_id,
-                workbench=workbench,
-                drafter_modules=modules,
-                registry=registry,
-                seal_exists=(SEAL_DIR / f"{slug(indicator_id)}_reference_seal_v1.json").is_file(),
-            )
-        )
-
-    failed = [item for item in results if item["verdict"] == "FAIL"]
-    return {
-        "schema_version": "answer_key_integrity_audit_v1",
-        "indicator_count": len(results),
-        "passed": sum(1 for item in results if item["verdict"] == "PASS"),
-        "failed": len(failed),
-        "needs_review": sum(1 for item in results if item["verdict"] == "REVIEW"),
-        "seals_to_discard": [
-            item["indicator_id"] for item in results if item["seal_must_be_discarded"]
-        ],
-        "status": "BLOCKED" if failed else "READY",
-        "indicators": results,
-    }
+    return audit_repository(ROOT)
 
 
 def render(report: dict[str, Any]) -> None:

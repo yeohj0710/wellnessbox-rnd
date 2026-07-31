@@ -6,6 +6,7 @@ import os
 import subprocess
 from pathlib import Path
 
+from wellnessbox_rnd.evals.answer_key_integrity import audit_repository
 from wellnessbox_rnd.governance.final_completion_audit import audit_final_completion_v1
 from wellnessbox_rnd.schemas.original_plan_manifest import RepositoryName
 
@@ -23,6 +24,9 @@ SOURCE_PATHS = (
     "src/wellnessbox_rnd/governance/final_completion_audit.py",
     "tests/test_final_completion_audit.py",
     "scripts/run_final_completion_audit.py",
+    "scripts/audit_answer_key_integrity.py",
+    "src/wellnessbox_rnd/evals/answer_key_integrity.py",
+    "data/original_plan/contracts/engine_input_registry_v1.json",
     "data/original_plan/op120_final_audit_policy_v1.json",
     "data/original_plan/op120_final_completion_audit_cases_v1.json",
     "data/original_plan/requirements_manifest_v1.json",
@@ -112,6 +116,23 @@ def assert_no_regression(expected: dict[str, dict], observed: dict[str, dict]) -
         raise AssertionError({"regressions": regressions})
 
 
+def apply_answer_key_integrity_gate(
+    audit_payload: dict,
+    answer_key_integrity: dict,
+) -> dict:
+    """Force the final audit closed unless all four current seals are auditable."""
+    gated = json.loads(json.dumps(audit_payload))
+    if answer_key_integrity.get("completion_status") == "READY":
+        return gated
+    gated["status"] = "BLOCKED"
+    gated["goal_complete"] = False
+    blockers = list(gated.get("blockers", []))
+    if "answer_key_integrity_failed" not in blockers:
+        blockers.append("answer_key_integrity_failed")
+    gated["blockers"] = blockers
+    return gated
+
+
 def main() -> int:
     audit = audit_final_completion_v1(
         manifest_path=MANIFEST,
@@ -121,6 +142,11 @@ def main() -> int:
             RepositoryName.WELLNESSBOX_RND: ROOT,
             RepositoryName.WELLNESSBOX: SERVICE_ROOT,
         },
+    )
+    answer_key_integrity = audit_repository(ROOT)
+    audit_payload = apply_answer_key_integrity_gate(
+        audit.model_dump(mode="json"),
+        answer_key_integrity,
     )
     cases = json.loads(CASES.read_text(encoding="utf-8"))
     facts = audit.facts
@@ -141,8 +167,8 @@ def main() -> int:
             "independent_review": facts.independent_review_receipt_valid,
         },
         "completion_decision": {
-            "status": audit.status.value,
-            "goal_complete": audit.goal_complete,
+            "status": audit_payload["status"],
+            "goal_complete": audit_payload["goal_complete"],
         },
     }
     expected = {item["case_id"]: item["expected"] for item in cases["cases"]}
@@ -161,7 +187,8 @@ def main() -> int:
             "case_count": len(cases["cases"]),
             "sha256": sha256(CASES),
         },
-        "audit": audit.model_dump(mode="json"),
+        "audit": audit_payload,
+        "answer_key_integrity": answer_key_integrity,
         "observed": observed,
         "source_identity": {"commit": source_commit, "blobs": source_blobs},
         "audited_input_identity": {
@@ -170,8 +197,8 @@ def main() -> int:
         },
         "stage_boundary": {
             "final_auditor_implemented": True,
-            "final_audit_ready": audit.status.value == "READY",
-            "goal_complete": audit.goal_complete,
+            "final_audit_ready": audit_payload["status"] == "READY",
+            "goal_complete": audit_payload["goal_complete"],
         },
     }
     OUTPUT.write_text(

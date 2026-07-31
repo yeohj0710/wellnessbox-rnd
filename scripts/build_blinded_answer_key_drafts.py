@@ -4,7 +4,8 @@ Replaces the drafts the 2026-07-31 audit rejected. Feed the result in with:
 
   python scripts/run_answer_key_workbench.py draft --indicator KPI-4 \\
       --cases data/original_plan/kpi/drafts/kpi4_blinded_cases_v1.json \\
-      --draft-source health_checker_reference_extract_v1 --overwrite
+      --draft-source health_checker_reference_extract_v1@blinded_drafters \\
+      --drafting-agent codex --blinded-from-registry --overwrite
 
 KPI-3 drafts carry no answer. The reviewer supplies every one, so each case
 records as an edit rather than an acceptance.

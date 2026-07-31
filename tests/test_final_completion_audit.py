@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from scripts.run_final_completion_audit import (
     SERVICE_ROOT,
     _audited_input_hashes,
+    apply_answer_key_integrity_gate,
     assert_no_regression,
     audited_repository_commits,
 )
@@ -25,6 +26,31 @@ from wellnessbox_rnd.governance.final_completion_audit import (
 from wellnessbox_rnd.schemas.original_plan_manifest import RepositoryName
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_answer_key_integrity_blocks_an_otherwise_ready_final_audit() -> None:
+    audit = {"status": "READY", "goal_complete": True, "blockers": []}
+
+    result = apply_answer_key_integrity_gate(
+        audit,
+        {"completion_status": "BLOCKED", "completion_blockers": ["KPI-1"]},
+    )
+
+    assert result["status"] == "BLOCKED"
+    assert result["goal_complete"] is False
+    assert "answer_key_integrity_failed" in result["blockers"]
+    assert audit["status"] == "READY"
+
+
+def test_answer_key_integrity_pass_preserves_final_audit_result() -> None:
+    audit = {"status": "READY", "goal_complete": True, "blockers": []}
+
+    result = apply_answer_key_integrity_gate(
+        audit,
+        {"completion_status": "READY", "completion_blockers": []},
+    )
+
+    assert result == audit
 
 
 def test_fixed_cases_allow_monotonic_completion_progress() -> None:
