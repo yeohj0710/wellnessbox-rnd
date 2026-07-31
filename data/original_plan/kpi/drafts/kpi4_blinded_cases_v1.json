@@ -1,0 +1,1015 @@
+[
+  {
+    "case_id": "kpi4-001",
+    "prompt": "Amlodipine 복용 중입니다. 「대사 및 순환 6. 당독소(AGEs) 관리」에서 「1. 생성 억제 (당화 차단)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (26_대사_및_순환_6._당독소_AGEs_관리.md p142) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-002",
+    "prompt": "「대사 및 순환 6. 당독소(AGEs) 관리」에서 「3. 장내 배출 (내독소 제거)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "probiotics",
+      "soluble_fiber"
+    ],
+    "draft_rationale": "원문 권장 성분 (26_대사_및_순환_6._당독소_AGEs_관리.md p143)"
+  },
+  {
+    "case_id": "kpi4-003",
+    "prompt": "「기타 3. 어린이」에서 「A형 성장 정체 및 유전형 (성장판 자원 부족)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "advise_professional_consult",
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p231) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다"
+  },
+  {
+    "case_id": "kpi4-004",
+    "prompt": "Atorvastatin 복용 중입니다. 「기타 3. 어린이」에서 「B형 생활 습관/호르몬형 (수면/운동 부족)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "advise_professional_consult",
+      "coq10",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p231) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다 · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-005",
+    "prompt": "「기타 3. 어린이」에서 「C형 영양 불균형/흡수부족형 (식욕부진, 편식)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "advise_professional_consult",
+      "probiotics",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p232) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다"
+  },
+  {
+    "case_id": "kpi4-006",
+    "prompt": "「기타 3. 어린이」에서 「D+E형 스트레스/성조숙형 (심리 불안, 조기 사춘기)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "advise_professional_consult",
+      "calcium_citrate",
+      "l_theanine",
+      "soluble_fiber",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p232) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다"
+  },
+  {
+    "case_id": "kpi4-007",
+    "prompt": "Esomeprazole 복용 중입니다. 「신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별」에서 「1. 기억력 강화 및 뇌세포 보호 (문항 1,2,3번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-008",
+    "prompt": "「신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별」에서 「3. 지남력 강화 및 신경 보호 (문항 6,7번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)"
+  },
+  {
+    "case_id": "kpi4-009",
+    "prompt": "「신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별」에서 「4. 감정 조절 및 가성치매 방지 (문항 9,10번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "l_theanine",
+      "magnesium_glycinate",
+      "probiotics"
+    ],
+    "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)"
+  },
+  {
+    "case_id": "kpi4-010",
+    "prompt": "Furosemide 복용 중입니다. 「신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별」에서 「5. 인지저하 전반적 용도」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-011",
+    "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「1. 혈관/대사 - 혈관 내피 기능 및 인슐린 감수성 개선」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "coq10",
+      "magnesium_glycinate",
+      "omega3"
+    ],
+    "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p51)"
+  },
+  {
+    "case_id": "kpi4-012",
+    "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「2. 수면 - 수면 리듬 조절 및 신경 이완」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)"
+  },
+  {
+    "case_id": "kpi4-013",
+    "prompt": "Levothyroxine 복용 중입니다. 「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「3. 스트레스 - 스트레스 조절 및 신경 보호」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "separate_dosing",
+      "vitamin_c"
+    ],
+    "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+  },
+  {
+    "case_id": "kpi4-014",
+    "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「5. 영양결핍 - 신경전달물질 원료 및 에너지 공급」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)"
+  },
+  {
+    "case_id": "kpi4-015",
+    "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「6. 운동부족/혈류저하 - 뇌 신경 보호 및 기억력 개선」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "coq10",
+      "omega3"
+    ],
+    "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)"
+  },
+  {
+    "case_id": "kpi4-016",
+    "prompt": "Metformin 복용 중입니다. 「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「7. 만성 염증 - 뇌 내 아밀로이드 축적 억제 및 항염」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "coq10",
+      "omega3",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-017",
+    "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「8. 감각저하 - 시력·청력 보호 및 미세순환 개선」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "magnesium_glycinate",
+      "omega3"
+    ],
+    "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)"
+  },
+  {
+    "case_id": "kpi4-018",
+    "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「9. 환경 (음주/흡연/중금속) - 산화 스트레스 감소 및 중금속 배출」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_b_complex",
+      "vitamin_c"
+    ],
+    "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)"
+  },
+  {
+    "case_id": "kpi4-019",
+    "prompt": "Prednisolone 복용 중입니다. 「기타 1. 치과질환」에서 「1. 치은염 (Gingivitis) 잇몸 조직 재생 및 지혈」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (41_기타_1._치과질환.md p215) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)"
+  },
+  {
+    "case_id": "kpi4-020",
+    "prompt": "「기타 1. 치과질환」에서 「2. 치주염 (Periodontitis) 치조골 밀도 유지」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (41_기타_1._치과질환.md p215)"
+  },
+  {
+    "case_id": "kpi4-021",
+    "prompt": "「신경계 및 뇌기능 2. 우울」에서 「1. 불안·자책 완화 및 정서적 안정 (문항 1,5,6번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)"
+  },
+  {
+    "case_id": "kpi4-022",
+    "prompt": "Amlodipine 복용 중입니다. 「신경계 및 뇌기능 2. 우울」에서 「2. 의욕 저하 및 에너지 회복 (문항 3,4,8번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-023",
+    "prompt": "「신경계 및 뇌기능 2. 우울」에서 「3. 장-뇌 축 및 감정 활력 (문항 7번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "probiotics",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)"
+  },
+  {
+    "case_id": "kpi4-024",
+    "prompt": "「신경계 및 뇌기능 2. 우울」에서 「4. 염증성 피로 및 뇌 피로 개선 (문항 9,10번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "omega3",
+      "vitamin_c",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)"
+  },
+  {
+    "case_id": "kpi4-025",
+    "prompt": "Atorvastatin 복용 중입니다. 「대사 및 순환 3. 당뇨·인슐린저항성」에서 「1. 인슐린 저항성 개선」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "berberine",
+      "coq10",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-026",
+    "prompt": "「대사 및 순환 3. 당뇨·인슐린저항성」에서 「2. 식후 혈당 억제(스파이크 방지)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "soluble_fiber"
+    ],
+    "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128)"
+  },
+  {
+    "case_id": "kpi4-027",
+    "prompt": "「대사 및 순환 3. 당뇨·인슐린저항성」에서 「3. 합병증 방어」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128)"
+  },
+  {
+    "case_id": "kpi4-028",
+    "prompt": "Esomeprazole 복용 중입니다. 「대사 및 순환 3. 당뇨·인슐린저항성」에서 「4. 약물 고갈 영양소」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-029",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 5. 어지럼증」에서 「A형 말초성 현훈 (귀) 이석증 메니에르 (순환/신경)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)"
+  },
+  {
+    "case_id": "kpi4-030",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 5. 어지럼증」에서 「B형 중추성 현훈 (뇌) 뇌졸중 뇌종양 (뇌혈관)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)"
+  },
+  {
+    "case_id": "kpi4-031",
+    "prompt": "Furosemide 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 5. 어지럼증」에서 「C형 심인성 현훈 (마음) 공황장애 불안증 (자율신경)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p79) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-032",
+    "prompt": "「대사 및 순환 2. 이상지질혈증」에서 「1. LDL 상승형(콜레스테롤) 유전성/체질」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "soluble_fiber"
+    ],
+    "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p120)"
+  },
+  {
+    "case_id": "kpi4-033",
+    "prompt": "「대사 및 순환 2. 이상지질혈증」에서 「2. TG 상승형(중성지방/대사성)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "berberine",
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p120)"
+  },
+  {
+    "case_id": "kpi4-034",
+    "prompt": "Levothyroxine 복용 중입니다. 「대사 및 순환 2. 이상지질혈증」에서 「3. 산화 방지형(동맥경화 예방)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "separate_dosing",
+      "vitamin_c"
+    ],
+    "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p121) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+  },
+  {
+    "case_id": "kpi4-035",
+    "prompt": "「대사 및 순환 2. 이상지질혈증」에서 「4. 스타틴 복용형(약물 부작용)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p121)"
+  },
+  {
+    "case_id": "kpi4-036",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「1. 기초 에너지 생성 및 만성피로 예방 (문항 1, 9번 'O')」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_b_complex",
+      "vitamin_c"
+    ],
+    "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)"
+  },
+  {
+    "case_id": "kpi4-037",
+    "prompt": "Metformin 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「2. 부신 건강 및 스트레스 저항력 강화 (문항 3, 5번 'O')」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "coq10",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "vitamin_c"
+    ],
+    "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-038",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「3. 자율신경 균형 및 혈당 안정 (문항 2,4,6번 'O')」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "coq10",
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)"
+  },
+  {
+    "case_id": "kpi4-039",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「4. 신체 회복력 강화 및 소진 관리 (문항 7,8번 'O')」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "coq10",
+      "omega3"
+    ],
+    "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)"
+  },
+  {
+    "case_id": "kpi4-040",
+    "prompt": "Prednisolone 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「5. 만성 피로 고위험 (문항 9번 'X')」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)"
+  },
+  {
+    "case_id": "kpi4-041",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「6. PEM(활동 후 피로 악화) 및 극심한 소진 관리 (문항 10번 'X')」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)"
+  },
+  {
+    "case_id": "kpi4-042",
+    "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「급성 방광염 － 강력한 균 포획 및 배출 (문항 5-7번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_c"
+    ],
+    "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186)"
+  },
+  {
+    "case_id": "kpi4-043",
+    "prompt": "Amlodipine 복용 중입니다. 「성호르몬·비뇨기계 4. 여성 염증」에서 「만성/재발성 방광염 － 바이오필름 파괴 및 면역 증가 (문항 20, 21, 26번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "magnesium_glycinate",
+      "probiotics",
+      "supplement_depleted_nutrient",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-044",
+    "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「급성 요도염 － 화끈거림 차단 및 항염 (문항 8-10번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "omega3",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186)"
+  },
+  {
+    "case_id": "kpi4-045",
+    "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「만성요도염 － 상피 재생 및 신경 안정 (문항 11, 16, 17번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187)"
+  },
+  {
+    "case_id": "kpi4-046",
+    "prompt": "Atorvastatin 복용 중입니다. 「성호르몬·비뇨기계 4. 여성 염증」에서 「세균성& 칸디다 질염 － 질내 pH 정상화 및 유익균 생태계 복구」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "coq10",
+      "probiotics",
+      "supplement_depleted_nutrient",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-047",
+    "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「트리코모나스 질염－ 기생충 감염 후 점막 손상 회복 및 재발 방지」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "probiotics",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187)"
+  },
+  {
+    "case_id": "kpi4-048",
+    "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「만성 / 재발성 질염－ 점막 방어막 재생 및 바이오필름 파괴」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "omega3",
+      "probiotics"
+    ],
+    "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p188)"
+  },
+  {
+    "case_id": "kpi4-049",
+    "prompt": "Esomeprazole 복용 중입니다. 「성호르몬·비뇨기계 1. 여성 갱년기」에서 「정서적 안정 및 수면 질 개선 - 우울/불안, 불면증」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p172) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-050",
+    "prompt": "「성호르몬·비뇨기계 1. 여성 갱년기」에서 「점막 보습 및 피부 탄력 유지 → 질 건조감, 피부 가려움」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "probiotics"
+    ],
+    "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p172)"
+  },
+  {
+    "case_id": "kpi4-051",
+    "prompt": "「성호르몬·비뇨기계 1. 여성 갱년기」에서 「골밀도 유지 및 관절 보호 - 골다공증, 관절통」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p173)"
+  },
+  {
+    "case_id": "kpi4-052",
+    "prompt": "Furosemide 복용 중입니다. 「성호르몬·비뇨기계 1. 여성 갱년기」에서 「세포 에너지 생성 및 활성화 - 피로감, 무기력증」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p173) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-053",
+    "prompt": "「소화기계 1. 위」에서 「1. 위 운동 기능 저하 개선 (문항 1, 2, 3, 10번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (18_소화기계_1._위.md p93)"
+  },
+  {
+    "case_id": "kpi4-054",
+    "prompt": "「소화기계 1. 위」에서 「2. 자율신경 균형 및 스트레스 완화 (문항 5, 9번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "l_theanine",
+      "magnesium_glycinate",
+      "vitamin_c"
+    ],
+    "draft_rationale": "원문 권장 성분 (18_소화기계_1._위.md p93)"
+  },
+  {
+    "case_id": "kpi4-055",
+    "prompt": "Levothyroxine 복용 중입니다. 「대사 및 순환 9. 통풍」에서 「요산 배출 및 당 대사 개선」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "separate_dosing"
+    ],
+    "draft_rationale": "원문 권장 성분 (29_대사_및_순환_9._통풍.md p153) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+  },
+  {
+    "case_id": "kpi4-056",
+    "prompt": "「대사 및 순환 9. 통풍」에서 「통증 방어 및 염증 조절」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "probiotics"
+    ],
+    "draft_rationale": "원문 권장 성분 (29_대사_및_순환_9._통풍.md p153)"
+  },
+  {
+    "case_id": "kpi4-057",
+    "prompt": "「신경계 및 뇌기능 5. 두통·편두통」에서 「1. 편두통 완화 및 혈관 안정 (문항 1,2,3번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)"
+  },
+  {
+    "case_id": "kpi4-058",
+    "prompt": "Metformin 복용 중입니다. 「신경계 및 뇌기능 5. 두통·편두통」에서 「2. 긴장성 두통 및 근육 이완 (문항 8, 10번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "coq10",
+      "l_theanine",
+      "magnesium_glycinate",
+      "probiotics",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-059",
+    "prompt": "「신경계 및 뇌기능 5. 두통·편두통」에서 「3. 수면 부족 및 피로 누적 개선 (문항 7번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "l_theanine",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)"
+  },
+  {
+    "case_id": "kpi4-060",
+    "prompt": "「신경계 및 뇌기능 5. 두통·편두통」에서 「4. 식이 유발 및 대사 관리 (문항 9번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)"
+  },
+  {
+    "case_id": "kpi4-061",
+    "prompt": "Prednisolone 복용 중입니다. 「대사 및 순환 7. 치질」에서 「3. 배변 습관 교정 (악화 인자 제거) - 딱딱한 변 / 변비 - 배변 시 힘주기」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics",
+      "soluble_fiber",
+      "supplement_depleted_nutrient",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (27_대사_및_순환_7._치질.md p145) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)"
+  },
+  {
+    "case_id": "kpi4-062",
+    "prompt": "「대사 및 순환 1. 고혈압」에서 「1. 체액 저류형(나트륨 과다) • 짜게 먹는 식습관 • 부종 동반 • 이뇨제 처방 환자」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p113)"
+  },
+  {
+    "case_id": "kpi4-063",
+    "prompt": "「대사 및 순환 1. 고혈압」에서 「2. 혈관 경화형(대사증후군) • 고지혈증/당뇨 동반 • 맥압(수축-이완) 큼 • 노인성 단독 수축기」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "omega3"
+    ],
+    "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p113)"
+  },
+  {
+    "case_id": "kpi4-064",
+    "prompt": "Amlodipine 복용 중입니다. 「대사 및 순환 1. 고혈압」에서 「2. 혈관 경화형(계속)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "coq10",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient"
+    ],
+    "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-065",
+    "prompt": "「대사 및 순환 1. 고혈압」에서 「3. 교감신경 항진형(스트레스성) • 두근거림/불면 • 뒷목 뻐근함 • 백의 고혈압」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114)"
+  },
+  {
+    "case_id": "kpi4-066",
+    "prompt": "「대사 및 순환 1. 고혈압」에서 「4. 호모시스테인형(혈관 독소) • 가족력 • 약이 잘 안 들음 • 마른 고혈압」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_b_complex",
+      "vitamin_c"
+    ],
+    "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114)"
+  },
+  {
+    "case_id": "kpi4-067",
+    "prompt": "Atorvastatin 복용 중입니다. 「대사 및 순환 1. 고혈압」에서 「5. 복합형(대부분)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "coq10",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-068",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진」에서 「1. 안구 보호 & 항산화 (활성산소 방어)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "omega3"
+    ],
+    "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)"
+  },
+  {
+    "case_id": "kpi4-069",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진」에서 「2. 증상 완화 & 근육 보호 (대사 조절)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "coq10"
+    ],
+    "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)"
+  },
+  {
+    "case_id": "kpi4-070",
+    "prompt": "Esomeprazole 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진」에서 「3. 신경 안정 & 수면 유도 (교감신경 억제)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-071",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진」에서 「4. 뼈 건강 (골밀도 유지)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)"
+  },
+  {
+    "case_id": "kpi4-072",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 4. 저혈압·빈혈」에서 「[빈혈] 혈액량·순환 개선」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)"
+  },
+  {
+    "case_id": "kpi4-073",
+    "prompt": "Furosemide 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 4. 저혈압·빈혈」에서 「[공통] 심박출량 증가」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-074",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 2. 갑상선 기능 저하」에서 「1. 붓고 살찜 & 추위 → 대사 활성화」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)"
+  },
+  {
+    "case_id": "kpi4-075",
+    "prompt": "「에너지 생성 및 부신·갑상선 기능 2. 갑상선 기능 저하」에서 「2. 만성 피로 → 에너지 부스팅」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "coq10",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)"
+  },
+  {
+    "case_id": "kpi4-076",
+    "prompt": "Levothyroxine 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 2. 갑상선 기능 저하」에서 「4. 소화·변비 → 장 운동 정상화」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics",
+      "separate_dosing"
+    ],
+    "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+  },
+  {
+    "case_id": "kpi4-077",
+    "prompt": "「면역 및 염증 1. 면역균형」에서 「1. 방어력 저하형 (잦은 감기, 감염 후 회복이 더딤) - 점막 면역 강화 (1차방어선)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p157)"
+  },
+  {
+    "case_id": "kpi4-078",
+    "prompt": "「면역 및 염증 1. 면역균형」에서 「2. 과민 반응형 (알레르기, 비염, 아토피, 천식, 두드러기) - 면역균형 회복」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "omega3",
+      "probiotics",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p157)"
+  },
+  {
+    "case_id": "kpi4-079",
+    "prompt": "Metformin 복용 중입니다. 「면역 및 염증 1. 면역균형」에서 「3. 만성 염증형 (통증 / 관절 쑤심, 부종, 만성피로 / 종양) - 만성 염증 억제 및 면역 소모 감소」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "coq10",
+      "omega3",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p158) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-080",
+    "prompt": "「면역 및 염증 1. 면역균형」에서 「4. 장누수/대사형 (잦은 설사,변비 / 저체온 / 항생제 장기복용) - 장 점막 면역 강화 및 대사 활성화」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "soluble_fiber",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p158)"
+  },
+  {
+    "case_id": "kpi4-081",
+    "prompt": "「임신 1. 난임」에서 「여성 ② 대사/PCOS(인슐린 저항성)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "berberine",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p193)"
+  },
+  {
+    "case_id": "kpi4-082",
+    "prompt": "Prednisolone 복용 중입니다. 「임신 1. 난임」에서 「여성 ③ 자궁/염증(착상 실패)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "supplement_depleted_nutrient",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p193) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)"
+  },
+  {
+    "case_id": "kpi4-083",
+    "prompt": "「임신 1. 난임」에서 「남성 ④,⑤ 정자 요인(DNA 손상)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "coq10",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p194)"
+  },
+  {
+    "case_id": "kpi4-084",
+    "prompt": "「임신 1. 난임」에서 「공통 원인 불명(노화/스트레스)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "probiotics",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p194)"
+  },
+  {
+    "case_id": "kpi4-085",
+    "prompt": "Amlodipine 복용 중입니다. 「소화기계 2. 장」에서 「IBS - 장신경 안정 및 근육 이완 (문항 12, 13번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "l_theanine",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient"
+    ],
+    "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-086",
+    "prompt": "「소화기계 2. 장」에서 「유당불내증 - 유제품 소화력 강화 및 부패방지 (문항 14번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "probiotics"
+    ],
+    "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98)"
+  },
+  {
+    "case_id": "kpi4-087",
+    "prompt": "「소화기계 2. 장」에서 「+10번: O」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98)"
+  },
+  {
+    "case_id": "kpi4-088",
+    "prompt": "Atorvastatin 복용 중입니다. 「소화기계 2. 장」에서 「LGS - 장점막 장벽 복구 및 전신 염증 차단 (문항 15, 16, 17번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "coq10",
+      "supplement_depleted_nutrient",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-089",
+    "prompt": "「소화기계 2. 장」에서 「변비 우세형 - 배변 리듬 및 연동운동 활성화 (문항 1~4번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "magnesium_glycinate",
+      "soluble_fiber",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p99)"
+  },
+  {
+    "case_id": "kpi4-090",
+    "prompt": "「소화기계 2. 장」에서 「설사 및 긴급형 - 장벽보호 및 수분 흡수 리듬 회복 (문항 5, 6번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "probiotics",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p99)"
+  },
+  {
+    "case_id": "kpi4-091",
+    "prompt": "Esomeprazole 복용 중입니다. 「D. 생활습관」에서 「1번(활력/심리) X」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)"
+  },
+  {
+    "case_id": "kpi4-092",
+    "prompt": "「D. 생활습관」에서 「12번(활동량) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29)"
+  },
+  {
+    "case_id": "kpi4-093",
+    "prompt": "「D. 생활습관」에서 「13, 14번(입면/숙면) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29)"
+  },
+  {
+    "case_id": "kpi4-094",
+    "prompt": "Furosemide 복용 중입니다. 「D. 생활습관」에서 「15번(기상 시 개운함) X」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)"
+  },
+  {
+    "case_id": "kpi4-095",
+    "prompt": "「D. 생활습관」에서 「4번(단백질/채소) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "probiotics"
+    ],
+    "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)"
+  },
+  {
+    "case_id": "kpi4-096",
+    "prompt": "「D. 생활습관」에서 「5번(가공식품) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "omega3"
+    ],
+    "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)"
+  },
+  {
+    "case_id": "kpi4-097",
+    "prompt": "Levothyroxine 복용 중입니다. 「D. 생활습관」에서 「6번(식사 규칙성) X」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "separate_dosing",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)"
+  },
+  {
+    "case_id": "kpi4-098",
+    "prompt": "「D. 생활습관」에서 「8번(식사 속도) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)"
+  },
+  {
+    "case_id": "kpi4-099",
+    "prompt": "「D. 생활습관」에서 「9, 10, 11번(운동) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
+    "draft_answer": [
+      "magnesium_glycinate"
+    ],
+    "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)"
+  },
+  {
+    "case_id": "kpi4-100",
+    "prompt": "Metformin 복용 중입니다. 「소화기계 3. 간」에서 「간 기능 및 피로 - 에너지 생성 및 부신 피로 회복」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+    "draft_answer": [
+      "coq10",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex"
+    ],
+    "draft_rationale": "원문 권장 성분 (20_소화기계_3._간.md p105) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)"
+  }
+]
