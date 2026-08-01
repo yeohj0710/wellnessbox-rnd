@@ -25,6 +25,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from wellnessbox_rnd.evals.adaptive_answer_key_review import audit_adaptive_review
+from wellnessbox_rnd.evals.answer_key_workbench import (
+    CaseDraft,
+    Decision,
+    Workbench,
+)
+
 REGISTRY_PATH = "data/original_plan/contracts/engine_input_registry_v1.json"
 WORKBENCH_DIR = "data/original_plan/kpi/workbench"
 SEAL_DIR = "data/original_plan/kpi/seals"
@@ -244,6 +251,42 @@ def audit_drafter_source(
     }
 
 
+def audit_declared_blinding(
+    workbench: dict[str, Any],
+    registry: dict[str, Any],
+) -> dict[str, Any]:
+    """Require every draft to declare blindness from every engine-logic input."""
+    required = {
+        entry["path"]
+        for entry in registry["entries"]
+        if entry["role"] == "engine_logic"
+    }
+    declared_sets = {
+        tuple(sorted(set(draft.get("blinded_from", []))))
+        for draft in workbench.get("drafts", [])
+    }
+    inconsistent = len(declared_sets) != 1
+    declared = set(next(iter(declared_sets), ())) if not inconsistent else set()
+    missing = sorted(required - declared)
+    verdict = "FAIL" if inconsistent or missing else "PASS"
+    return {
+        "required_engine_logic": sorted(required),
+        "declared_blinded_from": sorted(declared),
+        "missing_engine_logic": missing,
+        "consistent_across_cases": not inconsistent,
+        "verdict": verdict,
+        "reason": (
+            "초안의 blinded_from 기록이 사례마다 다르다."
+            if inconsistent
+            else (
+                "초안이 차단했다고 기록하지 않은 engine_logic 파일이 있다."
+                if missing
+                else ""
+            )
+        ),
+    }
+
+
 def _parse(stamp: str) -> datetime | None:
     try:
         return datetime.fromisoformat(stamp.replace("Z", "+00:00"))
@@ -254,33 +297,76 @@ def _parse(stamp: str) -> datetime | None:
 def audit_review_effort(workbench: dict[str, Any]) -> dict[str, Any]:
     """Report whether the recorded decisions had time to be decisions."""
     decisions = list(workbench.get("decisions", {}).values())
-    settled = [item for item in decisions if item.get("action") in {"accepted", "edited"}]
-    stamps = sorted(filter(None, (_parse(item.get("decided_at", "")) for item in settled)))
+    settled = [
+        item
+        for item in decisions
+        if item.get("action") in {"accepted", "edited", "rejected"}
+    ]
+    detailed = [item for item in settled if item.get("reviewed_in_detail", True)]
+    batch_count = len(settled) - len(detailed)
+    durations = [
+        float(item["review_duration_seconds"])
+        for item in detailed
+        if item.get("review_duration_seconds") is not None
+    ]
+    stamps = sorted(
+        filter(None, (_parse(item.get("decided_at", "")) for item in detailed))
+    )
+
+    if detailed and len(durations) == len(detailed):
+        elapsed = sum(durations)
+        per_decision = elapsed / len(detailed)
+        edited = sum(1 for item in detailed if item.get("action") == "edited")
+        edit_rate = round(100.0 * edited / len(detailed), 2)
+        too_fast = per_decision < MIN_SECONDS_PER_DECISION
+        return {
+            "decision_count": len(settled),
+            "detailed_decision_count": len(detailed),
+            "batch_approved_count": batch_count,
+            "elapsed_seconds": round(elapsed, 3),
+            "seconds_per_decision": round(per_decision, 3),
+            "duration_source": "per_case_recorded_duration",
+            "edit_rate_pct": edit_rate,
+            "verdict": "FAIL" if too_fast else "PASS",
+            "reason": (
+                f"상세 판단 {len(detailed)}건의 기록 시간이 건당 "
+                f"{per_decision:.2f}초로 하한보다 짧다."
+                if too_fast
+                else ""
+            ),
+        }
 
     if len(stamps) < 2:
         return {
             "decision_count": len(settled),
+            "detailed_decision_count": len(detailed),
+            "batch_approved_count": batch_count,
             "elapsed_seconds": None,
             "seconds_per_decision": None,
+            "duration_source": "decision_timestamp_span",
             "edit_rate_pct": 0.0,
-            "verdict": "PASS" if not settled else "REVIEW",
-            "reason": "판단 기록이 시간 비교를 하기에 부족하다." if settled else "",
+            "verdict": "PASS" if not detailed else "REVIEW",
+            "reason": "상세 판단 기록이 시간 비교를 하기에 부족하다." if detailed else "",
         }
 
     elapsed = (stamps[-1] - stamps[0]).total_seconds()
     per_decision = elapsed / (len(stamps) - 1)
-    edited = sum(1 for item in settled if item.get("action") == "edited")
-    edit_rate = round(100.0 * edited / len(settled), 2)
+    edited = sum(1 for item in detailed if item.get("action") == "edited")
+    edit_rate = round(100.0 * edited / len(detailed), 2)
     too_fast = per_decision < MIN_SECONDS_PER_DECISION
 
     return {
         "decision_count": len(settled),
+        "detailed_decision_count": len(detailed),
+        "batch_approved_count": batch_count,
         "elapsed_seconds": round(elapsed, 3),
         "seconds_per_decision": round(per_decision, 3),
+        "duration_source": "decision_timestamp_span",
         "edit_rate_pct": edit_rate,
         "verdict": "FAIL" if too_fast else "PASS",
         "reason": (
-            f"{len(settled)}건을 {elapsed:.1f}초에 판단했다. 건당 {per_decision:.2f}초로는 "
+            f"상세 판단 {len(detailed)}건을 {elapsed:.1f}초에 처리했다. "
+            f"건당 {per_decision:.2f}초로는 "
             "사례를 읽을 수 없다. 자동 수락으로 보아야 한다."
             if too_fast
             else ""
@@ -310,7 +396,28 @@ def audit_indicator(
         }
     )
     review_audit = audit_review_effort(workbench)
-    verdicts = {source_audit["verdict"], review_audit["verdict"]}
+    blinding_audit = audit_declared_blinding(workbench, registry)
+    adaptive_workbench = Workbench(
+        indicator_id,
+        [CaseDraft(**item) for item in workbench.get("drafts", [])],
+        {
+            case_id: Decision(**item)
+            for case_id, item in workbench.get("decisions", {}).items()
+        },
+        list(workbench.get("seal_disposals", [])),
+        dict(workbench.get("ai_review", {})),
+        workbench.get("batch_approval"),
+    )
+    adaptive_audit = audit_adaptive_review(
+        adaptive_workbench,
+        required_blinded_from=blinding_audit["required_engine_logic"],
+    )
+    verdicts = {
+        source_audit["verdict"],
+        blinding_audit["verdict"],
+        review_audit["verdict"],
+        adaptive_audit["verdict"],
+    }
     verdict = "FAIL" if "FAIL" in verdicts else ("REVIEW" if "REVIEW" in verdicts else "PASS")
 
     return {
@@ -318,7 +425,9 @@ def audit_indicator(
         "draft_sources": sources,
         "case_count": len(workbench.get("drafts", [])),
         "source_independence": source_audit,
+        "declared_blinding": blinding_audit,
         "review_effort": review_audit,
+        "adaptive_review": adaptive_audit,
         "seal_exists": seal_exists,
         "verdict": verdict,
         "seal_must_be_discarded": verdict == "FAIL" and seal_exists,

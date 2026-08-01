@@ -286,9 +286,10 @@ def cmd_review(args) -> int:
         if elapsed < MIN_SECONDS_PER_CASE:
             rushed += 1
             say(
-                f"  ! {elapsed:.2f}초 판단을 저장합니다. "
-                "봉인 전 검토 시간 감사에서 차단될 수 있습니다."
+                f"  ! {elapsed:.2f}초 만에 입력돼 저장하지 않았습니다. "
+                f"사례를 읽고 최소 {MIN_SECONDS_PER_CASE:.1f}초 뒤 다시 판단하세요."
             )
+            continue
 
         workbench.decisions[draft.case_id] = decide(
             draft=draft,
@@ -492,7 +493,7 @@ def cmd_seal(args) -> int:
         provenance = build_provenance(
             workbench,
             summary,
-            system_under_test_agent=getattr(args, "system_under_test_agent", ""),
+            system_under_test_id=getattr(args, "system_under_test_id", ""),
         )
     except ValueError as exc:
         say(json.dumps(
@@ -689,9 +690,11 @@ def build_parser() -> ArgumentParser:
     seal = sub.add_parser("seal", help="확정된 정답을 봉인한다")
     seal.add_argument("--indicator", required=True)
     seal.add_argument(
+        "--system-under-test-id",
         "--system-under-test-agent",
+        dest="system_under_test_id",
         default="",
-        help="KPI-4 상담 모듈 에이전트 계열. 초안 에이전트와 달라야 합니다.",
+        help="측정 대상 엔진의 고유 ID. 초안 작성 주체와 같을 수 없습니다.",
     )
     seal.set_defaults(func=cmd_seal)
 

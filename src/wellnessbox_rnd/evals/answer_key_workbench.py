@@ -279,7 +279,8 @@ def build_provenance(
     workbench: Workbench,
     summary: dict[str, Any],
     *,
-    system_under_test_agent: str = "",
+    system_under_test_id: str = "",
+    system_under_test_agent: str | None = None,
 ) -> dict[str, Any]:
     """Provenance that travels with the seal so the method stays auditable."""
     drafting_agents = {draft.drafting_agent.strip() for draft in workbench.drafts}
@@ -292,21 +293,21 @@ def build_provenance(
         raise ValueError("inconsistent_blinded_from_across_cases")
     drafting_agent = next(iter(drafting_agents), "")
     blinded_from = list(next(iter(blinded_sets), ()))
-    evaluated_agent = system_under_test_agent.strip()
+    evaluated_agent = (
+        system_under_test_id.strip()
+        or (system_under_test_agent or "").strip()
+    )
     drafting_family = _agent_family(drafting_agent)
     evaluated_family = _agent_family(evaluated_agent)
-    separation_required = workbench.indicator_id == "KPI-4"
-    separated = bool(
-        drafting_family
-        and evaluated_family
-        and drafting_family != evaluated_family
+    provider_separated = bool(
+        drafting_family and evaluated_family and drafting_family != evaluated_family
     )
-    if separation_required and not drafting_agent:
-        raise ValueError("kpi4_drafting_agent_required")
-    if separation_required and not evaluated_agent:
-        raise ValueError("kpi4_system_under_test_agent_required")
-    if separation_required and not separated:
-        raise ValueError("kpi4_drafting_agent_matches_system_under_test_agent")
+    if not drafting_agent:
+        raise ValueError("drafting_agent_required")
+    if not evaluated_agent:
+        raise ValueError("system_under_test_id_required")
+    if drafting_agent.casefold() == evaluated_agent.casefold():
+        raise ValueError("drafting_actor_is_system_under_test")
 
     return {
         "answer_key_method": "independent_draft_then_human_adjudication",
@@ -315,16 +316,34 @@ def build_provenance(
         "blinded_from": blinded_from,
         "engine_output_consulted_before_sealing": False,
         "prior_seal_disposals": list(workbench.seal_disposals),
-        "agent_separation": {
-            "required": separation_required,
-            "system_under_test_agent": evaluated_agent or None,
-            "drafting_agent_family": drafting_family or None,
-            "system_under_test_agent_family": evaluated_family or None,
-            "separated": separated if separation_required else None,
+        "role_separation": {
+            "required": True,
+            "drafting_actor_id": drafting_agent,
+            "system_under_test_id": evaluated_agent,
+            "exact_identity_separated": True,
+            "drafting_provider_family": drafting_family or None,
+            "system_under_test_provider_family": evaluated_family or None,
+            "provider_family_separated": provider_separated,
+            "provider_family_is_a_validity_gate": False,
+            "validity_basis": (
+                "audited_source_and_information_boundary_plus_human_adjudication"
+            ),
+        },
+        "cross_ai_review": {
+            "used": bool(workbench.ai_review),
+            "reviewing_agent": workbench.ai_review.get("reviewing_agent"),
+            "reviewing_agent_family": workbench.ai_review.get(
+                "reviewing_agent_family"
+            ),
+            "cases_sha256": workbench.ai_review.get("cases_sha256"),
+            "batch_approval": workbench.batch_approval,
         },
         "adjudication": {
             "counts": summary["counts"],
             "edit_rate_pct": summary["edit_rate_pct"],
+            "detailed_review_count": summary["detailed_review_count"],
+            "batch_approved_count": summary["batch_approved_count"],
+            "detailed_edit_rate_pct": summary["detailed_edit_rate_pct"],
             "reviewers": summary["reviewers"],
             "warnings": summary["warnings"],
         },

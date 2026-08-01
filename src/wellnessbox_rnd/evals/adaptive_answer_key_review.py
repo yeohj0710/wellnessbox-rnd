@@ -439,3 +439,114 @@ def approve_consensus_batch(
     }
     workbench.batch_approval = approval
     return approval
+
+
+def audit_adaptive_review(
+    workbench: Workbench,
+    *,
+    required_blinded_from: list[str],
+) -> dict[str, Any]:
+    """Fail closed when a claimed AI-consensus approval is stale or incomplete."""
+    review = workbench.ai_review or {}
+    if not review:
+        return {
+            "used": False,
+            "verdict": "PASS",
+            "reason": "",
+            "batch_approved_count": 0,
+        }
+
+    def fail(reason: str) -> dict[str, Any]:
+        return {
+            "used": True,
+            "verdict": "FAIL",
+            "reason": reason,
+            "batch_approved_count": sum(
+                not decision.reviewed_in_detail
+                for decision in workbench.decisions.values()
+            ),
+        }
+
+    required = sorted(
+        {
+            str(path).strip()
+            for path in required_blinded_from
+            if str(path).strip()
+        }
+    )
+    if review.get("engine_output_consulted") is not False:
+        return fail("ai_review_engine_output_boundary_invalid")
+    missing = sorted(set(required) - set(review.get("blinded_from", [])))
+    if missing:
+        return fail("ai_review_missing_blinded_paths:" + ",".join(missing))
+    expected_packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=required,
+    )
+    if review.get("packet_sha256") != expected_packet["packet_sha256"]:
+        return fail("ai_review_packet_sha256_mismatch")
+    review_cases = review.get("cases", {})
+    if set(review_cases) != {draft.case_id for draft in workbench.drafts}:
+        return fail("complete_independent_ai_review_required")
+    if review.get("cases_sha256") != _review_digest(review_cases):
+        return fail("ai_review_cases_digest_mismatch")
+    if agent_family(review.get("reviewing_agent", "")) == agent_family(
+        review.get("drafting_agent", "")
+    ):
+        return fail("ai_review_agent_matches_drafting_agent_family")
+
+    plan = build_adaptive_review_plan(workbench)
+    batch_decisions = {
+        case_id: decision
+        for case_id, decision in workbench.decisions.items()
+        if not decision.reviewed_in_detail
+    }
+    if not batch_decisions:
+        return {
+            "used": True,
+            "verdict": "PASS",
+            "reason": "",
+            "reviewing_agent": review.get("reviewing_agent"),
+            "agreement_count": plan.get("agreement_count", 0),
+            "disagreement_count": plan.get("disagreement_count", 0),
+            "required_detail_count": len(plan.get("required_detail_ids", [])),
+            "batch_approved_count": 0,
+        }
+
+    approval = workbench.batch_approval or {}
+    if approval.get("ai_review_cases_sha256") != review.get("cases_sha256"):
+        return fail("batch_approval_ai_review_digest_mismatch")
+    if approval.get("packet_sha256") != review.get("packet_sha256"):
+        return fail("batch_approval_packet_digest_mismatch")
+    if set(approval.get("batch_approved_ids", [])) != set(batch_decisions):
+        return fail("batch_approval_case_set_mismatch")
+    if plan.get("status") != "READY_TO_SEAL":
+        return fail("adaptive_review_not_ready_to_seal")
+    if set(approval.get("required_detail_ids", [])) != set(
+        plan.get("required_detail_ids", [])
+    ):
+        return fail("batch_approval_required_detail_set_mismatch")
+
+    draft_by_id = {draft.case_id: draft for draft in workbench.drafts}
+    approver = approval.get("approved_by")
+    for case_id, decision in batch_decisions.items():
+        if (
+            decision.action != "accepted"
+            or decision.decision_mode != "ai_consensus_batch_approval"
+            or decision.decided_by != approver
+            or sorted(decision.final_answer)
+            != sorted(draft_by_id[case_id].draft_answer)
+        ):
+            return fail(f"batch_decision_invalid:{case_id}")
+
+    return {
+        "used": True,
+        "verdict": "PASS",
+        "reason": "",
+        "reviewing_agent": review.get("reviewing_agent"),
+        "agreement_count": plan["agreement_count"],
+        "disagreement_count": plan["disagreement_count"],
+        "required_detail_count": len(plan["required_detail_ids"]),
+        "batch_approved_count": len(batch_decisions),
+        "escalation": plan["escalation"],
+    }

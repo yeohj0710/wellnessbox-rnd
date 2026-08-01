@@ -9,6 +9,7 @@ from unittest.mock import patch
 import scripts.run_answer_key_workbench as workbench_cli
 from wellnessbox_rnd.evals.adaptive_answer_key_review import (
     approve_consensus_batch,
+    audit_adaptive_review,
     build_adaptive_review_plan,
     build_blind_ai_review_packet,
     register_independent_ai_review,
@@ -286,6 +287,18 @@ def test_consensus_batch_needs_detailed_sample_and_exact_human_confirmation() ->
     assert len(workbench.decisions) == 100
     assert sum(not item.reviewed_in_detail for item in workbench.decisions.values()) == 95
     assert build_adaptive_review_plan(workbench)["status"] == "READY_TO_SEAL"
+    assert audit_adaptive_review(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )["verdict"] == "PASS"
+
+    workbench.batch_approval["ai_review_cases_sha256"] = "tampered"
+    result = audit_adaptive_review(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )
+    assert result["verdict"] == "FAIL"
+    assert result["reason"] == "batch_approval_ai_review_digest_mismatch"
 
 
 def test_cli_exports_blind_packet_and_imports_complete_ai_review() -> None:

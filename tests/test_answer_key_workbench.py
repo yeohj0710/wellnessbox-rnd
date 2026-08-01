@@ -39,6 +39,8 @@ def _draft(case_id="c1", answer=None):
         prompt="목표 sleep_support",
         draft_answer=answer or ["magnesium", "l_theanine"],
         draft_source=DRAFT_SOURCE,
+        drafting_agent="codex",
+        blinded_from=["engine/policy.json"],
     )
 
 
@@ -255,7 +257,11 @@ class AdjudicationSummaryTest(unittest.TestCase):
             bench.decisions[draft.case_id] = decide(
                 draft=draft, final_answer=["magnesium"], decided_by="권혁찬"
             )
-        provenance = build_provenance(bench, summarise_adjudication(bench))
+        provenance = build_provenance(
+            bench,
+            summarise_adjudication(bench),
+            system_under_test_id="wellnessbox-recommendation-engine-v1",
+        )
 
         self.assertEqual(
             provenance["answer_key_method"], "independent_draft_then_human_adjudication"
@@ -278,12 +284,16 @@ class AdjudicationSummaryTest(unittest.TestCase):
             ],
             {},
         )
-        provenance = build_provenance(bench, summarise_adjudication(bench))
+        provenance = build_provenance(
+            bench,
+            summarise_adjudication(bench),
+            system_under_test_id="wellnessbox-recommendation-engine-v1",
+        )
 
         self.assertEqual(provenance["drafting_agent"], "codex")
         self.assertEqual(provenance["blinded_from"], ["engine/policy.json"])
 
-    def test_kpi4_requires_a_different_system_under_test_agent(self) -> None:
+    def test_role_separation_uses_exact_actor_identity_not_provider_family(self) -> None:
         bench = Workbench(
             "KPI-4",
             [
@@ -302,41 +312,27 @@ class AdjudicationSummaryTest(unittest.TestCase):
 
         with self.assertRaisesRegex(
             ValueError,
-            "kpi4_system_under_test_agent_required",
+            "system_under_test_id_required",
         ):
             build_provenance(bench, summary)
         with self.assertRaisesRegex(
             ValueError,
-            "kpi4_drafting_agent_matches_system_under_test_agent",
+            "drafting_actor_is_system_under_test",
         ):
             build_provenance(
                 bench,
                 summary,
-                system_under_test_agent="CODEX",
-            )
-        with self.assertRaisesRegex(
-            ValueError,
-            "kpi4_drafting_agent_matches_system_under_test_agent",
-        ):
-            build_provenance(
-                bench,
-                summary,
-                system_under_test_agent="OpenAI GPT-5",
+                system_under_test_id="CODEX",
             )
         provenance = build_provenance(
             bench,
             summary,
-            system_under_test_agent="claude",
+            system_under_test_id="OpenAI GPT-5 counseling engine",
         )
-        self.assertTrue(provenance["agent_separation"]["separated"])
-        self.assertEqual(
-            provenance["agent_separation"]["drafting_agent_family"],
-            "openai",
-        )
-        self.assertEqual(
-            provenance["agent_separation"]["system_under_test_agent_family"],
-            "anthropic",
-        )
+        separation = provenance["role_separation"]
+        self.assertTrue(separation["exact_identity_separated"])
+        self.assertFalse(separation["provider_family_separated"])
+        self.assertFalse(separation["provider_family_is_a_validity_gate"])
 
 
 class PersistenceTest(unittest.TestCase):
@@ -504,7 +500,11 @@ class SealDisposalTest(unittest.TestCase):
             )
 
             restored = load_workbench(bench_path)
-            provenance = build_provenance(restored, summarise_adjudication(restored))
+            provenance = build_provenance(
+                restored,
+                summarise_adjudication(restored),
+                system_under_test_id="wellnessbox-recommendation-engine-v1",
+            )
             self.assertFalse(seal_path.exists())
             self.assertEqual(len(restored.decisions), 0)
             self.assertEqual(restored.seal_disposals, [record])
@@ -587,7 +587,7 @@ class SealDisposalTest(unittest.TestCase):
 
 
 class ReviewPacingTest(unittest.TestCase):
-    def test_rushed_decision_is_saved_with_duration_for_seal_audit(self) -> None:
+    def test_rushed_decision_is_not_saved(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             path = save_workbench(Path(temp) / "workbench.json", _bench(1))
             args = SimpleNamespace(indicator="KPI-1", by="권혁찬")
@@ -605,8 +605,8 @@ class ReviewPacingTest(unittest.TestCase):
 
             restored = load_workbench(path)
             self.assertEqual(result, 0)
-            self.assertEqual(restored.decisions["c0"].review_duration_seconds, 0.5)
-            self.assertEqual(len(restored.pending()), 0)
+            self.assertEqual(restored.decisions, {})
+            self.assertEqual(len(restored.pending()), 1)
 
 
 class DraftCliRoutingTest(unittest.TestCase):

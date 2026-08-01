@@ -66,9 +66,11 @@ def build_parser() -> ArgumentParser:
     seal.add_argument("--cases", required=True, help="사례별 정답 JSON 경로")
     seal.add_argument("--by", required=True, help="정답을 만든 사람 이름")
     seal.add_argument(
+        "--system-under-test-id",
         "--system-under-test-agent",
+        dest="system_under_test_id",
         default="",
-        help="KPI-4 상담 모듈 에이전트 계열. 초안 에이전트와 달라야 합니다.",
+        help="측정 대상 엔진의 고유 ID. 초안 작성 주체와 같을 수 없습니다.",
     )
 
     check = sub.add_parser("verify", help="봉인이 그대로인지 확인한다")
@@ -134,7 +136,7 @@ def main() -> int:
             provenance = build_provenance(
                 workbench,
                 summary,
-                system_under_test_agent=args.system_under_test_agent,
+                system_under_test_id=args.system_under_test_id,
             )
         except ValueError as exc:
             print(json.dumps(

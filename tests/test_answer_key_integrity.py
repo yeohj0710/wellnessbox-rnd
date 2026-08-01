@@ -18,6 +18,7 @@ from scripts import run_answer_key_workbench as workbench_cli
 from scripts import seal_reference_standard as reference_seal_cli
 from scripts.audit_answer_key_integrity import drafter_source_index
 from wellnessbox_rnd.evals.answer_key_integrity import (
+    audit_declared_blinding,
     audit_drafter_source,
     audit_repository,
     audit_review_effort,
@@ -200,6 +201,53 @@ def test_paced_review_passes() -> None:
 
 def test_review_with_too_few_decisions_is_not_failed() -> None:
     assert audit_review_effort({"decisions": {}})["verdict"] == "PASS"
+
+
+def test_declared_blinding_requires_every_engine_logic_path() -> None:
+    registry = {
+        "entries": [
+            {"path": "engine/policy.json", "role": "engine_logic"},
+            {"path": "engine/safety.json", "role": "engine_logic"},
+            {"path": "catalog.json", "role": "vocabulary"},
+        ]
+    }
+    workbench = {
+        "drafts": [
+            {
+                "case_id": "case-1",
+                "blinded_from": ["engine/policy.json"],
+            }
+        ]
+    }
+
+    result = audit_declared_blinding(workbench, registry)
+
+    assert result["verdict"] == "FAIL"
+    assert result["missing_engine_logic"] == ["engine/safety.json"]
+
+
+def test_recorded_durations_audit_detailed_review_but_not_batch_approval() -> None:
+    workbench = {
+        "decisions": {
+            "detail-1": {
+                "action": "accepted",
+                "reviewed_in_detail": True,
+                "review_duration_seconds": 2.0,
+            },
+            "batch-1": {
+                "action": "accepted",
+                "reviewed_in_detail": False,
+                "decision_mode": "ai_consensus_batch_approval",
+            },
+        }
+    }
+
+    result = audit_review_effort(workbench)
+
+    assert result["verdict"] == "PASS"
+    assert result["detailed_decision_count"] == 1
+    assert result["batch_approved_count"] == 1
+    assert result["seconds_per_decision"] == 2.0
 
 
 def test_repository_audit_passes_all_current_draft_sources() -> None:
