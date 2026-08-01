@@ -1,5 +1,14 @@
 # PROGRESS
 
+## 2026-08-01 전체 pytest 기준선 오진 정정
+
+- 전체 pytest 실패가 90건에서 114건으로 늘었다는 직전 보고를 재현·추적했다. 제품 코드 실패가 늘어난 것이 아니라 `.pytest_cache/v/cache/lastfailed`에 현재 존재하지 않는 테스트 node ID 24개가 남아 있었고, 캐시 항목 수를 실제 실패 수로 잘못 해석한 보고 오류였다.
+- 캐시를 사용하지 않고 `python -m pytest -q --tb=no`의 실제 `FAILED` 줄을 직접 집계한 결과는 **90 failed / 73 failed files**다. 기록된 기준선 90건과 일치하므로 이번 KPI 변경의 신규 전체-test 실패는 0건이다.
+- 대표 stale node ID 4개를 현재 파일에서 직접 실행했을 때 모두 `not found`로 재현됐다. 현재 커밋의 관련 회귀 시험 121건은 별도로 PASS다.
+- 부모 커밋을 저장소 내부 임시 worktree에서도 실행해 보았으나 여러 시험이 절대 경로와 저장소 위치에 의존해 실패 집합이 달라졌다. 이 비교는 기준선 증거로 사용하지 않았고 임시 worktree는 제거했다.
+- 앞으로 전체 실패 수는 `lastfailed` JSON 길이로 보고하지 않는다. 실제 pytest 실행 출력의 `FAILED` 항목이나 최종 요약만 사용한다.
+- 코드·데이터·엔진·frozen eval·replay·slice는 바꾸지 않았다. 이 loop의 공식 metric delta는 0이다.
+
 ## 2026-08-01 KPI-3 블라인드 Codex 1차 초안 도입
 
 - 별도 블라인드 작업이 만든 `data/original_plan/kpi/ai_review_responses/kpi3_codex_blind_response_v1.json` 100건을 KPI-3의 실제 1차 초안으로 가져왔다. 기존 `미정_검토자가_판단` placeholder 100건은 채점 답으로 쓰지 않는다.
@@ -8,7 +17,7 @@
 - 단일 답 문자열은 가져올 때 1개짜리 배열로 정규화한다. 저장된 증거와 봉인 감사는 계속 배열만 허용해 사후 스키마 변조를 차단한다.
 - KPI-4 Codex 응답 100건도 패킷 해시는 맞지만 OpenAI 상담 모델과 같은 제공자 계열이다. 따라서 KPI-4 1차 초안으로 가져오지 않았다. Claude 1차 초안이 들어온 뒤 2차 의견으로만 검증할 수 있다.
 - 현재 KPI-3은 `complete_independent_ai_review_required`로 차단된다. 다음 입력은 Anthropic 계열처럼 Codex와 다른 제공자 계열의 독립 응답 100건이다. 사람 판단·승인·봉인은 만들지 않았다.
-- 관련 회귀 시험 121건은 통과했다. 전체 pytest는 현재 114건 실패로 이전 인계의 90건 기준선과 일치하지 않는다. 실패 목록에는 이번 변경의 정답지·적응형 검토 시험이 없지만, 24건 차이의 원인은 이번 loop에서 규명하지 못했으므로 신규 실패 0으로 단정하지 않는다. 지정 Ruff 범위는 기존 `run_counseling_full_service_roundtrip_smoke.py` 오류 2건만 남는다.
+- 관련 회귀 시험 121건은 통과했다. 전체 pytest 실제 실행은 기준선과 같은 90건 실패로 신규 실패 0건이다. 직전 114건 보고는 stale `lastfailed` 캐시를 센 오류였으며 위 절에서 정정했다. 지정 Ruff 범위는 기존 `run_counseling_full_service_roundtrip_smoke.py` 오류 2건만 남는다.
 - 엔진·안전 규칙·채점 로직·frozen eval·replay·slice는 바꾸지 않았다. 공식 delta는 0이다.
 
 ## 2026-08-01 KPI-3·4 Codex 독립 의견 생성

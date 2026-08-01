@@ -1,5 +1,7 @@
 # NEXT_STEPS
 
+전체 pytest 기준선은 실제 실행 결과 90건 실패다. `.pytest_cache/v/cache/lastfailed`에는 삭제·이름 변경된 node ID가 남을 수 있으므로 캐시 항목 수를 기준선으로 사용하지 않는다.
+
 ## 현재 최우선 순서 (2026-08-01)
 
 1. KPI-3 블라인드 패킷을 비 OpenAI 계열 AI(예: Claude)에 전달해 독립 2차 의견 100건을 받는다. Codex 1차 초안 100건은 이미 가져왔다.

@@ -1,5 +1,17 @@
 # SESSION_HANDOFF
 
+## 2026-08-01 pytest 기준선 오진 정정 handoff
+
+- **선택 단계와 과제:** KPI 정답지 변경 뒤 전체 pytest 실패 수가 90→114로 늘었다는 보고의 원인을 체계적으로 진단했다.
+- **주 데이터셋과 사례 수:** 제품 데이터셋 변경은 없다. 전체 pytest 실행 결과의 실패 90건, 실패 파일 73개와 `.pytest_cache`의 stale node ID 24개를 비교했다.
+- **변경 파일:** `PROGRESS.md`, `NEXT_STEPS.md`, `SESSION_HANDOFF.md`만 갱신했다. 진단용 임시 worktree는 제거했다.
+- **핵심 결과:** 실제 회귀 증가는 없었다. `.pytest_cache/v/cache/lastfailed`가 삭제·이름 변경된 테스트 24개를 보존한 상태에서 캐시 길이를 실제 실패 수로 잘못 셌다. 캐시가 아닌 전체 pytest 실행 출력은 기준선과 같은 90건 실패다.
+- **검증:** `python -m pytest -q --tb=no` 실제 결과를 별도 프로세스에서 캡처해 `ACTUAL_FAILED 90`, `FAILED_FILES 73`을 확인했다. 관련 KPI 회귀 121건 PASS, 지정 Ruff 범위의 기존 오류 2건은 그대로다.
+- **공식 delta:** 코드·데이터·엔진 입력·채점식·frozen eval을 바꾸거나 재실행하지 않아 delta 0이다. replay·slice도 변경하지 않아 delta 0이다.
+- **가장 큰 병목 5개:** KPI-1·5 사람 폐기 확인, KPI-1·3·5 Claude 2차 응답 300건, KPI-4 Claude 1차 응답 100건, 사람 상세 판단 최소 20건·최대 400건과 봉인 4종, KPI-2 실제 사용자 100명 전·후 PRO다.
+- **권장 다음 반복 3개:** (1) KPI-3 Claude 2차 응답 확보·가져오기, (2) KPI-4 Claude 1차 초안 뒤 Codex 2차 의견 가져오기, (3) KPI-1·5 Claude 응답과 사람 폐기 확인이다.
+- **주의:** 전체 실패 수를 `.pytest_cache` 항목 수로 보고하지 않는다. 실제 pytest 출력의 `FAILED` 항목이나 최종 요약을 사용한다.
+
 ## 2026-08-01 KPI-3 블라인드 Codex 1차 초안 handoff
 
 - **선택 단계와 과제:** 교차 AI 정답지 작성 중 KPI-3의 placeholder를 별도 블라인드 Codex 응답으로 교체했다. 사람 판정·승인·봉인은 실행하지 않았다.
@@ -7,7 +19,7 @@
 - **변경 파일:** 원본 KPI-3 응답, KPI-3 워크벤치, `adaptive_answer_key_review.py`, 워크벤치 CLI, 적응형 검토 테스트, `PROGRESS.md`, `NEXT_STEPS.md`, `SESSION_HANDOFF.md`다. KPI-4 응답은 아직 1차 Claude 응답이 없어 가져오지 않았다.
 - **핵심 변경:** `--promote-review-response`를 명시한 경우에만 `reviewing_agent` 형식의 블라인드 응답을 1차 초안으로 전환한다. 원래 역할과 원본 파일 SHA-256을 provenance에 남긴다. 단일 답 문자열은 가져오기 경계에서 배열로 정규화하고 저장·감사 형식은 배열로 고정한다.
 - **현재 상태:** KPI-3 1차 Codex 응답 100건은 등록됐다. 2차 AI 응답 0건, 사람 상세 판단 0건, 일괄 승인 0건, 봉인 0건이다. 다음 단계는 다른 제공자 계열 Claude 응답 100건이다.
-- **검증:** 관련 회귀 시험 121건 PASS. KPI-3 가져오기 `READY_FOR_INDEPENDENT_AI_REVIEW`; `minimal-status`는 예상대로 `complete_independent_ai_review_required`; 무결성 감사는 출처 4/4 PASS이고 완료만 `BLOCKED`다. 전체 pytest는 현재 114건 실패로 기록된 90건 기준선보다 24건 많다. 이번 변경의 시험은 실패 목록에 없지만 차이 원인은 미규명이다. 지정 Ruff 범위는 기존 파일 오류 2건이다.
+- **검증:** 관련 회귀 시험 121건 PASS. KPI-3 가져오기 `READY_FOR_INDEPENDENT_AI_REVIEW`; `minimal-status`는 예상대로 `complete_independent_ai_review_required`; 무결성 감사는 출처 4/4 PASS이고 완료만 `BLOCKED`다. 전체 pytest 실제 실행은 기준선과 같은 90건 실패다. 직전 114건 보고는 stale `lastfailed` 캐시 집계 오류였다. 지정 Ruff 범위는 기존 파일 오류 2건이다.
 - **공식 delta:** 엔진 입력·안전 규칙·채점식·frozen eval을 바꾸거나 실행하지 않았다. delta 0이다. replay·slice도 변경·재실행하지 않아 delta 0이다.
 - **가장 큰 병목 5개:** KPI-1·5 사람 폐기 확인, KPI-1·3·5 Claude 2차 응답 300건, KPI-4 Claude 1차 응답 100건과 Codex 2차 가져오기, 사람 상세 판단 최소 20건·최대 400건과 봉인 4종, KPI-2 실제 사용자 100명 전·후 PRO다.
 - **권장 다음 반복 3개:** (1) KPI-3 Claude 2차 응답을 받아 교차 비교를 연다. (2) KPI-4 Claude 1차 초안 뒤 보관 중인 Codex 응답을 붙인다. (3) KPI-1·5 Claude 응답과 사람 폐기 확인을 마친다.
