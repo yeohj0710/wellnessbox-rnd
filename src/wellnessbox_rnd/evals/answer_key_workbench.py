@@ -65,6 +65,9 @@ class Decision:
     decided_by: str = ""
     decided_at: str = ""
     note: str = ""
+    review_duration_seconds: float | None = None
+    decision_mode: str = "detailed_review"
+    reviewed_in_detail: bool = True
 
 
 @dataclass
@@ -73,6 +76,8 @@ class Workbench:
     drafts: list[CaseDraft]
     decisions: dict[str, Decision] = field(default_factory=dict)
     seal_disposals: list[dict[str, Any]] = field(default_factory=list)
+    ai_review: dict[str, Any] = field(default_factory=dict)
+    batch_approval: dict[str, Any] | None = None
 
     def pending(self) -> list[CaseDraft]:
         return [
@@ -150,20 +155,45 @@ def decide(
     decided_by: str,
     note: str = "",
     decided_at: str | None = None,
+    review_duration_seconds: float | None = None,
+    decision_mode: str = "detailed_review",
+    reviewed_in_detail: bool = True,
 ) -> Decision:
     """Record one human decision. `None` means the case was rejected outright."""
     if not decided_by.strip():
         raise ValueError("decision_requires_a_named_person")
+    if review_duration_seconds is not None and review_duration_seconds < 0:
+        raise ValueError("review_duration_seconds_must_be_non_negative")
     stamp = decided_at or datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
     if final_answer is None:
-        return Decision(draft.case_id, "rejected", [], decided_by.strip(), stamp, note)
+        return Decision(
+            draft.case_id,
+            "rejected",
+            [],
+            decided_by.strip(),
+            stamp,
+            note,
+            review_duration_seconds,
+            decision_mode,
+            reviewed_in_detail,
+        )
 
     cleaned = sorted(set(final_answer))
     if not cleaned:
         raise ValueError(f"final_answer_is_empty:{draft.case_id}")
     action: Action = "accepted" if cleaned == sorted(set(draft.draft_answer)) else "edited"
-    return Decision(draft.case_id, action, cleaned, decided_by.strip(), stamp, note)
+    return Decision(
+        draft.case_id,
+        action,
+        cleaned,
+        decided_by.strip(),
+        stamp,
+        note,
+        review_duration_seconds,
+        decision_mode,
+        reviewed_in_detail,
+    )
 
 
 def summarise_adjudication(workbench: Workbench) -> dict[str, Any]:
@@ -178,6 +208,20 @@ def summarise_adjudication(workbench: Workbench) -> dict[str, Any]:
 
     settled = counts["accepted"] + counts["edited"]
     edit_rate = round(100.0 * counts["edited"] / settled, 2) if settled else 0.0
+    detailed = [decision for decision in decisions if decision.reviewed_in_detail]
+    detailed_settled = [
+        decision
+        for decision in detailed
+        if decision.action in {"accepted", "edited"}
+    ]
+    detailed_edited = sum(
+        decision.action == "edited" for decision in detailed_settled
+    )
+    detailed_edit_rate = (
+        round(100.0 * detailed_edited / len(detailed_settled), 2)
+        if detailed_settled
+        else 0.0
+    )
     reviewers = sorted({d.decided_by for d in decisions if d.decided_by})
 
     warnings: list[str] = []
@@ -193,6 +237,11 @@ def summarise_adjudication(workbench: Workbench) -> dict[str, Any]:
         "counts": counts,
         "settled_count": settled,
         "edit_rate_pct": edit_rate,
+        "detailed_review_count": len(detailed),
+        "batch_approved_count": sum(
+            not decision.reviewed_in_detail for decision in decisions
+        ),
+        "detailed_edit_rate_pct": detailed_edit_rate,
         "reviewers": reviewers,
         "warnings": warnings,
         "complete": counts["pending"] == 0,
@@ -437,6 +486,8 @@ def load_workbench(path: Path) -> Workbench:
         drafts,
         decisions,
         list(payload.get("seal_disposals", [])),
+        dict(payload.get("ai_review", {})),
+        payload.get("batch_approval"),
     )
 
 
@@ -449,6 +500,8 @@ def save_workbench(path: Path, workbench: Workbench) -> Path:
         "drafts": [vars(draft) for draft in workbench.drafts],
         "decisions": {case_id: vars(value) for case_id, value in workbench.decisions.items()},
         "seal_disposals": list(workbench.seal_disposals),
+        "ai_review": dict(workbench.ai_review),
+        "batch_approval": workbench.batch_approval,
     }
     target.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

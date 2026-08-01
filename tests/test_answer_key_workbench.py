@@ -16,6 +16,7 @@ from wellnessbox_rnd.evals.answer_key_drafters import (
 )
 from wellnessbox_rnd.evals.answer_key_workbench import (
     CaseDraft,
+    Decision,
     Workbench,
     adjudicated_answer_key,
     assert_source_is_independent,
@@ -136,6 +137,30 @@ class DecisionTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             decide(draft=_draft(), final_answer=[], decided_by="권혁찬")
 
+    def test_review_duration_and_mode_are_recorded(self) -> None:
+        decision = decide(
+            draft=_draft(),
+            final_answer=["magnesium"],
+            decided_by="권혁찬",
+            review_duration_seconds=0.4,
+        )
+
+        self.assertEqual(decision.review_duration_seconds, 0.4)
+        self.assertEqual(decision.decision_mode, "detailed_review")
+        self.assertTrue(decision.reviewed_in_detail)
+
+    def test_negative_review_duration_is_rejected(self) -> None:
+        with self.assertRaisesRegex(
+            ValueError,
+            "review_duration_seconds_must_be_non_negative",
+        ):
+            decide(
+                draft=_draft(),
+                final_answer=["magnesium"],
+                decided_by="권혁찬",
+                review_duration_seconds=-0.1,
+            )
+
 
 class AdjudicationSummaryTest(unittest.TestCase):
     def test_accepting_everything_unchanged_is_surfaced_not_hidden(self) -> None:
@@ -203,6 +228,26 @@ class AdjudicationSummaryTest(unittest.TestCase):
         self.assertIn("c0", key)
         self.assertNotIn("c1", key)
         self.assertNotIn("c2", key)
+
+    def test_summary_separates_detailed_and_batch_approved_cases(self) -> None:
+        bench = _bench(2)
+        bench.decisions["c0"] = decide(
+            draft=bench.drafts[0],
+            final_answer=list(bench.drafts[0].draft_answer),
+            decided_by="권혁찬",
+        )
+        bench.decisions["c1"] = decide(
+            draft=bench.drafts[1],
+            final_answer=list(bench.drafts[1].draft_answer),
+            decided_by="권혁찬",
+            decision_mode="ai_consensus_batch_approval",
+            reviewed_in_detail=False,
+        )
+
+        summary = summarise_adjudication(bench)
+
+        self.assertEqual(summary["detailed_review_count"], 1)
+        self.assertEqual(summary["batch_approved_count"], 1)
 
     def test_provenance_names_the_method_and_carries_the_edit_rate(self) -> None:
         bench = _bench(2)
@@ -308,6 +353,75 @@ class PersistenceTest(unittest.TestCase):
         self.assertEqual(restored.decisions["c0"].action, "edited")
         self.assertEqual(restored.pending()[0].case_id, "c1")
 
+    def test_ai_review_and_batch_approval_round_trip(self) -> None:
+        bench = _bench(1)
+        bench.ai_review = {"schema_version": "independent_ai_answer_review_v1"}
+        bench.batch_approval = {"approved_by": "권혁찬"}
+        with tempfile.TemporaryDirectory() as temp:
+            path = save_workbench(Path(temp) / "wb.json", bench)
+            restored = load_workbench(path)
+
+        self.assertEqual(restored.ai_review, bench.ai_review)
+        self.assertEqual(restored.batch_approval, bench.batch_approval)
+
+    def test_adaptive_review_fields_round_trip(self) -> None:
+        bench = _bench(2)
+        bench.ai_review = {
+            "schema_version": "independent_ai_answer_review_v1",
+            "reviewing_agent": "claude",
+            "cases": {},
+        }
+        bench.batch_approval = {
+            "approved_by": "여형준",
+            "approved_at": "2026-08-01T01:00:00Z",
+        }
+        bench.decisions["c0"] = Decision(
+            case_id="c0",
+            action="accepted",
+            final_answer=list(bench.drafts[0].draft_answer),
+            decided_by="여형준",
+            decided_at="2026-08-01T01:00:00Z",
+            note="AI 합의안 일괄 승인; 개별 상세 검토 아님",
+            decision_mode="ai_consensus_batch_approval",
+            reviewed_in_detail=False,
+        )
+
+        with tempfile.TemporaryDirectory() as temp:
+            restored = load_workbench(
+                save_workbench(Path(temp) / "adaptive.json", bench)
+            )
+
+        self.assertEqual(restored.ai_review, bench.ai_review)
+        self.assertEqual(restored.batch_approval, bench.batch_approval)
+        self.assertEqual(
+            restored.decisions["c0"].decision_mode,
+            "ai_consensus_batch_approval",
+        )
+        self.assertFalse(restored.decisions["c0"].reviewed_in_detail)
+
+    def test_summary_separates_detailed_review_from_batch_approval(self) -> None:
+        bench = _bench(2)
+        bench.decisions["c0"] = decide(
+            draft=bench.drafts[0],
+            final_answer=list(bench.drafts[0].draft_answer),
+            decided_by="여형준",
+        )
+        bench.decisions["c1"] = Decision(
+            case_id="c1",
+            action="accepted",
+            final_answer=list(bench.drafts[1].draft_answer),
+            decided_by="여형준",
+            decided_at="2026-08-01T01:00:00Z",
+            decision_mode="ai_consensus_batch_approval",
+            reviewed_in_detail=False,
+        )
+
+        summary = summarise_adjudication(bench)
+
+        self.assertEqual(summary["detailed_review_count"], 1)
+        self.assertEqual(summary["batch_approved_count"], 1)
+        self.assertEqual(summary["detailed_edit_rate_pct"], 0.0)
+
     def test_legacy_workbench_without_new_provenance_fields_still_loads(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "legacy.json"
@@ -332,6 +446,8 @@ class PersistenceTest(unittest.TestCase):
 
         self.assertEqual(restored.drafts[0].drafting_agent, "")
         self.assertEqual(restored.drafts[0].blinded_from, [])
+        self.assertEqual(restored.ai_review, {})
+        self.assertIsNone(restored.batch_approval)
 
 
 class SealDisposalTest(unittest.TestCase):
