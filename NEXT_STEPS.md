@@ -2,6 +2,8 @@
 
 전체 pytest 기준선은 실제 실행 결과 90건 실패다. `.pytest_cache/v/cache/lastfailed`에는 삭제·이름 변경된 node ID가 남을 수 있으므로 캐시 항목 수를 기준선으로 사용하지 않는다.
 
+현재 외부 실행 blocker는 Claude 로그인이다. 열린 Claude 로그인 탭에서 사용자가 직접 로그인한 뒤 이 작업에 준비됐다고 알려야 한다. 로그인·계정 생성·결제는 AI가 대신하지 않는다.
+
 ## 현재 최우선 순서 (2026-08-01)
 
 1. `data/original_plan/kpi/ai_review_requests/kpi3_claude_review_request_v1.json` 하나만 새 Claude 작업에 전달해 독립 2차 의견 100건을 받는다. Codex 1차 초안 100건은 이미 가져왔다.

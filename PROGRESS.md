@@ -1,5 +1,13 @@
 # PROGRESS
 
+## 2026-08-01 외부 Claude 실행 경로 점검
+
+- 실제 KPI-3 Claude 응답 생성을 시도하기 전에 로컬 실행 경로를 점검했다. Claude CLI, `ANTHROPIC_API_KEY`, Anthropic Python 패키지는 모두 없었다.
+- 브라우저 경로는 Claude 로그인 페이지까지 연결됐지만 인증된 세션이 없었다. Chrome 연결도 사용할 수 없었다. 로그인·계정 생성·요금제 선택·결제는 대신하지 않았다.
+- KPI-3 요청 JSON은 Claude에 전송하지 않았고 외부 응답 파일도 만들지 않았다. 로그인 탭만 사용자가 이어갈 수 있도록 인계했다.
+- 다음 진행에는 사용자가 열린 Claude 탭에 로그인한 뒤 이 작업에 준비됐다고 알려야 한다. 그다음 새 Claude 대화에 `kpi3_claude_review_request_v1.json` 하나만 전달한다.
+- 코드·데이터·워크벤치·사람 판단·봉인·frozen eval·replay·slice는 바꾸지 않았다. delta 0이다.
+
 ## 2026-08-01 Claude 블라인드 요청 번들·사전검증 완성
 
 - KPI-1·3·5 독립 2차 의견과 KPI-4 독립 1차 초안을 위한 Claude 요청 JSON 4개를 `data/original_plan/kpi/ai_review_requests/`에 생성했다. 각 파일은 사례 100건, 허용 답 어휘, 빈 응답 skeleton, 패킷·요청 SHA-256을 포함한다.

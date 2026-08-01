@@ -1,5 +1,17 @@
 # SESSION_HANDOFF
 
+## 2026-08-01 Claude 로그인 blocker handoff
+
+- **선택 단계와 과제:** 준비된 KPI-3 Claude 요청을 실제 외부 AI에 전달할 실행 경로를 점검했다.
+- **주 데이터셋과 사례 수:** `data/original_plan/kpi/ai_review_requests/kpi3_claude_review_request_v1.json` 100건이다. 파일은 외부에 전송하지 않았다.
+- **변경 파일:** `PROGRESS.md`, `NEXT_STEPS.md`, `SESSION_HANDOFF.md`만 갱신했다.
+- **점검 결과:** Claude CLI 없음, Anthropic API 키 없음, Anthropic 패키지 없음, Chrome 연결 없음, 인앱 Claude 세션 로그인 안 됨이다. Claude 로그인 페이지는 사용자가 이어갈 수 있도록 남겼다.
+- **검증:** 외부 전송 0건, 응답 생성 0건, 워크벤치 변경 0건이다. 로그인·가입·요금제·결제를 실행하지 않았다.
+- **공식 delta:** 엔진·데이터·채점식·frozen eval·replay·slice를 변경하거나 실행하지 않아 모두 0이다.
+- **가장 큰 병목 5개:** Claude 로그인과 응답 400건, KPI-1·5 사람 폐기 확인, 사람 상세 판단 최소 20건·최대 400건, 새 봉인 4종, KPI-2 실제 사용자 100명 전·후 PRO다.
+- **권장 다음 반복 3개:** (1) 사용자가 Claude에 로그인한 뒤 KPI-3 요청을 단독 전달, (2) 응답을 사전검증·가져오기, (3) KPI-4 Claude primary와 Codex review를 연결한다.
+- **재개 조건:** 사용자가 Claude 로그인 완료를 알려야 한다. 그전에는 같은 제공자 계열 Codex로 Claude 응답을 대체하지 않는다.
+
 ## 2026-08-01 Claude 블라인드 요청 번들 handoff
 
 - **선택 단계와 과제:** 외부 Claude 응답을 저장소 노출 없이 바로 받을 수 있도록 역할별 요청 파일과 비변경 사전검증을 만들었다.
