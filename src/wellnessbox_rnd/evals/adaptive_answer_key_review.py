@@ -464,6 +464,17 @@ def audit_adaptive_review(
     """Fail closed when a claimed AI-consensus approval is stale or incomplete."""
     review = workbench.ai_review or {}
     if not review:
+        if any(
+            not decision.reviewed_in_detail
+            or decision.decision_mode == "ai_consensus_batch_approval"
+            for decision in workbench.decisions.values()
+        ):
+            return {
+                "used": False,
+                "verdict": "FAIL",
+                "reason": "batch_decision_without_ai_review",
+                "batch_approved_count": 0,
+            }
         return {
             "used": False,
             "verdict": "PASS",
@@ -511,6 +522,18 @@ def audit_adaptive_review(
         return fail("ai_review_agent_matches_drafting_agent_family")
 
     plan = build_adaptive_review_plan(workbench)
+    if any(
+        (
+            decision.decision_mode == "ai_consensus_batch_approval"
+            and decision.reviewed_in_detail
+        )
+        or (
+            decision.decision_mode != "ai_consensus_batch_approval"
+            and not decision.reviewed_in_detail
+        )
+        for decision in workbench.decisions.values()
+    ):
+        return fail("decision_mode_detail_flag_mismatch")
     batch_decisions = {
         case_id: decision
         for case_id, decision in workbench.decisions.items()

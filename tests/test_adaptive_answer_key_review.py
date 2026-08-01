@@ -14,6 +14,7 @@ from wellnessbox_rnd.evals.adaptive_answer_key_review import (
     build_blind_ai_review_packet,
     register_independent_ai_review,
 )
+from wellnessbox_rnd.evals.answer_key_integrity import load_registry
 from wellnessbox_rnd.evals.answer_key_workbench import (
     CaseDraft,
     Decision,
@@ -21,6 +22,8 @@ from wellnessbox_rnd.evals.answer_key_workbench import (
     load_workbench,
     save_workbench,
 )
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _workbench(case_count: int = 100) -> Workbench:
@@ -317,6 +320,28 @@ def test_consensus_batch_needs_detailed_sample_and_exact_human_confirmation() ->
     assert result["reason"] == "batch_approval_ai_review_digest_mismatch"
 
 
+def test_non_detailed_decision_without_ai_review_fails_closed() -> None:
+    workbench = _workbench(1)
+    draft = workbench.drafts[0]
+    workbench.decisions[draft.case_id] = Decision(
+        case_id=draft.case_id,
+        action="accepted",
+        final_answer=list(draft.draft_answer),
+        decided_by="여형준",
+        decided_at="2026-08-01T02:00:00Z",
+        decision_mode="ai_consensus_batch_approval",
+        reviewed_in_detail=False,
+    )
+
+    result = audit_adaptive_review(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )
+
+    assert result["verdict"] == "FAIL"
+    assert result["reason"] == "batch_decision_without_ai_review"
+
+
 def test_cli_exports_blind_packet_and_imports_complete_ai_review() -> None:
     with tempfile.TemporaryDirectory() as temp:
         root = Path(temp)
@@ -357,3 +382,30 @@ def test_cli_exports_blind_packet_and_imports_complete_ai_review() -> None:
         assert import_result == 0
         assert set(packet["cases"][0]) == {"case_id", "prompt"}
         assert load_workbench(bench_path).ai_review["reviewing_agent"] == "claude"
+
+
+def test_repository_blind_packets_match_current_workbenches() -> None:
+    required = sorted(
+        entry["path"]
+        for entry in load_registry(ROOT)["entries"]
+        if entry["role"] == "engine_logic"
+    )
+    for indicator_id in ("KPI-1", "KPI-3", "KPI-4", "KPI-5"):
+        slug = indicator_id.lower().replace("-", "")
+        workbench = load_workbench(
+            ROOT
+            / "data/original_plan/kpi/workbench"
+            / f"{slug}_workbench_v1.json"
+        )
+        recorded = json.loads(
+            (
+                ROOT
+                / "data/original_plan/kpi/ai_review_packets"
+                / f"{slug}_blind_ai_review_packet_v1.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        assert recorded == build_blind_ai_review_packet(
+            workbench,
+            required_blinded_from=required,
+        )
