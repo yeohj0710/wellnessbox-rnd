@@ -72,6 +72,11 @@ def build_parser() -> ArgumentParser:
         default="",
         help="측정 대상 엔진의 고유 ID. 초안 작성 주체와 같을 수 없습니다.",
     )
+    seal.add_argument(
+        "--system-under-test-provider-family",
+        default="",
+        help="KPI-4 상담 모델 제공자 계열. KPI-4는 필수입니다.",
+    )
 
     check = sub.add_parser("verify", help="봉인이 그대로인지 확인한다")
     check.add_argument("--indicator", required=True)
@@ -137,6 +142,9 @@ def main() -> int:
                 workbench,
                 summary,
                 system_under_test_id=args.system_under_test_id,
+                system_under_test_provider_family=(
+                    args.system_under_test_provider_family
+                ),
             )
         except ValueError as exc:
             print(json.dumps(

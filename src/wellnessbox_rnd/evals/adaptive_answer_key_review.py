@@ -18,6 +18,12 @@ if TYPE_CHECKING:
 
 AI_REVIEW_SCHEMA = "independent_ai_answer_review_v1"
 AI_REVIEW_PACKET_SCHEMA = "blind_ai_answer_review_packet_v1"
+PRIMARY_AI_DRAFT_SCHEMA = "blind_primary_ai_answer_draft_v1"
+PRIMARY_AI_DRAFT_SOURCE = (
+    "blind_primary_ai_response_v1@adaptive_answer_key_review"
+)
+DRAFT_SOURCES = {"KPI-3": PRIMARY_AI_DRAFT_SOURCE}
+KPI3_PLACEHOLDER_ANSWER = "미정_검토자가_판단"
 INITIAL_AGREEMENT_SAMPLE = 5
 EXPANDED_AGREEMENT_SAMPLE = 20
 MIN_AI_CONFIDENCE = 0.8
@@ -131,6 +137,124 @@ def build_blind_ai_review_packet(
     return {**payload, "packet_sha256": _payload_digest(payload)}
 
 
+def register_blind_primary_ai_draft(
+    workbench: Workbench,
+    *,
+    drafting_agent: str,
+    draft_source: str,
+    blinded_from: list[str],
+    required_blinded_from: list[str],
+    packet_sha256: str,
+    engine_output_consulted: bool,
+    cases: list[dict[str, Any]],
+    drafted_at: str | None = None,
+) -> dict[str, Any]:
+    """Promote one blind AI response into KPI-3's previously empty answers."""
+    if workbench.indicator_id != "KPI-3":
+        raise ValueError("primary_ai_draft_only_supported_for_kpi3")
+    if any(draft.draft_answer != [KPI3_PLACEHOLDER_ANSWER] for draft in workbench.drafts):
+        raise ValueError("kpi3_primary_answers_already_exist")
+    if workbench.decisions or workbench.ai_review or workbench.batch_approval:
+        raise ValueError("primary_ai_draft_must_precede_review_and_decisions")
+
+    author = drafting_agent.strip()
+    if not author:
+        raise ValueError("primary_ai_drafting_agent_required")
+    source = draft_source.strip()
+    if not source:
+        raise ValueError("primary_ai_draft_source_required")
+    from wellnessbox_rnd.evals.answer_key_workbench import (
+        assert_source_is_independent,
+    )
+
+    assert_source_is_independent(source)
+    if engine_output_consulted:
+        raise ValueError("primary_ai_draft_consulted_engine_output")
+    required = sorted(
+        {str(path).strip() for path in required_blinded_from if str(path).strip()}
+    )
+    expected_packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=required,
+    )
+    if packet_sha256.strip() != expected_packet["packet_sha256"]:
+        raise ValueError("primary_ai_draft_packet_sha256_mismatch")
+    blind_paths = sorted(
+        {str(path).strip() for path in blinded_from if str(path).strip()}
+    )
+    missing_blind_paths = sorted(set(required) - set(blind_paths))
+    if missing_blind_paths:
+        raise ValueError(
+            "primary_ai_draft_missing_blinded_paths:"
+            + ",".join(missing_blind_paths)
+        )
+
+    expected_ids = {draft.case_id for draft in workbench.drafts}
+    received: dict[str, dict[str, Any]] = {}
+    for item in cases:
+        case_id = str(item.get("case_id", "")).strip()
+        if not case_id:
+            raise ValueError("primary_ai_draft_case_id_required")
+        if case_id in received:
+            raise ValueError(f"duplicate_primary_ai_draft_case:{case_id}")
+        try:
+            confidence = float(item.get("confidence"))
+        except (TypeError, ValueError) as exc:
+            raise ValueError(
+                f"primary_ai_draft_confidence_invalid:{case_id}"
+            ) from exc
+        if not 0.0 <= confidence <= 1.0:
+            raise ValueError(f"primary_ai_draft_confidence_out_of_range:{case_id}")
+        raw_flags = item.get("flags", [])
+        if not isinstance(raw_flags, list):
+            raise ValueError(f"primary_ai_draft_flags_must_be_a_list:{case_id}")
+        received[case_id] = {
+            "proposed_answer": _clean_answer(
+                item.get("proposed_answer"),
+                case_id=case_id,
+            ),
+            "confidence": confidence,
+            "flags": sorted(
+                {str(flag).strip() for flag in raw_flags if str(flag).strip()}
+            ),
+            "rationale": str(item.get("rationale", "")).strip(),
+        }
+    if set(received) != expected_ids:
+        missing = sorted(expected_ids - set(received))
+        extra = sorted(set(received) - expected_ids)
+        raise ValueError(
+            "primary_ai_draft_case_set_mismatch:"
+            f"missing={','.join(missing)}:extra={','.join(extra)}"
+        )
+
+    record = {
+        "schema_version": PRIMARY_AI_DRAFT_SCHEMA,
+        "drafting_agent": author,
+        "drafting_agent_family": agent_family(author),
+        "draft_source": PRIMARY_AI_DRAFT_SOURCE,
+        "response_source": source,
+        "blinded_from": blind_paths,
+        "required_blinded_from": required,
+        "packet_sha256": packet_sha256.strip(),
+        "engine_output_consulted": False,
+        "drafted_at": (
+            drafted_at or datetime.now(UTC).isoformat().replace("+00:00", "Z")
+        ),
+        "case_count": len(received),
+        "cases": received,
+        "cases_sha256": _review_digest(received),
+    }
+    for draft in workbench.drafts:
+        item = received[draft.case_id]
+        draft.draft_answer = list(item["proposed_answer"])
+        draft.draft_rationale = item["rationale"]
+        draft.draft_source = PRIMARY_AI_DRAFT_SOURCE
+        draft.drafting_agent = author
+        draft.blinded_from = list(blind_paths)
+    workbench.primary_ai_draft = record
+    return record
+
+
 def register_independent_ai_review(
     workbench: Workbench,
     *,
@@ -212,6 +336,7 @@ def register_independent_ai_review(
             "flags": sorted(
                 {str(flag).strip() for flag in raw_flags if str(flag).strip()}
             ),
+            "rationale": str(item.get("rationale", "")).strip(),
         }
 
     received_ids = set(received)
@@ -456,12 +581,77 @@ def approve_consensus_batch(
     return approval
 
 
+def _primary_ai_draft_error(
+    workbench: Workbench,
+    *,
+    required_blinded_from: list[str],
+) -> str:
+    record = workbench.primary_ai_draft or {}
+    if not record:
+        return ""
+    if workbench.indicator_id != "KPI-3":
+        return "primary_ai_draft_on_unsupported_indicator"
+    if record.get("schema_version") != PRIMARY_AI_DRAFT_SCHEMA:
+        return "primary_ai_draft_schema_invalid"
+    if record.get("draft_source") != PRIMARY_AI_DRAFT_SOURCE:
+        return "primary_ai_draft_source_invalid"
+    if not str(record.get("response_source", "")).strip():
+        return "primary_ai_draft_response_source_missing"
+    if record.get("engine_output_consulted") is not False:
+        return "primary_ai_draft_engine_output_boundary_invalid"
+    missing = sorted(
+        set(required_blinded_from) - set(record.get("blinded_from", []))
+    )
+    if missing:
+        return "primary_ai_draft_missing_blinded_paths:" + ",".join(missing)
+    expected_packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=required_blinded_from,
+    )
+    if record.get("packet_sha256") != expected_packet["packet_sha256"]:
+        return "primary_ai_draft_packet_sha256_mismatch"
+    cases = record.get("cases", {})
+    draft_by_id = {draft.case_id: draft for draft in workbench.drafts}
+    if set(cases) != set(draft_by_id):
+        return "complete_primary_ai_draft_required"
+    if record.get("cases_sha256") != _review_digest(cases):
+        return "primary_ai_draft_cases_digest_mismatch"
+    author = record.get("drafting_agent", "")
+    if not author or any(
+        draft.drafting_agent != author
+        or draft.draft_source != PRIMARY_AI_DRAFT_SOURCE
+        or sorted(draft.draft_answer)
+        != sorted(cases[draft.case_id].get("proposed_answer", []))
+        for draft in workbench.drafts
+    ):
+        return "primary_ai_draft_no_longer_matches_workbench"
+    return ""
+
+
 def audit_adaptive_review(
     workbench: Workbench,
     *,
     required_blinded_from: list[str],
 ) -> dict[str, Any]:
     """Fail closed when a claimed AI-consensus approval is stale or incomplete."""
+    required = sorted(
+        {
+            str(path).strip()
+            for path in required_blinded_from
+            if str(path).strip()
+        }
+    )
+    primary_error = _primary_ai_draft_error(
+        workbench,
+        required_blinded_from=required,
+    )
+    if primary_error:
+        return {
+            "used": bool(workbench.ai_review),
+            "verdict": "FAIL",
+            "reason": primary_error,
+            "batch_approved_count": 0,
+        }
     review = workbench.ai_review or {}
     if not review:
         if any(
@@ -493,15 +683,23 @@ def audit_adaptive_review(
             ),
         }
 
-    required = sorted(
-        {
-            str(path).strip()
-            for path in required_blinded_from
-            if str(path).strip()
-        }
-    )
     if review.get("engine_output_consulted") is not False:
         return fail("ai_review_engine_output_boundary_invalid")
+    if review.get("schema_version") != AI_REVIEW_SCHEMA:
+        return fail("ai_review_schema_invalid")
+    reviewer = str(review.get("reviewing_agent", "")).strip()
+    if not reviewer:
+        return fail("ai_reviewing_agent_required")
+    drafting_agents = {
+        draft.drafting_agent.strip()
+        for draft in workbench.drafts
+        if draft.drafting_agent.strip()
+    }
+    if len(drafting_agents) != 1:
+        return fail("one_drafting_agent_required_for_ai_review")
+    actual_drafting_agent = next(iter(drafting_agents))
+    if review.get("drafting_agent") != actual_drafting_agent:
+        return fail("ai_review_drafting_agent_mismatch")
     missing = sorted(set(required) - set(review.get("blinded_from", [])))
     if missing:
         return fail("ai_review_missing_blinded_paths:" + ",".join(missing))
@@ -516,9 +714,7 @@ def audit_adaptive_review(
         return fail("complete_independent_ai_review_required")
     if review.get("cases_sha256") != _review_digest(review_cases):
         return fail("ai_review_cases_digest_mismatch")
-    if agent_family(review.get("reviewing_agent", "")) == agent_family(
-        review.get("drafting_agent", "")
-    ):
+    if agent_family(reviewer) == agent_family(actual_drafting_agent):
         return fail("ai_review_agent_matches_drafting_agent_family")
 
     plan = build_adaptive_review_plan(workbench)
@@ -552,12 +748,29 @@ def audit_adaptive_review(
         }
 
     approval = workbench.batch_approval or {}
+    if approval.get("schema_version") != "ai_consensus_batch_approval_v1":
+        return fail("batch_approval_schema_invalid")
+    if approval.get("indicator_id") != workbench.indicator_id:
+        return fail("batch_approval_indicator_mismatch")
+    approver = str(approval.get("approved_by", "")).strip()
+    if not approver:
+        return fail("batch_approval_approver_required")
+    expected_confirmation = f"{workbench.indicator_id} AI 합의안 일괄 승인"
+    if approval.get("confirmation") != expected_confirmation:
+        return fail("batch_approval_confirmation_mismatch")
+    approved_at = str(approval.get("approved_at", "")).strip()
+    try:
+        datetime.fromisoformat(approved_at.replace("Z", "+00:00"))
+    except ValueError:
+        return fail("batch_approval_timestamp_invalid")
     if approval.get("ai_review_cases_sha256") != review.get("cases_sha256"):
         return fail("batch_approval_ai_review_digest_mismatch")
     if approval.get("packet_sha256") != review.get("packet_sha256"):
         return fail("batch_approval_packet_digest_mismatch")
     if set(approval.get("batch_approved_ids", [])) != set(batch_decisions):
         return fail("batch_approval_case_set_mismatch")
+    if approval.get("batch_approved_count") != len(batch_decisions):
+        return fail("batch_approval_count_mismatch")
     if plan.get("status") != "READY_TO_SEAL":
         return fail("adaptive_review_not_ready_to_seal")
     if set(approval.get("required_detail_ids", [])) != set(
@@ -566,12 +779,12 @@ def audit_adaptive_review(
         return fail("batch_approval_required_detail_set_mismatch")
 
     draft_by_id = {draft.case_id: draft for draft in workbench.drafts}
-    approver = approval.get("approved_by")
     for case_id, decision in batch_decisions.items():
         if (
             decision.action != "accepted"
             or decision.decision_mode != "ai_consensus_batch_approval"
             or decision.decided_by != approver
+            or decision.decided_at != approved_at
             or sorted(decision.final_answer)
             != sorted(draft_by_id[case_id].draft_answer)
         ):

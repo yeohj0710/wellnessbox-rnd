@@ -12,6 +12,7 @@ from wellnessbox_rnd.evals.adaptive_answer_key_review import (
     audit_adaptive_review,
     build_adaptive_review_plan,
     build_blind_ai_review_packet,
+    register_blind_primary_ai_draft,
     register_independent_ai_review,
 )
 from wellnessbox_rnd.evals.answer_key_integrity import load_registry
@@ -105,6 +106,69 @@ def test_kpi3_packet_uses_the_public_action_vocabulary_not_placeholder_answer() 
     assert "maintain" in packet["answer_vocabulary"]
     assert "stop_and_escalate" in packet["answer_vocabulary"]
     assert "미정_검토자가_판단" not in packet["answer_vocabulary"]
+
+
+def test_kpi3_can_promote_a_complete_blind_ai_response_to_primary_drafts() -> None:
+    workbench = _workbench(2)
+    workbench.indicator_id = "KPI-3"
+    for draft in workbench.drafts:
+        draft.draft_answer = ["미정_검토자가_판단"]
+    packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )
+    cases = [
+        {
+            "case_id": draft.case_id,
+            "proposed_answer": ["maintain"],
+            "confidence": 0.95,
+            "flags": [],
+            "rationale": "상태가 안정적이므로 유지",
+        }
+        for draft in workbench.drafts
+    ]
+
+    record = register_blind_primary_ai_draft(
+        workbench,
+        drafting_agent="claude",
+        draft_source="independent_claude_opinion",
+        blinded_from=["engine/policy.json"],
+        required_blinded_from=["engine/policy.json"],
+        packet_sha256=packet["packet_sha256"],
+        engine_output_consulted=False,
+        cases=cases,
+    )
+
+    assert record["drafting_agent_family"] == "anthropic"
+    assert all(draft.draft_answer == ["maintain"] for draft in workbench.drafts)
+    assert all(draft.drafting_agent == "claude" for draft in workbench.drafts)
+    assert workbench.drafts[0].draft_rationale == "상태가 안정적이므로 유지"
+    assert workbench.primary_ai_draft["cases_sha256"] == record["cases_sha256"]
+    assert workbench.ai_review == {}
+
+
+def test_primary_ai_draft_is_limited_to_unanswered_kpi3_workbench() -> None:
+    workbench = _workbench(1)
+    packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )
+
+    try:
+        register_blind_primary_ai_draft(
+            workbench,
+            drafting_agent="claude",
+            draft_source="independent_claude_opinion",
+            blinded_from=["engine/policy.json"],
+            required_blinded_from=["engine/policy.json"],
+            packet_sha256=packet["packet_sha256"],
+            engine_output_consulted=False,
+            cases=_reviews(workbench),
+        )
+    except ValueError as exc:
+        assert str(exc) == "primary_ai_draft_only_supported_for_kpi3"
+    else:
+        raise AssertionError("non-KPI-3 workbench accepted primary AI replacement")
 
 
 def test_ai_review_is_bound_to_the_blind_packet() -> None:
@@ -382,6 +446,59 @@ def test_cli_exports_blind_packet_and_imports_complete_ai_review() -> None:
         assert import_result == 0
         assert set(packet["cases"][0]) == {"case_id", "prompt"}
         assert load_workbench(bench_path).ai_review["reviewing_agent"] == "claude"
+
+
+def test_cli_imports_kpi3_primary_ai_draft_before_second_review() -> None:
+    workbench = _workbench(2)
+    workbench.indicator_id = "KPI-3"
+    for draft in workbench.drafts:
+        draft.draft_answer = ["미정_검토자가_판단"]
+    with tempfile.TemporaryDirectory() as temp:
+        root = Path(temp)
+        bench_path = save_workbench(root / "workbench.json", workbench)
+        packet = build_blind_ai_review_packet(
+            workbench,
+            required_blinded_from=["engine/policy.json"],
+        )
+        response_path = root / "primary.json"
+        response_path.write_text(
+            json.dumps(
+                {
+                    "drafting_agent": "claude",
+                    "draft_source": "independent_claude_opinion",
+                    "blinded_from": ["engine/policy.json"],
+                    "packet_sha256": packet["packet_sha256"],
+                    "engine_output_consulted": False,
+                    "cases": [
+                        {
+                            "case_id": draft.case_id,
+                            "proposed_answer": ["maintain"],
+                            "confidence": 0.95,
+                            "flags": [],
+                        }
+                        for draft in workbench.drafts
+                    ],
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+        with (
+            patch.object(workbench_cli, "workbench_path", return_value=bench_path),
+            patch.object(
+                workbench_cli,
+                "engine_logic_blinded_from",
+                return_value=["engine/policy.json"],
+            ),
+        ):
+            result = workbench_cli.cmd_import_primary_ai_draft(
+                SimpleNamespace(indicator="KPI-3", response=str(response_path))
+            )
+
+        restored = load_workbench(bench_path)
+        assert result == 0
+        assert restored.primary_ai_draft["drafting_agent"] == "claude"
+        assert restored.drafts[0].draft_answer == ["maintain"]
 
 
 def test_repository_blind_packets_match_current_workbenches() -> None:

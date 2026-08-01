@@ -78,6 +78,7 @@ class Workbench:
     seal_disposals: list[dict[str, Any]] = field(default_factory=list)
     ai_review: dict[str, Any] = field(default_factory=dict)
     batch_approval: dict[str, Any] | None = None
+    primary_ai_draft: dict[str, Any] = field(default_factory=dict)
 
     def pending(self) -> list[CaseDraft]:
         return [
@@ -281,6 +282,7 @@ def build_provenance(
     *,
     system_under_test_id: str = "",
     system_under_test_agent: str | None = None,
+    system_under_test_provider_family: str = "",
 ) -> dict[str, Any]:
     """Provenance that travels with the seal so the method stays auditable."""
     drafting_agents = {draft.drafting_agent.strip() for draft in workbench.drafts}
@@ -298,7 +300,9 @@ def build_provenance(
         or (system_under_test_agent or "").strip()
     )
     drafting_family = _agent_family(drafting_agent)
-    evaluated_family = _agent_family(evaluated_agent)
+    declared_evaluated_family = _agent_family(system_under_test_provider_family)
+    evaluated_family = declared_evaluated_family or _agent_family(evaluated_agent)
+    provider_family_gate = workbench.indicator_id == "KPI-4"
     provider_separated = bool(
         drafting_family and evaluated_family and drafting_family != evaluated_family
     )
@@ -308,9 +312,19 @@ def build_provenance(
         raise ValueError("system_under_test_id_required")
     if drafting_agent.casefold() == evaluated_agent.casefold():
         raise ValueError("drafting_actor_is_system_under_test")
+    if provider_family_gate and not system_under_test_provider_family.strip():
+        raise ValueError("system_under_test_provider_family_required_for_kpi4")
+    if provider_family_gate and not provider_separated:
+        raise ValueError(
+            "kpi4_drafting_agent_matches_system_under_test_provider_family"
+        )
 
     return {
-        "answer_key_method": "independent_draft_then_human_adjudication",
+        "answer_key_method": (
+            "blind_cross_ai_adaptive_review_then_human_final_approval"
+            if workbench.ai_review
+            else "independent_draft_then_human_adjudication"
+        ),
         "draft_source": workbench.drafts[0].draft_source if workbench.drafts else None,
         "drafting_agent": drafting_agent or None,
         "blinded_from": blinded_from,
@@ -324,12 +338,14 @@ def build_provenance(
             "drafting_provider_family": drafting_family or None,
             "system_under_test_provider_family": evaluated_family or None,
             "provider_family_separated": provider_separated,
-            "provider_family_is_a_validity_gate": False,
+            "provider_family_is_a_validity_gate": provider_family_gate,
             "validity_basis": (
-                "audited_source_and_information_boundary_plus_human_adjudication"
+                "audited_source_and_information_boundary_plus_provider_separation_"
+                "for_kpi4_plus_human_final_approval"
             ),
         },
         "cross_ai_review": {
+            "primary_ai_draft": workbench.primary_ai_draft or None,
             "used": bool(workbench.ai_review),
             "reviewing_agent": workbench.ai_review.get("reviewing_agent"),
             "reviewing_agent_family": workbench.ai_review.get(
@@ -348,8 +364,9 @@ def build_provenance(
             "warnings": summary["warnings"],
         },
         "note": (
-            "초안은 측정 대상 엔진이 아닌 독립 출처가 만들었고, 각 건을 사람이 "
-            "수락·수정·반려로 확정했다. 수정률은 숨기지 않고 함께 기록한다."
+            "초안과 2차 AI 의견은 측정 대상 엔진의 입력·출력에서 분리했다. "
+            "사람이 상세 검토한 건수와 AI 합의안을 일괄 승인한 건수를 구분해 "
+            "기록하며, 모든 사례의 최종 결정권자는 기록된 사람에게 있다."
         ),
     }
 
@@ -507,6 +524,7 @@ def load_workbench(path: Path) -> Workbench:
         list(payload.get("seal_disposals", [])),
         dict(payload.get("ai_review", {})),
         payload.get("batch_approval"),
+        dict(payload.get("primary_ai_draft", {})),
     )
 
 
@@ -519,6 +537,7 @@ def save_workbench(path: Path, workbench: Workbench) -> Path:
         "drafts": [vars(draft) for draft in workbench.drafts],
         "decisions": {case_id: vars(value) for case_id, value in workbench.decisions.items()},
         "seal_disposals": list(workbench.seal_disposals),
+        "primary_ai_draft": dict(workbench.primary_ai_draft),
         "ai_review": dict(workbench.ai_review),
         "batch_approval": workbench.batch_approval,
     }

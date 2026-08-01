@@ -40,6 +40,7 @@ DRAFTER_MODULES = (
     "answer_key_drafters",
     "reference_corpus_drafters",
     "blinded_drafters",
+    "adaptive_answer_key_review",
 )
 INDICATORS = ("KPI-1", "KPI-3", "KPI-4", "KPI-5")
 
@@ -407,6 +408,7 @@ def audit_indicator(
         list(workbench.get("seal_disposals", [])),
         dict(workbench.get("ai_review", {})),
         workbench.get("batch_approval"),
+        dict(workbench.get("primary_ai_draft", {})),
     )
     adaptive_audit = audit_adaptive_review(
         adaptive_workbench,

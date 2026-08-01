@@ -31,6 +31,7 @@ from wellnessbox_rnd.evals.adaptive_answer_key_review import (  # noqa: E402
     approve_consensus_batch,
     build_adaptive_review_plan,
     build_blind_ai_review_packet,
+    register_blind_primary_ai_draft,
     register_independent_ai_review,
 )
 from wellnessbox_rnd.evals.answer_key_integrity import (  # noqa: E402
@@ -252,6 +253,8 @@ def cmd_review(args) -> int:
             say(f"  2차 AI({relation}): {', '.join(peer_answer)}")
             if peer.get("flags"):
                 say(f"  2차 AI 플래그: {', '.join(peer['flags'])}")
+            if peer.get("rationale"):
+                say(f"  2차 AI 근거: {peer['rationale']}")
         started = time.monotonic()
         try:
             answer = input("  > ").strip()
@@ -399,6 +402,51 @@ def cmd_import_ai_review(args) -> int:
     return 0
 
 
+def cmd_import_primary_ai_draft(args) -> int:
+    target = workbench_path(args.indicator)
+    if not target.is_file():
+        say(f"초안이 없습니다: {target}")
+        return 2
+    workbench = load_workbench(target)
+    response = json.loads(Path(args.response).read_text(encoding="utf-8"))
+    required = engine_logic_blinded_from()
+    try:
+        record = register_blind_primary_ai_draft(
+            workbench,
+            drafting_agent=response.get("drafting_agent", ""),
+            draft_source=response.get("draft_source", ""),
+            blinded_from=response.get("blinded_from", []),
+            required_blinded_from=required,
+            packet_sha256=response.get("packet_sha256", ""),
+            engine_output_consulted=bool(
+                response.get("engine_output_consulted", False)
+            ),
+            cases=response.get("cases", []),
+        )
+    except ValueError as exc:
+        say(json.dumps(
+            {"status": "BLOCKED", "reason": str(exc)},
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+    save_workbench(target, workbench)
+    say(json.dumps(
+        {
+            "status": "READY_FOR_INDEPENDENT_AI_REVIEW",
+            "drafting_agent": record["drafting_agent"],
+            "case_count": record["case_count"],
+            "next": (
+                "같은 블라인드 패킷을 다른 제공자 계열 AI에 전달한 뒤 "
+                "import-ai-review를 실행하세요."
+            ),
+        },
+        ensure_ascii=False,
+        indent=2,
+    ))
+    return 0
+
+
 def cmd_minimal_status(args) -> int:
     target = workbench_path(args.indicator)
     if not target.is_file():
@@ -494,6 +542,11 @@ def cmd_seal(args) -> int:
             workbench,
             summary,
             system_under_test_id=getattr(args, "system_under_test_id", ""),
+            system_under_test_provider_family=getattr(
+                args,
+                "system_under_test_provider_family",
+                "",
+            ),
         )
     except ValueError as exc:
         say(json.dumps(
@@ -660,6 +713,14 @@ def build_parser() -> ArgumentParser:
     import_ai.add_argument("--response", required=True)
     import_ai.set_defaults(func=cmd_import_ai_review)
 
+    import_primary = sub.add_parser(
+        "import-primary-ai-draft",
+        help="KPI-3의 빈 정답에 첫 번째 블라인드 AI 초안을 넣는다",
+    )
+    import_primary.add_argument("--indicator", required=True)
+    import_primary.add_argument("--response", required=True)
+    import_primary.set_defaults(func=cmd_import_primary_ai_draft)
+
     minimal = sub.add_parser(
         "review-minimal",
         help="불일치·플래그·결정적 표본만 상세 검토한다",
@@ -695,6 +756,11 @@ def build_parser() -> ArgumentParser:
         dest="system_under_test_id",
         default="",
         help="측정 대상 엔진의 고유 ID. 초안 작성 주체와 같을 수 없습니다.",
+    )
+    seal.add_argument(
+        "--system-under-test-provider-family",
+        default="",
+        help="KPI-4 상담 모델 제공자 계열(예: openai, anthropic). KPI-4는 필수입니다.",
     )
     seal.set_defaults(func=cmd_seal)
 

@@ -293,7 +293,7 @@ class AdjudicationSummaryTest(unittest.TestCase):
         self.assertEqual(provenance["drafting_agent"], "codex")
         self.assertEqual(provenance["blinded_from"], ["engine/policy.json"])
 
-    def test_role_separation_uses_exact_actor_identity_not_provider_family(self) -> None:
+    def test_kpi4_role_separation_requires_a_different_provider_family(self) -> None:
         bench = Workbench(
             "KPI-4",
             [
@@ -324,15 +324,35 @@ class AdjudicationSummaryTest(unittest.TestCase):
                 summary,
                 system_under_test_id="CODEX",
             )
+        with self.assertRaisesRegex(
+            ValueError,
+            "system_under_test_provider_family_required_for_kpi4",
+        ):
+            build_provenance(
+                bench,
+                summary,
+                system_under_test_id="wellnessbox-chat-v1",
+            )
+        with self.assertRaisesRegex(
+            ValueError,
+            "kpi4_drafting_agent_matches_system_under_test_provider_family",
+        ):
+            build_provenance(
+                bench,
+                summary,
+                system_under_test_id="wellnessbox-chat-v1",
+                system_under_test_provider_family="openai",
+            )
         provenance = build_provenance(
             bench,
             summary,
-            system_under_test_id="OpenAI GPT-5 counseling engine",
+            system_under_test_id="wellnessbox-chat-v1",
+            system_under_test_provider_family="anthropic",
         )
         separation = provenance["role_separation"]
         self.assertTrue(separation["exact_identity_separated"])
-        self.assertFalse(separation["provider_family_separated"])
-        self.assertFalse(separation["provider_family_is_a_validity_gate"])
+        self.assertTrue(separation["provider_family_separated"])
+        self.assertTrue(separation["provider_family_is_a_validity_gate"])
 
 
 class PersistenceTest(unittest.TestCase):
@@ -351,6 +371,10 @@ class PersistenceTest(unittest.TestCase):
 
     def test_ai_review_and_batch_approval_round_trip(self) -> None:
         bench = _bench(1)
+        bench.primary_ai_draft = {
+            "schema_version": "blind_primary_ai_answer_draft_v1",
+            "drafting_agent": "claude",
+        }
         bench.ai_review = {"schema_version": "independent_ai_answer_review_v1"}
         bench.batch_approval = {"approved_by": "권혁찬"}
         with tempfile.TemporaryDirectory() as temp:
@@ -359,6 +383,7 @@ class PersistenceTest(unittest.TestCase):
 
         self.assertEqual(restored.ai_review, bench.ai_review)
         self.assertEqual(restored.batch_approval, bench.batch_approval)
+        self.assertEqual(restored.primary_ai_draft, bench.primary_ai_draft)
 
     def test_adaptive_review_fields_round_trip(self) -> None:
         bench = _bench(2)
@@ -444,6 +469,7 @@ class PersistenceTest(unittest.TestCase):
         self.assertEqual(restored.drafts[0].blinded_from, [])
         self.assertEqual(restored.ai_review, {})
         self.assertIsNone(restored.batch_approval)
+        self.assertEqual(restored.primary_ai_draft, {})
 
 
 class SealDisposalTest(unittest.TestCase):
