@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from wellnessbox_rnd.evals.adaptive_answer_key_review import (
     build_adaptive_review_plan,
+    build_blind_ai_review_packet,
     register_independent_ai_review,
 )
 from wellnessbox_rnd.evals.answer_key_workbench import (
@@ -41,12 +42,98 @@ def _reviews(workbench: Workbench) -> list[dict]:
 
 
 def _register(workbench: Workbench, cases: list[dict] | None = None) -> None:
+    packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )
     register_independent_ai_review(
         workbench,
         reviewing_agent="claude",
+        review_source="independent_claude_opinion",
         blinded_from=["engine/policy.json"],
+        required_blinded_from=["engine/policy.json"],
+        packet_sha256=packet["packet_sha256"],
+        engine_output_consulted=False,
         cases=cases or _reviews(workbench),
     )
+
+
+def test_blind_packet_omits_primary_answers_and_rationales() -> None:
+    workbench = _workbench(2)
+
+    packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )
+
+    assert set(packet["cases"][0]) == {"case_id", "prompt"}
+    assert packet["omitted_fields"] == [
+        "draft_answer",
+        "draft_rationale",
+        "engine_logic",
+        "engine_output",
+    ]
+    assert packet["answer_vocabulary"]
+    assert len(packet["packet_sha256"]) == 64
+
+
+def test_ai_review_is_bound_to_the_blind_packet() -> None:
+    workbench = _workbench(2)
+
+    try:
+        register_independent_ai_review(
+            workbench,
+            reviewing_agent="claude",
+            review_source="independent_claude_opinion",
+            blinded_from=["engine/policy.json"],
+            required_blinded_from=["engine/policy.json"],
+            packet_sha256="0" * 64,
+            engine_output_consulted=False,
+            cases=_reviews(workbench),
+        )
+    except ValueError as exc:
+        assert str(exc) == "ai_review_packet_sha256_mismatch"
+    else:
+        raise AssertionError("response with wrong packet digest was accepted")
+
+
+def test_ai_review_rejects_engine_output_and_missing_blinding() -> None:
+    workbench = _workbench(2)
+    packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=["engine/policy.json", "engine/safety.json"],
+    )
+    common = {
+        "workbench": workbench,
+        "reviewing_agent": "claude",
+        "review_source": "independent_claude_opinion",
+        "packet_sha256": packet["packet_sha256"],
+        "cases": _reviews(workbench),
+    }
+
+    try:
+        register_independent_ai_review(
+            **common,
+            blinded_from=["engine/policy.json", "engine/safety.json"],
+            required_blinded_from=["engine/policy.json", "engine/safety.json"],
+            engine_output_consulted=True,
+        )
+    except ValueError as exc:
+        assert str(exc) == "ai_review_consulted_engine_output"
+    else:
+        raise AssertionError("engine-informed AI review was accepted")
+
+    try:
+        register_independent_ai_review(
+            **common,
+            blinded_from=["engine/policy.json"],
+            required_blinded_from=["engine/policy.json", "engine/safety.json"],
+            engine_output_consulted=False,
+        )
+    except ValueError as exc:
+        assert str(exc) == "ai_review_missing_blinded_paths:engine/safety.json"
+    else:
+        raise AssertionError("AI review with incomplete blinding was accepted")
 
 
 def test_all_agreements_require_only_five_detailed_reviews() -> None:
@@ -124,7 +211,14 @@ def test_same_provider_family_cannot_review_its_own_draft() -> None:
         register_independent_ai_review(
             workbench,
             reviewing_agent="OpenAI GPT-5",
+            review_source="independent_openai_opinion",
             blinded_from=["engine/policy.json"],
+            required_blinded_from=["engine/policy.json"],
+            packet_sha256=build_blind_ai_review_packet(
+                workbench,
+                required_blinded_from=["engine/policy.json"],
+            )["packet_sha256"],
+            engine_output_consulted=False,
             cases=_reviews(workbench),
         )
     except ValueError as exc:

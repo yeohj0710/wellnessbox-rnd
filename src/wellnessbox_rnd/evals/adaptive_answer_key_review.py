@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from wellnessbox_rnd.evals.answer_key_workbench import Workbench
 
 AI_REVIEW_SCHEMA = "independent_ai_answer_review_v1"
+AI_REVIEW_PACKET_SCHEMA = "blind_ai_answer_review_packet_v1"
 INITIAL_AGREEMENT_SAMPLE = 5
 EXPANDED_AGREEMENT_SAMPLE = 20
 MIN_AI_CONFIDENCE = 0.8
@@ -57,11 +58,73 @@ def _review_digest(cases: dict[str, dict[str, Any]]) -> str:
     return hashlib.sha256(canonical).hexdigest()
 
 
+def _payload_digest(payload: dict[str, Any]) -> str:
+    canonical = json.dumps(
+        payload,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
+
+
+def build_blind_ai_review_packet(
+    workbench: Workbench,
+    *,
+    required_blinded_from: list[str],
+) -> dict[str, Any]:
+    """Export questions without the primary answers, rationale or engine data."""
+    blinded = sorted(
+        {
+            str(path).strip()
+            for path in required_blinded_from
+            if str(path).strip()
+        }
+    )
+    if not blinded:
+        raise ValueError("ai_review_required_blinded_from_missing")
+    cases = [
+        {"case_id": draft.case_id, "prompt": draft.prompt}
+        for draft in sorted(workbench.drafts, key=lambda item: item.case_id)
+    ]
+    vocabulary = sorted(
+        {
+            token
+            for draft in workbench.drafts
+            for token in draft.draft_answer
+            if token.strip()
+        }
+    )
+    payload = {
+        "schema_version": AI_REVIEW_PACKET_SCHEMA,
+        "indicator_id": workbench.indicator_id,
+        "case_count": len(cases),
+        "answer_vocabulary": vocabulary,
+        "required_blinded_from": blinded,
+        "omitted_fields": [
+            "draft_answer",
+            "draft_rationale",
+            "engine_logic",
+            "engine_output",
+        ],
+        "instructions": (
+            "각 사례를 독립적으로 판단해 proposed_answer, confidence, flags, "
+            "rationale을 반환한다. 1차 초안·근거·엔진 입력·엔진 출력은 보지 않는다."
+        ),
+        "cases": cases,
+    }
+    return {**payload, "packet_sha256": _payload_digest(payload)}
+
+
 def register_independent_ai_review(
     workbench: Workbench,
     *,
     reviewing_agent: str,
+    review_source: str,
     blinded_from: list[str],
+    required_blinded_from: list[str],
+    packet_sha256: str,
+    engine_output_consulted: bool,
     cases: list[dict[str, Any]],
     reviewed_at: str | None = None,
 ) -> dict[str, Any]:
@@ -69,9 +132,37 @@ def register_independent_ai_review(
     reviewer = reviewing_agent.strip()
     if not reviewer:
         raise ValueError("ai_reviewing_agent_required")
+    source = review_source.strip()
+    if not source:
+        raise ValueError("ai_review_source_required")
+    from wellnessbox_rnd.evals.answer_key_workbench import (
+        assert_source_is_independent,
+    )
+
+    assert_source_is_independent(source)
+    if engine_output_consulted:
+        raise ValueError("ai_review_consulted_engine_output")
+    required = sorted(
+        {
+            str(path).strip()
+            for path in required_blinded_from
+            if str(path).strip()
+        }
+    )
+    expected_packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=required,
+    )
+    if packet_sha256.strip() != expected_packet["packet_sha256"]:
+        raise ValueError("ai_review_packet_sha256_mismatch")
     blind_paths = sorted({str(path).strip() for path in blinded_from if str(path).strip()})
     if not blind_paths:
         raise ValueError("ai_review_blinded_from_required")
+    missing_blind_paths = sorted(set(required) - set(blind_paths))
+    if missing_blind_paths:
+        raise ValueError(
+            "ai_review_missing_blinded_paths:" + ",".join(missing_blind_paths)
+        )
 
     drafting_agents = {draft.drafting_agent.strip() for draft in workbench.drafts}
     if len(drafting_agents) != 1 or not next(iter(drafting_agents), ""):
@@ -123,7 +214,11 @@ def register_independent_ai_review(
         "reviewing_agent_family": agent_family(reviewer),
         "drafting_agent": drafting_agent,
         "drafting_agent_family": agent_family(drafting_agent),
+        "review_source": source,
         "blinded_from": blind_paths,
+        "required_blinded_from": required,
+        "packet_sha256": packet_sha256.strip(),
+        "engine_output_consulted": False,
         "reviewed_at": (
             reviewed_at or datetime.now(UTC).isoformat().replace("+00:00", "Z")
         ),
