@@ -1,5 +1,17 @@
 # SESSION_HANDOFF
 
+## 2026-08-01 미확인 오류 봉인 상태 확인 handoff
+
+- **선택 단계와 과제:** KPI-1·5 무효 봉인을 AI가 폐기 처리하지 않으면서 사람이 확인할 근거를 읽기 전용으로 표시했다. `discard-status`는 어떤 파일도 바꾸지 않는다.
+- **주 데이터셋과 사례 수:** KPI-1·5 과거 봉인 각 100건, 합계 200건이다. 두 봉인은 건당 약 0.038초·수정률 0%인 자동수락 오류의 산물이므로 유효한 연구 정답지가 아니다.
+- **변경 파일:** `scripts/run_answer_key_workbench.py`, `tests/test_answer_key_workbench.py`, `PROGRESS.md`, `NEXT_STEPS.md`, `SESSION_HANDOFF.md`다. 사람 확인 전 증거인 `data/original_plan/kpi/seals/` 파일은 미추적 상태로 그대로 뒀다.
+- **현재 상태:** KPI-1·5 모두 `AWAITING_HUMAN_CONFIRMATION`, 정식 폐기 이력 0건이다. 상태 명령이 출력한 파일 SHA-256은 KPI-1 `8918fd6fea2e839251cad4a47d3f3a1169bc37537c864d35d94b40cacdd7cf26`, KPI-5 `8822b96d2de196a39bf424f1e6d7255603f319cd442ea17bfae9f82d90b5eb61`이다.
+- **검증:** `tests/test_answer_key_workbench.py` 50건 PASS, 변경 파일 Ruff PASS, `git diff --check` PASS다. KPI-1·5 실제 `discard-status`도 `mutated: false`를 반환했다.
+- **공식 delta:** 엔진 입력·안전 규칙·채점식·frozen eval·replay·slice를 바꾸거나 실행하지 않았다. delta 0이다.
+- **가장 큰 병목 5개:** KPI-1·5 사람 폐기 확인, 외부 AI 응답 600건, 사람 상세 판단 최소 20건·최대 400건, 새 봉인 4종, KPI-2 실제 사용자 100명의 전·후 PRO다.
+- **권장 다음 반복 3개:** (1) 사람이 상태 해시를 확인하고 KPI-1·5를 정식 폐기한다. (2) 패킷 전용 외부 AI 응답을 확보해 가져온다. (3) 사람이 최소 상세 검토·일괄 승인·봉인을 수행한다.
+- **한계:** 상태 명령은 파일 존재와 해시, 기록 수만 확인한다. 과거 검토의 임상적 적절성이나 폐기 사유를 대신 판단하지 않는다. 1초 검토 하한과 합의 표본 5건은 임의의 운영 기준이며, 원문 성분 234종 중 209종은 카탈로그 밖이다.
+
 ## 2026-08-01 교차 AI 기반 최소 사람 검토 handoff
 
 - **선택 단계와 과제:** KPI-1·3·4·5의 100건 측정 표본은 유지하면서 사람의 상세 검토를 최소화했다. 브랜치는 `feat/adaptive-answer-key-review`다. push·배포·훈련·실제 트래픽·사람 판정·서명·봉인은 실행하지 않았다.

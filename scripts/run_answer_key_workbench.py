@@ -20,6 +20,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 import time
@@ -119,6 +120,17 @@ def legacy_discarded_seal_path(indicator_id: str) -> Path:
 
 def seal_disposal_history_path(indicator_id: str) -> Path:
     return SEAL_DISPOSAL_DIR / f"{slug(indicator_id)}_seal_disposals_v1.json"
+
+
+def seal_candidate_path(indicator_id: str) -> Path:
+    """Find an active seal or a seal relocated before audited disposal."""
+    active = seal_path(indicator_id)
+    if active.is_file():
+        return active
+    legacy = legacy_discarded_seal_path(indicator_id)
+    if legacy.is_file():
+        return legacy
+    return active
 
 
 def say(message: str = "") -> None:
@@ -596,12 +608,62 @@ def cmd_seal(args) -> int:
     return 0
 
 
-def cmd_discard_seal(args) -> int:
-    destination = seal_path(args.indicator)
+def cmd_discard_status(args) -> int:
+    """Report disposal evidence without recording a human decision."""
+    destination = seal_candidate_path(args.indicator)
+    history_path = seal_disposal_history_path(args.indicator)
+    history = {"events": []}
+    if history_path.is_file():
+        history = json.loads(history_path.read_text(encoding="utf-8"))
     if not destination.is_file():
-        legacy_destination = legacy_discarded_seal_path(args.indicator)
-        if legacy_destination.is_file():
-            destination = legacy_destination
+        say(json.dumps(
+            {
+                "status": "NO_SEAL_CANDIDATE",
+                "indicator_id": args.indicator,
+                "formal_disposal_count": len(history.get("events", [])),
+            },
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+
+    seal = json.loads(destination.read_text(encoding="utf-8"))
+    if seal.get("indicator_id") != args.indicator:
+        say(json.dumps(
+            {
+                "status": "BLOCKED",
+                "reason": "seal_indicator_mismatch",
+                "requested": args.indicator,
+                "found": seal.get("indicator_id"),
+            },
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+
+    actual_sha256 = hashlib.sha256(destination.read_bytes()).hexdigest()
+    say(json.dumps(
+        {
+            "status": "AWAITING_HUMAN_CONFIRMATION",
+            "indicator_id": args.indicator,
+            "seal_path": str(destination),
+            "file_sha256": actual_sha256,
+            "embedded_seal_sha256": seal.get("seal_sha256"),
+            "formal_disposal_count": len(history.get("events", [])),
+            "mutated": False,
+            "next": (
+                "사람이 폐기 사유를 확인한 뒤 discard-seal을 실행하고 "
+                f"'{args.indicator} 봉인 폐기'를 직접 입력한다."
+            ),
+        },
+        ensure_ascii=False,
+        indent=2,
+    ))
+    return 0
+
+
+def cmd_discard_seal(args) -> int:
+    destination = seal_candidate_path(args.indicator)
     target = workbench_path(args.indicator)
     if not destination.is_file():
         say(f"폐기할 봉인이 없습니다: {seal_path(args.indicator)}")
@@ -783,6 +845,13 @@ def build_parser() -> ArgumentParser:
     discard.add_argument("--by", required=True, help="폐기하는 사람 이름")
     discard.add_argument("--reason", required=True, help="폐기 사유")
     discard.set_defaults(func=cmd_discard_seal)
+
+    discard_status = sub.add_parser(
+        "discard-status",
+        help="봉인 폐기 후보와 정식 폐기 이력을 읽기 전용으로 확인한다",
+    )
+    discard_status.add_argument("--indicator", required=True)
+    discard_status.set_defaults(func=cmd_discard_status)
     return parser
 
 

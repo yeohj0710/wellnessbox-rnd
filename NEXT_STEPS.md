@@ -2,7 +2,7 @@
 
 ## 2026-08-01 최소 사람 검토 경로의 다음 단계
 
-1. **사람이 KPI-1·5 과속 봉인을 정식 폐기한다.** `discard-seal`을 지표별로 실행하고 폐기자·사유·확인 문구를 사람이 직접 입력한다. AI는 폐기 승인을 대신하지 않는다.
+1. **사람이 KPI-1·5 과속 봉인을 정식 폐기한다.** 먼저 `python scripts/run_answer_key_workbench.py discard-status --indicator KPI-1`과 KPI-5 명령으로 후보 해시와 `formal_disposal_count: 0`을 확인한다. 그다음 `discard-seal`을 지표별로 실행하고 폐기자·사유·확인 문구를 사람이 직접 입력한다. AI는 폐기 승인을 대신하지 않는다.
 2. **KPI-1·5는 Claude 2차 의견을 받는다.** `data/original_plan/kpi/ai_review_packets/`의 해당 패킷만 Claude에 전달한다. 저장소나 워크벤치 원본은 전달하지 않는다. 완전한 응답 JSON을 `import-ai-review`로 가져온다.
 3. **KPI-3·4는 Claude 1차 초안과 새 블라인드 Codex 2차 의견을 받는다.** Claude 응답은 `import-primary-ai-draft`로 가져온다. 같은 패킷만 새 Codex 작업에 전달하고 그 응답을 `import-ai-review`로 가져온다. 현재 작업은 엔진 정책을 이미 읽었으므로 2차 의견을 만들지 않는다.
 4. **사람이 필요한 사례만 상세 검토한다.** 지표별로 `minimal-status`를 확인하고 `review-minimal --by <검토자>`를 실행한다. 모든 불일치·위험 플래그와 합의 표본 5건이 대상이다. 표본 수정에 따라 20건 또는 전수로 자동 확대된다. 2차년도 기록은 `pharmacist_candidate_preliminary_safety_review`이며 약사 검토라고 쓰지 않는다.

@@ -591,6 +591,81 @@ class SealDisposalTest(unittest.TestCase):
             self.assertTrue(seal_path.is_file())
             self.assertEqual(load_workbench(bench_path).decisions, {})
 
+    def test_discard_status_reports_legacy_candidate_without_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            active_path = root / "active.json"
+            legacy_path = root / "discarded" / "legacy.json"
+            legacy_path.parent.mkdir()
+            legacy_path.write_text(
+                json.dumps({"indicator_id": "KPI-1", "seal_sha256": "abc123"}),
+                encoding="utf-8",
+            )
+            before = legacy_path.read_bytes()
+            messages: list[str] = []
+
+            with (
+                patch.object(workbench_cli, "seal_path", return_value=active_path),
+                patch.object(
+                    workbench_cli,
+                    "legacy_discarded_seal_path",
+                    return_value=legacy_path,
+                ),
+                patch.object(
+                    workbench_cli,
+                    "seal_disposal_history_path",
+                    return_value=root / "history.json",
+                ),
+                patch.object(workbench_cli, "say", side_effect=messages.append),
+            ):
+                result = workbench_cli.cmd_discard_status(
+                    SimpleNamespace(indicator="KPI-1")
+                )
+
+            report = json.loads(messages[-1])
+            self.assertEqual(result, 0)
+            self.assertEqual(report["status"], "AWAITING_HUMAN_CONFIRMATION")
+            self.assertEqual(report["formal_disposal_count"], 0)
+            self.assertFalse(report["mutated"])
+            self.assertEqual(legacy_path.read_bytes(), before)
+
+    def test_discard_status_does_not_treat_history_as_a_current_candidate(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            history_path = root / "history.json"
+            history_path.write_text(
+                json.dumps({"events": [{"indicator_id": "KPI-1"}]}),
+                encoding="utf-8",
+            )
+            messages: list[str] = []
+
+            with (
+                patch.object(
+                    workbench_cli,
+                    "seal_path",
+                    return_value=root / "missing-active.json",
+                ),
+                patch.object(
+                    workbench_cli,
+                    "legacy_discarded_seal_path",
+                    return_value=root / "missing-legacy.json",
+                ),
+                patch.object(
+                    workbench_cli,
+                    "seal_disposal_history_path",
+                    return_value=history_path,
+                ),
+                patch.object(workbench_cli, "say", side_effect=messages.append),
+            ):
+                result = workbench_cli.cmd_discard_status(
+                    SimpleNamespace(indicator="KPI-1")
+                )
+
+            report = json.loads(messages[-1])
+            self.assertEqual(result, 2)
+            self.assertEqual(report["status"], "NO_SEAL_CANDIDATE")
+            self.assertEqual(report["formal_disposal_count"], 1)
+
     def test_cli_can_confirm_a_seal_relocated_before_audited_disposal(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
