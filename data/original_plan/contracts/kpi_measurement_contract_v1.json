@@ -31,10 +31,10 @@
       "internal_only_possible": true,
       "internal_condition": "약사가 엔진 출력을 보기 전에 R_i를 확정하고 봉인해야 한다.",
       "fulfilment_plan": {
-        "approach": "독립 출처 AI 초안 → 사람이 건별 확정 → 봉인 → 엔진 대조",
+        "approach": "독립 초안 + 다른 제공자 계열 AI의 블라인드 검수 → 사람이 불일치·위험·합의 표본 상세 검토 → 나머지 합의안 명시적 일괄 승인 → 봉인 → 엔진 대조",
         "tool": "scripts/run_answer_key_workbench.py",
-        "status": "sealed",
-        "sealed_note": "2026-07-31 권혁찬 예비 약사가 100건 확정 후 봉인. edit_rate_pct 0.0 이며 edit_rate_zero_every_draft_was_accepted_unchanged 경고가 봉인 provenance에 기록돼 있다. 3차년도 면허 취득 후 재검토 시 이 경고를 해소한다."
+        "status": "drafts_ready_prior_invalid_seal_awaiting_human_disposal_record",
+        "prior_seal_note": "2026-07-31 기록은 100건을 약 3.7초에 자동 수락해 유효한 검토로 인정하지 않는다. 파일은 discarded 폴더에 보존했지만 폐기자·시각·사유를 남기는 사람 확인은 아직 없다. AI나 도구가 폐기 승인을 대신하지 않는다."
       },
       "internal_measurement_is_valid_during_research": true
     },
@@ -120,11 +120,11 @@
       "internal_only_possible": true,
       "internal_condition": "정답 작업을 먼저 확정하고 봉인한 뒤 시스템을 실행한다.",
       "fulfilment_plan": {
-        "approach": "블라인드 상황 생성 → 검토자가 행동을 직접 입력 → 봉인 → 엔진 대조",
+        "approach": "블라인드 상황 생성 → 첫 번째 AI의 블라인드 행동 초안 가져오기 → 다른 제공자 계열 AI의 독립 검수 → 사람이 불일치·위험·합의 표본 상세 검토 → 나머지 합의안 명시적 일괄 승인 → 봉인 → 엔진 대조",
         "tool": "scripts/build_blinded_answer_key_drafts.py + scripts/run_answer_key_workbench.py",
         "status": "scenarios_ready_answers_not_supplied",
-        "note": "2026-07-31 감사에서 종전 초안이 무효로 확인됐다. 정답이 closed_loop_next_action_policy_v1.json 의 action 값이었고 엔진도 같은 파일을 읽어 정확도가 구조적으로 100%가 됐다. 대체 초안은 상황 100건만 제공하고 정답을 담지 않는다. 이 지표의 정답은 검토자가 입력하기 전까지 저장소 안에 존재하지 않는다.",
-        "expected_edit_rate": "100% — 검토자가 모든 답을 직접 쓰므로 수락이 아니라 수정으로 기록된다"
+        "note": "2026-07-31 감사에서 종전 초안이 무효로 확인됐다. 대체 워크벤치는 상황 100건과 미정 표시만 제공한다. 최소 검토 경로에서는 첫 번째 블라인드 AI 답안을 import-primary-ai-draft로 넣고, 다른 제공자 계열 AI가 같은 블라인드 패킷을 독립적으로 판단한다. 실제 AI 답안과 사람 결정은 아직 0건이다.",
+        "placeholder_is_not_an_answer": true
       },
       "internal_measurement_is_valid_during_research": true
     },
@@ -148,11 +148,11 @@
       "internal_only_possible": true,
       "internal_condition": "문항과 정답을 먼저 확정하고 봉인한 뒤 상담 모듈을 실행한다.",
       "fulfilment_plan": {
-        "approach": "독립 참조 코퍼스 초안 → 사람이 건별 확정 → 봉인 → 엔진 대조",
+        "approach": "OpenAI가 아닌 AI의 블라인드 1차 초안 → 다른 제공자 계열 AI의 블라인드 검수 → 사람이 불일치·위험·합의 표본 상세 검토 → 나머지 합의안 명시적 일괄 승인 → 봉인 → OpenAI 상담 모듈 대조",
         "tool": "scripts/build_blinded_answer_key_drafts.py + scripts/run_answer_key_workbench.py",
-        "status": "drafts_ready",
-        "note": "2026-07-31 감사에서 종전 초안이 고유 문항 57개(100 미달), 고유 정답 5개로 확인돼 교체했다. 대체 초안은 health_checker_reference_extract_v1 기반으로 고유 문항 100개, 고유 정답 75개다.",
-        "agent_separation_note": "대화형 LLM은 같은 제공자 계열 모델끼리 오류가 함께 발생할 수 있다. 다만 제공자 분리만으로 정답 독립성이 증명되지는 않는다. 모든 봉인은 측정 대상 ID와 초안 작성 주체가 다르고, 초안 생성 경로가 engine_logic 9개와 엔진 출력에서 차단됐음을 요구한다. 사람의 100건 상세 검토를 교차 AI 합의로 줄일 때만 서로 다른 제공자 계열의 2차 AI를 추가로 요구한다."
+        "status": "questions_ready_non_openai_primary_ai_draft_required",
+        "note": "2026-07-31 감사에서 종전 초안이 고유 문항 57개(100 미달), 고유 정답 5개로 확인돼 교체했다. 현재 문항은 health_checker_reference_extract_v1 기반으로 고유 문항 100개다. 측정 대상 상담 모듈이 OpenAI 계열이므로 Codex 답은 봉인하지 않고, Claude 같은 비-OpenAI 계열 1차 답을 import-primary-ai-draft로 가져온다.",
+        "agent_separation_note": "KPI-4는 측정 대상이 대화형 LLM이므로 초안 작성 AI와 상담 모델의 제공자 계열이 다르지 않으면 봉인을 거부한다. 교차 AI 검수도 1차와 다른 제공자 계열이어야 한다. 제공자 분리와 함께 engine_logic 9개·엔진 출력 차단, 패킷 SHA-256, 사람 최종 승인을 모두 검증한다."
       },
       "internal_measurement_is_valid_during_research": true
     },
@@ -176,10 +176,10 @@
       "internal_only_possible": true,
       "internal_condition": "참조 규칙을 외부 근거(문헌·규제 자료)에서 먼저 도출하고 봉인한다.",
       "fulfilment_plan": {
-        "approach": "독립 참조 코퍼스 초안 → 사람이 건별 확정 → 봉인 → 엔진 대조",
+        "approach": "독립 참조 코퍼스 초안 → 다른 제공자 계열 AI의 블라인드 검수 → 사람이 불일치·위험·합의 표본 상세 검토 → 나머지 합의안 명시적 일괄 승인 → 봉인 → 엔진 대조",
         "tool": "scripts/run_answer_key_workbench.py",
-        "status": "sealed",
-        "sealed_note": "2026-07-31 권혁찬 예비 약사가 100건 확정 후 봉인. KPI-1과 마찬가지로 edit_rate_pct 0.0 이며 경고가 봉인 provenance에 남아 있다."
+        "status": "drafts_ready_prior_invalid_seal_awaiting_human_disposal_record",
+        "prior_seal_note": "KPI-1과 같은 약 3.7초 자동 수락 기록이므로 유효한 검토로 인정하지 않는다. 사람 확인이 있는 정식 폐기 기록과 새 검토가 필요하다."
       },
       "internal_measurement_is_valid_during_research": true
     },
@@ -253,7 +253,7 @@
     }
   },
   "answer_key_construction": {
-    "method": "independent_draft_then_human_adjudication_with_optional_blind_cross_ai",
+    "method": "blind_cross_ai_adaptive_review_with_human_final_approval_or_full_human_fallback",
     "who_may_draft": "측정 대상 엔진이 아닌 독립 출처. AI가 초안을 만들어도 된다.",
     "who_may_not_draft": [
       "recommendation_engine",
@@ -261,31 +261,44 @@
       "engine_output",
       "system_under_test"
     ],
-    "who_decides": "최종 결정권자는 지명된 사람이다. 기본 경로에서는 100건을 각각 수락·수정·반려한다. 선택 경로에서는 서로 다른 제공자 계열의 두 AI가 독립적으로 답한 뒤, 사람이 모든 불일치·위험 플래그·결정적 합의 표본을 상세 검토하고 나머지 합의 사례를 명시적으로 일괄 승인한다. 일괄 승인도 사례별 결정으로 저장하되 상세 검토로 표기하지 않는다.",
+    "who_decides": "최종 결정권자는 지명된 사람이다. 기본 경로에서는 100건을 각각 수락·수정·반려하고, 반려 사례는 교체하기 전까지 봉인하지 않는다. 선택 경로에서는 서로 다른 제공자 계열의 두 AI가 독립적으로 답한 뒤, 사람이 모든 불일치·양쪽 AI의 위험 플래그·결정적 합의 표본을 상세 검토하고 나머지 합의 사례를 명시적으로 일괄 승인한다. 일괄 승인도 사례별 결정으로 저장하되 상세 검토로 표기하지 않는다.",
     "recorded": [
       "draft_source",
       "drafting_agent",
       "blinded_from",
       "system_under_test_id",
+      "system_under_test_provider_family (KPI-4 필수)",
       "engine_output_consulted_before_sealing (항상 false)",
+      "primary_ai_draft_cases_sha256 (KPI-3·4 대체 1차 초안 경로)",
       "blind_ai_review_packet_sha256",
       "independent_ai_review_cases_sha256",
       "건별 action (accepted / edited / rejected)",
       "decision_mode (detailed_review / ai_consensus_batch_approval)",
       "detailed_review_count",
       "batch_approved_count",
+      "review_duration_seconds (상세 검토만)",
       "edit_rate_pct",
       "reviewers"
     ],
     "adaptive_review_policy": {
       "purpose": "두 독립 AI의 합의를 사용해 사람의 상세 검토량을 줄이되 최종 결정을 자동화하지 않는다.",
       "different_provider_family_required_for_batch_approval": true,
-      "detailed_review_required": "모든 AI 불일치, 모든 위험 플래그, SHA-256으로 고른 합의 표본",
+      "detailed_review_required": "모든 AI 불일치, 1차·2차 AI의 모든 위험 플래그, SHA-256으로 고른 합의 표본",
       "initial_agreement_sample": 5,
       "one_sample_correction": "합의 표본을 20건으로 확대",
       "two_sample_corrections": "모든 합의 사례를 상세 검토",
       "batch_confirmation": "<KPI-ID> AI 합의안 일괄 승인",
+      "kpi3_primary_draft": "미정 표시는 답으로 세지 않는다. 첫 번째 AI의 완전한 블라인드 응답을 import-primary-ai-draft로 가져온 뒤 다른 제공자 계열 AI가 독립 검수한다.",
+      "kpi4_provider_separation": "초안 작성 AI와 상담 모델 제공자 계열이 같으면 봉인을 거부한다.",
+      "minimum_human_work_if_all_agree_without_flags": "지표별 상세 검토 5건과 일괄 승인 1회. 네 지표 합계 상세 검토 20건과 일괄 승인 4회.",
       "limit": "5건은 통계적·임상적 타당성을 증명하는 표본 수가 아니라 오류를 조기에 찾기 위한 임의의 운영 하한이다. 합의율·승인율·반려율은 봉인 통과 기준으로 사용하지 않는다."
+    },
+    "operational_limitations": {
+      "external_ai_blinding": "저장소는 응답의 engine_output_consulted=false, blinded_from, 패킷 SHA-256을 검사한다. 외부 AI가 실제로 무엇을 보았는지는 직접 관찰하지 못하므로 패킷만 전달한 실행 증빙을 별도로 보존한다.",
+      "ast_scope": "AST 감사는 저장소의 생성·가져오기 모듈이 어떤 파일을 읽는지 파일 단위로 본다. 읽은 파일을 상황 열거에만 썼는지 정답 도출에 썼는지는 구분하지 못한다.",
+      "provider_family": "제공자 계열은 알려진 실행 주체 문자열에서 추정한다. 알 수 없는 문자열은 독립 제공자로 인정하지 않지만 이 추정은 암호학적 증명이 아니다.",
+      "review_time_floor": "MIN_SECONDS_PER_DECISION=1.0은 임상적 충분성을 증명하는 기준이 아니라 자동 입력을 차단하는 임의 하한이다.",
+      "catalog_coverage": "원문 성분 234종 중 209종은 엔진 성분 카탈로그 12종 밖이라 채점에서 빠진다."
     },
     "rubber_stamp_signal": "상세 검토를 전부 그대로 수락하면 detailed_edit_rate_pct가 0이 되고 경고가 남는다. AI 합의 일괄 승인은 batch_approved_count로 따로 기록하며 상세 검토나 수정률에 섞지 않는다.",
     "tool": "scripts/run_answer_key_workbench.py",
@@ -295,6 +308,6 @@
       "KPI-4",
       "KPI-5"
     ],
-    "why_this_is_valid": "문제는 'AI가 만들었다'가 아니라 '측정 대상이 자기 정답을 만들었다'였다. 초안과 선택적 2차 AI 의견은 엔진 입력·출력에서 차단된 별도 경로로 만들고, 지명된 사람이 상세 판단 또는 명시적 합의안 일괄 승인으로 모든 사례의 최종 결정을 남긴 뒤 엔진 실행 전에 봉인한다. 제공자 분리는 상관 오류를 줄이는 보조 장치이며, 독립성의 핵심 증거는 정보 경계와 봉인 순서다."
+    "why_this_is_valid": "초안과 2차 AI 의견은 기록된 블라인드 경로로 만들고, 지명된 사람이 상세 판단 또는 명시적 합의안 일괄 승인으로 모든 사례의 최종 결정을 남긴 뒤 엔진 실행 전에 봉인한다. KPI-4는 초안 작성 AI와 상담 모델의 제공자 계열도 분리한다. 외부 AI 블라인딩은 실행 증빙이 필요한 운영 진술이며, 상세 검토 5건은 통계적 타당성 주장이 아니라 오류 탐지용 운영 하한이다."
   }
 }

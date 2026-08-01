@@ -1,4 +1,4 @@
-"""Draft an answer key from an independent source, then let a human decide each one.
+"""Draft independently, compare a blind second AI answer, then let a human decide.
 
 Authoring 100 cases by hand for four indicators is 400 items, and nobody does
 that well. The fix is not to let the engine grade itself — it is to separate the
@@ -6,12 +6,14 @@ two roles that were conflated:
 
   drafting   — anything may draft, as long as it is NOT the system under test
                and has not seen that system's output for the case
-  deciding   — a named human accepts, edits or rejects each draft, and the
-               record shows which of the three happened
+  deciding   — a named human reviews disagreements, risk flags and an agreement
+               sample, then explicitly approves or rejects the remaining AI
+               consensus batch
 
-That is ordinary assisted annotation. The measurement stays honest because the
-draft comes from a different derivation path than the engine's optimizer, and
-because the human's edits are counted rather than assumed.
+That is assisted annotation with adaptive checking. Every measured case remains,
+but detailed human review can fall to five cases when two independent AI answers
+fully agree and no risk is flagged. Batch approval is never labelled as detailed
+review, and the named human remains the final decision maker.
 
 A reviewer who accepts everything untouched produces a 0% edit rate. This module
 reports that number instead of hiding it, so the record shows what the review
@@ -22,6 +24,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
@@ -163,8 +166,13 @@ def decide(
     """Record one human decision. `None` means the case was rejected outright."""
     if not decided_by.strip():
         raise ValueError("decision_requires_a_named_person")
-    if review_duration_seconds is not None and review_duration_seconds < 0:
-        raise ValueError("review_duration_seconds_must_be_non_negative")
+    if review_duration_seconds is not None and (
+        not math.isfinite(review_duration_seconds)
+        or review_duration_seconds < 0
+    ):
+        raise ValueError(
+            "review_duration_seconds_must_be_finite_and_non_negative"
+        )
     stamp = decided_at or datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
     if final_answer is None:
@@ -261,7 +269,7 @@ def adjudicated_answer_key(workbench: Workbench) -> dict[str, list[str]]:
 
 
 def _agent_family(agent: str) -> str:
-    """Normalize common agent names to the model-provider family being tested."""
+    """Normalize known agent names; return empty when family is unknown."""
     folded = agent.strip().casefold()
     families = {
         "openai": ("openai", "chatgpt", "codex", "gpt-", "o1", "o3", "o4"),
@@ -273,7 +281,7 @@ def _agent_family(agent: str) -> str:
     for family, markers in families.items():
         if any(marker in folded for marker in markers):
             return family
-    return folded
+    return ""
 
 
 def build_provenance(
@@ -314,6 +322,10 @@ def build_provenance(
         raise ValueError("drafting_actor_is_system_under_test")
     if provider_family_gate and not system_under_test_provider_family.strip():
         raise ValueError("system_under_test_provider_family_required_for_kpi4")
+    if provider_family_gate and not drafting_family:
+        raise ValueError("drafting_agent_provider_family_unknown_for_kpi4")
+    if provider_family_gate and not declared_evaluated_family:
+        raise ValueError("system_under_test_provider_family_unknown_for_kpi4")
     if provider_family_gate and not provider_separated:
         raise ValueError(
             "kpi4_drafting_agent_matches_system_under_test_provider_family"
@@ -490,6 +502,7 @@ def discard_seal_with_audit_trail(
         active.replace(archived_seal)
         copy2(bench_path, archived_workbench)
         workbench.decisions = {}
+        workbench.batch_approval = None
         workbench.seal_disposals.append(record)
         save_workbench(bench_path, workbench)
         history.write_text(

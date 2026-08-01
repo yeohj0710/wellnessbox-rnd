@@ -21,6 +21,7 @@ from __future__ import annotations
 import ast
 import importlib
 import json
+import math
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -30,7 +31,11 @@ from wellnessbox_rnd.evals.answer_key_workbench import (
     CaseDraft,
     Decision,
     Workbench,
+    adjudicated_answer_key,
+    build_provenance,
+    summarise_adjudication,
 )
+from wellnessbox_rnd.evals.reference_standard import verify_seal
 
 REGISTRY_PATH = "data/original_plan/contracts/engine_input_registry_v1.json"
 WORKBENCH_DIR = "data/original_plan/kpi/workbench"
@@ -305,14 +310,40 @@ def audit_review_effort(workbench: dict[str, Any]) -> dict[str, Any]:
     ]
     detailed = [item for item in settled if item.get("reviewed_in_detail", True)]
     batch_count = len(settled) - len(detailed)
-    durations = [
-        float(item["review_duration_seconds"])
-        for item in detailed
-        if item.get("review_duration_seconds") is not None
-    ]
+    durations: list[float] = []
+    invalid_duration_count = 0
+    for item in detailed:
+        raw_duration = item.get("review_duration_seconds")
+        if raw_duration is None:
+            continue
+        try:
+            duration = float(raw_duration)
+        except (TypeError, ValueError):
+            invalid_duration_count += 1
+            continue
+        if not math.isfinite(duration) or duration < 0:
+            invalid_duration_count += 1
+            continue
+        durations.append(duration)
     stamps = sorted(
         filter(None, (_parse(item.get("decided_at", "")) for item in detailed))
     )
+
+    if invalid_duration_count:
+        return {
+            "decision_count": len(settled),
+            "detailed_decision_count": len(detailed),
+            "batch_approved_count": batch_count,
+            "elapsed_seconds": None,
+            "seconds_per_decision": None,
+            "duration_source": "per_case_recorded_duration",
+            "edit_rate_pct": 0.0,
+            "verdict": "FAIL",
+            "reason": (
+                f"상세 판단 {invalid_duration_count}건의 기록 시간이 "
+                "유한한 0 이상 숫자가 아니다."
+            ),
+        }
 
     if detailed and len(durations) == len(detailed):
         elapsed = sum(durations)
@@ -524,6 +555,10 @@ def audit_repository(
             registry=registry,
             seal_exists=seal is not None,
         )
+        draft_case_ids = [
+            item.get("case_id")
+            for item in workbench.get("drafts", [])
+        ]
         draft_ids = {
             item.get("case_id")
             for item in workbench.get("drafts", [])
@@ -532,7 +567,12 @@ def audit_repository(
         decided_ids = {
             case_id
             for case_id, decision in workbench.get("decisions", {}).items()
-            if decision.get("action") in {"accepted", "edited", "rejected"}
+            if decision.get("action") in {"accepted", "edited"}
+        }
+        rejected_ids = {
+            case_id
+            for case_id, decision in workbench.get("decisions", {}).items()
+            if decision.get("action") == "rejected"
         }
         seal_audit_verdict = (
             seal.get("provenance", {})
@@ -541,14 +581,72 @@ def audit_repository(
             if seal is not None
             else None
         )
-        indicator_audit["workbench_complete"] = draft_ids == decided_ids
+        current_workbench = Workbench(
+            indicator_id,
+            [CaseDraft(**item) for item in workbench.get("drafts", [])],
+            {
+                case_id: Decision(**item)
+                for case_id, item in workbench.get("decisions", {}).items()
+            },
+            list(workbench.get("seal_disposals", [])),
+            dict(workbench.get("ai_review", {})),
+            workbench.get("batch_approval"),
+            dict(workbench.get("primary_ai_draft", {})),
+        )
+        seal_check = verify_seal(seal) if seal is not None else None
+        current_cases = adjudicated_answer_key(current_workbench)
+        seal_matches_current_cases = bool(
+            seal is not None and seal.get("cases") == current_cases
+        )
+        provenance_matches_current = False
+        if seal is not None:
+            stored_provenance = seal.get("provenance", {})
+            stored_role = stored_provenance.get("role_separation", {})
+            try:
+                expected_provenance = build_provenance(
+                    current_workbench,
+                    summarise_adjudication(current_workbench),
+                    system_under_test_id=str(
+                        stored_role.get("system_under_test_id", "")
+                    ),
+                    system_under_test_provider_family=str(
+                        stored_role.get("system_under_test_provider_family", "")
+                        or ""
+                    ),
+                )
+            except ValueError:
+                expected_provenance = None
+            stored_provenance_core = {
+                key: value
+                for key, value in stored_provenance.items()
+                if key != "integrity_audit"
+            }
+            provenance_matches_current = bool(
+                expected_provenance is not None
+                and stored_provenance_core == expected_provenance
+            )
+        indicator_audit["workbench_complete"] = bool(
+            len(draft_case_ids) == len(draft_ids)
+            and draft_ids == decided_ids
+            and not rejected_ids
+        )
         indicator_audit["seal_integrity_audit_verdict"] = seal_audit_verdict
+        indicator_audit["seal_intact"] = bool(
+            seal_check and seal_check["seal_intact"]
+        )
+        indicator_audit["seal_matches_current_cases"] = seal_matches_current_cases
+        indicator_audit["seal_provenance_matches_current"] = (
+            provenance_matches_current
+        )
         indicator_audit["completion_ready"] = bool(
             indicator_audit["verdict"] == "PASS"
             and indicator_audit["workbench_complete"]
             and seal is not None
             and seal.get("meets_minimum_sample")
             and seal_audit_verdict == "PASS"
+            and indicator_audit["seal_intact"]
+            and seal_matches_current_cases
+            and provenance_matches_current
         )
         results.append(indicator_audit)
 
@@ -603,16 +701,49 @@ def sealing_readiness(
             "integrity_audit": indicator_audit,
         }
 
-    draft_ids = {
-        item.get("case_id")
-        for item in workbench.get("drafts", [])
-        if item.get("case_id")
-    }
+    raw_draft_ids = [
+        item.get("case_id") for item in workbench.get("drafts", [])
+    ]
+    draft_ids = {case_id for case_id in raw_draft_ids if case_id}
+    if len(raw_draft_ids) != len(draft_ids):
+        return {
+            "status": "BLOCKED",
+            "reason": "draft_case_ids_must_be_unique_and_nonempty",
+            "indicator_id": indicator_audit.get("indicator_id"),
+            "integrity_audit": indicator_audit,
+        }
     decisions = workbench.get("decisions", {})
-    decided_ids = {
+    settled_ids = {
         case_id
         for case_id, decision in decisions.items()
         if decision.get("action") in {"accepted", "edited", "rejected"}
+    }
+    extra = sorted(settled_ids - draft_ids)
+    if extra:
+        return {
+            "status": "BLOCKED",
+            "reason": "decision_case_not_in_drafts",
+            "indicator_id": indicator_audit.get("indicator_id"),
+            "extra_decision_ids": extra,
+            "integrity_audit": indicator_audit,
+        }
+    rejected = sorted(
+        case_id
+        for case_id, decision in decisions.items()
+        if case_id in draft_ids and decision.get("action") == "rejected"
+    )
+    if rejected:
+        return {
+            "status": "BLOCKED",
+            "reason": "rejected_cases_require_replacement",
+            "indicator_id": indicator_audit.get("indicator_id"),
+            "rejected_ids": rejected,
+            "integrity_audit": indicator_audit,
+        }
+    decided_ids = {
+        case_id
+        for case_id, decision in decisions.items()
+        if decision.get("action") in {"accepted", "edited"}
     }
     pending = sorted(draft_ids - decided_ids)
     if pending:

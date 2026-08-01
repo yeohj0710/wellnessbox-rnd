@@ -153,15 +153,27 @@ def main() -> int:
                 indent=2,
             ))
             return 2
+        provenance["integrity_audit"] = integrity["integrity_audit"]
         seal = seal_reference_standard(
             indicator_id=args.indicator,
             cases=cases,
             sealed_by=args.by,
             sealed_at=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
             contract=contract,
+            provenance=provenance,
         )
-        seal["provenance"] = provenance
-        seal["provenance"]["integrity_audit"] = integrity["integrity_audit"]
+        if not seal["meets_minimum_sample"]:
+            print(json.dumps(
+                {
+                    "status": "BLOCKED",
+                    "reason": "minimum_sample_not_met",
+                    "case_count": seal["case_count"],
+                    "minimum_sample_count": seal["minimum_sample_count"],
+                },
+                ensure_ascii=False,
+                indent=2,
+            ))
+            return 2
         write_json(target, seal)
         print(json.dumps(
             {
@@ -174,7 +186,7 @@ def main() -> int:
             },
             ensure_ascii=False, indent=2,
         ))
-        return 0 if seal["meets_minimum_sample"] else 2
+        return 0
 
     if not target.is_file():
         print(json.dumps(

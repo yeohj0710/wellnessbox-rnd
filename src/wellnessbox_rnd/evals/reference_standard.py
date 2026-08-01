@@ -18,7 +18,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-SEAL_SCHEMA = "reference_standard_seal_v1"
+SEAL_SCHEMA = "reference_standard_seal_v2"
 COMPARISON_SCHEMA = "reference_standard_comparison_v1"
 CONTRACT_RELATIVE_PATH = "data/original_plan/contracts/kpi_measurement_contract_v1.json"
 
@@ -50,8 +50,9 @@ def seal_reference_standard(
     sealed_by: str,
     sealed_at: str,
     contract: dict[str, Any],
+    provenance: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Record the human answer and its digest before any engine output exists."""
+    """Record the answer and all governance evidence under one digest."""
     spec = indicator(contract, indicator_id)
     if not sealed_by.strip():
         raise ValueError("seal_requires_a_named_person")
@@ -64,7 +65,7 @@ def seal_reference_standard(
     if empty:
         raise ValueError(f"reference_standard_has_empty_cases:{empty}")
 
-    return {
+    payload = {
         "schema_version": SEAL_SCHEMA,
         "indicator_id": indicator_id,
         "indicator_name": spec["name"],
@@ -75,20 +76,32 @@ def seal_reference_standard(
         "meets_minimum_sample": len(normalised) >= minimum,
         "engine_output_seen_before_sealing": False,
         "cases": normalised,
-        "seal_sha256": canonical_digest(normalised),
+        "cases_sha256": canonical_digest(normalised),
     }
+    if provenance is not None:
+        payload["provenance"] = provenance
+    return {**payload, "seal_sha256": canonical_digest(payload)}
 
 
 def verify_seal(seal: dict[str, Any]) -> dict[str, Any]:
-    """Re-derive the digest so an edit after sealing cannot pass unnoticed."""
-    recomputed = canonical_digest(seal.get("cases", {}))
-    intact = recomputed == seal.get("seal_sha256")
+    """Re-derive the whole-record digest, including governance provenance."""
+    payload = {
+        key: value for key, value in seal.items() if key != "seal_sha256"
+    }
+    recomputed = canonical_digest(payload)
+    supported_schema = seal.get("schema_version") == SEAL_SCHEMA
+    intact = supported_schema and recomputed == seal.get("seal_sha256")
     return {
         "schema_version": "reference_standard_seal_check_v1",
         "status": "READY" if intact else "BLOCKED",
         "seal_intact": intact,
         "recorded_sha256": seal.get("seal_sha256"),
         "recomputed_sha256": recomputed,
+        "reason": "" if intact else (
+            "unsupported_seal_schema"
+            if not supported_schema
+            else "seal_payload_digest_mismatch"
+        ),
     }
 
 

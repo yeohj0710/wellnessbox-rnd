@@ -1,13 +1,15 @@
-"""정답 초안을 AI가 만들고, 사람이 한 건씩 확정한다.
+"""두 AI의 블라인드 답안을 비교하고, 사람이 최종 결정한다.
 
 100건을 맨손으로 쓰는 대신 이렇게 나눈다.
 
-  draft   독립 출처(엔진이 아님)가 초안 100건을 만든다
-  review  사람이 한 건씩 수락·수정·반려로 확정한다. Enter만 누르면 수락이다
-  seal    확정된 정답을 봉인한다. 그다음에 엔진을 돌린다
+  export-ai-review   1차 답과 엔진 정보를 뺀 패킷을 만든다
+  import-ai-review   다른 제공자 계열 AI의 독립 답안을 가져온다
+  review-minimal     불일치·위험·합의 표본만 사람이 상세 검토한다
+  approve-consensus  사람이 나머지 AI 합의안을 명시적으로 최종 승인한다
+  seal               확정된 정답을 봉인한다. 그다음에 엔진을 돌린다
 
-초안 출처가 측정 대상 엔진이면 거부한다. 수정률은 기록에 남는다. 전부 그대로
-수락하면 수정률 0%가 그대로 보인다.
+초안 출처가 측정 대상 엔진이면 거부한다. 상세 검토와 일괄 승인을 구분해 기록한다.
+사람의 명시적 최종 승인 없이 AI 합의만으로 정답을 확정하지 않는다.
 
 사용법:
   python scripts/run_answer_key_workbench.py draft  --indicator KPI-1
@@ -556,20 +558,32 @@ def cmd_seal(args) -> int:
         ))
         return 2
 
+    provenance["integrity_audit"] = integrity["integrity_audit"]
     seal = seal_reference_standard(
         indicator_id=args.indicator,
         cases=adjudicated_answer_key(workbench),
         sealed_by=reviewers[0],
         sealed_at=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         contract=load_contract(ROOT),
+        provenance=provenance,
     )
-    seal["provenance"] = provenance
-    seal["provenance"]["integrity_audit"] = integrity["integrity_audit"]
+    if not seal["meets_minimum_sample"]:
+        say(json.dumps(
+            {
+                "status": "BLOCKED",
+                "reason": "minimum_sample_not_met",
+                "case_count": seal["case_count"],
+                "minimum_sample_count": seal["minimum_sample_count"],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
     write_json(destination, seal)
 
     say(json.dumps(
         {
-            "status": "READY" if seal["meets_minimum_sample"] else "BELOW_MINIMUM_SAMPLE",
+            "status": "READY",
             "seal_path": str(destination),
             "case_count": seal["case_count"],
             "minimum_sample_count": seal["minimum_sample_count"],
@@ -579,7 +593,7 @@ def cmd_seal(args) -> int:
         },
         ensure_ascii=False, indent=2,
     ))
-    return 0 if seal["meets_minimum_sample"] else 2
+    return 0
 
 
 def cmd_discard_seal(args) -> int:
@@ -715,7 +729,7 @@ def build_parser() -> ArgumentParser:
 
     import_primary = sub.add_parser(
         "import-primary-ai-draft",
-        help="KPI-3의 빈 정답에 첫 번째 블라인드 AI 초안을 넣는다",
+        help="KPI-3·4에 첫 번째 블라인드 AI 초안을 넣는다",
     )
     import_primary.add_argument("--indicator", required=True)
     import_primary.add_argument("--response", required=True)

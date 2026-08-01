@@ -154,13 +154,25 @@ class DecisionTest(unittest.TestCase):
     def test_negative_review_duration_is_rejected(self) -> None:
         with self.assertRaisesRegex(
             ValueError,
-            "review_duration_seconds_must_be_non_negative",
+            "review_duration_seconds_must_be_finite_and_non_negative",
         ):
             decide(
                 draft=_draft(),
                 final_answer=["magnesium"],
                 decided_by="권혁찬",
                 review_duration_seconds=-0.1,
+            )
+
+    def test_nonfinite_review_duration_is_rejected(self) -> None:
+        with self.assertRaisesRegex(
+            ValueError,
+            "review_duration_seconds_must_be_finite_and_non_negative",
+        ):
+            decide(
+                draft=_draft(),
+                final_answer=["magnesium"],
+                decided_by="권혁찬",
+                review_duration_seconds=float("nan"),
             )
 
 
@@ -343,6 +355,16 @@ class AdjudicationSummaryTest(unittest.TestCase):
                 system_under_test_id="wellnessbox-chat-v1",
                 system_under_test_provider_family="openai",
             )
+        with self.assertRaisesRegex(
+            ValueError,
+            "system_under_test_provider_family_unknown_for_kpi4",
+        ):
+            build_provenance(
+                bench,
+                summary,
+                system_under_test_id="wellnessbox-chat-v1",
+                system_under_test_provider_family="unknown-vendor",
+            )
         provenance = build_provenance(
             bench,
             summary,
@@ -496,6 +518,7 @@ class SealDisposalTest(unittest.TestCase):
             history_path = root / "history.json"
             archive_dir = root / "archive"
             bench = _bench(2)
+            bench.batch_approval = {"approved_by": "권혁찬"}
             for draft in bench.drafts:
                 bench.decisions[draft.case_id] = decide(
                     draft=draft,
@@ -533,6 +556,7 @@ class SealDisposalTest(unittest.TestCase):
             )
             self.assertFalse(seal_path.exists())
             self.assertEqual(len(restored.decisions), 0)
+            self.assertIsNone(restored.batch_approval)
             self.assertEqual(restored.seal_disposals, [record])
             self.assertEqual(provenance["prior_seal_disposals"], [record])
             self.assertTrue(Path(root / record["archived_seal_path"]).is_file())

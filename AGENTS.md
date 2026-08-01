@@ -43,11 +43,21 @@ Rationale and approved internal-only routes: `docs/original_plan/KPI_COMPLIANCE_
 - KPI-2 is the only indicator still open. Its 100-person minimum comes from the funded
   plan, so changing the number in this repo changes nothing. See `open_decision` in the
   contract.
-- KPI-1/3/4/5 compare the engine against a human answer key. Build it with
-  `scripts/run_answer_key_workbench.py`: an independent source drafts, a named person
-  decides each case, then it is sealed BEFORE the engine runs. AI drafting is fine —
-  only the system under test may not draft its own answer key. The edit rate is
-  recorded and a 0% rate is flagged; do not suppress that.
+- KPI-1/3/4/5 compare the engine against a human-controlled answer key. Keep all 100
+  measured cases. To minimize detailed human work, two different provider-family AI
+  agents independently answer every case from a blind packet. A named person reviews
+  every disagreement, every risk flag, and a deterministic sample of 5 agreements,
+  then explicitly approves or rejects the remaining agreement batch. One sampled
+  correction expands the sample to 20; two require every agreement. Record detailed
+  reviews and batch approvals separately. The named person remains the final decision
+  maker, and sealing must happen BEFORE the engine runs. Full per-case human review
+  remains a valid fallback.
+- KPI-3 starts with scenario-only placeholders. Before cross-AI review, import one
+  blind AI response with `import-primary-ai-draft`; a second, different-family AI then
+  reviews the same blind packet. Never count the placeholder as an AI answer.
+- KPI-4 also requires the primary drafting AI and the dialogue model under test to be
+  from different provider families. Record the dialogue model's provider family at
+  sealing; same-family provenance is a sealing failure.
 - Synthetic data is allowed as training input. It is NOT allowed as a KPI answer key
   (KPI-1/3/4/5) or as the measured values for KPI-2 and KPI-6.
 - KPI-2 needs pre/post PRO from at least 100 real people. KPI-6 needs 12 months of real
@@ -64,7 +74,9 @@ Rationale and approved internal-only routes: `docs/original_plan/KPI_COMPLIANCE_
 - Runtime safety must remain deterministic and rule / structured-knowledge based.
 - Deterministic fallback must remain when learned output is missing, unsafe, or suspicious.
 - Keep system-owned action space only.
-- Do not introduce human-review / manual-review / handoff actions.
+- Do not introduce human-review / manual-review / handoff actions into the runtime
+  recommendation flow. Offline KPI answer-key governance above is the explicit
+  exception required for measurement validity.
 - Prefer simple, testable, reproducible systems over ambitious architecture.
 
 ## Repo boundary

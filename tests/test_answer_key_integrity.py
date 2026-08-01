@@ -14,9 +14,13 @@ from types import SimpleNamespace
 
 import pytest
 
+import wellnessbox_rnd.evals.answer_key_integrity as integrity_module
 from scripts import run_answer_key_workbench as workbench_cli
 from scripts import seal_reference_standard as reference_seal_cli
 from scripts.audit_answer_key_integrity import drafter_source_index
+from wellnessbox_rnd.evals.adaptive_answer_key_review import (
+    PRIMARY_AI_DRAFT_SOURCE,
+)
 from wellnessbox_rnd.evals.answer_key_integrity import (
     audit_declared_blinding,
     audit_drafter_source,
@@ -26,11 +30,23 @@ from wellnessbox_rnd.evals.answer_key_integrity import (
     read_path_string_literals,
     sealing_readiness,
 )
+from wellnessbox_rnd.evals.answer_key_workbench import (
+    CaseDraft,
+    Workbench,
+    build_provenance,
+    decide,
+    save_workbench,
+    summarise_adjudication,
+)
 from wellnessbox_rnd.evals.blinded_drafters import (
     DRAFT_SOURCE_KPI4 as BLINDED_KPI4_DRAFT_SOURCE,
 )
 from wellnessbox_rnd.evals.reference_corpus_drafters import (
     DRAFT_SOURCE as REFERENCE_DRAFT_SOURCE,
+)
+from wellnessbox_rnd.evals.reference_standard import (
+    load_contract,
+    seal_reference_standard,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -150,6 +166,21 @@ def test_drafter_source_index_is_indicator_specific() -> None:
     assert kpi5 == {"reference_corpus_drafters.py"}
 
 
+def test_blind_primary_ai_source_maps_to_its_import_module() -> None:
+    index = drafter_source_index()
+    for indicator_id in ("KPI-3", "KPI-4"):
+        modules = {
+            path.name
+            for path in index[(indicator_id, PRIMARY_AI_DRAFT_SOURCE)]
+        }
+        assert modules == {"adaptive_answer_key_review.py"}
+    result = audit_drafter_source(
+        [EVALS / "adaptive_answer_key_review.py"],
+        load_registry(ROOT),
+    )
+    assert result["verdict"] == "PASS"
+
+
 def test_shared_corpus_sources_still_name_the_drafter_module() -> None:
     assert REFERENCE_DRAFT_SOURCE.endswith("@reference_corpus_drafters")
     assert BLINDED_KPI4_DRAFT_SOURCE.endswith("@blinded_drafters")
@@ -250,6 +281,23 @@ def test_recorded_durations_audit_detailed_review_but_not_batch_approval() -> No
     assert result["seconds_per_decision"] == 2.0
 
 
+def test_nonfinite_recorded_duration_fails_closed() -> None:
+    result = audit_review_effort(
+        {
+            "decisions": {
+                "case-1": {
+                    "action": "accepted",
+                    "reviewed_in_detail": True,
+                    "review_duration_seconds": float("nan"),
+                }
+            }
+        }
+    )
+
+    assert result["verdict"] == "FAIL"
+    assert "유한한 0 이상 숫자" in result["reason"]
+
+
 def test_repository_audit_passes_all_current_draft_sources() -> None:
     report = audit_repository(ROOT)
 
@@ -259,6 +307,98 @@ def test_repository_audit_passes_all_current_draft_sources() -> None:
         item["indicator_id"]: item["source_independence"]["verdict"]
         for item in report["indicators"]
     } == {"KPI-1": "PASS", "KPI-3": "PASS", "KPI-4": "PASS", "KPI-5": "PASS"}
+
+
+def test_repository_completion_rejects_tampered_seal_provenance(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    registry_path = (
+        tmp_path
+        / "data/original_plan/contracts/engine_input_registry_v1.json"
+    )
+    registry_path.parent.mkdir(parents=True)
+    registry_path.write_text(
+        json.dumps(
+            {
+                "entries": [
+                    {"path": "engine/policy.json", "role": "engine_logic"}
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    drafter_module = tmp_path / "independent_drafter.py"
+    drafter_module.write_text("VALUE = 1\n", encoding="utf-8")
+    monkeypatch.setattr(
+        integrity_module,
+        "drafter_source_index",
+        lambda _root: {("KPI-1", "independent"): {drafter_module}},
+    )
+    workbench = Workbench(
+        "KPI-1",
+        [
+            CaseDraft(
+                case_id=f"case-{index:03}",
+                prompt=f"질문 {index}",
+                draft_answer=["omega3"],
+                draft_source="independent",
+                drafting_agent="codex",
+                blinded_from=["engine/policy.json"],
+            )
+            for index in range(100)
+        ],
+    )
+    for draft in workbench.drafts:
+        workbench.decisions[draft.case_id] = decide(
+            draft=draft,
+            final_answer=["omega3"],
+            decided_by="검토자",
+            decided_at="2026-08-01T01:00:00Z",
+            review_duration_seconds=2.0,
+        )
+    workbench_file = (
+        tmp_path / "data/original_plan/kpi/workbench/kpi1_workbench_v1.json"
+    )
+    save_workbench(workbench_file, workbench)
+
+    before_seal = audit_repository(tmp_path, indicators=("KPI-1",))
+    provenance = build_provenance(
+        workbench,
+        summarise_adjudication(workbench),
+        system_under_test_id="engine-v1",
+    )
+    provenance["integrity_audit"] = before_seal["indicators"][0]
+    seal = seal_reference_standard(
+        indicator_id="KPI-1",
+        cases={draft.case_id: ["omega3"] for draft in workbench.drafts},
+        sealed_by="검토자",
+        sealed_at="2026-08-01T02:00:00Z",
+        contract=load_contract(ROOT),
+        provenance=provenance,
+    )
+    seal_path = (
+        tmp_path / "data/original_plan/kpi/seals/kpi1_reference_seal_v1.json"
+    )
+    seal_path.parent.mkdir(parents=True)
+    seal_path.write_text(
+        json.dumps(seal, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    assert audit_repository(
+        tmp_path,
+        indicators=("KPI-1",),
+    )["completion_status"] == "READY"
+
+    seal["provenance"]["role_separation"]["system_under_test_id"] = "tampered"
+    seal_path.write_text(
+        json.dumps(seal, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    tampered = audit_repository(tmp_path, indicators=("KPI-1",))
+
+    assert tampered["completion_status"] == "BLOCKED"
+    assert tampered["indicators"][0]["seal_intact"] is False
 
 
 def test_sealing_readiness_blocks_a_failed_integrity_audit() -> None:
@@ -280,6 +420,33 @@ def test_sealing_readiness_blocks_pending_human_decisions() -> None:
     assert result["status"] == "BLOCKED"
     assert result["reason"] == "adjudication_incomplete"
     assert result["pending"] == 1
+
+
+def test_sealing_readiness_blocks_rejected_cases_until_replaced() -> None:
+    result = sealing_readiness(
+        indicator_audit={"indicator_id": "KPI-1", "verdict": "PASS"},
+        workbench={
+            "drafts": [{"case_id": "case-1"}],
+            "decisions": {"case-1": {"action": "rejected"}},
+        },
+    )
+
+    assert result["status"] == "BLOCKED"
+    assert result["reason"] == "rejected_cases_require_replacement"
+    assert result["rejected_ids"] == ["case-1"]
+
+
+def test_sealing_readiness_blocks_duplicate_draft_ids() -> None:
+    result = sealing_readiness(
+        indicator_audit={"indicator_id": "KPI-1", "verdict": "PASS"},
+        workbench={
+            "drafts": [{"case_id": "case-1"}, {"case_id": "case-1"}],
+            "decisions": {"case-1": {"action": "accepted"}},
+        },
+    )
+
+    assert result["status"] == "BLOCKED"
+    assert result["reason"] == "draft_case_ids_must_be_unique_and_nonempty"
 
 
 def test_sealing_readiness_accepts_a_complete_passed_workbench() -> None:
@@ -372,6 +539,65 @@ def test_reference_seal_cli_refuses_to_write_when_the_audit_gate_fails(
             str(cases),
             "--by",
             "검토자",
+        ],
+    )
+
+    result = reference_seal_cli.main()
+
+    assert result == 2
+    assert not destination.exists()
+
+
+def test_reference_seal_cli_does_not_write_below_minimum_sample(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    cases = tmp_path / "cases.json"
+    destination = tmp_path / "seal.json"
+    cases.write_text(json.dumps({"case-1": ["omega3"]}), encoding="utf-8")
+    monkeypatch.setattr(reference_seal_cli, "seal_path", lambda _: destination)
+    monkeypatch.setattr(reference_seal_cli, "load_contract", lambda _: {})
+    monkeypatch.setattr(
+        reference_seal_cli,
+        "audit_sealing_readiness",
+        lambda *_: {"status": "READY", "integrity_audit": {"verdict": "PASS"}},
+    )
+    monkeypatch.setattr(reference_seal_cli, "load_workbench", lambda _: object())
+    monkeypatch.setattr(
+        reference_seal_cli,
+        "summarise_adjudication",
+        lambda _: {"reviewers": ["검토자"]},
+    )
+    monkeypatch.setattr(
+        reference_seal_cli,
+        "adjudicated_answer_key",
+        lambda _: {"case-1": ["omega3"]},
+    )
+    monkeypatch.setattr(reference_seal_cli, "build_provenance", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(
+        reference_seal_cli,
+        "seal_reference_standard",
+        lambda **_kwargs: {
+            "case_count": 1,
+            "minimum_sample_count": 100,
+            "meets_minimum_sample": False,
+            "seal_sha256": "abc",
+        },
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "seal_reference_standard.py",
+            "seal",
+            "--indicator",
+            "KPI-1",
+            "--cases",
+            str(cases),
+            "--by",
+            "검토자",
+            "--system-under-test-id",
+            "engine-v1",
         ],
     )
 

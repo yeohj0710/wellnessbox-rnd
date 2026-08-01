@@ -16,13 +16,19 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = load_contract(ROOT)
 
 
-def _seal(cases=None, sealed_by="권혁찬", indicator_id="KPI-1"):
+def _seal(
+    cases=None,
+    sealed_by="권혁찬",
+    indicator_id="KPI-1",
+    provenance=None,
+):
     return seal_reference_standard(
         indicator_id=indicator_id,
         cases=cases if cases is not None else {"case-1": ["omega3", "vitaminD"]},
         sealed_by=sealed_by,
         sealed_at="2026-07-30T12:00:00Z",
         contract=CONTRACT,
+        provenance=provenance,
     )
 
 
@@ -105,6 +111,30 @@ class SealTest(unittest.TestCase):
 
         self.assertFalse(check["seal_intact"])
         self.assertEqual(check["status"], "BLOCKED")
+
+    def test_editing_governance_provenance_after_sealing_is_detected(self) -> None:
+        seal = _seal(
+            provenance={
+                "integrity_audit": {"verdict": "PASS"},
+                "role_separation": {"system_under_test_id": "engine-v1"},
+            }
+        )
+        seal["provenance"]["integrity_audit"]["verdict"] = "FAIL"
+
+        check = verify_seal(seal)
+
+        self.assertFalse(check["seal_intact"])
+        self.assertEqual(check["reason"], "seal_payload_digest_mismatch")
+
+    def test_legacy_case_only_digest_is_not_accepted_as_a_current_seal(self) -> None:
+        seal = _seal()
+        seal["schema_version"] = "reference_standard_seal_v1"
+        seal["seal_sha256"] = canonical_digest(seal["cases"])
+
+        check = verify_seal(seal)
+
+        self.assertFalse(check["seal_intact"])
+        self.assertEqual(check["reason"], "unsupported_seal_schema")
 
     def test_ingredient_order_does_not_change_the_digest(self) -> None:
         self.assertEqual(
