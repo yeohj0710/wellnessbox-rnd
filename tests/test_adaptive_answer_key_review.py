@@ -181,6 +181,38 @@ def test_kpi4_can_replace_openai_primary_with_a_blind_claude_draft() -> None:
     )["packet_sha256"] == packet["packet_sha256"]
 
 
+def test_primary_ai_draft_records_promoted_review_response_role() -> None:
+    workbench = _workbench(1)
+    workbench.indicator_id = "KPI-3"
+    workbench.drafts[0].draft_answer = ["미정_검토자가_판단"]
+    packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )
+    cases = _reviews(workbench)
+    cases[0]["proposed_answer"] = "maintain"
+
+    record = register_blind_primary_ai_draft(
+        workbench,
+        drafting_agent="codex",
+        draft_source="blind_packet_independent_opinion",
+        blinded_from=["engine/policy.json"],
+        required_blinded_from=["engine/policy.json"],
+        packet_sha256=packet["packet_sha256"],
+        engine_output_consulted=False,
+        cases=cases,
+        input_response_role="independent_ai_review_promoted_to_primary",
+        input_response_sha256="a" * 64,
+    )
+
+    assert (
+        record["input_response_role"]
+        == "independent_ai_review_promoted_to_primary"
+    )
+    assert record["cases"]["case-000"]["proposed_answer"] == ["maintain"]
+    assert record["input_response_sha256"] == "a" * 64
+
+
 def test_primary_ai_draft_is_not_used_for_deterministic_kpi1() -> None:
     workbench = _workbench(1)
     packet = build_blind_ai_review_packet(

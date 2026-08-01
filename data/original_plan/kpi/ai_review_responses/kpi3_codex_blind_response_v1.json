@@ -1,0 +1,919 @@
+{
+    "reviewing_agent":  "codex-gpt-5.6-terra-kpi3-blind",
+    "review_source":  "blind_packet_independent_opinion",
+    "blinded_from":  [
+                         "data/knowledge/counseling_answer_verifier_policy_v1.json",
+                         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+                         "data/knowledge/goal_ingredient_priors_v1.json",
+                         "data/knowledge/reference_knowledge_base_v1.json",
+                         "data/knowledge/runtime_knowledge_db_v1.json",
+                         "data/original_plan/closed_loop_next_action_policy_v1.json",
+                         "data/rules/candidate_signal_scoring_rules_v1.json",
+                         "data/rules/safety_rules.json",
+                         "data/synthetic/synthetic_longitudinal_v4.jsonl"
+                     ],
+    "packet_sha256":  "9206684fd6644a92b310539fd15d0b203789f93a4e383f87716545b91c4d8d81",
+    "engine_output_consulted":  false,
+    "cases":  [
+                  {
+                      "case_id":  "kpi3-001",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.72,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+                  },
+                  {
+                      "case_id":  "kpi3-002",
+                      "proposed_answer":  "reduce",
+                      "confidence":  0.91,
+                      "flags":  [
+                                    "adverse_effect_reported"
+                                ],
+                      "rationale":  "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+                  },
+                  {
+                      "case_id":  "kpi3-003",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-004",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.96,
+                      "flags":  [
+                                    "missing_measurement"
+                                ],
+                      "rationale":  "The intended measurement is unavailable, so the next action should obtain the missing result."
+                  },
+                  {
+                      "case_id":  "kpi3-005",
+                      "proposed_answer":  "maintain",
+                      "confidence":  0.9,
+                      "flags":  [
+                                    "benefit_without_discomfort"
+                                ],
+                      "rationale":  "The goal indicator improved and no discomfort was reported, supporting maintenance."
+                  },
+                  {
+                      "case_id":  "kpi3-006",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.88,
+                      "flags":  [
+                                    "new_prescription"
+                                ],
+                      "rationale":  "A newly added prescription requires follow-up before changing the current plan."
+                  },
+                  {
+                      "case_id":  "kpi3-007",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.83,
+                      "flags":  [
+                                    "adherence_variation"
+                                ],
+                      "rationale":  "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+                  },
+                  {
+                      "case_id":  "kpi3-008",
+                      "proposed_answer":  "stop_and_escalate",
+                      "confidence":  0.97,
+                      "flags":  [
+                                    "new_allergy_history"
+                                ],
+                      "rationale":  "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+                  },
+                  {
+                      "case_id":  "kpi3-009",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.84,
+                      "flags":  [
+                                    "borderline_lab_result"
+                                ],
+                      "rationale":  "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+                  },
+                  {
+                      "case_id":  "kpi3-010",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.89,
+                      "flags":  [
+                                    "change_request"
+                                ],
+                      "rationale":  "The requested ingredient change needs follow-up before selecting a replacement."
+                  },
+                  {
+                      "case_id":  "kpi3-011",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.82,
+                      "flags":  [
+                                    "dose_deviation"
+                                ],
+                      "rationale":  "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+                  },
+                  {
+                      "case_id":  "kpi3-012",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-013",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.72,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+                  },
+                  {
+                      "case_id":  "kpi3-014",
+                      "proposed_answer":  "reduce",
+                      "confidence":  0.91,
+                      "flags":  [
+                                    "adverse_effect_reported"
+                                ],
+                      "rationale":  "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+                  },
+                  {
+                      "case_id":  "kpi3-015",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-016",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.96,
+                      "flags":  [
+                                    "missing_measurement"
+                                ],
+                      "rationale":  "The intended measurement is unavailable, so the next action should obtain the missing result."
+                  },
+                  {
+                      "case_id":  "kpi3-017",
+                      "proposed_answer":  "maintain",
+                      "confidence":  0.9,
+                      "flags":  [
+                                    "benefit_without_discomfort"
+                                ],
+                      "rationale":  "The goal indicator improved and no discomfort was reported, supporting maintenance."
+                  },
+                  {
+                      "case_id":  "kpi3-018",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.88,
+                      "flags":  [
+                                    "new_prescription"
+                                ],
+                      "rationale":  "A newly added prescription requires follow-up before changing the current plan."
+                  },
+                  {
+                      "case_id":  "kpi3-019",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.83,
+                      "flags":  [
+                                    "adherence_variation"
+                                ],
+                      "rationale":  "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+                  },
+                  {
+                      "case_id":  "kpi3-020",
+                      "proposed_answer":  "stop_and_escalate",
+                      "confidence":  0.97,
+                      "flags":  [
+                                    "new_allergy_history"
+                                ],
+                      "rationale":  "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+                  },
+                  {
+                      "case_id":  "kpi3-021",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.84,
+                      "flags":  [
+                                    "borderline_lab_result"
+                                ],
+                      "rationale":  "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+                  },
+                  {
+                      "case_id":  "kpi3-022",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.89,
+                      "flags":  [
+                                    "change_request"
+                                ],
+                      "rationale":  "The requested ingredient change needs follow-up before selecting a replacement."
+                  },
+                  {
+                      "case_id":  "kpi3-023",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.82,
+                      "flags":  [
+                                    "dose_deviation"
+                                ],
+                      "rationale":  "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+                  },
+                  {
+                      "case_id":  "kpi3-024",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.86,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No meaningful improvement after eight weeks supports reoptimization."
+                  },
+                  {
+                      "case_id":  "kpi3-025",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.72,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+                  },
+                  {
+                      "case_id":  "kpi3-026",
+                      "proposed_answer":  "reduce",
+                      "confidence":  0.91,
+                      "flags":  [
+                                    "adverse_effect_reported"
+                                ],
+                      "rationale":  "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+                  },
+                  {
+                      "case_id":  "kpi3-027",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-028",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.96,
+                      "flags":  [
+                                    "missing_measurement"
+                                ],
+                      "rationale":  "The intended measurement is unavailable, so the next action should obtain the missing result."
+                  },
+                  {
+                      "case_id":  "kpi3-029",
+                      "proposed_answer":  "maintain",
+                      "confidence":  0.9,
+                      "flags":  [
+                                    "benefit_without_discomfort"
+                                ],
+                      "rationale":  "The goal indicator improved and no discomfort was reported, supporting maintenance."
+                  },
+                  {
+                      "case_id":  "kpi3-030",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.88,
+                      "flags":  [
+                                    "new_prescription"
+                                ],
+                      "rationale":  "A newly added prescription requires follow-up before changing the current plan."
+                  },
+                  {
+                      "case_id":  "kpi3-031",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.83,
+                      "flags":  [
+                                    "adherence_variation"
+                                ],
+                      "rationale":  "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+                  },
+                  {
+                      "case_id":  "kpi3-032",
+                      "proposed_answer":  "stop_and_escalate",
+                      "confidence":  0.97,
+                      "flags":  [
+                                    "new_allergy_history"
+                                ],
+                      "rationale":  "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+                  },
+                  {
+                      "case_id":  "kpi3-033",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.84,
+                      "flags":  [
+                                    "borderline_lab_result"
+                                ],
+                      "rationale":  "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+                  },
+                  {
+                      "case_id":  "kpi3-034",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.89,
+                      "flags":  [
+                                    "change_request"
+                                ],
+                      "rationale":  "The requested ingredient change needs follow-up before selecting a replacement."
+                  },
+                  {
+                      "case_id":  "kpi3-035",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.82,
+                      "flags":  [
+                                    "dose_deviation"
+                                ],
+                      "rationale":  "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+                  },
+                  {
+                      "case_id":  "kpi3-036",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.86,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No meaningful improvement after eight weeks supports reoptimization."
+                  },
+                  {
+                      "case_id":  "kpi3-037",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.72,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+                  },
+                  {
+                      "case_id":  "kpi3-038",
+                      "proposed_answer":  "reduce",
+                      "confidence":  0.91,
+                      "flags":  [
+                                    "adverse_effect_reported"
+                                ],
+                      "rationale":  "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+                  },
+                  {
+                      "case_id":  "kpi3-039",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-040",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.96,
+                      "flags":  [
+                                    "missing_measurement"
+                                ],
+                      "rationale":  "The intended measurement is unavailable, so the next action should obtain the missing result."
+                  },
+                  {
+                      "case_id":  "kpi3-041",
+                      "proposed_answer":  "maintain",
+                      "confidence":  0.9,
+                      "flags":  [
+                                    "benefit_without_discomfort"
+                                ],
+                      "rationale":  "The goal indicator improved and no discomfort was reported, supporting maintenance."
+                  },
+                  {
+                      "case_id":  "kpi3-042",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.88,
+                      "flags":  [
+                                    "new_prescription"
+                                ],
+                      "rationale":  "A newly added prescription requires follow-up before changing the current plan."
+                  },
+                  {
+                      "case_id":  "kpi3-043",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.83,
+                      "flags":  [
+                                    "adherence_variation"
+                                ],
+                      "rationale":  "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+                  },
+                  {
+                      "case_id":  "kpi3-044",
+                      "proposed_answer":  "stop_and_escalate",
+                      "confidence":  0.97,
+                      "flags":  [
+                                    "new_allergy_history"
+                                ],
+                      "rationale":  "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+                  },
+                  {
+                      "case_id":  "kpi3-045",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.84,
+                      "flags":  [
+                                    "borderline_lab_result"
+                                ],
+                      "rationale":  "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+                  },
+                  {
+                      "case_id":  "kpi3-046",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.89,
+                      "flags":  [
+                                    "change_request"
+                                ],
+                      "rationale":  "The requested ingredient change needs follow-up before selecting a replacement."
+                  },
+                  {
+                      "case_id":  "kpi3-047",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.82,
+                      "flags":  [
+                                    "dose_deviation"
+                                ],
+                      "rationale":  "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+                  },
+                  {
+                      "case_id":  "kpi3-048",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.86,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No meaningful improvement after eight weeks supports reoptimization."
+                  },
+                  {
+                      "case_id":  "kpi3-049",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.72,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+                  },
+                  {
+                      "case_id":  "kpi3-050",
+                      "proposed_answer":  "reduce",
+                      "confidence":  0.91,
+                      "flags":  [
+                                    "adverse_effect_reported"
+                                ],
+                      "rationale":  "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+                  },
+                  {
+                      "case_id":  "kpi3-051",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-052",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.96,
+                      "flags":  [
+                                    "missing_measurement"
+                                ],
+                      "rationale":  "The intended measurement is unavailable, so the next action should obtain the missing result."
+                  },
+                  {
+                      "case_id":  "kpi3-053",
+                      "proposed_answer":  "maintain",
+                      "confidence":  0.9,
+                      "flags":  [
+                                    "benefit_without_discomfort"
+                                ],
+                      "rationale":  "The goal indicator improved and no discomfort was reported, supporting maintenance."
+                  },
+                  {
+                      "case_id":  "kpi3-054",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.88,
+                      "flags":  [
+                                    "new_prescription"
+                                ],
+                      "rationale":  "A newly added prescription requires follow-up before changing the current plan."
+                  },
+                  {
+                      "case_id":  "kpi3-055",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.83,
+                      "flags":  [
+                                    "adherence_variation"
+                                ],
+                      "rationale":  "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+                  },
+                  {
+                      "case_id":  "kpi3-056",
+                      "proposed_answer":  "stop_and_escalate",
+                      "confidence":  0.97,
+                      "flags":  [
+                                    "new_allergy_history"
+                                ],
+                      "rationale":  "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+                  },
+                  {
+                      "case_id":  "kpi3-057",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.84,
+                      "flags":  [
+                                    "borderline_lab_result"
+                                ],
+                      "rationale":  "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+                  },
+                  {
+                      "case_id":  "kpi3-058",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.89,
+                      "flags":  [
+                                    "change_request"
+                                ],
+                      "rationale":  "The requested ingredient change needs follow-up before selecting a replacement."
+                  },
+                  {
+                      "case_id":  "kpi3-059",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.82,
+                      "flags":  [
+                                    "dose_deviation"
+                                ],
+                      "rationale":  "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+                  },
+                  {
+                      "case_id":  "kpi3-060",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.86,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No meaningful improvement after eight weeks supports reoptimization."
+                  },
+                  {
+                      "case_id":  "kpi3-061",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.72,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+                  },
+                  {
+                      "case_id":  "kpi3-062",
+                      "proposed_answer":  "reduce",
+                      "confidence":  0.91,
+                      "flags":  [
+                                    "adverse_effect_reported"
+                                ],
+                      "rationale":  "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+                  },
+                  {
+                      "case_id":  "kpi3-063",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-064",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.96,
+                      "flags":  [
+                                    "missing_measurement"
+                                ],
+                      "rationale":  "The intended measurement is unavailable, so the next action should obtain the missing result."
+                  },
+                  {
+                      "case_id":  "kpi3-065",
+                      "proposed_answer":  "maintain",
+                      "confidence":  0.9,
+                      "flags":  [
+                                    "benefit_without_discomfort"
+                                ],
+                      "rationale":  "The goal indicator improved and no discomfort was reported, supporting maintenance."
+                  },
+                  {
+                      "case_id":  "kpi3-066",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.88,
+                      "flags":  [
+                                    "new_prescription"
+                                ],
+                      "rationale":  "A newly added prescription requires follow-up before changing the current plan."
+                  },
+                  {
+                      "case_id":  "kpi3-067",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.83,
+                      "flags":  [
+                                    "adherence_variation"
+                                ],
+                      "rationale":  "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+                  },
+                  {
+                      "case_id":  "kpi3-068",
+                      "proposed_answer":  "stop_and_escalate",
+                      "confidence":  0.97,
+                      "flags":  [
+                                    "new_allergy_history"
+                                ],
+                      "rationale":  "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+                  },
+                  {
+                      "case_id":  "kpi3-069",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.84,
+                      "flags":  [
+                                    "borderline_lab_result"
+                                ],
+                      "rationale":  "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+                  },
+                  {
+                      "case_id":  "kpi3-070",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.89,
+                      "flags":  [
+                                    "change_request"
+                                ],
+                      "rationale":  "The requested ingredient change needs follow-up before selecting a replacement."
+                  },
+                  {
+                      "case_id":  "kpi3-071",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.82,
+                      "flags":  [
+                                    "dose_deviation"
+                                ],
+                      "rationale":  "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+                  },
+                  {
+                      "case_id":  "kpi3-072",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.86,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No meaningful improvement after eight weeks supports reoptimization."
+                  },
+                  {
+                      "case_id":  "kpi3-073",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.72,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+                  },
+                  {
+                      "case_id":  "kpi3-074",
+                      "proposed_answer":  "reduce",
+                      "confidence":  0.91,
+                      "flags":  [
+                                    "adverse_effect_reported"
+                                ],
+                      "rationale":  "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+                  },
+                  {
+                      "case_id":  "kpi3-075",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-076",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.96,
+                      "flags":  [
+                                    "missing_measurement"
+                                ],
+                      "rationale":  "The intended measurement is unavailable, so the next action should obtain the missing result."
+                  },
+                  {
+                      "case_id":  "kpi3-077",
+                      "proposed_answer":  "maintain",
+                      "confidence":  0.9,
+                      "flags":  [
+                                    "benefit_without_discomfort"
+                                ],
+                      "rationale":  "The goal indicator improved and no discomfort was reported, supporting maintenance."
+                  },
+                  {
+                      "case_id":  "kpi3-078",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.88,
+                      "flags":  [
+                                    "new_prescription"
+                                ],
+                      "rationale":  "A newly added prescription requires follow-up before changing the current plan."
+                  },
+                  {
+                      "case_id":  "kpi3-079",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.83,
+                      "flags":  [
+                                    "adherence_variation"
+                                ],
+                      "rationale":  "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+                  },
+                  {
+                      "case_id":  "kpi3-080",
+                      "proposed_answer":  "stop_and_escalate",
+                      "confidence":  0.97,
+                      "flags":  [
+                                    "new_allergy_history"
+                                ],
+                      "rationale":  "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+                  },
+                  {
+                      "case_id":  "kpi3-081",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.84,
+                      "flags":  [
+                                    "borderline_lab_result"
+                                ],
+                      "rationale":  "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+                  },
+                  {
+                      "case_id":  "kpi3-082",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.89,
+                      "flags":  [
+                                    "change_request"
+                                ],
+                      "rationale":  "The requested ingredient change needs follow-up before selecting a replacement."
+                  },
+                  {
+                      "case_id":  "kpi3-083",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.82,
+                      "flags":  [
+                                    "dose_deviation"
+                                ],
+                      "rationale":  "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+                  },
+                  {
+                      "case_id":  "kpi3-084",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.86,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No meaningful improvement after eight weeks supports reoptimization."
+                  },
+                  {
+                      "case_id":  "kpi3-085",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.72,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+                  },
+                  {
+                      "case_id":  "kpi3-086",
+                      "proposed_answer":  "reduce",
+                      "confidence":  0.91,
+                      "flags":  [
+                                    "adverse_effect_reported"
+                                ],
+                      "rationale":  "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+                  },
+                  {
+                      "case_id":  "kpi3-087",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-088",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.96,
+                      "flags":  [
+                                    "missing_measurement"
+                                ],
+                      "rationale":  "The intended measurement is unavailable, so the next action should obtain the missing result."
+                  },
+                  {
+                      "case_id":  "kpi3-089",
+                      "proposed_answer":  "maintain",
+                      "confidence":  0.9,
+                      "flags":  [
+                                    "benefit_without_discomfort"
+                                ],
+                      "rationale":  "The goal indicator improved and no discomfort was reported, supporting maintenance."
+                  },
+                  {
+                      "case_id":  "kpi3-090",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.88,
+                      "flags":  [
+                                    "new_prescription"
+                                ],
+                      "rationale":  "A newly added prescription requires follow-up before changing the current plan."
+                  },
+                  {
+                      "case_id":  "kpi3-091",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.83,
+                      "flags":  [
+                                    "adherence_variation"
+                                ],
+                      "rationale":  "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+                  },
+                  {
+                      "case_id":  "kpi3-092",
+                      "proposed_answer":  "stop_and_escalate",
+                      "confidence":  0.97,
+                      "flags":  [
+                                    "new_allergy_history"
+                                ],
+                      "rationale":  "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+                  },
+                  {
+                      "case_id":  "kpi3-093",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.84,
+                      "flags":  [
+                                    "borderline_lab_result"
+                                ],
+                      "rationale":  "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+                  },
+                  {
+                      "case_id":  "kpi3-094",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.89,
+                      "flags":  [
+                                    "change_request"
+                                ],
+                      "rationale":  "The requested ingredient change needs follow-up before selecting a replacement."
+                  },
+                  {
+                      "case_id":  "kpi3-095",
+                      "proposed_answer":  "request_followup",
+                      "confidence":  0.82,
+                      "flags":  [
+                                    "dose_deviation"
+                                ],
+                      "rationale":  "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+                  },
+                  {
+                      "case_id":  "kpi3-096",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.86,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No meaningful improvement after eight weeks supports reoptimization."
+                  },
+                  {
+                      "case_id":  "kpi3-097",
+                      "proposed_answer":  "reoptimize",
+                      "confidence":  0.72,
+                      "flags":  [
+                                    "insufficient_response"
+                                ],
+                      "rationale":  "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+                  },
+                  {
+                      "case_id":  "kpi3-098",
+                      "proposed_answer":  "reduce",
+                      "confidence":  0.91,
+                      "flags":  [
+                                    "adverse_effect_reported"
+                                ],
+                      "rationale":  "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+                  },
+                  {
+                      "case_id":  "kpi3-099",
+                      "proposed_answer":  "request_safety_review",
+                      "confidence":  0.94,
+                      "flags":  [
+                                    "bleeding_or_bruising_signal"
+                                ],
+                      "rationale":  "New bruising warrants a safety review before further routine use."
+                  },
+                  {
+                      "case_id":  "kpi3-100",
+                      "proposed_answer":  "request_measurement",
+                      "confidence":  0.96,
+                      "flags":  [
+                                    "missing_measurement"
+                                ],
+                      "rationale":  "The intended measurement is unavailable, so the next action should obtain the missing result."
+                  }
+              ]
+}

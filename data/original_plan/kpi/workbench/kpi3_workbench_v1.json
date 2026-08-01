@@ -6,11 +6,11 @@
       "case_id": "kpi3-001",
       "prompt": "목표 「1. 생성 억제 (당화 차단)」(대사 및 순환 6. 당독소(AGEs) 관리) / 복용 중 vitamin_b_complex / 복용약 Amlodipine / 관찰: 복용 2주차, 목표 지표에 변화가 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 26_대사_및_순환_6._당독소_AGEs_관리.md p142)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -27,11 +27,11 @@
       "case_id": "kpi3-002",
       "prompt": "목표 「3. 지남력 강화 및 신경 보호 (문항 6,7번)」(신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별) / 복용 중 vitamin_b_complex / 관찰: 복용 중 속쓰림과 메스꺼움을 호소한다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reduce"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -48,11 +48,11 @@
       "case_id": "kpi3-003",
       "prompt": "목표 「6. 운동부족/혈류저하 - 뇌 신경 보호 및 기억력 개선」(신경계 및 뇌기능 7. 인지기능 저하 요인) / 복용 중 coq10, omega3 / 관찰: 복용 후 두드러기가 올라왔다고 보고했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -69,11 +69,11 @@
       "case_id": "kpi3-004",
       "prompt": "목표 「2. 의욕 저하 및 에너지 회복 (문항 3,4,8번)」(신경계 및 뇌기능 2. 우울) / 복용 중 vitamin_b_complex / 관찰: 후속 측정값을 제출하지 않아 경과를 확인할 수 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The intended measurement is unavailable, so the next action should obtain the missing result.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -90,11 +90,11 @@
       "case_id": "kpi3-005",
       "prompt": "목표 「A형 말초성 현훈 (귀) 이석증 메니에르 (순환/신경)」(에너지 생성 및 부신·갑상선 기능 5. 어지럼증) / 복용 중 vitamin_b_complex, zinc / 복용약 Atorvastatin / 관찰: 목표 지표가 개선됐고 불편 호소는 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "maintain"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -111,11 +111,11 @@
       "case_id": "kpi3-006",
       "prompt": "목표 「1. 기초 에너지 생성 및 만성피로 예방 (문항 1, 9번 'O')」(에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경) / 복용 중 magnesium_glycinate, omega3, vitamin_b_complex, vitamin_c / 관찰: 다른 병원에서 새 처방약이 추가됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly added prescription requires follow-up before changing the current plan.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -132,11 +132,11 @@
       "case_id": "kpi3-007",
       "prompt": "목표 「만성/재발성 방광염 － 바이오필름 파괴 및 면역 증가 (문항 20, 21, 26번)」(성호르몬·비뇨기계 4. 여성 염증) / 복용 중 probiotics, vitamin_d3 / 관찰: 복용 순응도가 절반에 못 미친다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p186)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -153,11 +153,11 @@
       "case_id": "kpi3-008",
       "prompt": "목표 「점막 보습 및 피부 탄력 유지 → 질 건조감, 피부 가려움」(성호르몬·비뇨기계 1. 여성 갱년기) / 복용 중 probiotics / 관찰: 이전에 없던 알레르기 이력이 새로 확인됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "stop_and_escalate"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p172)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -174,11 +174,11 @@
       "case_id": "kpi3-009",
       "prompt": "목표 「1. 편두통 완화 및 혈관 안정 (문항 1,2,3번)」(신경계 및 뇌기능 5. 두통·편두통) / 복용 중 coq10, magnesium_glycinate, vitamin_b_complex / 복용약 Esomeprazole / 관찰: 혈액검사 수치가 경계값에 걸쳐 있다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 09_신경계_및_뇌기능_5._두통·편두통.md p43)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -195,11 +195,11 @@
       "case_id": "kpi3-010",
       "prompt": "목표 「2. 혈관 경화형(계속)」(대사 및 순환 1. 고혈압) / 복용 중 coq10 / 관찰: 본인이 성분을 바꾸고 싶다고 요청했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p114)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The requested ingredient change needs follow-up before selecting a replacement.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -216,11 +216,11 @@
       "case_id": "kpi3-011",
       "prompt": "목표 「4. 뼈 건강 (골밀도 유지)」(에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진) / 복용 중 calcium_citrate, vitamin_d3 / 관찰: 권장량을 넘겨 복용해 왔다고 뒤늦게 말했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -237,11 +237,11 @@
       "case_id": "kpi3-012",
       "prompt": "목표 「2. 과민 반응형 (알레르기, 비염, 아토피, 천식, 두드러기) - 면역균형 회복」(면역 및 염증 1. 면역균형) / 복용 중 omega3, probiotics, vitamin_d3 / 관찰: 복용 8주차인데 목표 지표가 오히려 나빠졌다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p157)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -258,11 +258,11 @@
       "case_id": "kpi3-013",
       "prompt": "목표 「IBS - 장신경 안정 및 근육 이완 (문항 12, 13번)」(소화기계 2. 장) / 복용 중 l_theanine, magnesium_glycinate / 복용약 Furosemide / 관찰: 복용 2주차, 목표 지표에 변화가 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p98)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -279,11 +279,11 @@
       "case_id": "kpi3-014",
       "prompt": "목표 「12번(활동량) X」(D. 생활습관) / 복용 중 magnesium_glycinate, vitamin_b_complex / 관찰: 복용 중 속쓰림과 메스꺼움을 호소한다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reduce"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p29)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -300,11 +300,11 @@
       "case_id": "kpi3-015",
       "prompt": "목표 「9, 10, 11번(운동) X」(D. 생활습관) / 복용 중 magnesium_glycinate / 관찰: 복용 후 두드러기가 올라왔다고 보고했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -321,11 +321,11 @@
       "case_id": "kpi3-016",
       "prompt": "목표 「대사 활성화 및 감정 기복 조절 － 무기력증, 근육량 감소」(성호르몬·비뇨기계 2. 남성 갱년기) / 복용 중 vitamin_b_complex, vitamin_d3 / 관찰: 후속 측정값을 제출하지 않아 경과를 확인할 수 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 34_성호르몬·비뇨기계_2._남성_갱년기.md p177)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The intended measurement is unavailable, so the next action should obtain the missing result.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -342,11 +342,11 @@
       "case_id": "kpi3-017",
       "prompt": "목표 「4. 손상 신경 복구 및 신호 정상화」(근골격계 1. 근골격계 통증) / 복용 중 magnesium_glycinate, vitamin_b_complex / 복용약 Levothyroxine / 관찰: 목표 지표가 개선됐고 불편 호소는 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "maintain"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 31_근골격계_1._근골격계_통증.md p164)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -363,11 +363,11 @@
       "case_id": "kpi3-018",
       "prompt": "목표 「방광 평활근 이완 및 탄력 증가 － 야간뇨, 빈뇨, 절박뇨」(성호르몬·비뇨기계 3. 전립선) / 복용 중 magnesium_glycinate, omega3 / 관찰: 다른 병원에서 새 처방약이 추가됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 35_성호르몬·비뇨기계_3._전립선.md p180)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly added prescription requires follow-up before changing the current plan.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -384,11 +384,11 @@
       "case_id": "kpi3-019",
       "prompt": "목표 「1. 위점막 복구 및 염증 완화 (문항 1,2,3번)」(소화기계 1. 위) / 복용 중 zinc / 관찰: 복용 순응도가 절반에 못 미친다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p87)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -405,11 +405,11 @@
       "case_id": "kpi3-020",
       "prompt": "목표 「A형 혈관성 이명 (뇌혈관)」(에너지 생성 및 부신·갑상선 기능 6. 이명(귀울림)) / 복용 중 magnesium_glycinate, omega3 / 관찰: 이전에 없던 알레르기 이력이 새로 확인됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "stop_and_escalate"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 17_에너지_생성_및_부신·갑상선_기능_6._이명_귀울림.md p83)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -426,11 +426,11 @@
       "case_id": "kpi3-021",
       "prompt": "목표 「A형 성장 정체 및 유전형 (성장판 자원 부족)」(기타 3. 어린이) / 복용 중 calcium_citrate, magnesium_glycinate, vitamin_d3 / 복용약 Metformin / 관찰: 혈액검사 수치가 경계값에 걸쳐 있다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 43_기타_3._어린이.md p231)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -447,11 +447,11 @@
       "case_id": "kpi3-022",
       "prompt": "목표 「5. 인지저하 전반적 용도」(신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별) / 복용 중 probiotics / 관찰: 본인이 성분을 바꾸고 싶다고 요청했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The requested ingredient change needs follow-up before selecting a replacement.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -468,11 +468,11 @@
       "case_id": "kpi3-023",
       "prompt": "목표 「8. 감각저하 - 시력·청력 보호 및 미세순환 개선」(신경계 및 뇌기능 7. 인지기능 저하 요인) / 복용 중 magnesium_glycinate, omega3 / 관찰: 권장량을 넘겨 복용해 왔다고 뒤늦게 말했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -489,11 +489,11 @@
       "case_id": "kpi3-024",
       "prompt": "목표 「4. 염증성 피로 및 뇌 피로 개선 (문항 9,10번)」(신경계 및 뇌기능 2. 우울) / 복용 중 omega3, vitamin_c, zinc / 관찰: 복용 8주차인데 목표 지표가 오히려 나빠졌다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No meaningful improvement after eight weeks supports reoptimization.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -510,11 +510,11 @@
       "case_id": "kpi3-025",
       "prompt": "목표 「C형 심인성 현훈 (마음) 공황장애 불안증 (자율신경)」(에너지 생성 및 부신·갑상선 기능 5. 어지럼증) / 복용 중 l_theanine, magnesium_glycinate / 복용약 Prednisolone / 관찰: 복용 2주차, 목표 지표에 변화가 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p79)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -531,11 +531,11 @@
       "case_id": "kpi3-026",
       "prompt": "목표 「3. 자율신경 균형 및 혈당 안정 (문항 2,4,6번 'O')」(에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경) / 복용 중 coq10, l_theanine, magnesium_glycinate / 관찰: 복용 중 속쓰림과 메스꺼움을 호소한다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reduce"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -552,11 +552,11 @@
       "case_id": "kpi3-027",
       "prompt": "목표 「만성요도염 － 상피 재생 및 신경 안정 (문항 11, 16, 17번)」(성호르몬·비뇨기계 4. 여성 염증) / 복용 중 vitamin_b_complex / 관찰: 복용 후 두드러기가 올라왔다고 보고했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p187)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -573,11 +573,11 @@
       "case_id": "kpi3-028",
       "prompt": "목표 「세포 에너지 생성 및 활성화 - 피로감, 무기력증」(성호르몬·비뇨기계 1. 여성 갱년기) / 복용 중 coq10, vitamin_b_complex / 관찰: 후속 측정값을 제출하지 않아 경과를 확인할 수 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p173)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The intended measurement is unavailable, so the next action should obtain the missing result.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -594,11 +594,11 @@
       "case_id": "kpi3-029",
       "prompt": "목표 「3. 수면 부족 및 피로 누적 개선 (문항 7번)」(신경계 및 뇌기능 5. 두통·편두통) / 복용 중 l_theanine, vitamin_b_complex / 복용약 Amlodipine / 관찰: 목표 지표가 개선됐고 불편 호소는 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "maintain"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 09_신경계_및_뇌기능_5._두통·편두통.md p43)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -615,11 +615,11 @@
       "case_id": "kpi3-030",
       "prompt": "목표 「4. 호모시스테인형(혈관 독소) • 가족력 • 약이 잘 안 들음 • 마른 고혈압」(대사 및 순환 1. 고혈압) / 복용 중 vitamin_b_complex, vitamin_c / 관찰: 다른 병원에서 새 처방약이 추가됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p114)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly added prescription requires follow-up before changing the current plan.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -636,11 +636,11 @@
       "case_id": "kpi3-031",
       "prompt": "목표 「[공통] 심박출량 증가」(에너지 생성 및 부신·갑상선 기능 4. 저혈압·빈혈) / 복용 중 coq10, vitamin_b_complex / 관찰: 복용 순응도가 절반에 못 미친다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -657,11 +657,11 @@
       "case_id": "kpi3-032",
       "prompt": "목표 「4. 장누수/대사형 (잦은 설사,변비 / 저체온 / 항생제 장기복용) - 장 점막 면역 강화 및 대사 활성화」(면역 및 염증 1. 면역균형) / 복용 중 soluble_fiber, vitamin_b_complex / 관찰: 이전에 없던 알레르기 이력이 새로 확인됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "stop_and_escalate"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p158)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -678,11 +678,11 @@
       "case_id": "kpi3-033",
       "prompt": "목표 「+10번: O」(소화기계 2. 장) / 복용 중 vitamin_b_complex / 복용약 Atorvastatin / 관찰: 혈액검사 수치가 경계값에 걸쳐 있다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p98)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -699,11 +699,11 @@
       "case_id": "kpi3-034",
       "prompt": "목표 「15번(기상 시 개운함) X」(D. 생활습관) / 복용 중 l_theanine, magnesium_glycinate / 관찰: 본인이 성분을 바꾸고 싶다고 요청했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p29)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The requested ingredient change needs follow-up before selecting a replacement.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -720,11 +720,11 @@
       "case_id": "kpi3-035",
       "prompt": "목표 「지방간 및 대사 - 간 내 지방 축적 억제 및 대사 정상화」(소화기계 3. 간) / 복용 중 omega3 / 관찰: 권장량을 넘겨 복용해 왔다고 뒤늦게 말했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 20_소화기계_3._간.md p105)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -741,11 +741,11 @@
       "case_id": "kpi3-036",
       "prompt": "목표 「2. 혈당관리 - 인슐린 저항성」(대사 및 순환 4. 대사증후군) / 복용 중 vitamin_b_complex, zinc / 관찰: 복용 8주차인데 목표 지표가 오히려 나빠졌다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 24_대사_및_순환_4._대사증후군.md p134)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No meaningful improvement after eight weeks supports reoptimization.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -762,11 +762,11 @@
       "case_id": "kpi3-037",
       "prompt": "목표 「B. 신경성/스트레스 - 스트레스 호르몬 안정 & 식탐 억제」(대사 및 순환 5. 체지방·비만) / 복용 중 l_theanine, magnesium_glycinate / 복용약 Esomeprazole / 관찰: 복용 2주차, 목표 지표에 변화가 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 25_대사_및_순환_5._체지방·비만.md p139)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -783,11 +783,11 @@
       "case_id": "kpi3-038",
       "prompt": "목표 「2. 수면 유지 및 뇌 각성 억제 (문항 3번)」(신경계 및 뇌기능 1. 수면) / 복용 중 omega3 / 관찰: 복용 중 속쓰림과 메스꺼움을 호소한다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reduce"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 05_신경계_및_뇌기능_1._수면.md p33)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -804,11 +804,11 @@
       "case_id": "kpi3-039",
       "prompt": "목표 「4. 영양 흡수 보충 및 전신 징후 관리 (문항 10번)」(소화기계 1. 위) / 복용 중 vitamin_b_complex / 관찰: 복용 후 두드러기가 올라왔다고 보고했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p88)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -825,11 +825,11 @@
       "case_id": "kpi3-040",
       "prompt": "목표 「C형 신경성 이명 (감각 신경)」(에너지 생성 및 부신·갑상선 기능 6. 이명(귀울림)) / 복용 중 coq10, l_theanine, magnesium_glycinate, vitamin_b_complex, zinc / 관찰: 후속 측정값을 제출하지 않아 경과를 확인할 수 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 17_에너지_생성_및_부신·갑상선_기능_6._이명_귀울림.md p84)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The intended measurement is unavailable, so the next action should obtain the missing result.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -846,11 +846,11 @@
       "case_id": "kpi3-041",
       "prompt": "목표 「C형 영양 불균형/흡수부족형 (식욕부진, 편식)」(기타 3. 어린이) / 복용 중 probiotics, zinc / 복용약 Furosemide / 관찰: 목표 지표가 개선됐고 불편 호소는 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "maintain"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 43_기타_3._어린이.md p232)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -867,11 +867,11 @@
       "case_id": "kpi3-042",
       "prompt": "목표 「2. 수면 - 수면 리듬 조절 및 신경 이완」(신경계 및 뇌기능 7. 인지기능 저하 요인) / 복용 중 magnesium_glycinate, vitamin_b_complex / 관찰: 다른 병원에서 새 처방약이 추가됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly added prescription requires follow-up before changing the current plan.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -888,11 +888,11 @@
       "case_id": "kpi3-043",
       "prompt": "목표 「1. 치은염 (Gingivitis) 잇몸 조직 재생 및 지혈」(기타 1. 치과질환) / 복용 중 vitamin_c / 관찰: 복용 순응도가 절반에 못 미친다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 41_기타_1._치과질환.md p215)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -909,11 +909,11 @@
       "case_id": "kpi3-044",
       "prompt": "목표 「2. 식후 혈당 억제(스파이크 방지)」(대사 및 순환 3. 당뇨·인슐린저항성) / 복용 중 soluble_fiber / 관찰: 이전에 없던 알레르기 이력이 새로 확인됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "stop_and_escalate"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 23_대사_및_순환_3._당뇨·인슐린저항성.md p128)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -930,11 +930,11 @@
       "case_id": "kpi3-045",
       "prompt": "목표 「2. TG 상승형(중성지방/대사성)」(대사 및 순환 2. 이상지질혈증) / 복용 중 berberine, omega3, vitamin_b_complex / 복용약 Levothyroxine / 관찰: 혈액검사 수치가 경계값에 걸쳐 있다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 22_대사_및_순환_2._이상지질혈증.md p120)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -951,11 +951,11 @@
       "case_id": "kpi3-046",
       "prompt": "목표 「5. 만성 피로 고위험 (문항 9번 'X')」(에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경) / 복용 중 magnesium_glycinate, omega3, vitamin_b_complex / 관찰: 본인이 성분을 바꾸고 싶다고 요청했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The requested ingredient change needs follow-up before selecting a replacement.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -972,11 +972,11 @@
       "case_id": "kpi3-047",
       "prompt": "목표 「트리코모나스 질염－ 기생충 감염 후 점막 손상 회복 및 재발 방지」(성호르몬·비뇨기계 4. 여성 염증) / 복용 중 probiotics, zinc / 관찰: 권장량을 넘겨 복용해 왔다고 뒤늦게 말했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p187)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -993,11 +993,11 @@
       "case_id": "kpi3-048",
       "prompt": "목표 「2. 자율신경 균형 및 스트레스 완화 (문항 5, 9번)」(소화기계 1. 위) / 복용 중 l_theanine, magnesium_glycinate, vitamin_c / 관찰: 복용 8주차인데 목표 지표가 오히려 나빠졌다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p93)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No meaningful improvement after eight weeks supports reoptimization.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1014,11 +1014,11 @@
       "case_id": "kpi3-049",
       "prompt": "목표 「3. 배변 습관 교정 (악화 인자 제거) - 딱딱한 변 / 변비 - 배변 시 힘주기」(대사 및 순환 7. 치질) / 복용 중 probiotics, soluble_fiber / 복용약 Metformin / 관찰: 복용 2주차, 목표 지표에 변화가 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 27_대사_및_순환_7._치질.md p145)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1035,11 +1035,11 @@
       "case_id": "kpi3-050",
       "prompt": "목표 「1. 안구 보호 & 항산화 (활성산소 방어)」(에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진) / 복용 중 omega3 / 관찰: 복용 중 속쓰림과 메스꺼움을 호소한다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reduce"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1056,11 +1056,11 @@
       "case_id": "kpi3-051",
       "prompt": "목표 「2. 만성 피로 → 에너지 부스팅」(에너지 생성 및 부신·갑상선 기능 2. 갑상선 기능 저하) / 복용 중 coq10, vitamin_b_complex / 관찰: 복용 후 두드러기가 올라왔다고 보고했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1077,11 +1077,11 @@
       "case_id": "kpi3-052",
       "prompt": "목표 「여성 ③ 자궁/염증(착상 실패)」(임신 1. 난임) / 복용 중 omega3 / 관찰: 후속 측정값을 제출하지 않아 경과를 확인할 수 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 37_임신_1._난임.md p193)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The intended measurement is unavailable, so the next action should obtain the missing result.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1098,11 +1098,11 @@
       "case_id": "kpi3-053",
       "prompt": "목표 「변비 우세형 - 배변 리듬 및 연동운동 활성화 (문항 1~4번)」(소화기계 2. 장) / 복용 중 magnesium_glycinate, soluble_fiber, vitamin_b_complex / 복용약 Prednisolone / 관찰: 목표 지표가 개선됐고 불편 호소는 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "maintain"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p99)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1119,11 +1119,11 @@
       "case_id": "kpi3-054",
       "prompt": "목표 「5번(가공식품) X」(D. 생활습관) / 복용 중 omega3 / 관찰: 다른 병원에서 새 처방약이 추가됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly added prescription requires follow-up before changing the current plan.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1140,11 +1140,11 @@
       "case_id": "kpi3-055",
       "prompt": "목표 「해독 - 유해 독소 배출 및 산화적 스트레스 제거」(소화기계 3. 간) / 복용 중 zinc / 관찰: 복용 순응도가 절반에 못 미친다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 20_소화기계_3._간.md p107)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1161,11 +1161,11 @@
       "case_id": "kpi3-056",
       "prompt": "목표 「1. 연골 재생 및 마모 방지 관절 구조」(근골격계 1. 근골격계 통증) / 복용 중 vitamin_c / 관찰: 이전에 없던 알레르기 이력이 새로 확인됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "stop_and_escalate"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 31_근골격계_1._근골격계_통증.md p164)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1182,11 +1182,11 @@
       "case_id": "kpi3-057",
       "prompt": "목표 「1.골밀도 강화 & 골기질 형성 → 뼈의 재료 보충」(근골격계 2. 골다공증) / 복용 중 calcium_citrate, magnesium_glycinate / 복용약 Amlodipine / 관찰: 혈액검사 수치가 경계값에 걸쳐 있다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 32_근골격계_2._골다공증.md p167)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1203,11 +1203,11 @@
       "case_id": "kpi3-058",
       "prompt": "목표 「4. 야간 저혈당 방지 및 혈당 안정 (문항 4번)」(신경계 및 뇌기능 1. 수면) / 복용 중 vitamin_b_complex / 관찰: 본인이 성분을 바꾸고 싶다고 요청했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 05_신경계_및_뇌기능_1._수면.md p34)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The requested ingredient change needs follow-up before selecting a replacement.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1224,11 +1224,11 @@
       "case_id": "kpi3-059",
       "prompt": "목표 「2. 신체적 긴장 및 근육 이완 (문항 4,7번)」(신경계 및 뇌기능 3. 스트레스) / 복용 중 calcium_citrate, magnesium_glycinate / 관찰: 권장량을 넘겨 복용해 왔다고 뒤늦게 말했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 07_신경계_및_뇌기능_3._스트레스.md p38)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1245,11 +1245,11 @@
       "case_id": "kpi3-060",
       "prompt": "목표 「2. 부종 & 미세순환 - 심한 저녁 부종 - 꽉 끼는 신발 - 다리 저림 / 경련」(대사 및 순환 8. 하지정맥류) / 복용 중 magnesium_glycinate / 관찰: 복용 8주차인데 목표 지표가 오히려 나빠졌다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 28_대사_및_순환_8._하지정맥류.md p149)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No meaningful improvement after eight weeks supports reoptimization.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1266,11 +1266,11 @@
       "case_id": "kpi3-061",
       "prompt": "목표 「1. 기억력 강화 및 뇌세포 보호 (문항 1,2,3번)」(신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별) / 복용 중 omega3 / 복용약 Atorvastatin / 관찰: 복용 2주차, 목표 지표에 변화가 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1287,11 +1287,11 @@
       "case_id": "kpi3-062",
       "prompt": "목표 「5. 영양결핍 - 신경전달물질 원료 및 에너지 공급」(신경계 및 뇌기능 7. 인지기능 저하 요인) / 복용 중 vitamin_b_complex, vitamin_d3 / 관찰: 복용 중 속쓰림과 메스꺼움을 호소한다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reduce"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1308,11 +1308,11 @@
       "case_id": "kpi3-063",
       "prompt": "목표 「1. 불안·자책 완화 및 정서적 안정 (문항 1,5,6번)」(신경계 및 뇌기능 2. 우울) / 복용 중 l_theanine, magnesium_glycinate / 관찰: 복용 후 두드러기가 올라왔다고 보고했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1329,11 +1329,11 @@
       "case_id": "kpi3-064",
       "prompt": "목표 「4. 약물 고갈 영양소」(대사 및 순환 3. 당뇨·인슐린저항성) / 복용 중 calcium_citrate, coq10, magnesium_glycinate, vitamin_b_complex, vitamin_d3 / 관찰: 후속 측정값을 제출하지 않아 경과를 확인할 수 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 23_대사_및_순환_3._당뇨·인슐린저항성.md p128)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The intended measurement is unavailable, so the next action should obtain the missing result.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1350,11 +1350,11 @@
       "case_id": "kpi3-065",
       "prompt": "목표 「4. 스타틴 복용형(약물 부작용)」(대사 및 순환 2. 이상지질혈증) / 복용 중 coq10, magnesium_glycinate, vitamin_d3 / 복용약 Esomeprazole / 관찰: 목표 지표가 개선됐고 불편 호소는 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "maintain"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 22_대사_및_순환_2._이상지질혈증.md p121)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1371,11 +1371,11 @@
       "case_id": "kpi3-066",
       "prompt": "목표 「급성 방광염 － 강력한 균 포획 및 배출 (문항 5-7번)」(성호르몬·비뇨기계 4. 여성 염증) / 복용 중 vitamin_c / 관찰: 다른 병원에서 새 처방약이 추가됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p186)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly added prescription requires follow-up before changing the current plan.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1392,11 +1392,11 @@
       "case_id": "kpi3-067",
       "prompt": "목표 「정서적 안정 및 수면 질 개선 - 우울/불안, 불면증」(성호르몬·비뇨기계 1. 여성 갱년기) / 복용 중 l_theanine, magnesium_glycinate / 관찰: 복용 순응도가 절반에 못 미친다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p172)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1413,11 +1413,11 @@
       "case_id": "kpi3-068",
       "prompt": "목표 「통증 방어 및 염증 조절」(대사 및 순환 9. 통풍) / 복용 중 probiotics / 관찰: 이전에 없던 알레르기 이력이 새로 확인됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "stop_and_escalate"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 29_대사_및_순환_9._통풍.md p153)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1434,11 +1434,11 @@
       "case_id": "kpi3-069",
       "prompt": "목표 「2. 혈관 경화형(대사증후군) • 고지혈증/당뇨 동반 • 맥압(수축-이완) 큼 • 노인성 단독 수축기」(대사 및 순환 1. 고혈압) / 복용 중 omega3 / 복용약 Furosemide / 관찰: 혈액검사 수치가 경계값에 걸쳐 있다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p113)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1455,11 +1455,11 @@
       "case_id": "kpi3-070",
       "prompt": "목표 「3. 신경 안정 & 수면 유도 (교감신경 억제)」(에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진) / 복용 중 l_theanine, magnesium_glycinate / 관찰: 본인이 성분을 바꾸고 싶다고 요청했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The requested ingredient change needs follow-up before selecting a replacement.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1476,11 +1476,11 @@
       "case_id": "kpi3-071",
       "prompt": "목표 「1. 방어력 저하형 (잦은 감기, 감염 후 회복이 더딤) - 점막 면역 강화 (1차방어선)」(면역 및 염증 1. 면역균형) / 복용 중 zinc / 관찰: 권장량을 넘겨 복용해 왔다고 뒤늦게 말했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p157)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1497,11 +1497,11 @@
       "case_id": "kpi3-072",
       "prompt": "목표 「공통 원인 불명(노화/스트레스)」(임신 1. 난임) / 복용 중 probiotics, vitamin_b_complex / 관찰: 복용 8주차인데 목표 지표가 오히려 나빠졌다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 37_임신_1._난임.md p194)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No meaningful improvement after eight weeks supports reoptimization.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1518,11 +1518,11 @@
       "case_id": "kpi3-073",
       "prompt": "목표 「1번(활력/심리) X」(D. 생활습관) / 복용 중 magnesium_glycinate, vitamin_b_complex / 복용약 Levothyroxine / 관찰: 복용 2주차, 목표 지표에 변화가 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1539,11 +1539,11 @@
       "case_id": "kpi3-074",
       "prompt": "목표 「8번(식사 속도) X」(D. 생활습관) / 복용 중 vitamin_b_complex / 관찰: 복용 중 속쓰림과 메스꺼움을 호소한다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reduce"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p28)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1560,11 +1560,11 @@
       "case_id": "kpi3-075",
       "prompt": "목표 「호르몬 합성 및 생식기능 강화 － 성욕 저하, 정자 활력 감소」(성호르몬·비뇨기계 2. 남성 갱년기) / 복용 중 zinc / 관찰: 복용 후 두드러기가 올라왔다고 보고했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 34_성호르몬·비뇨기계_2._남성_갱년기.md p177)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1581,11 +1581,11 @@
       "case_id": "kpi3-076",
       "prompt": "목표 「3.근육 이완 및 경련 예방」(근골격계 1. 근골격계 통증) / 복용 중 calcium_citrate, magnesium_glycinate, vitamin_d3 / 관찰: 후속 측정값을 제출하지 않아 경과를 확인할 수 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 31_근골격계_1._근골격계_통증.md p164)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The intended measurement is unavailable, so the next action should obtain the missing result.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1602,11 +1602,11 @@
       "case_id": "kpi3-077",
       "prompt": "목표 「전립선 크기 및 호르몬 조절 － 약뇨/잔뇨감, 배뇨 지연」(성호르몬·비뇨기계 3. 전립선) / 복용 중 zinc / 복용약 Metformin / 관찰: 목표 지표가 개선됐고 불편 호소는 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "maintain"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 35_성호르몬·비뇨기계_3._전립선.md p180)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1623,11 +1623,11 @@
       "case_id": "kpi3-078",
       "prompt": "목표 「3. 양쪽 복합형 (두 점수 모두 높음)」(소화기계 1. 위) / 복용 중 vitamin_b_complex / 관찰: 다른 병원에서 새 처방약이 추가됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p91)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly added prescription requires follow-up before changing the current plan.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1644,11 +1644,11 @@
       "case_id": "kpi3-079",
       "prompt": "목표 「4. 인지 피로 및 잡념 억제 (문항 2,6번)」(신경계 및 뇌기능 3. 스트레스) / 복용 중 vitamin_b_complex / 관찰: 복용 순응도가 절반에 못 미친다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 07_신경계_및_뇌기능_3._스트레스.md p38)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1665,11 +1665,11 @@
       "case_id": "kpi3-080",
       "prompt": "목표 「3. 장내 배출 (내독소 제거)」(대사 및 순환 6. 당독소(AGEs) 관리) / 복용 중 probiotics, soluble_fiber / 관찰: 이전에 없던 알레르기 이력이 새로 확인됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "stop_and_escalate"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 26_대사_및_순환_6._당독소_AGEs_관리.md p143)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1686,11 +1686,11 @@
       "case_id": "kpi3-081",
       "prompt": "목표 「4. 감정 조절 및 가성치매 방지 (문항 9,10번)」(신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별) / 복용 중 l_theanine, magnesium_glycinate, probiotics / 복용약 Prednisolone / 관찰: 혈액검사 수치가 경계값에 걸쳐 있다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1707,11 +1707,11 @@
       "case_id": "kpi3-082",
       "prompt": "목표 「7. 만성 염증 - 뇌 내 아밀로이드 축적 억제 및 항염」(신경계 및 뇌기능 7. 인지기능 저하 요인) / 복용 중 omega3, vitamin_d3 / 관찰: 본인이 성분을 바꾸고 싶다고 요청했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The requested ingredient change needs follow-up before selecting a replacement.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1728,11 +1728,11 @@
       "case_id": "kpi3-083",
       "prompt": "목표 「3. 장-뇌 축 및 감정 활력 (문항 7번)」(신경계 및 뇌기능 2. 우울) / 복용 중 probiotics, vitamin_d3 / 관찰: 권장량을 넘겨 복용해 왔다고 뒤늦게 말했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 06_신경계_및_뇌기능_2._우울.md p36)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1749,11 +1749,11 @@
       "case_id": "kpi3-084",
       "prompt": "목표 「B형 중추성 현훈 (뇌) 뇌졸중 뇌종양 (뇌혈관)」(에너지 생성 및 부신·갑상선 기능 5. 어지럼증) / 복용 중 omega3, vitamin_b_complex / 관찰: 복용 8주차인데 목표 지표가 오히려 나빠졌다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No meaningful improvement after eight weeks supports reoptimization.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1770,11 +1770,11 @@
       "case_id": "kpi3-085",
       "prompt": "목표 「2. 부신 건강 및 스트레스 저항력 강화 (문항 3, 5번 'O')」(에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경) / 복용 중 magnesium_glycinate, vitamin_c / 복용약 Amlodipine / 관찰: 복용 2주차, 목표 지표에 변화가 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1791,11 +1791,11 @@
       "case_id": "kpi3-086",
       "prompt": "목표 「급성 요도염 － 화끈거림 차단 및 항염 (문항 8-10번)」(성호르몬·비뇨기계 4. 여성 염증) / 복용 중 omega3, zinc / 관찰: 복용 중 속쓰림과 메스꺼움을 호소한다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reduce"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 36_성호르몬·비뇨기계_4._여성_염증.md p186)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1812,11 +1812,11 @@
       "case_id": "kpi3-087",
       "prompt": "목표 「골밀도 유지 및 관절 보호 - 골다공증, 관절통」(성호르몬·비뇨기계 1. 여성 갱년기) / 복용 중 calcium_citrate, magnesium_glycinate, vitamin_d3 / 관찰: 복용 후 두드러기가 올라왔다고 보고했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 33_성호르몬·비뇨기계_1._여성_갱년기.md p173)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1833,11 +1833,11 @@
       "case_id": "kpi3-088",
       "prompt": "목표 「2. 긴장성 두통 및 근육 이완 (문항 8, 10번)」(신경계 및 뇌기능 5. 두통·편두통) / 복용 중 l_theanine, magnesium_glycinate, probiotics / 관찰: 후속 측정값을 제출하지 않아 경과를 확인할 수 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 09_신경계_및_뇌기능_5._두통·편두통.md p43)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The intended measurement is unavailable, so the next action should obtain the missing result.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1854,11 +1854,11 @@
       "case_id": "kpi3-089",
       "prompt": "목표 「3. 교감신경 항진형(스트레스성) • 두근거림/불면 • 뒷목 뻐근함 • 백의 고혈압」(대사 및 순환 1. 고혈압) / 복용 중 calcium_citrate, l_theanine, magnesium_glycinate / 복용약 Atorvastatin / 관찰: 목표 지표가 개선됐고 불편 호소는 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "maintain"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 21_대사_및_순환_1._고혈압.md p114)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1875,11 +1875,11 @@
       "case_id": "kpi3-090",
       "prompt": "목표 「[빈혈] 혈액량·순환 개선」(에너지 생성 및 부신·갑상선 기능 4. 저혈압·빈혈) / 복용 중 vitamin_b_complex / 관찰: 다른 병원에서 새 처방약이 추가됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly added prescription requires follow-up before changing the current plan.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1896,11 +1896,11 @@
       "case_id": "kpi3-091",
       "prompt": "목표 「3. 만성 염증형 (통증 / 관절 쑤심, 부종, 만성피로 / 종양) - 만성 염증 억제 및 면역 소모 감소」(면역 및 염증 1. 면역균형) / 복용 중 omega3 / 관찰: 복용 순응도가 절반에 못 미친다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 30_면역_및_염증_1._면역균형.md p158)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1917,11 +1917,11 @@
       "case_id": "kpi3-092",
       "prompt": "목표 「유당불내증 - 유제품 소화력 강화 및 부패방지 (문항 14번)」(소화기계 2. 장) / 복용 중 probiotics / 관찰: 이전에 없던 알레르기 이력이 새로 확인됐다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "stop_and_escalate"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 19_소화기계_2._장.md p98)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1938,11 +1938,11 @@
       "case_id": "kpi3-093",
       "prompt": "목표 「13, 14번(입면/숙면) X」(D. 생활습관) / 복용 중 l_theanine, magnesium_glycinate / 복용약 Esomeprazole / 관찰: 혈액검사 수치가 경계값에 걸쳐 있다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 04_D._생활습관.md p29)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1959,11 +1959,11 @@
       "case_id": "kpi3-094",
       "prompt": "목표 「간 기능 및 피로 - 에너지 생성 및 부신 피로 회복」(소화기계 3. 간) / 복용 중 vitamin_b_complex / 관찰: 본인이 성분을 바꾸고 싶다고 요청했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 20_소화기계_3._간.md p105)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The requested ingredient change needs follow-up before selecting a replacement.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1980,11 +1980,11 @@
       "case_id": "kpi3-095",
       "prompt": "목표 「1. 혈압관리 - 혈관 이완」(대사 및 순환 4. 대사증후군) / 복용 중 coq10, magnesium_glycinate, omega3 / 관찰: 권장량을 넘겨 복용해 왔다고 뒤늦게 말했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_followup"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 24_대사_및_순환_4._대사증후군.md p133)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2001,11 +2001,11 @@
       "case_id": "kpi3-096",
       "prompt": "목표 「A. 대사성/내장지방 - 인슐린 저항성 개선 & 지방 연소」(대사 및 순환 5. 체지방·비만) / 복용 중 berberine, coq10, probiotics, vitamin_b_complex, vitamin_d3 / 관찰: 복용 8주차인데 목표 지표가 오히려 나빠졌다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 25_대사_및_순환_5._체지방·비만.md p138)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No meaningful improvement after eight weeks supports reoptimization.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2022,11 +2022,11 @@
       "case_id": "kpi3-097",
       "prompt": "목표 「1. 신경 이완 및 입면 유도 (문항 1, 2, 9, 10번)」(신경계 및 뇌기능 1. 수면) / 복용 중 l_theanine, magnesium_glycinate / 복용약 Furosemide / 관찰: 복용 2주차, 목표 지표에 변화가 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reoptimize"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 05_신경계_및_뇌기능_1._수면.md p33)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2043,11 +2043,11 @@
       "case_id": "kpi3-098",
       "prompt": "목표 「3. 제균 보조 및 위 환경 개선 (문항 7,8번)」(소화기계 1. 위) / 복용 중 probiotics / 관찰: 복용 중 속쓰림과 메스꺼움을 호소한다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "reduce"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 18_소화기계_1._위.md p88)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2064,11 +2064,11 @@
       "case_id": "kpi3-099",
       "prompt": "목표 「B형 체성 이명 (근육/관절)」(에너지 생성 및 부신·갑상선 기능 6. 이명(귀울림)) / 복용 중 magnesium_glycinate / 관찰: 복용 후 두드러기가 올라왔다고 보고했다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_safety_review"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 17_에너지_생성_및_부신·갑상선_기능_6._이명_귀울림.md p84)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "New bruising warrants a safety review before further routine use.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2085,11 +2085,11 @@
       "case_id": "kpi3-100",
       "prompt": "목표 「B형 생활 습관/호르몬형 (수면/운동 부족)」(기타 3. 어린이) / 복용 중 magnesium_glycinate, vitamin_b_complex, vitamin_d3, zinc / 관찰: 후속 측정값을 제출하지 않아 경과를 확인할 수 없다 — 다음 수행 작업으로 무엇이 맞습니까?",
       "draft_answer": [
-        "미정_검토자가_판단"
+        "request_measurement"
       ],
-      "draft_source": "blinded_scenarios_reviewer_supplied_actions",
-      "draft_rationale": "이 지표의 정답은 저장소 안에 없다. 검토자가 다음 중 하나를 직접 입력한다: maintain, reduce, replace, reoptimize, hold_for_review, request_followup, request_measurement, request_safety_review, stop_and_escalate. (상황 출처: 43_기타_3._어린이.md p231)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "The intended measurement is unavailable, so the next action should obtain the missing result.",
+      "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2104,5 +2104,1056 @@
     }
   ],
   "decisions": {},
-  "seal_disposals": []
+  "seal_disposals": [],
+  "primary_ai_draft": {
+    "schema_version": "blind_primary_ai_answer_draft_v1",
+    "drafting_agent": "codex-gpt-5.6-terra-kpi3-blind",
+    "drafting_agent_family": "openai",
+    "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+    "response_source": "blind_packet_independent_opinion",
+    "input_response_role": "independent_ai_review_promoted_to_primary",
+    "input_response_sha256": "9e2ef4b2f03255c394ed475aec5f74493aafd8332b743b6ecbce5bfed7896015",
+    "blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "required_blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "packet_sha256": "9206684fd6644a92b310539fd15d0b203789f93a4e383f87716545b91c4d8d81",
+    "answer_vocabulary": [
+      "hold_for_review",
+      "maintain",
+      "reduce",
+      "replace",
+      "reoptimize",
+      "request_followup",
+      "request_measurement",
+      "request_safety_review",
+      "stop_and_escalate"
+    ],
+    "engine_output_consulted": false,
+    "drafted_at": "2026-08-01T04:05:43.615026Z",
+    "case_count": 100,
+    "cases": {
+      "kpi3-001": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+      },
+      "kpi3-002": {
+        "proposed_answer": [
+          "reduce"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "adverse_effect_reported"
+        ],
+        "rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+      },
+      "kpi3-003": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-004": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "missing_measurement"
+        ],
+        "rationale": "The intended measurement is unavailable, so the next action should obtain the missing result."
+      },
+      "kpi3-005": {
+        "proposed_answer": [
+          "maintain"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "benefit_without_discomfort"
+        ],
+        "rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance."
+      },
+      "kpi3-006": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "new_prescription"
+        ],
+        "rationale": "A newly added prescription requires follow-up before changing the current plan."
+      },
+      "kpi3-007": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.83,
+        "flags": [
+          "adherence_variation"
+        ],
+        "rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+      },
+      "kpi3-008": {
+        "proposed_answer": [
+          "stop_and_escalate"
+        ],
+        "confidence": 0.97,
+        "flags": [
+          "new_allergy_history"
+        ],
+        "rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+      },
+      "kpi3-009": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.84,
+        "flags": [
+          "borderline_lab_result"
+        ],
+        "rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+      },
+      "kpi3-010": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.89,
+        "flags": [
+          "change_request"
+        ],
+        "rationale": "The requested ingredient change needs follow-up before selecting a replacement."
+      },
+      "kpi3-011": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "dose_deviation"
+        ],
+        "rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+      },
+      "kpi3-012": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-013": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+      },
+      "kpi3-014": {
+        "proposed_answer": [
+          "reduce"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "adverse_effect_reported"
+        ],
+        "rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+      },
+      "kpi3-015": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-016": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "missing_measurement"
+        ],
+        "rationale": "The intended measurement is unavailable, so the next action should obtain the missing result."
+      },
+      "kpi3-017": {
+        "proposed_answer": [
+          "maintain"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "benefit_without_discomfort"
+        ],
+        "rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance."
+      },
+      "kpi3-018": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "new_prescription"
+        ],
+        "rationale": "A newly added prescription requires follow-up before changing the current plan."
+      },
+      "kpi3-019": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.83,
+        "flags": [
+          "adherence_variation"
+        ],
+        "rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+      },
+      "kpi3-020": {
+        "proposed_answer": [
+          "stop_and_escalate"
+        ],
+        "confidence": 0.97,
+        "flags": [
+          "new_allergy_history"
+        ],
+        "rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+      },
+      "kpi3-021": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.84,
+        "flags": [
+          "borderline_lab_result"
+        ],
+        "rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+      },
+      "kpi3-022": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.89,
+        "flags": [
+          "change_request"
+        ],
+        "rationale": "The requested ingredient change needs follow-up before selecting a replacement."
+      },
+      "kpi3-023": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "dose_deviation"
+        ],
+        "rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+      },
+      "kpi3-024": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.86,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No meaningful improvement after eight weeks supports reoptimization."
+      },
+      "kpi3-025": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+      },
+      "kpi3-026": {
+        "proposed_answer": [
+          "reduce"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "adverse_effect_reported"
+        ],
+        "rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+      },
+      "kpi3-027": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-028": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "missing_measurement"
+        ],
+        "rationale": "The intended measurement is unavailable, so the next action should obtain the missing result."
+      },
+      "kpi3-029": {
+        "proposed_answer": [
+          "maintain"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "benefit_without_discomfort"
+        ],
+        "rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance."
+      },
+      "kpi3-030": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "new_prescription"
+        ],
+        "rationale": "A newly added prescription requires follow-up before changing the current plan."
+      },
+      "kpi3-031": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.83,
+        "flags": [
+          "adherence_variation"
+        ],
+        "rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+      },
+      "kpi3-032": {
+        "proposed_answer": [
+          "stop_and_escalate"
+        ],
+        "confidence": 0.97,
+        "flags": [
+          "new_allergy_history"
+        ],
+        "rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+      },
+      "kpi3-033": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.84,
+        "flags": [
+          "borderline_lab_result"
+        ],
+        "rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+      },
+      "kpi3-034": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.89,
+        "flags": [
+          "change_request"
+        ],
+        "rationale": "The requested ingredient change needs follow-up before selecting a replacement."
+      },
+      "kpi3-035": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "dose_deviation"
+        ],
+        "rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+      },
+      "kpi3-036": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.86,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No meaningful improvement after eight weeks supports reoptimization."
+      },
+      "kpi3-037": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+      },
+      "kpi3-038": {
+        "proposed_answer": [
+          "reduce"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "adverse_effect_reported"
+        ],
+        "rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+      },
+      "kpi3-039": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-040": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "missing_measurement"
+        ],
+        "rationale": "The intended measurement is unavailable, so the next action should obtain the missing result."
+      },
+      "kpi3-041": {
+        "proposed_answer": [
+          "maintain"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "benefit_without_discomfort"
+        ],
+        "rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance."
+      },
+      "kpi3-042": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "new_prescription"
+        ],
+        "rationale": "A newly added prescription requires follow-up before changing the current plan."
+      },
+      "kpi3-043": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.83,
+        "flags": [
+          "adherence_variation"
+        ],
+        "rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+      },
+      "kpi3-044": {
+        "proposed_answer": [
+          "stop_and_escalate"
+        ],
+        "confidence": 0.97,
+        "flags": [
+          "new_allergy_history"
+        ],
+        "rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+      },
+      "kpi3-045": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.84,
+        "flags": [
+          "borderline_lab_result"
+        ],
+        "rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+      },
+      "kpi3-046": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.89,
+        "flags": [
+          "change_request"
+        ],
+        "rationale": "The requested ingredient change needs follow-up before selecting a replacement."
+      },
+      "kpi3-047": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "dose_deviation"
+        ],
+        "rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+      },
+      "kpi3-048": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.86,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No meaningful improvement after eight weeks supports reoptimization."
+      },
+      "kpi3-049": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+      },
+      "kpi3-050": {
+        "proposed_answer": [
+          "reduce"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "adverse_effect_reported"
+        ],
+        "rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+      },
+      "kpi3-051": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-052": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "missing_measurement"
+        ],
+        "rationale": "The intended measurement is unavailable, so the next action should obtain the missing result."
+      },
+      "kpi3-053": {
+        "proposed_answer": [
+          "maintain"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "benefit_without_discomfort"
+        ],
+        "rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance."
+      },
+      "kpi3-054": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "new_prescription"
+        ],
+        "rationale": "A newly added prescription requires follow-up before changing the current plan."
+      },
+      "kpi3-055": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.83,
+        "flags": [
+          "adherence_variation"
+        ],
+        "rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+      },
+      "kpi3-056": {
+        "proposed_answer": [
+          "stop_and_escalate"
+        ],
+        "confidence": 0.97,
+        "flags": [
+          "new_allergy_history"
+        ],
+        "rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+      },
+      "kpi3-057": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.84,
+        "flags": [
+          "borderline_lab_result"
+        ],
+        "rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+      },
+      "kpi3-058": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.89,
+        "flags": [
+          "change_request"
+        ],
+        "rationale": "The requested ingredient change needs follow-up before selecting a replacement."
+      },
+      "kpi3-059": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "dose_deviation"
+        ],
+        "rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+      },
+      "kpi3-060": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.86,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No meaningful improvement after eight weeks supports reoptimization."
+      },
+      "kpi3-061": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+      },
+      "kpi3-062": {
+        "proposed_answer": [
+          "reduce"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "adverse_effect_reported"
+        ],
+        "rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+      },
+      "kpi3-063": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-064": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "missing_measurement"
+        ],
+        "rationale": "The intended measurement is unavailable, so the next action should obtain the missing result."
+      },
+      "kpi3-065": {
+        "proposed_answer": [
+          "maintain"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "benefit_without_discomfort"
+        ],
+        "rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance."
+      },
+      "kpi3-066": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "new_prescription"
+        ],
+        "rationale": "A newly added prescription requires follow-up before changing the current plan."
+      },
+      "kpi3-067": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.83,
+        "flags": [
+          "adherence_variation"
+        ],
+        "rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+      },
+      "kpi3-068": {
+        "proposed_answer": [
+          "stop_and_escalate"
+        ],
+        "confidence": 0.97,
+        "flags": [
+          "new_allergy_history"
+        ],
+        "rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+      },
+      "kpi3-069": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.84,
+        "flags": [
+          "borderline_lab_result"
+        ],
+        "rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+      },
+      "kpi3-070": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.89,
+        "flags": [
+          "change_request"
+        ],
+        "rationale": "The requested ingredient change needs follow-up before selecting a replacement."
+      },
+      "kpi3-071": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "dose_deviation"
+        ],
+        "rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+      },
+      "kpi3-072": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.86,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No meaningful improvement after eight weeks supports reoptimization."
+      },
+      "kpi3-073": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+      },
+      "kpi3-074": {
+        "proposed_answer": [
+          "reduce"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "adverse_effect_reported"
+        ],
+        "rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+      },
+      "kpi3-075": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-076": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "missing_measurement"
+        ],
+        "rationale": "The intended measurement is unavailable, so the next action should obtain the missing result."
+      },
+      "kpi3-077": {
+        "proposed_answer": [
+          "maintain"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "benefit_without_discomfort"
+        ],
+        "rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance."
+      },
+      "kpi3-078": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "new_prescription"
+        ],
+        "rationale": "A newly added prescription requires follow-up before changing the current plan."
+      },
+      "kpi3-079": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.83,
+        "flags": [
+          "adherence_variation"
+        ],
+        "rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+      },
+      "kpi3-080": {
+        "proposed_answer": [
+          "stop_and_escalate"
+        ],
+        "confidence": 0.97,
+        "flags": [
+          "new_allergy_history"
+        ],
+        "rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+      },
+      "kpi3-081": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.84,
+        "flags": [
+          "borderline_lab_result"
+        ],
+        "rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+      },
+      "kpi3-082": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.89,
+        "flags": [
+          "change_request"
+        ],
+        "rationale": "The requested ingredient change needs follow-up before selecting a replacement."
+      },
+      "kpi3-083": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "dose_deviation"
+        ],
+        "rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+      },
+      "kpi3-084": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.86,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No meaningful improvement after eight weeks supports reoptimization."
+      },
+      "kpi3-085": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+      },
+      "kpi3-086": {
+        "proposed_answer": [
+          "reduce"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "adverse_effect_reported"
+        ],
+        "rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+      },
+      "kpi3-087": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-088": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "missing_measurement"
+        ],
+        "rationale": "The intended measurement is unavailable, so the next action should obtain the missing result."
+      },
+      "kpi3-089": {
+        "proposed_answer": [
+          "maintain"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "benefit_without_discomfort"
+        ],
+        "rationale": "The goal indicator improved and no discomfort was reported, supporting maintenance."
+      },
+      "kpi3-090": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "new_prescription"
+        ],
+        "rationale": "A newly added prescription requires follow-up before changing the current plan."
+      },
+      "kpi3-091": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.83,
+        "flags": [
+          "adherence_variation"
+        ],
+        "rationale": "Irregular use prevents a reliable response assessment and requires adherence follow-up."
+      },
+      "kpi3-092": {
+        "proposed_answer": [
+          "stop_and_escalate"
+        ],
+        "confidence": 0.97,
+        "flags": [
+          "new_allergy_history"
+        ],
+        "rationale": "A newly reported allergy history warrants stopping routine continuation and escalating assessment."
+      },
+      "kpi3-093": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.84,
+        "flags": [
+          "borderline_lab_result"
+        ],
+        "rationale": "A borderline laboratory result needs confirmatory measurement or clinical interpretation."
+      },
+      "kpi3-094": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.89,
+        "flags": [
+          "change_request"
+        ],
+        "rationale": "The requested ingredient change needs follow-up before selecting a replacement."
+      },
+      "kpi3-095": {
+        "proposed_answer": [
+          "request_followup"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "dose_deviation"
+        ],
+        "rationale": "Use differs from the recommendation, so follow-up is needed before judging efficacy or safety."
+      },
+      "kpi3-096": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.86,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No meaningful improvement after eight weeks supports reoptimization."
+      },
+      "kpi3-097": {
+        "proposed_answer": [
+          "reoptimize"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "insufficient_response"
+        ],
+        "rationale": "No improvement after the stated trial supports revisiting the regimen rather than continuing unchanged."
+      },
+      "kpi3-098": {
+        "proposed_answer": [
+          "reduce"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "adverse_effect_reported"
+        ],
+        "rationale": "Reported dizziness and nausea support reducing exposure and reassessing tolerability."
+      },
+      "kpi3-099": {
+        "proposed_answer": [
+          "request_safety_review"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "bleeding_or_bruising_signal"
+        ],
+        "rationale": "New bruising warrants a safety review before further routine use."
+      },
+      "kpi3-100": {
+        "proposed_answer": [
+          "request_measurement"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "missing_measurement"
+        ],
+        "rationale": "The intended measurement is unavailable, so the next action should obtain the missing result."
+      }
+    },
+    "cases_sha256": "2b79514c97920e6f5456026d3aa92ae4a0fda56655734cbc92e069bbea4e0a0b"
+  },
+  "ai_review": {},
+  "batch_approval": null
 }

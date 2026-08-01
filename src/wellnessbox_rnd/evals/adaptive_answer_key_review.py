@@ -59,7 +59,14 @@ def agent_family(agent: str) -> str:
     return ""
 
 
-def _clean_answer(value: Any, *, case_id: str) -> list[str]:
+def _clean_answer(
+    value: Any,
+    *,
+    case_id: str,
+    allow_single_string: bool = False,
+) -> list[str]:
+    if allow_single_string and isinstance(value, str):
+        value = [value]
     if not isinstance(value, list):
         raise ValueError(f"ai_review_answer_must_be_a_list:{case_id}")
     answer = sorted({str(item).strip() for item in value if str(item).strip()})
@@ -183,9 +190,23 @@ def register_blind_primary_ai_draft(
     packet_sha256: str,
     engine_output_consulted: bool,
     cases: list[dict[str, Any]],
+    input_response_role: str = "primary_ai_draft",
+    input_response_sha256: str = "",
     drafted_at: str | None = None,
 ) -> dict[str, Any]:
     """Promote a blind AI response where the primary agent must be replaced."""
+    allowed_input_roles = {
+        "primary_ai_draft",
+        "independent_ai_review_promoted_to_primary",
+    }
+    if input_response_role not in allowed_input_roles:
+        raise ValueError("primary_ai_draft_input_response_role_invalid")
+    response_sha256 = input_response_sha256.strip().casefold()
+    if response_sha256 and (
+        len(response_sha256) != 64
+        or any(character not in "0123456789abcdef" for character in response_sha256)
+    ):
+        raise ValueError("primary_ai_draft_input_response_sha256_invalid")
     if workbench.indicator_id not in {"KPI-3", "KPI-4"}:
         raise ValueError("primary_ai_draft_only_supported_for_kpi3_or_kpi4")
     if workbench.indicator_id == "KPI-3" and any(
@@ -253,6 +274,7 @@ def register_blind_primary_ai_draft(
         proposed_answer = _clean_answer(
             item.get("proposed_answer"),
             case_id=case_id,
+            allow_single_string=True,
         )
         outside = _outside_vocabulary(
             proposed_answer,
@@ -285,6 +307,8 @@ def register_blind_primary_ai_draft(
         "drafting_agent_family": author_family,
         "draft_source": PRIMARY_AI_DRAFT_SOURCE,
         "response_source": source,
+        "input_response_role": input_response_role,
+        "input_response_sha256": response_sha256,
         "blinded_from": blind_paths,
         "required_blinded_from": required,
         "packet_sha256": packet_sha256.strip(),
@@ -389,6 +413,7 @@ def register_independent_ai_review(
         proposed_answer = _clean_answer(
             item.get("proposed_answer"),
             case_id=case_id,
+            allow_single_string=True,
         )
         outside = _outside_vocabulary(
             proposed_answer,
@@ -675,6 +700,17 @@ def _primary_ai_draft_error(
         return "primary_ai_draft_schema_invalid"
     if record.get("draft_source") != PRIMARY_AI_DRAFT_SOURCE:
         return "primary_ai_draft_source_invalid"
+    if record.get("input_response_role", "primary_ai_draft") not in {
+        "primary_ai_draft",
+        "independent_ai_review_promoted_to_primary",
+    }:
+        return "primary_ai_draft_input_response_role_invalid"
+    response_sha256 = str(record.get("input_response_sha256", ""))
+    if response_sha256 and (
+        len(response_sha256) != 64
+        or any(character not in "0123456789abcdef" for character in response_sha256)
+    ):
+        return "primary_ai_draft_input_response_sha256_invalid"
     response_source = str(record.get("response_source", "")).strip()
     if not response_source:
         return "primary_ai_draft_response_source_missing"

@@ -1,5 +1,27 @@
 # SESSION_HANDOFF
 
+## 2026-08-01 KPI-3 블라인드 Codex 1차 초안 handoff
+
+- **선택 단계와 과제:** 교차 AI 정답지 작성 중 KPI-3의 placeholder를 별도 블라인드 Codex 응답으로 교체했다. 사람 판정·승인·봉인은 실행하지 않았다.
+- **주 데이터셋과 사례 수:** `data/original_plan/kpi/ai_review_responses/kpi3_codex_blind_response_v1.json` 100건과 `data/original_plan/kpi/workbench/kpi3_workbench_v1.json` 100건이다.
+- **변경 파일:** 원본 KPI-3 응답, KPI-3 워크벤치, `adaptive_answer_key_review.py`, 워크벤치 CLI, 적응형 검토 테스트, `PROGRESS.md`, `NEXT_STEPS.md`, `SESSION_HANDOFF.md`다. KPI-4 응답은 아직 1차 Claude 응답이 없어 가져오지 않았다.
+- **핵심 변경:** `--promote-review-response`를 명시한 경우에만 `reviewing_agent` 형식의 블라인드 응답을 1차 초안으로 전환한다. 원래 역할과 원본 파일 SHA-256을 provenance에 남긴다. 단일 답 문자열은 가져오기 경계에서 배열로 정규화하고 저장·감사 형식은 배열로 고정한다.
+- **현재 상태:** KPI-3 1차 Codex 응답 100건은 등록됐다. 2차 AI 응답 0건, 사람 상세 판단 0건, 일괄 승인 0건, 봉인 0건이다. 다음 단계는 다른 제공자 계열 Claude 응답 100건이다.
+- **검증:** 관련 회귀 시험 121건 PASS. KPI-3 가져오기 `READY_FOR_INDEPENDENT_AI_REVIEW`; `minimal-status`는 예상대로 `complete_independent_ai_review_required`; 무결성 감사는 출처 4/4 PASS이고 완료만 `BLOCKED`다. 전체 pytest는 현재 114건 실패로 기록된 90건 기준선보다 24건 많다. 이번 변경의 시험은 실패 목록에 없지만 차이 원인은 미규명이다. 지정 Ruff 범위는 기존 파일 오류 2건이다.
+- **공식 delta:** 엔진 입력·안전 규칙·채점식·frozen eval을 바꾸거나 실행하지 않았다. delta 0이다. replay·slice도 변경·재실행하지 않아 delta 0이다.
+- **가장 큰 병목 5개:** KPI-1·5 사람 폐기 확인, KPI-1·3·5 Claude 2차 응답 300건, KPI-4 Claude 1차 응답 100건과 Codex 2차 가져오기, 사람 상세 판단 최소 20건·최대 400건과 봉인 4종, KPI-2 실제 사용자 100명 전·후 PRO다.
+- **권장 다음 반복 3개:** (1) KPI-3 Claude 2차 응답을 받아 교차 비교를 연다. (2) KPI-4 Claude 1차 초안 뒤 보관 중인 Codex 응답을 붙인다. (3) KPI-1·5 Claude 응답과 사람 폐기 확인을 마친다.
+- **한계:** 외부 Codex의 실제 블라인딩은 응답 자기 진술과 별도 작업 경계에 의존한다. 응답 역할 전환은 생성 당시 판단 내용을 바꾸지 않지만, 원래 파일이 2차 의견 형식이었다는 사실을 provenance로만 증명한다. 1초 하한·합의 표본 5건은 임의 기준이고 원문 234종 중 209종은 카탈로그 밖이다.
+
+## 2026-08-01 Codex 블라인드 독립 의견 handoff
+
+- `data/original_plan/kpi/ai_review_responses/kpi3_codex_blind_response_v1.json`: KPI-3 Codex 독립 의견 100건. 원래 응답 역할을 provenance에 남기고 1차 초안으로 가져왔다.
+- `data/original_plan/kpi/ai_review_responses/kpi4_codex_blind_response_v1.json`: KPI-4 Codex 독립 2차 의견 100건.
+- 두 Codex 작업은 각 KPI의 블라인드 패킷 하나만 읽었다. 패킷 SHA-256 일치, 고유 문항 100건, 누락·추가 0건, 허용 답변 밖 선택 0건, 엔진 출력 열람 없음이 확인됐다.
+- KPI-4 Codex 파일은 아직 가져오지 않았다. KPI-3에는 비 OpenAI 2차 의견, KPI-4에는 비 OpenAI 1차 초안이 필요하다. Claude 응답은 아직 0건이다.
+- AI 응답과 KPI-3 가져오기는 정답·사람 승인·봉인이 아니다. 다음 작업자는 필요한 비 OpenAI 응답을 확보·검증·가져온 뒤 사람의 최소 상세 검토와 명시적 일괄 승인을 받는다.
+- `python scripts/run_answer_key_workbench.py discard-status --indicator KPI-1`과 KPI-5 명령은 과거 봉인 후보를 변경하지 않고 보여준다. 실제 폐기는 사람 확인이 있어야 한다.
+
 ## 2026-08-01 미확인 오류 봉인 상태 확인 handoff
 
 - **선택 단계와 과제:** KPI-1·5 무효 봉인을 AI가 폐기 처리하지 않으면서 사람이 확인할 근거를 읽기 전용으로 표시했다. `discard-status`는 어떤 파일도 바꾸지 않는다.

@@ -1,15 +1,22 @@
 # NEXT_STEPS
 
+## 현재 최우선 순서 (2026-08-01)
+
+1. KPI-3 블라인드 패킷을 비 OpenAI 계열 AI(예: Claude)에 전달해 독립 2차 의견 100건을 받는다. Codex 1차 초안 100건은 이미 가져왔다.
+2. KPI-4 블라인드 패킷으로 비 OpenAI 계열의 독립 1차 초안 100건을 받은 뒤, 준비된 Codex 응답 100건을 독립 2차 의견으로 가져온다.
+3. 사람은 불일치·위험 표시·결정론적 합의 표본만 상세 검토하고, 남은 AI 합의는 직접 일괄 승인한다. AI가 사람의 최종 선택을 대신하지 않는다.
+4. KPI-1·5의 과거 봉인은 `discard-status`로 읽기 전용 확인한 뒤, 사람이 사유와 폐기자를 확인하여 정식 폐기한다.
+
 ## 2026-08-01 최소 사람 검토 경로의 다음 단계
 
 1. **사람이 KPI-1·5 과속 봉인을 정식 폐기한다.** 먼저 `python scripts/run_answer_key_workbench.py discard-status --indicator KPI-1`과 KPI-5 명령으로 후보 해시와 `formal_disposal_count: 0`을 확인한다. 그다음 `discard-seal`을 지표별로 실행하고 폐기자·사유·확인 문구를 사람이 직접 입력한다. AI는 폐기 승인을 대신하지 않는다.
 2. **KPI-1·5는 Claude 2차 의견을 받는다.** `data/original_plan/kpi/ai_review_packets/`의 해당 패킷만 Claude에 전달한다. 저장소나 워크벤치 원본은 전달하지 않는다. 완전한 응답 JSON을 `import-ai-review`로 가져온다.
-3. **KPI-3·4는 Claude 1차 초안과 새 블라인드 Codex 2차 의견을 받는다.** Claude 응답은 `import-primary-ai-draft`로 가져온다. 같은 패킷만 새 Codex 작업에 전달하고 그 응답을 `import-ai-review`로 가져온다. 현재 작업은 엔진 정책을 이미 읽었으므로 2차 의견을 만들지 않는다.
+3. **KPI-3은 Claude 2차 의견을 받고, KPI-4는 Claude 1차 초안을 받는다.** KPI-3에는 블라인드 Codex 1차 초안 100건이 이미 들어갔다. 같은 KPI-3 패킷만 Claude에 전달하고 `import-ai-review`로 가져온다. KPI-4는 Claude 응답을 `import-primary-ai-draft`로 먼저 가져온 뒤 보관 중인 Codex 응답을 `import-ai-review`로 가져온다. 현재 작업은 엔진 정책을 이미 읽었으므로 새 답을 만들지 않는다.
 4. **사람이 필요한 사례만 상세 검토한다.** 지표별로 `minimal-status`를 확인하고 `review-minimal --by <검토자>`를 실행한다. 모든 불일치·위험 플래그와 합의 표본 5건이 대상이다. 표본 수정에 따라 20건 또는 전수로 자동 확대된다. 2차년도 기록은 `pharmacist_candidate_preliminary_safety_review`이며 약사 검토라고 쓰지 않는다.
 5. **같은 사람이 나머지 합의안을 최종 승인하거나 거부한다.** `approve-consensus --by <검토자>`에서 정확한 확인 문구를 직접 입력한다. 모두 합의했다면 네 지표의 상세 검토 하한은 합계 20건이고, 지표별 일괄 승인 1회가 추가된다.
 6. **감사 PASS 뒤 봉인한다.** KPI-4는 `--system-under-test-id <상담_모듈_ID> --system-under-test-provider-family openai`를 함께 넣는다. 1차 초안 AI가 OpenAI 계열이면 봉인을 거부한다. 그 뒤에만 연구 단계 내부 측정을 실행하고 `measurement_environment: research_phase_internal_measurement`를 기록한다.
 
-현재 실제 AI 응답 0건, 사람 상세 판단 0건, 사람 일괄 승인 0건이다. KPI-2의 실제 사용자 100명 경로와 3차년도 측정 결정은 그대로이며, KPI-6·7과 H-003 학습 게이트는 건드리지 않는다.
+현재 유효하게 가져온 AI 응답은 KPI-3 1차 초안 100건이다. 사람 상세 판단과 사람 일괄 승인은 0건이다. KPI-2의 실제 사용자 100명 경로와 3차년도 측정 결정은 그대로이며, KPI-6·7과 H-003 학습 게이트는 건드리지 않는다.
 
 권장 다음 3개 bounded loop는 다음과 같다. (1) 사람이 KPI-1·5 오류 봉인을 정식 폐기하고 패킷만 사용한 외부 AI 응답을 확보한다. (2) 응답을 가져와 사람이 최소 상세 검토·일괄 승인·봉인을 끝낸다. (3) KPI-2 실제 사용자 100명의 전·후 PRO 수집 경로를 시작한다.
 

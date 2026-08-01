@@ -422,13 +422,26 @@ def cmd_import_primary_ai_draft(args) -> int:
         say(f"초안이 없습니다: {target}")
         return 2
     workbench = load_workbench(target)
-    response = json.loads(Path(args.response).read_text(encoding="utf-8"))
+    response_path = Path(args.response)
+    response_bytes = response_path.read_bytes()
+    response = json.loads(response_bytes.decode("utf-8"))
+    promote_review_response = bool(
+        getattr(args, "promote_review_response", False)
+    )
+    if promote_review_response:
+        drafting_agent = response.get("reviewing_agent", "")
+        draft_source = response.get("review_source", "")
+        input_response_role = "independent_ai_review_promoted_to_primary"
+    else:
+        drafting_agent = response.get("drafting_agent", "")
+        draft_source = response.get("draft_source", "")
+        input_response_role = "primary_ai_draft"
     required = engine_logic_blinded_from()
     try:
         record = register_blind_primary_ai_draft(
             workbench,
-            drafting_agent=response.get("drafting_agent", ""),
-            draft_source=response.get("draft_source", ""),
+            drafting_agent=drafting_agent,
+            draft_source=draft_source,
             blinded_from=response.get("blinded_from", []),
             required_blinded_from=required,
             packet_sha256=response.get("packet_sha256", ""),
@@ -436,6 +449,8 @@ def cmd_import_primary_ai_draft(args) -> int:
                 response.get("engine_output_consulted", False)
             ),
             cases=response.get("cases", []),
+            input_response_role=input_response_role,
+            input_response_sha256=hashlib.sha256(response_bytes).hexdigest(),
         )
     except ValueError as exc:
         say(json.dumps(
@@ -795,6 +810,14 @@ def build_parser() -> ArgumentParser:
     )
     import_primary.add_argument("--indicator", required=True)
     import_primary.add_argument("--response", required=True)
+    import_primary.add_argument(
+        "--promote-review-response",
+        action="store_true",
+        help=(
+            "블라인드 2차 의견 형식의 응답을 KPI-3·4 1차 초안으로 명시 전환한다. "
+            "원래 응답 역할은 provenance에 보존한다."
+        ),
+    )
     import_primary.set_defaults(func=cmd_import_primary_ai_draft)
 
     minimal = sub.add_parser(

@@ -1,5 +1,25 @@
 # PROGRESS
 
+## 2026-08-01 KPI-3 블라인드 Codex 1차 초안 도입
+
+- 별도 블라인드 작업이 만든 `data/original_plan/kpi/ai_review_responses/kpi3_codex_blind_response_v1.json` 100건을 KPI-3의 실제 1차 초안으로 가져왔다. 기존 `미정_검토자가_판단` placeholder 100건은 채점 답으로 쓰지 않는다.
+- 응답은 KPI-3 패킷 SHA-256 `9206684fd6644a92b310539fd15d0b203789f93a4e383f87716545b91c4d8d81`과 일치하고, 엔진 로직 9개를 보지 않았다고 선언하며, 엔진 출력 열람은 `false`다. 답은 허용된 KPI-3 행동 어휘 안에 있고 사례 ID 100개가 정확히 일치했다.
+- 원본 응답이 `reviewing_agent` 형식으로 생성됐으므로 `--promote-review-response`를 명시해야만 1차 초안으로 전환한다. 워크벤치는 `input_response_role: independent_ai_review_promoted_to_primary`와 원본 파일 SHA-256 `9e2ef4b2f03255c394ed475aec5f74493aafd8332b743b6ecbce5bfed7896015`를 보존한다. 역할 전환 사실을 숨기지 않는다.
+- 단일 답 문자열은 가져올 때 1개짜리 배열로 정규화한다. 저장된 증거와 봉인 감사는 계속 배열만 허용해 사후 스키마 변조를 차단한다.
+- KPI-4 Codex 응답 100건도 패킷 해시는 맞지만 OpenAI 상담 모델과 같은 제공자 계열이다. 따라서 KPI-4 1차 초안으로 가져오지 않았다. Claude 1차 초안이 들어온 뒤 2차 의견으로만 검증할 수 있다.
+- 현재 KPI-3은 `complete_independent_ai_review_required`로 차단된다. 다음 입력은 Anthropic 계열처럼 Codex와 다른 제공자 계열의 독립 응답 100건이다. 사람 판단·승인·봉인은 만들지 않았다.
+- 관련 회귀 시험 121건은 통과했다. 전체 pytest는 현재 114건 실패로 이전 인계의 90건 기준선과 일치하지 않는다. 실패 목록에는 이번 변경의 정답지·적응형 검토 시험이 없지만, 24건 차이의 원인은 이번 loop에서 규명하지 못했으므로 신규 실패 0으로 단정하지 않는다. 지정 Ruff 범위는 기존 `run_counseling_full_service_roundtrip_smoke.py` 오류 2건만 남는다.
+- 엔진·안전 규칙·채점 로직·frozen eval·replay·slice는 바꾸지 않았다. 공식 delta는 0이다.
+
+## 2026-08-01 KPI-3·4 Codex 독립 의견 생성
+
+- 서로 분리된 Codex 작업 두 개가 KPI-3·4 블라인드 패킷만 읽고 각각 100건, 총 200건의 독립 의견을 만들었다.
+- 패킷 SHA-256, 문항 수와 ID, 답변 어휘, 블라인드 선언을 검사했고 두 파일 모두 구조 검증을 통과했다.
+- KPI-3 Codex 응답은 원래 역할을 provenance에 보존하고 독립 1차 초안으로 가져왔다. KPI-3에는 비 OpenAI 계열의 2차 의견이 필요하다.
+- KPI-4는 OpenAI 상담 모듈을 측정하므로 Codex 응답을 1차 초안으로 쓸 수 없다. 비 OpenAI 계열의 1차 초안을 먼저 가져온 뒤 Codex를 2차 의견으로 가져온다.
+- Claude 응답 0건, 사람 상세 판단 0건, 사람 일괄 승인 0건, 신규 봉인 0건이다. 따라서 완료 상태는 정상적으로 `BLOCKED`다.
+- 다음 순서는 KPI-3 Claude 2차 의견과 KPI-4 Claude 1차 초안 확보 → KPI-4 Codex 2차 의견 가져오기 → 최소 사람 검토·일괄 승인이다.
+
 ## 2026-08-01 미확인 오류 봉인의 읽기 전용 상태 확인
 
 - `discard-status --indicator <KPI-ID>`를 추가했다. 명령은 활성 봉인과 사람이 확인하기 전에 `seals/discarded/`로 옮겨진 봉인을 찾고, 파일 SHA-256·내장 봉인 해시·정식 폐기 이력 수를 출력한다.
