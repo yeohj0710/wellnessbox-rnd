@@ -88,6 +88,22 @@ def test_blind_packet_omits_primary_answers_and_rationales() -> None:
     assert len(packet["packet_sha256"]) == 64
 
 
+def test_kpi3_packet_uses_the_public_action_vocabulary_not_placeholder_answer() -> None:
+    workbench = _workbench(2)
+    workbench.indicator_id = "KPI-3"
+    for draft in workbench.drafts:
+        draft.draft_answer = ["미정_검토자가_판단"]
+
+    packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )
+
+    assert "maintain" in packet["answer_vocabulary"]
+    assert "stop_and_escalate" in packet["answer_vocabulary"]
+    assert "미정_검토자가_판단" not in packet["answer_vocabulary"]
+
+
 def test_ai_review_is_bound_to_the_blind_packet() -> None:
     workbench = _workbench(2)
 

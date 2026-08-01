@@ -21,6 +21,17 @@ AI_REVIEW_PACKET_SCHEMA = "blind_ai_answer_review_packet_v1"
 INITIAL_AGREEMENT_SAMPLE = 5
 EXPANDED_AGREEMENT_SAMPLE = 20
 MIN_AI_CONFIDENCE = 0.8
+KPI3_ACTION_VOCABULARY = (
+    "hold_for_review",
+    "maintain",
+    "reduce",
+    "replace",
+    "reoptimize",
+    "request_followup",
+    "request_measurement",
+    "request_safety_review",
+    "stop_and_escalate",
+)
 
 
 def agent_family(agent: str) -> str:
@@ -87,13 +98,17 @@ def build_blind_ai_review_packet(
         {"case_id": draft.case_id, "prompt": draft.prompt}
         for draft in sorted(workbench.drafts, key=lambda item: item.case_id)
     ]
-    vocabulary = sorted(
-        {
-            token
-            for draft in workbench.drafts
-            for token in draft.draft_answer
-            if token.strip()
-        }
+    vocabulary = (
+        list(KPI3_ACTION_VOCABULARY)
+        if workbench.indicator_id == "KPI-3"
+        else sorted(
+            {
+                token
+                for draft in workbench.drafts
+                for token in draft.draft_answer
+                if token.strip()
+            }
+        )
     )
     payload = {
         "schema_version": AI_REVIEW_PACKET_SCHEMA,
