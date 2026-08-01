@@ -272,6 +272,7 @@
       "primary_ai_draft_cases_sha256 (KPI-3·4 대체 1차 초안 경로)",
       "blind_ai_review_packet_sha256",
       "independent_ai_review_cases_sha256",
+      "reference_standard_seal_v2 whole-record SHA-256",
       "건별 action (accepted / edited / rejected)",
       "decision_mode (detailed_review / ai_consensus_batch_approval)",
       "detailed_review_count",
@@ -308,6 +309,6 @@
       "KPI-4",
       "KPI-5"
     ],
-    "why_this_is_valid": "초안과 2차 AI 의견은 기록된 블라인드 경로로 만들고, 지명된 사람이 상세 판단 또는 명시적 합의안 일괄 승인으로 모든 사례의 최종 결정을 남긴 뒤 엔진 실행 전에 봉인한다. KPI-4는 초안 작성 AI와 상담 모델의 제공자 계열도 분리한다. 외부 AI 블라인딩은 실행 증빙이 필요한 운영 진술이며, 상세 검토 5건은 통계적 타당성 주장이 아니라 오류 탐지용 운영 하한이다."
+    "why_this_is_valid": "초안과 2차 AI 의견은 기록된 블라인드 경로로 만들고, 지명된 사람이 상세 판단 또는 명시적 합의안 일괄 승인으로 모든 사례의 최종 결정을 남긴 뒤 엔진 실행 전에 봉인한다. reference_standard_seal_v2는 정답과 무결성 감사·AI 지문·사람 승인·측정 대상 provenance 전체를 해시한다. KPI-4는 초안 작성 AI와 상담 모델의 제공자 계열도 분리한다. 외부 AI 블라인딩은 실행 증빙이 필요한 운영 진술이며, 상세 검토 5건은 통계적 타당성 주장이 아니라 오류 탐지용 운영 하한이다."
   }
 }
