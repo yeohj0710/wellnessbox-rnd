@@ -1,5 +1,14 @@
 # PROGRESS
 
+## 2026-08-01 Claude 블라인드 요청 번들·사전검증 완성
+
+- KPI-1·3·5 독립 2차 의견과 KPI-4 독립 1차 초안을 위한 Claude 요청 JSON 4개를 `data/original_plan/kpi/ai_review_requests/`에 생성했다. 각 파일은 사례 100건, 허용 답 어휘, 빈 응답 skeleton, 패킷·요청 SHA-256을 포함한다.
+- 새 Claude 작업에는 요청 JSON 하나만 전달한다. 요청 계약은 저장소·엔진 규칙·엔진 출력·기존 정답 열람을 금지하고 JSON만 반환하도록 명시한다. 실제 사례에는 `case_id`와 `prompt`만 들어 있다.
+- `validate-ai-response`를 추가했다. 제공자 계열, 역할별 메타데이터, 패킷 해시, 블라인딩 경로 9개, 사례 ID 100개, 답 어휘, confidence·flags 스키마를 실제 가져오기 함수로 검사하되 deepcopy 워크벤치만 바꾼다. 성공 출력은 `READY_TO_IMPORT`, `mutated: false`다.
+- KPI-1·3·5 요청은 Anthropic 계열 review, KPI-4 요청은 Anthropic 계열 primary로 고정했다. OpenAI 초안에 OpenAI 2차 의견을 요청하면 생성 단계에서 거부한다.
+- 네 요청 파일의 자체 해시, 고유 사례 100건, 사례 필드 제한, 단독 입력 계약을 재검증했다. 관련 회귀 시험 124건과 변경 파일 Ruff가 통과했다. 전체 pytest 실제 실행은 기준선과 같은 90건 실패·실패 파일 73개다.
+- Claude 응답·사람 판단·승인·봉인은 아직 만들지 않았다. 엔진·채점·frozen eval·replay·slice delta는 0이다.
+
 ## 2026-08-01 전체 pytest 기준선 오진 정정
 
 - 전체 pytest 실패가 90건에서 114건으로 늘었다는 직전 보고를 재현·추적했다. 제품 코드 실패가 늘어난 것이 아니라 `.pytest_cache/v/cache/lastfailed`에 현재 존재하지 않는 테스트 node ID 24개가 남아 있었고, 캐시 항목 수를 실제 실패 수로 잘못 해석한 보고 오류였다.

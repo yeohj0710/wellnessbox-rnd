@@ -1,5 +1,17 @@
 # SESSION_HANDOFF
 
+## 2026-08-01 Claude 블라인드 요청 번들 handoff
+
+- **선택 단계와 과제:** 외부 Claude 응답을 저장소 노출 없이 바로 받을 수 있도록 역할별 요청 파일과 비변경 사전검증을 만들었다.
+- **주 데이터셋과 사례 수:** `data/original_plan/kpi/ai_review_requests/`의 KPI-1·3·4·5 요청 각 100건, 총 400건이다.
+- **변경 파일:** `adaptive_answer_key_review.py`, `run_answer_key_workbench.py`, 적응형 검토 테스트, Claude 요청 JSON 4개와 README, `KPI_COMPLIANCE_STRATEGY.md`, 인계 문서 3종이다.
+- **핵심 변경:** `export-external-ai-request`는 사례와 허용 어휘만 든 단독 전달 파일을 만든다. `validate-ai-response`는 실제 등록 함수와 deepcopy를 사용해 응답을 검사하고 원본 워크벤치를 바꾸지 않는다. KPI-1·3·5는 Anthropic review, KPI-4는 Anthropic primary 요청이다.
+- **검증:** 관련 시험 124건 PASS, 변경 파일 Ruff PASS. 전체 pytest 실제 실행은 기준선과 같은 90건 실패·실패 파일 73개다. 네 실제 요청은 request SHA-256 일치, 고유 사례 100건, 사례 필드 `case_id`·`prompt` 제한, `only_input_allowed: this_request_file`을 모두 통과했다.
+- **공식 delta:** 엔진 입력·안전 규칙·채점식·frozen eval을 바꾸거나 실행하지 않아 delta 0이다. replay·slice도 변경하지 않아 delta 0이다.
+- **가장 큰 병목 5개:** Claude 응답 400건, KPI-1·5 사람 폐기 확인, 사람 상세 판단 최소 20건·최대 400건, 새 봉인 4종, KPI-2 실제 사용자 100명 전·후 PRO다.
+- **권장 다음 반복 3개:** (1) KPI-3 요청 파일로 Claude 응답을 받아 검증·가져오기, (2) KPI-4 Claude primary 뒤 Codex review 가져오기, (3) KPI-1·5 Claude 응답과 사람 폐기 확인이다.
+- **한계:** 요청 파일은 Claude가 실제로 다른 자료를 보지 않았음을 기술적으로 증명하지 못한다. 별도 작업 경계와 응답 자기 진술에 의존한다. 1초 하한·합의 표본 5건은 임의 기준이고 원문 234종 중 209종은 카탈로그 밖이다.
+
 ## 2026-08-01 pytest 기준선 오진 정정 handoff
 
 - **선택 단계와 과제:** KPI 정답지 변경 뒤 전체 pytest 실패 수가 90→114로 늘었다는 보고의 원인을 체계적으로 진단했다.

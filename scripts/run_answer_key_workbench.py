@@ -25,15 +25,18 @@ import json
 import sys
 import time
 from argparse import ArgumentParser
+from copy import deepcopy
 from datetime import UTC, datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from wellnessbox_rnd.evals.adaptive_answer_key_review import (  # noqa: E402
+    agent_family,
     approve_consensus_batch,
     build_adaptive_review_plan,
     build_blind_ai_review_packet,
+    build_external_ai_request,
     register_blind_primary_ai_draft,
     register_independent_ai_review,
 )
@@ -366,6 +369,123 @@ def cmd_export_ai_review(args) -> int:
             "packet_path": str(output),
             "case_count": packet["case_count"],
             "packet_sha256": packet["packet_sha256"],
+        },
+        ensure_ascii=False,
+        indent=2,
+    ))
+    return 0
+
+
+def cmd_export_external_ai_request(args) -> int:
+    target = workbench_path(args.indicator)
+    if not target.is_file():
+        say(f"초안이 없습니다: {target}")
+        return 2
+    try:
+        request = build_external_ai_request(
+            load_workbench(target),
+            required_blinded_from=engine_logic_blinded_from(),
+            requested_role=args.role,
+            required_provider_family=args.provider_family,
+        )
+    except ValueError as exc:
+        say(json.dumps(
+            {"status": "BLOCKED", "reason": str(exc)},
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
+        json.dumps(request, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    say(json.dumps(
+        {
+            "status": "READY",
+            "request_path": str(output),
+            "indicator_id": args.indicator,
+            "requested_role": args.role,
+            "provider_family": args.provider_family,
+            "case_count": request["packet"]["case_count"],
+            "packet_sha256": request["packet"]["packet_sha256"],
+            "request_sha256": request["request_sha256"],
+        },
+        ensure_ascii=False,
+        indent=2,
+    ))
+    return 0
+
+
+def cmd_validate_ai_response(args) -> int:
+    target = workbench_path(args.indicator)
+    if not target.is_file():
+        say(f"초안이 없습니다: {target}")
+        return 2
+    response_path = Path(args.response)
+    response_bytes = response_path.read_bytes()
+    response = json.loads(response_bytes.decode("utf-8"))
+    workbench = deepcopy(load_workbench(target))
+    required = engine_logic_blinded_from()
+    agent_key = "drafting_agent" if args.role == "primary" else "reviewing_agent"
+    agent = str(response.get(agent_key, ""))
+    if agent_family(agent) != args.provider_family:
+        say(json.dumps(
+            {
+                "status": "BLOCKED",
+                "reason": "ai_response_provider_family_mismatch",
+                "expected": args.provider_family,
+                "found": agent_family(agent) or "unknown",
+            },
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+    try:
+        if args.role == "primary":
+            record = register_blind_primary_ai_draft(
+                workbench,
+                drafting_agent=agent,
+                draft_source=response.get("draft_source", ""),
+                blinded_from=response.get("blinded_from", []),
+                required_blinded_from=required,
+                packet_sha256=response.get("packet_sha256", ""),
+                engine_output_consulted=bool(
+                    response.get("engine_output_consulted", False)
+                ),
+                cases=response.get("cases", []),
+                input_response_sha256=hashlib.sha256(response_bytes).hexdigest(),
+            )
+        else:
+            record = register_independent_ai_review(
+                workbench,
+                reviewing_agent=agent,
+                review_source=response.get("review_source", ""),
+                blinded_from=response.get("blinded_from", []),
+                required_blinded_from=required,
+                packet_sha256=response.get("packet_sha256", ""),
+                engine_output_consulted=bool(
+                    response.get("engine_output_consulted", False)
+                ),
+                cases=response.get("cases", []),
+            )
+    except ValueError as exc:
+        say(json.dumps(
+            {"status": "BLOCKED", "reason": str(exc), "mutated": False},
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+    say(json.dumps(
+        {
+            "status": "READY_TO_IMPORT",
+            "indicator_id": args.indicator,
+            "role": args.role,
+            "provider_family": args.provider_family,
+            "case_count": record["case_count"],
+            "response_sha256": hashlib.sha256(response_bytes).hexdigest(),
+            "mutated": False,
         },
         ensure_ascii=False,
         indent=2,
@@ -795,6 +915,36 @@ def build_parser() -> ArgumentParser:
     export_ai.add_argument("--indicator", required=True)
     export_ai.add_argument("--output", required=True)
     export_ai.set_defaults(func=cmd_export_ai_review)
+
+    export_request = sub.add_parser(
+        "export-external-ai-request",
+        help="외부 AI에 단독 전달할 블라인드 요청 파일을 만든다",
+    )
+    export_request.add_argument("--indicator", required=True)
+    export_request.add_argument("--role", required=True, choices=("primary", "review"))
+    export_request.add_argument(
+        "--provider-family",
+        required=True,
+        choices=("anthropic", "google", "meta", "openai"),
+    )
+    export_request.add_argument("--output", required=True)
+    export_request.set_defaults(func=cmd_export_external_ai_request)
+
+    validate_response = sub.add_parser(
+        "validate-ai-response",
+        help="워크벤치를 바꾸지 않고 외부 AI 응답의 가져오기 가능 여부를 검사한다",
+    )
+    validate_response.add_argument("--indicator", required=True)
+    validate_response.add_argument("--response", required=True)
+    validate_response.add_argument(
+        "--role", required=True, choices=("primary", "review")
+    )
+    validate_response.add_argument(
+        "--provider-family",
+        required=True,
+        choices=("anthropic", "google", "meta", "openai"),
+    )
+    validate_response.set_defaults(func=cmd_validate_ai_response)
 
     import_ai = sub.add_parser(
         "import-ai-review",

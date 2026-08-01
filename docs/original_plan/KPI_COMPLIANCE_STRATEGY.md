@@ -84,13 +84,16 @@
 **100건을 맨손으로 쓰지 않는다.** 기본 경로에서는 AI 초안을 보며 100건을 사람이 확정한다. 선택 경로에서는 두 AI가 독립적으로 답하고, 사람은 불일치·위험 사례와 결정적 표본을 상세 검토한 뒤 나머지 합의안을 한 번 더 판단해 일괄 승인한다.
 
 ```bash
-python scripts/run_answer_key_workbench.py export-ai-review --indicator KPI-1 --output <블라인드_패킷.json>
-# 다른 제공자 계열 AI가 패킷만 읽고 응답 JSON을 작성한다.
+python scripts/run_answer_key_workbench.py export-external-ai-request --indicator KPI-1 --role review --provider-family anthropic --output <Claude_요청.json>
+# 새 Claude 작업에는 이 요청 파일 하나만 전달한다.
+python scripts/run_answer_key_workbench.py validate-ai-response --indicator KPI-1 --role review --provider-family anthropic --response <Claude_응답.json>
 python scripts/run_answer_key_workbench.py import-ai-review --indicator KPI-1 --response <2차_AI_응답.json>
 python scripts/run_answer_key_workbench.py review-minimal --indicator KPI-1 --by <검토자>
 python scripts/run_answer_key_workbench.py approve-consensus --indicator KPI-1 --by <검토자>
 python scripts/run_answer_key_workbench.py seal --indicator KPI-1 --system-under-test-id <엔진_ID>
 ```
+
+`validate-ai-response`는 워크벤치를 복사해 가져오기 검증만 실행하고 `mutated: false`를 반환한다. 제공자 계열, 패킷 해시, 블라인딩 선언, 100개 사례 ID, 답 어휘, confidence와 flags 스키마가 모두 맞아야 `READY_TO_IMPORT`가 된다.
 
 KPI-3은 `import-ai-review` 전에 첫 블라인드 응답을 가져온다. KPI-4도 OpenAI 상담 모델을 측정한다면 비-OpenAI 1차 응답으로 현재 답을 교체한다.
 

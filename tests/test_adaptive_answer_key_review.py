@@ -14,6 +14,7 @@ from wellnessbox_rnd.evals.adaptive_answer_key_review import (
     audit_adaptive_review,
     build_adaptive_review_plan,
     build_blind_ai_review_packet,
+    build_external_ai_request,
     register_blind_primary_ai_draft,
     register_independent_ai_review,
 )
@@ -92,6 +93,95 @@ def test_blind_packet_omits_primary_answers_and_rationales() -> None:
     ]
     assert packet["answer_vocabulary"]
     assert len(packet["packet_sha256"]) == 64
+
+
+def test_external_review_request_contains_only_blind_packet_and_empty_skeleton() -> None:
+    workbench = _workbench(2)
+
+    request = build_external_ai_request(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+        requested_role="review",
+        required_provider_family="anthropic",
+    )
+
+    assert request["required_provider_family"] == "anthropic"
+    assert request["packet"]["cases"][0] == {
+        "case_id": "case-000",
+        "prompt": "상황 0",
+    }
+    assert all(
+        set(item) == {"case_id", "prompt"}
+        for item in request["packet"]["cases"]
+    )
+    assert request["response_skeleton"]["reviewing_agent"].startswith("<")
+    assert len(request["response_skeleton"]["cases"]) == 2
+    assert len(request["request_sha256"]) == 64
+
+
+def test_external_review_request_rejects_same_provider_family() -> None:
+    workbench = _workbench(1)
+
+    try:
+        build_external_ai_request(
+            workbench,
+            required_blinded_from=["engine/policy.json"],
+            requested_role="review",
+            required_provider_family="openai",
+        )
+    except ValueError as exc:
+        assert str(exc) == "external_review_request_matches_drafting_family"
+    else:
+        raise AssertionError("same-family external request was accepted")
+
+
+def test_validate_ai_response_is_read_only() -> None:
+    workbench = _workbench(2)
+    packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=["engine/policy.json"],
+    )
+    response = {
+        "reviewing_agent": "Claude 4",
+        "review_source": "blind_packet_independent_opinion",
+        "blinded_from": ["engine/policy.json"],
+        "packet_sha256": packet["packet_sha256"],
+        "engine_output_consulted": False,
+        "cases": _reviews(workbench),
+    }
+    with tempfile.TemporaryDirectory() as temp:
+        root = Path(temp)
+        workbench_file = save_workbench(root / "workbench.json", workbench)
+        response_file = root / "response.json"
+        response_file.write_text(
+            json.dumps(response, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        before = workbench_file.read_bytes()
+        messages: list[str] = []
+        args = SimpleNamespace(
+            indicator="KPI-1",
+            response=str(response_file),
+            role="review",
+            provider_family="anthropic",
+        )
+
+        with (
+            patch.object(workbench_cli, "workbench_path", return_value=workbench_file),
+            patch.object(
+                workbench_cli,
+                "engine_logic_blinded_from",
+                return_value=["engine/policy.json"],
+            ),
+            patch.object(workbench_cli, "say", side_effect=messages.append),
+        ):
+            result = workbench_cli.cmd_validate_ai_response(args)
+
+        report = json.loads(messages[-1])
+        assert result == 0
+        assert report["status"] == "READY_TO_IMPORT"
+        assert report["mutated"] is False
+        assert workbench_file.read_bytes() == before
 
 
 def test_kpi3_packet_uses_the_public_action_vocabulary_not_placeholder_answer() -> None:

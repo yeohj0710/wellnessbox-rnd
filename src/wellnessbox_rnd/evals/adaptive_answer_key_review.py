@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
 AI_REVIEW_SCHEMA = "independent_ai_answer_review_v1"
 AI_REVIEW_PACKET_SCHEMA = "blind_ai_answer_review_packet_v1"
+EXTERNAL_AI_REQUEST_SCHEMA = "blind_external_ai_answer_request_v1"
 PRIMARY_AI_DRAFT_SCHEMA = "blind_primary_ai_answer_draft_v1"
 PRIMARY_AI_DRAFT_SOURCE = (
     "blind_primary_ai_response_v1@adaptive_answer_key_review"
@@ -178,6 +179,83 @@ def build_blind_ai_review_packet(
         "cases": cases,
     }
     return {**payload, "packet_sha256": _payload_digest(payload)}
+
+
+def build_external_ai_request(
+    workbench: Workbench,
+    *,
+    required_blinded_from: list[str],
+    requested_role: str,
+    required_provider_family: str,
+) -> dict[str, Any]:
+    """Build the only artifact an external blind answerer needs to see."""
+    if requested_role not in {"primary", "review"}:
+        raise ValueError("external_ai_request_role_invalid")
+    family = required_provider_family.strip().casefold()
+    if family not in {"anthropic", "google", "meta", "openai"}:
+        raise ValueError("external_ai_request_provider_family_invalid")
+    if requested_role == "primary" and workbench.indicator_id not in {
+        "KPI-3",
+        "KPI-4",
+    }:
+        raise ValueError("external_primary_request_only_supported_for_kpi3_or_kpi4")
+
+    packet = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=required_blinded_from,
+    )
+    if requested_role == "review":
+        drafting_families = {
+            agent_family(draft.drafting_agent) for draft in workbench.drafts
+        }
+        if "" in drafting_families or len(drafting_families) != 1:
+            raise ValueError("external_review_request_drafting_family_unknown")
+        if family in drafting_families:
+            raise ValueError("external_review_request_matches_drafting_family")
+
+    agent_key = "drafting_agent" if requested_role == "primary" else "reviewing_agent"
+    source_key = "draft_source" if requested_role == "primary" else "review_source"
+    response_skeleton = {
+        agent_key: "<모델과 제공자 계열을 식별할 수 있는 이름>",
+        source_key: "blind_packet_independent_opinion",
+        "blinded_from": list(packet["required_blinded_from"]),
+        "packet_sha256": packet["packet_sha256"],
+        "engine_output_consulted": False,
+        "cases": [
+            {
+                "case_id": item["case_id"],
+                "proposed_answer": [],
+                "confidence": None,
+                "flags": [],
+                "rationale": "",
+            }
+            for item in packet["cases"]
+        ],
+    }
+    payload = {
+        "schema_version": EXTERNAL_AI_REQUEST_SCHEMA,
+        "indicator_id": workbench.indicator_id,
+        "requested_role": requested_role,
+        "required_provider_family": family,
+        "blindness_contract": {
+            "only_input_allowed": "this_request_file",
+            "must_not_access_repository": True,
+            "must_not_access_engine_logic_or_output": True,
+            "return_json_only": True,
+            "do_not_copy_empty_skeleton_values": True,
+        },
+        "instructions": [
+            "packet.cases의 100개 사례를 모두 독립적으로 판단한다.",
+            "proposed_answer는 packet.answer_vocabulary 안의 값 하나 이상만 쓴다.",
+            "confidence는 0.0 이상 1.0 이하 숫자다.",
+            "위험·불확실성은 flags에 짧은 식별자로 남긴다.",
+            "response_skeleton과 같은 키의 JSON 객체만 반환한다.",
+            "저장소, 엔진 규칙, 엔진 출력, 기존 정답은 열람하지 않는다.",
+        ],
+        "packet": packet,
+        "response_skeleton": response_skeleton,
+    }
+    return {**payload, "request_sha256": _payload_digest(payload)}
 
 
 def register_blind_primary_ai_draft(
