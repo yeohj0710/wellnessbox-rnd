@@ -338,11 +338,7 @@ def build_adaptive_review_plan(workbench: Workbench) -> dict[str, Any]:
     batch_eligible = sorted(
         set(agreement_ids)
         - set(required)
-        - {
-            case_id
-            for case_id, decision in workbench.decisions.items()
-            if _is_detailed_decision(decision)
-        }
+        - set(workbench.decisions)
     )
     if pending:
         status = "REVIEW_REQUIRED"
@@ -379,3 +375,67 @@ def build_adaptive_review_plan(workbench: Workbench) -> dict[str, Any]:
             1 for decision in workbench.decisions.values() if _is_detailed_decision(decision)
         ),
     }
+
+
+def approve_consensus_batch(
+    workbench: Workbench,
+    *,
+    approved_by: str,
+    confirmation: str,
+    approved_at: str | None = None,
+) -> dict[str, Any]:
+    """Turn untouched AI agreements into explicit, non-detailed human decisions."""
+    approver = approved_by.strip()
+    if not approver:
+        raise ValueError("consensus_batch_approver_required")
+    expected_confirmation = f"{workbench.indicator_id} AI 합의안 일괄 승인"
+    if confirmation.strip() != expected_confirmation:
+        raise ValueError("consensus_batch_confirmation_mismatch")
+
+    plan = build_adaptive_review_plan(workbench)
+    if plan["status"] != "READY_FOR_BATCH_APPROVAL":
+        raise ValueError(plan.get("reason") or "consensus_batch_not_ready")
+    detailed_reviewers = {
+        decision.decided_by
+        for decision in workbench.decisions.values()
+        if _is_detailed_decision(decision) and decision.decided_by
+    }
+    if detailed_reviewers and detailed_reviewers != {approver}:
+        raise ValueError("batch_approver_must_match_detailed_reviewer")
+
+    from wellnessbox_rnd.evals.answer_key_workbench import Decision
+
+    stamp = approved_at or datetime.now(UTC).isoformat().replace("+00:00", "Z")
+    draft_by_id = {draft.case_id: draft for draft in workbench.drafts}
+    batch_ids = list(plan["batch_eligible_ids"])
+    for case_id in batch_ids:
+        draft = draft_by_id[case_id]
+        workbench.decisions[case_id] = Decision(
+            case_id=case_id,
+            action="accepted",
+            final_answer=sorted(set(draft.draft_answer)),
+            decided_by=approver,
+            decided_at=stamp,
+            note="AI 합의안 일괄 승인; 개별 상세 검토 아님",
+            review_duration_seconds=None,
+            decision_mode="ai_consensus_batch_approval",
+            reviewed_in_detail=False,
+        )
+
+    review = workbench.ai_review
+    approval = {
+        "schema_version": "ai_consensus_batch_approval_v1",
+        "indicator_id": workbench.indicator_id,
+        "approved_by": approver,
+        "approved_at": stamp,
+        "confirmation": expected_confirmation,
+        "ai_review_cases_sha256": review.get("cases_sha256"),
+        "packet_sha256": review.get("packet_sha256"),
+        "required_detail_ids": list(plan["required_detail_ids"]),
+        "sampled_agreement_ids": list(plan["sampled_agreement_ids"]),
+        "sample_correction_count": plan["sample_correction_count"],
+        "batch_approved_ids": batch_ids,
+        "batch_approved_count": len(batch_ids),
+    }
+    workbench.batch_approval = approval
+    return approval

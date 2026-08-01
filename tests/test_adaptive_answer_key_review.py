@@ -1,6 +1,14 @@
 from __future__ import annotations
 
+import json
+import tempfile
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
+
+import scripts.run_answer_key_workbench as workbench_cli
 from wellnessbox_rnd.evals.adaptive_answer_key_review import (
+    approve_consensus_batch,
     build_adaptive_review_plan,
     build_blind_ai_review_packet,
     register_independent_ai_review,
@@ -9,6 +17,8 @@ from wellnessbox_rnd.evals.answer_key_workbench import (
     CaseDraft,
     Decision,
     Workbench,
+    load_workbench,
+    save_workbench,
 )
 
 
@@ -225,3 +235,96 @@ def test_same_provider_family_cannot_review_its_own_draft() -> None:
         assert str(exc) == "ai_review_agent_matches_drafting_agent_family"
     else:
         raise AssertionError("same-family review was accepted")
+
+
+def test_consensus_batch_needs_detailed_sample_and_exact_human_confirmation() -> None:
+    workbench = _workbench()
+    _register(workbench)
+    plan = build_adaptive_review_plan(workbench)
+
+    try:
+        approve_consensus_batch(
+            workbench,
+            approved_by="여형준",
+            confirmation="KPI-1 AI 합의안 일괄 승인",
+        )
+    except ValueError as exc:
+        assert str(exc) == "required_detailed_review_pending"
+    else:
+        raise AssertionError("batch approval bypassed the detailed sample")
+
+    for case_id in plan["required_detail_ids"]:
+        draft = next(item for item in workbench.drafts if item.case_id == case_id)
+        workbench.decisions[case_id] = Decision(
+            case_id=case_id,
+            action="accepted",
+            final_answer=list(draft.draft_answer),
+            decided_by="여형준",
+            decided_at="2026-08-01T01:00:00Z",
+            review_duration_seconds=3.0,
+        )
+
+    try:
+        approve_consensus_batch(
+            workbench,
+            approved_by="여형준",
+            confirmation="승인",
+        )
+    except ValueError as exc:
+        assert str(exc) == "consensus_batch_confirmation_mismatch"
+    else:
+        raise AssertionError("batch approval accepted an imprecise confirmation")
+
+    approval = approve_consensus_batch(
+        workbench,
+        approved_by="여형준",
+        confirmation="KPI-1 AI 합의안 일괄 승인",
+        approved_at="2026-08-01T02:00:00Z",
+    )
+
+    assert approval["batch_approved_count"] == 95
+    assert len(workbench.decisions) == 100
+    assert sum(not item.reviewed_in_detail for item in workbench.decisions.values()) == 95
+    assert build_adaptive_review_plan(workbench)["status"] == "READY_TO_SEAL"
+
+
+def test_cli_exports_blind_packet_and_imports_complete_ai_review() -> None:
+    with tempfile.TemporaryDirectory() as temp:
+        root = Path(temp)
+        bench_path = save_workbench(root / "workbench.json", _workbench(3))
+        packet_path = root / "packet.json"
+        response_path = root / "response.json"
+        with (
+            patch.object(workbench_cli, "workbench_path", return_value=bench_path),
+            patch.object(
+                workbench_cli,
+                "engine_logic_blinded_from",
+                return_value=["engine/policy.json"],
+            ),
+        ):
+            export_result = workbench_cli.cmd_export_ai_review(
+                SimpleNamespace(indicator="KPI-1", output=str(packet_path))
+            )
+            packet = json.loads(packet_path.read_text(encoding="utf-8"))
+            response_path.write_text(
+                json.dumps(
+                    {
+                        "reviewing_agent": "claude",
+                        "review_source": "independent_claude_opinion",
+                        "blinded_from": ["engine/policy.json"],
+                        "packet_sha256": packet["packet_sha256"],
+                        "engine_output_consulted": False,
+                        "cases": _reviews(load_workbench(bench_path)),
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            import_result = workbench_cli.cmd_import_ai_review(
+                SimpleNamespace(indicator="KPI-1", response=str(response_path))
+            )
+
+        assert export_result == 0
+        assert import_result == 0
+        assert set(packet["cases"][0]) == {"case_id", "prompt"}
+        assert load_workbench(bench_path).ai_review["reviewing_agent"] == "claude"

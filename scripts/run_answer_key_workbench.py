@@ -27,6 +27,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from wellnessbox_rnd.evals.adaptive_answer_key_review import (  # noqa: E402
+    approve_consensus_batch,
+    build_adaptive_review_plan,
+    build_blind_ai_review_packet,
+    register_independent_ai_review,
+)
 from wellnessbox_rnd.evals.answer_key_integrity import (  # noqa: E402
     MIN_SECONDS_PER_DECISION,
     audit_sealing_readiness,
@@ -196,15 +202,34 @@ def cmd_review(args) -> int:
         say(f"초안이 없습니다: {target}. 먼저 draft 를 실행하세요.")
         return 2
     workbench = load_workbench(target)
-    pending = workbench.pending()
+    if getattr(args, "minimal", False):
+        plan = build_adaptive_review_plan(workbench)
+        if plan["status"] == "BLOCKED":
+            say(json.dumps(plan, ensure_ascii=False, indent=2))
+            return 2
+        required = set(plan["pending_required_detail_ids"])
+        pending = [draft for draft in workbench.drafts if draft.case_id in required]
+    else:
+        pending = workbench.pending()
     if not pending:
-        say("남은 건이 없습니다. seal 로 넘어가세요.")
+        next_step = (
+            "approve-consensus 로 AI 합의안을 확인하세요."
+            if workbench.ai_review
+            and build_adaptive_review_plan(workbench)["status"]
+            == "READY_FOR_BATCH_APPROVAL"
+            else "남은 건이 없습니다. seal 로 넘어가세요."
+        )
+        say(next_step)
         return 0
 
     say(BAR)
     say(f" {args.indicator} 정답 확정  —  남은 {len(pending)}건 / 전체 {len(workbench.drafts)}건")
     say(BAR)
-    say("Enter = 초안 그대로 수락 | e = 수정 | r = 반려 | q = 저장하고 종료")
+    peer_cases = workbench.ai_review.get("cases", {})
+    choices = "Enter = 1차 초안 수락"
+    if peer_cases:
+        choices += " | p = 2차 AI 의견 수락"
+    say(choices + " | e = 수정 | r = 반려 | q = 저장하고 종료")
     say("명령은 한 줄씩 실행하세요. 여러 줄을 붙여넣으면 답변으로 먹혀 중단됩니다.")
     say("수정은 성분을 쉼표로 구분해 입력합니다. 예: omega3, vitaminD, magnesium")
 
@@ -216,6 +241,17 @@ def cmd_review(args) -> int:
         say(f"  초안: {', '.join(draft.draft_answer)}")
         if draft.draft_rationale:
             say(f"  근거: {draft.draft_rationale}")
+        peer = peer_cases.get(draft.case_id)
+        if peer:
+            peer_answer = peer["proposed_answer"]
+            relation = (
+                "일치"
+                if sorted(peer_answer) == sorted(draft.draft_answer)
+                else "불일치"
+            )
+            say(f"  2차 AI({relation}): {', '.join(peer_answer)}")
+            if peer.get("flags"):
+                say(f"  2차 AI 플래그: {', '.join(peer['flags'])}")
         started = time.monotonic()
         try:
             answer = input("  > ").strip()
@@ -230,9 +266,13 @@ def cmd_review(args) -> int:
 
         if answer.lower() == "q":
             break
+        note = ""
         if answer.lower() == "r":
             note = input("  반려 사유: ").strip()
             final = None
+        elif answer.lower() == "p" and peer:
+            final = list(peer["proposed_answer"])
+            note = "사람이 2차 AI 의견을 선택함"
         elif answer.lower() == "e":
             edited = input("  수정할 성분(쉼표 구분): ").strip()
             final = [item.strip() for item in edited.split(",") if item.strip()]
@@ -246,16 +286,16 @@ def cmd_review(args) -> int:
         if elapsed < MIN_SECONDS_PER_CASE:
             rushed += 1
             say(
-                f"  ! {elapsed:.2f}초 만에 입력돼 저장하지 않았습니다. "
-                f"사례를 읽고 최소 {MIN_SECONDS_PER_CASE:.1f}초 뒤 다시 판단하세요."
+                f"  ! {elapsed:.2f}초 판단을 저장합니다. "
+                "봉인 전 검토 시간 감사에서 차단될 수 있습니다."
             )
-            continue
 
         workbench.decisions[draft.case_id] = decide(
             draft=draft,
             final_answer=final,
             decided_by=args.by,
-            note=note if answer.lower() == "r" else "",
+            note=note,
+            review_duration_seconds=elapsed,
         )
         save_workbench(target, workbench)
 
@@ -279,9 +319,136 @@ def cmd_status(args) -> int:
         say(json.dumps({"status": "NOT_STARTED", "workbench_path": str(target)},
                        ensure_ascii=False, indent=2))
         return 2
-    summary = summarise_adjudication(load_workbench(target))
+    workbench = load_workbench(target)
+    summary = summarise_adjudication(workbench)
+    if workbench.ai_review:
+        summary["adaptive_review"] = build_adaptive_review_plan(workbench)
     say(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0 if summary["complete"] else 2
+
+
+def cmd_export_ai_review(args) -> int:
+    target = workbench_path(args.indicator)
+    if not target.is_file():
+        say(f"초안이 없습니다: {target}")
+        return 2
+    packet = build_blind_ai_review_packet(
+        load_workbench(target),
+        required_blinded_from=engine_logic_blinded_from(),
+    )
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
+        json.dumps(packet, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    say(json.dumps(
+        {
+            "status": "READY",
+            "packet_path": str(output),
+            "case_count": packet["case_count"],
+            "packet_sha256": packet["packet_sha256"],
+        },
+        ensure_ascii=False,
+        indent=2,
+    ))
+    return 0
+
+
+def cmd_import_ai_review(args) -> int:
+    target = workbench_path(args.indicator)
+    if not target.is_file():
+        say(f"초안이 없습니다: {target}")
+        return 2
+    workbench = load_workbench(target)
+    response = json.loads(Path(args.response).read_text(encoding="utf-8"))
+    required = engine_logic_blinded_from()
+    try:
+        review = register_independent_ai_review(
+            workbench,
+            reviewing_agent=response.get("reviewing_agent", ""),
+            review_source=response.get("review_source", ""),
+            blinded_from=response.get("blinded_from", []),
+            required_blinded_from=required,
+            packet_sha256=response.get("packet_sha256", ""),
+            engine_output_consulted=bool(
+                response.get("engine_output_consulted", False)
+            ),
+            cases=response.get("cases", []),
+        )
+    except ValueError as exc:
+        say(json.dumps(
+            {"status": "BLOCKED", "reason": str(exc)},
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+    save_workbench(target, workbench)
+    plan = build_adaptive_review_plan(workbench)
+    say(json.dumps(
+        {
+            "status": "READY",
+            "reviewing_agent": review["reviewing_agent"],
+            "case_count": review["case_count"],
+            "adaptive_review": plan,
+        },
+        ensure_ascii=False,
+        indent=2,
+    ))
+    return 0
+
+
+def cmd_minimal_status(args) -> int:
+    target = workbench_path(args.indicator)
+    if not target.is_file():
+        say(f"초안이 없습니다: {target}")
+        return 2
+    plan = build_adaptive_review_plan(load_workbench(target))
+    say(json.dumps(plan, ensure_ascii=False, indent=2))
+    return 0 if plan["status"] in {
+        "READY_FOR_BATCH_APPROVAL",
+        "READY_TO_SEAL",
+    } else 2
+
+
+def cmd_review_minimal(args) -> int:
+    args.minimal = True
+    return cmd_review(args)
+
+
+def cmd_approve_consensus(args) -> int:
+    target = workbench_path(args.indicator)
+    if not target.is_file():
+        say(f"초안이 없습니다: {target}")
+        return 2
+    workbench = load_workbench(target)
+    confirmation = f"{args.indicator} AI 합의안 일괄 승인"
+    say("상세 검토하지 않은 AI 합의 사례를 일괄 승인합니다.")
+    say(f"계속하려면 정확히 입력하세요: {confirmation}")
+    try:
+        answer = input("  > ").strip()
+    except EOFError:
+        answer = ""
+    try:
+        approval = approve_consensus_batch(
+            workbench,
+            approved_by=args.by,
+            confirmation=answer,
+        )
+    except ValueError as exc:
+        say(json.dumps(
+            {"status": "BLOCKED", "reason": str(exc)},
+            ensure_ascii=False,
+            indent=2,
+        ))
+        return 2
+    save_workbench(target, workbench)
+    say(json.dumps(
+        {"status": "APPROVED", "batch_approval": approval},
+        ensure_ascii=False,
+        indent=2,
+    ))
+    return 0
 
 
 def cmd_seal(args) -> int:
@@ -475,6 +642,45 @@ def build_parser() -> ArgumentParser:
     review.add_argument("--indicator", required=True)
     review.add_argument("--by", required=True, help="확정하는 사람 이름")
     review.set_defaults(func=cmd_review)
+
+    export_ai = sub.add_parser(
+        "export-ai-review",
+        help="1차 답과 엔진 정보를 뺀 2차 AI 검토 패킷을 만든다",
+    )
+    export_ai.add_argument("--indicator", required=True)
+    export_ai.add_argument("--output", required=True)
+    export_ai.set_defaults(func=cmd_export_ai_review)
+
+    import_ai = sub.add_parser(
+        "import-ai-review",
+        help="독립 2차 AI 의견을 검증해 워크벤치에 붙인다",
+    )
+    import_ai.add_argument("--indicator", required=True)
+    import_ai.add_argument("--response", required=True)
+    import_ai.set_defaults(func=cmd_import_ai_review)
+
+    minimal = sub.add_parser(
+        "review-minimal",
+        help="불일치·플래그·결정적 표본만 상세 검토한다",
+    )
+    minimal.add_argument("--indicator", required=True)
+    minimal.add_argument("--by", required=True, help="확정하는 사람 이름")
+    minimal.set_defaults(func=cmd_review_minimal)
+
+    minimal_status = sub.add_parser(
+        "minimal-status",
+        help="적응형 상세 검토와 일괄 승인 준비 상태를 본다",
+    )
+    minimal_status.add_argument("--indicator", required=True)
+    minimal_status.set_defaults(func=cmd_minimal_status)
+
+    approve = sub.add_parser(
+        "approve-consensus",
+        help="상세 검토 뒤 남은 AI 합의안을 사람이 명시적으로 승인한다",
+    )
+    approve.add_argument("--indicator", required=True)
+    approve.add_argument("--by", required=True, help="일괄 승인하는 사람 이름")
+    approve.set_defaults(func=cmd_approve_consensus)
 
     status = sub.add_parser("status", help="진행 상황만 본다")
     status.add_argument("--indicator", required=True)

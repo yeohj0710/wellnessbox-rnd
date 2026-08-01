@@ -587,7 +587,7 @@ class SealDisposalTest(unittest.TestCase):
 
 
 class ReviewPacingTest(unittest.TestCase):
-    def test_rushed_decision_is_not_saved(self) -> None:
+    def test_rushed_decision_is_saved_with_duration_for_seal_audit(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             path = save_workbench(Path(temp) / "workbench.json", _bench(1))
             args = SimpleNamespace(indicator="KPI-1", by="권혁찬")
@@ -605,8 +605,8 @@ class ReviewPacingTest(unittest.TestCase):
 
             restored = load_workbench(path)
             self.assertEqual(result, 0)
-            self.assertEqual(restored.decisions, {})
-            self.assertEqual(len(restored.pending()), 1)
+            self.assertEqual(restored.decisions["c0"].review_duration_seconds, 0.5)
+            self.assertEqual(len(restored.pending()), 0)
 
 
 class DraftCliRoutingTest(unittest.TestCase):
