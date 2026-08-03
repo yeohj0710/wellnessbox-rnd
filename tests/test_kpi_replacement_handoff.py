@@ -57,6 +57,15 @@ def test_external_requests_use_actual_replacement_counts() -> None:
         assert request["requested_role"] == (
             "primary" if indicator_id == "KPI-4" else "review"
         )
+        assert request["blindness_contract"]["allowed_model_ids"] == [
+            builder.ANTHROPIC_MODEL_ID
+        ]
+        agent_key = (
+            "drafting_agent"
+            if request["requested_role"] == "primary"
+            else "reviewing_agent"
+        )
+        assert request["response_skeleton"][agent_key] == builder.ANTHROPIC_MODEL_ID
         assert all(
             set(item) == {"case_id", "prompt"}
             for item in request["packet"]["cases"]

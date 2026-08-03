@@ -48,6 +48,7 @@ REPLACEMENT_REPORT = (
 )
 WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
 COUNTS = {"KPI-1": 49, "KPI-4": 7, "KPI-5": 9}
+ANTHROPIC_MODEL_ID = "claude-opus-5"
 REQUEST_NAMES = {
     "KPI-1": "kpi1_anthropic_review_request.json",
     "KPI-4": "kpi4_anthropic_primary_request.json",
@@ -329,12 +330,34 @@ def build_requests(
             role = "primary"
         else:
             role = "review"
-        requests[indicator_id] = build_external_ai_request(
+        request = build_external_ai_request(
             temporary,
             required_blinded_from=blinded,
             requested_role=role,
             required_provider_family="anthropic",
         )
+        agent_key = "drafting_agent" if role == "primary" else "reviewing_agent"
+        request["blindness_contract"]["allowed_model_ids"] = [
+            ANTHROPIC_MODEL_ID
+        ]
+        request["instructions"][1] = (
+            f"{agent_key}에는 {ANTHROPIC_MODEL_ID}를 정확히 쓴다."
+        )
+        request["response_skeleton"][agent_key] = ANTHROPIC_MODEL_ID
+        payload = {
+            key: value
+            for key, value in request.items()
+            if key != "request_sha256"
+        }
+        request["request_sha256"] = hashlib.sha256(
+            json.dumps(
+                payload,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()
+        requests[indicator_id] = request
     return requests
 
 
@@ -372,6 +395,7 @@ def _instructions() -> str:
         "confirmed_at에 시간대가 있는 ISO 8601 시각을 씁니다.\n"
         "4. MAKE_RETURN_ZIP.cmd를 실행합니다.\n"
         "5. 생성된 kpi_replacement_completed.zip 하나만 반환합니다.\n\n"
+        f"응답 JSON의 모델명은 {ANTHROPIC_MODEL_ID}를 그대로 씁니다.\n"
         "요청 건수: KPI-1 49건, KPI-4 7건, KPI-5 9건.\n"
         "요청 파일 외의 저장소·엔진 규칙·기존 정답은 첨부하지 않습니다.\n"
     )

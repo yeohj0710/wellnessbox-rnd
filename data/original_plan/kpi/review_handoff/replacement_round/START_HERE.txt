@@ -9,5 +9,6 @@ KPI 교체 입력 자료
 4. MAKE_RETURN_ZIP.cmd를 실행합니다.
 5. 생성된 kpi_replacement_completed.zip 하나만 반환합니다.
 
+응답 JSON의 모델명은 claude-opus-5를 그대로 씁니다.
 요청 건수: KPI-1 49건, KPI-4 7건, KPI-5 9건.
 요청 파일 외의 저장소·엔진 규칙·기존 정답은 첨부하지 않습니다.

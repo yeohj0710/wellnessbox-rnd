@@ -2,7 +2,7 @@
 
 ## 2026-08-03 반려 사례 교체 입력 handoff
 
-- 입력 패키지: `data/original_plan/kpi/review_handoff/replacement_round/kpi_replacement_input_package.zip`, SHA-256 `4183d13b5711b421a555b3bb1d6be8bd1284162c91f32593d533a6bd01ac3eff`. 내부 정답 후보 파일은 외부 패키지에서 제외했다.
+- 입력 패키지: `data/original_plan/kpi/review_handoff/replacement_round/kpi_replacement_input_package.zip`, SHA-256 `aa1ec8fa1cdaa46ec4a89deb04f150f552408fb53f305d01e880871b56835cba`. 내부 정답 후보 파일은 외부 패키지에서 제외했다.
 - 새 후보: KPI-1 49건, KPI-4 7건, KPI-5 9건. 지표별 문항은 모두 고유하고 기존 문항과 겹치지 않는다.
 - 외부 역할: KPI-1·5는 Codex 계열 초안에 대한 Anthropic 2차 의견, KPI-4는 OpenAI 상담 모듈과 분리된 Anthropic 1차 초안이다.
 - 신원 입력: `reviewer_identity_selection.json`은 `op039_reviewer_identity_registry_v1.json`에서 검토 권한이 확인된 참조만 허용한다. 임의 이름·가명·해시는 importer가 차단한다.

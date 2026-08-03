@@ -10,11 +10,14 @@
     "must_not_access_repository": true,
     "must_not_access_engine_logic_or_output": true,
     "return_json_only": true,
-    "do_not_copy_empty_skeleton_values": true
+    "do_not_copy_empty_skeleton_values": true,
+    "allowed_model_ids": [
+      "claude-opus-5"
+    ]
   },
   "instructions": [
     "반드시 anthropic 계열 모델에서 이 요청을 처리한다.",
-    "reviewing_agent에는 실제 모델명을 쓰고 not_recorded·unknown·placeholder를 쓰지 않는다.",
+    "reviewing_agent에는 claude-opus-5를 정확히 쓴다.",
     "packet.cases의 49개 사례를 모두 독립적으로 판단한다.",
     "proposed_answer는 packet.answer_vocabulary 안의 값 하나 이상만 쓴다.",
     "confidence는 0.0 이상 1.0 이하 숫자다.",
@@ -259,7 +262,7 @@
     "packet_sha256": "22bfbc1dea05b378567fb8cdbfdc985fb84e638cc4a18a4b3db6f5107c97754b"
   },
   "response_skeleton": {
-    "reviewing_agent": "<반드시 anthropic 계열의 실제 모델명; not_recorded·unknown·placeholder 금지>",
+    "reviewing_agent": "claude-opus-5",
     "review_source": "blind_packet_independent_opinion",
     "blinded_from": [
       "data/knowledge/counseling_answer_verifier_policy_v1.json",
@@ -620,5 +623,5 @@
       }
     ]
   },
-  "request_sha256": "28a37af413f9c091cf63da4dc7564a5353d78f282ea2ec484c7c00f9866eed6f"
+  "request_sha256": "cc7ded8b57b5c162d889e16b4accb9b018299886eba67f52373256750a588e3c"
 }

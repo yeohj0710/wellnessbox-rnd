@@ -109,12 +109,17 @@ def _validate_identity_selection(payload: dict[str, Any]) -> dict[str, str]:
     }
 
 
-def _actual_anthropic_agent(payload: dict[str, Any], key: str) -> str:
+def _actual_anthropic_agent(
+    payload: dict[str, Any],
+    key: str,
+    allowed_model_ids: list[str] | frozenset[str] = ALLOWED_ANTHROPIC_MODEL_IDS,
+) -> str:
     agent = str(payload.get(key, "")).strip()
+    allowed = {str(item).strip().casefold() for item in allowed_model_ids}
     if (
         agent.casefold() in INVALID_AGENT_NAMES
         or agent_family(agent) != "anthropic"
-        or agent.casefold() not in ALLOWED_ANTHROPIC_MODEL_IDS
+        or agent.casefold() not in allowed
     ):
         raise ValueError(f"replacement_response_agent_invalid:{key}")
     return agent
@@ -152,7 +157,11 @@ def validate_return(source: Path) -> tuple[dict[str, Any], dict[str, bytes]]:
                 workbench.primary_ai_draft = {
                     "answer_vocabulary": list(request["packet"]["answer_vocabulary"])
                 }
-                agent = _actual_anthropic_agent(response, "drafting_agent")
+                agent = _actual_anthropic_agent(
+                    response,
+                    "drafting_agent",
+                    request["blindness_contract"].get("allowed_model_ids", []),
+                )
                 record = register_blind_primary_ai_draft(
                     workbench,
                     drafting_agent=agent,
@@ -167,7 +176,11 @@ def validate_return(source: Path) -> tuple[dict[str, Any], dict[str, bytes]]:
                     input_response_sha256=hashlib.sha256(raw).hexdigest(),
                 )
             else:
-                agent = _actual_anthropic_agent(response, "reviewing_agent")
+                agent = _actual_anthropic_agent(
+                    response,
+                    "reviewing_agent",
+                    request["blindness_contract"].get("allowed_model_ids", []),
+                )
                 record = register_independent_ai_review(
                     workbench,
                     reviewing_agent=agent,
