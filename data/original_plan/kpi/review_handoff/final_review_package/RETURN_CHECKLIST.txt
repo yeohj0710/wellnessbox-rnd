@@ -1,0 +1,8 @@
+반환 전 확인
+
+[ ] Claude 추가 작업 없음
+[ ] CSV 4개에서 각 100행의 검토_선택과 시각 작성
+[ ] reviewer_details.json 작성
+[ ] seal_disposal_review.json 작성
+[ ] MAKE_RETURN_ZIP.cmd 실행
+[ ] kpi_completed_review.zip 하나만 반환

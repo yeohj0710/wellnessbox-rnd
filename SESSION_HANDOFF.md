@@ -1,5 +1,13 @@
 # SESSION_HANDOFF
 
+## 2026-08-03 일괄 검토·반환 패키지 handoff
+
+- Claude 역할은 완료됐다. KPI-1·3·5의 2차 의견과 KPI-4의 1차 초안, 총 400건이 이미 워크벤치에 반영됐다.
+- 검토자는 `kpi_final_review_package.zip`을 풀고 CSV 4개와 JSON 2개만 작성한다.
+- `MAKE_RETURN_ZIP.cmd`는 여섯 파일만 `kpi_completed_review.zip`으로 묶는다. 반환 ZIP 생성 실험에서 항목 6개를 확인했다.
+- 코드 검증: 패키지·가져오기 집중 시험 7건 PASS, 변경 파일 Ruff PASS.
+- 보류: 검토자 선택 400건, KPI-1·5 봉인 처리 판단, 반환 ZIP 가져오기, 최종 감사와 새 봉인.
+
 ## 2026-08-03 오프라인 검토 CSV importer handoff
 
 - 명령: `python scripts/import_kpi_reviewer_package.py --input <ZIP>`은 읽기 전용, `--apply`는 검증 통과 뒤 네 워크벤치를 원자적으로 저장한다.

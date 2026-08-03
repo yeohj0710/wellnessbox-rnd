@@ -21,6 +21,14 @@ HANDOFF_DIR = ROOT / "data/original_plan/kpi/review_handoff"
 OUTPUT_DIR = HANDOFF_DIR / "final_review_package"
 OUTPUT_ZIP = HANDOFF_DIR / "kpi_final_review_package.zip"
 INDICATORS = ("KPI-1", "KPI-3", "KPI-4", "KPI-5")
+EDITABLE_FILES = (
+    "kpi1_review.csv",
+    "kpi3_review.csv",
+    "kpi4_review.csv",
+    "kpi5_review.csv",
+    "reviewer_details.json",
+    "seal_disposal_review.json",
+)
 CSV_FIELDS = (
     "case_id",
     "prompt",
@@ -123,6 +131,79 @@ def _write_zip(files: dict[str, bytes]) -> None:
             archive.writestr(info, content)
 
 
+def _instructions_bytes() -> bytes:
+    return (
+        "KPI 정답 검토 자료\n\n"
+        "역할 구분\n"
+        "- Claude: 완료. 400건의 안 B를 이미 작성했습니다. 추가 AI 실행은 없습니다.\n"
+        "- 검토자: 아래 작성 대상 6개만 작성합니다. 최종 선택은 검토자가 합니다.\n\n"
+        "작성 대상 6개\n"
+        "- kpi1_review.csv\n"
+        "- kpi3_review.csv\n"
+        "- kpi4_review.csv\n"
+        "- kpi5_review.csv\n"
+        "- reviewer_details.json\n"
+        "- seal_disposal_review.json\n\n"
+        "CSV 작성법\n"
+        "1. 각 행에서 안 A와 안 B의 답·근거·표시를 비교합니다.\n"
+        "2. 검토_선택에는 A, B, CUSTOM, REJECT 중 하나만 씁니다.\n"
+        "3. CUSTOM이면 최종_답에 허용 답을 |로 구분해 씁니다.\n"
+        "4. A, B 또는 REJECT이면 최종_답을 비웁니다.\n"
+        "5. 검토_메모는 선택 사항입니다.\n"
+        "6. 시작·종료 시각은 시간대가 있는 ISO 8601 형식으로 씁니다. "
+        "예: 2026-08-03T14:30:00+09:00\n"
+        "7. 각 행의 종료 시각은 시작 시각보다 1초 이상 늦어야 합니다. "
+        "서로 다른 행의 검토 시간은 겹치면 안 됩니다.\n\n"
+        "JSON 작성법\n"
+        "- reviewer_details.json: reviewer_name, affiliation, review_date를 채웁니다. "
+        "qualification_stage는 바꾸지 않습니다. review_date 예: 2026-08-03\n"
+        "- seal_disposal_review.json: KPI-1과 KPI-5 각각 decision에 DISCARD 또는 "
+        "KEEP, reason에 판단 이유, reviewed_by에 이름, reviewed_at에 시간대가 있는 "
+        "ISO 8601 시각을 씁니다.\n\n"
+        "반환 방법\n"
+        "1. ZIP을 먼저 폴더에 풉니다.\n"
+        "2. 위 6개 파일을 모두 작성합니다.\n"
+        "3. MAKE_RETURN_ZIP.cmd를 실행합니다.\n"
+        "4. 같은 폴더에 생긴 kpi_completed_review.zip 하나만 반환합니다.\n\n"
+        "START_HERE.txt, RETURN_CHECKLIST.txt, SUMMARY.json, MAKE_RETURN_ZIP.cmd는 "
+        "수정하지 않습니다.\n"
+        "현재 검토 대상: KPI-1 100건, KPI-3 100건, KPI-4 100건, KPI-5 100건.\n"
+    ).encode()
+
+
+def _checklist_bytes() -> bytes:
+    return (
+        "반환 전 확인\n\n"
+        "[ ] Claude 추가 작업 없음\n"
+        "[ ] CSV 4개에서 각 100행의 검토_선택과 시각 작성\n"
+        "[ ] reviewer_details.json 작성\n"
+        "[ ] seal_disposal_review.json 작성\n"
+        "[ ] MAKE_RETURN_ZIP.cmd 실행\n"
+        "[ ] kpi_completed_review.zip 하나만 반환\n"
+    ).encode()
+
+
+def _return_zip_script_bytes() -> bytes:
+    file_list = ",".join(f"'{name}'" for name in EDITABLE_FILES)
+    script = (
+        "@echo off\r\n"
+        "setlocal\r\n"
+        'cd /d "%~dp0"\r\n'
+        "powershell -NoProfile -ExecutionPolicy Bypass -Command "
+        f'"$files=@({file_list}); '
+        "$missing=@($files | Where-Object { -not (Test-Path -LiteralPath $_ -PathType Leaf) }); "
+        "if ($missing.Count -gt 0) { Write-Host ('Missing: ' + ($missing -join ', ')); exit 2 }; "
+        "Compress-Archive -LiteralPath $files "
+        "-DestinationPath 'kpi_completed_review.zip' -Force\"\r\n"
+        "if errorlevel 1 (\r\n"
+        "  echo Failed to create kpi_completed_review.zip\r\n"
+        "  exit /b 1\r\n"
+        ")\r\n"
+        "echo Created: kpi_completed_review.zip\r\n"
+    )
+    return script.encode("utf-8")
+
+
 def main() -> int:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     summaries: list[dict[str, Any]] = []
@@ -136,21 +217,9 @@ def main() -> int:
         summaries.append(summary)
         package_files[name] = content
 
-    instructions = (
-        "KPI 정답 검토 자료\n\n"
-        "1. CSV 파일을 하나씩 엽니다.\n"
-        "2. 각 행에서 안 A와 안 B의 답·근거·표시를 비교합니다.\n"
-        "3. 검토_선택에는 A, B, CUSTOM, REJECT 중 하나를 씁니다.\n"
-        "4. CUSTOM이면 최종_답에 허용 답을 |로 구분해 씁니다.\n"
-        "5. A 또는 B이면 최종_답은 비워도 됩니다.\n"
-        "6. 검토 시작·종료 시각은 ISO 8601 형식으로 기록합니다.\n"
-        "7. reviewer_details.json의 이름·소속·검토일을 채웁니다. "
-        "qualification_stage 값은 바꾸지 않습니다.\n"
-        "8. 네 CSV와 reviewer_details.json, seal_disposal_review.json을 "
-        "한 ZIP으로 묶어 반환합니다.\n\n"
-        "현재 검토 대상: KPI-1 100건, KPI-3 100건, "
-        "KPI-4 100건, KPI-5 100건.\n"
-    ).encode()
+    instructions = _instructions_bytes()
+    checklist = _checklist_bytes()
+    return_zip_script = _return_zip_script_bytes()
     summary_bytes = (
         json.dumps(
             {"schema_version": "kpi_reviewer_package_v1", "indicators": summaries},
@@ -160,8 +229,12 @@ def main() -> int:
         + "\n"
     ).encode("utf-8")
     (OUTPUT_DIR / "START_HERE.txt").write_bytes(instructions)
+    (OUTPUT_DIR / "RETURN_CHECKLIST.txt").write_bytes(checklist)
+    (OUTPUT_DIR / "MAKE_RETURN_ZIP.cmd").write_bytes(return_zip_script)
     (OUTPUT_DIR / "SUMMARY.json").write_bytes(summary_bytes)
     package_files["START_HERE.txt"] = instructions
+    package_files["RETURN_CHECKLIST.txt"] = checklist
+    package_files["MAKE_RETURN_ZIP.cmd"] = return_zip_script
     package_files["SUMMARY.json"] = summary_bytes
     for template in ("reviewer_details.json", "seal_disposal_review.json"):
         content = (HANDOFF_DIR / template).read_bytes()

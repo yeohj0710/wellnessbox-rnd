@@ -1,5 +1,13 @@
 # PROGRESS
 
+## 2026-08-03 일괄 검토·반환 패키지
+
+- Claude의 교차 의견 400건은 모두 반영됐다. 추가 Claude 또는 다른 AI 실행은 없다.
+- `kpi_final_review_package.zip`은 검토자가 작성할 CSV 4개와 JSON 2개를 명확히 구분한다.
+- `START_HERE.txt`에 허용 선택값, 시각 형식, 봉인 처리 판단값과 반환 절차를 기록했다.
+- `MAKE_RETURN_ZIP.cmd`는 작성 대상 6개만 `kpi_completed_review.zip`으로 묶는다. 실제 실행 결과 ZIP 항목은 정확히 6개였다.
+- 검토 판단 400건과 KPI-1·5 과거 봉인 처리 판단은 아직 입력하지 않았다.
+
 ## 2026-08-03 작성된 검토 CSV 가져오기 게이트
 
 - `scripts/import_kpi_reviewer_package.py`를 추가했다. 기본 실행은 읽기 전용 검증이며 `--apply`가 있을 때만 네 워크벤치를 한꺼번에 갱신한다.

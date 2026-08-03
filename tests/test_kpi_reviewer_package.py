@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from scripts import build_kpi_reviewer_package as package
 from wellnessbox_rnd.evals.answer_key_workbench import CaseDraft, Workbench
 
@@ -62,3 +64,21 @@ def test_build_rows_includes_only_required_cases(monkeypatch) -> None:
     assert rows[0]["안_A"] == "a"
     assert rows[0]["안_B"] == "b"
     assert summary["required_review_count"] == 1
+
+
+def test_instructions_separate_completed_ai_work_from_reviewer_work() -> None:
+    text = package._instructions_bytes().decode("utf-8")
+
+    assert "Claude: 완료" in text
+    assert "추가 AI 실행은 없습니다" in text
+    assert "작성 대상 6개" in text
+    assert "kpi_completed_review.zip 하나만 반환" in text
+
+
+def test_return_zip_script_contains_only_the_six_editable_files() -> None:
+    text = package._return_zip_script_bytes().decode("utf-8")
+    listed = re.search(r"\$files=@\((.*?)\);", text)
+
+    assert listed is not None
+    assert tuple(re.findall(r"'([^']+)'", listed.group(1))) == package.EDITABLE_FILES
+    assert "kpi_completed_review.zip" in text
