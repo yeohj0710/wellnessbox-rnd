@@ -57,6 +57,29 @@ def test_external_requests_use_actual_replacement_counts() -> None:
         assert request["requested_role"] == (
             "primary" if indicator_id == "KPI-4" else "review"
         )
+        assert all(
+            set(item) == {"case_id", "prompt"}
+            for item in request["packet"]["cases"]
+        )
+
+
+def test_handoff_zip_excludes_internal_answers() -> None:
+    with zipfile.ZipFile(builder.PACKAGE_PATH) as archive:
+        names = set(archive.namelist())
+
+    assert "kpi_replacement_candidates_v1.json" not in names
+    assert names == {
+        "START_HERE.txt",
+        "MAKE_RETURN_ZIP.cmd",
+        "reviewer_identity_selection.json",
+        *builder.REQUEST_NAMES.values(),
+    }
+
+
+def test_identity_options_exclude_ineligible_owner() -> None:
+    selection = builder._identity_selection()
+
+    assert [item["registered_name"] for item in selection["options"]] == ["권혁찬"]
 
 
 def _response_for(request: dict) -> dict:
@@ -75,7 +98,7 @@ def _completed_zip(tmp_path: Path, *, identity_ref: str | None = None) -> Path:
     requests = builder.build_requests(builder.build_candidates())
     selection = builder._identity_selection()
     selection["selected_reviewer_identity_ref"] = (
-        identity_ref or selection["options"][1]["reviewer_identity_ref"]
+        identity_ref or selection["options"][0]["reviewer_identity_ref"]
     )
     selection["confirmed_at"] = "2026-08-03T18:00:00+09:00"
     source = tmp_path / "completed.zip"
@@ -123,6 +146,17 @@ def test_generic_provider_name_is_not_an_actual_model() -> None:
         importer._actual_anthropic_agent(
             {"reviewing_agent": "Claude"}, "reviewing_agent"
         )
+    with pytest.raises(ValueError, match="replacement_response_agent_invalid"):
+        importer._actual_anthropic_agent(
+            {"reviewing_agent": "arbitrary-claude-label"}, "reviewing_agent"
+        )
+
+    assert (
+        importer._actual_anthropic_agent(
+            {"reviewing_agent": "claude-opus-5"}, "reviewing_agent"
+        )
+        == "claude-opus-5"
+    )
 
 
 def test_apply_stores_validated_staging_and_original_responses(
@@ -139,8 +173,13 @@ def test_apply_stores_validated_staging_and_original_responses(
     assert report["status"] == "READY_FOR_KPI4_SECOND_OPINION_AND_FINAL_REVIEW"
     assert staging_path.is_file()
     assert sorted(path.name for path in response_dir.iterdir()) == sorted(
-        [importer.SELECTION_NAME, *builder.RESPONSE_NAMES.values()]
+        [
+            importer.RETURN_ZIP_NAME,
+            importer.SELECTION_NAME,
+            *builder.RESPONSE_NAMES.values(),
+        ]
     )
+    assert (response_dir / importer.RETURN_ZIP_NAME).read_bytes() == source.read_bytes()
 
 
 def test_snapshot_zip_keeps_original_bytes_after_source_replacement(

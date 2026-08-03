@@ -4,11 +4,6 @@
   "confirmed_at": "",
   "options": [
     {
-      "registered_name": "여형준",
-      "organization": "웰니스박스 TIPS 과제 책임연구원",
-      "reviewer_identity_ref": "registry:op039:sha256:560350bc55ffe05163859ab83b2a5ac11feb612ee6d29db1f19d9627c59af9b4"
-    },
-    {
       "registered_name": "권혁찬",
       "organization": "웰니스박스 TIPS 과제 참여연구원",
       "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"

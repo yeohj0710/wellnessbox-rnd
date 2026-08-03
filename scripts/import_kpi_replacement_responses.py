@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import io
 import json
+import re
 import sys
 import zipfile
 from copy import deepcopy
@@ -37,6 +38,7 @@ from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
 )
 
 SELECTION_NAME = "reviewer_identity_selection.json"
+RETURN_ZIP_NAME = "kpi_replacement_completed.zip"
 STAGING_PATH = OUTPUT_DIR / "kpi_replacement_staging_v1.json"
 RESPONSE_DIR = OUTPUT_DIR / "responses"
 INVALID_AGENT_NAMES = {
@@ -46,6 +48,10 @@ INVALID_AGENT_NAMES = {
     "unknown",
     "placeholder",
 }
+ANTHROPIC_MODEL_PATTERN = re.compile(
+    r"^claude-(?:opus|sonnet|haiku)-[a-z0-9][a-z0-9.-]*$",
+    re.IGNORECASE,
+)
 
 
 class SnapshotZip:
@@ -87,9 +93,16 @@ def _validate_identity_selection(payload: dict[str, Any]) -> dict[str, str]:
     if payload.get("schema_version") != "kpi_reviewer_identity_selection_v1":
         raise ValueError("identity_selection_schema_invalid")
     selected = str(payload.get("selected_reviewer_identity_ref", "")).strip()
-    trusted = registered_reviewer_identity_references(
-        load_identity_registry(ROOT)
-    )
+    registry = load_identity_registry(ROOT)
+    eligible_registry = {
+        **registry,
+        "registered_reviewers": [
+            entry
+            for entry in registry.get("registered_reviewers", [])
+            if entry.get("may_review_h005") is True
+        ],
+    }
+    trusted = registered_reviewer_identity_references(eligible_registry)
     if selected not in trusted:
         raise ValueError("identity_selection_not_registered")
     return {
@@ -102,7 +115,11 @@ def _validate_identity_selection(payload: dict[str, Any]) -> dict[str, str]:
 
 def _actual_anthropic_agent(payload: dict[str, Any], key: str) -> str:
     agent = str(payload.get(key, "")).strip()
-    if agent.casefold() in INVALID_AGENT_NAMES or agent_family(agent) != "anthropic":
+    if (
+        agent.casefold() in INVALID_AGENT_NAMES
+        or agent_family(agent) != "anthropic"
+        or ANTHROPIC_MODEL_PATTERN.fullmatch(agent) is None
+    ):
         raise ValueError(f"replacement_response_agent_invalid:{key}")
     return agent
 
@@ -118,7 +135,10 @@ def validate_return(source: Path) -> tuple[dict[str, Any], dict[str, bytes]]:
         identity = _validate_identity_selection(selection_payload)
         candidates = build_candidates()
         records: dict[str, Any] = {}
-        response_bytes: dict[str, bytes] = {SELECTION_NAME: selection_bytes}
+        response_bytes: dict[str, bytes] = {
+            RETURN_ZIP_NAME: reader.source_bytes,
+            SELECTION_NAME: selection_bytes,
+        }
 
         for indicator_id in ("KPI-1", "KPI-4", "KPI-5"):
             request = json.loads(

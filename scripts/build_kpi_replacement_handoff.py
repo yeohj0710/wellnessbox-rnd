@@ -347,7 +347,10 @@ def _identity_selection() -> dict[str, Any]:
             "reviewer_identity_ref": reviewer_identity_reference(entry),
         }
         for entry in registry["registered_reviewers"]
+        if entry.get("may_review_h005") is True
     ]
+    if not options:
+        raise ValueError("eligible_reviewer_identity_option_missing")
     return {
         "schema_version": "kpi_reviewer_identity_selection_v1",
         "selected_reviewer_identity_ref": "",
@@ -425,7 +428,6 @@ def main() -> int:
         "START_HERE.txt",
         "MAKE_RETURN_ZIP.cmd",
         "reviewer_identity_selection.json",
-        "kpi_replacement_candidates_v1.json",
         *REQUEST_NAMES.values(),
     ]
     with zipfile.ZipFile(PACKAGE_PATH, "w", zipfile.ZIP_DEFLATED) as archive:
