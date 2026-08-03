@@ -33,8 +33,8 @@
       "fulfilment_plan": {
         "approach": "독립 초안 + 다른 제공자 계열 AI의 블라인드 검수 → 사람이 불일치·위험·합의 표본 상세 검토 → 나머지 합의안 명시적 일괄 승인 → 봉인 → 엔진 대조",
         "tool": "scripts/run_answer_key_workbench.py",
-        "status": "review_imported_identity_attestation_and_49_replacements_required",
-        "prior_seal_note": "2026-07-31의 과속 자동 수락 봉인 원본과 2026-08-03 제출된 폐기 판단을 보존했다. 비식별 검토자의 추적 가능한 신원 확인값이 없어 정식 폐기로 계산하지 않는다. 새 검토 100건 중 49건도 반려돼 두 조건을 해결하기 전에는 재봉인하지 않는다."
+        "status": "replacement_candidates_49_ready_external_review_required",
+        "prior_seal_note": "2026-07-31의 과속 자동 수락 봉인 원본과 2026-08-03 제출된 폐기 판단을 보존했다. 비식별 검토자의 등록 신원 참조가 없어 정식 폐기로 계산하지 않는다. 반려 49건의 새 후보는 준비됐으며 Anthropic 독립 의견과 최종 판단을 반영하기 전에는 재봉인하지 않는다."
       },
       "internal_measurement_is_valid_during_research": true
     },
@@ -150,8 +150,8 @@
       "fulfilment_plan": {
         "approach": "OpenAI가 아닌 AI의 블라인드 1차 초안 → 다른 제공자 계열 AI의 블라인드 검수 → 사람이 불일치·위험·합의 표본 상세 검토 → 나머지 합의안 명시적 일괄 승인 → 봉인 → OpenAI 상담 모듈 대조",
         "tool": "scripts/build_blinded_answer_key_drafts.py + scripts/run_answer_key_workbench.py",
-        "status": "review_imported_identity_attestation_and_7_replacements_required",
-        "note": "비-OpenAI 1차 초안과 별도 OpenAI 계열 의견, 제출된 상세 판단 100건을 반영했다. 비식별 검토자의 추적 가능한 신원 확인값이 없고 7건이 반려돼 두 조건을 해결하기 전에는 봉인하지 않는다.",
+        "status": "replacement_candidates_7_ready_anthropic_primary_required",
+        "note": "비-OpenAI 1차 초안과 별도 OpenAI 계열 의견, 제출된 상세 판단 100건을 반영했다. 비식별 검토자의 등록 신원 참조가 없고 7건이 반려됐다. 새 질문 7건은 준비됐으며 Anthropic 1차 초안, OpenAI 2차 의견, 최종 판단을 반영하기 전에는 봉인하지 않는다.",
         "agent_separation_note": "KPI-4는 측정 대상이 대화형 LLM이므로 초안 작성 AI와 상담 모델의 제공자 계열이 다르지 않으면 봉인을 거부한다. 교차 AI 검수도 1차와 다른 제공자 계열이어야 한다. 제공자 분리와 함께 engine_logic 9개·엔진 출력 차단, 패킷 SHA-256, 사람 최종 승인을 모두 검증한다."
       },
       "internal_measurement_is_valid_during_research": true
@@ -178,8 +178,8 @@
       "fulfilment_plan": {
         "approach": "독립 참조 코퍼스 초안 → 다른 제공자 계열 AI의 블라인드 검수 → 사람이 불일치·위험·합의 표본 상세 검토 → 나머지 합의안 명시적 일괄 승인 → 봉인 → 엔진 대조",
         "tool": "scripts/run_answer_key_workbench.py",
-        "status": "review_imported_identity_attestation_and_9_replacements_required",
-        "prior_seal_note": "KPI-1과 같은 과속 자동 수락 봉인 원본과 제출된 폐기 판단을 보존했다. 비식별 검토자의 추적 가능한 신원 확인값이 없어 정식 폐기로 계산하지 않는다. 새 검토 100건 중 9건도 반려돼 두 조건을 해결하기 전에는 재봉인하지 않는다."
+        "status": "replacement_candidates_9_ready_external_review_required",
+        "prior_seal_note": "KPI-1과 같은 과속 자동 수락 봉인 원본과 제출된 폐기 판단을 보존했다. 비식별 검토자의 등록 신원 참조가 없어 정식 폐기로 계산하지 않는다. 반려 9건의 새 후보는 준비됐으며 Anthropic 독립 의견과 최종 판단을 반영하기 전에는 재봉인하지 않는다."
       },
       "internal_measurement_is_valid_during_research": true
     },

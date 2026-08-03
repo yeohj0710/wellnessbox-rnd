@@ -252,7 +252,7 @@ def build_external_ai_request(
         "instructions": [
             f"반드시 {family} 계열 모델에서 이 요청을 처리한다.",
             f"{agent_key}에는 실제 모델명을 쓰고 not_recorded·unknown·placeholder를 쓰지 않는다.",
-            "packet.cases의 100개 사례를 모두 독립적으로 판단한다.",
+            f"packet.cases의 {packet['case_count']}개 사례를 모두 독립적으로 판단한다.",
             "proposed_answer는 packet.answer_vocabulary 안의 값 하나 이상만 쓴다.",
             "confidence는 0.0 이상 1.0 이하 숫자다.",
             "위험·불확실성은 flags에 짧은 식별자로 남긴다.",

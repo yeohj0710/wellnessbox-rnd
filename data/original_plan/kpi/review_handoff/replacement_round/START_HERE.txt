@@ -1,0 +1,13 @@
+KPI 교체 입력 자료
+
+1. 요청 JSON 3개를 각각 새 Claude 대화에 첨부합니다.
+2. 요청 파일의 지시대로 JSON만 받아 아래 이름으로 저장합니다.
+   - kpi1_response.json
+   - kpi4_response.json
+   - kpi5_response.json
+3. reviewer_identity_selection.json에서 등록 정보와 일치하는 항목의 reviewer_identity_ref를 selected_reviewer_identity_ref에 복사하고 confirmed_at에 시간대가 있는 ISO 8601 시각을 씁니다.
+4. MAKE_RETURN_ZIP.cmd를 실행합니다.
+5. 생성된 kpi_replacement_completed.zip 하나만 반환합니다.
+
+요청 건수: KPI-1 49건, KPI-4 7건, KPI-5 9건.
+요청 파일 외의 저장소·엔진 규칙·기존 정답은 첨부하지 않습니다.

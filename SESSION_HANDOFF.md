@@ -1,5 +1,15 @@
 # SESSION_HANDOFF
 
+## 2026-08-03 반려 사례 교체 입력 handoff
+
+- 입력 패키지: `data/original_plan/kpi/review_handoff/replacement_round/kpi_replacement_input_package.zip`, SHA-256 `851d8191d215d8d30ab8e5d8df7af47efa55a7418082ec66daf9e6f837650b26`.
+- 새 후보: KPI-1 49건, KPI-4 7건, KPI-5 9건. 지표별 문항은 모두 고유하고 기존 문항과 겹치지 않는다.
+- 외부 역할: KPI-1·5는 Codex 계열 초안에 대한 Anthropic 2차 의견, KPI-4는 OpenAI 상담 모듈과 분리된 Anthropic 1차 초안이다.
+- 신원 입력: `reviewer_identity_selection.json`은 `op039_reviewer_identity_registry_v1.json`에서 계산한 두 참조 중 하나만 허용한다. 임의 이름·가명·해시는 importer가 차단한다.
+- 반환 검증: `scripts/import_kpi_replacement_responses.py`는 읽기 전용이 기본이며 `--apply`만 원본 응답과 staging을 저장한다. 사람 판단이나 정답 확정은 만들지 않는다.
+- 후속 순서: 반환 검증·적용 → KPI-4 OpenAI 블라인드 2차 의견 7건 → 65건 최종 검토 자료 → 워크벤치 교체 → 감사·봉인이다. 이 순서는 제공자 분리를 지키기 위해 생략할 수 없다.
+- 검증: 관련 집중 시험 171건 PASS. 전체 pytest 90건 실패와 전체 Ruff 28건은 기존 기준선과 같아 신규 실패·오류가 없다.
+
 ## 2026-08-03 최종 검토 반영·신원 확인 보완 handoff
 
 - 원본: `data/original_plan/kpi/review_handoff/completed_review/kpi_completed_review.zip`, SHA-256 `a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c`.

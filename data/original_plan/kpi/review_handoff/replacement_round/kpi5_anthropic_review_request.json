@@ -1,0 +1,185 @@
+{
+  "schema_version": "blind_external_ai_answer_request_v1",
+  "indicator_id": "KPI-5",
+  "requested_role": "review",
+  "required_provider_family": "anthropic",
+  "blindness_contract": {
+    "only_input_allowed": "this_request_file",
+    "required_provider_family": "anthropic",
+    "actual_model_name_required": true,
+    "must_not_access_repository": true,
+    "must_not_access_engine_logic_or_output": true,
+    "return_json_only": true,
+    "do_not_copy_empty_skeleton_values": true
+  },
+  "instructions": [
+    "반드시 anthropic 계열 모델에서 이 요청을 처리한다.",
+    "reviewing_agent에는 실제 모델명을 쓰고 not_recorded·unknown·placeholder를 쓰지 않는다.",
+    "packet.cases의 9개 사례를 모두 독립적으로 판단한다.",
+    "proposed_answer는 packet.answer_vocabulary 안의 값 하나 이상만 쓴다.",
+    "confidence는 0.0 이상 1.0 이하 숫자다.",
+    "위험·불확실성은 flags에 짧은 식별자로 남긴다.",
+    "response_skeleton과 같은 키의 JSON 객체만 반환한다.",
+    "저장소, 엔진 규칙, 엔진 출력, 기존 정답은 열람하지 않는다."
+  ],
+  "packet": {
+    "schema_version": "blind_ai_answer_review_packet_v1",
+    "indicator_id": "KPI-5",
+    "case_count": 9,
+    "answer_vocabulary": [
+      "calcium_citrate",
+      "coq10",
+      "depletion",
+      "magnesium_glycinate",
+      "p236",
+      "p237",
+      "vitamin_b_complex",
+      "zinc",
+      "마그네슘",
+      "비타민 B1",
+      "아연",
+      "칼슘",
+      "코엔자임Q10"
+    ],
+    "required_blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "omitted_fields": [
+      "draft_answer",
+      "draft_rationale",
+      "engine_logic",
+      "engine_output"
+    ],
+    "instructions": "각 사례를 독립적으로 판단해 proposed_answer, confidence, flags, rationale을 반환한다. 1차 초안·근거·엔진 입력·엔진 출력은 보지 않는다.",
+    "cases": [
+      {
+        "case_id": "kpi5-repl-001",
+        "prompt": "Atorvastatin 복용자 상담에서 coq10 관계의 라벨과 원문 근거를 함께 제시하면?"
+      },
+      {
+        "case_id": "kpi5-repl-002",
+        "prompt": "Esomeprazole 복용자 상담에서 calcium_citrate 관계의 라벨과 원문 근거를 함께 제시하면?"
+      },
+      {
+        "case_id": "kpi5-repl-003",
+        "prompt": "Esomeprazole 복용자 상담에서 magnesium_glycinate 관계의 라벨과 원문 근거를 함께 제시하면?"
+      },
+      {
+        "case_id": "kpi5-repl-004",
+        "prompt": "Esomeprazole 복용자 상담에서 vitamin_b_complex 관계의 라벨과 원문 근거를 함께 제시하면?"
+      },
+      {
+        "case_id": "kpi5-repl-005",
+        "prompt": "Esomeprazole 복용자 상담에서 zinc 관계의 라벨과 원문 근거를 함께 제시하면?"
+      },
+      {
+        "case_id": "kpi5-repl-006",
+        "prompt": "Furosemide 복용자 상담에서 calcium_citrate 관계의 라벨과 원문 근거를 함께 제시하면?"
+      },
+      {
+        "case_id": "kpi5-repl-007",
+        "prompt": "Furosemide 복용자 상담에서 magnesium_glycinate 관계의 라벨과 원문 근거를 함께 제시하면?"
+      },
+      {
+        "case_id": "kpi5-repl-008",
+        "prompt": "Furosemide 복용자 상담에서 vitamin_b_complex 관계의 라벨과 원문 근거를 함께 제시하면?"
+      },
+      {
+        "case_id": "kpi5-repl-009",
+        "prompt": "Furosemide 복용자 상담에서 zinc 관계의 라벨과 원문 근거를 함께 제시하면?"
+      }
+    ],
+    "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d"
+  },
+  "response_skeleton": {
+    "reviewing_agent": "<반드시 anthropic 계열의 실제 모델명; not_recorded·unknown·placeholder 금지>",
+    "review_source": "blind_packet_independent_opinion",
+    "blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+    "engine_output_consulted": false,
+    "cases": [
+      {
+        "case_id": "kpi5-repl-001",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi5-repl-002",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi5-repl-003",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi5-repl-004",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi5-repl-005",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi5-repl-006",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi5-repl-007",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi5-repl-008",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi5-repl-009",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      }
+    ]
+  },
+  "request_sha256": "96d29194d8dba28e7d5351874904cb1221a2a0533034ad1b0da51f154e163073"
+}

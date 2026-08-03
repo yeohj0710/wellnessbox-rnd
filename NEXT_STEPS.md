@@ -1,12 +1,13 @@
 # NEXT_STEPS
 
-반환 검토 자료 400건은 원문 그대로 적용됐다. 아직 유효한 신규 봉인은 없다.
+반환 검토 자료 400건은 원문 그대로 적용됐다. 아직 유효한 신규 봉인은 없다. 다음 입력 파일은 `data/original_plan/kpi/review_handoff/replacement_round/kpi_replacement_input_package.zip`이다.
 
-1. 비식별 검토 기록에 추적 가능한 `reviewer_identity_ref`를 추가한다. 값은 `op039_reviewer_identity_registry_v1.json`의 등록 참여자 기록에서 계산한 `registry:op039:sha256:<64자리 해시>`만 허용하며 임의 해시는 차단한다.
-2. `data/original_plan/kpi/review_handoff/completed_review/kpi_replacement_required_v1.json`의 KPI-1 49건, KPI-4 7건, KPI-5 9건을 새 사례로 교체한다.
-3. 교체 사례는 기존과 같은 출처 독립성·제공자 분리·블라인딩 검사를 거친다. 기존 반려 사례를 조용히 삭제하거나 기존 답을 복사해 확정하지 않는다.
-4. 신원 확인과 교체 사례 판단이 반영되면 네 워크벤치를 다시 감사하고 100개 유효 사례가 있는 지표만 봉인한다.
-5. 새 봉인 뒤에만 `measurement_environment: research_phase_internal_measurement`로 연구 단계 내부 측정을 실행한다.
+1. 패키지의 `START_HERE.txt` 순서대로 Anthropic 응답 3개와 등록 신원 선택을 `kpi_replacement_completed.zip`으로 반환한다.
+2. `python scripts/import_kpi_replacement_responses.py --input <ZIP>`으로 읽기 전용 검증한 뒤 `--apply`로 staging에 보존한다.
+3. KPI-4의 Anthropic 1차 초안이 들어온 뒤 OpenAI 계열의 블라인드 2차 의견 7건을 만든다. KPI-1·5는 Anthropic 2차 의견까지 이 반환으로 끝난다.
+4. 두 의견을 나란히 둔 65건 최종 검토 자료를 만든다. 등록 신원 참조는 기존 400건과 KPI-1·5 폐기 이력에도 같은 값으로 연결한다.
+5. 교체 판단을 반영해 각 지표가 다시 100개 유효 사례가 되면 무결성 감사 후 봉인한다.
+6. 새 봉인 뒤에만 `measurement_environment: research_phase_internal_measurement`로 연구 단계 내부 측정을 실행한다.
 
 전체 pytest 기준선은 실제 실행 결과 90건 실패다. `.pytest_cache/v/cache/lastfailed` 항목 수를 기준선으로 사용하지 않는다.
 
