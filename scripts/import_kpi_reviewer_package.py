@@ -33,13 +33,17 @@ from wellnessbox_rnd.evals.answer_key_integrity import (  # noqa: E402
 from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
     Workbench,
     decide,
+    discard_seal_with_audit_trail,
     load_workbench,
     save_workbench,
 )
 
 WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
+SEAL_DIR = ROOT / "data/original_plan/kpi/seals"
+SEAL_DISPOSAL_DIR = ROOT / "data/original_plan/kpi/seal_disposals"
 EXPECTED_QUALIFICATION_STAGE = "pharmacist_candidate_preliminary_safety_review"
 IMMUTABLE_FIELDS = CSV_FIELDS[:10]
+SEAL_INDICATORS = ("KPI-1", "KPI-5")
 
 
 def _slug(indicator_id: str) -> str:
@@ -48,6 +52,17 @@ def _slug(indicator_id: str) -> str:
 
 def _workbench_path(indicator_id: str) -> Path:
     return WORKBENCH_DIR / f"{_slug(indicator_id)}_workbench_v1.json"
+
+
+def _seal_candidate_path(indicator_id: str) -> Path:
+    name = f"{_slug(indicator_id)}_reference_seal_v1.json"
+    active = SEAL_DIR / name
+    legacy = SEAL_DIR / "discarded" / name
+    return active if active.is_file() else legacy
+
+
+def _seal_disposal_history_path(indicator_id: str) -> Path:
+    return SEAL_DISPOSAL_DIR / f"{_slug(indicator_id)}_seal_disposals_v1.json"
 
 
 class PackageReader:
@@ -129,10 +144,40 @@ def _load_reviewer(reader: PackageReader) -> dict[str, str]:
     return {key: str(value).strip() for key, value in payload.items()}
 
 
+def _load_seal_disposals(
+    reader: PackageReader, *, reviewer_name: str
+) -> dict[str, dict[str, str]]:
+    payload = json.loads(reader.read("seal_disposal_review.json").decode("utf-8"))
+    if set(payload) != set(SEAL_INDICATORS):
+        raise ValueError("seal_disposal_indicators_invalid")
+    normalized: dict[str, dict[str, str]] = {}
+    for indicator_id in SEAL_INDICATORS:
+        source = payload[indicator_id]
+        if not isinstance(source, dict):
+            raise ValueError(f"seal_disposal_entry_invalid:{indicator_id}")
+        entry = {key: str(value).strip() for key, value in source.items()}
+        decision = entry.get("decision", "")
+        if decision not in {"DISCARD", "KEEP"}:
+            raise ValueError(f"seal_disposal_decision_invalid:{indicator_id}")
+        for field in ("reason", "reviewed_by", "reviewed_at"):
+            if not entry.get(field):
+                raise ValueError(f"seal_disposal_detail_missing:{indicator_id}:{field}")
+        if entry["reviewed_by"] != reviewer_name:
+            raise ValueError(f"seal_disposal_reviewer_mismatch:{indicator_id}")
+        _parse_timestamp(
+            entry["reviewed_at"], case_id=indicator_id, field="seal_reviewed_at"
+        )
+        normalized[indicator_id] = entry
+    return normalized
+
+
 def validate_package(source: Path) -> tuple[dict[str, Workbench], dict[str, Any]]:
     reader = PackageReader(source)
     try:
         reviewer = _load_reviewer(reader)
+        seal_disposals = _load_seal_disposals(
+            reader, reviewer_name=reviewer["reviewer_name"]
+        )
         staged: dict[str, Workbench] = {}
         intervals: list[ReviewedInterval] = []
         counts: dict[str, int] = {}
@@ -215,25 +260,97 @@ def validate_package(source: Path) -> tuple[dict[str, Workbench], dict[str, Any]
             "qualification_stage": reviewer["qualification_stage"],
             "review_count": sum(counts.values()),
             "indicator_counts": counts,
+            "seal_disposal_decisions": {
+                indicator_id: entry["decision"]
+                for indicator_id, entry in seal_disposals.items()
+            },
         }
     finally:
         reader.close()
 
 
+def _disposal_mutation_paths(
+    seal_disposals: dict[str, dict[str, str]],
+) -> dict[str, dict[str, Path]]:
+    paths: dict[str, dict[str, Path]] = {}
+    for indicator_id, entry in seal_disposals.items():
+        if entry["decision"] != "DISCARD":
+            continue
+        candidate = _seal_candidate_path(indicator_id)
+        if not candidate.is_file():
+            raise ValueError(f"seal_disposal_candidate_missing:{indicator_id}")
+        seal = json.loads(candidate.read_text(encoding="utf-8"))
+        seal_sha256 = str(seal.get("seal_sha256", "")).strip()
+        if not seal_sha256:
+            raise ValueError(f"active_seal_sha256_missing:{indicator_id}")
+        slug = _slug(indicator_id)
+        archive = SEAL_DISPOSAL_DIR / "archive"
+        paths[indicator_id] = {
+            "candidate": candidate,
+            "history": _seal_disposal_history_path(indicator_id),
+            "archived_seal": archive / "seals" / f"{slug}_reference_seal_{seal_sha256}.json",
+            "archived_workbench": archive
+            / "workbenches"
+            / f"{slug}_workbench_{seal_sha256}.json",
+        }
+    return paths
+
+
+def _restore_files(snapshots: dict[Path, bytes | None]) -> None:
+    for path, content in snapshots.items():
+        if content is None:
+            path.unlink(missing_ok=True)
+        else:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+
+
 def apply_package(source: Path) -> dict[str, Any]:
     staged, report = validate_package(source)
-    originals = {
-        indicator_id: _workbench_path(indicator_id).read_bytes()
-        for indicator_id in INDICATORS
+    reader = PackageReader(source)
+    try:
+        reviewer = _load_reviewer(reader)
+        seal_disposals = _load_seal_disposals(
+            reader, reviewer_name=reviewer["reviewer_name"]
+        )
+    finally:
+        reader.close()
+    disposal_paths = _disposal_mutation_paths(seal_disposals)
+    mutation_paths = {
+        *(_workbench_path(indicator_id) for indicator_id in INDICATORS),
+        *(
+            path
+            for indicator_paths in disposal_paths.values()
+            for path in indicator_paths.values()
+        ),
+    }
+    snapshots = {
+        path: path.read_bytes() if path.is_file() else None for path in mutation_paths
     }
     try:
+        for indicator_id, paths in disposal_paths.items():
+            entry = seal_disposals[indicator_id]
+            record = discard_seal_with_audit_trail(
+                active_seal_path=paths["candidate"],
+                workbench_path=_workbench_path(indicator_id),
+                history_path=paths["history"],
+                archive_dir=SEAL_DISPOSAL_DIR / "archive",
+                record_root=ROOT,
+                discarded_by=entry["reviewed_by"],
+                reason=entry["reason"],
+                discarded_at=entry["reviewed_at"],
+            )
+            staged[indicator_id].seal_disposals.append(record)
         for indicator_id in INDICATORS:
             save_workbench(_workbench_path(indicator_id), staged[indicator_id])
     except Exception:
-        for indicator_id, content in originals.items():
-            _workbench_path(indicator_id).write_bytes(content)
+        _restore_files(snapshots)
         raise
-    return {**report, "status": "IMPORTED"}
+    return {
+        **report,
+        "status": "IMPORTED",
+        "discarded_seals": sorted(disposal_paths),
+    }
 
 
 def main() -> int:

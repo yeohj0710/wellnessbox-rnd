@@ -6,6 +6,7 @@
 - `kpi_final_review_package.zip`은 검토자가 작성할 CSV 4개와 JSON 2개를 명확히 구분한다.
 - `START_HERE.txt`에 허용 선택값, 시각 형식, 봉인 처리 판단값과 반환 절차를 기록했다.
 - `MAKE_RETURN_ZIP.cmd`는 작성 대상 6개만 `kpi_completed_review.zip`으로 묶는다. 실제 실행 결과 ZIP 항목은 정확히 6개였다.
+- 가져오기 명령은 `seal_disposal_review.json`의 작성자·사유·시각·DISCARD/KEEP를 검증한다. `--apply`는 DISCARD 판단의 감사 이력을 남기고 새 결정을 적용하므로 추가 확인 입력이 필요 없다.
 - 검토 판단 400건과 KPI-1·5 과거 봉인 처리 판단은 아직 입력하지 않았다.
 
 ## 2026-08-03 작성된 검토 CSV 가져오기 게이트

@@ -23,7 +23,7 @@ CSV 작성법
 
 JSON 작성법
 - reviewer_details.json: reviewer_name, affiliation, review_date를 채웁니다. qualification_stage는 바꾸지 않습니다. review_date 예: 2026-08-03
-- seal_disposal_review.json: KPI-1과 KPI-5 각각 decision에 DISCARD 또는 KEEP, reason에 판단 이유, reviewed_by에 이름, reviewed_at에 시간대가 있는 ISO 8601 시각을 씁니다.
+- seal_disposal_review.json: KPI-1과 KPI-5 각각 decision에 DISCARD 또는 KEEP, reason에 판단 이유, reviewed_by에 이름, reviewed_at에 시간대가 있는 ISO 8601 시각을 씁니다. 이 기록이 이후 봉인 처리 판단 확인으로 사용되므로 별도 재입력은 없습니다.
 
 반환 방법
 1. ZIP을 먼저 폴더에 풉니다.
