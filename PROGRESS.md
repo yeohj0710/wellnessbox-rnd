@@ -1,5 +1,13 @@
 # PROGRESS
 
+## 2026-08-03 작성된 검토 CSV 가져오기 게이트
+
+- `scripts/import_kpi_reviewer_package.py`를 추가했다. 기본 실행은 읽기 전용 검증이며 `--apply`가 있을 때만 네 워크벤치를 한꺼번에 갱신한다.
+- CSV의 사례 ID·질문·안 A·안 B·근거·신뢰도·표시가 바뀌면 차단한다. 빈 선택, 허용 답 밖 CUSTOM 값, 시간대 없는 시각, 건당 1초 미만, 겹치는 검토 구간도 차단한다.
+- 네 CSV를 모두 검증한 뒤에만 저장하며 저장 중 오류가 나면 네 워크벤치를 원래 바이트로 복구한다.
+- `reviewer_details.json`에는 2차년도 기록값 `pharmacist_candidate_preliminary_safety_review`를 미리 넣었다. 이름·소속·검토일은 비워 두었다.
+- 현재 미작성 ZIP을 검증하면 `reviewer_detail_missing:reviewer_name`으로 정상 차단된다.
+
 ## 2026-08-03 Claude 응답 반영과 최종 검토 자료 생성
 
 - `claude-opus-5` 응답 4개, 총 400건이 Anthropic 계열·패킷 해시·답 어휘·100건 완전성 검증을 통과했다.

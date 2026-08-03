@@ -1,5 +1,12 @@
 # SESSION_HANDOFF
 
+## 2026-08-03 오프라인 검토 CSV importer handoff
+
+- 명령: `python scripts/import_kpi_reviewer_package.py --input <ZIP>`은 읽기 전용, `--apply`는 검증 통과 뒤 네 워크벤치를 원자적으로 저장한다.
+- 검증 범위: 파일 6개, CSV 열·사례·원문·두 안의 불변성, 선택값, CUSTOM 답 어휘, 검토자 정보, ISO 8601 시간대, 건당 1초 이상, 전체 구간 비중첩.
+- 기본 qualification stage는 `pharmacist_candidate_preliminary_safety_review`다. `licensed_pharmacist`로 바꾸지 않는다.
+- 현재 ZIP은 미작성 상태라 importer가 `reviewer_detail_missing:reviewer_name`으로 차단한다.
+
 ## 2026-08-03 Claude 응답 반영과 검토 ZIP handoff
 
 - 입력: `data/original_plan/kpi/review_handoff/claude_responses/`의 `claude-opus-5` 응답 4개, 각 100건.

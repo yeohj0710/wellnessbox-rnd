@@ -1,5 +1,7 @@
 # NEXT_STEPS
 
+작성된 ZIP을 받으면 먼저 `python scripts/import_kpi_reviewer_package.py --input <ZIP>`으로 읽기 전용 검사한다. `READY_TO_IMPORT`일 때 같은 명령에 `--apply`를 붙여 네 지표의 결정을 원자적으로 반영한다.
+
 `data/original_plan/kpi/review_handoff/kpi_final_review_package.zip`의 CSV 4개를 작성해 반환한다. 실제 두 의견의 불일치와 표시가 전체 400건을 덮으므로 현재 최소 상세 검토 수는 400건이다. 검사 기준을 낮추거나 표시를 삭제해 수를 줄이지 않는다.
 
 현재 반환된 `ChatGPT 5.6 Sol Pro` 응답 400건은 OpenAI 동일 계열이라 정식 교차 검수에 사용할 수 없다. 갱신된 `data/original_plan/kpi/review_handoff/kpi_review_preparation_package.zip`을 `claude.ai`의 Anthropic 계열 모델에서 다시 처리한다. 반환 JSON의 `reviewing_agent` 또는 `drafting_agent`에는 실제 Claude 모델명을 기록한다.
