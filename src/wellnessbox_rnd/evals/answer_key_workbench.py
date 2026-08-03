@@ -111,21 +111,26 @@ def reviewer_identity_requires_reference(name: str) -> bool:
     )
 
 
-def valid_reviewer_identity_reference(reference: str) -> bool:
+def valid_reviewer_identity_reference(
+    reference: str,
+    trusted_identity_refs: set[str] | frozenset[str] = frozenset(),
+) -> bool:
     value = reference.strip().casefold()
-    if not value.startswith("sha256:"):
+    if not value.startswith("registry:op039:sha256:"):
         return False
-    digest = value.removeprefix("sha256:")
-    return len(digest) == 64 and all(
-        character in "0123456789abcdef" for character in digest
-    )
+    return value in {item.strip().casefold() for item in trusted_identity_refs}
 
 
-def assert_reviewer_identity_traceable(name: str, reference: str = "") -> None:
+def assert_reviewer_identity_traceable(
+    name: str,
+    reference: str = "",
+    *,
+    trusted_identity_refs: set[str] | frozenset[str] = frozenset(),
+) -> None:
     if not name.strip():
         raise ValueError("decision_requires_a_named_person")
     if reviewer_identity_requires_reference(name) and not valid_reviewer_identity_reference(
-        reference
+        reference, trusted_identity_refs
     ):
         raise ValueError("pseudonymous_reviewer_requires_identity_reference")
 
@@ -191,9 +196,14 @@ def decide(
     decision_mode: str = "detailed_review",
     reviewed_in_detail: bool = True,
     reviewer_identity_ref: str = "",
+    trusted_reviewer_identity_refs: set[str] | frozenset[str] = frozenset(),
 ) -> Decision:
     """Record one human decision. `None` means the case was rejected outright."""
-    assert_reviewer_identity_traceable(decided_by, reviewer_identity_ref)
+    assert_reviewer_identity_traceable(
+        decided_by,
+        reviewer_identity_ref,
+        trusted_identity_refs=trusted_reviewer_identity_refs,
+    )
     if review_duration_seconds is not None and (
         not math.isfinite(review_duration_seconds)
         or review_duration_seconds < 0
@@ -428,13 +438,18 @@ def build_seal_disposal_record(
     archived_seal_path: str,
     archived_workbench_path: str,
     discarded_by_identity_ref: str = "",
+    trusted_reviewer_identity_refs: set[str] | frozenset[str] = frozenset(),
     discarded_at: str | None = None,
 ) -> dict[str, Any]:
     """Build the append-only event that explains why an active seal was retired."""
     actor = discarded_by.strip()
     explanation = reason.strip()
     try:
-        assert_reviewer_identity_traceable(actor, discarded_by_identity_ref)
+        assert_reviewer_identity_traceable(
+            actor,
+            discarded_by_identity_ref,
+            trusted_identity_refs=trusted_reviewer_identity_refs,
+        )
     except ValueError as exc:
         raise ValueError("seal_disposal_requires_traceable_person") from exc
     if not explanation:
@@ -476,6 +491,7 @@ def discard_seal_with_audit_trail(
     discarded_by: str,
     reason: str,
     discarded_by_identity_ref: str = "",
+    trusted_reviewer_identity_refs: set[str] | frozenset[str] = frozenset(),
     discarded_at: str | None = None,
 ) -> dict[str, Any]:
     """Archive a seal and its decisions, then reset review with rollback on failure."""
@@ -509,6 +525,7 @@ def discard_seal_with_audit_trail(
         seal_sha256=seal_sha256,
         discarded_by=discarded_by,
         discarded_by_identity_ref=discarded_by_identity_ref,
+        trusted_reviewer_identity_refs=trusted_reviewer_identity_refs,
         reason=reason,
         original_seal_path=_record_path(active, record_root),
         archived_seal_path=_record_path(archived_seal, record_root),

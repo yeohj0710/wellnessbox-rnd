@@ -299,20 +299,42 @@ def test_pseudonymous_reviewer_without_identity_reference_fails() -> None:
 
 
 def test_pseudonymous_reviewer_with_identity_reference_passes() -> None:
+    identity_ref = "registry:op039:sha256:" + "a" * 64
     result = audit_review_effort(
         {
             "decisions": {
                 "case-1": {
                     "action": "accepted",
                     "decided_by": "비식별 검토자",
-                    "reviewer_identity_ref": "sha256:" + "a" * 64,
+                    "reviewer_identity_ref": identity_ref,
                     "review_duration_seconds": 2.0,
                 }
             }
-        }
+        },
+        trusted_identity_refs={identity_ref},
     )
 
     assert result["verdict"] == "PASS"
+
+
+def test_unregistered_digest_shaped_identity_reference_fails() -> None:
+    result = audit_review_effort(
+        {
+            "decisions": {
+                "case-1": {
+                    "action": "accepted",
+                    "decided_by": "비식별 검토자",
+                    "reviewer_identity_ref": (
+                        "registry:op039:sha256:" + "0" * 64
+                    ),
+                    "review_duration_seconds": 2.0,
+                }
+            }
+        },
+        trusted_identity_refs={"registry:op039:sha256:" + "a" * 64},
+    )
+
+    assert result["verdict"] == "FAIL"
 
 
 def test_nonfinite_recorded_duration_fails_closed() -> None:
@@ -360,6 +382,13 @@ def test_repository_completion_rejects_tampered_seal_provenance(
             }
         ),
         encoding="utf-8",
+    )
+    identity_registry_path = (
+        tmp_path
+        / "data/original_plan/contracts/op039_reviewer_identity_registry_v1.json"
+    )
+    identity_registry_path.write_text(
+        json.dumps({"registered_reviewers": []}), encoding="utf-8"
     )
     drafter_module = tmp_path / "independent_drafter.py"
     drafter_module.write_text("VALUE = 1\n", encoding="utf-8")

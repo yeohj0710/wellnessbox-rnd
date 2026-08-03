@@ -39,6 +39,12 @@ from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
     load_workbench,
     save_workbench,
 )
+from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
+    load_registry as load_reviewer_identity_registry,
+)
+from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
+    registered_reviewer_identity_references,
+)
 
 WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
 SEAL_DIR = ROOT / "data/original_plan/kpi/seals"
@@ -46,6 +52,11 @@ SEAL_DISPOSAL_DIR = ROOT / "data/original_plan/kpi/seal_disposals"
 EXPECTED_QUALIFICATION_STAGE = "pharmacist_candidate_preliminary_safety_review"
 IMMUTABLE_FIELDS = CSV_FIELDS[:10]
 SEAL_INDICATORS = ("KPI-1", "KPI-5")
+
+
+def _trusted_identity_refs() -> set[str]:
+    registry = load_reviewer_identity_registry(ROOT)
+    return registered_reviewer_identity_references(registry)
 
 
 def _slug(indicator_id: str) -> str:
@@ -147,7 +158,11 @@ def _load_rows(reader: PackageReader, indicator_id: str) -> list[dict[str, str]]
     return list(csv_reader)
 
 
-def _load_reviewer(reader: PackageReader) -> dict[str, str]:
+def _load_reviewer(
+    reader: PackageReader,
+    *,
+    trusted_identity_refs: set[str],
+) -> dict[str, str]:
     payload = json.loads(reader.read("reviewer_details.json").decode("utf-8"))
     required = ("reviewer_name", "affiliation", "qualification_stage", "review_date")
     for field in required:
@@ -158,7 +173,9 @@ def _load_reviewer(reader: PackageReader) -> dict[str, str]:
     identity_ref = str(payload.get("reviewer_identity_ref", "")).strip()
     try:
         assert_reviewer_identity_traceable(
-            str(payload["reviewer_name"]), identity_ref
+            str(payload["reviewer_name"]),
+            identity_ref,
+            trusted_identity_refs=trusted_identity_refs,
         )
     except ValueError as exc:
         raise ValueError("reviewer_identity_not_traceable") from exc
@@ -204,7 +221,10 @@ def _validate_reader(
     dict[str, str],
     dict[str, dict[str, str]],
 ]:
-    reviewer = _load_reviewer(reader)
+    trusted_identity_refs = _trusted_identity_refs()
+    reviewer = _load_reviewer(
+        reader, trusted_identity_refs=trusted_identity_refs
+    )
     seal_disposals = _load_seal_disposals(
         reader, reviewer_name=reviewer["reviewer_name"]
     )
@@ -277,6 +297,7 @@ def _validate_reader(
                 note="; ".join(note_parts),
                 review_duration_seconds=duration,
                 reviewer_identity_ref=reviewer.get("reviewer_identity_ref", ""),
+                trusted_reviewer_identity_refs=trusted_identity_refs,
             )
         plan = build_adaptive_review_plan(workbench)
         if plan["pending_required_detail_ids"]:
@@ -366,6 +387,7 @@ def apply_package(source: Path) -> dict[str, Any]:
     finally:
         reader.close()
     disposal_paths = _disposal_mutation_paths(seal_disposals)
+    trusted_identity_refs = _trusted_identity_refs()
     mutation_paths = {
         *(_workbench_path(indicator_id) for indicator_id in INDICATORS),
         *(
@@ -391,6 +413,7 @@ def apply_package(source: Path) -> dict[str, Any]:
                 discarded_by_identity_ref=reviewer.get(
                     "reviewer_identity_ref", ""
                 ),
+                trusted_reviewer_identity_refs=trusted_identity_refs,
                 discarded_at=entry["reviewed_at"],
             )
             staged[indicator_id].seal_disposals.append(record)

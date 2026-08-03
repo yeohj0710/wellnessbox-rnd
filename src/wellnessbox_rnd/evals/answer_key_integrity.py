@@ -38,6 +38,12 @@ from wellnessbox_rnd.evals.answer_key_workbench import (
     valid_reviewer_identity_reference,
 )
 from wellnessbox_rnd.evals.reference_standard import verify_seal
+from wellnessbox_rnd.governance.reviewer_credentials import (
+    load_registry as load_reviewer_identity_registry,
+)
+from wellnessbox_rnd.governance.reviewer_credentials import (
+    registered_reviewer_identity_references,
+)
 
 REGISTRY_PATH = "data/original_plan/contracts/engine_input_registry_v1.json"
 WORKBENCH_DIR = "data/original_plan/kpi/workbench"
@@ -302,7 +308,11 @@ def _parse(stamp: str) -> datetime | None:
         return None
 
 
-def audit_review_effort(workbench: dict[str, Any]) -> dict[str, Any]:
+def audit_review_effort(
+    workbench: dict[str, Any],
+    *,
+    trusted_identity_refs: set[str] | frozenset[str] = frozenset(),
+) -> dict[str, Any]:
     """Report whether the recorded decisions had time to be decisions."""
     decisions = list(workbench.get("decisions", {}).values())
     settled = [
@@ -317,7 +327,7 @@ def audit_review_effort(workbench: dict[str, Any]) -> dict[str, Any]:
         for item in settled
         if reviewer_identity_requires_reference(str(item.get("decided_by", "")))
         and not valid_reviewer_identity_reference(
-            str(item.get("reviewer_identity_ref", ""))
+            str(item.get("reviewer_identity_ref", "")), trusted_identity_refs
         )
     )
     if untraceable_identity_count:
@@ -438,6 +448,7 @@ def audit_indicator(
     workbench: dict[str, Any],
     drafter_modules: list[Path],
     registry: dict[str, Any],
+    trusted_identity_refs: set[str] | frozenset[str],
     seal_exists: bool,
 ) -> dict[str, Any]:
     sources = sorted({draft.get("draft_source", "") for draft in workbench.get("drafts", [])})
@@ -453,7 +464,9 @@ def audit_indicator(
             "independent": None,
         }
     )
-    review_audit = audit_review_effort(workbench)
+    review_audit = audit_review_effort(
+        workbench, trusted_identity_refs=trusted_identity_refs
+    )
     blinding_audit = audit_declared_blinding(workbench, registry)
     adaptive_workbench = Workbench(
         indicator_id,
@@ -543,6 +556,10 @@ def audit_repository(
     """Run the canonical integrity audit against repository workbenches."""
     root = Path(root)
     registry = load_registry(root)
+    identity_registry = load_reviewer_identity_registry(root)
+    trusted_identity_refs = registered_reviewer_identity_references(
+        identity_registry
+    )
     index = drafter_source_index(root)
     results: list[dict[str, Any]] = []
 
@@ -579,6 +596,7 @@ def audit_repository(
             workbench=workbench,
             drafter_modules=modules,
             registry=registry,
+            trusted_identity_refs=trusted_identity_refs,
             seal_exists=seal is not None,
         )
         draft_case_ids = [

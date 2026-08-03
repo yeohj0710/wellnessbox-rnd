@@ -16,7 +16,9 @@ from wellnessbox_rnd.governance.reviewer_credentials import (
     load_registry,
     normalize_identity,
     registered_reviewer,
+    registered_reviewer_identity_references,
     review_character_for,
+    reviewer_identity_reference,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +43,21 @@ def _reviewer(**overrides):
 
 
 class QualificationStageContractTest(unittest.TestCase):
+    def test_identity_references_resolve_only_to_registered_participants(self) -> None:
+        references = registered_reviewer_identity_references(REGISTRY)
+
+        self.assertEqual(len(references), 2)
+        self.assertEqual(
+            references,
+            {
+                reviewer_identity_reference(entry)
+                for entry in REGISTRY["registered_reviewers"]
+            },
+        )
+        self.assertTrue(
+            all(value.startswith("registry:op039:sha256:") for value in references)
+        )
+
     def test_year2_registry_records_candidates_not_licensed_pharmacists(self) -> None:
         stage = REGISTRY["qualification_stage"]
 

@@ -11,6 +11,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import unicodedata
@@ -21,6 +22,32 @@ REGISTRY_RELATIVE_PATH = "data/original_plan/contracts/op039_reviewer_identity_r
 PHARMACIST_CANDIDATE = "pharmacist_candidate"
 LICENSED_PHARMACIST = "licensed_pharmacist"
 _ZERO_WIDTH = dict.fromkeys(map(ord, "​‌‍﻿"))
+IDENTITY_REFERENCE_PREFIX = "registry:op039:sha256:"
+
+
+def reviewer_identity_reference(entry: dict[str, Any]) -> str:
+    """Create a stable opaque reference to one registered project participant."""
+    stable_record = {
+        "name": str(entry.get("name", "")).strip(),
+        "organization": str(entry.get("organization", "")).strip(),
+        "role_in_project": str(entry.get("role_in_project", "")).strip(),
+    }
+    encoded = json.dumps(
+        stable_record,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return IDENTITY_REFERENCE_PREFIX + hashlib.sha256(encoded).hexdigest()
+
+
+def registered_reviewer_identity_references(registry: dict[str, Any]) -> set[str]:
+    """Return only references that resolve to the checked-in participant registry."""
+    return {
+        reviewer_identity_reference(entry)
+        for entry in registry.get("registered_reviewers", [])
+        if str(entry.get("name", "")).strip()
+    }
 
 
 def normalize_identity(value: str) -> str:

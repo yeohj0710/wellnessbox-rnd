@@ -60,6 +60,33 @@ class _MemoryReader:
         return json.dumps(self.payload).encode()
 
 
+class _ReviewerReader:
+    def __init__(self, payload: dict[str, str]):
+        self.payload = payload
+
+    def read(self, name: str) -> bytes:
+        assert name == "reviewer_details.json"
+        return json.dumps(self.payload).encode()
+
+
+def test_load_reviewer_rejects_unregistered_digest_shaped_reference() -> None:
+    reader = _ReviewerReader(
+        {
+            "reviewer_name": "비식별 검토자",
+            "reviewer_identity_ref": "registry:op039:sha256:" + "0" * 64,
+            "affiliation": "비공개",
+            "qualification_stage": importer.EXPECTED_QUALIFICATION_STAGE,
+            "review_date": "2026-08-03",
+        }
+    )
+
+    with pytest.raises(ValueError, match="reviewer_identity_not_traceable"):
+        importer._load_reviewer(
+            reader,
+            trusted_identity_refs={"registry:op039:sha256:" + "a" * 64},
+        )
+
+
 def test_load_seal_disposals_accepts_one_shot_reviewer_authorization() -> None:
     payload = {
         indicator_id: {
@@ -106,6 +133,7 @@ def test_apply_package_uses_recorded_disposal_without_second_prompt(
     monkeypatch.setattr(importer, "WORKBENCH_DIR", workbench_dir)
     monkeypatch.setattr(importer, "SEAL_DIR", seal_dir)
     monkeypatch.setattr(importer, "SEAL_DISPOSAL_DIR", disposal_dir)
+    monkeypatch.setattr(importer, "_trusted_identity_refs", lambda: set())
 
     staged = {}
     for indicator_id in importer.INDICATORS:

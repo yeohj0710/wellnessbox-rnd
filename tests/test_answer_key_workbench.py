@@ -146,15 +146,30 @@ class DecisionTest(unittest.TestCase):
             )
 
     def test_pseudonymous_decider_records_identity_reference(self) -> None:
-        identity_ref = "sha256:" + "a" * 64
+        identity_ref = "registry:op039:sha256:" + "a" * 64
         decision = decide(
             draft=_draft(),
             final_answer=["a"],
             decided_by="\ube44\uc2dd\ubcc4 \uac80\ud1a0\uc790",
             reviewer_identity_ref=identity_ref,
+            trusted_reviewer_identity_refs={identity_ref},
         )
 
         self.assertEqual(decision.reviewer_identity_ref, identity_ref)
+
+    def test_digest_shaped_but_unregistered_reference_is_rejected(self) -> None:
+        with self.assertRaisesRegex(
+            ValueError, "pseudonymous_reviewer_requires_identity_reference"
+        ):
+            decide(
+                draft=_draft(),
+                final_answer=["a"],
+                decided_by="\ube44\uc2dd\ubcc4 \uac80\ud1a0\uc790",
+                reviewer_identity_ref="registry:op039:sha256:" + "0" * 64,
+                trusted_reviewer_identity_refs={
+                    "registry:op039:sha256:" + "a" * 64
+                },
+            )
 
     def test_an_empty_final_answer_is_rejected(self) -> None:
         with self.assertRaises(ValueError):

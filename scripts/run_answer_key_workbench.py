@@ -76,6 +76,12 @@ from wellnessbox_rnd.evals.reference_standard import (  # noqa: E402
     seal_reference_standard,
     write_json,
 )
+from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
+    load_registry as load_reviewer_identity_registry,
+)
+from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
+    registered_reviewer_identity_references,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
@@ -745,7 +751,9 @@ def cmd_seal(args) -> int:
     return 0
 
 
-def _disposal_identity_counts(history: dict) -> tuple[int, int]:
+def _disposal_identity_counts(
+    history: dict, trusted_identity_refs: set[str]
+) -> tuple[int, int]:
     events = history.get("events", [])
     traceable = 0
     for event in events:
@@ -753,7 +761,7 @@ def _disposal_identity_counts(history: dict) -> tuple[int, int]:
         identity_ref = str(event.get("discarded_by_identity_ref", "")).strip()
         if actor and (
             not reviewer_identity_requires_reference(actor)
-            or valid_reviewer_identity_reference(identity_ref)
+            or valid_reviewer_identity_reference(identity_ref, trusted_identity_refs)
         ):
             traceable += 1
     return traceable, len(events) - traceable
@@ -766,7 +774,12 @@ def cmd_discard_status(args) -> int:
     history = {"events": []}
     if history_path.is_file():
         history = json.loads(history_path.read_text(encoding="utf-8"))
-    formal_count, unverified_count = _disposal_identity_counts(history)
+    trusted_identity_refs = registered_reviewer_identity_references(
+        load_reviewer_identity_registry(ROOT)
+    )
+    formal_count, unverified_count = _disposal_identity_counts(
+        history, trusted_identity_refs
+    )
     if not destination.is_file():
         say(json.dumps(
             {
