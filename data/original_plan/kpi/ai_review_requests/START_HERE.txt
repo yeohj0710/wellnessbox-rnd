@@ -1,10 +1,10 @@
 KPI 독립 검토 응답 만들기
 
-1. 새 Claude 작업을 엽니다.
+1. claude.ai에서 새 Claude 작업을 엽니다. ChatGPT·Codex에서는 처리하지 않습니다.
 2. 아래 JSON 파일을 한 번에 하나만 첨부합니다.
 3. 다음 문장을 그대로 입력합니다.
 
-   첨부한 JSON의 instructions를 따르세요. response_skeleton의 모든 사례를 채우고 JSON 객체만 반환하세요. 저장소·엔진 규칙·엔진 출력·기존 정답은 사용하지 마세요.
+   첨부한 JSON의 instructions를 따르세요. response_skeleton의 모든 사례를 채우고 JSON 객체만 반환하세요. reviewing_agent 또는 drafting_agent에는 현재 Claude 모델명을 정확히 쓰세요. 저장소·엔진 규칙·엔진 출력·기존 정답은 사용하지 마세요.
 
 4. Claude가 반환한 JSON을 아래 이름으로 저장합니다.
 
@@ -25,6 +25,8 @@ KPI 독립 검토 응답 만들기
 주의
 
 - JSON마다 새 Claude 작업을 사용합니다.
+- 반환 파일의 `reviewing_agent` 또는 `drafting_agent`가 `not_recorded`, `unknown`, 빈 값이면 검증이 실패합니다.
+- ChatGPT·Codex에서 만든 응답은 Anthropic 독립 응답으로 인정되지 않습니다.
 - 요청 JSON 이외의 연구 파일은 첨부하지 않습니다.
 - 빈 답이나 빈 confidence가 있으면 다시 완성된 JSON을 요청합니다.
 - 이 묶음은 독립 응답 생성용입니다. 최종 검토자용 자료는 네 응답을 검사한 뒤 별도로 생성합니다.

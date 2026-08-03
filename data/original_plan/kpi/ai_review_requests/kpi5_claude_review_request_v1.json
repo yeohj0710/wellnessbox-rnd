@@ -5,12 +5,16 @@
   "required_provider_family": "anthropic",
   "blindness_contract": {
     "only_input_allowed": "this_request_file",
+    "required_provider_family": "anthropic",
+    "actual_model_name_required": true,
     "must_not_access_repository": true,
     "must_not_access_engine_logic_or_output": true,
     "return_json_only": true,
     "do_not_copy_empty_skeleton_values": true
   },
   "instructions": [
+    "반드시 anthropic 계열 모델에서 이 요청을 처리한다.",
+    "reviewing_agent에는 실제 모델명을 쓰고 not_recorded·unknown·placeholder를 쓰지 않는다.",
     "packet.cases의 100개 사례를 모두 독립적으로 판단한다.",
     "proposed_answer는 packet.answer_vocabulary 안의 값 하나 이상만 쓴다.",
     "confidence는 0.0 이상 1.0 이하 숫자다.",
@@ -468,7 +472,7 @@
     "packet_sha256": "fe44d9aa046e611942bec25c9d2ae8db8f97174db6604080be755ae0b96f6fd2"
   },
   "response_skeleton": {
-    "reviewing_agent": "<모델과 제공자 계열을 식별할 수 있는 이름>",
+    "reviewing_agent": "<반드시 anthropic 계열의 실제 모델명; not_recorded·unknown·placeholder 금지>",
     "review_source": "blind_packet_independent_opinion",
     "blinded_from": [
       "data/knowledge/counseling_answer_verifier_policy_v1.json",
@@ -1186,5 +1190,5 @@
       }
     ]
   },
-  "request_sha256": "48a8c54799d8a2e0f9a327203cc166ae3b54b67990b6ba3faff1d4fe2bb387b9"
+  "request_sha256": "83e6a09b90ceb61b2c2a70edb4b318521b15245919b7da83f75d5b058b49e9fe"
 }

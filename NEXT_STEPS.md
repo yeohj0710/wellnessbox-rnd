@@ -1,5 +1,7 @@
 # NEXT_STEPS
 
+현재 반환된 `ChatGPT 5.6 Sol Pro` 응답 400건은 OpenAI 동일 계열이라 정식 교차 검수에 사용할 수 없다. 갱신된 `data/original_plan/kpi/review_handoff/kpi_review_preparation_package.zip`을 `claude.ai`의 Anthropic 계열 모델에서 다시 처리한다. 반환 JSON의 `reviewing_agent` 또는 `drafting_agent`에는 실제 Claude 모델명을 기록한다.
+
 전체 pytest 기준선은 실제 실행 결과 90건 실패다. `.pytest_cache/v/cache/lastfailed`에는 삭제·이름 변경된 node ID가 남을 수 있으므로 캐시 항목 수를 기준선으로 사용하지 않는다.
 
 현재 외부 실행 blocker는 Claude 로그인이다. 열린 Claude 로그인 탭에서 사용자가 직접 로그인한 뒤 이 작업에 준비됐다고 알려야 한다. 로그인·계정 생성·결제는 AI가 대신하지 않는다.

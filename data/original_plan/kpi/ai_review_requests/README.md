@@ -2,6 +2,8 @@
 
 이 폴더의 JSON 파일 하나만 새 Claude 작업에 전달한다. 저장소, 워크벤치, 엔진 규칙, 엔진 출력, 기존 정답은 전달하지 않는다.
 
+Claude 작업은 `claude.ai`의 Anthropic 계열 모델에서 실행한다. ChatGPT·Codex 응답은 사용할 수 없다. 반환 JSON의 `reviewing_agent` 또는 `drafting_agent`에는 실제 Claude 모델명을 기록하며 `not_recorded`·`unknown`·빈 값은 허용하지 않는다.
+
 - KPI-1·3·5 파일은 `reviewing_agent` 형식의 독립 2차 의견을 요청한다.
 - KPI-4 파일은 `drafting_agent` 형식의 독립 1차 초안을 요청한다. 측정 대상 상담 모델이 OpenAI 계열이기 때문이다.
 - Claude는 `response_skeleton`의 모든 사례를 채우고 JSON 객체만 반환한다. 빈 답·빈 confidence를 그대로 반환하면 검증이 실패한다.

@@ -1,5 +1,13 @@
 # SESSION_HANDOFF
 
+## 2026-08-03 OpenAI 반환 응답 handoff
+
+- `C:\Users\hjyeo\Downloads\kpi_processed_responses.zip`을 확인했다. ZIP SHA-256은 `1d84499e0805241c172c73359cd1cd27af42fa33bccd6456a60b9e2b1166e45d`다.
+- 사용자 확인 모델은 `ChatGPT 5.6 Sol Pro`이고 다운로드 출처 호스트는 `chatgpt.com`이다. 각 100건의 내용 구조는 통과했지만 원본 모델 필드는 `not_recorded`다.
+- OpenAI 모델명을 진단용 복사본에 적용하면 KPI-1·3·5는 `ai_review_agent_matches_drafting_agent_family`로 차단된다. KPI-4도 측정 대상과 준비된 2차 의견이 OpenAI 계열이라 사용할 수 없다.
+- 원본은 `data/original_plan/kpi/review_handoff/rejected_openai_responses/`에 보존했다. 실제 워크벤치는 바꾸지 않았다.
+- 외부 요청 생성기, 네 요청 JSON, 내부·외부 ZIP은 Anthropic 실제 모델명 요구사항을 포함하도록 갱신했다.
+
 ## 2026-08-01 Claude 로그인 blocker handoff
 
 - **선택 단계와 과제:** 준비된 KPI-3 Claude 요청을 실제 외부 AI에 전달할 실행 경로를 점검했다.

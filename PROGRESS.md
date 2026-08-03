@@ -1,5 +1,13 @@
 # PROGRESS
 
+## 2026-08-03 반환 OpenAI 응답의 독립성 차단
+
+- 반환 ZIP에는 KPI-1·3·4·5 각 100건, 총 400건이 있으며 구조·답 어휘·confidence·패킷 해시는 통과했다.
+- 사용자가 생성 모델을 `ChatGPT 5.6 Sol Pro`로 확인했고 Windows 다운로드 출처도 `chatgpt.com`이었다. 원본 응답의 모델 필드는 모두 `not_recorded`였다.
+- KPI-1·3·5는 기존 초안과 OpenAI 계열이 같아 검증기가 `ai_review_agent_matches_drafting_agent_family`로 차단했다. KPI-4도 OpenAI 상담 모듈과 같은 계열이라 정식 측정용 1차 초안으로 사용할 수 없다.
+- 반환 ZIP은 `review_handoff/rejected_openai_responses/`에 보조 의견과 실패 근거로 보존했다. 워크벤치·정답·승인·봉인에는 반영하지 않았다.
+- 외부 요청 생성기와 ZIP 안내문은 Anthropic 실제 모델명, `claude.ai` 실행, `not_recorded` 금지를 명시하도록 강화했다.
+
 ## 2026-08-01 외부 Claude 실행 경로 점검
 
 - 실제 KPI-3 Claude 응답 생성을 시도하기 전에 로컬 실행 경로를 점검했다. Claude CLI, `ANTHROPIC_API_KEY`, Anthropic Python 패키지는 모두 없었다.

@@ -216,7 +216,10 @@ def build_external_ai_request(
     agent_key = "drafting_agent" if requested_role == "primary" else "reviewing_agent"
     source_key = "draft_source" if requested_role == "primary" else "review_source"
     response_skeleton = {
-        agent_key: "<모델과 제공자 계열을 식별할 수 있는 이름>",
+        agent_key: (
+            f"<반드시 {family} 계열의 실제 모델명; "
+            "not_recorded·unknown·placeholder 금지>"
+        ),
         source_key: "blind_packet_independent_opinion",
         "blinded_from": list(packet["required_blinded_from"]),
         "packet_sha256": packet["packet_sha256"],
@@ -239,12 +242,16 @@ def build_external_ai_request(
         "required_provider_family": family,
         "blindness_contract": {
             "only_input_allowed": "this_request_file",
+            "required_provider_family": family,
+            "actual_model_name_required": True,
             "must_not_access_repository": True,
             "must_not_access_engine_logic_or_output": True,
             "return_json_only": True,
             "do_not_copy_empty_skeleton_values": True,
         },
         "instructions": [
+            f"반드시 {family} 계열 모델에서 이 요청을 처리한다.",
+            f"{agent_key}에는 실제 모델명을 쓰고 not_recorded·unknown·placeholder를 쓰지 않는다.",
             "packet.cases의 100개 사례를 모두 독립적으로 판단한다.",
             "proposed_answer는 packet.answer_vocabulary 안의 값 하나 이상만 쓴다.",
             "confidence는 0.0 이상 1.0 이하 숫자다.",

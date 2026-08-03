@@ -115,6 +115,12 @@ def test_external_review_request_contains_only_blind_packet_and_empty_skeleton()
         for item in request["packet"]["cases"]
     )
     assert request["response_skeleton"]["reviewing_agent"].startswith("<")
+    assert "anthropic" in request["response_skeleton"]["reviewing_agent"]
+    assert request["blindness_contract"]["required_provider_family"] == "anthropic"
+    assert request["blindness_contract"]["actual_model_name_required"] is True
+    assert request["instructions"][0] == (
+        "반드시 anthropic 계열 모델에서 이 요청을 처리한다."
+    )
     assert len(request["response_skeleton"]["cases"]) == 2
     assert len(request["request_sha256"]) == 64
 
