@@ -1,0 +1,10 @@
+반환 파일 6개
+
+[ ] kpi1_claude_review_response.json
+[ ] kpi3_claude_review_response.json
+[ ] kpi4_claude_primary_response.json
+[ ] kpi5_claude_review_response.json
+[ ] reviewer_details.json
+[ ] seal_disposal_review.json
+
+JSON 파일은 원본 형식을 유지합니다. 모든 파일을 한 ZIP으로 묶어 전달합니다.

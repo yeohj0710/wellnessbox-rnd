@@ -1,0 +1,15 @@
+KPI 검토 준비 자료
+
+처리 순서
+
+1. kpi_independent_review_requests.zip의 START_HERE.txt를 읽고 응답 JSON 4개를 만듭니다.
+2. reviewer_details.json과 seal_disposal_review.json의 빈 값을 작성합니다.
+3. RETURN_CHECKLIST.txt의 파일 6개를 한 폴더에 모아 전달합니다.
+4. 응답 JSON을 검사하면 불일치·위험 표시·합의 표본 사례가 확정됩니다.
+5. 확정된 사례만 담은 최종 검토 자료를 별도로 생성합니다.
+
+순서 제약
+
+- 4단계와 5단계는 응답 JSON 4개가 있어야 실행할 수 있습니다.
+- 현재 묶음에는 아직 확정되지 않은 최소 검토 사례를 넣지 않았습니다.
+- 응답 JSON과 작성 기록의 문장·값을 전달 전에 임의로 합치거나 바꾸지 않습니다.
