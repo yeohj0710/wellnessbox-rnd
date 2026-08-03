@@ -33,7 +33,9 @@ from wellnessbox_rnd.evals.answer_key_workbench import (
     Workbench,
     adjudicated_answer_key,
     build_provenance,
+    reviewer_identity_requires_reference,
     summarise_adjudication,
+    valid_reviewer_identity_reference,
 )
 from wellnessbox_rnd.evals.reference_standard import verify_seal
 
@@ -310,6 +312,30 @@ def audit_review_effort(workbench: dict[str, Any]) -> dict[str, Any]:
     ]
     detailed = [item for item in settled if item.get("reviewed_in_detail", True)]
     batch_count = len(settled) - len(detailed)
+    untraceable_identity_count = sum(
+        1
+        for item in settled
+        if reviewer_identity_requires_reference(str(item.get("decided_by", "")))
+        and not valid_reviewer_identity_reference(
+            str(item.get("reviewer_identity_ref", ""))
+        )
+    )
+    if untraceable_identity_count:
+        return {
+            "decision_count": len(settled),
+            "detailed_decision_count": len(detailed),
+            "batch_approved_count": batch_count,
+            "elapsed_seconds": None,
+            "seconds_per_decision": None,
+            "duration_source": "per_case_recorded_duration",
+            "edit_rate_pct": 0.0,
+            "untraceable_reviewer_identity_count": untraceable_identity_count,
+            "verdict": "FAIL",
+            "reason": (
+                f"비식별 검토자 결정 {untraceable_identity_count}건에 "
+                "추적 가능한 신원 확인값이 없습니다."
+            ),
+        }
     durations: list[float] = []
     invalid_duration_count = 0
     for item in detailed:

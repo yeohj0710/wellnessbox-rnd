@@ -1,13 +1,16 @@
 # SESSION_HANDOFF
 
-## 2026-08-03 최종 검토 반영·KPI-3 봉인 handoff
+## 2026-08-03 최종 검토 반영·신원 확인 보완 handoff
 
 - 원본: `data/original_plan/kpi/review_handoff/completed_review/kpi_completed_review.zip`, SHA-256 `a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c`.
-- 적용: 네 워크벤치 각 100건, 합계 400건. KPI-1·5 과거 봉인은 제출된 DISCARD 판단대로 archive와 append-only 이력을 남겨 폐기했다.
-- 봉인 완료: KPI-3 100건, `wellnessbox_rnd_engine`, seal SHA-256 `2baadb797be0f6ff8ffd19b6eaec6b8331910a5e12d2c502fb78562da816c91c`.
+- 적용: 네 워크벤치 각 100건, 합계 400건. KPI-1·5 과거 봉인과 제출된 DISCARD 기록은 archive와 append-only 이력에 보존했다.
+- 신원 게이트: 제출 기록의 `비식별 검토자`에 `reviewer_identity_ref`가 없어 네 지표 결정과 KPI-1·5 폐기 기록을 아직 정식 증거로 계산하지 않는다. KPI-1·5 `formal_disposal_count`는 0이다.
+- 봉인 상태: 앞서 만든 KPI-3 봉인은 신원 게이트를 통과하지 못해 제거했다. 현재 유효한 신규 봉인은 없다.
 - 교체 필요: KPI-1 49건, KPI-4 7건, KPI-5 9건. 근거는 `kpi_replacement_required_v1.json`에 보존했다.
-- 현재 감사: 출처 무결성 4/4 PASS, KPI-3 completion ready, KPI-1·4·5는 `rejected_cases_require_replacement`로 차단.
+- 현재 감사: 출처 독립성은 4/4 PASS지만 검토 신원 무결성은 4/4 FAIL이다. KPI-1·4·5는 `rejected_cases_require_replacement`도 함께 차단한다.
 - 제출 기록의 검토자 표시는 `비식별 검토자`, 소속은 `비공개`, 건별 기록 시간은 모두 2초다. 입력을 임의로 실명화하거나 시간을 바꾸지 않았다.
+- importer는 ZIP 전체를 한 번만 메모리에 읽고 그 바이트의 SHA-256을 기록한다. 검증과 반영 사이에 다른 ZIP을 읽지 않는다.
+- 검증: 집중 시험 95건 PASS. 전체 pytest 90건 실패와 전체 Ruff 28건은 기존 기준선과 같아 신규 실패·오류가 없다.
 
 ## 2026-08-03 일괄 검토·반환 패키지 handoff
 

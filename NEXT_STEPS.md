@@ -1,11 +1,12 @@
 # NEXT_STEPS
 
-반환 검토 자료는 적용됐다. KPI-3은 100건 봉인까지 끝났다.
+반환 검토 자료 400건은 원문 그대로 적용됐다. 아직 유효한 신규 봉인은 없다.
 
-1. `data/original_plan/kpi/review_handoff/completed_review/kpi_replacement_required_v1.json`의 KPI-1 49건, KPI-4 7건, KPI-5 9건을 새 사례로 교체한다.
-2. 교체 사례는 기존과 같은 출처 독립성·제공자 분리·블라인딩 검사를 거친다. 기존 반려 사례를 조용히 삭제하거나 기존 답을 복사해 확정하지 않는다.
-3. 교체 사례의 최종 판단이 들어오면 세 워크벤치를 다시 감사하고 100개 유효 사례가 있는 지표만 봉인한다.
-4. 새 봉인 뒤에만 `measurement_environment: research_phase_internal_measurement`로 연구 단계 내부 측정을 실행한다.
+1. 비식별 검토 기록에 추적 가능한 `reviewer_identity_ref`를 추가한다. 저장 형식은 `sha256:<64자리 해시>`이며 실제 신원 자료는 공개 저장소에 넣지 않는다.
+2. `data/original_plan/kpi/review_handoff/completed_review/kpi_replacement_required_v1.json`의 KPI-1 49건, KPI-4 7건, KPI-5 9건을 새 사례로 교체한다.
+3. 교체 사례는 기존과 같은 출처 독립성·제공자 분리·블라인딩 검사를 거친다. 기존 반려 사례를 조용히 삭제하거나 기존 답을 복사해 확정하지 않는다.
+4. 신원 확인과 교체 사례 판단이 반영되면 네 워크벤치를 다시 감사하고 100개 유효 사례가 있는 지표만 봉인한다.
+5. 새 봉인 뒤에만 `measurement_environment: research_phase_internal_measurement`로 연구 단계 내부 측정을 실행한다.
 
 전체 pytest 기준선은 실제 실행 결과 90건 실패다. `.pytest_cache/v/cache/lastfailed` 항목 수를 기준선으로 사용하지 않는다.
 

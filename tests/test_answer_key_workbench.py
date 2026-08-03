@@ -135,6 +135,27 @@ class DecisionTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             decide(draft=_draft(), final_answer=["a"], decided_by="  ")
 
+    def test_pseudonymous_decider_requires_identity_reference(self) -> None:
+        with self.assertRaisesRegex(
+            ValueError, "pseudonymous_reviewer_requires_identity_reference"
+        ):
+            decide(
+                draft=_draft(),
+                final_answer=["a"],
+                decided_by="\ube44\uc2dd\ubcc4 \uac80\ud1a0\uc790",
+            )
+
+    def test_pseudonymous_decider_records_identity_reference(self) -> None:
+        identity_ref = "sha256:" + "a" * 64
+        decision = decide(
+            draft=_draft(),
+            final_answer=["a"],
+            decided_by="\ube44\uc2dd\ubcc4 \uac80\ud1a0\uc790",
+            reviewer_identity_ref=identity_ref,
+        )
+
+        self.assertEqual(decision.reviewer_identity_ref, identity_ref)
+
     def test_an_empty_final_answer_is_rejected(self) -> None:
         with self.assertRaises(ValueError):
             decide(draft=_draft(), final_answer=[], decided_by="권혁찬")
@@ -663,8 +684,9 @@ class SealDisposalTest(unittest.TestCase):
 
             report = json.loads(messages[-1])
             self.assertEqual(result, 2)
-            self.assertEqual(report["status"], "NO_SEAL_CANDIDATE")
-            self.assertEqual(report["formal_disposal_count"], 1)
+            self.assertEqual(report["status"], "AWAITING_IDENTITY_ATTESTATION")
+            self.assertEqual(report["formal_disposal_count"], 0)
+            self.assertEqual(report["unverified_disposal_count"], 1)
 
     def test_cli_can_confirm_a_seal_relocated_before_audited_disposal(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

@@ -71,6 +71,7 @@ class Decision:
     review_duration_seconds: float | None = None
     decision_mode: str = "detailed_review"
     reviewed_in_detail: bool = True
+    reviewer_identity_ref: str = ""
 
 
 @dataclass
@@ -100,6 +101,33 @@ def assert_source_is_independent(draft_source: str) -> None:
     for forbidden in FORBIDDEN_DRAFT_SOURCES:
         if forbidden in folded:
             raise ValueError(f"draft_source_is_the_system_under_test:{draft_source}")
+
+
+def reviewer_identity_requires_reference(name: str) -> bool:
+    folded = name.strip().casefold().replace(" ", "")
+    return any(
+        marker in folded
+        for marker in ("\ube44\uc2dd\ubcc4", "\uc775\uba85", "anonymous")
+    )
+
+
+def valid_reviewer_identity_reference(reference: str) -> bool:
+    value = reference.strip().casefold()
+    if not value.startswith("sha256:"):
+        return False
+    digest = value.removeprefix("sha256:")
+    return len(digest) == 64 and all(
+        character in "0123456789abcdef" for character in digest
+    )
+
+
+def assert_reviewer_identity_traceable(name: str, reference: str = "") -> None:
+    if not name.strip():
+        raise ValueError("decision_requires_a_named_person")
+    if reviewer_identity_requires_reference(name) and not valid_reviewer_identity_reference(
+        reference
+    ):
+        raise ValueError("pseudonymous_reviewer_requires_identity_reference")
 
 
 def build_drafts(
@@ -162,10 +190,10 @@ def decide(
     review_duration_seconds: float | None = None,
     decision_mode: str = "detailed_review",
     reviewed_in_detail: bool = True,
+    reviewer_identity_ref: str = "",
 ) -> Decision:
     """Record one human decision. `None` means the case was rejected outright."""
-    if not decided_by.strip():
-        raise ValueError("decision_requires_a_named_person")
+    assert_reviewer_identity_traceable(decided_by, reviewer_identity_ref)
     if review_duration_seconds is not None and (
         not math.isfinite(review_duration_seconds)
         or review_duration_seconds < 0
@@ -186,6 +214,7 @@ def decide(
             review_duration_seconds,
             decision_mode,
             reviewed_in_detail,
+            reviewer_identity_ref.strip(),
         )
 
     cleaned = sorted(set(final_answer))
@@ -202,6 +231,7 @@ def decide(
         review_duration_seconds,
         decision_mode,
         reviewed_in_detail,
+        reviewer_identity_ref.strip(),
     )
 
 
@@ -232,6 +262,9 @@ def summarise_adjudication(workbench: Workbench) -> dict[str, Any]:
         else 0.0
     )
     reviewers = sorted({d.decided_by for d in decisions if d.decided_by})
+    reviewer_identity_refs = sorted(
+        {d.reviewer_identity_ref for d in decisions if d.reviewer_identity_ref}
+    )
 
     warnings: list[str] = []
     if settled and counts["edited"] == 0:
@@ -252,6 +285,7 @@ def summarise_adjudication(workbench: Workbench) -> dict[str, Any]:
         ),
         "detailed_edit_rate_pct": detailed_edit_rate,
         "reviewers": reviewers,
+        "reviewer_identity_refs": reviewer_identity_refs,
         "warnings": warnings,
         "complete": counts["pending"] == 0,
     }
@@ -373,6 +407,7 @@ def build_provenance(
             "batch_approved_count": summary["batch_approved_count"],
             "detailed_edit_rate_pct": summary["detailed_edit_rate_pct"],
             "reviewers": summary["reviewers"],
+            "reviewer_identity_refs": summary.get("reviewer_identity_refs", []),
             "warnings": summary["warnings"],
         },
         "note": (
@@ -392,13 +427,16 @@ def build_seal_disposal_record(
     original_seal_path: str,
     archived_seal_path: str,
     archived_workbench_path: str,
+    discarded_by_identity_ref: str = "",
     discarded_at: str | None = None,
 ) -> dict[str, Any]:
     """Build the append-only event that explains why an active seal was retired."""
     actor = discarded_by.strip()
     explanation = reason.strip()
-    if not actor:
-        raise ValueError("seal_disposal_requires_a_named_person")
+    try:
+        assert_reviewer_identity_traceable(actor, discarded_by_identity_ref)
+    except ValueError as exc:
+        raise ValueError("seal_disposal_requires_traceable_person") from exc
     if not explanation:
         raise ValueError("seal_disposal_requires_a_reason")
     if not seal_sha256.strip():
@@ -409,6 +447,7 @@ def build_seal_disposal_record(
         "indicator_id": indicator_id,
         "discarded_seal_sha256": seal_sha256,
         "discarded_by": actor,
+        "discarded_by_identity_ref": discarded_by_identity_ref.strip(),
         "discarded_at": (
             discarded_at or datetime.now(UTC).isoformat().replace("+00:00", "Z")
         ),
@@ -436,6 +475,7 @@ def discard_seal_with_audit_trail(
     record_root: Path,
     discarded_by: str,
     reason: str,
+    discarded_by_identity_ref: str = "",
     discarded_at: str | None = None,
 ) -> dict[str, Any]:
     """Archive a seal and its decisions, then reset review with rollback on failure."""
@@ -468,6 +508,7 @@ def discard_seal_with_audit_trail(
         indicator_id=indicator_id,
         seal_sha256=seal_sha256,
         discarded_by=discarded_by,
+        discarded_by_identity_ref=discarded_by_identity_ref,
         reason=reason,
         original_seal_path=_record_path(active, record_root),
         archived_seal_path=_record_path(archived_seal, record_root),

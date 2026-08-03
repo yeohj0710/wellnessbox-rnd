@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import io
 import json
 import math
@@ -32,6 +33,7 @@ from wellnessbox_rnd.evals.answer_key_integrity import (  # noqa: E402
 )
 from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
     Workbench,
+    assert_reviewer_identity_traceable,
     decide,
     discard_seal_with_audit_trail,
     load_workbench,
@@ -68,18 +70,34 @@ def _seal_disposal_history_path(indicator_id: str) -> Path:
 class PackageReader:
     def __init__(self, source: Path):
         self.source = source
-        self.archive = zipfile.ZipFile(source) if source.is_file() else None
+        self.source_bytes = source.read_bytes() if source.is_file() else None
+        self.source_sha256 = (
+            hashlib.sha256(self.source_bytes).hexdigest()
+            if self.source_bytes is not None
+            else ""
+        )
+        self.archive = (
+            zipfile.ZipFile(io.BytesIO(self.source_bytes))
+            if self.source_bytes is not None
+            else None
+        )
+        self.cache: dict[str, bytes] = {}
 
     def read(self, name: str) -> bytes:
+        if name in self.cache:
+            return self.cache[name]
         if self.archive is not None:
             try:
-                return self.archive.read(name)
+                content = self.archive.read(name)
             except KeyError as exc:
                 raise ValueError(f"review_package_file_missing:{name}") from exc
-        path = self.source / name
-        if not path.is_file():
-            raise ValueError(f"review_package_file_missing:{name}")
-        return path.read_bytes()
+        else:
+            path = self.source / name
+            if not path.is_file():
+                raise ValueError(f"review_package_file_missing:{name}")
+            content = path.read_bytes()
+        self.cache[name] = content
+        return content
 
     def close(self) -> None:
         if self.archive is not None:
@@ -137,6 +155,13 @@ def _load_reviewer(reader: PackageReader) -> dict[str, str]:
             raise ValueError(f"reviewer_detail_missing:{field}")
     if payload["qualification_stage"] != EXPECTED_QUALIFICATION_STAGE:
         raise ValueError("reviewer_qualification_stage_invalid")
+    identity_ref = str(payload.get("reviewer_identity_ref", "")).strip()
+    try:
+        assert_reviewer_identity_traceable(
+            str(payload["reviewer_name"]), identity_ref
+        )
+    except ValueError as exc:
+        raise ValueError("reviewer_identity_not_traceable") from exc
     try:
         datetime.fromisoformat(str(payload["review_date"]))
     except ValueError as exc:
@@ -171,112 +196,129 @@ def _load_seal_disposals(
     return normalized
 
 
+def _validate_reader(
+    reader: PackageReader,
+) -> tuple[
+    dict[str, Workbench],
+    dict[str, Any],
+    dict[str, str],
+    dict[str, dict[str, str]],
+]:
+    reviewer = _load_reviewer(reader)
+    seal_disposals = _load_seal_disposals(
+        reader, reviewer_name=reviewer["reviewer_name"]
+    )
+    staged: dict[str, Workbench] = {}
+    intervals: list[ReviewedInterval] = []
+    counts: dict[str, int] = {}
+    choice_counts: dict[str, dict[str, int]] = {}
+    for indicator_id in INDICATORS:
+        expected_rows, _ = build_rows(indicator_id)
+        rows = _load_rows(reader, indicator_id)
+        if len(rows) != len(expected_rows):
+            raise ValueError(f"review_csv_case_count_changed:{indicator_id}")
+        workbench = deepcopy(load_workbench(_workbench_path(indicator_id)))
+        if workbench.decisions:
+            raise ValueError(f"workbench_already_has_decisions:{indicator_id}")
+        draft_by_id = {draft.case_id: draft for draft in workbench.drafts}
+        vocabulary = _answer_vocabulary(workbench)
+        seen: set[str] = set()
+        indicator_choices = {
+            choice: 0 for choice in ("A", "B", "CUSTOM", "REJECT")
+        }
+        for row, expected in zip(rows, expected_rows, strict=True):
+            case_id = row["case_id"].strip()
+            if case_id in seen:
+                raise ValueError(f"review_case_id_duplicated:{case_id}")
+            seen.add(case_id)
+            for field in IMMUTABLE_FIELDS:
+                if row[field] != expected[field]:
+                    raise ValueError(f"review_source_field_changed:{case_id}:{field}")
+
+            choice = row["검토_선택"].strip().upper()
+            if choice not in {"A", "B", "CUSTOM", "REJECT"}:
+                raise ValueError(f"review_choice_invalid:{case_id}")
+            indicator_choices[choice] += 1
+            if choice == "A":
+                final_answer: list[str] | None = _split_answer(expected["안_A"])
+            elif choice == "B":
+                final_answer = _split_answer(expected["안_B"])
+            elif choice == "CUSTOM":
+                final_answer = _split_answer(row["최종_답"])
+                if not final_answer:
+                    raise ValueError(f"custom_answer_empty:{case_id}")
+            else:
+                final_answer = None
+            if final_answer is not None:
+                outside = sorted(set(final_answer) - vocabulary)
+                if outside:
+                    raise ValueError(
+                        f"final_answer_outside_vocabulary:{case_id}:{'|'.join(outside)}"
+                    )
+
+            start = _parse_timestamp(
+                row["검토_시작_시각"], case_id=case_id, field="start"
+            )
+            end = _parse_timestamp(
+                row["검토_종료_시각"], case_id=case_id, field="end"
+            )
+            duration = (end - start).total_seconds()
+            if not math.isfinite(duration) or duration < MIN_SECONDS_PER_DECISION:
+                raise ValueError(f"review_duration_too_short:{case_id}")
+            intervals.append(ReviewedInterval(case_id, start, end))
+            note_parts = [f"offline_review_choice:{choice}"]
+            if row["검토_메모"].strip():
+                note_parts.append(row["검토_메모"].strip())
+            workbench.decisions[case_id] = decide(
+                draft=draft_by_id[case_id],
+                final_answer=final_answer,
+                decided_by=reviewer["reviewer_name"],
+                decided_at=end.isoformat(),
+                note="; ".join(note_parts),
+                review_duration_seconds=duration,
+                reviewer_identity_ref=reviewer.get("reviewer_identity_ref", ""),
+            )
+        plan = build_adaptive_review_plan(workbench)
+        if plan["pending_required_detail_ids"]:
+            raise ValueError(f"required_review_still_pending:{indicator_id}")
+        staged[indicator_id] = workbench
+        counts[indicator_id] = len(rows)
+        choice_counts[indicator_id] = indicator_choices
+
+    ordered = sorted(intervals, key=lambda item: item.start)
+    for previous, current in zip(ordered, ordered[1:], strict=False):
+        if current.start < previous.end:
+            raise ValueError(
+                f"review_intervals_overlap:{previous.case_id}:{current.case_id}"
+            )
+    report = {
+        "status": "READY_TO_IMPORT",
+        "source_sha256": reader.source_sha256,
+        "reviewer_name": reviewer["reviewer_name"],
+        "qualification_stage": reviewer["qualification_stage"],
+        "review_count": sum(counts.values()),
+        "indicator_counts": counts,
+        "choice_counts": choice_counts,
+        "replacement_required_counts": {
+            indicator_id: choices["REJECT"]
+            for indicator_id, choices in choice_counts.items()
+        },
+        "replacement_required_count": sum(
+            choices["REJECT"] for choices in choice_counts.values()
+        ),
+        "seal_disposal_decisions": {
+            indicator_id: entry["decision"]
+            for indicator_id, entry in seal_disposals.items()
+        },
+    }
+    return staged, report, reviewer, seal_disposals
+
+
 def validate_package(source: Path) -> tuple[dict[str, Workbench], dict[str, Any]]:
     reader = PackageReader(source)
     try:
-        reviewer = _load_reviewer(reader)
-        seal_disposals = _load_seal_disposals(
-            reader, reviewer_name=reviewer["reviewer_name"]
-        )
-        staged: dict[str, Workbench] = {}
-        intervals: list[ReviewedInterval] = []
-        counts: dict[str, int] = {}
-        choice_counts: dict[str, dict[str, int]] = {}
-        for indicator_id in INDICATORS:
-            expected_rows, _ = build_rows(indicator_id)
-            rows = _load_rows(reader, indicator_id)
-            if len(rows) != len(expected_rows):
-                raise ValueError(f"review_csv_case_count_changed:{indicator_id}")
-            workbench = deepcopy(load_workbench(_workbench_path(indicator_id)))
-            if workbench.decisions:
-                raise ValueError(f"workbench_already_has_decisions:{indicator_id}")
-            draft_by_id = {draft.case_id: draft for draft in workbench.drafts}
-            vocabulary = _answer_vocabulary(workbench)
-            seen: set[str] = set()
-            indicator_choices = {choice: 0 for choice in ("A", "B", "CUSTOM", "REJECT")}
-            for row, expected in zip(rows, expected_rows, strict=True):
-                case_id = row["case_id"].strip()
-                if case_id in seen:
-                    raise ValueError(f"review_case_id_duplicated:{case_id}")
-                seen.add(case_id)
-                for field in IMMUTABLE_FIELDS:
-                    if row[field] != expected[field]:
-                        raise ValueError(f"review_source_field_changed:{case_id}:{field}")
-
-                choice = row["검토_선택"].strip().upper()
-                if choice not in {"A", "B", "CUSTOM", "REJECT"}:
-                    raise ValueError(f"review_choice_invalid:{case_id}")
-                indicator_choices[choice] += 1
-                if choice == "A":
-                    final_answer: list[str] | None = _split_answer(expected["안_A"])
-                elif choice == "B":
-                    final_answer = _split_answer(expected["안_B"])
-                elif choice == "CUSTOM":
-                    final_answer = _split_answer(row["최종_답"])
-                    if not final_answer:
-                        raise ValueError(f"custom_answer_empty:{case_id}")
-                else:
-                    final_answer = None
-                if final_answer is not None:
-                    outside = sorted(set(final_answer) - vocabulary)
-                    if outside:
-                        raise ValueError(
-                            f"final_answer_outside_vocabulary:{case_id}:{'|'.join(outside)}"
-                        )
-
-                start = _parse_timestamp(
-                    row["검토_시작_시각"], case_id=case_id, field="start"
-                )
-                end = _parse_timestamp(
-                    row["검토_종료_시각"], case_id=case_id, field="end"
-                )
-                duration = (end - start).total_seconds()
-                if not math.isfinite(duration) or duration < MIN_SECONDS_PER_DECISION:
-                    raise ValueError(f"review_duration_too_short:{case_id}")
-                intervals.append(ReviewedInterval(case_id, start, end))
-                note_parts = [f"offline_review_choice:{choice}"]
-                if row["검토_메모"].strip():
-                    note_parts.append(row["검토_메모"].strip())
-                workbench.decisions[case_id] = decide(
-                    draft=draft_by_id[case_id],
-                    final_answer=final_answer,
-                    decided_by=reviewer["reviewer_name"],
-                    decided_at=end.isoformat(),
-                    note="; ".join(note_parts),
-                    review_duration_seconds=duration,
-                )
-            plan = build_adaptive_review_plan(workbench)
-            if plan["pending_required_detail_ids"]:
-                raise ValueError(f"required_review_still_pending:{indicator_id}")
-            staged[indicator_id] = workbench
-            counts[indicator_id] = len(rows)
-            choice_counts[indicator_id] = indicator_choices
-
-        ordered = sorted(intervals, key=lambda item: item.start)
-        for previous, current in zip(ordered, ordered[1:], strict=False):
-            if current.start < previous.end:
-                raise ValueError(
-                    f"review_intervals_overlap:{previous.case_id}:{current.case_id}"
-                )
-        return staged, {
-            "status": "READY_TO_IMPORT",
-            "reviewer_name": reviewer["reviewer_name"],
-            "qualification_stage": reviewer["qualification_stage"],
-            "review_count": sum(counts.values()),
-            "indicator_counts": counts,
-            "choice_counts": choice_counts,
-            "replacement_required_counts": {
-                indicator_id: choices["REJECT"]
-                for indicator_id, choices in choice_counts.items()
-            },
-            "replacement_required_count": sum(
-                choices["REJECT"] for choices in choice_counts.values()
-            ),
-            "seal_disposal_decisions": {
-                indicator_id: entry["decision"]
-                for indicator_id, entry in seal_disposals.items()
-            },
-        }
+        staged, report, _, _ = _validate_reader(reader)
+        return staged, report
     finally:
         reader.close()
 
@@ -318,13 +360,9 @@ def _restore_files(snapshots: dict[Path, bytes | None]) -> None:
 
 
 def apply_package(source: Path) -> dict[str, Any]:
-    staged, report = validate_package(source)
     reader = PackageReader(source)
     try:
-        reviewer = _load_reviewer(reader)
-        seal_disposals = _load_seal_disposals(
-            reader, reviewer_name=reviewer["reviewer_name"]
-        )
+        staged, report, reviewer, seal_disposals = _validate_reader(reader)
     finally:
         reader.close()
     disposal_paths = _disposal_mutation_paths(seal_disposals)
@@ -350,6 +388,9 @@ def apply_package(source: Path) -> dict[str, Any]:
                 record_root=ROOT,
                 discarded_by=entry["reviewed_by"],
                 reason=entry["reason"],
+                discarded_by_identity_ref=reviewer.get(
+                    "reviewer_identity_ref", ""
+                ),
                 discarded_at=entry["reviewed_at"],
             )
             staged[indicator_id].seal_disposals.append(record)

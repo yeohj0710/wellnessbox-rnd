@@ -54,8 +54,10 @@ from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
     decide,
     discard_seal_with_audit_trail,
     load_workbench,
+    reviewer_identity_requires_reference,
     save_workbench,
     summarise_adjudication,
+    valid_reviewer_identity_reference,
 )
 from wellnessbox_rnd.evals.blinded_drafters import (  # noqa: E402
     DRAFT_SOURCES as BLINDED_DRAFT_SOURCES,
@@ -743,6 +745,20 @@ def cmd_seal(args) -> int:
     return 0
 
 
+def _disposal_identity_counts(history: dict) -> tuple[int, int]:
+    events = history.get("events", [])
+    traceable = 0
+    for event in events:
+        actor = str(event.get("discarded_by", "")).strip()
+        identity_ref = str(event.get("discarded_by_identity_ref", "")).strip()
+        if actor and (
+            not reviewer_identity_requires_reference(actor)
+            or valid_reviewer_identity_reference(identity_ref)
+        ):
+            traceable += 1
+    return traceable, len(events) - traceable
+
+
 def cmd_discard_status(args) -> int:
     """Report disposal evidence without recording a human decision."""
     destination = seal_candidate_path(args.indicator)
@@ -750,12 +766,18 @@ def cmd_discard_status(args) -> int:
     history = {"events": []}
     if history_path.is_file():
         history = json.loads(history_path.read_text(encoding="utf-8"))
+    formal_count, unverified_count = _disposal_identity_counts(history)
     if not destination.is_file():
         say(json.dumps(
             {
-                "status": "NO_SEAL_CANDIDATE",
+                "status": (
+                    "AWAITING_IDENTITY_ATTESTATION"
+                    if unverified_count
+                    else "NO_SEAL_CANDIDATE"
+                ),
                 "indicator_id": args.indicator,
-                "formal_disposal_count": len(history.get("events", [])),
+                "formal_disposal_count": formal_count,
+                "unverified_disposal_count": unverified_count,
             },
             ensure_ascii=False,
             indent=2,
@@ -784,7 +806,8 @@ def cmd_discard_status(args) -> int:
             "seal_path": str(destination),
             "file_sha256": actual_sha256,
             "embedded_seal_sha256": seal.get("seal_sha256"),
-            "formal_disposal_count": len(history.get("events", [])),
+            "formal_disposal_count": formal_count,
+            "unverified_disposal_count": unverified_count,
             "mutated": False,
             "next": (
                 "사람이 폐기 사유를 확인한 뒤 discard-seal을 실행하고 "

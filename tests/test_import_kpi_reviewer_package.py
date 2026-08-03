@@ -1,11 +1,29 @@
 from __future__ import annotations
 
 import json
+import zipfile
 from datetime import UTC, datetime, timedelta
 
 import pytest
 
 from scripts import import_kpi_reviewer_package as importer
+
+
+def test_package_reader_keeps_the_validated_zip_snapshot(tmp_path) -> None:
+    source = tmp_path / "review.zip"
+    with zipfile.ZipFile(source, "w") as archive:
+        archive.writestr("value.txt", "original")
+
+    reader = importer.PackageReader(source)
+    original_hash = reader.source_sha256
+    with zipfile.ZipFile(source, "w") as archive:
+        archive.writestr("value.txt", "replacement")
+
+    try:
+        assert reader.read("value.txt") == b"original"
+        assert reader.source_sha256 == original_hash
+    finally:
+        reader.close()
 
 
 def test_parse_timestamp_requires_timezone() -> None:
@@ -135,9 +153,22 @@ def test_apply_package_uses_recorded_disposal_without_second_prompt(
         ),
         encoding="utf-8",
     )
+    reviewer = {
+        "reviewer_name": "검토자",
+        "reviewer_identity_ref": "",
+    }
+    seal_disposals = {
+        indicator_id: {
+            "decision": "DISCARD",
+            "reason": "과속 자동 수락 기록",
+            "reviewed_by": "검토자",
+            "reviewed_at": "2026-08-03T12:00:00+09:00",
+        }
+        for indicator_id in importer.SEAL_INDICATORS
+    }
     monkeypatch.setattr(
         importer,
-        "validate_package",
+        "_validate_reader",
         lambda _: (
             staged,
             {
@@ -145,6 +176,8 @@ def test_apply_package_uses_recorded_disposal_without_second_prompt(
                 "seal_disposal_decisions": {"KPI-1": "DISCARD", "KPI-5": "DISCARD"},
                 "replacement_required_count": 2,
             },
+            reviewer,
+            seal_disposals,
         ),
     )
 

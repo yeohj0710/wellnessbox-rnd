@@ -281,6 +281,40 @@ def test_recorded_durations_audit_detailed_review_but_not_batch_approval() -> No
     assert result["seconds_per_decision"] == 2.0
 
 
+def test_pseudonymous_reviewer_without_identity_reference_fails() -> None:
+    result = audit_review_effort(
+        {
+            "decisions": {
+                "case-1": {
+                    "action": "accepted",
+                    "decided_by": "비식별 검토자",
+                    "review_duration_seconds": 2.0,
+                }
+            }
+        }
+    )
+
+    assert result["verdict"] == "FAIL"
+    assert result["untraceable_reviewer_identity_count"] == 1
+
+
+def test_pseudonymous_reviewer_with_identity_reference_passes() -> None:
+    result = audit_review_effort(
+        {
+            "decisions": {
+                "case-1": {
+                    "action": "accepted",
+                    "decided_by": "비식별 검토자",
+                    "reviewer_identity_ref": "sha256:" + "a" * 64,
+                    "review_duration_seconds": 2.0,
+                }
+            }
+        }
+    )
+
+    assert result["verdict"] == "PASS"
+
+
 def test_nonfinite_recorded_duration_fails_closed() -> None:
     result = audit_review_effort(
         {
@@ -301,8 +335,7 @@ def test_nonfinite_recorded_duration_fails_closed() -> None:
 def test_repository_audit_passes_all_current_draft_sources() -> None:
     report = audit_repository(ROOT)
 
-    assert report["status"] == "READY"
-    assert report["passed"] == 4
+    assert report["status"] == "BLOCKED"
     assert {
         item["indicator_id"]: item["source_independence"]["verdict"]
         for item in report["indicators"]
@@ -607,8 +640,8 @@ def test_reference_seal_cli_does_not_write_below_minimum_sample(
     assert not destination.exists()
 
 
-def test_current_kpi1_and_kpi5_reviews_follow_formal_disposal() -> None:
-    """The invalid auto-accept seals were retired before the new reviews."""
+def test_current_kpi1_and_kpi5_reviews_require_identity_attestation() -> None:
+    """Imported pseudonymous reviews are not formal until identity is traceable."""
     for indicator in ("kpi1", "kpi5"):
         path = ROOT / f"data/original_plan/kpi/workbench/{indicator}_workbench_v1.json"
         if not path.is_file():
@@ -618,4 +651,4 @@ def test_current_kpi1_and_kpi5_reviews_follow_formal_disposal() -> None:
             continue
         assert len(workbench["decisions"]) == 100
         assert len(workbench.get("seal_disposals", [])) == 1
-        assert audit_review_effort(workbench)["verdict"] == "PASS"
+        assert audit_review_effort(workbench)["verdict"] == "FAIL"
