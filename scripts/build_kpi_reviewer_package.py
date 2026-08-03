@@ -134,9 +134,9 @@ def _write_zip(files: dict[str, bytes]) -> None:
 def _instructions_bytes() -> bytes:
     return (
         "KPI 정답 검토 자료\n\n"
-        "역할 구분\n"
-        "- Claude: 완료. 400건의 안 B를 이미 작성했습니다. 추가 AI 실행은 없습니다.\n"
-        "- 검토자: 아래 작성 대상 6개만 작성합니다. 최종 선택은 검토자가 합니다.\n\n"
+        "준비 상태\n"
+        "- 400건의 안 A와 안 B가 준비돼 있습니다. 추가 외부 작성 작업은 없습니다.\n"
+        "- 아래 작성 대상 6개만 작성합니다. 최종 선택은 검토_선택 열에 기록합니다.\n\n"
         "작성 대상 6개\n"
         "- kpi1_review.csv\n"
         "- kpi3_review.csv\n"
@@ -166,7 +166,7 @@ def _instructions_bytes() -> bytes:
         "2. 위 6개 파일을 모두 작성합니다.\n"
         "3. MAKE_RETURN_ZIP.cmd를 실행합니다.\n"
         "4. 같은 폴더에 생긴 kpi_completed_review.zip 하나만 반환합니다.\n\n"
-        "START_HERE.txt, RETURN_CHECKLIST.txt, SUMMARY.json, MAKE_RETURN_ZIP.cmd는 "
+        "START_HERE.txt, RETURN_CHECKLIST.txt, MAKE_RETURN_ZIP.cmd는 "
         "수정하지 않습니다.\n"
         "현재 검토 대상: KPI-1 100건, KPI-3 100건, KPI-4 100건, KPI-5 100건.\n"
     ).encode()
@@ -175,7 +175,7 @@ def _instructions_bytes() -> bytes:
 def _checklist_bytes() -> bytes:
     return (
         "반환 전 확인\n\n"
-        "[ ] Claude 추가 작업 없음\n"
+        "[ ] 추가 외부 작성 작업 없음\n"
         "[ ] CSV 4개에서 각 100행의 검토_선택과 시각 작성\n"
         "[ ] reviewer_details.json 작성\n"
         "[ ] seal_disposal_review.json 작성\n"
@@ -236,7 +236,6 @@ def main() -> int:
     package_files["START_HERE.txt"] = instructions
     package_files["RETURN_CHECKLIST.txt"] = checklist
     package_files["MAKE_RETURN_ZIP.cmd"] = return_zip_script
-    package_files["SUMMARY.json"] = summary_bytes
     for template in ("reviewer_details.json", "seal_disposal_review.json"):
         content = (HANDOFF_DIR / template).read_bytes()
         package_files[template] = content

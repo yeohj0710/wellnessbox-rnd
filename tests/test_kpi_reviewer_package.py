@@ -66,11 +66,14 @@ def test_build_rows_includes_only_required_cases(monkeypatch) -> None:
     assert summary["required_review_count"] == 1
 
 
-def test_instructions_separate_completed_ai_work_from_reviewer_work() -> None:
+def test_instructions_separate_completed_preparation_from_review_work() -> None:
     text = package._instructions_bytes().decode("utf-8")
 
-    assert "Claude: 완료" in text
-    assert "추가 AI 실행은 없습니다" in text
+    assert "안 A와 안 B가 준비돼 있습니다" in text
+    assert "추가 외부 작성 작업은 없습니다" in text
+    assert "Claude" not in text
+    assert "AI" not in text
+    assert "SUMMARY.json" not in text
     assert "작성 대상 6개" in text
     assert "kpi_completed_review.zip 하나만 반환" in text
 
