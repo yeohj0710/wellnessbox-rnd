@@ -150,6 +150,11 @@ def test_generic_provider_name_is_not_an_actual_model() -> None:
         importer._actual_anthropic_agent(
             {"reviewing_agent": "arbitrary-claude-label"}, "reviewing_agent"
         )
+    with pytest.raises(ValueError, match="replacement_response_agent_invalid"):
+        importer._actual_anthropic_agent(
+            {"reviewing_agent": "claude-opus-not-a-real-model"},
+            "reviewing_agent",
+        )
 
     assert (
         importer._actual_anthropic_agent(

@@ -6,7 +6,6 @@ import argparse
 import hashlib
 import io
 import json
-import re
 import sys
 import zipfile
 from copy import deepcopy
@@ -48,10 +47,7 @@ INVALID_AGENT_NAMES = {
     "unknown",
     "placeholder",
 }
-ANTHROPIC_MODEL_PATTERN = re.compile(
-    r"^claude-(?:opus|sonnet|haiku)-[a-z0-9][a-z0-9.-]*$",
-    re.IGNORECASE,
-)
+ALLOWED_ANTHROPIC_MODEL_IDS = frozenset({"claude-opus-5"})
 
 
 class SnapshotZip:
@@ -118,7 +114,7 @@ def _actual_anthropic_agent(payload: dict[str, Any], key: str) -> str:
     if (
         agent.casefold() in INVALID_AGENT_NAMES
         or agent_family(agent) != "anthropic"
-        or ANTHROPIC_MODEL_PATTERN.fullmatch(agent) is None
+        or agent.casefold() not in ALLOWED_ANTHROPIC_MODEL_IDS
     ):
         raise ValueError(f"replacement_response_agent_invalid:{key}")
     return agent
