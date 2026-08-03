@@ -159,7 +159,7 @@ class DecisionTest(unittest.TestCase):
 
     def test_digest_shaped_but_unregistered_reference_is_rejected(self) -> None:
         with self.assertRaisesRegex(
-            ValueError, "pseudonymous_reviewer_requires_identity_reference"
+            ValueError, "reviewer_requires_registered_identity"
         ):
             decide(
                 draft=_draft(),

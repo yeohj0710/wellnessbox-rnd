@@ -50,6 +50,15 @@ def registered_reviewer_identity_references(registry: dict[str, Any]) -> set[str
     }
 
 
+def registered_reviewer_names(registry: dict[str, Any]) -> set[str]:
+    """Return canonical names that the checked-in participant registry resolves."""
+    return {
+        str(entry.get("name", "")).strip()
+        for entry in registry.get("registered_reviewers", [])
+        if str(entry.get("name", "")).strip()
+    }
+
+
 def normalize_identity(value: str) -> str:
     """Fold a free-text person name down to something comparable."""
     folded = unicodedata.normalize("NFKC", str(value)).translate(_ZERO_WIDTH)

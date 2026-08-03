@@ -17,6 +17,7 @@ from wellnessbox_rnd.governance.reviewer_credentials import (
     normalize_identity,
     registered_reviewer,
     registered_reviewer_identity_references,
+    registered_reviewer_names,
     review_character_for,
     reviewer_identity_reference,
 )
@@ -56,6 +57,9 @@ class QualificationStageContractTest(unittest.TestCase):
         )
         self.assertTrue(
             all(value.startswith("registry:op039:sha256:") for value in references)
+        )
+        self.assertEqual(
+            registered_reviewer_names(REGISTRY), {"여형준", "권혁찬"}
         )
 
     def test_year2_registry_records_candidates_not_licensed_pharmacists(self) -> None:

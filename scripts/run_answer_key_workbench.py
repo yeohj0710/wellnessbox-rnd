@@ -54,10 +54,9 @@ from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
     decide,
     discard_seal_with_audit_trail,
     load_workbench,
-    reviewer_identity_requires_reference,
+    reviewer_identity_is_traceable,
     save_workbench,
     summarise_adjudication,
-    valid_reviewer_identity_reference,
 )
 from wellnessbox_rnd.evals.blinded_drafters import (  # noqa: E402
     DRAFT_SOURCES as BLINDED_DRAFT_SOURCES,
@@ -81,6 +80,7 @@ from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
 )
 from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
     registered_reviewer_identity_references,
+    registered_reviewer_names,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -96,6 +96,14 @@ BUILTIN_DRAFTERS = {
     "KPI-4": (draft_blinded_cases, BLINDED_DRAFT_SOURCES["KPI-4"]),
     "KPI-5": (draft_reference_cases, REFERENCE_DRAFT_SOURCE),
 }
+
+
+def _trusted_reviewer_context() -> tuple[set[str], set[str]]:
+    registry = load_reviewer_identity_registry(ROOT)
+    return (
+        registered_reviewer_identity_references(registry),
+        registered_reviewer_names(registry),
+    )
 
 
 def looks_like_a_shell_command(answer: str) -> bool:
@@ -224,6 +232,7 @@ def cmd_draft(args) -> int:
 
 def cmd_review(args) -> int:
     target = workbench_path(args.indicator)
+    trusted_identity_refs, trusted_reviewer_names = _trusted_reviewer_context()
     if not target.is_file():
         say(f"초안이 없습니다: {target}. 먼저 draft 를 실행하세요.")
         return 2
@@ -325,6 +334,8 @@ def cmd_review(args) -> int:
             decided_by=args.by,
             note=note,
             review_duration_seconds=elapsed,
+            trusted_reviewer_identity_refs=trusted_identity_refs,
+            trusted_reviewer_names=trusted_reviewer_names,
         )
         save_workbench(target, workbench)
 
@@ -752,16 +763,20 @@ def cmd_seal(args) -> int:
 
 
 def _disposal_identity_counts(
-    history: dict, trusted_identity_refs: set[str]
+    history: dict,
+    trusted_identity_refs: set[str],
+    trusted_reviewer_names: set[str],
 ) -> tuple[int, int]:
     events = history.get("events", [])
     traceable = 0
     for event in events:
         actor = str(event.get("discarded_by", "")).strip()
         identity_ref = str(event.get("discarded_by_identity_ref", "")).strip()
-        if actor and (
-            not reviewer_identity_requires_reference(actor)
-            or valid_reviewer_identity_reference(identity_ref, trusted_identity_refs)
+        if reviewer_identity_is_traceable(
+            actor,
+            identity_ref,
+            trusted_identity_refs=trusted_identity_refs,
+            trusted_reviewer_names=trusted_reviewer_names,
         ):
             traceable += 1
     return traceable, len(events) - traceable
@@ -774,11 +789,9 @@ def cmd_discard_status(args) -> int:
     history = {"events": []}
     if history_path.is_file():
         history = json.loads(history_path.read_text(encoding="utf-8"))
-    trusted_identity_refs = registered_reviewer_identity_references(
-        load_reviewer_identity_registry(ROOT)
-    )
+    trusted_identity_refs, trusted_reviewer_names = _trusted_reviewer_context()
     formal_count, unverified_count = _disposal_identity_counts(
-        history, trusted_identity_refs
+        history, trusted_identity_refs, trusted_reviewer_names
     )
     if not destination.is_file():
         say(json.dumps(
@@ -835,6 +848,7 @@ def cmd_discard_status(args) -> int:
 
 def cmd_discard_seal(args) -> int:
     destination = seal_candidate_path(args.indicator)
+    trusted_identity_refs, trusted_reviewer_names = _trusted_reviewer_context()
     target = workbench_path(args.indicator)
     if not destination.is_file():
         say(f"폐기할 봉인이 없습니다: {seal_path(args.indicator)}")
@@ -886,6 +900,8 @@ def cmd_discard_seal(args) -> int:
             record_root=ROOT,
             discarded_by=args.by,
             reason=args.reason,
+            trusted_reviewer_identity_refs=trusted_identity_refs,
+            trusted_reviewer_names=trusted_reviewer_names,
         )
     except (FileNotFoundError, FileExistsError, ValueError) as exc:
         say(json.dumps(

@@ -33,9 +33,8 @@ from wellnessbox_rnd.evals.answer_key_workbench import (
     Workbench,
     adjudicated_answer_key,
     build_provenance,
-    reviewer_identity_requires_reference,
+    reviewer_identity_is_traceable,
     summarise_adjudication,
-    valid_reviewer_identity_reference,
 )
 from wellnessbox_rnd.evals.reference_standard import verify_seal
 from wellnessbox_rnd.governance.reviewer_credentials import (
@@ -43,6 +42,7 @@ from wellnessbox_rnd.governance.reviewer_credentials import (
 )
 from wellnessbox_rnd.governance.reviewer_credentials import (
     registered_reviewer_identity_references,
+    registered_reviewer_names,
 )
 
 REGISTRY_PATH = "data/original_plan/contracts/engine_input_registry_v1.json"
@@ -312,6 +312,7 @@ def audit_review_effort(
     workbench: dict[str, Any],
     *,
     trusted_identity_refs: set[str] | frozenset[str] = frozenset(),
+    trusted_reviewer_names: set[str] | frozenset[str] = frozenset(),
 ) -> dict[str, Any]:
     """Report whether the recorded decisions had time to be decisions."""
     decisions = list(workbench.get("decisions", {}).values())
@@ -325,9 +326,11 @@ def audit_review_effort(
     untraceable_identity_count = sum(
         1
         for item in settled
-        if reviewer_identity_requires_reference(str(item.get("decided_by", "")))
-        and not valid_reviewer_identity_reference(
-            str(item.get("reviewer_identity_ref", "")), trusted_identity_refs
+        if not reviewer_identity_is_traceable(
+            str(item.get("decided_by", "")),
+            str(item.get("reviewer_identity_ref", "")),
+            trusted_identity_refs=trusted_identity_refs,
+            trusted_reviewer_names=trusted_reviewer_names,
         )
     )
     if untraceable_identity_count:
@@ -449,6 +452,7 @@ def audit_indicator(
     drafter_modules: list[Path],
     registry: dict[str, Any],
     trusted_identity_refs: set[str] | frozenset[str],
+    trusted_reviewer_names: set[str] | frozenset[str],
     seal_exists: bool,
 ) -> dict[str, Any]:
     sources = sorted({draft.get("draft_source", "") for draft in workbench.get("drafts", [])})
@@ -465,7 +469,9 @@ def audit_indicator(
         }
     )
     review_audit = audit_review_effort(
-        workbench, trusted_identity_refs=trusted_identity_refs
+        workbench,
+        trusted_identity_refs=trusted_identity_refs,
+        trusted_reviewer_names=trusted_reviewer_names,
     )
     blinding_audit = audit_declared_blinding(workbench, registry)
     adaptive_workbench = Workbench(
@@ -560,6 +566,7 @@ def audit_repository(
     trusted_identity_refs = registered_reviewer_identity_references(
         identity_registry
     )
+    trusted_reviewer_names = registered_reviewer_names(identity_registry)
     index = drafter_source_index(root)
     results: list[dict[str, Any]] = []
 
@@ -597,6 +604,7 @@ def audit_repository(
             drafter_modules=modules,
             registry=registry,
             trusted_identity_refs=trusted_identity_refs,
+            trusted_reviewer_names=trusted_reviewer_names,
             seal_exists=seal is not None,
         )
         draft_case_ids = [

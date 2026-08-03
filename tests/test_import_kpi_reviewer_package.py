@@ -84,6 +84,26 @@ def test_load_reviewer_rejects_unregistered_digest_shaped_reference() -> None:
         importer._load_reviewer(
             reader,
             trusted_identity_refs={"registry:op039:sha256:" + "a" * 64},
+            trusted_reviewer_names={"등록 검토자"},
+        )
+
+
+def test_load_reviewer_rejects_unregistered_alias_without_reference() -> None:
+    reader = _ReviewerReader(
+        {
+            "reviewer_name": "reviewer-001",
+            "reviewer_identity_ref": "",
+            "affiliation": "비공개",
+            "qualification_stage": importer.EXPECTED_QUALIFICATION_STAGE,
+            "review_date": "2026-08-03",
+        }
+    )
+
+    with pytest.raises(ValueError, match="reviewer_identity_not_traceable"):
+        importer._load_reviewer(
+            reader,
+            trusted_identity_refs={"registry:op039:sha256:" + "a" * 64},
+            trusted_reviewer_names={"등록 검토자"},
         )
 
 
@@ -133,7 +153,9 @@ def test_apply_package_uses_recorded_disposal_without_second_prompt(
     monkeypatch.setattr(importer, "WORKBENCH_DIR", workbench_dir)
     monkeypatch.setattr(importer, "SEAL_DIR", seal_dir)
     monkeypatch.setattr(importer, "SEAL_DISPOSAL_DIR", disposal_dir)
-    monkeypatch.setattr(importer, "_trusted_identity_refs", lambda: set())
+    monkeypatch.setattr(
+        importer, "_trusted_identity_context", lambda: (set(), {"검토자"})
+    )
 
     staged = {}
     for indicator_id in importer.INDICATORS:

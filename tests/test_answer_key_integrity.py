@@ -337,6 +337,24 @@ def test_unregistered_digest_shaped_identity_reference_fails() -> None:
     assert result["verdict"] == "FAIL"
 
 
+def test_unregistered_alias_without_identity_reference_fails() -> None:
+    result = audit_review_effort(
+        {
+            "decisions": {
+                "case-1": {
+                    "action": "accepted",
+                    "decided_by": "reviewer-001",
+                    "review_duration_seconds": 2.0,
+                }
+            }
+        },
+        trusted_identity_refs={"registry:op039:sha256:" + "a" * 64},
+        trusted_reviewer_names={"등록 검토자"},
+    )
+
+    assert result["verdict"] == "FAIL"
+
+
 def test_nonfinite_recorded_duration_fails_closed() -> None:
     result = audit_review_effort(
         {

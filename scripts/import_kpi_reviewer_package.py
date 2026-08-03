@@ -44,6 +44,7 @@ from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
 )
 from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
     registered_reviewer_identity_references,
+    registered_reviewer_names,
 )
 
 WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
@@ -54,9 +55,12 @@ IMMUTABLE_FIELDS = CSV_FIELDS[:10]
 SEAL_INDICATORS = ("KPI-1", "KPI-5")
 
 
-def _trusted_identity_refs() -> set[str]:
+def _trusted_identity_context() -> tuple[set[str], set[str]]:
     registry = load_reviewer_identity_registry(ROOT)
-    return registered_reviewer_identity_references(registry)
+    return (
+        registered_reviewer_identity_references(registry),
+        registered_reviewer_names(registry),
+    )
 
 
 def _slug(indicator_id: str) -> str:
@@ -162,6 +166,7 @@ def _load_reviewer(
     reader: PackageReader,
     *,
     trusted_identity_refs: set[str],
+    trusted_reviewer_names: set[str],
 ) -> dict[str, str]:
     payload = json.loads(reader.read("reviewer_details.json").decode("utf-8"))
     required = ("reviewer_name", "affiliation", "qualification_stage", "review_date")
@@ -176,6 +181,7 @@ def _load_reviewer(
             str(payload["reviewer_name"]),
             identity_ref,
             trusted_identity_refs=trusted_identity_refs,
+            trusted_reviewer_names=trusted_reviewer_names,
         )
     except ValueError as exc:
         raise ValueError("reviewer_identity_not_traceable") from exc
@@ -221,9 +227,11 @@ def _validate_reader(
     dict[str, str],
     dict[str, dict[str, str]],
 ]:
-    trusted_identity_refs = _trusted_identity_refs()
+    trusted_identity_refs, trusted_reviewer_names = _trusted_identity_context()
     reviewer = _load_reviewer(
-        reader, trusted_identity_refs=trusted_identity_refs
+        reader,
+        trusted_identity_refs=trusted_identity_refs,
+        trusted_reviewer_names=trusted_reviewer_names,
     )
     seal_disposals = _load_seal_disposals(
         reader, reviewer_name=reviewer["reviewer_name"]
@@ -298,6 +306,7 @@ def _validate_reader(
                 review_duration_seconds=duration,
                 reviewer_identity_ref=reviewer.get("reviewer_identity_ref", ""),
                 trusted_reviewer_identity_refs=trusted_identity_refs,
+                trusted_reviewer_names=trusted_reviewer_names,
             )
         plan = build_adaptive_review_plan(workbench)
         if plan["pending_required_detail_ids"]:
@@ -387,7 +396,7 @@ def apply_package(source: Path) -> dict[str, Any]:
     finally:
         reader.close()
     disposal_paths = _disposal_mutation_paths(seal_disposals)
-    trusted_identity_refs = _trusted_identity_refs()
+    trusted_identity_refs, trusted_reviewer_names = _trusted_identity_context()
     mutation_paths = {
         *(_workbench_path(indicator_id) for indicator_id in INDICATORS),
         *(
@@ -414,6 +423,7 @@ def apply_package(source: Path) -> dict[str, Any]:
                     "reviewer_identity_ref", ""
                 ),
                 trusted_reviewer_identity_refs=trusted_identity_refs,
+                trusted_reviewer_names=trusted_reviewer_names,
                 discarded_at=entry["reviewed_at"],
             )
             staged[indicator_id].seal_disposals.append(record)

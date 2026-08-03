@@ -121,17 +121,43 @@ def valid_reviewer_identity_reference(
     return value in {item.strip().casefold() for item in trusted_identity_refs}
 
 
+def reviewer_identity_is_traceable(
+    name: str,
+    reference: str = "",
+    *,
+    trusted_identity_refs: set[str] | frozenset[str] = frozenset(),
+    trusted_reviewer_names: set[str] | frozenset[str] = frozenset(),
+) -> bool:
+    folded_name = name.strip().casefold().replace(" ", "")
+    if not trusted_identity_refs and not trusted_reviewer_names:
+        return not reviewer_identity_requires_reference(name)
+    registered_names = {
+        item.strip().casefold().replace(" ", "")
+        for item in trusted_reviewer_names
+    }
+    return (
+        bool(folded_name) and folded_name in registered_names
+    ) or valid_reviewer_identity_reference(reference, trusted_identity_refs)
+
+
 def assert_reviewer_identity_traceable(
     name: str,
     reference: str = "",
     *,
     trusted_identity_refs: set[str] | frozenset[str] = frozenset(),
+    trusted_reviewer_names: set[str] | frozenset[str] = frozenset(),
 ) -> None:
     if not name.strip():
         raise ValueError("decision_requires_a_named_person")
-    if reviewer_identity_requires_reference(name) and not valid_reviewer_identity_reference(
-        reference, trusted_identity_refs
+    has_registry_context = bool(trusted_identity_refs or trusted_reviewer_names)
+    if has_registry_context and not reviewer_identity_is_traceable(
+        name,
+        reference,
+        trusted_identity_refs=trusted_identity_refs,
+        trusted_reviewer_names=trusted_reviewer_names,
     ):
+        raise ValueError("reviewer_requires_registered_identity")
+    if not has_registry_context and reviewer_identity_requires_reference(name):
         raise ValueError("pseudonymous_reviewer_requires_identity_reference")
 
 
@@ -197,12 +223,14 @@ def decide(
     reviewed_in_detail: bool = True,
     reviewer_identity_ref: str = "",
     trusted_reviewer_identity_refs: set[str] | frozenset[str] = frozenset(),
+    trusted_reviewer_names: set[str] | frozenset[str] = frozenset(),
 ) -> Decision:
     """Record one human decision. `None` means the case was rejected outright."""
     assert_reviewer_identity_traceable(
         decided_by,
         reviewer_identity_ref,
         trusted_identity_refs=trusted_reviewer_identity_refs,
+        trusted_reviewer_names=trusted_reviewer_names,
     )
     if review_duration_seconds is not None and (
         not math.isfinite(review_duration_seconds)
@@ -439,6 +467,7 @@ def build_seal_disposal_record(
     archived_workbench_path: str,
     discarded_by_identity_ref: str = "",
     trusted_reviewer_identity_refs: set[str] | frozenset[str] = frozenset(),
+    trusted_reviewer_names: set[str] | frozenset[str] = frozenset(),
     discarded_at: str | None = None,
 ) -> dict[str, Any]:
     """Build the append-only event that explains why an active seal was retired."""
@@ -449,6 +478,7 @@ def build_seal_disposal_record(
             actor,
             discarded_by_identity_ref,
             trusted_identity_refs=trusted_reviewer_identity_refs,
+            trusted_reviewer_names=trusted_reviewer_names,
         )
     except ValueError as exc:
         raise ValueError("seal_disposal_requires_traceable_person") from exc
@@ -492,6 +522,7 @@ def discard_seal_with_audit_trail(
     reason: str,
     discarded_by_identity_ref: str = "",
     trusted_reviewer_identity_refs: set[str] | frozenset[str] = frozenset(),
+    trusted_reviewer_names: set[str] | frozenset[str] = frozenset(),
     discarded_at: str | None = None,
 ) -> dict[str, Any]:
     """Archive a seal and its decisions, then reset review with rollback on failure."""
@@ -526,6 +557,7 @@ def discard_seal_with_audit_trail(
         discarded_by=discarded_by,
         discarded_by_identity_ref=discarded_by_identity_ref,
         trusted_reviewer_identity_refs=trusted_reviewer_identity_refs,
+        trusted_reviewer_names=trusted_reviewer_names,
         reason=reason,
         original_seal_path=_record_path(active, record_root),
         archived_seal_path=_record_path(archived_seal, record_root),
