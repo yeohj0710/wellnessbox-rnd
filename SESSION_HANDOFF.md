@@ -1,5 +1,14 @@
 # SESSION_HANDOFF
 
+## 2026-08-03 Claude 응답 반영과 검토 ZIP handoff
+
+- 입력: `data/original_plan/kpi/review_handoff/claude_responses/`의 `claude-opus-5` 응답 4개, 각 100건.
+- 검증: 네 파일 모두 `READY_TO_IMPORT`; SHA-256은 KPI-1 `cc3579fe...0317`, KPI-3 `0473358d...6e57`, KPI-4 `b86ec46d...0009`, KPI-5 `ba5f01e5...0571`이다.
+- 반영 역할: KPI-1·3·5 Claude 2차 의견, KPI-4 Claude 1차 초안 + Codex 2차 의견.
+- 최소 검토 계산: KPI-1 100, KPI-3 100, KPI-4 100, KPI-5 100, 합계 400건. 두 의견의 불일치·위험·불확실성 표시가 모든 사례를 덮는다.
+- 산출물: `data/original_plan/kpi/review_handoff/kpi_final_review_package.zip`. CSV 4개, 각 100개 고유 사례, UTF-8 BOM, 깨진 문자 0건, ZIP 오류 0건.
+- 보류: 작성된 CSV 반영, 정답 확정, 승인, 봉인, KPI-1·5 과거 봉인 폐기.
+
 ## 2026-08-03 OpenAI 반환 응답 handoff
 
 - `C:\Users\hjyeo\Downloads\kpi_processed_responses.zip`을 확인했다. ZIP SHA-256은 `1d84499e0805241c172c73359cd1cd27af42fa33bccd6456a60b9e2b1166e45d`다.

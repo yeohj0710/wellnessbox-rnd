@@ -2204,5 +2204,1063 @@
     }
   ],
   "decisions": {},
-  "seal_disposals": []
+  "seal_disposals": [],
+  "primary_ai_draft": {},
+  "ai_review": {
+    "schema_version": "independent_ai_answer_review_v1",
+    "reviewing_agent": "claude-opus-5",
+    "reviewing_agent_family": "anthropic",
+    "drafting_agent": "codex",
+    "drafting_agent_family": "openai",
+    "review_source": "blind_packet_independent_opinion",
+    "blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "required_blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "packet_sha256": "fe44d9aa046e611942bec25c9d2ae8db8f97174db6604080be755ae0b96f6fd2",
+    "engine_output_consulted": false,
+    "reviewed_at": "2026-08-03T07:46:14.582805Z",
+    "case_count": 100,
+    "cases": {
+      "kpi5-ref-001": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "마그네슘"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "pharmacodynamic_not_depletion",
+          "relation_label_ambiguous"
+        ],
+        "rationale": "암로디핀은 마그네슘을 고갈시키지 않는다. 두 가지 모두 혈관을 이완시켜 혈압 강하가 겹치는 약력학적 상호작용이라, 남은 두 라벨 중에서는 상호작용 쪽에 붙인다. 라벨 선택 자체가 불확실하다."
+      },
+      "kpi5-ref-002": {
+        "proposed_answer": [
+          "depletion",
+          "코엔자임Q10"
+        ],
+        "confidence": 0.9,
+        "flags": [],
+        "rationale": "스타틴이 메발론산 경로를 막으면 콜레스테롤과 CoQ10 합성이 함께 줄어든다. 대표적인 약물 유발 고갈이다."
+      },
+      "kpi5-ref-003": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 D"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "evidence_contested"
+        ],
+        "rationale": "스타틴과 비타민 D는 같은 전구체를 공유해 고갈 항목으로 자주 실린다. 다만 혈중 25(OH)D가 오히려 오른다는 보고도 있어 방향이 갈린다."
+      },
+      "kpi5-ref-004": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "칼슘"
+        ],
+        "confidence": 0.7,
+        "flags": [],
+        "rationale": "PPI가 위산을 낮추면 탄산칼슘 용해가 떨어진다. 구연산칼슘은 위산에 덜 기대므로 PPI 복용자에게 권하는 형태다. 흡수 조건이 쟁점이라 상호작용으로 본다."
+      },
+      "kpi5-ref-005": {
+        "proposed_answer": [
+          "depletion",
+          "마그네슘"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "PPI 장기 복용은 저마그네슘혈증을 부른다. 규제기관 안전성 서한이 나온 항목이다."
+      },
+      "kpi5-ref-006": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 B12"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "위산과 펩신이 줄면 음식에 결합된 B12가 떨어져 나오지 못한다. PPI 장기 복용의 대표 고갈 항목이다."
+      },
+      "kpi5-ref-007": {
+        "proposed_answer": [
+          "depletion",
+          "아연"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "mechanism_absorption_mediated"
+        ],
+        "rationale": "아연 흡수는 위산에 기댄다. PPI 복용이 길어지면 아연 상태가 떨어진다. 기전은 흡수 저하지만 결과는 체내 고갈로 나타난다."
+      },
+      "kpi5-ref-008": {
+        "proposed_answer": [
+          "depletion",
+          "칼슘"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "루프 이뇨제는 헨레고리 상행각의 재흡수를 막아 칼슘을 소변으로 내보낸다."
+      },
+      "kpi5-ref-009": {
+        "proposed_answer": [
+          "depletion",
+          "마그네슘"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "루프 이뇨제의 대표 부작용이 저마그네슘혈증이다. 소변 배설 증가가 직접 원인이다."
+      },
+      "kpi5-ref-010": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 B1"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "푸로세미드는 티아민을 소변으로 내보내 심부전 환자의 티아민 결핍을 부른다."
+      },
+      "kpi5-ref-011": {
+        "proposed_answer": [
+          "depletion",
+          "아연"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "이뇨제 사용은 아연 요배설을 늘려 혈중 아연을 떨어뜨린다."
+      },
+      "kpi5-ref-012": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "칼슘"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "separate_dosing_required"
+        ],
+        "rationale": "칼슘이 레보티록신과 결합해 흡수를 막는다. 공복 복용 뒤 4시간 간격을 두면 피할 수 있다."
+      },
+      "kpi5-ref-013": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "마그네슘"
+        ],
+        "confidence": 0.8,
+        "flags": [
+          "separate_dosing_required"
+        ],
+        "rationale": "마그네슘 등 다가 양이온이 레보티록신을 붙잡아 흡수를 낮춘다. 복용 간격 분리로 관리한다."
+      },
+      "kpi5-ref-014": {
+        "proposed_answer": [
+          "depletion",
+          "코엔자임Q10"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "evidence_contested"
+        ],
+        "rationale": "메트포르민의 CoQ10 고갈은 일부 자료에 실리지만 B12만큼 확립되지 않았다."
+      },
+      "kpi5-ref-015": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 B12"
+        ],
+        "confidence": 0.9,
+        "flags": [],
+        "rationale": "메트포르민은 회장에서 칼슘 의존성 B12 흡수를 막는다. 장기 복용자 B12 감시는 진료지침 항목이다."
+      },
+      "kpi5-ref-016": {
+        "proposed_answer": [
+          "depletion",
+          "칼슘"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "스테로이드는 장 칼슘 흡수를 줄이고 요배설을 늘려 골 소실로 이어진다."
+      },
+      "kpi5-ref-017": {
+        "proposed_answer": [
+          "depletion",
+          "마그네슘"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "스테로이드 장기 사용은 마그네슘 요배설을 늘린다."
+      },
+      "kpi5-ref-018": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 C"
+        ],
+        "confidence": 0.6,
+        "flags": [],
+        "rationale": "스테로이드 사용 중에는 비타민 C 소모가 늘어 고갈 목록에 자주 오른다."
+      },
+      "kpi5-ref-019": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 D"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "스테로이드는 비타민 D 대사와 작용을 방해해 칼슘 흡수를 함께 떨어뜨린다."
+      },
+      "kpi5-ref-020": {
+        "proposed_answer": [
+          "depletion",
+          "아연"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "스테로이드 장기 사용은 아연 배설을 늘린다."
+      },
+      "kpi5-ref-021": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-022": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-023": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-024": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-025": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-026": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-027": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-028": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-029": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-030": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-031": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-032": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-033": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-034": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-035": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-036": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-037": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-038": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-039": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-040": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-041": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "마그네슘"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "pharmacodynamic_not_depletion",
+          "relation_label_ambiguous"
+        ],
+        "rationale": "암로디핀은 마그네슘을 고갈시키지 않는다. 두 가지 모두 혈관을 이완시켜 혈압 강하가 겹치는 약력학적 상호작용이라, 남은 두 라벨 중에서는 상호작용 쪽에 붙인다. 라벨 선택 자체가 불확실하다."
+      },
+      "kpi5-ref-042": {
+        "proposed_answer": [
+          "depletion",
+          "코엔자임Q10"
+        ],
+        "confidence": 0.9,
+        "flags": [],
+        "rationale": "스타틴이 메발론산 경로를 막으면 콜레스테롤과 CoQ10 합성이 함께 줄어든다. 대표적인 약물 유발 고갈이다."
+      },
+      "kpi5-ref-043": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 D"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "evidence_contested"
+        ],
+        "rationale": "스타틴과 비타민 D는 같은 전구체를 공유해 고갈 항목으로 자주 실린다. 다만 혈중 25(OH)D가 오히려 오른다는 보고도 있어 방향이 갈린다."
+      },
+      "kpi5-ref-044": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "칼슘"
+        ],
+        "confidence": 0.7,
+        "flags": [],
+        "rationale": "PPI가 위산을 낮추면 탄산칼슘 용해가 떨어진다. 구연산칼슘은 위산에 덜 기대므로 PPI 복용자에게 권하는 형태다. 흡수 조건이 쟁점이라 상호작용으로 본다."
+      },
+      "kpi5-ref-045": {
+        "proposed_answer": [
+          "depletion",
+          "마그네슘"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "PPI 장기 복용은 저마그네슘혈증을 부른다. 규제기관 안전성 서한이 나온 항목이다."
+      },
+      "kpi5-ref-046": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 B12"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "위산과 펩신이 줄면 음식에 결합된 B12가 떨어져 나오지 못한다. PPI 장기 복용의 대표 고갈 항목이다."
+      },
+      "kpi5-ref-047": {
+        "proposed_answer": [
+          "depletion",
+          "아연"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "mechanism_absorption_mediated"
+        ],
+        "rationale": "아연 흡수는 위산에 기댄다. PPI 복용이 길어지면 아연 상태가 떨어진다. 기전은 흡수 저하지만 결과는 체내 고갈로 나타난다."
+      },
+      "kpi5-ref-048": {
+        "proposed_answer": [
+          "depletion",
+          "칼슘"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "루프 이뇨제는 헨레고리 상행각의 재흡수를 막아 칼슘을 소변으로 내보낸다."
+      },
+      "kpi5-ref-049": {
+        "proposed_answer": [
+          "depletion",
+          "마그네슘"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "루프 이뇨제의 대표 부작용이 저마그네슘혈증이다. 소변 배설 증가가 직접 원인이다."
+      },
+      "kpi5-ref-050": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 B1"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "푸로세미드는 티아민을 소변으로 내보내 심부전 환자의 티아민 결핍을 부른다."
+      },
+      "kpi5-ref-051": {
+        "proposed_answer": [
+          "depletion",
+          "아연"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "이뇨제 사용은 아연 요배설을 늘려 혈중 아연을 떨어뜨린다."
+      },
+      "kpi5-ref-052": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "칼슘"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "separate_dosing_required"
+        ],
+        "rationale": "칼슘이 레보티록신과 결합해 흡수를 막는다. 공복 복용 뒤 4시간 간격을 두면 피할 수 있다."
+      },
+      "kpi5-ref-053": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "마그네슘"
+        ],
+        "confidence": 0.8,
+        "flags": [
+          "separate_dosing_required"
+        ],
+        "rationale": "마그네슘 등 다가 양이온이 레보티록신을 붙잡아 흡수를 낮춘다. 복용 간격 분리로 관리한다."
+      },
+      "kpi5-ref-054": {
+        "proposed_answer": [
+          "depletion",
+          "코엔자임Q10"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "evidence_contested"
+        ],
+        "rationale": "메트포르민의 CoQ10 고갈은 일부 자료에 실리지만 B12만큼 확립되지 않았다."
+      },
+      "kpi5-ref-055": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 B12"
+        ],
+        "confidence": 0.9,
+        "flags": [],
+        "rationale": "메트포르민은 회장에서 칼슘 의존성 B12 흡수를 막는다. 장기 복용자 B12 감시는 진료지침 항목이다."
+      },
+      "kpi5-ref-056": {
+        "proposed_answer": [
+          "depletion",
+          "칼슘"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "스테로이드는 장 칼슘 흡수를 줄이고 요배설을 늘려 골 소실로 이어진다."
+      },
+      "kpi5-ref-057": {
+        "proposed_answer": [
+          "depletion",
+          "마그네슘"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "스테로이드 장기 사용은 마그네슘 요배설을 늘린다."
+      },
+      "kpi5-ref-058": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 C"
+        ],
+        "confidence": 0.6,
+        "flags": [],
+        "rationale": "스테로이드 사용 중에는 비타민 C 소모가 늘어 고갈 목록에 자주 오른다."
+      },
+      "kpi5-ref-059": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 D"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "스테로이드는 비타민 D 대사와 작용을 방해해 칼슘 흡수를 함께 떨어뜨린다."
+      },
+      "kpi5-ref-060": {
+        "proposed_answer": [
+          "depletion",
+          "아연"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "스테로이드 장기 사용은 아연 배설을 늘린다."
+      },
+      "kpi5-ref-061": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-062": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-063": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-064": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-065": {
+        "proposed_answer": [
+          "p236"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p236로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-066": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-067": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-068": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-069": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-070": {
+        "proposed_answer": [
+          "p237"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p237로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-071": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-072": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-073": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-074": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-075": {
+        "proposed_answer": [
+          "p238"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p238로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-076": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-077": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-078": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-079": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-080": {
+        "proposed_answer": [
+          "p239"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "page_locator_not_derivable_blind",
+          "positional_estimate_only"
+        ],
+        "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
+      },
+      "kpi5-ref-081": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "마그네슘"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "pharmacodynamic_not_depletion",
+          "relation_label_ambiguous"
+        ],
+        "rationale": "암로디핀은 마그네슘을 고갈시키지 않는다. 두 가지 모두 혈관을 이완시켜 혈압 강하가 겹치는 약력학적 상호작용이라, 남은 두 라벨 중에서는 상호작용 쪽에 붙인다. 라벨 선택 자체가 불확실하다."
+      },
+      "kpi5-ref-082": {
+        "proposed_answer": [
+          "depletion",
+          "코엔자임Q10"
+        ],
+        "confidence": 0.9,
+        "flags": [],
+        "rationale": "스타틴이 메발론산 경로를 막으면 콜레스테롤과 CoQ10 합성이 함께 줄어든다. 대표적인 약물 유발 고갈이다."
+      },
+      "kpi5-ref-083": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 D"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "evidence_contested"
+        ],
+        "rationale": "스타틴과 비타민 D는 같은 전구체를 공유해 고갈 항목으로 자주 실린다. 다만 혈중 25(OH)D가 오히려 오른다는 보고도 있어 방향이 갈린다."
+      },
+      "kpi5-ref-084": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "칼슘"
+        ],
+        "confidence": 0.7,
+        "flags": [],
+        "rationale": "PPI가 위산을 낮추면 탄산칼슘 용해가 떨어진다. 구연산칼슘은 위산에 덜 기대므로 PPI 복용자에게 권하는 형태다. 흡수 조건이 쟁점이라 상호작용으로 본다."
+      },
+      "kpi5-ref-085": {
+        "proposed_answer": [
+          "depletion",
+          "마그네슘"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "PPI 장기 복용은 저마그네슘혈증을 부른다. 규제기관 안전성 서한이 나온 항목이다."
+      },
+      "kpi5-ref-086": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 B12"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "위산과 펩신이 줄면 음식에 결합된 B12가 떨어져 나오지 못한다. PPI 장기 복용의 대표 고갈 항목이다."
+      },
+      "kpi5-ref-087": {
+        "proposed_answer": [
+          "depletion",
+          "아연"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "mechanism_absorption_mediated"
+        ],
+        "rationale": "아연 흡수는 위산에 기댄다. PPI 복용이 길어지면 아연 상태가 떨어진다. 기전은 흡수 저하지만 결과는 체내 고갈로 나타난다."
+      },
+      "kpi5-ref-088": {
+        "proposed_answer": [
+          "depletion",
+          "칼슘"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "루프 이뇨제는 헨레고리 상행각의 재흡수를 막아 칼슘을 소변으로 내보낸다."
+      },
+      "kpi5-ref-089": {
+        "proposed_answer": [
+          "depletion",
+          "마그네슘"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "루프 이뇨제의 대표 부작용이 저마그네슘혈증이다. 소변 배설 증가가 직접 원인이다."
+      },
+      "kpi5-ref-090": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 B1"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "푸로세미드는 티아민을 소변으로 내보내 심부전 환자의 티아민 결핍을 부른다."
+      },
+      "kpi5-ref-091": {
+        "proposed_answer": [
+          "depletion",
+          "아연"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "이뇨제 사용은 아연 요배설을 늘려 혈중 아연을 떨어뜨린다."
+      },
+      "kpi5-ref-092": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "칼슘"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "separate_dosing_required"
+        ],
+        "rationale": "칼슘이 레보티록신과 결합해 흡수를 막는다. 공복 복용 뒤 4시간 간격을 두면 피할 수 있다."
+      },
+      "kpi5-ref-093": {
+        "proposed_answer": [
+          "absorption_interaction",
+          "마그네슘"
+        ],
+        "confidence": 0.8,
+        "flags": [
+          "separate_dosing_required"
+        ],
+        "rationale": "마그네슘 등 다가 양이온이 레보티록신을 붙잡아 흡수를 낮춘다. 복용 간격 분리로 관리한다."
+      },
+      "kpi5-ref-094": {
+        "proposed_answer": [
+          "depletion",
+          "코엔자임Q10"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "evidence_contested"
+        ],
+        "rationale": "메트포르민의 CoQ10 고갈은 일부 자료에 실리지만 B12만큼 확립되지 않았다."
+      },
+      "kpi5-ref-095": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 B12"
+        ],
+        "confidence": 0.9,
+        "flags": [],
+        "rationale": "메트포르민은 회장에서 칼슘 의존성 B12 흡수를 막는다. 장기 복용자 B12 감시는 진료지침 항목이다."
+      },
+      "kpi5-ref-096": {
+        "proposed_answer": [
+          "depletion",
+          "칼슘"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "스테로이드는 장 칼슘 흡수를 줄이고 요배설을 늘려 골 소실로 이어진다."
+      },
+      "kpi5-ref-097": {
+        "proposed_answer": [
+          "depletion",
+          "마그네슘"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "스테로이드 장기 사용은 마그네슘 요배설을 늘린다."
+      },
+      "kpi5-ref-098": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 C"
+        ],
+        "confidence": 0.6,
+        "flags": [],
+        "rationale": "스테로이드 사용 중에는 비타민 C 소모가 늘어 고갈 목록에 자주 오른다."
+      },
+      "kpi5-ref-099": {
+        "proposed_answer": [
+          "depletion",
+          "비타민 D"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "스테로이드는 비타민 D 대사와 작용을 방해해 칼슘 흡수를 함께 떨어뜨린다."
+      },
+      "kpi5-ref-100": {
+        "proposed_answer": [
+          "depletion",
+          "아연"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "스테로이드 장기 사용은 아연 배설을 늘린다."
+      }
+    },
+    "cases_sha256": "103132e3e04612fff11e87dcab0594a6e84a411a522f5d6ce1671ec2067e49b2"
+  },
+  "batch_approval": null
 }

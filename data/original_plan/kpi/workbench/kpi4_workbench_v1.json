@@ -6,13 +6,12 @@
       "case_id": "kpi4-001",
       "prompt": "Amlodipine 복용 중입니다. 「대사 및 순환 6. 당독소(AGEs) 관리」에서 「1. 생성 억제 (당화 차단)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "magnesium_glycinate",
-        "supplement_depleted_nutrient",
+        "berberine",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (26_대사_및_순환_6._당독소_AGEs_관리.md p142) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "당화 산물은 혈당 노출량에 비례해 쌓인다. 어휘 안에서는 berberine이 공복·식후 혈당을 낮춰 당화 부하를 줄이고, vitamin_b_complex의 티아민 유도체가 당화 경로 차단 근거를 갖는다. 암로디핀은 영양소를 고갈시키지 않아 별도 보충 조정이 필요 없다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -32,9 +31,9 @@
         "probiotics",
         "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (26_대사_및_순환_6._당독소_AGEs_관리.md p143)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "장내 배출·내독소 제거 목표는 세균총 교정과 수용성 식이섬유의 흡착·배설 작용에 그대로 대응한다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -51,14 +50,13 @@
       "case_id": "kpi4-003",
       "prompt": "「기타 3. 어린이」에서 「A형 성장 정체 및 유전형 (성장판 자원 부족)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "advise_professional_consult",
         "calcium_citrate",
-        "magnesium_glycinate",
-        "vitamin_d3"
+        "vitamin_d3",
+        "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p231) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "성장판 자원 부족형은 뼈 기질 재료를 채우는 문제다. 칼슘·비타민 D가 골 무기질화를, 아연이 성장호르몬·IGF-1 축을 맡는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -75,17 +73,14 @@
       "case_id": "kpi4-004",
       "prompt": "Atorvastatin 복용 중입니다. 「기타 3. 어린이」에서 「B형 생활 습관/호르몬형 (수면/운동 부족)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "advise_professional_consult",
         "coq10",
         "magnesium_glycinate",
         "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "vitamin_d3",
-        "zinc"
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p231) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다 · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "성장호르몬은 서파수면에 몰려 분비된다. 마그네슘이 입면과 수면 질을, 비타민 D가 골 성장과 근기능을 받친다. 성분보다 수면·활동 습관 교정이 앞선다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -102,13 +97,12 @@
       "case_id": "kpi4-005",
       "prompt": "「기타 3. 어린이」에서 「C형 영양 불균형/흡수부족형 (식욕부진, 편식)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "advise_professional_consult",
         "probiotics",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p232) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "아연 결핍은 미각 저하와 식욕부진의 대표 원인이다. 프로바이오틱스가 편식으로 무너진 장내 환경을 보완한다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -126,15 +120,12 @@
       "prompt": "「기타 3. 어린이」에서 「D+E형 스트레스/성조숙형 (심리 불안, 조기 사춘기)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "advise_professional_consult",
-        "calcium_citrate",
         "l_theanine",
-        "soluble_fiber",
-        "vitamin_b_complex",
-        "vitamin_d3"
+        "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (43_기타_3._어린이.md p232) · 특수집단 영역이라 전문가 상담 안내가 답변에 포함돼야 한다",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "심리 불안 축에는 테아닌·마그네슘의 이완 근거를 쓴다. 조기 사춘기 자체는 보충제가 아니라 내분비 평가 대상이다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -151,16 +142,13 @@
       "case_id": "kpi4-007",
       "prompt": "Esomeprazole 복용 중입니다. 「신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별」에서 「1. 기억력 강화 및 뇌세포 보호 (문항 1,2,3번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
-        "magnesium_glycinate",
         "omega3",
         "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "zinc"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "DHA는 신경세포막을 구성한다. 기억·뇌세포 보호 목표에 가장 직접 대응하는 성분이다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -177,11 +165,12 @@
       "case_id": "kpi4-008",
       "prompt": "「신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별」에서 「3. 지남력 강화 및 신경 보호 (문항 6,7번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
+        "omega3",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p47)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "B12·엽산 결핍은 되돌릴 수 있는 지남력 저하 원인이다. 오메가3가 신경 보호 축을 보탠다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -198,13 +187,12 @@
       "case_id": "kpi4-009",
       "prompt": "「신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별」에서 「4. 감정 조절 및 가성치매 방지 (문항 9,10번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "l_theanine",
-        "magnesium_glycinate",
-        "probiotics"
+        "omega3",
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "가성치매는 우울이 인지 저하로 보이는 상태다. EPA 우세 오메가3와 비타민 D가 우울 지표 개선 근거를 갖는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -221,16 +209,14 @@
       "case_id": "kpi4-010",
       "prompt": "Furosemide 복용 중입니다. 「신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별」에서 「5. 인지저하 전반적 용도」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "magnesium_glycinate",
-        "probiotics",
+        "omega3",
         "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "zinc"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (10_신경계_및_뇌기능_6._일시적_인지저하와_치매_선별.md p48) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "전반 용도에는 신경막 구성(오메가3)과 호모시스테인·신경전달물질 대사(B군)를 함께 둔다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -247,13 +233,12 @@
       "case_id": "kpi4-011",
       "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「1. 혈관/대사 - 혈관 내피 기능 및 인슐린 감수성 개선」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "coq10",
-        "magnesium_glycinate",
+        "berberine",
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p51)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "인슐린 감수성은 berberine이, 혈관 내피 기능은 오메가3가 맡는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -270,12 +255,12 @@
       "case_id": "kpi4-012",
       "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「2. 수면 - 수면 리듬 조절 및 신경 이완」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "magnesium_glycinate",
-        "vitamin_b_complex"
+        "l_theanine",
+        "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "테아닌이 각성을 누르고, 마그네슘 글리시네이트가 GABA계 이완과 입면 지연 단축을 맡는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -292,15 +277,13 @@
       "case_id": "kpi4-013",
       "prompt": "Levothyroxine 복용 중입니다. 「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「3. 스트레스 - 스트레스 조절 및 신경 보호」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "l_theanine",
         "magnesium_glycinate",
-        "separate_dosing",
-        "vitamin_c"
+        "separate_dosing"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "급성 스트레스 반응은 테아닌이 완화하고, 스트레스로 소모된 마그네슘은 글리시네이트형으로 채운다. 칼슘·마그네슘·아연·식이섬유는 레보티록신 흡수를 막는다. 공복 복용 뒤 4시간 간격을 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -317,12 +300,11 @@
       "case_id": "kpi4-014",
       "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「5. 영양결핍 - 신경전달물질 원료 및 에너지 공급」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "vitamin_b_complex",
-        "vitamin_d3"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p52)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "B군은 신경전달물질 합성 조효소이자 미토콘드리아 에너지 대사의 직접 원료다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -342,9 +324,9 @@
         "coq10",
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "에너지·혈류 축에 CoQ10, 신경 보호·기억 축에 오메가3를 둔다. 운동 자체를 대신하지는 못한다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -361,15 +343,14 @@
       "case_id": "kpi4-016",
       "prompt": "Metformin 복용 중입니다. 「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「7. 만성 염증 - 뇌 내 아밀로이드 축적 억제 및 항염」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "coq10",
         "omega3",
         "supplement_depleted_nutrient",
         "vitamin_b_complex",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "전신 항염 근거는 오메가3와 비타민 D가 가장 두껍다. 아밀로이드 축적 억제까지는 근거가 모자란다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -386,12 +367,12 @@
       "case_id": "kpi4-017",
       "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「8. 감각저하 - 시력·청력 보호 및 미세순환 개선」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "magnesium_glycinate",
-        "omega3"
+        "omega3",
+        "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "아연은 AREDS 조성의 핵심이고 오메가3가 망막·미세순환을 받친다. 루테인·지아잔틴이 어휘에 없어 대체한다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -408,12 +389,12 @@
       "case_id": "kpi4-018",
       "prompt": "「신경계 및 뇌기능 7. 인지기능 저하 요인」에서 「9. 환경 (음주/흡연/중금속) - 산화 스트레스 감소 및 중금속 배출」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "vitamin_b_complex",
-        "vitamin_c"
+        "vitamin_c",
+        "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (11_신경계_및_뇌기능_7._인지기능_저하_요인.md p53)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "비타민 C는 흡연·음주로 먼저 소모되는 항산화제이고, 아연은 메탈로티오네인을 통해 중금속을 붙잡는다. 셀레늄·글루타치온이 어휘에 없다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -431,15 +412,13 @@
       "prompt": "Prednisolone 복용 중입니다. 「기타 1. 치과질환」에서 「1. 치은염 (Gingivitis) 잇몸 조직 재생 및 지혈」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
         "calcium_citrate",
-        "magnesium_glycinate",
         "supplement_depleted_nutrient",
         "vitamin_c",
-        "vitamin_d3",
-        "zinc"
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (41_기타_1._치과질환.md p215) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "잇몸 콜라겐 합성과 모세혈관 취약성 개선을 비타민 C가 직접 맡는다. 스테로이드는 칼슘·비타민 D 손실과 골 소실을 부른다. 골 보호 조합을 기본으로 얹는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -457,13 +436,11 @@
       "prompt": "「기타 1. 치과질환」에서 「2. 치주염 (Periodontitis) 치조골 밀도 유지」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "calcium_citrate",
-        "coq10",
-        "magnesium_glycinate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (41_기타_1._치과질환.md p215)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "치조골도 전신 골대사를 따라간다. 칼슘·비타민 D가 골밀도 유지 축이다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -483,9 +460,9 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "불안·긴장 완화에 테아닌과 마그네슘의 근거가 모인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -502,13 +479,12 @@
       "case_id": "kpi4-022",
       "prompt": "Amlodipine 복용 중입니다. 「신경계 및 뇌기능 2. 우울」에서 「2. 의욕 저하 및 에너지 회복 (문항 3,4,8번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "magnesium_glycinate",
-        "supplement_depleted_nutrient",
-        "vitamin_b_complex"
+        "vitamin_b_complex",
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "에너지 대사 조효소인 B군과, 결핍 시 무기력·기분 저하로 이어지는 비타민 D를 둔다. 암로디핀은 영양소를 고갈시키지 않아 별도 보충 조정이 필요 없다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -525,12 +501,11 @@
       "case_id": "kpi4-023",
       "prompt": "「신경계 및 뇌기능 2. 우울」에서 「3. 장-뇌 축 및 감정 활력 (문항 7번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "probiotics",
-        "vitamin_d3"
+        "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "장-뇌 축이라는 목표 서술 자체가 프로바이오틱스를 가리킨다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -548,12 +523,11 @@
       "prompt": "「신경계 및 뇌기능 2. 우울」에서 「4. 염증성 피로 및 뇌 피로 개선 (문항 9,10번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "omega3",
-        "vitamin_c",
-        "zinc"
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (06_신경계_및_뇌기능_2._우울.md p36)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "염증성 우울·피로 가설에 대응하는 성분은 오메가3와 비타민 D다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -572,13 +546,11 @@
       "draft_answer": [
         "berberine",
         "coq10",
-        "magnesium_glycinate",
-        "supplement_depleted_nutrient",
-        "vitamin_d3"
+        "supplement_depleted_nutrient"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "베르베린은 AMPK 활성화로 인슐린 감수성을 높인다. 어휘 안에서 이 목표에 가장 직접 붙는 성분이다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -597,9 +569,9 @@
       "draft_answer": [
         "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "수용성 식이섬유가 위 배출과 당 흡수 속도를 늦춰 식후 혈당 상승 폭을 줄인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -619,9 +591,9 @@
         "omega3",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "신경병증 축에 B군, 심혈관·신장 합병증 축에 오메가3를 나눠 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -638,17 +610,13 @@
       "case_id": "kpi4-028",
       "prompt": "Esomeprazole 복용 중입니다. 「대사 및 순환 3. 당뇨·인슐린저항성」에서 「4. 약물 고갈 영양소」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "coq10",
-        "magnesium_glycinate",
         "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "vitamin_d3",
-        "zinc"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (23_대사_및_순환_3._당뇨·인슐린저항성.md p128) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "당뇨 처방에서 메트포르민이 B12를, 병용 스타틴이 CoQ10을 고갈시킨다. 가장 흔한 두 고갈 항목이다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -665,12 +633,12 @@
       "case_id": "kpi4-029",
       "prompt": "「에너지 생성 및 부신·갑상선 기능 5. 어지럼증」에서 「A형 말초성 현훈 (귀) 이석증 메니에르 (순환/신경)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "vitamin_b_complex",
-        "zinc"
+        "calcium_citrate",
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "이석은 탄산칼슘 결정이다. 비타민 D·칼슘 보충이 재발성 이석증의 재발률을 낮춘 무작위 시험 근거가 있다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -687,12 +655,12 @@
       "case_id": "kpi4-030",
       "prompt": "「에너지 생성 및 부신·갑상선 기능 5. 어지럼증」에서 「B형 중추성 현훈 (뇌) 뇌졸중 뇌종양 (뇌혈관)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "omega3",
-        "vitamin_b_complex"
+        "advise_professional_consult",
+        "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p78)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "중추성 현훈은 영상·신경학적 평가가 먼저다. 보충제는 혈관 위험 관리 보조에 그친다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -709,16 +677,13 @@
       "case_id": "kpi4-031",
       "prompt": "Furosemide 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 5. 어지럼증」에서 「C형 심인성 현훈 (마음) 공황장애 불안증 (자율신경)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "l_theanine",
         "magnesium_glycinate",
-        "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "zinc"
+        "supplement_depleted_nutrient"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (16_에너지_생성_및_부신·갑상선_기능_5._어지럼증.md p79) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "자율신경 과각성 완화에 테아닌·마그네슘을 쓴다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -735,11 +700,12 @@
       "case_id": "kpi4-032",
       "prompt": "「대사 및 순환 2. 이상지질혈증」에서 「1. LDL 상승형(콜레스테롤) 유전성/체질」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
+        "berberine",
         "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p120)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "베르베린은 LDL 수용체 발현을 늘리고, 수용성 식이섬유는 담즙산 배설로 LDL을 끌어내린다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -756,13 +722,11 @@
       "case_id": "kpi4-033",
       "prompt": "「대사 및 순환 2. 이상지질혈증」에서 「2. TG 상승형(중성지방/대사성)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "berberine",
-        "omega3",
-        "vitamin_b_complex"
+        "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p120)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "고용량 EPA·DHA의 중성지방 저하는 용량-반응이 확인된 근거다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -779,15 +743,12 @@
       "case_id": "kpi4-034",
       "prompt": "Levothyroxine 복용 중입니다. 「대사 및 순환 2. 이상지질혈증」에서 「3. 산화 방지형(동맥경화 예방)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "coq10",
-        "magnesium_glycinate",
-        "separate_dosing",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p121) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "산화 LDL 억제 축에 CoQ10·비타민 C를 둔다. 임상 결과 지표까지의 근거는 제한적이다. 레보티록신은 공복 복용이 원칙이다. 보충제는 복용 4시간 뒤로 미룬다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -804,13 +765,11 @@
       "case_id": "kpi4-035",
       "prompt": "「대사 및 순환 2. 이상지질혈증」에서 「4. 스타틴 복용형(약물 부작용)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "coq10",
-        "magnesium_glycinate",
-        "vitamin_d3"
+        "coq10"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (22_대사_및_순환_2._이상지질혈증.md p121)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "스타틴이 메발론산 경로를 막아 CoQ10 합성을 함께 줄인다. 근육 증상 대응의 표준 보충 항목이다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -827,14 +786,12 @@
       "case_id": "kpi4-036",
       "prompt": "「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「1. 기초 에너지 생성 및 만성피로 예방 (문항 1, 9번 'O')」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "magnesium_glycinate",
-        "omega3",
-        "vitamin_b_complex",
-        "vitamin_c"
+        "coq10",
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "ATP 생성 경로의 조효소(B군)와 전자전달계 운반체(CoQ10)를 함께 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -851,15 +808,13 @@
       "case_id": "kpi4-037",
       "prompt": "Metformin 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「2. 부신 건강 및 스트레스 저항력 강화 (문항 3, 5번 'O')」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "coq10",
-        "magnesium_glycinate",
         "supplement_depleted_nutrient",
         "vitamin_b_complex",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p57) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "부신 피질은 비타민 C 농도가 가장 높은 조직이고, 판토텐산은 코르티솔 합성 경로 조효소다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -876,13 +831,12 @@
       "case_id": "kpi4-038",
       "prompt": "「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「3. 자율신경 균형 및 혈당 안정 (문항 2,4,6번 'O')」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "coq10",
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "교감신경 과항진 완화에 마그네슘·테아닌을 둔다. 혈당 안정까지의 직접 근거는 약하다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -899,12 +853,12 @@
       "case_id": "kpi4-039",
       "prompt": "「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「4. 신체 회복력 강화 및 소진 관리 (문항 7,8번 'O')」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "coq10",
-        "omega3"
+        "magnesium_glycinate",
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "회복력·소진이라는 서술이 특정 성분을 지목하지 않는다. 근육 회복과 에너지 대사 축으로 최소 답을 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -922,17 +876,14 @@
       "prompt": "Prednisolone 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「5. 만성 피로 고위험 (문항 9번 'X')」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
         "calcium_citrate",
-        "magnesium_glycinate",
-        "omega3",
+        "coq10",
         "supplement_depleted_nutrient",
         "vitamin_b_complex",
-        "vitamin_c",
-        "vitamin_d3",
-        "zinc"
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "만성 피로 고위험군에는 미토콘드리아 지원 축을 둔다. 갑상선·빈혈 등 기저 원인 감별이 먼저다. 스테로이드는 칼슘·비타민 D 손실과 골 소실을 부른다. 골 보호 조합을 기본으로 얹는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -949,11 +900,13 @@
       "case_id": "kpi4-041",
       "prompt": "「에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경」에서 「6. PEM(활동 후 피로 악화) 및 극심한 소진 관리 (문항 10번 'X')」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
+        "advise_professional_consult",
+        "coq10",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (12_에너지_생성_및_부신·갑상선_기능_1._피로·부신·자율신경.md p58)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "활동 후 권태는 ME/CFS 핵심 징후라 진단 확인이 먼저다. 미토콘드리아 지원 목적의 CoQ10·마그네슘은 보조다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -970,11 +923,13 @@
       "case_id": "kpi4-042",
       "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「급성 방광염 － 강력한 균 포획 및 배출 (문항 5-7번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
+        "advise_professional_consult",
+        "probiotics",
         "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "급성 방광염은 항균제가 1차다. D-만노스·크랜베리가 어휘에 없어 요 산성화와 세균총 보조로 대체한다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -991,14 +946,12 @@
       "case_id": "kpi4-043",
       "prompt": "Amlodipine 복용 중입니다. 「성호르몬·비뇨기계 4. 여성 염증」에서 「만성/재발성 방광염 － 바이오필름 파괴 및 면역 증가 (문항 20, 21, 26번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "magnesium_glycinate",
         "probiotics",
-        "supplement_depleted_nutrient",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "재발 예방은 질·요로 세균총 회복과 면역 상태 교정으로 간다. 바이오필름을 직접 겨냥하는 성분은 어휘에 없다. 암로디핀은 영양소를 고갈시키지 않아 별도 보충 조정이 필요 없다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1015,12 +968,13 @@
       "case_id": "kpi4-044",
       "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「급성 요도염 － 화끈거림 차단 및 항염 (문항 8-10번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
+        "advise_professional_consult",
         "omega3",
-        "zinc"
+        "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p186)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "급성 요도염은 성매개 감염 감별과 항균 치료가 먼저다. 보충제는 항염 보조에 그친다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1037,11 +991,12 @@
       "case_id": "kpi4-045",
       "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「만성요도염 － 상피 재생 및 신경 안정 (문항 11, 16, 17번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "vitamin_b_complex"
+        "magnesium_glycinate",
+        "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "상피 재생은 아연, 신경 안정은 마그네슘으로 축을 나눈다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1060,14 +1015,11 @@
       "draft_answer": [
         "coq10",
         "probiotics",
-        "supplement_depleted_nutrient",
-        "vitamin_c",
-        "vitamin_d3",
-        "zinc"
+        "supplement_depleted_nutrient"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "질내 락토바실러스 우점 회복이 목표 서술 그대로다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1084,12 +1036,13 @@
       "case_id": "kpi4-047",
       "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「트리코모나스 질염－ 기생충 감염 후 점막 손상 회복 및 재발 방지」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
+        "advise_professional_consult",
         "probiotics",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p187)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "트리코모나스는 메트로니다졸 치료 대상이다. 보충제는 치료 뒤 점막·세균총 회복으로 범위를 한정한다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1106,12 +1059,12 @@
       "case_id": "kpi4-048",
       "prompt": "「성호르몬·비뇨기계 4. 여성 염증」에서 「만성 / 재발성 질염－ 점막 방어막 재생 및 바이오필름 파괴」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "omega3",
-        "probiotics"
+        "probiotics",
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (36_성호르몬·비뇨기계_4._여성_염증.md p188)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "세균총 재정착과 점막 면역 지원으로 접근한다. 바이오필름 파괴 전용 성분은 어휘에 없다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1128,16 +1081,14 @@
       "case_id": "kpi4-049",
       "prompt": "Esomeprazole 복용 중입니다. 「성호르몬·비뇨기계 1. 여성 갱년기」에서 「정서적 안정 및 수면 질 개선 - 우울/불안, 불면증」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "l_theanine",
         "magnesium_glycinate",
         "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "zinc"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p172) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "갱년기 불면·불안에 테아닌·마그네슘을 둔다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1154,11 +1105,12 @@
       "case_id": "kpi4-050",
       "prompt": "「성호르몬·비뇨기계 1. 여성 갱년기」에서 「점막 보습 및 피부 탄력 유지 → 질 건조감, 피부 가려움」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "probiotics"
+        "omega3",
+        "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p172)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "오메가3가 점막·피부 지질막을, 비타민 C가 콜라겐 합성을 맡는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1176,12 +1128,11 @@
       "prompt": "「성호르몬·비뇨기계 1. 여성 갱년기」에서 「골밀도 유지 및 관절 보호 - 골다공증, 관절통」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "calcium_citrate",
-        "magnesium_glycinate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p173)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "폐경 후 골 소실 대응의 표준 조합이다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1198,16 +1149,14 @@
       "case_id": "kpi4-052",
       "prompt": "Furosemide 복용 중입니다. 「성호르몬·비뇨기계 1. 여성 갱년기」에서 「세포 에너지 생성 및 활성화 - 피로감, 무기력증」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "coq10",
         "magnesium_glycinate",
         "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "zinc"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (33_성호르몬·비뇨기계_1._여성_갱년기.md p173) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "세포 에너지 생성이라는 목표에 전자전달계 CoQ10과 조효소 B군이 붙는다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1224,12 +1173,12 @@
       "case_id": "kpi4-053",
       "prompt": "「소화기계 1. 위」에서 「1. 위 운동 기능 저하 개선 (문항 1, 2, 3, 10번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "magnesium_glycinate",
+        "probiotics",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (18_소화기계_1._위.md p93)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "위 배출 지연에 쓰는 생강·소화효소가 어휘에 없다. 세균총 교정과 B군의 신경·근 기능 지원으로 대체한다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1247,12 +1196,11 @@
       "prompt": "「소화기계 1. 위」에서 「2. 자율신경 균형 및 스트레스 완화 (문항 5, 9번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "l_theanine",
-        "magnesium_glycinate",
-        "vitamin_c"
+        "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (18_소화기계_1._위.md p93)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "기능성 소화불량의 스트레스 축에 테아닌·마그네슘을 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1269,13 +1217,12 @@
       "case_id": "kpi4-055",
       "prompt": "Levothyroxine 복용 중입니다. 「대사 및 순환 9. 통풍」에서 「요산 배출 및 당 대사 개선」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
-        "magnesium_glycinate",
-        "separate_dosing"
+        "berberine",
+        "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (29_대사_및_순환_9._통풍.md p153) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "비타민 C는 신세뇨관 요산 배설을 늘려 혈중 요산을 낮춘다. 베르베린이 동반된 당 대사 이상을 겨냥한다. 레보티록신은 공복 복용이 원칙이다. 보충제는 복용 4시간 뒤로 미룬다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1292,11 +1239,12 @@
       "case_id": "kpi4-056",
       "prompt": "「대사 및 순환 9. 통풍」에서 「통증 방어 및 염증 조절」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "probiotics"
+        "advise_professional_consult",
+        "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (29_대사_및_순환_9._통풍.md p153)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "급성 발작기 통증은 약물 영역이다. 오메가3는 만성 염증 부하를 낮추는 보조로 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1314,12 +1262,11 @@
       "prompt": "「신경계 및 뇌기능 5. 두통·편두통」에서 「1. 편두통 완화 및 혈관 안정 (문항 1,2,3번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "coq10",
-        "magnesium_glycinate",
-        "vitamin_b_complex"
+        "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "마그네슘과 CoQ10은 편두통 예방에서 가이드라인 수준의 보충 근거를 가진 두 성분이다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1336,16 +1283,13 @@
       "case_id": "kpi4-058",
       "prompt": "Metformin 복용 중입니다. 「신경계 및 뇌기능 5. 두통·편두통」에서 「2. 긴장성 두통 및 근육 이완 (문항 8, 10번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "coq10",
-        "l_theanine",
         "magnesium_glycinate",
-        "probiotics",
         "supplement_depleted_nutrient",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "근긴장 완화와 신경근 흥분도 조절을 마그네슘이 맡는다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1363,11 +1307,11 @@
       "prompt": "「신경계 및 뇌기능 5. 두통·편두통」에서 「3. 수면 부족 및 피로 누적 개선 (문항 7번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "l_theanine",
-        "vitamin_b_complex"
+        "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "수면 부족이 유발 인자인 두통에는 입면·수면 질 축을 먼저 손본다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1384,11 +1328,11 @@
       "case_id": "kpi4-060",
       "prompt": "「신경계 및 뇌기능 5. 두통·편두통」에서 「4. 식이 유발 및 대사 관리 (문항 9번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "magnesium_glycinate"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (09_신경계_및_뇌기능_5._두통·편두통.md p43)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "고용량 리보플라빈의 편두통 예방 근거를 대사 관리 축에 둔다. 유발 식품 회피가 먼저다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1407,16 +1351,13 @@
       "draft_answer": [
         "calcium_citrate",
         "magnesium_glycinate",
-        "probiotics",
         "soluble_fiber",
         "supplement_depleted_nutrient",
-        "vitamin_c",
-        "vitamin_d3",
-        "zinc"
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (27_대사_및_순환_7._치질.md p145) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "변 부피와 수분을 늘리는 수용성 식이섬유가 1차, 마그네슘이 삼투성 완하 보조다. 스테로이드는 칼슘·비타민 D 손실과 골 소실을 부른다. 골 보호 조합을 기본으로 얹는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1433,12 +1374,11 @@
       "case_id": "kpi4-062",
       "prompt": "「대사 및 순환 1. 고혈압」에서 「1. 체액 저류형(나트륨 과다) • 짜게 먹는 식습관 • 부종 동반 • 이뇨제 처방 환자」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "calcium_citrate",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p113)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "체액 저류형의 1차 대응인 칼륨이 어휘에 없다. 나트륨 배설과 혈관 이완을 돕는 마그네슘으로 대체한다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1455,11 +1395,12 @@
       "case_id": "kpi4-063",
       "prompt": "「대사 및 순환 1. 고혈압」에서 「2. 혈관 경화형(대사증후군) • 고지혈증/당뇨 동반 • 맥압(수축-이완) 큼 • 노인성 단독 수축기」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
+        "coq10",
         "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p113)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "혈관 탄성과 내피 기능 축에 오메가3, 혈압 강하 보조 근거에 CoQ10을 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1477,12 +1418,11 @@
       "prompt": "Amlodipine 복용 중입니다. 「대사 및 순환 1. 고혈압」에서 「2. 혈관 경화형(계속)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
         "coq10",
-        "magnesium_glycinate",
-        "supplement_depleted_nutrient"
+        "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "「계속」 표기는 앞 항목에서 이어지는 조각이다. 같은 혈관 경화형 대응을 유지한다. 암로디핀은 영양소를 고갈시키지 않아 별도 보충 조정이 필요 없다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1499,13 +1439,12 @@
       "case_id": "kpi4-065",
       "prompt": "「대사 및 순환 1. 고혈압」에서 「3. 교감신경 항진형(스트레스성) • 두근거림/불면 • 뒷목 뻐근함 • 백의 고혈압」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "calcium_citrate",
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "교감신경 항진형은 이완 축이 그대로 답이다. 테아닌·마그네슘을 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1522,12 +1461,11 @@
       "case_id": "kpi4-066",
       "prompt": "「대사 및 순환 1. 고혈압」에서 「4. 호모시스테인형(혈관 독소) • 가족력 • 약이 잘 안 들음 • 마른 고혈압」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "vitamin_b_complex",
-        "vitamin_c"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "호모시스테인 상승은 엽산·B6·B12 결핍이 직접 원인이다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1546,13 +1484,12 @@
       "draft_answer": [
         "coq10",
         "magnesium_glycinate",
-        "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "vitamin_d3"
+        "omega3",
+        "supplement_depleted_nutrient"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (21_대사_및_순환_1._고혈압.md p114) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "복합형은 특정 기전을 지목하지 않는다. 혈압에서 근거가 가장 넓은 두 성분을 최소 답으로 둔다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1569,11 +1506,12 @@
       "case_id": "kpi4-068",
       "prompt": "「에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진」에서 「1. 안구 보호 & 항산화 (활성산소 방어)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "omega3"
+        "omega3",
+        "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "갑상선 안병증의 근거 성분인 셀레늄이 어휘에 없다. 항염·항산화 축으로 대체한다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1590,11 +1528,12 @@
       "case_id": "kpi4-069",
       "prompt": "「에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진」에서 「2. 증상 완화 & 근육 보호 (대사 조절)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "coq10"
+        "coq10",
+        "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "항진 상태의 에너지 과소모와 근 소실에 CoQ10·마그네슘을 둔다. 근거 수준은 낮다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1611,16 +1550,14 @@
       "case_id": "kpi4-070",
       "prompt": "Esomeprazole 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진」에서 「3. 신경 안정 & 수면 유도 (교감신경 억제)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "l_theanine",
         "magnesium_glycinate",
         "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "zinc"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "교감신경 억제라는 목표에 테아닌·마그네슘이 붙는다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1640,9 +1577,9 @@
         "calcium_citrate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (14_에너지_생성_및_부신·갑상선_기능_3._갑상선_기능_항진.md p64)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "갑상선 기능 항진은 골 교체율을 높여 골 소실을 앞당긴다. 칼슘·비타민 D가 직접 대응이다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1659,11 +1596,12 @@
       "case_id": "kpi4-072",
       "prompt": "「에너지 생성 및 부신·갑상선 기능 4. 저혈압·빈혈」에서 「[빈혈] 혈액량·순환 개선」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "vitamin_b_complex"
+        "vitamin_b_complex",
+        "vitamin_c"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "철분이 어휘에 없다. 거대적혈구성 빈혈의 B12·엽산과 철 흡수를 돕는 비타민 C로 대체한다. 빈혈 유형 감별이 먼저다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1680,16 +1618,13 @@
       "case_id": "kpi4-073",
       "prompt": "Furosemide 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 4. 저혈압·빈혈」에서 「[공통] 심박출량 증가」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "coq10",
         "magnesium_glycinate",
-        "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "zinc"
+        "supplement_depleted_nutrient"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (15_에너지_생성_및_부신·갑상선_기능_4._저혈압·빈혈.md p69) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "심근 에너지 대사 지원 근거로 CoQ10을 둔다. 저혈압 자체를 성분으로 올리기는 어렵다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1708,9 +1643,9 @@
       "draft_answer": [
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "요오드·셀레늄이 어휘에 없다. 아연이 T4에서 T3로 가는 전환에 관여해 남은 선택 중 가장 가깝다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1730,9 +1665,9 @@
         "coq10",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "갑상선 저하의 피로에는 에너지 대사 조효소와 CoQ10을 보조로 둔다. 호르몬 용량 조정이 먼저다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1749,14 +1684,13 @@
       "case_id": "kpi4-076",
       "prompt": "Levothyroxine 복용 중입니다. 「에너지 생성 및 부신·갑상선 기능 2. 갑상선 기능 저하」에서 「4. 소화·변비 → 장 운동 정상화」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
         "magnesium_glycinate",
-        "probiotics",
-        "separate_dosing"
+        "separate_dosing",
+        "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (13_에너지_생성_및_부신·갑상선_기능_2._갑상선_기능_저하.md p60) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "장 운동 저하형 변비에 삼투·부피 두 축을 함께 쓴다. 칼슘·마그네슘·아연·식이섬유는 레보티록신 흡수를 막는다. 공복 복용 뒤 4시간 간격을 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1773,11 +1707,12 @@
       "case_id": "kpi4-077",
       "prompt": "「면역 및 염증 1. 면역균형」에서 「1. 방어력 저하형 (잦은 감기, 감염 후 회복이 더딤) - 점막 면역 강화 (1차방어선)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
+        "vitamin_c",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p157)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "아연·비타민 C는 감기 이환 기간 단축 근거가 있다. 점막 면역 1차 성분인 비타민 A는 어휘에 없다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1794,13 +1729,12 @@
       "case_id": "kpi4-078",
       "prompt": "「면역 및 염증 1. 면역균형」에서 「2. 과민 반응형 (알레르기, 비염, 아토피, 천식, 두드러기) - 면역균형 회복」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "omega3",
         "probiotics",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p157)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "Th1/Th2 균형 회복 근거는 프로바이오틱스와 비타민 D에 모인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1817,14 +1751,14 @@
       "case_id": "kpi4-079",
       "prompt": "Metformin 복용 중입니다. 「면역 및 염증 1. 면역균형」에서 「3. 만성 염증형 (통증 / 관절 쑤심, 부종, 만성피로 / 종양) - 만성 염증 억제 및 면역 소모 감소」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "coq10",
         "omega3",
         "supplement_depleted_nutrient",
-        "vitamin_b_complex"
+        "vitamin_b_complex",
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p158) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "만성 저등급 염증 억제에서 근거가 가장 두꺼운 두 성분이다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1841,12 +1775,12 @@
       "case_id": "kpi4-080",
       "prompt": "「면역 및 염증 1. 면역균형」에서 「4. 장누수/대사형 (잦은 설사,변비 / 저체온 / 항생제 장기복용) - 장 점막 면역 강화 및 대사 활성화」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "soluble_fiber",
-        "vitamin_b_complex"
+        "probiotics",
+        "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (30_면역_및_염증_1._면역균형.md p158)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "글루타민이 어휘에 없다. 세균총 교정과 밀착연접 유지에 관여하는 아연으로 대체한다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1863,13 +1797,13 @@
       "case_id": "kpi4-081",
       "prompt": "「임신 1. 난임」에서 「여성 ② 대사/PCOS(인슐린 저항성)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
+        "advise_professional_consult",
         "berberine",
-        "magnesium_glycinate",
         "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p193)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "PCOS 1차 보충인 미오이노시톨이 어휘에 없다. 인슐린 감수성 축의 베르베린과 결핍이 흔한 비타민 D를 둔다. 임신 시도 중 베르베린은 권하지 않으므로 전문가 확인이 필요하다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1886,17 +1820,15 @@
       "case_id": "kpi4-082",
       "prompt": "Prednisolone 복용 중입니다. 「임신 1. 난임」에서 「여성 ③ 자궁/염증(착상 실패)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
+        "advise_professional_consult",
         "calcium_citrate",
-        "magnesium_glycinate",
         "omega3",
         "supplement_depleted_nutrient",
-        "vitamin_c",
-        "vitamin_d3",
-        "zinc"
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p193) · calcium_citrate: Prednisolone 고갈 성분 (p238) · magnesium_glycinate: Prednisolone 고갈 성분 (p238) · vitamin_c: Prednisolone 고갈 성분 (p238) · vitamin_d3: Prednisolone 고갈 성분 (p238) · zinc: Prednisolone 고갈 성분 (p238)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "자궁내막 염증·면역 환경 축에 오메가3와 비타민 D를 둔다. 스테로이드는 칼슘·비타민 D 손실과 골 소실을 부른다. 골 보호 조합을 기본으로 얹는다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1914,13 +1846,11 @@
       "prompt": "「임신 1. 난임」에서 「남성 ④,⑤ 정자 요인(DNA 손상)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "coq10",
-        "vitamin_b_complex",
-        "vitamin_c",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p194)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "정자 DNA 분절 감소와 운동성 개선 근거는 CoQ10과 아연에 모인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1937,12 +1867,13 @@
       "case_id": "kpi4-084",
       "prompt": "「임신 1. 난임」에서 「공통 원인 불명(노화/스트레스)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "probiotics",
-        "vitamin_b_complex"
+        "advise_professional_consult",
+        "coq10",
+        "omega3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (37_임신_1._난임.md p194)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "원인 불명 난임은 성분으로 좁히기 어렵다. 산화 스트레스 축의 CoQ10과 오메가3를 최소 답으로 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1959,13 +1890,12 @@
       "case_id": "kpi4-085",
       "prompt": "Amlodipine 복용 중입니다. 「소화기계 2. 장」에서 「IBS - 장신경 안정 및 근육 이완 (문항 12, 13번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "l_theanine",
         "magnesium_glycinate",
-        "supplement_depleted_nutrient"
+        "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98) · magnesium_glycinate: Amlodipine 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "장 평활근 이완에 마그네슘, 세균총 축에 프로바이오틱스를 둔다. IBS 아형에 따라 식이섬유는 증상을 키울 수 있다. 암로디핀은 영양소를 고갈시키지 않는다. 마그네슘을 함께 쓰면 혈압 강하가 겹치므로 어지럼·기립 저혈압만 지켜본다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -1984,9 +1914,9 @@
       "draft_answer": [
         "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "락타아제 효소가 어휘에 없다. 유당 분해 균주 보충이 남은 선택 중 가장 가깝다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2003,11 +1933,11 @@
       "case_id": "kpi4-087",
       "prompt": "「소화기계 2. 장」에서 「+10번: O」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "vitamin_b_complex"
+        "probiotics"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "「+10번: O」는 성분을 지정할 만한 목표 서술이 아니다. 장 영역 기본 축인 프로바이오틱스를 최소 답으로 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2025,13 +1955,13 @@
       "prompt": "Atorvastatin 복용 중입니다. 「소화기계 2. 장」에서 「LGS - 장점막 장벽 복구 및 전신 염증 차단 (문항 15, 16, 17번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
         "coq10",
+        "probiotics",
         "supplement_depleted_nutrient",
-        "vitamin_d3",
         "zinc"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p98) · coq10: Atorvastatin 고갈 성분 (p236) · vitamin_d3: Atorvastatin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "장 점막 장벽 복구에 세균총 교정과 밀착연접 관련 아연을 둔다. 글루타민이 어휘에 없다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2049,12 +1979,11 @@
       "prompt": "「소화기계 2. 장」에서 「변비 우세형 - 배변 리듬 및 연동운동 활성화 (문항 1~4번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "magnesium_glycinate",
-        "soluble_fiber",
-        "vitamin_b_complex"
+        "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p99)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "삼투성 마그네슘과 부피 형성 식이섬유가 변비 우세형의 두 축이다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2072,11 +2001,11 @@
       "prompt": "「소화기계 2. 장」에서 「설사 및 긴급형 - 장벽보호 및 수분 흡수 리듬 회복 (문항 5, 6번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
         "probiotics",
-        "zinc"
+        "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (19_소화기계_2._장.md p99)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "수용성 식이섬유가 수분을 붙잡고, 프로바이오틱스가 장벽과 세균총을 되돌린다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2093,15 +2022,13 @@
       "case_id": "kpi4-091",
       "prompt": "Esomeprazole 복용 중입니다. 「D. 생활습관」에서 「1번(활력/심리) X」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
-        "magnesium_glycinate",
         "supplement_depleted_nutrient",
         "vitamin_b_complex",
-        "zinc"
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28) · calcium_citrate: Esomeprazole 고갈 성분 (p237) · magnesium_glycinate: Esomeprazole 고갈 성분 (p237) · vitamin_b_complex: Esomeprazole 고갈 성분 (p237) · zinc: Esomeprazole 고갈 성분 (p237)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "활력·심리 저하 문항에는 에너지 대사 B군과 결핍이 흔한 비타민 D를 둔다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2118,12 +2045,13 @@
       "case_id": "kpi4-092",
       "prompt": "「D. 생활습관」에서 「12번(활동량) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "magnesium_glycinate",
-        "vitamin_b_complex"
+        "advise_professional_consult",
+        "coq10",
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "활동량 부족은 행동 교정 항목이다. 보충제는 근·에너지 대사 보조에 그친다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2143,9 +2071,9 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "입면·숙면 문항은 이완 축으로 바로 이어진다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2162,16 +2090,13 @@
       "case_id": "kpi4-094",
       "prompt": "Furosemide 복용 중입니다. 「D. 생활습관」에서 「15번(기상 시 개운함) X」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
-        "l_theanine",
         "magnesium_glycinate",
         "supplement_depleted_nutrient",
-        "vitamin_b_complex",
-        "zinc"
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p29) · calcium_citrate: Furosemide 고갈 성분 (p236) · magnesium_glycinate: Furosemide 고갈 성분 (p236) · vitamin_b_complex: Furosemide 고갈 성분 (p236) · zinc: Furosemide 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "기상 시 피로는 수면 분절·수면무호흡 감별이 먼저다. 성분은 보조로만 둔다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2188,11 +2113,13 @@
       "case_id": "kpi4-095",
       "prompt": "「D. 생활습관」에서 「4번(단백질/채소) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "probiotics"
+        "advise_professional_consult",
+        "soluble_fiber",
+        "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "식사 구성 결손은 식단 교정이 1차다. 채소 섭취 부족분에 식이섬유, 단백질·미량영양소 축에 B군을 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2209,11 +2136,12 @@
       "case_id": "kpi4-096",
       "prompt": "「D. 생활습관」에서 「5번(가공식품) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "omega3"
+        "omega3",
+        "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "가공식품 위주 식사는 오메가3 부족과 식이섬유 부족을 함께 만든다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2230,14 +2158,13 @@
       "case_id": "kpi4-097",
       "prompt": "Levothyroxine 복용 중입니다. 「D. 생활습관」에서 「6번(식사 규칙성) X」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
       "draft_answer": [
-        "calcium_citrate",
-        "magnesium_glycinate",
+        "advise_professional_consult",
         "separate_dosing",
-        "vitamin_b_complex"
+        "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28) · calcium_citrate: 흡수 간섭이라 복용 간격 안내 필요 (p239) · magnesium_glycinate: 흡수 간섭이라 복용 간격 안내 필요 (p239)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "식사 간격이 불규칙하면 혈당 변동이 커진다. 식이섬유로 변동 폭을 줄이되 식사 리듬 교정이 먼저다. 칼슘·마그네슘·아연·식이섬유는 레보티록신 흡수를 막는다. 공복 복용 뒤 4시간 간격을 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2254,11 +2181,12 @@
       "case_id": "kpi4-098",
       "prompt": "「D. 생활습관」에서 「8번(식사 속도) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "vitamin_b_complex"
+        "advise_professional_consult",
+        "soluble_fiber"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "빠른 식사는 식후 혈당 상승 폭과 소화 불편을 키운다. 식이섬유는 보조이고 속도 교정이 본 대응이다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2275,11 +2203,13 @@
       "case_id": "kpi4-099",
       "prompt": "「D. 생활습관」에서 「9, 10, 11번(운동) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
       "draft_answer": [
-        "magnesium_glycinate"
+        "advise_professional_consult",
+        "coq10",
+        "vitamin_d3"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (04_D._생활습관.md p28)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "운동 부족은 행동 항목이다. 근기능·에너지 대사 보조로만 성분을 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2300,9 +2230,9 @@
         "supplement_depleted_nutrient",
         "vitamin_b_complex"
       ],
-      "draft_source": "health_checker_reference_extract_v1@blinded_drafters",
-      "draft_rationale": "원문 권장 성분 (20_소화기계_3._간.md p105) · coq10: Metformin 고갈 성분 (p236) · vitamin_b_complex: Metformin 고갈 성분 (p236)",
-      "drafting_agent": "codex",
+      "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+      "draft_rationale": "밀크시슬이 어휘에 없다. 에너지 생성 축의 B군과 CoQ10으로 대체한다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다.",
+      "drafting_agent": "claude-opus-5",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
         "data/knowledge/counseling_knowledge_scope_registry_v1.json",
@@ -2317,5 +2247,2200 @@
     }
   ],
   "decisions": {},
-  "seal_disposals": []
+  "seal_disposals": [],
+  "primary_ai_draft": {
+    "schema_version": "blind_primary_ai_answer_draft_v1",
+    "drafting_agent": "claude-opus-5",
+    "drafting_agent_family": "anthropic",
+    "draft_source": "blind_primary_ai_response_v1@adaptive_answer_key_review",
+    "response_source": "blind_packet_independent_opinion",
+    "input_response_role": "primary_ai_draft",
+    "input_response_sha256": "b86ec46df90e861e58607e6afe0b5165ddefba9559f8118944d2e5f802110009",
+    "blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "required_blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "packet_sha256": "d6cce98b257f37358d4fae57fb29ec1b345d3a693622673f72be4e04e640bc98",
+    "answer_vocabulary": [
+      "advise_professional_consult",
+      "berberine",
+      "calcium_citrate",
+      "coq10",
+      "l_theanine",
+      "magnesium_glycinate",
+      "omega3",
+      "probiotics",
+      "separate_dosing",
+      "soluble_fiber",
+      "supplement_depleted_nutrient",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "engine_output_consulted": false,
+    "drafted_at": "2026-08-03T07:46:13.867005Z",
+    "case_count": 100,
+    "cases": {
+      "kpi4-001": {
+        "proposed_answer": [
+          "berberine",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "당화 산물은 혈당 노출량에 비례해 쌓인다. 어휘 안에서는 berberine이 공복·식후 혈당을 낮춰 당화 부하를 줄이고, vitamin_b_complex의 티아민 유도체가 당화 경로 차단 근거를 갖는다. 암로디핀은 영양소를 고갈시키지 않아 별도 보충 조정이 필요 없다."
+      },
+      "kpi4-002": {
+        "proposed_answer": [
+          "probiotics",
+          "soluble_fiber"
+        ],
+        "confidence": 0.7,
+        "flags": [],
+        "rationale": "장내 배출·내독소 제거 목표는 세균총 교정과 수용성 식이섬유의 흡착·배설 작용에 그대로 대응한다."
+      },
+      "kpi4-003": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "vitamin_d3",
+          "zinc"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "pediatric_dose_caution"
+        ],
+        "rationale": "성장판 자원 부족형은 뼈 기질 재료를 채우는 문제다. 칼슘·비타민 D가 골 무기질화를, 아연이 성장호르몬·IGF-1 축을 맡는다."
+      },
+      "kpi4-004": {
+        "proposed_answer": [
+          "coq10",
+          "magnesium_glycinate",
+          "supplement_depleted_nutrient",
+          "vitamin_d3"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "low_evidence_goal",
+          "pediatric_dose_caution",
+          "statin_coq10_depletion"
+        ],
+        "rationale": "성장호르몬은 서파수면에 몰려 분비된다. 마그네슘이 입면과 수면 질을, 비타민 D가 골 성장과 근기능을 받친다. 성분보다 수면·활동 습관 교정이 앞선다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다."
+      },
+      "kpi4-005": {
+        "proposed_answer": [
+          "probiotics",
+          "zinc"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "pediatric_dose_caution"
+        ],
+        "rationale": "아연 결핍은 미각 저하와 식욕부진의 대표 원인이다. 프로바이오틱스가 편식으로 무너진 장내 환경을 보완한다."
+      },
+      "kpi4-006": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "l_theanine",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "low_evidence_goal",
+          "pediatric_dose_caution",
+          "red_flag_medical_referral"
+        ],
+        "rationale": "심리 불안 축에는 테아닌·마그네슘의 이완 근거를 쓴다. 조기 사춘기 자체는 보충제가 아니라 내분비 평가 대상이다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-007": {
+        "proposed_answer": [
+          "omega3",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.7,
+        "flags": [
+          "ppi_b12_depletion"
+        ],
+        "rationale": "DHA는 신경세포막을 구성한다. 기억·뇌세포 보호 목표에 가장 직접 대응하는 성분이다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다."
+      },
+      "kpi4-008": {
+        "proposed_answer": [
+          "omega3",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "B12·엽산 결핍은 되돌릴 수 있는 지남력 저하 원인이다. 오메가3가 신경 보호 축을 보탠다."
+      },
+      "kpi4-009": {
+        "proposed_answer": [
+          "omega3",
+          "vitamin_d3"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "가성치매는 우울이 인지 저하로 보이는 상태다. EPA 우세 오메가3와 비타민 D가 우울 지표 개선 근거를 갖는다."
+      },
+      "kpi4-010": {
+        "proposed_answer": [
+          "magnesium_glycinate",
+          "omega3",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "loop_diuretic_depletion",
+          "loop_diuretic_thiamine_depletion"
+        ],
+        "rationale": "전반 용도에는 신경막 구성(오메가3)과 호모시스테인·신경전달물질 대사(B군)를 함께 둔다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다."
+      },
+      "kpi4-011": {
+        "proposed_answer": [
+          "berberine",
+          "omega3"
+        ],
+        "confidence": 0.55,
+        "flags": [],
+        "rationale": "인슐린 감수성은 berberine이, 혈관 내피 기능은 오메가3가 맡는다."
+      },
+      "kpi4-012": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "테아닌이 각성을 누르고, 마그네슘 글리시네이트가 GABA계 이완과 입면 지연 단축을 맡는다."
+      },
+      "kpi4-013": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate",
+          "separate_dosing"
+        ],
+        "confidence": 0.7,
+        "flags": [
+          "separate_dosing_required"
+        ],
+        "rationale": "급성 스트레스 반응은 테아닌이 완화하고, 스트레스로 소모된 마그네슘은 글리시네이트형으로 채운다. 칼슘·마그네슘·아연·식이섬유는 레보티록신 흡수를 막는다. 공복 복용 뒤 4시간 간격을 둔다."
+      },
+      "kpi4-014": {
+        "proposed_answer": [
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "B군은 신경전달물질 합성 조효소이자 미토콘드리아 에너지 대사의 직접 원료다."
+      },
+      "kpi4-015": {
+        "proposed_answer": [
+          "coq10",
+          "omega3"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "에너지·혈류 축에 CoQ10, 신경 보호·기억 축에 오메가3를 둔다. 운동 자체를 대신하지는 못한다."
+      },
+      "kpi4-016": {
+        "proposed_answer": [
+          "omega3",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex",
+          "vitamin_d3"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "low_evidence_goal",
+          "metformin_b12_depletion"
+        ],
+        "rationale": "전신 항염 근거는 오메가3와 비타민 D가 가장 두껍다. 아밀로이드 축적 억제까지는 근거가 모자란다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다."
+      },
+      "kpi4-017": {
+        "proposed_answer": [
+          "omega3",
+          "zinc"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "아연은 AREDS 조성의 핵심이고 오메가3가 망막·미세순환을 받친다. 루테인·지아잔틴이 어휘에 없어 대체한다."
+      },
+      "kpi4-018": {
+        "proposed_answer": [
+          "vitamin_c",
+          "zinc"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "비타민 C는 흡연·음주로 먼저 소모되는 항산화제이고, 아연은 메탈로티오네인을 통해 중금속을 붙잡는다. 셀레늄·글루타치온이 어휘에 없다."
+      },
+      "kpi4-019": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "supplement_depleted_nutrient",
+          "vitamin_c",
+          "vitamin_d3"
+        ],
+        "confidence": 0.75,
+        "flags": [
+          "steroid_bone_loss_support",
+          "steroid_vitamin_c_depletion"
+        ],
+        "rationale": "잇몸 콜라겐 합성과 모세혈관 취약성 개선을 비타민 C가 직접 맡는다. 스테로이드는 칼슘·비타민 D 손실과 골 소실을 부른다. 골 보호 조합을 기본으로 얹는다."
+      },
+      "kpi4-020": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "vitamin_d3"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "치조골도 전신 골대사를 따라간다. 칼슘·비타민 D가 골밀도 유지 축이다."
+      },
+      "kpi4-021": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "불안·긴장 완화에 테아닌과 마그네슘의 근거가 모인다."
+      },
+      "kpi4-022": {
+        "proposed_answer": [
+          "vitamin_b_complex",
+          "vitamin_d3"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "에너지 대사 조효소인 B군과, 결핍 시 무기력·기분 저하로 이어지는 비타민 D를 둔다. 암로디핀은 영양소를 고갈시키지 않아 별도 보충 조정이 필요 없다."
+      },
+      "kpi4-023": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "장-뇌 축이라는 목표 서술 자체가 프로바이오틱스를 가리킨다."
+      },
+      "kpi4-024": {
+        "proposed_answer": [
+          "omega3",
+          "vitamin_d3"
+        ],
+        "confidence": 0.6,
+        "flags": [],
+        "rationale": "염증성 우울·피로 가설에 대응하는 성분은 오메가3와 비타민 D다."
+      },
+      "kpi4-025": {
+        "proposed_answer": [
+          "berberine",
+          "coq10",
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.85,
+        "flags": [
+          "statin_coq10_depletion"
+        ],
+        "rationale": "베르베린은 AMPK 활성화로 인슐린 감수성을 높인다. 어휘 안에서 이 목표에 가장 직접 붙는 성분이다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다."
+      },
+      "kpi4-026": {
+        "proposed_answer": [
+          "soluble_fiber"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "수용성 식이섬유가 위 배출과 당 흡수 속도를 늦춰 식후 혈당 상승 폭을 줄인다."
+      },
+      "kpi4-027": {
+        "proposed_answer": [
+          "omega3",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "신경병증 축에 B군, 심혈관·신장 합병증 축에 오메가3를 나눠 둔다."
+      },
+      "kpi4-028": {
+        "proposed_answer": [
+          "coq10",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.7,
+        "flags": [
+          "ppi_b12_depletion"
+        ],
+        "rationale": "당뇨 처방에서 메트포르민이 B12를, 병용 스타틴이 CoQ10을 고갈시킨다. 가장 흔한 두 고갈 항목이다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다."
+      },
+      "kpi4-029": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "vitamin_d3"
+        ],
+        "confidence": 0.55,
+        "flags": [],
+        "rationale": "이석은 탄산칼슘 결정이다. 비타민 D·칼슘 보충이 재발성 이석증의 재발률을 낮춘 무작위 시험 근거가 있다."
+      },
+      "kpi4-030": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "omega3"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "not_first_line_supplement",
+          "red_flag_medical_referral"
+        ],
+        "rationale": "중추성 현훈은 영상·신경학적 평가가 먼저다. 보충제는 혈관 위험 관리 보조에 그친다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-031": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate",
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "loop_diuretic_depletion"
+        ],
+        "rationale": "자율신경 과각성 완화에 테아닌·마그네슘을 쓴다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다."
+      },
+      "kpi4-032": {
+        "proposed_answer": [
+          "berberine",
+          "soluble_fiber"
+        ],
+        "confidence": 0.7,
+        "flags": [],
+        "rationale": "베르베린은 LDL 수용체 발현을 늘리고, 수용성 식이섬유는 담즙산 배설로 LDL을 끌어내린다."
+      },
+      "kpi4-033": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.9,
+        "flags": [],
+        "rationale": "고용량 EPA·DHA의 중성지방 저하는 용량-반응이 확인된 근거다."
+      },
+      "kpi4-034": {
+        "proposed_answer": [
+          "coq10",
+          "vitamin_c"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "산화 LDL 억제 축에 CoQ10·비타민 C를 둔다. 임상 결과 지표까지의 근거는 제한적이다. 레보티록신은 공복 복용이 원칙이다. 보충제는 복용 4시간 뒤로 미룬다."
+      },
+      "kpi4-035": {
+        "proposed_answer": [
+          "coq10"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "스타틴이 메발론산 경로를 막아 CoQ10 합성을 함께 줄인다. 근육 증상 대응의 표준 보충 항목이다."
+      },
+      "kpi4-036": {
+        "proposed_answer": [
+          "coq10",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.7,
+        "flags": [],
+        "rationale": "ATP 생성 경로의 조효소(B군)와 전자전달계 운반체(CoQ10)를 함께 둔다."
+      },
+      "kpi4-037": {
+        "proposed_answer": [
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex",
+          "vitamin_c"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "metformin_b12_depletion"
+        ],
+        "rationale": "부신 피질은 비타민 C 농도가 가장 높은 조직이고, 판토텐산은 코르티솔 합성 경로 조효소다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다."
+      },
+      "kpi4-038": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "교감신경 과항진 완화에 마그네슘·테아닌을 둔다. 혈당 안정까지의 직접 근거는 약하다."
+      },
+      "kpi4-039": {
+        "proposed_answer": [
+          "magnesium_glycinate",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "회복력·소진이라는 서술이 특정 성분을 지목하지 않는다. 근육 회복과 에너지 대사 축으로 최소 답을 둔다."
+      },
+      "kpi4-040": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "coq10",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex",
+          "vitamin_d3"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "low_evidence_goal",
+          "steroid_bone_loss_support"
+        ],
+        "rationale": "만성 피로 고위험군에는 미토콘드리아 지원 축을 둔다. 갑상선·빈혈 등 기저 원인 감별이 먼저다. 스테로이드는 칼슘·비타민 D 손실과 골 소실을 부른다. 골 보호 조합을 기본으로 얹는다."
+      },
+      "kpi4-041": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "coq10",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.4,
+        "flags": [
+          "low_evidence_goal",
+          "red_flag_medical_referral"
+        ],
+        "rationale": "활동 후 권태는 ME/CFS 핵심 징후라 진단 확인이 먼저다. 미토콘드리아 지원 목적의 CoQ10·마그네슘은 보조다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-042": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "probiotics",
+          "vitamin_c"
+        ],
+        "confidence": 0.4,
+        "flags": [
+          "not_first_line_supplement",
+          "red_flag_medical_referral",
+          "vocab_coverage_gap"
+        ],
+        "rationale": "급성 방광염은 항균제가 1차다. D-만노스·크랜베리가 어휘에 없어 요 산성화와 세균총 보조로 대체한다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-043": {
+        "proposed_answer": [
+          "probiotics",
+          "vitamin_d3"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "재발 예방은 질·요로 세균총 회복과 면역 상태 교정으로 간다. 바이오필름을 직접 겨냥하는 성분은 어휘에 없다. 암로디핀은 영양소를 고갈시키지 않아 별도 보충 조정이 필요 없다."
+      },
+      "kpi4-044": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "omega3",
+          "vitamin_c"
+        ],
+        "confidence": 0.4,
+        "flags": [
+          "not_first_line_supplement",
+          "red_flag_medical_referral"
+        ],
+        "rationale": "급성 요도염은 성매개 감염 감별과 항균 치료가 먼저다. 보충제는 항염 보조에 그친다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-045": {
+        "proposed_answer": [
+          "magnesium_glycinate",
+          "zinc"
+        ],
+        "confidence": 0.4,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "상피 재생은 아연, 신경 안정은 마그네슘으로 축을 나눈다."
+      },
+      "kpi4-046": {
+        "proposed_answer": [
+          "coq10",
+          "probiotics",
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.85,
+        "flags": [
+          "statin_coq10_depletion"
+        ],
+        "rationale": "질내 락토바실러스 우점 회복이 목표 서술 그대로다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다."
+      },
+      "kpi4-047": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "probiotics",
+          "zinc"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "red_flag_medical_referral"
+        ],
+        "rationale": "트리코모나스는 메트로니다졸 치료 대상이다. 보충제는 치료 뒤 점막·세균총 회복으로 범위를 한정한다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-048": {
+        "proposed_answer": [
+          "probiotics",
+          "vitamin_d3"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "세균총 재정착과 점막 면역 지원으로 접근한다. 바이오필름 파괴 전용 성분은 어휘에 없다."
+      },
+      "kpi4-049": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "ppi_b12_depletion",
+          "ppi_magnesium_depletion"
+        ],
+        "rationale": "갱년기 불면·불안에 테아닌·마그네슘을 둔다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다."
+      },
+      "kpi4-050": {
+        "proposed_answer": [
+          "omega3",
+          "vitamin_c"
+        ],
+        "confidence": 0.55,
+        "flags": [],
+        "rationale": "오메가3가 점막·피부 지질막을, 비타민 C가 콜라겐 합성을 맡는다."
+      },
+      "kpi4-051": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "vitamin_d3"
+        ],
+        "confidence": 0.85,
+        "flags": [],
+        "rationale": "폐경 후 골 소실 대응의 표준 조합이다."
+      },
+      "kpi4-052": {
+        "proposed_answer": [
+          "coq10",
+          "magnesium_glycinate",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "loop_diuretic_depletion",
+          "loop_diuretic_thiamine_depletion"
+        ],
+        "rationale": "세포 에너지 생성이라는 목표에 전자전달계 CoQ10과 조효소 B군이 붙는다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다."
+      },
+      "kpi4-053": {
+        "proposed_answer": [
+          "probiotics",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "low_evidence_goal",
+          "vocab_coverage_gap"
+        ],
+        "rationale": "위 배출 지연에 쓰는 생강·소화효소가 어휘에 없다. 세균총 교정과 B군의 신경·근 기능 지원으로 대체한다."
+      },
+      "kpi4-054": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.7,
+        "flags": [],
+        "rationale": "기능성 소화불량의 스트레스 축에 테아닌·마그네슘을 둔다."
+      },
+      "kpi4-055": {
+        "proposed_answer": [
+          "berberine",
+          "vitamin_c"
+        ],
+        "confidence": 0.55,
+        "flags": [],
+        "rationale": "비타민 C는 신세뇨관 요산 배설을 늘려 혈중 요산을 낮춘다. 베르베린이 동반된 당 대사 이상을 겨냥한다. 레보티록신은 공복 복용이 원칙이다. 보충제는 복용 4시간 뒤로 미룬다."
+      },
+      "kpi4-056": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "omega3"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "not_first_line_supplement"
+        ],
+        "rationale": "급성 발작기 통증은 약물 영역이다. 오메가3는 만성 염증 부하를 낮추는 보조로 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-057": {
+        "proposed_answer": [
+          "coq10",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "마그네슘과 CoQ10은 편두통 예방에서 가이드라인 수준의 보충 근거를 가진 두 성분이다."
+      },
+      "kpi4-058": {
+        "proposed_answer": [
+          "magnesium_glycinate",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.7,
+        "flags": [
+          "metformin_b12_depletion"
+        ],
+        "rationale": "근긴장 완화와 신경근 흥분도 조절을 마그네슘이 맡는다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다."
+      },
+      "kpi4-059": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.55,
+        "flags": [],
+        "rationale": "수면 부족이 유발 인자인 두통에는 입면·수면 질 축을 먼저 손본다."
+      },
+      "kpi4-060": {
+        "proposed_answer": [
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "고용량 리보플라빈의 편두통 예방 근거를 대사 관리 축에 둔다. 유발 식품 회피가 먼저다."
+      },
+      "kpi4-061": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "magnesium_glycinate",
+          "soluble_fiber",
+          "supplement_depleted_nutrient",
+          "vitamin_d3"
+        ],
+        "confidence": 0.8,
+        "flags": [
+          "steroid_bone_loss_support",
+          "steroid_magnesium_depletion"
+        ],
+        "rationale": "변 부피와 수분을 늘리는 수용성 식이섬유가 1차, 마그네슘이 삼투성 완하 보조다. 스테로이드는 칼슘·비타민 D 손실과 골 소실을 부른다. 골 보호 조합을 기본으로 얹는다."
+      },
+      "kpi4-062": {
+        "proposed_answer": [
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "체액 저류형의 1차 대응인 칼륨이 어휘에 없다. 나트륨 배설과 혈관 이완을 돕는 마그네슘으로 대체한다."
+      },
+      "kpi4-063": {
+        "proposed_answer": [
+          "coq10",
+          "omega3"
+        ],
+        "confidence": 0.55,
+        "flags": [],
+        "rationale": "혈관 탄성과 내피 기능 축에 오메가3, 혈압 강하 보조 근거에 CoQ10을 둔다."
+      },
+      "kpi4-064": {
+        "proposed_answer": [
+          "coq10",
+          "omega3"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "goal_label_ambiguous"
+        ],
+        "rationale": "「계속」 표기는 앞 항목에서 이어지는 조각이다. 같은 혈관 경화형 대응을 유지한다. 암로디핀은 영양소를 고갈시키지 않아 별도 보충 조정이 필요 없다."
+      },
+      "kpi4-065": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.7,
+        "flags": [],
+        "rationale": "교감신경 항진형은 이완 축이 그대로 답이다. 테아닌·마그네슘을 둔다."
+      },
+      "kpi4-066": {
+        "proposed_answer": [
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "호모시스테인 상승은 엽산·B6·B12 결핍이 직접 원인이다."
+      },
+      "kpi4-067": {
+        "proposed_answer": [
+          "coq10",
+          "magnesium_glycinate",
+          "omega3",
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "goal_label_ambiguous",
+          "statin_coq10_depletion"
+        ],
+        "rationale": "복합형은 특정 기전을 지목하지 않는다. 혈압에서 근거가 가장 넓은 두 성분을 최소 답으로 둔다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다."
+      },
+      "kpi4-068": {
+        "proposed_answer": [
+          "omega3",
+          "vitamin_c"
+        ],
+        "confidence": 0.4,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "갑상선 안병증의 근거 성분인 셀레늄이 어휘에 없다. 항염·항산화 축으로 대체한다."
+      },
+      "kpi4-069": {
+        "proposed_answer": [
+          "coq10",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.4,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "항진 상태의 에너지 과소모와 근 소실에 CoQ10·마그네슘을 둔다. 근거 수준은 낮다."
+      },
+      "kpi4-070": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "ppi_b12_depletion",
+          "ppi_magnesium_depletion"
+        ],
+        "rationale": "교감신경 억제라는 목표에 테아닌·마그네슘이 붙는다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다."
+      },
+      "kpi4-071": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "vitamin_d3"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "갑상선 기능 항진은 골 교체율을 높여 골 소실을 앞당긴다. 칼슘·비타민 D가 직접 대응이다."
+      },
+      "kpi4-072": {
+        "proposed_answer": [
+          "vitamin_b_complex",
+          "vitamin_c"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "철분이 어휘에 없다. 거대적혈구성 빈혈의 B12·엽산과 철 흡수를 돕는 비타민 C로 대체한다. 빈혈 유형 감별이 먼저다."
+      },
+      "kpi4-073": {
+        "proposed_answer": [
+          "coq10",
+          "magnesium_glycinate",
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "loop_diuretic_depletion",
+          "low_evidence_goal"
+        ],
+        "rationale": "심근 에너지 대사 지원 근거로 CoQ10을 둔다. 저혈압 자체를 성분으로 올리기는 어렵다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다."
+      },
+      "kpi4-074": {
+        "proposed_answer": [
+          "zinc"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "요오드·셀레늄이 어휘에 없다. 아연이 T4에서 T3로 가는 전환에 관여해 남은 선택 중 가장 가깝다."
+      },
+      "kpi4-075": {
+        "proposed_answer": [
+          "coq10",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.6,
+        "flags": [],
+        "rationale": "갑상선 저하의 피로에는 에너지 대사 조효소와 CoQ10을 보조로 둔다. 호르몬 용량 조정이 먼저다."
+      },
+      "kpi4-076": {
+        "proposed_answer": [
+          "magnesium_glycinate",
+          "separate_dosing",
+          "soluble_fiber"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "separate_dosing_required"
+        ],
+        "rationale": "장 운동 저하형 변비에 삼투·부피 두 축을 함께 쓴다. 칼슘·마그네슘·아연·식이섬유는 레보티록신 흡수를 막는다. 공복 복용 뒤 4시간 간격을 둔다."
+      },
+      "kpi4-077": {
+        "proposed_answer": [
+          "vitamin_c",
+          "zinc"
+        ],
+        "confidence": 0.7,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "아연·비타민 C는 감기 이환 기간 단축 근거가 있다. 점막 면역 1차 성분인 비타민 A는 어휘에 없다."
+      },
+      "kpi4-078": {
+        "proposed_answer": [
+          "probiotics",
+          "vitamin_d3"
+        ],
+        "confidence": 0.6,
+        "flags": [],
+        "rationale": "Th1/Th2 균형 회복 근거는 프로바이오틱스와 비타민 D에 모인다."
+      },
+      "kpi4-079": {
+        "proposed_answer": [
+          "omega3",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex",
+          "vitamin_d3"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "metformin_b12_depletion"
+        ],
+        "rationale": "만성 저등급 염증 억제에서 근거가 가장 두꺼운 두 성분이다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다."
+      },
+      "kpi4-080": {
+        "proposed_answer": [
+          "probiotics",
+          "zinc"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "글루타민이 어휘에 없다. 세균총 교정과 밀착연접 유지에 관여하는 아연으로 대체한다."
+      },
+      "kpi4-081": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "berberine",
+          "vitamin_d3"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "pregnancy_intent_caution",
+          "vocab_coverage_gap"
+        ],
+        "rationale": "PCOS 1차 보충인 미오이노시톨이 어휘에 없다. 인슐린 감수성 축의 베르베린과 결핍이 흔한 비타민 D를 둔다. 임신 시도 중 베르베린은 권하지 않으므로 전문가 확인이 필요하다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-082": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "calcium_citrate",
+          "omega3",
+          "supplement_depleted_nutrient",
+          "vitamin_d3"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "pregnancy_intent_caution",
+          "steroid_bone_loss_support"
+        ],
+        "rationale": "자궁내막 염증·면역 환경 축에 오메가3와 비타민 D를 둔다. 스테로이드는 칼슘·비타민 D 손실과 골 소실을 부른다. 골 보호 조합을 기본으로 얹는다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-083": {
+        "proposed_answer": [
+          "coq10",
+          "zinc"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "정자 DNA 분절 감소와 운동성 개선 근거는 CoQ10과 아연에 모인다."
+      },
+      "kpi4-084": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "coq10",
+          "omega3"
+        ],
+        "confidence": 0.4,
+        "flags": [
+          "low_evidence_goal",
+          "pregnancy_intent_caution"
+        ],
+        "rationale": "원인 불명 난임은 성분으로 좁히기 어렵다. 산화 스트레스 축의 CoQ10과 오메가3를 최소 답으로 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-085": {
+        "proposed_answer": [
+          "magnesium_glycinate",
+          "probiotics"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "additive_hypotension_monitor",
+          "low_evidence_goal"
+        ],
+        "rationale": "장 평활근 이완에 마그네슘, 세균총 축에 프로바이오틱스를 둔다. IBS 아형에 따라 식이섬유는 증상을 키울 수 있다. 암로디핀은 영양소를 고갈시키지 않는다. 마그네슘을 함께 쓰면 혈압 강하가 겹치므로 어지럼·기립 저혈압만 지켜본다."
+      },
+      "kpi4-086": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.7,
+        "flags": [
+          "vocab_coverage_gap"
+        ],
+        "rationale": "락타아제 효소가 어휘에 없다. 유당 분해 균주 보충이 남은 선택 중 가장 가깝다."
+      },
+      "kpi4-087": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.2,
+        "flags": [
+          "goal_label_ambiguous"
+        ],
+        "rationale": "「+10번: O」는 성분을 지정할 만한 목표 서술이 아니다. 장 영역 기본 축인 프로바이오틱스를 최소 답으로 둔다."
+      },
+      "kpi4-088": {
+        "proposed_answer": [
+          "coq10",
+          "probiotics",
+          "supplement_depleted_nutrient",
+          "zinc"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "statin_coq10_depletion",
+          "vocab_coverage_gap"
+        ],
+        "rationale": "장 점막 장벽 복구에 세균총 교정과 밀착연접 관련 아연을 둔다. 글루타민이 어휘에 없다. 스타틴은 CoQ10 합성을 함께 줄인다. 근육 증상 여부와 무관하게 CoQ10 보충을 얹는다."
+      },
+      "kpi4-089": {
+        "proposed_answer": [
+          "magnesium_glycinate",
+          "soluble_fiber"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "삼투성 마그네슘과 부피 형성 식이섬유가 변비 우세형의 두 축이다."
+      },
+      "kpi4-090": {
+        "proposed_answer": [
+          "probiotics",
+          "soluble_fiber"
+        ],
+        "confidence": 0.65,
+        "flags": [],
+        "rationale": "수용성 식이섬유가 수분을 붙잡고, 프로바이오틱스가 장벽과 세균총을 되돌린다."
+      },
+      "kpi4-091": {
+        "proposed_answer": [
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex",
+          "vitamin_d3"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "low_evidence_goal",
+          "ppi_b12_depletion"
+        ],
+        "rationale": "활력·심리 저하 문항에는 에너지 대사 B군과 결핍이 흔한 비타민 D를 둔다. PPI는 위산을 낮춰 비타민 B12·마그네슘·칼슘·아연 상태를 떨어뜨린다. 칼슘은 위산에 덜 의존하는 구연산염 형태로 간다."
+      },
+      "kpi4-092": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "coq10",
+          "vitamin_d3"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "low_evidence_goal",
+          "not_first_line_supplement"
+        ],
+        "rationale": "활동량 부족은 행동 교정 항목이다. 보충제는 근·에너지 대사 보조에 그친다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-093": {
+        "proposed_answer": [
+          "l_theanine",
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.75,
+        "flags": [],
+        "rationale": "입면·숙면 문항은 이완 축으로 바로 이어진다."
+      },
+      "kpi4-094": {
+        "proposed_answer": [
+          "magnesium_glycinate",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "loop_diuretic_depletion",
+          "loop_diuretic_thiamine_depletion",
+          "low_evidence_goal"
+        ],
+        "rationale": "기상 시 피로는 수면 분절·수면무호흡 감별이 먼저다. 성분은 보조로만 둔다. 루프 이뇨제는 마그네슘·칼륨·칼슘·티아민·아연을 소변으로 함께 내보낸다. 전해질 확인과 보충이 같이 간다."
+      },
+      "kpi4-095": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "soluble_fiber",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.4,
+        "flags": [
+          "low_evidence_goal",
+          "not_first_line_supplement"
+        ],
+        "rationale": "식사 구성 결손은 식단 교정이 1차다. 채소 섭취 부족분에 식이섬유, 단백질·미량영양소 축에 B군을 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-096": {
+        "proposed_answer": [
+          "omega3",
+          "soluble_fiber"
+        ],
+        "confidence": 0.4,
+        "flags": [
+          "low_evidence_goal"
+        ],
+        "rationale": "가공식품 위주 식사는 오메가3 부족과 식이섬유 부족을 함께 만든다."
+      },
+      "kpi4-097": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "separate_dosing",
+          "soluble_fiber"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "low_evidence_goal",
+          "not_first_line_supplement",
+          "separate_dosing_required"
+        ],
+        "rationale": "식사 간격이 불규칙하면 혈당 변동이 커진다. 식이섬유로 변동 폭을 줄이되 식사 리듬 교정이 먼저다. 칼슘·마그네슘·아연·식이섬유는 레보티록신 흡수를 막는다. 공복 복용 뒤 4시간 간격을 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-098": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "soluble_fiber"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "low_evidence_goal",
+          "not_first_line_supplement"
+        ],
+        "rationale": "빠른 식사는 식후 혈당 상승 폭과 소화 불편을 키운다. 식이섬유는 보조이고 속도 교정이 본 대응이다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-099": {
+        "proposed_answer": [
+          "advise_professional_consult",
+          "coq10",
+          "vitamin_d3"
+        ],
+        "confidence": 0.35,
+        "flags": [
+          "low_evidence_goal",
+          "not_first_line_supplement"
+        ],
+        "rationale": "운동 부족은 행동 항목이다. 근기능·에너지 대사 보조로만 성분을 둔다. 성분만으로 끝낼 사안이 아니라 의료 상담을 함께 붙인다."
+      },
+      "kpi4-100": {
+        "proposed_answer": [
+          "coq10",
+          "supplement_depleted_nutrient",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "metformin_b12_depletion",
+          "metformin_coq10_depletion",
+          "vocab_coverage_gap"
+        ],
+        "rationale": "밀크시슬이 어휘에 없다. 에너지 생성 축의 B군과 CoQ10으로 대체한다. 메트포르민 장기 복용은 비타민 B12를 떨어뜨린다. 연 1회 B12 확인과 보충을 함께 둔다."
+      }
+    },
+    "cases_sha256": "0aad2e424eaf5be07df3075acdd137496a0b8161e969444b9a004653eb709369"
+  },
+  "ai_review": {
+    "schema_version": "independent_ai_answer_review_v1",
+    "reviewing_agent": "codex-gpt-5.6-terra-kpi4-blind",
+    "reviewing_agent_family": "openai",
+    "drafting_agent": "claude-opus-5",
+    "drafting_agent_family": "anthropic",
+    "review_source": "blind_packet_independent_opinion",
+    "blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "required_blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "packet_sha256": "d6cce98b257f37358d4fae57fb29ec1b345d3a693622673f72be4e04e640bc98",
+    "engine_output_consulted": false,
+    "reviewed_at": "2026-08-03T07:46:14.213810Z",
+    "case_count": 100,
+    "cases": {
+      "kpi4-001": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.86,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Medication and glycemic supplements require clinician review."
+      },
+      "kpi4-002": {
+        "proposed_answer": [
+          "soluble_fiber"
+        ],
+        "confidence": 0.7,
+        "flags": [],
+        "rationale": "Soluble fiber can support bowel and gut health."
+      },
+      "kpi4-003": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "growth_concern",
+          "pediatric"
+        ],
+        "rationale": "Child growth concerns need clinical assessment first."
+      },
+      "kpi4-004": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.93,
+        "flags": [
+          "medication_review",
+          "pediatric"
+        ],
+        "rationale": "Child hormonal or lifestyle concerns need clinical assessment."
+      },
+      "kpi4-005": {
+        "proposed_answer": [
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.66,
+        "flags": [
+          "pediatric"
+        ],
+        "rationale": "Assess likely nutrient gaps individually before supplementation."
+      },
+      "kpi4-006": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.95,
+        "flags": [
+          "endocrine_concern",
+          "pediatric"
+        ],
+        "rationale": "Possible precocious puberty requires specialist assessment."
+      },
+      "kpi4-007": {
+        "proposed_answer": [
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.75,
+        "flags": [
+          "cognitive_symptom",
+          "medication_review"
+        ],
+        "rationale": "Review nutrient status and assess cognitive symptoms clinically."
+      },
+      "kpi4-008": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "cognitive_symptom"
+        ],
+        "rationale": "Omega-3 may support vascular and neurologic health."
+      },
+      "kpi4-009": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.61,
+        "flags": [
+          "mental_health"
+        ],
+        "rationale": "L-theanine may support relaxation; persistent symptoms need assessment."
+      },
+      "kpi4-010": {
+        "proposed_answer": [
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.7,
+        "flags": [
+          "cognitive_symptom",
+          "medication_review"
+        ],
+        "rationale": "Diuretic use warrants electrolyte and nutrient review."
+      },
+      "kpi4-011": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.64,
+        "flags": [],
+        "rationale": "Omega-3 is a supportive option for vascular health."
+      },
+      "kpi4-012": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.68,
+        "flags": [],
+        "rationale": "L-theanine may support relaxation and sleep readiness."
+      },
+      "kpi4-013": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.63,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "L-theanine may support stress management alongside thyroid treatment."
+      },
+      "kpi4-014": {
+        "proposed_answer": [
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.74,
+        "flags": [],
+        "rationale": "B vitamins support neurotransmitter and energy metabolism."
+      },
+      "kpi4-015": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.57,
+        "flags": [],
+        "rationale": "Omega-3 is a supportive cardiovascular and neurologic option."
+      },
+      "kpi4-016": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.62,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Omega-3 is a supportive option for inflammatory risk management."
+      },
+      "kpi4-017": {
+        "proposed_answer": [
+          "zinc"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "low_specificity"
+        ],
+        "rationale": "Zinc supports sensory function; the cause of loss needs assessment."
+      },
+      "kpi4-018": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "toxin_exposure"
+        ],
+        "rationale": "Heavy-metal exposure concerns require testing and clinician care."
+      },
+      "kpi4-019": {
+        "proposed_answer": [
+          "vitamin_c"
+        ],
+        "confidence": 0.71,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Vitamin C may support gum tissue health."
+      },
+      "kpi4-020": {
+        "proposed_answer": [
+          "calcium_citrate"
+        ],
+        "confidence": 0.66,
+        "flags": [],
+        "rationale": "Calcium supports bone density maintenance."
+      },
+      "kpi4-021": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.66,
+        "flags": [
+          "mental_health"
+        ],
+        "rationale": "L-theanine is a supportive option for anxiety symptoms."
+      },
+      "kpi4-022": {
+        "proposed_answer": [
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "medication_review",
+          "mental_health"
+        ],
+        "rationale": "B vitamins support energy metabolism; depression symptoms need care."
+      },
+      "kpi4-023": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.68,
+        "flags": [
+          "mental_health"
+        ],
+        "rationale": "Probiotics can support the gut environment."
+      },
+      "kpi4-024": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "mental_health"
+        ],
+        "rationale": "Omega-3 is a supportive option for inflammatory health risks."
+      },
+      "kpi4-025": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.85,
+        "flags": [
+          "glycemic_risk",
+          "medication_review"
+        ],
+        "rationale": "Medication and glucose management need clinician review."
+      },
+      "kpi4-026": {
+        "proposed_answer": [
+          "soluble_fiber"
+        ],
+        "confidence": 0.78,
+        "flags": [],
+        "rationale": "Soluble fiber may help reduce post-meal glucose rises."
+      },
+      "kpi4-027": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.58,
+        "flags": [],
+        "rationale": "Omega-3 is a supportive option for cardiovascular risk management."
+      },
+      "kpi4-028": {
+        "proposed_answer": [
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.77,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Review possible nutrient depletion during acid-suppressing treatment."
+      },
+      "kpi4-029": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.93,
+        "flags": [
+          "acute_symptom"
+        ],
+        "rationale": "Vertigo needs diagnostic assessment before self-treatment."
+      },
+      "kpi4-030": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.99,
+        "flags": [
+          "urgent_neurologic_symptom"
+        ],
+        "rationale": "Possible central vertigo requires urgent medical assessment."
+      },
+      "kpi4-031": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "medication_review",
+          "mental_health"
+        ],
+        "rationale": "L-theanine may support anxiety-related symptoms."
+      },
+      "kpi4-032": {
+        "proposed_answer": [
+          "soluble_fiber"
+        ],
+        "confidence": 0.72,
+        "flags": [],
+        "rationale": "Soluble fiber is a supportive option for LDL management."
+      },
+      "kpi4-033": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.8,
+        "flags": [],
+        "rationale": "Omega-3 is a suitable supportive option for triglyceride management."
+      },
+      "kpi4-034": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.56,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Omega-3 is a supportive cardiovascular risk-management option."
+      },
+      "kpi4-035": {
+        "proposed_answer": [
+          "coq10"
+        ],
+        "confidence": 0.78,
+        "flags": [],
+        "rationale": "CoQ10 may be considered for statin-related muscle symptoms."
+      },
+      "kpi4-036": {
+        "proposed_answer": [
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.67,
+        "flags": [],
+        "rationale": "B vitamins support energy metabolism."
+      },
+      "kpi4-037": {
+        "proposed_answer": [
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.61,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "B vitamins support energy metabolism and nutrient review is useful."
+      },
+      "kpi4-038": {
+        "proposed_answer": [
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.64,
+        "flags": [],
+        "rationale": "Magnesium glycinate may support neuromuscular relaxation."
+      },
+      "kpi4-039": {
+        "proposed_answer": [
+          "coq10"
+        ],
+        "confidence": 0.62,
+        "flags": [],
+        "rationale": "CoQ10 is a supportive energy-metabolism option."
+      },
+      "kpi4-040": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Persistent fatigue during steroid treatment needs clinical review."
+      },
+      "kpi4-041": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.91,
+        "flags": [
+          "post_exertional_symptom"
+        ],
+        "rationale": "Severe post-exertional fatigue needs diagnostic assessment."
+      },
+      "kpi4-042": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "urinary_symptom"
+        ],
+        "rationale": "Probiotics are only supportive; acute urinary symptoms need care."
+      },
+      "kpi4-043": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.93,
+        "flags": [
+          "medication_review",
+          "recurrent_infection"
+        ],
+        "rationale": "Recurrent cystitis requires evaluation and treatment."
+      },
+      "kpi4-044": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.95,
+        "flags": [
+          "urinary_symptom"
+        ],
+        "rationale": "Urethral burning needs infection assessment and treatment."
+      },
+      "kpi4-045": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.92,
+        "flags": [
+          "chronic_symptom"
+        ],
+        "rationale": "Chronic urethral symptoms need diagnostic assessment."
+      },
+      "kpi4-046": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.62,
+        "flags": [
+          "infection_symptom",
+          "medication_review"
+        ],
+        "rationale": "Probiotics may support the vaginal microbiome but do not treat infection."
+      },
+      "kpi4-047": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.98,
+        "flags": [
+          "sexually_transmitted_infection"
+        ],
+        "rationale": "Trichomonas infection requires prescribed treatment and partner management."
+      },
+      "kpi4-048": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.58,
+        "flags": [
+          "recurrent_infection"
+        ],
+        "rationale": "Probiotics are supportive only; recurrent vaginitis needs care."
+      },
+      "kpi4-049": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.63,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "L-theanine may support relaxation and sleep readiness."
+      },
+      "kpi4-050": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.74,
+        "flags": [
+          "low_specificity"
+        ],
+        "rationale": "Dryness and itching need assessment because causes differ."
+      },
+      "kpi4-051": {
+        "proposed_answer": [
+          "calcium_citrate"
+        ],
+        "confidence": 0.77,
+        "flags": [],
+        "rationale": "Calcium supports bone density maintenance."
+      },
+      "kpi4-052": {
+        "proposed_answer": [
+          "coq10"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "CoQ10 is a supportive energy-metabolism option."
+      },
+      "kpi4-053": {
+        "proposed_answer": [
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.51,
+        "flags": [
+          "gastrointestinal_symptom"
+        ],
+        "rationale": "Magnesium may support relaxation; gastrointestinal symptoms need assessment."
+      },
+      "kpi4-054": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.67,
+        "flags": [],
+        "rationale": "L-theanine may support stress-related autonomic tension."
+      },
+      "kpi4-055": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "gout",
+          "medication_review"
+        ],
+        "rationale": "Gout and uric-acid management need clinical review."
+      },
+      "kpi4-056": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.47,
+        "flags": [
+          "gout"
+        ],
+        "rationale": "Omega-3 is supportive only and does not treat acute gout."
+      },
+      "kpi4-057": {
+        "proposed_answer": [
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.75,
+        "flags": [
+          "headache"
+        ],
+        "rationale": "Magnesium is a supportive option for migraine prevention."
+      },
+      "kpi4-058": {
+        "proposed_answer": [
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.72,
+        "flags": [
+          "headache",
+          "medication_review"
+        ],
+        "rationale": "Magnesium may support muscle relaxation."
+      },
+      "kpi4-059": {
+        "proposed_answer": [
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.61,
+        "flags": [
+          "headache"
+        ],
+        "rationale": "Magnesium may support sleep and muscle relaxation."
+      },
+      "kpi4-060": {
+        "proposed_answer": [
+          "soluble_fiber"
+        ],
+        "confidence": 0.48,
+        "flags": [
+          "headache"
+        ],
+        "rationale": "Soluble fiber may support regular meals and glycemic stability."
+      },
+      "kpi4-061": {
+        "proposed_answer": [
+          "soluble_fiber"
+        ],
+        "confidence": 0.8,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Soluble fiber may soften stool and reduce straining."
+      },
+      "kpi4-062": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.87,
+        "flags": [
+          "hypertension"
+        ],
+        "rationale": "Hypertension, edema, and diuretic issues need prescription review."
+      },
+      "kpi4-063": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "hypertension"
+        ],
+        "rationale": "Omega-3 is a supportive cardiovascular risk-management option."
+      },
+      "kpi4-064": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.61,
+        "flags": [
+          "hypertension",
+          "medication_review"
+        ],
+        "rationale": "Omega-3 may support vascular health; do not alter blood-pressure medication."
+      },
+      "kpi4-065": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.62,
+        "flags": [
+          "hypertension"
+        ],
+        "rationale": "L-theanine may support stress-related tension."
+      },
+      "kpi4-066": {
+        "proposed_answer": [
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.69,
+        "flags": [
+          "hypertension"
+        ],
+        "rationale": "B vitamins participate in homocysteine metabolism."
+      },
+      "kpi4-067": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "hypertension",
+          "medication_review"
+        ],
+        "rationale": "Omega-3 is supportive for combined cardiovascular risk management."
+      },
+      "kpi4-068": {
+        "proposed_answer": [
+          "coq10"
+        ],
+        "confidence": 0.52,
+        "flags": [
+          "thyroid_condition"
+        ],
+        "rationale": "CoQ10 is supportive only and does not replace hyperthyroidism treatment."
+      },
+      "kpi4-069": {
+        "proposed_answer": [
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.54,
+        "flags": [
+          "thyroid_condition"
+        ],
+        "rationale": "Magnesium may support muscle and neurologic symptoms."
+      },
+      "kpi4-070": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "medication_review",
+          "thyroid_condition"
+        ],
+        "rationale": "L-theanine may support relaxation."
+      },
+      "kpi4-071": {
+        "proposed_answer": [
+          "calcium_citrate"
+        ],
+        "confidence": 0.75,
+        "flags": [
+          "thyroid_condition"
+        ],
+        "rationale": "Calcium supports bone density maintenance."
+      },
+      "kpi4-072": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.92,
+        "flags": [
+          "anemia"
+        ],
+        "rationale": "Anemia requires cause-specific testing and treatment."
+      },
+      "kpi4-073": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.95,
+        "flags": [
+          "cardiovascular_symptom",
+          "medication_review"
+        ],
+        "rationale": "Trying to increase cardiac output with supplements is not safe."
+      },
+      "kpi4-074": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.9,
+        "flags": [
+          "thyroid_condition"
+        ],
+        "rationale": "Hypothyroid metabolic symptoms need treatment-level assessment."
+      },
+      "kpi4-075": {
+        "proposed_answer": [
+          "coq10"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "thyroid_condition"
+        ],
+        "rationale": "CoQ10 may support fatigue; thyroid treatment status needs review."
+      },
+      "kpi4-076": {
+        "proposed_answer": [
+          "separate_dosing"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Separate thyroid hormone from calcium, magnesium, and fiber supplements."
+      },
+      "kpi4-077": {
+        "proposed_answer": [
+          "zinc"
+        ],
+        "confidence": 0.63,
+        "flags": [],
+        "rationale": "Zinc supports immune and mucosal function."
+      },
+      "kpi4-078": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.57,
+        "flags": [
+          "allergy"
+        ],
+        "rationale": "Probiotics are a supportive option for gut-immune balance."
+      },
+      "kpi4-079": {
+        "proposed_answer": [
+          "omega3"
+        ],
+        "confidence": 0.62,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Omega-3 is a supportive option for chronic inflammatory risk."
+      },
+      "kpi4-080": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.72,
+        "flags": [],
+        "rationale": "Probiotics may support the gut microbiome and mucosal health."
+      },
+      "kpi4-081": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.94,
+        "flags": [
+          "fertility"
+        ],
+        "rationale": "Infertility and PCOS need obstetric or gynecologic assessment."
+      },
+      "kpi4-082": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "fertility",
+          "medication_review"
+        ],
+        "rationale": "Implantation failure and inflammation require fertility specialist care."
+      },
+      "kpi4-083": {
+        "proposed_answer": [
+          "coq10"
+        ],
+        "confidence": 0.63,
+        "flags": [
+          "fertility"
+        ],
+        "rationale": "CoQ10 is a supportive option for sperm health."
+      },
+      "kpi4-084": {
+        "proposed_answer": [
+          "coq10"
+        ],
+        "confidence": 0.52,
+        "flags": [
+          "fertility"
+        ],
+        "rationale": "CoQ10 is supportive only; infertility causes still need assessment."
+      },
+      "kpi4-085": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.5,
+        "flags": [
+          "gastrointestinal_symptom",
+          "medication_review"
+        ],
+        "rationale": "L-theanine may support stress-related gut tension."
+      },
+      "kpi4-086": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.42,
+        "flags": [
+          "low_specificity"
+        ],
+        "rationale": "Probiotics support the gut environment but do not treat lactose intolerance."
+      },
+      "kpi4-087": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.96,
+        "flags": [
+          "insufficient_context"
+        ],
+        "rationale": "The stated goal is insufficient for a safe ingredient choice."
+      },
+      "kpi4-088": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.62,
+        "flags": [
+          "gastrointestinal_symptom",
+          "medication_review"
+        ],
+        "rationale": "Probiotics are a supportive option for gut-environment health."
+      },
+      "kpi4-089": {
+        "proposed_answer": [
+          "soluble_fiber"
+        ],
+        "confidence": 0.83,
+        "flags": [],
+        "rationale": "Soluble fiber is suitable for constipation and bowel regularity."
+      },
+      "kpi4-090": {
+        "proposed_answer": [
+          "probiotics"
+        ],
+        "confidence": 0.56,
+        "flags": [
+          "gastrointestinal_symptom"
+        ],
+        "rationale": "Probiotics are a supportive option for gut-environment recovery."
+      },
+      "kpi4-091": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.57,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "L-theanine may support low mood or stress symptoms."
+      },
+      "kpi4-092": {
+        "proposed_answer": [
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.45,
+        "flags": [
+          "lifestyle_priority"
+        ],
+        "rationale": "Activity needs lifestyle change first; B vitamins are only supportive."
+      },
+      "kpi4-093": {
+        "proposed_answer": [
+          "l_theanine"
+        ],
+        "confidence": 0.68,
+        "flags": [
+          "lifestyle_priority"
+        ],
+        "rationale": "L-theanine may support sleep initiation and maintenance."
+      },
+      "kpi4-094": {
+        "proposed_answer": [
+          "magnesium_glycinate"
+        ],
+        "confidence": 0.55,
+        "flags": [
+          "lifestyle_priority",
+          "medication_review"
+        ],
+        "rationale": "Magnesium may support sleep and relaxation; diuretic use needs review."
+      },
+      "kpi4-095": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "lifestyle_priority"
+        ],
+        "rationale": "Low protein and vegetable intake needs meal-planning support first."
+      },
+      "kpi4-096": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.64,
+        "flags": [
+          "lifestyle_priority"
+        ],
+        "rationale": "Reducing processed foods requires direct dietary behavior change."
+      },
+      "kpi4-097": {
+        "proposed_answer": [
+          "separate_dosing"
+        ],
+        "confidence": 0.51,
+        "flags": [
+          "lifestyle_priority",
+          "medication_review"
+        ],
+        "rationale": "Take thyroid hormone consistently and separate it from food or supplements."
+      },
+      "kpi4-098": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.6,
+        "flags": [
+          "lifestyle_priority"
+        ],
+        "rationale": "Meal speed is best addressed by behavior change, not supplements."
+      },
+      "kpi4-099": {
+        "proposed_answer": [
+          "advise_professional_consult"
+        ],
+        "confidence": 0.62,
+        "flags": [
+          "lifestyle_priority"
+        ],
+        "rationale": "Low activity needs an activity plan; supplements cannot replace exercise."
+      },
+      "kpi4-100": {
+        "proposed_answer": [
+          "supplement_depleted_nutrient"
+        ],
+        "confidence": 0.65,
+        "flags": [
+          "medication_review"
+        ],
+        "rationale": "Review nutrient status and other causes of fatigue during metformin use."
+      }
+    },
+    "cases_sha256": "41033d9061b75e448c795a3885ed346d55d83b425ccc9320d6bd1b9a0d3b0e22"
+  },
+  "batch_approval": null
 }

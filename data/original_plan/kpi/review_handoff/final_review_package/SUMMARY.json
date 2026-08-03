@@ -1,0 +1,49 @@
+{
+  "schema_version": "kpi_reviewer_package_v1",
+  "indicators": [
+    {
+      "indicator_id": "KPI-1",
+      "case_count": 100,
+      "agreement_count": 1,
+      "disagreement_count": 99,
+      "flagged_count": 89,
+      "required_review_count": 100,
+      "option_a_agent": "codex",
+      "option_b_agent": "claude-opus-5",
+      "csv_sha256": "8ce3e880f7803d33747d8ad021e93ebf16e2cd1680b3ab804abf9af266deb383"
+    },
+    {
+      "indicator_id": "KPI-3",
+      "case_count": 100,
+      "agreement_count": 41,
+      "disagreement_count": 59,
+      "flagged_count": 100,
+      "required_review_count": 100,
+      "option_a_agent": "codex-gpt-5.6-terra-kpi3-blind",
+      "option_b_agent": "claude-opus-5",
+      "csv_sha256": "c3b976b28501961c96910b3efb17288c75f380de74df985ac694cf2f0f180aaa"
+    },
+    {
+      "indicator_id": "KPI-4",
+      "case_count": 100,
+      "agreement_count": 7,
+      "disagreement_count": 93,
+      "flagged_count": 98,
+      "required_review_count": 100,
+      "option_a_agent": "claude-opus-5",
+      "option_b_agent": "codex-gpt-5.6-terra-kpi4-blind",
+      "csv_sha256": "9ffdd4c4850c14435c90b1451b02985561939a525f04d2b37d50b13e6d6cb4ba"
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_count": 100,
+      "agreement_count": 0,
+      "disagreement_count": 100,
+      "flagged_count": 82,
+      "required_review_count": 100,
+      "option_a_agent": "codex",
+      "option_b_agent": "claude-opus-5",
+      "csv_sha256": "d26c4d7b8b9f34dfbb8f709c69e33d90ecbe8dd6cff2f113d5c762debedaa758"
+    }
+  ]
+}
