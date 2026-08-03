@@ -1,0 +1,30 @@
+KPI 독립 검토 응답 만들기
+
+1. 새 Claude 작업을 엽니다.
+2. 아래 JSON 파일을 한 번에 하나만 첨부합니다.
+3. 다음 문장을 그대로 입력합니다.
+
+   첨부한 JSON의 instructions를 따르세요. response_skeleton의 모든 사례를 채우고 JSON 객체만 반환하세요. 저장소·엔진 규칙·엔진 출력·기존 정답은 사용하지 마세요.
+
+4. Claude가 반환한 JSON을 아래 이름으로 저장합니다.
+
+   kpi1_claude_review_response.json
+   kpi3_claude_review_response.json
+   kpi4_claude_primary_response.json
+   kpi5_claude_review_response.json
+
+5. 네 응답 파일을 원본 그대로 전달합니다. 문장이나 값을 직접 고치지 않습니다.
+
+처리 순서
+
+1) kpi1_claude_review_request_v1.json
+2) kpi3_claude_review_request_v1.json
+3) kpi4_claude_primary_request_v1.json
+4) kpi5_claude_review_request_v1.json
+
+주의
+
+- JSON마다 새 Claude 작업을 사용합니다.
+- 요청 JSON 이외의 연구 파일은 첨부하지 않습니다.
+- 빈 답이나 빈 confidence가 있으면 다시 완성된 JSON을 요청합니다.
+- 이 묶음은 독립 응답 생성용입니다. 최종 검토자용 자료는 네 응답을 검사한 뒤 별도로 생성합니다.
