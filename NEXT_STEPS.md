@@ -1,12 +1,11 @@
 # NEXT_STEPS
 
-Claude 작업은 완료됐다. 추가 AI 실행이나 Claude 전달은 없다.
+반환 검토 자료는 적용됐다. KPI-3은 100건 봉인까지 끝났다.
 
-1. `data/original_plan/kpi/review_handoff/kpi_final_review_package.zip`을 푼다.
-2. CSV 4개와 JSON 2개만 작성한다. 실제 두 의견의 불일치 또는 표시가 전체 사례를 덮으므로 현재 최소 상세 검토 수는 400건이다.
-3. `MAKE_RETURN_ZIP.cmd`를 실행하고 생성된 `kpi_completed_review.zip` 하나만 저장소 작업자에게 반환한다.
-4. 반환 ZIP은 `python scripts/import_kpi_reviewer_package.py --input <ZIP>`으로 먼저 읽기 전용 검사한다. `READY_TO_IMPORT`일 때만 `--apply`로 네 워크벤치를 원자적으로 갱신한다.
-5. `--apply`는 `seal_disposal_review.json`의 DISCARD 판단을 감사 이력과 함께 반영한다. KEEP이면 기존 무효 봉인이 남아 재봉인이 차단된다. 적용 뒤 네 지표를 다시 감사·봉인한다.
+1. `data/original_plan/kpi/review_handoff/completed_review/kpi_replacement_required_v1.json`의 KPI-1 49건, KPI-4 7건, KPI-5 9건을 새 사례로 교체한다.
+2. 교체 사례는 기존과 같은 출처 독립성·제공자 분리·블라인딩 검사를 거친다. 기존 반려 사례를 조용히 삭제하거나 기존 답을 복사해 확정하지 않는다.
+3. 교체 사례의 최종 판단이 들어오면 세 워크벤치를 다시 감사하고 100개 유효 사례가 있는 지표만 봉인한다.
+4. 새 봉인 뒤에만 `measurement_environment: research_phase_internal_measurement`로 연구 단계 내부 측정을 실행한다.
 
 전체 pytest 기준선은 실제 실행 결과 90건 실패다. `.pytest_cache/v/cache/lastfailed` 항목 수를 기준선으로 사용하지 않는다.
 

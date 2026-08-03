@@ -1,5 +1,14 @@
 # SESSION_HANDOFF
 
+## 2026-08-03 최종 검토 반영·KPI-3 봉인 handoff
+
+- 원본: `data/original_plan/kpi/review_handoff/completed_review/kpi_completed_review.zip`, SHA-256 `a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c`.
+- 적용: 네 워크벤치 각 100건, 합계 400건. KPI-1·5 과거 봉인은 제출된 DISCARD 판단대로 archive와 append-only 이력을 남겨 폐기했다.
+- 봉인 완료: KPI-3 100건, `wellnessbox_rnd_engine`, seal SHA-256 `2baadb797be0f6ff8ffd19b6eaec6b8331910a5e12d2c502fb78562da816c91c`.
+- 교체 필요: KPI-1 49건, KPI-4 7건, KPI-5 9건. 근거는 `kpi_replacement_required_v1.json`에 보존했다.
+- 현재 감사: 출처 무결성 4/4 PASS, KPI-3 completion ready, KPI-1·4·5는 `rejected_cases_require_replacement`로 차단.
+- 제출 기록의 검토자 표시는 `비식별 검토자`, 소속은 `비공개`, 건별 기록 시간은 모두 2초다. 입력을 임의로 실명화하거나 시간을 바꾸지 않았다.
+
 ## 2026-08-03 일괄 검토·반환 패키지 handoff
 
 - Claude 역할은 완료됐다. KPI-1·3·5의 2차 의견과 KPI-4의 1차 초안, 총 400건이 이미 워크벤치에 반영됐다.
@@ -7,7 +16,7 @@
 - `MAKE_RETURN_ZIP.cmd`는 여섯 파일만 `kpi_completed_review.zip`으로 묶는다. 반환 ZIP 생성 실험에서 항목 6개를 확인했다.
 - importer는 두 봉인 처리 판단의 값·작성자 일치·사유·시간대를 검사한다. `--apply`는 DISCARD 판단을 감사 이력으로 반영한 뒤 새 결정 400건을 저장하며 실패 시 관련 파일을 복구한다.
 - 코드 검증: 패키지·가져오기·봉인 처리 집중 시험 60건 PASS, 변경 파일 Ruff PASS.
-- 보류: 검토자 선택 400건, KPI-1·5 봉인 처리 판단, 반환 ZIP 가져오기, 최종 감사와 새 봉인.
+- 이 절의 보류 작업은 이후 제출로 처리됐다. 현재 남은 작업은 위 절의 교체 사례 65건이다.
 
 ## 2026-08-03 오프라인 검토 CSV importer handoff
 

@@ -607,8 +607,8 @@ def test_reference_seal_cli_does_not_write_below_minimum_sample(
     assert not destination.exists()
 
 
-def test_current_kpi1_and_kpi5_reviews_are_flagged() -> None:
-    """The seals on disk came from 100 accepts in under four seconds."""
+def test_current_kpi1_and_kpi5_reviews_follow_formal_disposal() -> None:
+    """The invalid auto-accept seals were retired before the new reviews."""
     for indicator in ("kpi1", "kpi5"):
         path = ROOT / f"data/original_plan/kpi/workbench/{indicator}_workbench_v1.json"
         if not path.is_file():
@@ -616,4 +616,6 @@ def test_current_kpi1_and_kpi5_reviews_are_flagged() -> None:
         workbench = json.loads(path.read_text(encoding="utf-8"))
         if not workbench.get("decisions"):
             continue
-        assert audit_review_effort(workbench)["verdict"] == "FAIL"
+        assert len(workbench["decisions"]) == 100
+        assert len(workbench.get("seal_disposals", [])) == 1
+        assert audit_review_effort(workbench)["verdict"] == "PASS"

@@ -181,6 +181,7 @@ def validate_package(source: Path) -> tuple[dict[str, Workbench], dict[str, Any]
         staged: dict[str, Workbench] = {}
         intervals: list[ReviewedInterval] = []
         counts: dict[str, int] = {}
+        choice_counts: dict[str, dict[str, int]] = {}
         for indicator_id in INDICATORS:
             expected_rows, _ = build_rows(indicator_id)
             rows = _load_rows(reader, indicator_id)
@@ -192,6 +193,7 @@ def validate_package(source: Path) -> tuple[dict[str, Workbench], dict[str, Any]
             draft_by_id = {draft.case_id: draft for draft in workbench.drafts}
             vocabulary = _answer_vocabulary(workbench)
             seen: set[str] = set()
+            indicator_choices = {choice: 0 for choice in ("A", "B", "CUSTOM", "REJECT")}
             for row, expected in zip(rows, expected_rows, strict=True):
                 case_id = row["case_id"].strip()
                 if case_id in seen:
@@ -204,6 +206,7 @@ def validate_package(source: Path) -> tuple[dict[str, Workbench], dict[str, Any]
                 choice = row["검토_선택"].strip().upper()
                 if choice not in {"A", "B", "CUSTOM", "REJECT"}:
                     raise ValueError(f"review_choice_invalid:{case_id}")
+                indicator_choices[choice] += 1
                 if choice == "A":
                     final_answer: list[str] | None = _split_answer(expected["안_A"])
                 elif choice == "B":
@@ -247,6 +250,7 @@ def validate_package(source: Path) -> tuple[dict[str, Workbench], dict[str, Any]
                 raise ValueError(f"required_review_still_pending:{indicator_id}")
             staged[indicator_id] = workbench
             counts[indicator_id] = len(rows)
+            choice_counts[indicator_id] = indicator_choices
 
         ordered = sorted(intervals, key=lambda item: item.start)
         for previous, current in zip(ordered, ordered[1:], strict=False):
@@ -260,6 +264,14 @@ def validate_package(source: Path) -> tuple[dict[str, Workbench], dict[str, Any]
             "qualification_stage": reviewer["qualification_stage"],
             "review_count": sum(counts.values()),
             "indicator_counts": counts,
+            "choice_counts": choice_counts,
+            "replacement_required_counts": {
+                indicator_id: choices["REJECT"]
+                for indicator_id, choices in choice_counts.items()
+            },
+            "replacement_required_count": sum(
+                choices["REJECT"] for choices in choice_counts.values()
+            ),
             "seal_disposal_decisions": {
                 indicator_id: entry["decision"]
                 for indicator_id, entry in seal_disposals.items()
@@ -346,9 +358,14 @@ def apply_package(source: Path) -> dict[str, Any]:
     except Exception:
         _restore_files(snapshots)
         raise
+    replacement_count = int(report.get("replacement_required_count", 0))
     return {
         **report,
-        "status": "IMPORTED",
+        "status": (
+            "IMPORTED_REPLACEMENTS_REQUIRED"
+            if replacement_count
+            else "IMPORTED"
+        ),
         "discarded_seals": sorted(disposal_paths),
     }
 

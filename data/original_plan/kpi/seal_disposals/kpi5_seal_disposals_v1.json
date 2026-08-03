@@ -1,0 +1,18 @@
+{
+  "schema_version": "answer_key_seal_disposal_history_v1",
+  "indicator_id": "KPI-5",
+  "events": [
+    {
+      "schema_version": "answer_key_seal_disposal_v1",
+      "indicator_id": "KPI-5",
+      "discarded_seal_sha256": "7df0d7e35a41d85051e71c96121ca3d44c1afa3bee092b1749d300355136fbdf",
+      "discarded_by": "비식별 검토자",
+      "discarded_at": "2026-08-03T14:20:10+09:00",
+      "reason": "Amlodipine-magnesium, atorvastatin-vitamin D, metformin-CoQ10 관계가 확립된 정답으로 보기 어려워 기존 봉인본 전체를 검토 결과로 교체해야 함.",
+      "original_seal_path": "data/original_plan/kpi/seals/discarded/kpi5_reference_seal_v1.json",
+      "archived_seal_path": "data/original_plan/kpi/seal_disposals/archive/seals/kpi5_reference_seal_7df0d7e35a41d85051e71c96121ca3d44c1afa3bee092b1749d300355136fbdf.json",
+      "archived_workbench_path": "data/original_plan/kpi/seal_disposals/archive/workbenches/kpi5_workbench_7df0d7e35a41d85051e71c96121ca3d44c1afa3bee092b1749d300355136fbdf.json",
+      "review_required_before_resealing": true
+    }
+  ]
+}

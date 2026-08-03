@@ -1,0 +1,1163 @@
+{
+  "schema_version": "kpi_replacement_required_v1",
+  "source_review_zip_sha256": "a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c",
+  "replacement_required_count": 65,
+  "indicator_counts": {
+    "KPI-1": 49,
+    "KPI-3": 0,
+    "KPI-4": 7,
+    "KPI-5": 9
+  },
+  "seal_ready_indicators": [
+    "KPI-3"
+  ],
+  "replacement_required_indicators": [
+    "KPI-1",
+    "KPI-4",
+    "KPI-5"
+  ],
+  "indicators": [
+    {
+      "indicator_id": "KPI-1",
+      "rejected_count": 49,
+      "rejected_cases": [
+        {
+          "case_id": "kpi1-ref-003",
+          "prompt": "영역 기타 3. 어린이 / 판정 「A형 성장 정체 및 유전형 (성장판 자원 부족)」 / 나이 41 / 복용약 Atorvastatin",
+          "draft_answer": [
+            "calcium_citrate",
+            "coq10",
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "calcium_citrate",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "review_note": "offline_review_choice:REJECT; 어린이 판정과 41세 성인 사례가 불일치함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:00:08+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-004",
+          "prompt": "영역 기타 3. 어린이 / 판정 「B형 생활 습관/호르몬형 (수면/운동 부족)」 / 나이 47 / 복용약 Esomeprazole",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 어린이 판정과 47세 성인 사례가 불일치함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:00:11+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-005",
+          "prompt": "영역 기타 3. 어린이 / 판정 「C형 영양 불균형/흡수부족형 (식욕부진, 편식)」 / 나이 53 / 복용약 Furosemide",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "probiotics",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "probiotics",
+            "zinc"
+          ],
+          "review_note": "offline_review_choice:REJECT; 어린이 판정과 53세 성인 사례가 불일치함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:00:14+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-006",
+          "prompt": "영역 기타 3. 어린이 / 판정 「D+E형 스트레스/성조숙형 (심리 불안, 조기 사춘기)」 / 나이 58 / 복용약 Levothyroxine",
+          "draft_answer": [
+            "calcium_citrate",
+            "l_theanine",
+            "magnesium_glycinate",
+            "soluble_fiber",
+            "vitamin_b_complex",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "l_theanine",
+            "magnesium_glycinate"
+          ],
+          "review_note": "offline_review_choice:REJECT; 어린이·성조숙 판정과 58세 성인 사례가 불일치함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:00:17+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-009",
+          "prompt": "영역 신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별 / 판정 「4. 감정 조절 및 가성치매 방지 (문항 9,10번)」 / 나이 72 / 복용약 없음",
+          "draft_answer": [
+            "l_theanine",
+            "magnesium_glycinate",
+            "probiotics"
+          ],
+          "independent_opinion": [
+            "omega3",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 가성치매·감정 조절은 보충제 조합만으로 판정하기 부적절하며 임상 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:00:26+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-018",
+          "prompt": "영역 신경계 및 뇌기능 7. 인지기능 저하 요인 / 판정 「9. 환경 (음주/흡연/중금속) - 산화 스트레스 감소 및 중금속 배출」 / 나이 69 / 복용약 Amlodipine",
+          "draft_answer": [
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "vitamin_c"
+          ],
+          "independent_opinion": [
+            "vitamin_c",
+            "zinc"
+          ],
+          "review_note": "offline_review_choice:REJECT; 중금속 배출을 일반 항산화 보충제로 대체하는 근거가 부족하고 노출 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:00:53+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-029",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 5. 어지럼증 / 판정 「A형 말초성 현훈 (귀) 이석증 메니에르 (순환/신경)」 / 나이 72 / 복용약 Furosemide",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "calcium_citrate",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 말초성 현훈·메니에르는 원인 평가와 표준 치료가 우선이며 제시 조합이 직접 치료 근거를 갖지 못함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:01:26+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-030",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 5. 어지럼증 / 판정 「B형 중추성 현훈 (뇌) 뇌졸중 뇌종양 (뇌혈관)」 / 나이 76 / 복용약 Levothyroxine",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "omega3",
+            "vitamin_b_complex"
+          ],
+          "independent_opinion": [
+            "omega3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 중추성 현훈·뇌졸중·뇌종양 가능성은 즉시 의료 평가 대상임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:01:29+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-037",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경 / 판정 「2. 부신 건강 및 스트레스 저항력 강화 (문항 3, 5번 'O')」 / 나이 64 / 복용약 Furosemide",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "vitamin_c",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "vitamin_b_complex",
+            "vitamin_c"
+          ],
+          "review_note": "offline_review_choice:REJECT; 부신 피로 개념과 보충제 조합의 근거가 불충분하며 원인 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:01:50+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-040",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경 / 판정 「5. 만성 피로 고위험 (문항 9번 'X')」 / 나이 76 / 복용약 Prednisolone",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "omega3",
+            "vitamin_b_complex",
+            "vitamin_c",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "coq10",
+            "vitamin_b_complex"
+          ],
+          "review_note": "offline_review_choice:REJECT; 고령의 만성 피로와 prednisolone 복용은 원인·부작용 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:01:59+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-041",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경 / 판정 「6. PEM(활동 후 피로 악화) 및 극심한 소진 관리 (문항 10번 'X')」 / 나이 28 / 복용약 없음",
+          "draft_answer": [
+            "magnesium_glycinate"
+          ],
+          "independent_opinion": [
+            "coq10",
+            "magnesium_glycinate"
+          ],
+          "review_note": "offline_review_choice:REJECT; PEM과 극심한 소진은 보충제 추천보다 의학적 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:02+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-042",
+          "prompt": "영역 성호르몬·비뇨기계 4. 여성 염증 / 판정 「급성 방광염 － 강력한 균 포획 및 배출 (문항 5-7번)」 / 나이 34 / 복용약 Amlodipine",
+          "draft_answer": [
+            "magnesium_glycinate",
+            "vitamin_c"
+          ],
+          "independent_opinion": [
+            "probiotics",
+            "vitamin_c"
+          ],
+          "review_note": "offline_review_choice:REJECT; 급성 방광염은 진단과 항감염 치료가 우선이며 보충제로 대체할 수 없음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:05+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-043",
+          "prompt": "영역 성호르몬·비뇨기계 4. 여성 염증 / 판정 「만성/재발성 방광염 － 바이오필름 파괴 및 면역 증가 (문항 20, 21, 26번)」 / 나이 41 / 복용약 Atorvastatin",
+          "draft_answer": [
+            "coq10",
+            "probiotics",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "probiotics",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 만성·재발성 방광염은 재발 원인 평가와 표준 치료가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:08+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-044",
+          "prompt": "영역 성호르몬·비뇨기계 4. 여성 염증 / 판정 「급성 요도염 － 화끈거림 차단 및 항염 (문항 8-10번)」 / 나이 47 / 복용약 Esomeprazole",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "omega3",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "omega3",
+            "vitamin_c"
+          ],
+          "review_note": "offline_review_choice:REJECT; 급성 요도염은 감염 평가와 치료가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:11+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-045",
+          "prompt": "영역 성호르몬·비뇨기계 4. 여성 염증 / 판정 「만성요도염 － 상피 재생 및 신경 안정 (문항 11, 16, 17번)」 / 나이 53 / 복용약 Furosemide",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "magnesium_glycinate",
+            "zinc"
+          ],
+          "review_note": "offline_review_choice:REJECT; 만성 요도 증상은 원인 감별이 우선이며 제시 성분 근거가 낮음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:14+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-046",
+          "prompt": "영역 성호르몬·비뇨기계 4. 여성 염증 / 판정 「세균성& 칸디다 질염 － 질내 pH 정상화 및 유익균 생태계 복구」 / 나이 58 / 복용약 Levothyroxine",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "probiotics",
+            "vitamin_c",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "probiotics"
+          ],
+          "review_note": "offline_review_choice:REJECT; 세균성 질염과 칸디다 질염은 치료가 다르므로 하나의 보충제 답으로 묶기 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:17+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-047",
+          "prompt": "영역 성호르몬·비뇨기계 4. 여성 염증 / 판정 「트리코모나스 질염－ 기생충 감염 후 점막 손상 회복 및 재발 방지」 / 나이 64 / 복용약 Metformin",
+          "draft_answer": [
+            "coq10",
+            "probiotics",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "probiotics",
+            "zinc"
+          ],
+          "review_note": "offline_review_choice:REJECT; 트리코모나스 질염은 항감염 치료가 필요한 성매개감염임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:20+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-048",
+          "prompt": "영역 성호르몬·비뇨기계 4. 여성 염증 / 판정 「만성 / 재발성 질염－ 점막 방어막 재생 및 바이오필름 파괴」 / 나이 69 / 복용약 Prednisolone",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "omega3",
+            "probiotics",
+            "vitamin_c",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "probiotics",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 재발성 질염과 prednisolone 복용은 감염·면역 상태 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:23+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-050",
+          "prompt": "영역 성호르몬·비뇨기계 1. 여성 갱년기 / 판정 「점막 보습 및 피부 탄력 유지 → 질 건조감, 피부 가려움」 / 나이 76 / 복용약 Amlodipine",
+          "draft_answer": [
+            "magnesium_glycinate",
+            "probiotics"
+          ],
+          "independent_opinion": [
+            "omega3",
+            "vitamin_c"
+          ],
+          "review_note": "offline_review_choice:REJECT; 질 건조·가려움은 원인 감별과 국소 치료 검토가 우선이며 제시 보충제 근거가 낮음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:29+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-053",
+          "prompt": "영역 소화기계 1. 위 / 판정 「1. 위 운동 기능 저하 개선 (문항 1, 2, 3, 10번)」 / 나이 41 / 복용약 Furosemide",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "probiotics",
+            "vitamin_b_complex"
+          ],
+          "review_note": "offline_review_choice:REJECT; 위 운동 저하에 제시된 보충제 근거가 낮고 증상 원인 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:38+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-055",
+          "prompt": "영역 대사 및 순환 9. 통풍 / 판정 「요산 배출 및 당 대사 개선」 / 나이 53 / 복용약 Metformin",
+          "draft_answer": [
+            "coq10",
+            "magnesium_glycinate",
+            "vitamin_b_complex"
+          ],
+          "independent_opinion": [
+            "berberine",
+            "vitamin_c"
+          ],
+          "review_note": "offline_review_choice:REJECT; 통풍의 요산·당 대사는 검사와 표준 치료가 우선이며 berberine 병용은 혈당 저하 위험을 더할 수 있음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:44+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-056",
+          "prompt": "영역 대사 및 순환 9. 통풍 / 판정 「통증 방어 및 염증 조절」 / 나이 58 / 복용약 Prednisolone",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "probiotics",
+            "vitamin_c",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "omega3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 통풍 통증·염증은 급성 발작 평가와 표준 치료가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:02:47+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-062",
+          "prompt": "영역 대사 및 순환 1. 고혈압 / 판정 「1. 체액 저류형(나트륨 과다) • 짜게 먹는 식습관 • 부종 동반 • 이뇨제 처방 환자」 / 나이 34 / 복용약 Levothyroxine",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate"
+          ],
+          "independent_opinion": [
+            "magnesium_glycinate"
+          ],
+          "review_note": "offline_review_choice:REJECT; 체액 저류형 고혈압은 나트륨 조절과 혈압·부종 평가가 우선이며 보충제 답이 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:05+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-064",
+          "prompt": "영역 대사 및 순환 1. 고혈압 / 판정 「2. 혈관 경화형(계속)」 / 나이 47 / 복용약 Prednisolone",
+          "draft_answer": [
+            "calcium_citrate",
+            "coq10",
+            "magnesium_glycinate",
+            "vitamin_c",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "coq10",
+            "omega3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 판정명이 불완전한 “계속” 표기로 목표가 충분히 특정되지 않음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:11+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-067",
+          "prompt": "영역 대사 및 순환 1. 고혈압 / 판정 「5. 복합형(대부분)」 / 나이 64 / 복용약 Atorvastatin",
+          "draft_answer": [
+            "coq10",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "magnesium_glycinate",
+            "omega3"
+          ],
+          "review_note": "offline_review_choice:REJECT; “복합형”만으로는 우선 원인과 성분을 특정하기 어렵고 고혈압은 임상 관리가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:20+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-068",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진 / 판정 「1. 안구 보호 & 항산화 (활성산소 방어)」 / 나이 69 / 복용약 Esomeprazole",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "omega3",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "omega3",
+            "vitamin_c"
+          ],
+          "review_note": "offline_review_choice:REJECT; 갑상선 안병증은 전문 진료가 우선이며 핵심 근거 성분이 후보 어휘에 빠져 있음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:23+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-069",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진 / 판정 「2. 증상 완화 & 근육 보호 (대사 조절)」 / 나이 72 / 복용약 Furosemide",
+          "draft_answer": [
+            "calcium_citrate",
+            "coq10",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "coq10",
+            "magnesium_glycinate"
+          ],
+          "review_note": "offline_review_choice:REJECT; 갑상선 기능 항진 증상은 원인 치료가 우선이며 제시 보충제 근거가 낮음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:26+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-070",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진 / 판정 「3. 신경 안정 & 수면 유도 (교감신경 억제)」 / 나이 76 / 복용약 Levothyroxine",
+          "draft_answer": [
+            "calcium_citrate",
+            "l_theanine",
+            "magnesium_glycinate"
+          ],
+          "independent_opinion": [
+            "l_theanine",
+            "magnesium_glycinate"
+          ],
+          "review_note": "offline_review_choice:REJECT; 갑상선 기능 항진 판정과 levothyroxine 복용 조합은 과잉 대체 가능성 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:29+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-072",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 4. 저혈압·빈혈 / 판정 「[빈혈] 혈액량·순환 개선」 / 나이 34 / 복용약 Prednisolone",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "vitamin_c",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "vitamin_b_complex",
+            "vitamin_c"
+          ],
+          "review_note": "offline_review_choice:REJECT; 빈혈은 원인과 철·B12·엽산 상태를 확인해야 하며 후보 조합만으로 답하기 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:35+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-073",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 4. 저혈압·빈혈 / 판정 「[공통] 심박출량 증가」 / 나이 41 / 복용약 없음",
+          "draft_answer": [
+            "coq10",
+            "vitamin_b_complex"
+          ],
+          "independent_opinion": [
+            "coq10"
+          ],
+          "review_note": "offline_review_choice:REJECT; 심박출량 저하 가능성은 심혈관 평가가 우선이며 CoQ10 단독 추천으로 대체할 수 없음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:38+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-074",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 2. 갑상선 기능 저하 / 판정 「1. 붓고 살찜 & 추위 → 대사 활성화」 / 나이 47 / 복용약 Amlodipine",
+          "draft_answer": [
+            "magnesium_glycinate",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "zinc"
+          ],
+          "review_note": "offline_review_choice:REJECT; 갑상선 기능 저하 의심 증상은 검사와 호르몬 치료 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:41+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-075",
+          "prompt": "영역 에너지 생성 및 부신·갑상선 기능 2. 갑상선 기능 저하 / 판정 「2. 만성 피로 → 에너지 부스팅」 / 나이 53 / 복용약 Atorvastatin",
+          "draft_answer": [
+            "coq10",
+            "vitamin_b_complex",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "coq10",
+            "vitamin_b_complex"
+          ],
+          "review_note": "offline_review_choice:REJECT; 갑상선 기능 저하 관련 피로는 갑상선 조절과 statin 근육 증상 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:44+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-080",
+          "prompt": "영역 면역 및 염증 1. 면역균형 / 판정 「4. 장누수/대사형 (잦은 설사,변비 / 저체온 / 항생제 장기복용) - 장 점막 면역 강화 및 대사 활성화」 / 나이 76 / 복용약 Prednisolone",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "soluble_fiber",
+            "vitamin_b_complex",
+            "vitamin_c",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "probiotics",
+            "zinc"
+          ],
+          "review_note": "offline_review_choice:REJECT; 장누수라는 비표준 진단과 광범위 증상을 보충제 조합만으로 판정하기 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:03:59+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-081",
+          "prompt": "영역 임신 1. 난임 / 판정 「여성 ② 대사/PCOS(인슐린 저항성)」 / 나이 28 / 복용약 없음",
+          "draft_answer": [
+            "berberine",
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "berberine",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 임신 가능성이 있는 난임·PCOS 사례에서 berberine 추천은 부적절하며 전문 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:02+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-082",
+          "prompt": "영역 임신 1. 난임 / 판정 「여성 ③ 자궁/염증(착상 실패)」 / 나이 34 / 복용약 Amlodipine",
+          "draft_answer": [
+            "magnesium_glycinate",
+            "omega3"
+          ],
+          "independent_opinion": [
+            "omega3",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 착상 실패·자궁 염증은 난임 전문 평가가 우선이며 보충제 조합만으로 답할 수 없음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:05+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-084",
+          "prompt": "영역 임신 1. 난임 / 판정 「공통 원인 불명(노화/스트레스)」 / 나이 47 / 복용약 Esomeprazole",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "probiotics",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "coq10",
+            "omega3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 원인 불명 난임은 양측 평가가 우선이며 PPI 관련 영양소 또는 일반 항산화 조합으로 대체할 수 없음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:11+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-085",
+          "prompt": "영역 소화기계 2. 장 / 판정 「IBS - 장신경 안정 및 근육 이완 (문항 12, 13번)」 / 나이 53 / 복용약 Furosemide",
+          "draft_answer": [
+            "calcium_citrate",
+            "l_theanine",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "magnesium_glycinate",
+            "probiotics"
+          ],
+          "review_note": "offline_review_choice:REJECT; IBS 아형과 증상 정보가 부족하고 magnesium은 설사형에서 악화 가능성이 있어 일괄 추천이 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:14+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-086",
+          "prompt": "영역 소화기계 2. 장 / 판정 「유당불내증 - 유제품 소화력 강화 및 부패방지 (문항 14번)」 / 나이 58 / 복용약 Levothyroxine",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "probiotics"
+          ],
+          "independent_opinion": [
+            "probiotics"
+          ],
+          "review_note": "offline_review_choice:REJECT; 유당불내증의 직접 대안인 lactase가 후보 어휘에 없고 probiotics만으로 대체하기 어려움.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:17+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-087",
+          "prompt": "영역 소화기계 2. 장 / 판정 「+10번: O」 / 나이 64 / 복용약 Metformin",
+          "draft_answer": [
+            "coq10",
+            "vitamin_b_complex"
+          ],
+          "independent_opinion": [
+            "probiotics"
+          ],
+          "review_note": "offline_review_choice:REJECT; “+10번: O”만으로 목표 의미를 해석할 수 없음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:20+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-088",
+          "prompt": "영역 소화기계 2. 장 / 판정 「LGS - 장점막 장벽 복구 및 전신 염증 차단 (문항 15, 16, 17번)」 / 나이 69 / 복용약 Prednisolone",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "vitamin_c",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "probiotics",
+            "zinc"
+          ],
+          "review_note": "offline_review_choice:REJECT; LGS는 정의가 불명확하고 prednisolone 복용 상황에서 원인 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:23+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-091",
+          "prompt": "영역 D. 생활습관 / 판정 「1번(활력/심리) X」 / 나이 28 / 복용약 Atorvastatin",
+          "draft_answer": [
+            "coq10",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "vitamin_b_complex",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 활력·심리 문항 하나만으로 영양소 결핍을 특정할 수 없고 생활·의학적 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:32+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-092",
+          "prompt": "영역 D. 생활습관 / 판정 「12번(활동량) X」 / 나이 34 / 복용약 Esomeprazole",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "coq10",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 활동량 부족은 행동 교정이 우선이며 보충제 추천 근거가 낮음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:35+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-094",
+          "prompt": "영역 D. 생활습관 / 판정 「15번(기상 시 개운함) X」 / 나이 47 / 복용약 Levothyroxine",
+          "draft_answer": [
+            "calcium_citrate",
+            "l_theanine",
+            "magnesium_glycinate"
+          ],
+          "independent_opinion": [
+            "magnesium_glycinate",
+            "vitamin_b_complex"
+          ],
+          "review_note": "offline_review_choice:REJECT; 기상 시 피로는 수면장애·갑상선 조절 등 원인 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:41+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-095",
+          "prompt": "영역 D. 생활습관 / 판정 「4번(단백질/채소) X」 / 나이 53 / 복용약 Metformin",
+          "draft_answer": [
+            "coq10",
+            "probiotics",
+            "vitamin_b_complex"
+          ],
+          "independent_opinion": [
+            "soluble_fiber",
+            "vitamin_b_complex"
+          ],
+          "review_note": "offline_review_choice:REJECT; 단백질·채소 부족은 식사 개선이 우선이며 보충제로 대체하기 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:44+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-096",
+          "prompt": "영역 D. 생활습관 / 판정 「5번(가공식품) X」 / 나이 58 / 복용약 Prednisolone",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "omega3",
+            "vitamin_c",
+            "vitamin_d3",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "omega3",
+            "soluble_fiber"
+          ],
+          "review_note": "offline_review_choice:REJECT; 가공식품 과다는 식습관 개선이 우선이며 보충제 조합으로 상쇄할 수 없음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:47+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-097",
+          "prompt": "영역 D. 생활습관 / 판정 「6번(식사 규칙성) X」 / 나이 64 / 복용약 없음",
+          "draft_answer": [
+            "vitamin_b_complex"
+          ],
+          "independent_opinion": [
+            "soluble_fiber"
+          ],
+          "review_note": "offline_review_choice:REJECT; 식사 규칙성 문제는 행동 교정이 우선이며 성분 추천 근거가 없음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:50+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-098",
+          "prompt": "영역 D. 생활습관 / 판정 「8번(식사 속도) X」 / 나이 69 / 복용약 Amlodipine",
+          "draft_answer": [
+            "magnesium_glycinate",
+            "vitamin_b_complex"
+          ],
+          "independent_opinion": [
+            "soluble_fiber"
+          ],
+          "review_note": "offline_review_choice:REJECT; 식사 속도 문제는 행동 교정이 우선이며 성분 추천 근거가 없음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:53+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-099",
+          "prompt": "영역 D. 생활습관 / 판정 「9, 10, 11번(운동) X」 / 나이 72 / 복용약 Atorvastatin",
+          "draft_answer": [
+            "coq10",
+            "magnesium_glycinate",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "coq10",
+            "vitamin_d3"
+          ],
+          "review_note": "offline_review_choice:REJECT; 운동 부족은 활동 계획과 statin 근육 증상 확인이 우선이며 보충제 자동 추천이 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:56+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi1-ref-100",
+          "prompt": "영역 소화기계 3. 간 / 판정 「간 기능 및 피로 - 에너지 생성 및 부신 피로 회복」 / 나이 76 / 복용약 Esomeprazole",
+          "draft_answer": [
+            "calcium_citrate",
+            "magnesium_glycinate",
+            "vitamin_b_complex",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "coq10",
+            "vitamin_b_complex"
+          ],
+          "review_note": "offline_review_choice:REJECT; 간 기능 저하·피로는 간질환 및 약물 원인 평가가 우선임.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:04:59+09:00",
+          "replacement_status": "required"
+        }
+      ]
+    },
+    {
+      "indicator_id": "KPI-3",
+      "rejected_count": 0,
+      "rejected_cases": []
+    },
+    {
+      "indicator_id": "KPI-4",
+      "rejected_count": 7,
+      "rejected_cases": [
+        {
+          "case_id": "kpi4-060",
+          "prompt": "「신경계 및 뇌기능 5. 두통·편두통」에서 「4. 식이 유발 및 대사 관리 (문항 9번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+          "draft_answer": [
+            "vitamin_b_complex"
+          ],
+          "independent_opinion": [
+            "soluble_fiber"
+          ],
+          "review_note": "offline_review_choice:REJECT; 식이 유발 관리가 우선이며 vitamin B군이나 fiber를 단독 정답으로 둘 근거가 부족함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:12:59+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi4-064",
+          "prompt": "Amlodipine 복용 중입니다. 「대사 및 순환 1. 고혈압」에서 「2. 혈관 경화형(계속)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+          "draft_answer": [
+            "coq10",
+            "omega3"
+          ],
+          "independent_opinion": [
+            "omega3"
+          ],
+          "review_note": "offline_review_choice:REJECT; “혈관 경화형(계속)”만으로 목표가 충분히 특정되지 않음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:13:11+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi4-086",
+          "prompt": "「소화기계 2. 장」에서 「유당불내증 - 유제품 소화력 강화 및 부패방지 (문항 14번)」이 목표입니다. 어떤 성분이 근거가 있나요?",
+          "draft_answer": [
+            "probiotics"
+          ],
+          "independent_opinion": [
+            "probiotics"
+          ],
+          "review_note": "offline_review_choice:REJECT; 유당불내증의 직접 대안인 lactase가 두 후보에 없고 probiotics만으로 대체하기 어려움.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:14:17+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi4-087",
+          "prompt": "「소화기계 2. 장」에서 「+10번: O」이 목표입니다. 어떤 성분이 근거가 있나요?",
+          "draft_answer": [
+            "probiotics"
+          ],
+          "independent_opinion": [
+            "advise_professional_consult"
+          ],
+          "review_note": "offline_review_choice:REJECT; “+10번: O”만으로 질문 의미를 해석할 수 없음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:14:20+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi4-088",
+          "prompt": "Atorvastatin 복용 중입니다. 「소화기계 2. 장」에서 「LGS - 장점막 장벽 복구 및 전신 염증 차단 (문항 15, 16, 17번)」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+          "draft_answer": [
+            "coq10",
+            "probiotics",
+            "supplement_depleted_nutrient",
+            "zinc"
+          ],
+          "independent_opinion": [
+            "probiotics"
+          ],
+          "review_note": "offline_review_choice:REJECT; LGS라는 비표준 진단과 약물 복용 상황을 probiotics 단독으로 답하기 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:14:23+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi4-091",
+          "prompt": "Esomeprazole 복용 중입니다. 「D. 생활습관」에서 「1번(활력/심리) X」이 목표인데, 무엇을 어떻게 먹어야 하나요?",
+          "draft_answer": [
+            "supplement_depleted_nutrient",
+            "vitamin_b_complex",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "l_theanine"
+          ],
+          "review_note": "offline_review_choice:REJECT; 활력·심리 문항 하나와 PPI 복용만으로 성분을 특정하기 어려움.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:14:32+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi4-092",
+          "prompt": "「D. 생활습관」에서 「12번(활동량) X」이 목표입니다. 어떤 성분이 근거가 있나요?",
+          "draft_answer": [
+            "advise_professional_consult",
+            "coq10",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "vitamin_b_complex"
+          ],
+          "review_note": "offline_review_choice:REJECT; 활동량 부족은 행동 교정이 우선이며 두 후보의 보충제 답이 적절하지 않음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:14:35+09:00",
+          "replacement_status": "required"
+        }
+      ]
+    },
+    {
+      "indicator_id": "KPI-5",
+      "rejected_count": 9,
+      "rejected_cases": [
+        {
+          "case_id": "kpi5-ref-001",
+          "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+          "draft_answer": [
+            "depletion",
+            "magnesium_glycinate"
+          ],
+          "independent_opinion": [
+            "absorption_interaction",
+            "마그네슘"
+          ],
+          "review_note": "offline_review_choice:REJECT; Amlodipine이 magnesium을 고갈시키거나 흡수를 저해한다는 관계는 확립되지 않았고, 후보 B도 약력학적 가능성을 잘못된 관계 라벨에 넣음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:15:02+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi5-ref-003",
+          "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?",
+          "draft_answer": [
+            "depletion",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "depletion",
+            "비타민 D"
+          ],
+          "review_note": "offline_review_choice:REJECT; Atorvastatin의 vitamin D 고갈 관계는 방향이 일관되게 확립되지 않아 정답 관계로 봉인하기 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:15:08+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi5-ref-014",
+          "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?",
+          "draft_answer": [
+            "coq10",
+            "depletion"
+          ],
+          "independent_opinion": [
+            "depletion",
+            "코엔자임Q10"
+          ],
+          "review_note": "offline_review_choice:REJECT; Metformin의 CoQ10 고갈 관계는 표준적으로 확립된 약물 유발 영양소 고갈로 보기 어려움.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:15:41+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi5-ref-041",
+          "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+          "draft_answer": [
+            "depletion",
+            "magnesium_glycinate"
+          ],
+          "independent_opinion": [
+            "absorption_interaction",
+            "마그네슘"
+          ],
+          "review_note": "offline_review_choice:REJECT; Amlodipine이 magnesium을 고갈시키거나 흡수를 저해한다는 관계는 확립되지 않았고, 후보 B도 약력학적 가능성을 잘못된 관계 라벨에 넣음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:17:02+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi5-ref-043",
+          "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?",
+          "draft_answer": [
+            "depletion",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "depletion",
+            "비타민 D"
+          ],
+          "review_note": "offline_review_choice:REJECT; Atorvastatin의 vitamin D 고갈 관계는 방향이 일관되게 확립되지 않아 정답 관계로 봉인하기 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:17:08+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi5-ref-054",
+          "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?",
+          "draft_answer": [
+            "coq10",
+            "depletion"
+          ],
+          "independent_opinion": [
+            "depletion",
+            "코엔자임Q10"
+          ],
+          "review_note": "offline_review_choice:REJECT; Metformin의 CoQ10 고갈 관계는 표준적으로 확립된 약물 유발 영양소 고갈로 보기 어려움.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:17:41+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi5-ref-081",
+          "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
+          "draft_answer": [
+            "depletion",
+            "magnesium_glycinate"
+          ],
+          "independent_opinion": [
+            "absorption_interaction",
+            "마그네슘"
+          ],
+          "review_note": "offline_review_choice:REJECT; Amlodipine이 magnesium을 고갈시키거나 흡수를 저해한다는 관계는 확립되지 않았고, 후보 B도 약력학적 가능성을 잘못된 관계 라벨에 넣음.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:19:02+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi5-ref-083",
+          "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?",
+          "draft_answer": [
+            "depletion",
+            "vitamin_d3"
+          ],
+          "independent_opinion": [
+            "depletion",
+            "비타민 D"
+          ],
+          "review_note": "offline_review_choice:REJECT; Atorvastatin의 vitamin D 고갈 관계는 방향이 일관되게 확립되지 않아 정답 관계로 봉인하기 부적절함.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:19:08+09:00",
+          "replacement_status": "required"
+        },
+        {
+          "case_id": "kpi5-ref-094",
+          "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?",
+          "draft_answer": [
+            "coq10",
+            "depletion"
+          ],
+          "independent_opinion": [
+            "depletion",
+            "코엔자임Q10"
+          ],
+          "review_note": "offline_review_choice:REJECT; Metformin의 CoQ10 고갈 관계는 표준적으로 확립된 약물 유발 영양소 고갈로 보기 어려움.",
+          "decided_by": "비식별 검토자",
+          "decided_at": "2026-08-03T14:19:41+09:00",
+          "replacement_status": "required"
+        }
+      ]
+    }
+  ]
+}

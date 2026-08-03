@@ -2103,7 +2103,1308 @@
       ]
     }
   ],
-  "decisions": {},
+  "decisions": {
+    "kpi3-001": {
+      "case_id": "kpi3-001",
+      "action": "edited",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:02+09:00",
+      "note": "offline_review_choice:B; 이상반응이 없는 2주 시점은 효과 판정에 이르므로 현 계획을 유지하고 평가 시점을 연장함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-002": {
+      "case_id": "kpi3-002",
+      "action": "accepted",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:05+09:00",
+      "note": "offline_review_choice:B; 위장관 불편이 있어 용량·복용 시점을 조정하고 내약성을 재평가함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-003": {
+      "case_id": "kpi3-003",
+      "action": "edited",
+      "final_answer": [
+        "stop_and_escalate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:08+09:00",
+      "note": "offline_review_choice:B; 두드러기는 과민반응 가능성이 있어 복용을 중단하고 안전성 평가로 전환함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-004": {
+      "case_id": "kpi3-004",
+      "action": "accepted",
+      "final_answer": [
+        "request_measurement"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:11+09:00",
+      "note": "offline_review_choice:B; 경과 데이터가 없어 유지·변경 전에 측정값 확보가 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-005": {
+      "case_id": "kpi3-005",
+      "action": "accepted",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:14+09:00",
+      "note": "offline_review_choice:B; 효과가 확인되고 불편이 없어 현 계획 유지가 타당함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-006": {
+      "case_id": "kpi3-006",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:17+09:00",
+      "note": "offline_review_choice:B; 새 처방약과 기존 보충제의 상호작용·중복 위험을 먼저 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-007": {
+      "case_id": "kpi3-007",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:20+09:00",
+      "note": "offline_review_choice:B; 효과 판정 전 복용 장애 요인을 확인하고 순응도 개선이 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-008": {
+      "case_id": "kpi3-008",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:23+09:00",
+      "note": "offline_review_choice:B; 현재 반응이 아닌 새 병력 정보이므로 즉시 중단보다 안전성 재검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-009": {
+      "case_id": "kpi3-009",
+      "action": "edited",
+      "final_answer": [
+        "hold_for_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:26+09:00",
+      "note": "offline_review_choice:B; 이미 확보된 경계값을 근거로 추가 진행을 보류하고 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-010": {
+      "case_id": "kpi3-010",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:29+09:00",
+      "note": "offline_review_choice:A; 선호 변경만으로 즉시 교체하지 않고 이유·목표·복용 가능성을 먼저 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-011": {
+      "case_id": "kpi3-011",
+      "action": "edited",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:32+09:00",
+      "note": "offline_review_choice:B; 즉시 권장 범위로 낮추고 초과 복용 관련 이상반응을 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-012": {
+      "case_id": "kpi3-012",
+      "action": "edited",
+      "final_answer": [
+        "reoptimize"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:35+09:00",
+      "note": "offline_review_choice:B; 충분한 평가 기간 후 악화가 확인되어 목표와 조합을 재설계함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-013": {
+      "case_id": "kpi3-013",
+      "action": "edited",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:38+09:00",
+      "note": "offline_review_choice:B; 이상반응이 없는 2주 시점은 효과 판정에 이르므로 현 계획을 유지하고 평가 시점을 연장함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-014": {
+      "case_id": "kpi3-014",
+      "action": "accepted",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:41+09:00",
+      "note": "offline_review_choice:B; 위장관 불편이 있어 용량·복용 시점을 조정하고 내약성을 재평가함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-015": {
+      "case_id": "kpi3-015",
+      "action": "edited",
+      "final_answer": [
+        "stop_and_escalate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:44+09:00",
+      "note": "offline_review_choice:B; 두드러기는 과민반응 가능성이 있어 복용을 중단하고 안전성 평가로 전환함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-016": {
+      "case_id": "kpi3-016",
+      "action": "accepted",
+      "final_answer": [
+        "request_measurement"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:47+09:00",
+      "note": "offline_review_choice:B; 경과 데이터가 없어 유지·변경 전에 측정값 확보가 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-017": {
+      "case_id": "kpi3-017",
+      "action": "accepted",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:50+09:00",
+      "note": "offline_review_choice:B; 효과가 확인되고 불편이 없어 현 계획 유지가 타당함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-018": {
+      "case_id": "kpi3-018",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:53+09:00",
+      "note": "offline_review_choice:B; 새 처방약과 기존 보충제의 상호작용·중복 위험을 먼저 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-019": {
+      "case_id": "kpi3-019",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:56+09:00",
+      "note": "offline_review_choice:B; 효과 판정 전 복용 장애 요인을 확인하고 순응도 개선이 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-020": {
+      "case_id": "kpi3-020",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:05:59+09:00",
+      "note": "offline_review_choice:B; 현재 반응이 아닌 새 병력 정보이므로 즉시 중단보다 안전성 재검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-021": {
+      "case_id": "kpi3-021",
+      "action": "edited",
+      "final_answer": [
+        "hold_for_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:02+09:00",
+      "note": "offline_review_choice:B; 이미 확보된 경계값을 근거로 추가 진행을 보류하고 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-022": {
+      "case_id": "kpi3-022",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:05+09:00",
+      "note": "offline_review_choice:A; 선호 변경만으로 즉시 교체하지 않고 이유·목표·복용 가능성을 먼저 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-023": {
+      "case_id": "kpi3-023",
+      "action": "edited",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:08+09:00",
+      "note": "offline_review_choice:B; 즉시 권장 범위로 낮추고 초과 복용 관련 이상반응을 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-024": {
+      "case_id": "kpi3-024",
+      "action": "accepted",
+      "final_answer": [
+        "reoptimize"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:11+09:00",
+      "note": "offline_review_choice:B; 충분한 평가 기간 후 악화가 확인되어 목표와 조합을 재설계함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-025": {
+      "case_id": "kpi3-025",
+      "action": "edited",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:14+09:00",
+      "note": "offline_review_choice:B; 이상반응이 없는 2주 시점은 효과 판정에 이르므로 현 계획을 유지하고 평가 시점을 연장함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-026": {
+      "case_id": "kpi3-026",
+      "action": "accepted",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:17+09:00",
+      "note": "offline_review_choice:B; 위장관 불편이 있어 용량·복용 시점을 조정하고 내약성을 재평가함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-027": {
+      "case_id": "kpi3-027",
+      "action": "edited",
+      "final_answer": [
+        "stop_and_escalate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:20+09:00",
+      "note": "offline_review_choice:B; 두드러기는 과민반응 가능성이 있어 복용을 중단하고 안전성 평가로 전환함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-028": {
+      "case_id": "kpi3-028",
+      "action": "accepted",
+      "final_answer": [
+        "request_measurement"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:23+09:00",
+      "note": "offline_review_choice:B; 경과 데이터가 없어 유지·변경 전에 측정값 확보가 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-029": {
+      "case_id": "kpi3-029",
+      "action": "accepted",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:26+09:00",
+      "note": "offline_review_choice:B; 효과가 확인되고 불편이 없어 현 계획 유지가 타당함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-030": {
+      "case_id": "kpi3-030",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:29+09:00",
+      "note": "offline_review_choice:B; 새 처방약과 기존 보충제의 상호작용·중복 위험을 먼저 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-031": {
+      "case_id": "kpi3-031",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:32+09:00",
+      "note": "offline_review_choice:B; 효과 판정 전 복용 장애 요인을 확인하고 순응도 개선이 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-032": {
+      "case_id": "kpi3-032",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:35+09:00",
+      "note": "offline_review_choice:B; 현재 반응이 아닌 새 병력 정보이므로 즉시 중단보다 안전성 재검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-033": {
+      "case_id": "kpi3-033",
+      "action": "edited",
+      "final_answer": [
+        "hold_for_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:38+09:00",
+      "note": "offline_review_choice:B; 이미 확보된 경계값을 근거로 추가 진행을 보류하고 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-034": {
+      "case_id": "kpi3-034",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:41+09:00",
+      "note": "offline_review_choice:A; 선호 변경만으로 즉시 교체하지 않고 이유·목표·복용 가능성을 먼저 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-035": {
+      "case_id": "kpi3-035",
+      "action": "edited",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:44+09:00",
+      "note": "offline_review_choice:B; 즉시 권장 범위로 낮추고 초과 복용 관련 이상반응을 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-036": {
+      "case_id": "kpi3-036",
+      "action": "accepted",
+      "final_answer": [
+        "reoptimize"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:47+09:00",
+      "note": "offline_review_choice:B; 충분한 평가 기간 후 악화가 확인되어 목표와 조합을 재설계함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-037": {
+      "case_id": "kpi3-037",
+      "action": "edited",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:50+09:00",
+      "note": "offline_review_choice:B; 이상반응이 없는 2주 시점은 효과 판정에 이르므로 현 계획을 유지하고 평가 시점을 연장함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-038": {
+      "case_id": "kpi3-038",
+      "action": "accepted",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:53+09:00",
+      "note": "offline_review_choice:B; 위장관 불편이 있어 용량·복용 시점을 조정하고 내약성을 재평가함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-039": {
+      "case_id": "kpi3-039",
+      "action": "edited",
+      "final_answer": [
+        "stop_and_escalate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:56+09:00",
+      "note": "offline_review_choice:B; 두드러기는 과민반응 가능성이 있어 복용을 중단하고 안전성 평가로 전환함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-040": {
+      "case_id": "kpi3-040",
+      "action": "accepted",
+      "final_answer": [
+        "request_measurement"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:06:59+09:00",
+      "note": "offline_review_choice:B; 경과 데이터가 없어 유지·변경 전에 측정값 확보가 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-041": {
+      "case_id": "kpi3-041",
+      "action": "accepted",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:02+09:00",
+      "note": "offline_review_choice:B; 효과가 확인되고 불편이 없어 현 계획 유지가 타당함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-042": {
+      "case_id": "kpi3-042",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:05+09:00",
+      "note": "offline_review_choice:B; 새 처방약과 기존 보충제의 상호작용·중복 위험을 먼저 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-043": {
+      "case_id": "kpi3-043",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:08+09:00",
+      "note": "offline_review_choice:B; 효과 판정 전 복용 장애 요인을 확인하고 순응도 개선이 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-044": {
+      "case_id": "kpi3-044",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:11+09:00",
+      "note": "offline_review_choice:B; 현재 반응이 아닌 새 병력 정보이므로 즉시 중단보다 안전성 재검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-045": {
+      "case_id": "kpi3-045",
+      "action": "edited",
+      "final_answer": [
+        "hold_for_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:14+09:00",
+      "note": "offline_review_choice:B; 이미 확보된 경계값을 근거로 추가 진행을 보류하고 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-046": {
+      "case_id": "kpi3-046",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:17+09:00",
+      "note": "offline_review_choice:A; 선호 변경만으로 즉시 교체하지 않고 이유·목표·복용 가능성을 먼저 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-047": {
+      "case_id": "kpi3-047",
+      "action": "edited",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:20+09:00",
+      "note": "offline_review_choice:B; 즉시 권장 범위로 낮추고 초과 복용 관련 이상반응을 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-048": {
+      "case_id": "kpi3-048",
+      "action": "accepted",
+      "final_answer": [
+        "reoptimize"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:23+09:00",
+      "note": "offline_review_choice:B; 충분한 평가 기간 후 악화가 확인되어 목표와 조합을 재설계함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-049": {
+      "case_id": "kpi3-049",
+      "action": "edited",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:26+09:00",
+      "note": "offline_review_choice:B; 이상반응이 없는 2주 시점은 효과 판정에 이르므로 현 계획을 유지하고 평가 시점을 연장함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-050": {
+      "case_id": "kpi3-050",
+      "action": "accepted",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:29+09:00",
+      "note": "offline_review_choice:B; 위장관 불편이 있어 용량·복용 시점을 조정하고 내약성을 재평가함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-051": {
+      "case_id": "kpi3-051",
+      "action": "edited",
+      "final_answer": [
+        "stop_and_escalate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:32+09:00",
+      "note": "offline_review_choice:B; 두드러기는 과민반응 가능성이 있어 복용을 중단하고 안전성 평가로 전환함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-052": {
+      "case_id": "kpi3-052",
+      "action": "accepted",
+      "final_answer": [
+        "request_measurement"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:35+09:00",
+      "note": "offline_review_choice:B; 경과 데이터가 없어 유지·변경 전에 측정값 확보가 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-053": {
+      "case_id": "kpi3-053",
+      "action": "accepted",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:38+09:00",
+      "note": "offline_review_choice:B; 효과가 확인되고 불편이 없어 현 계획 유지가 타당함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-054": {
+      "case_id": "kpi3-054",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:41+09:00",
+      "note": "offline_review_choice:B; 새 처방약과 기존 보충제의 상호작용·중복 위험을 먼저 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-055": {
+      "case_id": "kpi3-055",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:44+09:00",
+      "note": "offline_review_choice:B; 효과 판정 전 복용 장애 요인을 확인하고 순응도 개선이 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-056": {
+      "case_id": "kpi3-056",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:47+09:00",
+      "note": "offline_review_choice:B; 현재 반응이 아닌 새 병력 정보이므로 즉시 중단보다 안전성 재검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-057": {
+      "case_id": "kpi3-057",
+      "action": "edited",
+      "final_answer": [
+        "hold_for_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:50+09:00",
+      "note": "offline_review_choice:B; 이미 확보된 경계값을 근거로 추가 진행을 보류하고 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-058": {
+      "case_id": "kpi3-058",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:53+09:00",
+      "note": "offline_review_choice:A; 선호 변경만으로 즉시 교체하지 않고 이유·목표·복용 가능성을 먼저 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-059": {
+      "case_id": "kpi3-059",
+      "action": "edited",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:56+09:00",
+      "note": "offline_review_choice:B; 즉시 권장 범위로 낮추고 초과 복용 관련 이상반응을 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-060": {
+      "case_id": "kpi3-060",
+      "action": "accepted",
+      "final_answer": [
+        "reoptimize"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:07:59+09:00",
+      "note": "offline_review_choice:B; 충분한 평가 기간 후 악화가 확인되어 목표와 조합을 재설계함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-061": {
+      "case_id": "kpi3-061",
+      "action": "edited",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:02+09:00",
+      "note": "offline_review_choice:B; 이상반응이 없는 2주 시점은 효과 판정에 이르므로 현 계획을 유지하고 평가 시점을 연장함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-062": {
+      "case_id": "kpi3-062",
+      "action": "accepted",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:05+09:00",
+      "note": "offline_review_choice:B; 위장관 불편이 있어 용량·복용 시점을 조정하고 내약성을 재평가함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-063": {
+      "case_id": "kpi3-063",
+      "action": "edited",
+      "final_answer": [
+        "stop_and_escalate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:08+09:00",
+      "note": "offline_review_choice:B; 두드러기는 과민반응 가능성이 있어 복용을 중단하고 안전성 평가로 전환함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-064": {
+      "case_id": "kpi3-064",
+      "action": "accepted",
+      "final_answer": [
+        "request_measurement"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:11+09:00",
+      "note": "offline_review_choice:B; 경과 데이터가 없어 유지·변경 전에 측정값 확보가 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-065": {
+      "case_id": "kpi3-065",
+      "action": "accepted",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:14+09:00",
+      "note": "offline_review_choice:B; 효과가 확인되고 불편이 없어 현 계획 유지가 타당함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-066": {
+      "case_id": "kpi3-066",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:17+09:00",
+      "note": "offline_review_choice:B; 새 처방약과 기존 보충제의 상호작용·중복 위험을 먼저 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-067": {
+      "case_id": "kpi3-067",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:20+09:00",
+      "note": "offline_review_choice:B; 효과 판정 전 복용 장애 요인을 확인하고 순응도 개선이 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-068": {
+      "case_id": "kpi3-068",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:23+09:00",
+      "note": "offline_review_choice:B; 현재 반응이 아닌 새 병력 정보이므로 즉시 중단보다 안전성 재검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-069": {
+      "case_id": "kpi3-069",
+      "action": "edited",
+      "final_answer": [
+        "hold_for_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:26+09:00",
+      "note": "offline_review_choice:B; 이미 확보된 경계값을 근거로 추가 진행을 보류하고 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-070": {
+      "case_id": "kpi3-070",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:29+09:00",
+      "note": "offline_review_choice:A; 선호 변경만으로 즉시 교체하지 않고 이유·목표·복용 가능성을 먼저 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-071": {
+      "case_id": "kpi3-071",
+      "action": "edited",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:32+09:00",
+      "note": "offline_review_choice:B; 즉시 권장 범위로 낮추고 초과 복용 관련 이상반응을 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-072": {
+      "case_id": "kpi3-072",
+      "action": "accepted",
+      "final_answer": [
+        "reoptimize"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:35+09:00",
+      "note": "offline_review_choice:B; 충분한 평가 기간 후 악화가 확인되어 목표와 조합을 재설계함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-073": {
+      "case_id": "kpi3-073",
+      "action": "edited",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:38+09:00",
+      "note": "offline_review_choice:B; 이상반응이 없는 2주 시점은 효과 판정에 이르므로 현 계획을 유지하고 평가 시점을 연장함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-074": {
+      "case_id": "kpi3-074",
+      "action": "accepted",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:41+09:00",
+      "note": "offline_review_choice:B; 위장관 불편이 있어 용량·복용 시점을 조정하고 내약성을 재평가함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-075": {
+      "case_id": "kpi3-075",
+      "action": "edited",
+      "final_answer": [
+        "stop_and_escalate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:44+09:00",
+      "note": "offline_review_choice:B; 두드러기는 과민반응 가능성이 있어 복용을 중단하고 안전성 평가로 전환함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-076": {
+      "case_id": "kpi3-076",
+      "action": "accepted",
+      "final_answer": [
+        "request_measurement"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:47+09:00",
+      "note": "offline_review_choice:B; 경과 데이터가 없어 유지·변경 전에 측정값 확보가 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-077": {
+      "case_id": "kpi3-077",
+      "action": "accepted",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:50+09:00",
+      "note": "offline_review_choice:B; 효과가 확인되고 불편이 없어 현 계획 유지가 타당함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-078": {
+      "case_id": "kpi3-078",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:53+09:00",
+      "note": "offline_review_choice:B; 새 처방약과 기존 보충제의 상호작용·중복 위험을 먼저 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-079": {
+      "case_id": "kpi3-079",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:56+09:00",
+      "note": "offline_review_choice:B; 효과 판정 전 복용 장애 요인을 확인하고 순응도 개선이 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-080": {
+      "case_id": "kpi3-080",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:08:59+09:00",
+      "note": "offline_review_choice:B; 현재 반응이 아닌 새 병력 정보이므로 즉시 중단보다 안전성 재검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-081": {
+      "case_id": "kpi3-081",
+      "action": "edited",
+      "final_answer": [
+        "hold_for_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:02+09:00",
+      "note": "offline_review_choice:B; 이미 확보된 경계값을 근거로 추가 진행을 보류하고 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-082": {
+      "case_id": "kpi3-082",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:05+09:00",
+      "note": "offline_review_choice:A; 선호 변경만으로 즉시 교체하지 않고 이유·목표·복용 가능성을 먼저 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-083": {
+      "case_id": "kpi3-083",
+      "action": "edited",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:08+09:00",
+      "note": "offline_review_choice:B; 즉시 권장 범위로 낮추고 초과 복용 관련 이상반응을 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-084": {
+      "case_id": "kpi3-084",
+      "action": "accepted",
+      "final_answer": [
+        "reoptimize"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:11+09:00",
+      "note": "offline_review_choice:B; 충분한 평가 기간 후 악화가 확인되어 목표와 조합을 재설계함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-085": {
+      "case_id": "kpi3-085",
+      "action": "edited",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:14+09:00",
+      "note": "offline_review_choice:B; 이상반응이 없는 2주 시점은 효과 판정에 이르므로 현 계획을 유지하고 평가 시점을 연장함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-086": {
+      "case_id": "kpi3-086",
+      "action": "accepted",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:17+09:00",
+      "note": "offline_review_choice:B; 위장관 불편이 있어 용량·복용 시점을 조정하고 내약성을 재평가함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-087": {
+      "case_id": "kpi3-087",
+      "action": "edited",
+      "final_answer": [
+        "stop_and_escalate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:20+09:00",
+      "note": "offline_review_choice:B; 두드러기는 과민반응 가능성이 있어 복용을 중단하고 안전성 평가로 전환함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-088": {
+      "case_id": "kpi3-088",
+      "action": "accepted",
+      "final_answer": [
+        "request_measurement"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:23+09:00",
+      "note": "offline_review_choice:B; 경과 데이터가 없어 유지·변경 전에 측정값 확보가 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-089": {
+      "case_id": "kpi3-089",
+      "action": "accepted",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:26+09:00",
+      "note": "offline_review_choice:B; 효과가 확인되고 불편이 없어 현 계획 유지가 타당함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-090": {
+      "case_id": "kpi3-090",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:29+09:00",
+      "note": "offline_review_choice:B; 새 처방약과 기존 보충제의 상호작용·중복 위험을 먼저 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-091": {
+      "case_id": "kpi3-091",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:32+09:00",
+      "note": "offline_review_choice:B; 효과 판정 전 복용 장애 요인을 확인하고 순응도 개선이 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-092": {
+      "case_id": "kpi3-092",
+      "action": "edited",
+      "final_answer": [
+        "request_safety_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:35+09:00",
+      "note": "offline_review_choice:B; 현재 반응이 아닌 새 병력 정보이므로 즉시 중단보다 안전성 재검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-093": {
+      "case_id": "kpi3-093",
+      "action": "edited",
+      "final_answer": [
+        "hold_for_review"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:38+09:00",
+      "note": "offline_review_choice:B; 이미 확보된 경계값을 근거로 추가 진행을 보류하고 검토함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-094": {
+      "case_id": "kpi3-094",
+      "action": "accepted",
+      "final_answer": [
+        "request_followup"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:41+09:00",
+      "note": "offline_review_choice:A; 선호 변경만으로 즉시 교체하지 않고 이유·목표·복용 가능성을 먼저 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-095": {
+      "case_id": "kpi3-095",
+      "action": "edited",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:44+09:00",
+      "note": "offline_review_choice:B; 즉시 권장 범위로 낮추고 초과 복용 관련 이상반응을 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-096": {
+      "case_id": "kpi3-096",
+      "action": "accepted",
+      "final_answer": [
+        "reoptimize"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:47+09:00",
+      "note": "offline_review_choice:B; 충분한 평가 기간 후 악화가 확인되어 목표와 조합을 재설계함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-097": {
+      "case_id": "kpi3-097",
+      "action": "edited",
+      "final_answer": [
+        "maintain"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:50+09:00",
+      "note": "offline_review_choice:B; 이상반응이 없는 2주 시점은 효과 판정에 이르므로 현 계획을 유지하고 평가 시점을 연장함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-098": {
+      "case_id": "kpi3-098",
+      "action": "accepted",
+      "final_answer": [
+        "reduce"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:53+09:00",
+      "note": "offline_review_choice:B; 위장관 불편이 있어 용량·복용 시점을 조정하고 내약성을 재평가함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-099": {
+      "case_id": "kpi3-099",
+      "action": "edited",
+      "final_answer": [
+        "stop_and_escalate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:56+09:00",
+      "note": "offline_review_choice:B; 두드러기는 과민반응 가능성이 있어 복용을 중단하고 안전성 평가로 전환함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi3-100": {
+      "case_id": "kpi3-100",
+      "action": "accepted",
+      "final_answer": [
+        "request_measurement"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:09:59+09:00",
+      "note": "offline_review_choice:B; 경과 데이터가 없어 유지·변경 전에 측정값 확보가 필요함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    }
+  },
   "seal_disposals": [],
   "primary_ai_draft": {
     "schema_version": "blind_primary_ai_answer_draft_v1",

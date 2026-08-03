@@ -2246,7 +2246,1327 @@
       ]
     }
   ],
-  "decisions": {},
+  "decisions": {
+    "kpi4-001": {
+      "case_id": "kpi4-001",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:02+09:00",
+      "note": "offline_review_choice:B; berberine을 포함한 혈당·혈압 영향 성분은 복용약과 함께 전문가 검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-002": {
+      "case_id": "kpi4-002",
+      "action": "accepted",
+      "final_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:05+09:00",
+      "note": "offline_review_choice:A; 장내 미생물과 배출 목표를 함께 반영한 조합임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-003": {
+      "case_id": "kpi4-003",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:08+09:00",
+      "note": "offline_review_choice:B; 소아 성장 정체는 영양제보다 성장 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-004": {
+      "case_id": "kpi4-004",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:11+09:00",
+      "note": "offline_review_choice:B; 소아 성장·수면 문제와 statin 복용은 임상 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-005": {
+      "case_id": "kpi4-005",
+      "action": "edited",
+      "final_answer": [
+        "supplement_depleted_nutrient"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:14+09:00",
+      "note": "offline_review_choice:B; 소아에서는 결핍 가능성을 개별 평가한 뒤 보충하는 접근이 안전함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-006": {
+      "case_id": "kpi4-006",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:17+09:00",
+      "note": "offline_review_choice:B; 성조숙 가능성은 소아내분비 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-007": {
+      "case_id": "kpi4-007",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "supplement_depleted_nutrient"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:20+09:00",
+      "note": "offline_review_choice:CUSTOM; 인지 증상은 임상 평가가 필요하고, 장기 PPI 복용 시 관련 영양소 상태를 함께 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-008": {
+      "case_id": "kpi4-008",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:23+09:00",
+      "note": "offline_review_choice:CUSTOM; 지남력 저하는 보충제 선택보다 인지기능 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-009": {
+      "case_id": "kpi4-009",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:26+09:00",
+      "note": "offline_review_choice:CUSTOM; 가성치매·감정 조절 문제는 우울 등 정신건강 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-010": {
+      "case_id": "kpi4-010",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "supplement_depleted_nutrient"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:29+09:00",
+      "note": "offline_review_choice:CUSTOM; 고령 인지저하와 이뇨제 복용은 임상 평가 및 결핍 확인이 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-011": {
+      "case_id": "kpi4-011",
+      "action": "edited",
+      "final_answer": [
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:32+09:00",
+      "note": "offline_review_choice:B; 혈당 정보 없이 berberine을 추가하지 않고 혈관 목표에 직접적인 성분만 유지함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-012": {
+      "case_id": "kpi4-012",
+      "action": "accepted",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:35+09:00",
+      "note": "offline_review_choice:A; 수면 리듬과 신경 이완 목표를 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-013": {
+      "case_id": "kpi4-013",
+      "action": "accepted",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate",
+        "separate_dosing"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:38+09:00",
+      "note": "offline_review_choice:A; 이완 성분과 levothyroxine-미네랄 간격 복용을 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-014": {
+      "case_id": "kpi4-014",
+      "action": "accepted",
+      "final_answer": [
+        "vitamin_b_complex"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:41+09:00",
+      "note": "offline_review_choice:A; 두 후보가 동일하며 영양결핍 목표에 직접 대응함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-015": {
+      "case_id": "kpi4-015",
+      "action": "edited",
+      "final_answer": [
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:44+09:00",
+      "note": "offline_review_choice:B; 운동부족·혈류 목표에서 상대적으로 직접적인 omega3만 유지함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-016": {
+      "case_id": "kpi4-016",
+      "action": "edited",
+      "final_answer": [
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:47+09:00",
+      "note": "offline_review_choice:B; 만성 염증 목표에 직접적인 성분만 유지하고 metformin 관련 자동 보충은 제외함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-017": {
+      "case_id": "kpi4-017",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:50+09:00",
+      "note": "offline_review_choice:CUSTOM; 시력·청력 저하는 원인 감별이 우선이며 일반 보충제로 대체하기 어려움.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-018": {
+      "case_id": "kpi4-018",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:53+09:00",
+      "note": "offline_review_choice:B; 중금속·독성 노출 가능성은 전문 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-019": {
+      "case_id": "kpi4-019",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:56+09:00",
+      "note": "offline_review_choice:CUSTOM; 치은염과 prednisolone 복용은 치과 평가가 우선이며 광범위 보충은 부적절함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-020": {
+      "case_id": "kpi4-020",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:10:59+09:00",
+      "note": "offline_review_choice:CUSTOM; 치주 치료를 우선 안내하면서 골밀도 보조 성분은 제한적으로 유지함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-021": {
+      "case_id": "kpi4-021",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:02+09:00",
+      "note": "offline_review_choice:CUSTOM; 불안·자책은 정신건강 평가가 우선이며 보충제 단독 답변은 부적절함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-022": {
+      "case_id": "kpi4-022",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:05+09:00",
+      "note": "offline_review_choice:CUSTOM; 우울 관련 의욕 저하는 평가가 우선이며 영양제 단독 추천으로 대체할 수 없음.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-023": {
+      "case_id": "kpi4-023",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "probiotics"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:08+09:00",
+      "note": "offline_review_choice:CUSTOM; 정신건강 평가를 우선하되 장-뇌 축 보조 성분은 부가적으로만 제시함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-024": {
+      "case_id": "kpi4-024",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:11+09:00",
+      "note": "offline_review_choice:CUSTOM; 염증성 피로의 원인 평가를 우선하고 보조 성분은 제한적으로 유지함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-025": {
+      "case_id": "kpi4-025",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:14+09:00",
+      "note": "offline_review_choice:B; 인슐린 저항성과 statin 복용 상황에서 berberine 자동 추천보다 전문가 검토가 안전함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-026": {
+      "case_id": "kpi4-026",
+      "action": "accepted",
+      "final_answer": [
+        "soluble_fiber"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:17+09:00",
+      "note": "offline_review_choice:A; 식후 혈당 스파이크 목표에 soluble fiber가 직접 대응함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-027": {
+      "case_id": "kpi4-027",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:20+09:00",
+      "note": "offline_review_choice:CUSTOM; 당뇨 합병증은 보충제보다 혈당·장기 합병증 관리가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-028": {
+      "case_id": "kpi4-028",
+      "action": "edited",
+      "final_answer": [
+        "supplement_depleted_nutrient"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:23+09:00",
+      "note": "offline_review_choice:B; PPI 관련 결핍은 상태를 확인한 뒤 보충하며 CoQ10 자동 추가는 제외함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-029": {
+      "case_id": "kpi4-029",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:26+09:00",
+      "note": "offline_review_choice:B; 말초성 현훈은 원인 평가와 표준 치료가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-030": {
+      "case_id": "kpi4-030",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:29+09:00",
+      "note": "offline_review_choice:B; 중추성 현훈은 긴급 신경학적 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-031": {
+      "case_id": "kpi4-031",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:32+09:00",
+      "note": "offline_review_choice:CUSTOM; 심인성 현훈도 진단 확인과 이뇨제 안전성 검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-032": {
+      "case_id": "kpi4-032",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "soluble_fiber"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:35+09:00",
+      "note": "offline_review_choice:CUSTOM; 유전성 LDL 상승 가능성은 임상 평가가 필요하며 fiber는 보조로만 유지함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-033": {
+      "case_id": "kpi4-033",
+      "action": "accepted",
+      "final_answer": [
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:38+09:00",
+      "note": "offline_review_choice:A; 중성지방 목표에 omega3가 직접 대응함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-034": {
+      "case_id": "kpi4-034",
+      "action": "edited",
+      "final_answer": [
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:41+09:00",
+      "note": "offline_review_choice:B; 동맥경화 예방 목표에 후보 중 상대적으로 직접적인 성분을 선택함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-035": {
+      "case_id": "kpi4-035",
+      "action": "accepted",
+      "final_answer": [
+        "coq10"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:44+09:00",
+      "note": "offline_review_choice:A; 두 후보가 동일하며 statin 관련 목표에 직접 대응함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-036": {
+      "case_id": "kpi4-036",
+      "action": "accepted",
+      "final_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:47+09:00",
+      "note": "offline_review_choice:A; 에너지 생성 목표에 CoQ10과 B군을 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-037": {
+      "case_id": "kpi4-037",
+      "action": "edited",
+      "final_answer": [
+        "vitamin_b_complex"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:50+09:00",
+      "note": "offline_review_choice:B; metformin 관련 결핍은 확인이 전제되며 광범위 보충보다 간결한 답이 적절함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-038": {
+      "case_id": "kpi4-038",
+      "action": "accepted",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:53+09:00",
+      "note": "offline_review_choice:A; 자율신경 이완과 혈당 안정 목표를 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-039": {
+      "case_id": "kpi4-039",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:56+09:00",
+      "note": "offline_review_choice:CUSTOM; 비특이적 소진은 수면·정신건강·내과적 원인 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-040": {
+      "case_id": "kpi4-040",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:11:59+09:00",
+      "note": "offline_review_choice:B; 고위험 만성 피로와 prednisolone 복용은 전문가 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-041": {
+      "case_id": "kpi4-041",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:02+09:00",
+      "note": "offline_review_choice:B; PEM과 극심한 소진은 의학적 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-042": {
+      "case_id": "kpi4-042",
+      "action": "accepted",
+      "final_answer": [
+        "advise_professional_consult",
+        "probiotics",
+        "vitamin_c"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:05+09:00",
+      "note": "offline_review_choice:A; 급성 방광염은 의료 상담을 우선하면서 보조 성분임을 명확히 함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-043": {
+      "case_id": "kpi4-043",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:08+09:00",
+      "note": "offline_review_choice:B; 재발성 방광염은 원인 평가와 치료가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-044": {
+      "case_id": "kpi4-044",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:11+09:00",
+      "note": "offline_review_choice:B; 급성 요도염은 감염 평가와 치료가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-045": {
+      "case_id": "kpi4-045",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:14+09:00",
+      "note": "offline_review_choice:B; 만성 요도 증상은 원인 감별이 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-046": {
+      "case_id": "kpi4-046",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "probiotics"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:17+09:00",
+      "note": "offline_review_choice:CUSTOM; 질염은 유형별 진단·치료가 우선이며 probiotics는 보조로만 제시함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-047": {
+      "case_id": "kpi4-047",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:20+09:00",
+      "note": "offline_review_choice:B; 트리코모나스 질염은 성매개감염 치료가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-048": {
+      "case_id": "kpi4-048",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "probiotics"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:23+09:00",
+      "note": "offline_review_choice:CUSTOM; 재발성 질염은 평가가 우선이며 probiotics는 보조로만 유지함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-049": {
+      "case_id": "kpi4-049",
+      "action": "edited",
+      "final_answer": [
+        "l_theanine"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:26+09:00",
+      "note": "offline_review_choice:B; PPI 관련 광범위 자동 보충을 제외하고 수면 목표에 직접적인 성분만 유지함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-050": {
+      "case_id": "kpi4-050",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:29+09:00",
+      "note": "offline_review_choice:B; 질 건조·가려움은 원인 감별과 적절한 국소 치료 검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-051": {
+      "case_id": "kpi4-051",
+      "action": "accepted",
+      "final_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:32+09:00",
+      "note": "offline_review_choice:A; 골밀도 유지에 calcium과 vitamin D를 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-052": {
+      "case_id": "kpi4-052",
+      "action": "edited",
+      "final_answer": [
+        "coq10"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:35+09:00",
+      "note": "offline_review_choice:B; 피로 목표에 직접적인 CoQ10만 유지하고 이뇨제 관련 자동 보충은 제외함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-053": {
+      "case_id": "kpi4-053",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:38+09:00",
+      "note": "offline_review_choice:CUSTOM; 위 운동 저하 증상은 원인 평가가 우선이며 제시 보충제 근거가 낮음.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-054": {
+      "case_id": "kpi4-054",
+      "action": "accepted",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:41+09:00",
+      "note": "offline_review_choice:A; 스트레스성 위 증상과 신경 이완 목표를 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-055": {
+      "case_id": "kpi4-055",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:44+09:00",
+      "note": "offline_review_choice:B; 통풍·당 대사와 levothyroxine 복용은 전문가 검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-056": {
+      "case_id": "kpi4-056",
+      "action": "accepted",
+      "final_answer": [
+        "advise_professional_consult",
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:47+09:00",
+      "note": "offline_review_choice:A; 통풍 치료가 우선임을 포함하고 omega3는 보조로만 제시함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-057": {
+      "case_id": "kpi4-057",
+      "action": "accepted",
+      "final_answer": [
+        "coq10",
+        "magnesium_glycinate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:50+09:00",
+      "note": "offline_review_choice:A; 편두통 예방에 사용되는 CoQ10과 magnesium을 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-058": {
+      "case_id": "kpi4-058",
+      "action": "edited",
+      "final_answer": [
+        "magnesium_glycinate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:53+09:00",
+      "note": "offline_review_choice:B; 긴장성 두통 목표에 직접적인 magnesium만 유지하고 metformin 관련 자동 보충은 제외함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-059": {
+      "case_id": "kpi4-059",
+      "action": "accepted",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:56+09:00",
+      "note": "offline_review_choice:A; 수면 부족형 두통에 이완 성분을 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-060": {
+      "case_id": "kpi4-060",
+      "action": "rejected",
+      "final_answer": [],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:12:59+09:00",
+      "note": "offline_review_choice:REJECT; 식이 유발 관리가 우선이며 vitamin B군이나 fiber를 단독 정답으로 둘 근거가 부족함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-061": {
+      "case_id": "kpi4-061",
+      "action": "edited",
+      "final_answer": [
+        "soluble_fiber"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:02+09:00",
+      "note": "offline_review_choice:B; 치질 악화 인자인 변비·힘주기 교정에는 soluble fiber가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-062": {
+      "case_id": "kpi4-062",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:05+09:00",
+      "note": "offline_review_choice:B; 체액 저류형 고혈압은 혈압·부종 평가와 나트륨 관리가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-063": {
+      "case_id": "kpi4-063",
+      "action": "edited",
+      "final_answer": [
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:08+09:00",
+      "note": "offline_review_choice:B; 혈관 경화형에서 불필요한 CoQ10을 제외하고 간결한 보조 성분만 유지함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-064": {
+      "case_id": "kpi4-064",
+      "action": "rejected",
+      "final_answer": [],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:11+09:00",
+      "note": "offline_review_choice:REJECT; “혈관 경화형(계속)”만으로 목표가 충분히 특정되지 않음.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-065": {
+      "case_id": "kpi4-065",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:14+09:00",
+      "note": "offline_review_choice:CUSTOM; 스트레스성이라도 고혈압·두근거림은 평가가 우선이며 보충제 단독 답변은 부적절함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-066": {
+      "case_id": "kpi4-066",
+      "action": "accepted",
+      "final_answer": [
+        "vitamin_b_complex"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:17+09:00",
+      "note": "offline_review_choice:A; 호모시스테인 대사 목표에 B군이 직접 대응함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-067": {
+      "case_id": "kpi4-067",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:20+09:00",
+      "note": "offline_review_choice:CUSTOM; 복합형 고혈압과 statin 복용은 원인·약물 검토가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-068": {
+      "case_id": "kpi4-068",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:23+09:00",
+      "note": "offline_review_choice:CUSTOM; 갑상선 안병증 가능성은 전문 진료가 우선이며 후보 성분이 핵심 근거를 충족하지 못함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-069": {
+      "case_id": "kpi4-069",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:26+09:00",
+      "note": "offline_review_choice:CUSTOM; 갑상선 기능 항진 증상은 원인 치료가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-070": {
+      "case_id": "kpi4-070",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:29+09:00",
+      "note": "offline_review_choice:CUSTOM; 갑상선 기능 항진과 수면 증상은 갑상선 상태 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-071": {
+      "case_id": "kpi4-071",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:32+09:00",
+      "note": "offline_review_choice:CUSTOM; 갑상선 상태 치료를 우선하면서 골밀도 보조 성분을 함께 제시함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-072": {
+      "case_id": "kpi4-072",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:35+09:00",
+      "note": "offline_review_choice:B; 빈혈은 원인과 결핍 유형 확인이 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-073": {
+      "case_id": "kpi4-073",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:38+09:00",
+      "note": "offline_review_choice:B; 심박출량 저하 가능성과 furosemide 복용은 심혈관 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-074": {
+      "case_id": "kpi4-074",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:41+09:00",
+      "note": "offline_review_choice:B; 갑상선 기능 저하 의심 증상은 검사와 치료 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-075": {
+      "case_id": "kpi4-075",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:44+09:00",
+      "note": "offline_review_choice:CUSTOM; 갑상선 관련 피로는 갑상선 조절 여부 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-076": {
+      "case_id": "kpi4-076",
+      "action": "accepted",
+      "final_answer": [
+        "magnesium_glycinate",
+        "separate_dosing",
+        "soluble_fiber"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:47+09:00",
+      "note": "offline_review_choice:A; 변비 목표 성분과 levothyroxine 간격 복용을 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-077": {
+      "case_id": "kpi4-077",
+      "action": "accepted",
+      "final_answer": [
+        "vitamin_c",
+        "zinc"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:50+09:00",
+      "note": "offline_review_choice:A; 점막 방어 목표에 vitamin C와 zinc를 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-078": {
+      "case_id": "kpi4-078",
+      "action": "edited",
+      "final_answer": [
+        "probiotics"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:53+09:00",
+      "note": "offline_review_choice:B; 과민 반응형에서 불필요한 vitamin D 자동 추가를 피함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-079": {
+      "case_id": "kpi4-079",
+      "action": "edited",
+      "final_answer": [
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:56+09:00",
+      "note": "offline_review_choice:B; 만성 염증 목표에 omega3만 유지하고 metformin 관련 자동 보충은 제외함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-080": {
+      "case_id": "kpi4-080",
+      "action": "edited",
+      "final_answer": [
+        "probiotics"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:13:59+09:00",
+      "note": "offline_review_choice:B; 장 증상 목표에 probiotics만 간결하게 유지함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-081": {
+      "case_id": "kpi4-081",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:02+09:00",
+      "note": "offline_review_choice:B; 난임·PCOS에서 berberine을 자동 추천하지 않고 전문 평가를 우선함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-082": {
+      "case_id": "kpi4-082",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:05+09:00",
+      "note": "offline_review_choice:B; 착상 실패와 prednisolone 복용은 난임 전문 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-083": {
+      "case_id": "kpi4-083",
+      "action": "accepted",
+      "final_answer": [
+        "coq10",
+        "zinc"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:08+09:00",
+      "note": "offline_review_choice:A; 남성 정자 요인에 CoQ10과 zinc를 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-084": {
+      "case_id": "kpi4-084",
+      "action": "accepted",
+      "final_answer": [
+        "advise_professional_consult",
+        "coq10",
+        "omega3"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:11+09:00",
+      "note": "offline_review_choice:A; 원인 불명 난임에서 전문 상담을 우선하면서 보조 성분임을 명확히 함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-085": {
+      "case_id": "kpi4-085",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:14+09:00",
+      "note": "offline_review_choice:CUSTOM; IBS 아형이 불명확하고 Amlodipine 복용 중 magnesium 일괄 추천은 부적절함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-086": {
+      "case_id": "kpi4-086",
+      "action": "rejected",
+      "final_answer": [],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:17+09:00",
+      "note": "offline_review_choice:REJECT; 유당불내증의 직접 대안인 lactase가 두 후보에 없고 probiotics만으로 대체하기 어려움.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-087": {
+      "case_id": "kpi4-087",
+      "action": "rejected",
+      "final_answer": [],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:20+09:00",
+      "note": "offline_review_choice:REJECT; “+10번: O”만으로 질문 의미를 해석할 수 없음.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-088": {
+      "case_id": "kpi4-088",
+      "action": "rejected",
+      "final_answer": [],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:23+09:00",
+      "note": "offline_review_choice:REJECT; LGS라는 비표준 진단과 약물 복용 상황을 probiotics 단독으로 답하기 부적절함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-089": {
+      "case_id": "kpi4-089",
+      "action": "edited",
+      "final_answer": [
+        "soluble_fiber"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:26+09:00",
+      "note": "offline_review_choice:B; 변비에서는 soluble fiber를 우선하고 magnesium 자동 추가를 피함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-090": {
+      "case_id": "kpi4-090",
+      "action": "accepted",
+      "final_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:29+09:00",
+      "note": "offline_review_choice:A; 설사·긴급형에서 probiotics와 soluble fiber를 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-091": {
+      "case_id": "kpi4-091",
+      "action": "rejected",
+      "final_answer": [],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:32+09:00",
+      "note": "offline_review_choice:REJECT; 활력·심리 문항 하나와 PPI 복용만으로 성분을 특정하기 어려움.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-092": {
+      "case_id": "kpi4-092",
+      "action": "rejected",
+      "final_answer": [],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:35+09:00",
+      "note": "offline_review_choice:REJECT; 활동량 부족은 행동 교정이 우선이며 두 후보의 보충제 답이 적절하지 않음.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-093": {
+      "case_id": "kpi4-093",
+      "action": "accepted",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:38+09:00",
+      "note": "offline_review_choice:A; 입면·숙면 목표에 l-theanine과 magnesium을 함께 반영함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-094": {
+      "case_id": "kpi4-094",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:41+09:00",
+      "note": "offline_review_choice:CUSTOM; 기상 시 피로는 수면장애·심혈관·약물 원인 평가가 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-095": {
+      "case_id": "kpi4-095",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:44+09:00",
+      "note": "offline_review_choice:B; 단백질·채소 부족은 식사 개선 및 필요 시 전문가 상담이 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-096": {
+      "case_id": "kpi4-096",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:47+09:00",
+      "note": "offline_review_choice:B; 가공식품 과다는 식습관 개선이 우선이며 보충제로 상쇄하지 않음.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-097": {
+      "case_id": "kpi4-097",
+      "action": "edited",
+      "final_answer": [
+        "separate_dosing"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:50+09:00",
+      "note": "offline_review_choice:B; levothyroxine 복용 시 일관된 복용 간격 관리가 핵심임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-098": {
+      "case_id": "kpi4-098",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:53+09:00",
+      "note": "offline_review_choice:B; 식사 속도 문제는 행동 교정이 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-099": {
+      "case_id": "kpi4-099",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:56+09:00",
+      "note": "offline_review_choice:B; 운동 부족은 활동 계획과 필요 시 전문가 상담이 우선임.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    },
+    "kpi4-100": {
+      "case_id": "kpi4-100",
+      "action": "edited",
+      "final_answer": [
+        "advise_professional_consult",
+        "supplement_depleted_nutrient"
+      ],
+      "decided_by": "비식별 검토자",
+      "decided_at": "2026-08-03T14:14:59+09:00",
+      "note": "offline_review_choice:CUSTOM; 간 기능 저하·피로는 평가가 우선이며 metformin 관련 영양소 상태를 함께 확인함.",
+      "review_duration_seconds": 2.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true
+    }
+  },
   "seal_disposals": [],
   "primary_ai_draft": {
     "schema_version": "blind_primary_ai_answer_draft_v1",

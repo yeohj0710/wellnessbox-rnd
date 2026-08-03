@@ -1,0 +1,625 @@
+{
+  "schema_version": "reference_standard_seal_v1",
+  "indicator_id": "KPI-1",
+  "indicator_name": "건강기능식품 추천 정확도",
+  "sealed_by": "권혁찬",
+  "sealed_at": "2026-07-31T08:20:39.925080Z",
+  "case_count": 100,
+  "minimum_sample_count": 100,
+  "meets_minimum_sample": true,
+  "engine_output_seen_before_sealing": false,
+  "cases": {
+    "kpi1-ref-001": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-002": [
+      "magnesium_glycinate",
+      "probiotics",
+      "soluble_fiber"
+    ],
+    "kpi1-ref-003": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-004": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-005": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-006": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "soluble_fiber",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-007": [
+      "coq10",
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-008": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-009": [
+      "l_theanine",
+      "magnesium_glycinate",
+      "probiotics"
+    ],
+    "kpi1-ref-010": [
+      "magnesium_glycinate",
+      "probiotics"
+    ],
+    "kpi1-ref-011": [
+      "coq10",
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-012": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-013": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "zinc"
+    ],
+    "kpi1-ref-014": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-015": [
+      "coq10",
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-016": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-017": [
+      "magnesium_glycinate",
+      "omega3"
+    ],
+    "kpi1-ref-018": [
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_c"
+    ],
+    "kpi1-ref-019": [
+      "coq10",
+      "vitamin_c",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-020": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-021": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-022": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-023": [
+      "coq10",
+      "probiotics",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-024": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-025": [
+      "berberine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-026": [
+      "magnesium_glycinate",
+      "soluble_fiber"
+    ],
+    "kpi1-ref-027": [
+      "coq10",
+      "omega3",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-028": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-029": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-030": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-031": [
+      "coq10",
+      "l_theanine",
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-032": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "soluble_fiber",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-033": [
+      "berberine",
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-034": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_c"
+    ],
+    "kpi1-ref-035": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-036": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "zinc"
+    ],
+    "kpi1-ref-037": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "zinc"
+    ],
+    "kpi1-ref-038": [
+      "calcium_citrate",
+      "coq10",
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-039": [
+      "coq10",
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-040": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-041": [
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-042": [
+      "magnesium_glycinate",
+      "vitamin_c"
+    ],
+    "kpi1-ref-043": [
+      "coq10",
+      "probiotics",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-044": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-045": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-046": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics",
+      "vitamin_c",
+      "zinc"
+    ],
+    "kpi1-ref-047": [
+      "coq10",
+      "probiotics",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-048": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "probiotics",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-049": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-050": [
+      "magnesium_glycinate",
+      "probiotics"
+    ],
+    "kpi1-ref-051": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-052": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-053": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-054": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "vitamin_c"
+    ],
+    "kpi1-ref-055": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-056": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-057": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-058": [
+      "l_theanine",
+      "magnesium_glycinate",
+      "probiotics"
+    ],
+    "kpi1-ref-059": [
+      "coq10",
+      "l_theanine",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-060": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-061": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics",
+      "soluble_fiber",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-062": [
+      "calcium_citrate",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-063": [
+      "coq10",
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-064": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-065": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-066": [
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_c"
+    ],
+    "kpi1-ref-067": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-068": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-069": [
+      "calcium_citrate",
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-070": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-071": [
+      "calcium_citrate",
+      "coq10",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-072": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-073": [
+      "coq10",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-074": [
+      "magnesium_glycinate",
+      "zinc"
+    ],
+    "kpi1-ref-075": [
+      "coq10",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-076": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-077": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-078": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "probiotics",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-079": [
+      "coq10",
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-080": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "soluble_fiber",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-081": [
+      "berberine",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-082": [
+      "magnesium_glycinate",
+      "omega3"
+    ],
+    "kpi1-ref-083": [
+      "coq10",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-084": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-085": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-086": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "probiotics"
+    ],
+    "kpi1-ref-087": [
+      "coq10",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-088": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-089": [
+      "magnesium_glycinate",
+      "soluble_fiber",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-090": [
+      "magnesium_glycinate",
+      "probiotics",
+      "zinc"
+    ],
+    "kpi1-ref-091": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-092": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-093": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ],
+    "kpi1-ref-094": [
+      "calcium_citrate",
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-095": [
+      "coq10",
+      "probiotics",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-096": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "omega3",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-ref-097": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-098": [
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-099": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-100": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex",
+      "zinc"
+    ]
+  },
+  "seal_sha256": "4937a9ac1a01b2c31a5e298181b0912971777cb1a9d6282df46cb6dddabb5149",
+  "provenance": {
+    "answer_key_method": "independent_draft_then_human_adjudication",
+    "draft_source": "health_checker_reference_extract_v1",
+    "engine_output_consulted_before_sealing": false,
+    "adjudication": {
+      "counts": {
+        "accepted": 100,
+        "edited": 0,
+        "rejected": 0,
+        "pending": 0
+      },
+      "edit_rate_pct": 0.0,
+      "reviewers": [
+        "권혁찬"
+      ],
+      "warnings": [
+        "edit_rate_zero_every_draft_was_accepted_unchanged"
+      ]
+    },
+    "note": "초안은 측정 대상 엔진이 아닌 독립 출처가 만들었고, 각 건을 사람이 수락·수정·반려로 확정했다. 수정률은 숨기지 않고 함께 기록한다."
+  }
+}

@@ -143,12 +143,14 @@ def test_apply_package_uses_recorded_disposal_without_second_prompt(
             {
                 "status": "READY_TO_IMPORT",
                 "seal_disposal_decisions": {"KPI-1": "DISCARD", "KPI-5": "DISCARD"},
+                "replacement_required_count": 2,
             },
         ),
     )
 
     report = importer.apply_package(package_dir)
 
+    assert report["status"] == "IMPORTED_REPLACEMENTS_REQUIRED"
     assert report["discarded_seals"] == ["KPI-1", "KPI-5"]
     for indicator_id in importer.SEAL_INDICATORS:
         applied = importer.load_workbench(importer._workbench_path(indicator_id))

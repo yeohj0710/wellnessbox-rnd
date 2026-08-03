@@ -1,0 +1,435 @@
+{
+  "schema_version": "reference_standard_seal_v1",
+  "indicator_id": "KPI-5",
+  "indicator_name": "안전 검증 엔진 제공 데이터 및 데이터 레이크 레퍼런스 정확도",
+  "sealed_by": "권혁찬",
+  "sealed_at": "2026-07-31T08:20:50.822885Z",
+  "case_count": 100,
+  "minimum_sample_count": 100,
+  "meets_minimum_sample": true,
+  "engine_output_seen_before_sealing": false,
+  "cases": {
+    "kpi5-ref-001": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-002": [
+      "coq10",
+      "depletion"
+    ],
+    "kpi5-ref-003": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "kpi5-ref-004": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-005": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-006": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-007": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-008": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-009": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-010": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-011": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-012": [
+      "absorption_interaction",
+      "calcium_citrate"
+    ],
+    "kpi5-ref-013": [
+      "absorption_interaction",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-014": [
+      "coq10",
+      "depletion"
+    ],
+    "kpi5-ref-015": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-016": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-017": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-018": [
+      "depletion",
+      "vitamin_c"
+    ],
+    "kpi5-ref-019": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "kpi5-ref-020": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-021": [
+      "p237",
+      "마그네슘"
+    ],
+    "kpi5-ref-022": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "kpi5-ref-023": [
+      "p236",
+      "비타민 D"
+    ],
+    "kpi5-ref-024": [
+      "p237",
+      "칼슘"
+    ],
+    "kpi5-ref-025": [
+      "p237",
+      "마그네슘"
+    ],
+    "kpi5-ref-026": [
+      "p237",
+      "비타민 B1"
+    ],
+    "kpi5-ref-027": [
+      "p237",
+      "아연"
+    ],
+    "kpi5-ref-028": [
+      "p236",
+      "칼슘"
+    ],
+    "kpi5-ref-029": [
+      "p236",
+      "마그네슘"
+    ],
+    "kpi5-ref-030": [
+      "p236",
+      "비타민 B1"
+    ],
+    "kpi5-ref-031": [
+      "p236",
+      "아연"
+    ],
+    "kpi5-ref-032": [
+      "p239",
+      "칼슘"
+    ],
+    "kpi5-ref-033": [
+      "p239",
+      "마그네슘"
+    ],
+    "kpi5-ref-034": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "kpi5-ref-035": [
+      "p236",
+      "비타민 B12"
+    ],
+    "kpi5-ref-036": [
+      "p238",
+      "칼슘"
+    ],
+    "kpi5-ref-037": [
+      "p238",
+      "마그네슘"
+    ],
+    "kpi5-ref-038": [
+      "p238",
+      "비타민 C"
+    ],
+    "kpi5-ref-039": [
+      "p238",
+      "비타민 D"
+    ],
+    "kpi5-ref-040": [
+      "p238",
+      "아연"
+    ],
+    "kpi5-ref-041": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-042": [
+      "coq10",
+      "depletion"
+    ],
+    "kpi5-ref-043": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "kpi5-ref-044": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-045": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-046": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-047": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-048": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-049": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-050": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-051": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-052": [
+      "absorption_interaction",
+      "calcium_citrate"
+    ],
+    "kpi5-ref-053": [
+      "absorption_interaction",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-054": [
+      "coq10",
+      "depletion"
+    ],
+    "kpi5-ref-055": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-056": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-057": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-058": [
+      "depletion",
+      "vitamin_c"
+    ],
+    "kpi5-ref-059": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "kpi5-ref-060": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-061": [
+      "p237",
+      "마그네슘"
+    ],
+    "kpi5-ref-062": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "kpi5-ref-063": [
+      "p236",
+      "비타민 D"
+    ],
+    "kpi5-ref-064": [
+      "p237",
+      "칼슘"
+    ],
+    "kpi5-ref-065": [
+      "p237",
+      "마그네슘"
+    ],
+    "kpi5-ref-066": [
+      "p237",
+      "비타민 B1"
+    ],
+    "kpi5-ref-067": [
+      "p237",
+      "아연"
+    ],
+    "kpi5-ref-068": [
+      "p236",
+      "칼슘"
+    ],
+    "kpi5-ref-069": [
+      "p236",
+      "마그네슘"
+    ],
+    "kpi5-ref-070": [
+      "p236",
+      "비타민 B1"
+    ],
+    "kpi5-ref-071": [
+      "p236",
+      "아연"
+    ],
+    "kpi5-ref-072": [
+      "p239",
+      "칼슘"
+    ],
+    "kpi5-ref-073": [
+      "p239",
+      "마그네슘"
+    ],
+    "kpi5-ref-074": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "kpi5-ref-075": [
+      "p236",
+      "비타민 B12"
+    ],
+    "kpi5-ref-076": [
+      "p238",
+      "칼슘"
+    ],
+    "kpi5-ref-077": [
+      "p238",
+      "마그네슘"
+    ],
+    "kpi5-ref-078": [
+      "p238",
+      "비타민 C"
+    ],
+    "kpi5-ref-079": [
+      "p238",
+      "비타민 D"
+    ],
+    "kpi5-ref-080": [
+      "p238",
+      "아연"
+    ],
+    "kpi5-ref-081": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-082": [
+      "coq10",
+      "depletion"
+    ],
+    "kpi5-ref-083": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "kpi5-ref-084": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-085": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-086": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-087": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-088": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-089": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-090": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-091": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-092": [
+      "absorption_interaction",
+      "calcium_citrate"
+    ],
+    "kpi5-ref-093": [
+      "absorption_interaction",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-094": [
+      "coq10",
+      "depletion"
+    ],
+    "kpi5-ref-095": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-096": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-097": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-098": [
+      "depletion",
+      "vitamin_c"
+    ],
+    "kpi5-ref-099": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "kpi5-ref-100": [
+      "depletion",
+      "zinc"
+    ]
+  },
+  "seal_sha256": "7df0d7e35a41d85051e71c96121ca3d44c1afa3bee092b1749d300355136fbdf",
+  "provenance": {
+    "answer_key_method": "independent_draft_then_human_adjudication",
+    "draft_source": "health_checker_reference_extract_v1",
+    "engine_output_consulted_before_sealing": false,
+    "adjudication": {
+      "counts": {
+        "accepted": 100,
+        "edited": 0,
+        "rejected": 0,
+        "pending": 0
+      },
+      "edit_rate_pct": 0.0,
+      "reviewers": [
+        "권혁찬"
+      ],
+      "warnings": [
+        "edit_rate_zero_every_draft_was_accepted_unchanged"
+      ]
+    },
+    "note": "초안은 측정 대상 엔진이 아닌 독립 출처가 만들었고, 각 건을 사람이 수락·수정·반려로 확정했다. 수정률은 숨기지 않고 함께 기록한다."
+  }
+}

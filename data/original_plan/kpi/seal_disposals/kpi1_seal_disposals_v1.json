@@ -1,0 +1,18 @@
+{
+  "schema_version": "answer_key_seal_disposal_history_v1",
+  "indicator_id": "KPI-1",
+  "events": [
+    {
+      "schema_version": "answer_key_seal_disposal_v1",
+      "indicator_id": "KPI-1",
+      "discarded_seal_sha256": "4937a9ac1a01b2c31a5e298181b0912971777cb1a9d6282df46cb6dddabb5149",
+      "discarded_by": "비식별 검토자",
+      "discarded_at": "2026-08-03T14:20:05+09:00",
+      "reason": "연령-판정 불일치, 의료 평가 우선 사례, 근거가 낮은 자동 보충 및 약물 유발 영양소 과잉 반영이 다수 확인되어 기존 봉인 정답을 폐기하고 검토본으로 재봉인해야 함.",
+      "original_seal_path": "data/original_plan/kpi/seals/discarded/kpi1_reference_seal_v1.json",
+      "archived_seal_path": "data/original_plan/kpi/seal_disposals/archive/seals/kpi1_reference_seal_4937a9ac1a01b2c31a5e298181b0912971777cb1a9d6282df46cb6dddabb5149.json",
+      "archived_workbench_path": "data/original_plan/kpi/seal_disposals/archive/workbenches/kpi1_workbench_4937a9ac1a01b2c31a5e298181b0912971777cb1a9d6282df46cb6dddabb5149.json",
+      "review_required_before_resealing": true
+    }
+  ]
+}
