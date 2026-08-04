@@ -1150,3 +1150,13 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - frozen eval delta 0, replay delta 0, weakest-slice delta 0.
 - 상위 병목 5개: 현재 서비스 커밋과 일치하는 검증 영수증, 독립 검토 영수증, 완료 마법사 사람 단계 6개, KPI-2 실제 사용자 100명/3차년도 측정, H-003 NO-GO 경계.
 - 다음 loop 3개: 현재 커밋 검증 자료 제출, 독립 검토 및 사람이 직접 서명한 두 영수증 제출, 완료 마법사 갱신 후 `python scripts/run_final_completion_audit.py`에서 `status=READY`, `goal_complete=true`, `blockers=[]` 확인.
+
+## 2026-08-04 fresh 외부 검증 인계
+
+- 선택 단계: WellnessBox `7054d76670870bc31130006a84df3fa10aa46c78` 기준 최종 검증 완료, 사람 검토·서명 대기.
+- 주 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 8건, SHA-256 `5a2fc3d6549062ba919567d89273bd953391f324091538f8f621ab1eccbf7c29`; 승인 전용 데이터셋 6건.
+- fresh 결과: 정답키 `4/4 READY`, 승인 데이터셋 `READY`, 연구계획 `PASS`, final preflight `READY`, WellnessBox 정적 검증 4종 exit code `0`.
+- 최종 감사: `status=BLOCKED`, `goal_complete=false`, 차단 사유 2개. 검증 영수증과 독립 검토 영수증은 모두 현재 서비스 커밋과 일치하는 새 서명이 없다.
+- 완료 마법사: `3/13`; H-003 `NO-GO`; 실제 사람 단계 0건. frozen eval delta 0, replay delta 0, weakest-slice delta 0.
+- 상위 병목 5개: 현재 커밋 검증 영수증, 독립 검토 영수증, 완료 마법사 사람 단계 6개, KPI-2 실제 사용자 100명·3차년도 측정, H-003 NO-GO 경계.
+- 다음 loop 3개: 사람의 현재 커밋 검증, 구현과 독립된 검토자의 독립 검토 및 Critical 0·Important 0 기록, 두 서명 영수증과 완료 마법사 기록 importer 검증 후 최종 감사.

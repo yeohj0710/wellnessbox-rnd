@@ -1079,3 +1079,11 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - `run_final_session_preflight.py`는 읽기 전용 임시 실행에서 `status=READY`였다. 그러나 완료 마법사 상태는 현재 세션 사람 단계 0건으로 `3/13`이며, H-003은 계속 `NO-GO`다. 사람의 검토·판정·서명은 대신 입력하지 않았다.
 - 현재 세션에서 새 사람 자료나 새 서명 영수증은 확인되지 않았다. 기존 `operational_receipts/local-*.json`, `uploads/`, `seals/discarded/`는 수정·삭제·stage하지 않았다.
 - 다음 실제 조건은 현재 서비스 커밋 기준 검증 결과와 독립 검토 결과를 사람이 제출하고, 그 결과에 사람이 직접 서명한 두 영수증을 저장한 뒤 완료 마법사를 실제 기록 기준으로 갱신하는 것이다. 그 전에는 연구 완료로 판정하지 않는다.
+
+## 2026-08-04 fresh 외부 서비스 검증
+
+- 지정한 첫 확인 명령을 fresh로 실행했다. `git log --oneline -3`의 local `main` 최신 커밋은 `b2be303`이며, 정답키 감사는 `4/4 READY`, 승인 전용 데이터셋은 `6건 READY`, 연구계획 요건 감사는 `120/120 PASS`였다.
+- `python scripts/run_final_completion_audit.py`는 exit code `1`, `status=BLOCKED`, `goal_complete=false`를 반환했다. 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`이며, 감사 산출물 SHA-256은 `3430a4ab382b7403d9cc16e34f6e7d8c42f6ad0307e847e5a0db00a992f37c76`이다.
+- WellnessBox HEAD `7054d76670870bc31130006a84df3fa10aa46c78` 기준 `run_final_session_preflight.py`는 `READY`였다. health 4개는 모두 200, `/tips`와 `/pharm/tips`는 로그인 307 후 페이지 200, H-005 화면은 10건·선택 0건·미리 입력된 근거 0건이었다. 실제 DB·runtime controls·final state·영수증 목록과 해시는 모두 unchanged였다.
+- 같은 HEAD에서 WellnessBox `typecheck`, `qa:syntax`, `audit:encoding`, `audit:route-method-exports`는 모두 exit code `0`이었다. push·배포·실제 트래픽·훈련·승격은 실행하지 않았다.
+- 완료 마법사 상태는 여전히 `3/13`이고 이번 세션의 실제 프로필·AI 초안 전수 검토·정책·문체·고위험 10건·최종 서명 기록이 없다. 새 업로드도 없으며, 기존 미추적 운영 자료는 수정·삭제·stage하지 않았다.
