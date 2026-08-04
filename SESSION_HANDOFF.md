@@ -1056,3 +1056,12 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 남은 차단: 최초 검토 335건은 `비식별 검토자`로만 기록돼 등록 신원 참조가 없다. 이후 교체 검토 신원 파일을 근거로 과거 기록을 임의 귀속하지 않는다.
 - 최소 후속 입력: 최초 검토 ZIP의 SHA-256과 등록 신원 참조를 묶고, 최초 일괄 검토자가 등록 인물과 동일함을 확인하는 기록 1건. 사례별 판정 수정은 필요 없다.
 - 금지 상태 유지: 봉인·측정·배포·실제 트래픽·훈련·최종 영수증 재발급 없음.
+
+## 2026-08-04 기존 검토 신원 연결 패키지
+
+- 패키지: `data/original_plan/kpi/review_handoff/identity_linkage/kpi_original_review_identity_linkage_input.zip`.
+- 범위: KPI-1 51건, KPI-3 100건, KPI-4 93건, KPI-5 91건, 합계 335건.
+- 입력: `identity_link_status`, `confirmed_at` 두 필드. 반환 파일은 `kpi_original_review_identity_linkage_completed.zip` 하나다.
+- 검증: 원본 검토 ZIP SHA-256, 결정 범위 SHA-256, 사례 ID SHA-256, 등록 신원 참조, 시간대 포함 시각을 모두 확인한다.
+- 적용 제한: 검토자 이름과 `reviewer_identity_ref`만 연결한다. 정답·판정·메모·판정 시각·검토 시간은 바꾸지 않는다.
+- 적용 후 처리: 무결성 감사를 다시 실행하고 PASS일 때만 봉인한다. 배포·실제 트래픽·훈련·최종 영수증 재발급은 하지 않는다.

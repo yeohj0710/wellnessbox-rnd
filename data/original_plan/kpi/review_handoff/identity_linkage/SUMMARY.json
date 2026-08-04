@@ -1,0 +1,19 @@
+{
+  "schema_version": "kpi_original_review_identity_linkage_summary_v1",
+  "indicator_counts": {
+    "KPI-1": 51,
+    "KPI-3": 100,
+    "KPI-4": 93,
+    "KPI-5": 91
+  },
+  "total_decision_count": 335,
+  "single_submission": true,
+  "editable_fields": [
+    "identity_link_status",
+    "confirmed_at"
+  ],
+  "allowed_identity_link_status": [
+    "CONFIRMED",
+    "NOT_CONFIRMED"
+  ]
+}

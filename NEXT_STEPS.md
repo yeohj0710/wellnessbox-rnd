@@ -469,3 +469,9 @@ Do not run training or a new `cgm` loop yet.
 1. 기존 `kpi_completed_review.zip`의 `비식별 검토자`와 등록 검토자 신원을 연결하는 일괄 확인 기록 1건을 받는다. 335건을 다시 판정하지 않는다.
 2. 확인 기록을 검증한 뒤 기존 335개 결정에 동일한 신원 참조를 연결하고 `scripts/audit_answer_key_integrity.py`를 다시 실행한다.
 3. 감사 PASS 전에는 봉인과 KPI 측정을 실행하지 않는다. 최종 영수증도 재발급하지 않는다.
+
+## 2026-08-04 단일 반환 자료
+
+1. `data/original_plan/kpi/review_handoff/identity_linkage/kpi_original_review_identity_linkage_input.zip` 하나를 사용한다.
+2. 반환 ZIP 하나를 받은 뒤 335건의 신원 연결, 무결성 감사, 봉인을 순서대로 처리한다.
+3. 같은 검토자에게 사례별 추가 입력을 다시 요청하지 않는다.

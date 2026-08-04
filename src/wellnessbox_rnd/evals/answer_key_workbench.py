@@ -83,6 +83,7 @@ class Workbench:
     ai_review: dict[str, Any] = field(default_factory=dict)
     batch_approval: dict[str, Any] | None = None
     primary_ai_draft: dict[str, Any] = field(default_factory=dict)
+    identity_linkages: list[dict[str, Any]] = field(default_factory=list)
 
     def pending(self) -> list[CaseDraft]:
         return [
@@ -447,6 +448,7 @@ def build_provenance(
             "reviewers": summary["reviewers"],
             "reviewer_identity_refs": summary.get("reviewer_identity_refs", []),
             "warnings": summary["warnings"],
+            "identity_linkages": list(workbench.identity_linkages),
         },
         "note": (
             "초안과 2차 AI 의견은 측정 대상 엔진의 입력·출력에서 분리했다. "
@@ -628,6 +630,7 @@ def load_workbench(path: Path) -> Workbench:
         dict(payload.get("ai_review", {})),
         payload.get("batch_approval"),
         dict(payload.get("primary_ai_draft", {})),
+        list(payload.get("identity_linkages", [])),
     )
 
 
@@ -643,6 +646,7 @@ def save_workbench(path: Path, workbench: Workbench) -> Path:
         "primary_ai_draft": dict(workbench.primary_ai_draft),
         "ai_review": dict(workbench.ai_review),
         "batch_approval": workbench.batch_approval,
+        "identity_linkages": list(workbench.identity_linkages),
     }
     target.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
