@@ -2229,13 +2229,13 @@
         "coq10",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:05+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-004": {
       "case_id": "kpi5-ref-004",
@@ -2244,13 +2244,13 @@
         "calcium_citrate",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:11+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-005": {
       "case_id": "kpi5-ref-005",
@@ -2259,13 +2259,13 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:14+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-006": {
       "case_id": "kpi5-ref-006",
@@ -2274,13 +2274,13 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:17+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-007": {
       "case_id": "kpi5-ref-007",
@@ -2289,13 +2289,13 @@
         "depletion",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:20+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-008": {
       "case_id": "kpi5-ref-008",
@@ -2304,13 +2304,13 @@
         "calcium_citrate",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:23+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-009": {
       "case_id": "kpi5-ref-009",
@@ -2319,13 +2319,13 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:26+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-010": {
       "case_id": "kpi5-ref-010",
@@ -2334,13 +2334,13 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:29+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-011": {
       "case_id": "kpi5-ref-011",
@@ -2349,13 +2349,13 @@
         "depletion",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:32+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-012": {
       "case_id": "kpi5-ref-012",
@@ -2364,13 +2364,13 @@
         "absorption_interaction",
         "calcium_citrate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:35+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-013": {
       "case_id": "kpi5-ref-013",
@@ -2379,13 +2379,13 @@
         "absorption_interaction",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:38+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-015": {
       "case_id": "kpi5-ref-015",
@@ -2394,13 +2394,13 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:44+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-016": {
       "case_id": "kpi5-ref-016",
@@ -2409,13 +2409,13 @@
         "calcium_citrate",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:47+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-017": {
       "case_id": "kpi5-ref-017",
@@ -2424,13 +2424,13 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:50+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-018": {
       "case_id": "kpi5-ref-018",
@@ -2439,13 +2439,13 @@
         "depletion",
         "vitamin_c"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:53+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-019": {
       "case_id": "kpi5-ref-019",
@@ -2454,13 +2454,13 @@
         "depletion",
         "vitamin_d3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:56+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-020": {
       "case_id": "kpi5-ref-020",
@@ -2469,13 +2469,13 @@
         "depletion",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:15:59+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-021": {
       "case_id": "kpi5-ref-021",
@@ -2484,13 +2484,13 @@
         "p237",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:02+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-022": {
       "case_id": "kpi5-ref-022",
@@ -2499,13 +2499,13 @@
         "p236",
         "코엔자임Q10"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:05+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-023": {
       "case_id": "kpi5-ref-023",
@@ -2514,13 +2514,13 @@
         "p236",
         "비타민 D"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:08+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-024": {
       "case_id": "kpi5-ref-024",
@@ -2529,13 +2529,13 @@
         "p237",
         "칼슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:11+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-025": {
       "case_id": "kpi5-ref-025",
@@ -2544,13 +2544,13 @@
         "p237",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:14+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-026": {
       "case_id": "kpi5-ref-026",
@@ -2559,13 +2559,13 @@
         "p237",
         "비타민 B1"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:17+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-027": {
       "case_id": "kpi5-ref-027",
@@ -2574,13 +2574,13 @@
         "p237",
         "아연"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:20+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-028": {
       "case_id": "kpi5-ref-028",
@@ -2589,13 +2589,13 @@
         "p236",
         "칼슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:23+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-029": {
       "case_id": "kpi5-ref-029",
@@ -2604,13 +2604,13 @@
         "p236",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:26+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-030": {
       "case_id": "kpi5-ref-030",
@@ -2619,13 +2619,13 @@
         "p236",
         "비타민 B1"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:29+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-031": {
       "case_id": "kpi5-ref-031",
@@ -2634,13 +2634,13 @@
         "p236",
         "아연"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:32+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-032": {
       "case_id": "kpi5-ref-032",
@@ -2649,13 +2649,13 @@
         "p239",
         "칼슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:35+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-033": {
       "case_id": "kpi5-ref-033",
@@ -2664,13 +2664,13 @@
         "p239",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:38+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-034": {
       "case_id": "kpi5-ref-034",
@@ -2679,13 +2679,13 @@
         "p236",
         "코엔자임Q10"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:41+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-035": {
       "case_id": "kpi5-ref-035",
@@ -2694,13 +2694,13 @@
         "p236",
         "비타민 B12"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:44+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-036": {
       "case_id": "kpi5-ref-036",
@@ -2709,13 +2709,13 @@
         "p238",
         "칼슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:47+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-037": {
       "case_id": "kpi5-ref-037",
@@ -2724,13 +2724,13 @@
         "p238",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:50+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-038": {
       "case_id": "kpi5-ref-038",
@@ -2739,13 +2739,13 @@
         "p238",
         "비타민 C"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:53+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-039": {
       "case_id": "kpi5-ref-039",
@@ -2754,13 +2754,13 @@
         "p238",
         "비타민 D"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:56+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-040": {
       "case_id": "kpi5-ref-040",
@@ -2769,13 +2769,13 @@
         "p238",
         "아연"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:16:59+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-042": {
       "case_id": "kpi5-ref-042",
@@ -2784,13 +2784,13 @@
         "coq10",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:05+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-044": {
       "case_id": "kpi5-ref-044",
@@ -2799,13 +2799,13 @@
         "calcium_citrate",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:11+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-045": {
       "case_id": "kpi5-ref-045",
@@ -2814,13 +2814,13 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:14+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-046": {
       "case_id": "kpi5-ref-046",
@@ -2829,13 +2829,13 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:17+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-047": {
       "case_id": "kpi5-ref-047",
@@ -2844,13 +2844,13 @@
         "depletion",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:20+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-048": {
       "case_id": "kpi5-ref-048",
@@ -2859,13 +2859,13 @@
         "calcium_citrate",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:23+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-049": {
       "case_id": "kpi5-ref-049",
@@ -2874,13 +2874,13 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:26+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-050": {
       "case_id": "kpi5-ref-050",
@@ -2889,13 +2889,13 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:29+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-051": {
       "case_id": "kpi5-ref-051",
@@ -2904,13 +2904,13 @@
         "depletion",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:32+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-052": {
       "case_id": "kpi5-ref-052",
@@ -2919,13 +2919,13 @@
         "absorption_interaction",
         "calcium_citrate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:35+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-053": {
       "case_id": "kpi5-ref-053",
@@ -2934,13 +2934,13 @@
         "absorption_interaction",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:38+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-055": {
       "case_id": "kpi5-ref-055",
@@ -2949,13 +2949,13 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:44+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-056": {
       "case_id": "kpi5-ref-056",
@@ -2964,13 +2964,13 @@
         "calcium_citrate",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:47+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-057": {
       "case_id": "kpi5-ref-057",
@@ -2979,13 +2979,13 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:50+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-058": {
       "case_id": "kpi5-ref-058",
@@ -2994,13 +2994,13 @@
         "depletion",
         "vitamin_c"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:53+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-059": {
       "case_id": "kpi5-ref-059",
@@ -3009,13 +3009,13 @@
         "depletion",
         "vitamin_d3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:56+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-060": {
       "case_id": "kpi5-ref-060",
@@ -3024,13 +3024,13 @@
         "depletion",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:17:59+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-061": {
       "case_id": "kpi5-ref-061",
@@ -3039,13 +3039,13 @@
         "p237",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:02+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-062": {
       "case_id": "kpi5-ref-062",
@@ -3054,13 +3054,13 @@
         "p236",
         "코엔자임Q10"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:05+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-063": {
       "case_id": "kpi5-ref-063",
@@ -3069,13 +3069,13 @@
         "p236",
         "비타민 D"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:08+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-064": {
       "case_id": "kpi5-ref-064",
@@ -3084,13 +3084,13 @@
         "p237",
         "칼슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:11+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-065": {
       "case_id": "kpi5-ref-065",
@@ -3099,13 +3099,13 @@
         "p237",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:14+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-066": {
       "case_id": "kpi5-ref-066",
@@ -3114,13 +3114,13 @@
         "p237",
         "비타민 B1"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:17+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-067": {
       "case_id": "kpi5-ref-067",
@@ -3129,13 +3129,13 @@
         "p237",
         "아연"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:20+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-068": {
       "case_id": "kpi5-ref-068",
@@ -3144,13 +3144,13 @@
         "p236",
         "칼슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:23+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-069": {
       "case_id": "kpi5-ref-069",
@@ -3159,13 +3159,13 @@
         "p236",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:26+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-070": {
       "case_id": "kpi5-ref-070",
@@ -3174,13 +3174,13 @@
         "p236",
         "비타민 B1"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:29+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-071": {
       "case_id": "kpi5-ref-071",
@@ -3189,13 +3189,13 @@
         "p236",
         "아연"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:32+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-072": {
       "case_id": "kpi5-ref-072",
@@ -3204,13 +3204,13 @@
         "p239",
         "칼슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:35+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-073": {
       "case_id": "kpi5-ref-073",
@@ -3219,13 +3219,13 @@
         "p239",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:38+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-074": {
       "case_id": "kpi5-ref-074",
@@ -3234,13 +3234,13 @@
         "p236",
         "코엔자임Q10"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:41+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-075": {
       "case_id": "kpi5-ref-075",
@@ -3249,13 +3249,13 @@
         "p236",
         "비타민 B12"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:44+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-076": {
       "case_id": "kpi5-ref-076",
@@ -3264,13 +3264,13 @@
         "p238",
         "칼슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:47+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-077": {
       "case_id": "kpi5-ref-077",
@@ -3279,13 +3279,13 @@
         "p238",
         "마그네슘"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:50+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-078": {
       "case_id": "kpi5-ref-078",
@@ -3294,13 +3294,13 @@
         "p238",
         "비타민 C"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:53+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-079": {
       "case_id": "kpi5-ref-079",
@@ -3309,13 +3309,13 @@
         "p238",
         "비타민 D"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:56+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-080": {
       "case_id": "kpi5-ref-080",
@@ -3324,13 +3324,13 @@
         "p238",
         "아연"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:18:59+09:00",
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-082": {
       "case_id": "kpi5-ref-082",
@@ -3339,13 +3339,13 @@
         "coq10",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:05+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-084": {
       "case_id": "kpi5-ref-084",
@@ -3354,13 +3354,13 @@
         "calcium_citrate",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:11+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-085": {
       "case_id": "kpi5-ref-085",
@@ -3369,13 +3369,13 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:14+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-086": {
       "case_id": "kpi5-ref-086",
@@ -3384,13 +3384,13 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:17+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-087": {
       "case_id": "kpi5-ref-087",
@@ -3399,13 +3399,13 @@
         "depletion",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:20+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-088": {
       "case_id": "kpi5-ref-088",
@@ -3414,13 +3414,13 @@
         "calcium_citrate",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:23+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-089": {
       "case_id": "kpi5-ref-089",
@@ -3429,13 +3429,13 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:26+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-090": {
       "case_id": "kpi5-ref-090",
@@ -3444,13 +3444,13 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:29+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-091": {
       "case_id": "kpi5-ref-091",
@@ -3459,13 +3459,13 @@
         "depletion",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:32+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-092": {
       "case_id": "kpi5-ref-092",
@@ -3474,13 +3474,13 @@
         "absorption_interaction",
         "calcium_citrate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:35+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-093": {
       "case_id": "kpi5-ref-093",
@@ -3489,13 +3489,13 @@
         "absorption_interaction",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:38+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-095": {
       "case_id": "kpi5-ref-095",
@@ -3504,13 +3504,13 @@
         "depletion",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:44+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-096": {
       "case_id": "kpi5-ref-096",
@@ -3519,13 +3519,13 @@
         "calcium_citrate",
         "depletion"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:47+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-097": {
       "case_id": "kpi5-ref-097",
@@ -3534,13 +3534,13 @@
         "depletion",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:50+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-098": {
       "case_id": "kpi5-ref-098",
@@ -3549,13 +3549,13 @@
         "depletion",
         "vitamin_c"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:53+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-099": {
       "case_id": "kpi5-ref-099",
@@ -3564,13 +3564,13 @@
         "depletion",
         "vitamin_d3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:56+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-ref-100": {
       "case_id": "kpi5-ref-100",
@@ -3579,13 +3579,13 @@
         "depletion",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:19:59+09:00",
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi5-repl-001": {
       "case_id": "kpi5-repl-001",
@@ -4922,7 +4922,147 @@
         "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
         "engine_output_consulted": false
       }
-    }
+    },
+    "packet_segments": [
+      {
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "case_count": 9,
+        "case_ids": [
+          "kpi5-repl-001",
+          "kpi5-repl-002",
+          "kpi5-repl-003",
+          "kpi5-repl-004",
+          "kpi5-repl-005",
+          "kpi5-repl-006",
+          "kpi5-repl-007",
+          "kpi5-repl-008",
+          "kpi5-repl-009"
+        ],
+        "case_prompts_sha256": "c2d01cdab7a01a46d4f56a6ae47bcdf59aa949b85de0bb353781dc57f8f75843"
+      },
+      {
+        "packet_sha256": "fe44d9aa046e611942bec25c9d2ae8db8f97174db6604080be755ae0b96f6fd2",
+        "case_count": 91,
+        "case_ids": [
+          "kpi5-ref-002",
+          "kpi5-ref-004",
+          "kpi5-ref-005",
+          "kpi5-ref-006",
+          "kpi5-ref-007",
+          "kpi5-ref-008",
+          "kpi5-ref-009",
+          "kpi5-ref-010",
+          "kpi5-ref-011",
+          "kpi5-ref-012",
+          "kpi5-ref-013",
+          "kpi5-ref-015",
+          "kpi5-ref-016",
+          "kpi5-ref-017",
+          "kpi5-ref-018",
+          "kpi5-ref-019",
+          "kpi5-ref-020",
+          "kpi5-ref-021",
+          "kpi5-ref-022",
+          "kpi5-ref-023",
+          "kpi5-ref-024",
+          "kpi5-ref-025",
+          "kpi5-ref-026",
+          "kpi5-ref-027",
+          "kpi5-ref-028",
+          "kpi5-ref-029",
+          "kpi5-ref-030",
+          "kpi5-ref-031",
+          "kpi5-ref-032",
+          "kpi5-ref-033",
+          "kpi5-ref-034",
+          "kpi5-ref-035",
+          "kpi5-ref-036",
+          "kpi5-ref-037",
+          "kpi5-ref-038",
+          "kpi5-ref-039",
+          "kpi5-ref-040",
+          "kpi5-ref-042",
+          "kpi5-ref-044",
+          "kpi5-ref-045",
+          "kpi5-ref-046",
+          "kpi5-ref-047",
+          "kpi5-ref-048",
+          "kpi5-ref-049",
+          "kpi5-ref-050",
+          "kpi5-ref-051",
+          "kpi5-ref-052",
+          "kpi5-ref-053",
+          "kpi5-ref-055",
+          "kpi5-ref-056",
+          "kpi5-ref-057",
+          "kpi5-ref-058",
+          "kpi5-ref-059",
+          "kpi5-ref-060",
+          "kpi5-ref-061",
+          "kpi5-ref-062",
+          "kpi5-ref-063",
+          "kpi5-ref-064",
+          "kpi5-ref-065",
+          "kpi5-ref-066",
+          "kpi5-ref-067",
+          "kpi5-ref-068",
+          "kpi5-ref-069",
+          "kpi5-ref-070",
+          "kpi5-ref-071",
+          "kpi5-ref-072",
+          "kpi5-ref-073",
+          "kpi5-ref-074",
+          "kpi5-ref-075",
+          "kpi5-ref-076",
+          "kpi5-ref-077",
+          "kpi5-ref-078",
+          "kpi5-ref-079",
+          "kpi5-ref-080",
+          "kpi5-ref-082",
+          "kpi5-ref-084",
+          "kpi5-ref-085",
+          "kpi5-ref-086",
+          "kpi5-ref-087",
+          "kpi5-ref-088",
+          "kpi5-ref-089",
+          "kpi5-ref-090",
+          "kpi5-ref-091",
+          "kpi5-ref-092",
+          "kpi5-ref-093",
+          "kpi5-ref-095",
+          "kpi5-ref-096",
+          "kpi5-ref-097",
+          "kpi5-ref-098",
+          "kpi5-ref-099",
+          "kpi5-ref-100"
+        ],
+        "case_prompts_sha256": "441f5589da1b35075d1add52505941fd3bf23d638143167eb2e21da22d809475"
+      }
+    ],
+    "composite_packet_sha256": "201ec2f61cdf70d7b4c01f5919559675e0a60cbf0321d1afc0735a88e433e0d6"
   },
-  "batch_approval": null
+  "batch_approval": null,
+  "identity_linkages": [
+    {
+      "schema_version": "kpi_original_review_identity_linkage_application_v1",
+      "source_return_zip_sha256": "1dfebf5379d3e608b8a3bc959245086afbb33341a7f66c1c4a3c47e0763b771f",
+      "source_form_sha256": "7a754b54869106548f54b9adb5127c79ff246b6342894644d57d665c877b2b9b",
+      "source_review_zip_sha256": "a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c",
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+      "registered_name": "권혁찬",
+      "qualification_stage": "pharmacist_candidate_preliminary_safety_review",
+      "confirmed_at": "2026-08-04T15:57:57.221545+09:00",
+      "confirmation_channel": "project_owner_relay_of_registered_reviewer_confirmation",
+      "confirmed_at_semantics": "recorded_at_confirmation_receipt_per_reviewer_timestamp_delegation",
+      "indicator_counts": {
+        "KPI-1": 51,
+        "KPI-3": 100,
+        "KPI-4": 93,
+        "KPI-5": 91
+      },
+      "total_decision_count": 335,
+      "decision_scope_sha256": "6ed9c663b32857fdf21c56130537d7fe2cfe11fd4910e4aa909c0c79ca70560b",
+      "case_ids_sha256": "79780dbb9ccfd2d5e0ac39a9eb7602888f222dad8a7c43e756f79dc8b3173960"
+    }
+  ]
 }

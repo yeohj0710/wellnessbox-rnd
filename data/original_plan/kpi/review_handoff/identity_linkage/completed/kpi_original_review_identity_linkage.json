@@ -1,0 +1,17 @@
+{
+  "schema_version": "kpi_original_review_identity_linkage_v1",
+  "source_review_zip_sha256": "a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c",
+  "indicator_counts": {
+    "KPI-1": 51,
+    "KPI-3": 100,
+    "KPI-4": 93,
+    "KPI-5": 91
+  },
+  "total_decision_count": 335,
+  "decision_scope_sha256": "6ed9c663b32857fdf21c56130537d7fe2cfe11fd4910e4aa909c0c79ca70560b",
+  "case_ids_sha256": "79780dbb9ccfd2d5e0ac39a9eb7602888f222dad8a7c43e756f79dc8b3173960",
+  "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+  "qualification_stage": "pharmacist_candidate_preliminary_safety_review",
+  "identity_link_status": "CONFIRMED",
+  "confirmed_at": "2026-08-04T15:57:57.2215456+09:00"
+}

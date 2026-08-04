@@ -1,0 +1,567 @@
+{
+  "schema_version": "reference_standard_seal_v2",
+  "indicator_id": "KPI-1",
+  "indicator_name": "건강기능식품 추천 정확도",
+  "sealed_by": "권혁찬",
+  "sealed_at": "2026-08-04T07:04:21.039753Z",
+  "case_count": 100,
+  "minimum_sample_count": 100,
+  "meets_minimum_sample": true,
+  "engine_output_seen_before_sealing": false,
+  "cases": {
+    "kpi1-ref-001": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-002": [
+      "probiotics",
+      "soluble_fiber"
+    ],
+    "kpi1-ref-007": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-008": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-010": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-011": [
+      "coq10",
+      "omega3"
+    ],
+    "kpi1-ref-012": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-013": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-014": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-015": [
+      "omega3"
+    ],
+    "kpi1-ref-016": [
+      "omega3"
+    ],
+    "kpi1-ref-017": [
+      "omega3",
+      "zinc"
+    ],
+    "kpi1-ref-019": [
+      "vitamin_c"
+    ],
+    "kpi1-ref-020": [
+      "calcium_citrate",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-021": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-022": [
+      "vitamin_b_complex",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-023": [
+      "probiotics"
+    ],
+    "kpi1-ref-024": [
+      "omega3",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-025": [
+      "berberine"
+    ],
+    "kpi1-ref-026": [
+      "soluble_fiber"
+    ],
+    "kpi1-ref-027": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-028": [
+      "calcium_citrate",
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-031": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-032": [
+      "soluble_fiber"
+    ],
+    "kpi1-ref-033": [
+      "omega3"
+    ],
+    "kpi1-ref-034": [
+      "coq10",
+      "vitamin_c"
+    ],
+    "kpi1-ref-035": [
+      "coq10"
+    ],
+    "kpi1-ref-036": [
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-038": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-039": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-049": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-051": [
+      "calcium_citrate",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-052": [
+      "coq10",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-054": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-057": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-058": [
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-059": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-060": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-061": [
+      "soluble_fiber"
+    ],
+    "kpi1-ref-063": [
+      "coq10",
+      "omega3"
+    ],
+    "kpi1-ref-065": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-ref-066": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-ref-071": [
+      "calcium_citrate",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-076": [
+      "magnesium_glycinate",
+      "soluble_fiber"
+    ],
+    "kpi1-ref-077": [
+      "vitamin_c",
+      "zinc"
+    ],
+    "kpi1-ref-078": [
+      "probiotics",
+      "vitamin_d3"
+    ],
+    "kpi1-ref-079": [
+      "omega3"
+    ],
+    "kpi1-ref-083": [
+      "coq10",
+      "zinc"
+    ],
+    "kpi1-ref-089": [
+      "magnesium_glycinate",
+      "soluble_fiber"
+    ],
+    "kpi1-ref-090": [
+      "probiotics",
+      "soluble_fiber"
+    ],
+    "kpi1-ref-093": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-001": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-002": [
+      "probiotics",
+      "soluble_fiber"
+    ],
+    "kpi1-repl-003": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-004": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-005": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-006": [
+      "berberine",
+      "omega3"
+    ],
+    "kpi1-repl-007": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-008": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-009": [
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-010": [
+      "coq10",
+      "omega3"
+    ],
+    "kpi1-repl-011": [
+      "omega3"
+    ],
+    "kpi1-repl-012": [
+      "omega3",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-013": [
+      "vitamin_c",
+      "zinc"
+    ],
+    "kpi1-repl-014": [
+      "calcium_citrate",
+      "vitamin_d3"
+    ],
+    "kpi1-repl-015": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-016": [
+      "coq10",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-017": [
+      "probiotics",
+      "soluble_fiber"
+    ],
+    "kpi1-repl-018": [
+      "coq10",
+      "omega3"
+    ],
+    "kpi1-repl-019": [
+      "berberine",
+      "soluble_fiber"
+    ],
+    "kpi1-repl-020": [
+      "soluble_fiber"
+    ],
+    "kpi1-repl-021": [
+      "omega3",
+      "vitamin_c"
+    ],
+    "kpi1-repl-023": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-024": [
+      "soluble_fiber"
+    ],
+    "kpi1-repl-025": [
+      "omega3"
+    ],
+    "kpi1-repl-026": [
+      "coq10",
+      "vitamin_c"
+    ],
+    "kpi1-repl-028": [
+      "coq10",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-029": [
+      "berberine",
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-030": [
+      "coq10",
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-031": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-032": [
+      "calcium_citrate",
+      "vitamin_d3"
+    ],
+    "kpi1-repl-033": [
+      "coq10",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-034": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-035": [
+      "coq10",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-036": [
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-037": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-038": [
+      "magnesium_glycinate",
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-039": [
+      "magnesium_glycinate",
+      "probiotics",
+      "soluble_fiber"
+    ],
+    "kpi1-repl-040": [
+      "magnesium_glycinate",
+      "omega3",
+      "soluble_fiber"
+    ],
+    "kpi1-repl-041": [
+      "l_theanine",
+      "magnesium_glycinate"
+    ],
+    "kpi1-repl-042": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl-043": [
+      "calcium_citrate",
+      "vitamin_d3"
+    ],
+    "kpi1-repl-044": [
+      "probiotics",
+      "soluble_fiber"
+    ],
+    "kpi1-repl-045": [
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "kpi1-repl-046": [
+      "omega3",
+      "probiotics",
+      "vitamin_d3"
+    ],
+    "kpi1-repl-047": [
+      "omega3"
+    ],
+    "kpi1-repl-048": [
+      "coq10",
+      "omega3",
+      "vitamin_c",
+      "zinc"
+    ],
+    "kpi1-repl-049": [
+      "probiotics",
+      "soluble_fiber"
+    ],
+    "kpi1-repl2-001": [
+      "vitamin_b_complex"
+    ],
+    "kpi1-repl2-002": [
+      "probiotics",
+      "soluble_fiber"
+    ]
+  },
+  "cases_sha256": "e67abcce8ac620fff58b12d5fd45a84ce75e52a72da39a684e06d863139290a6",
+  "provenance": {
+    "answer_key_method": "blind_cross_ai_adaptive_review_then_human_final_approval",
+    "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+    "drafting_agent": "codex",
+    "blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "engine_output_consulted_before_sealing": false,
+    "prior_seal_disposals": [
+      {
+        "schema_version": "answer_key_seal_disposal_v1",
+        "indicator_id": "KPI-1",
+        "discarded_seal_sha256": "4937a9ac1a01b2c31a5e298181b0912971777cb1a9d6282df46cb6dddabb5149",
+        "discarded_by": "비식별 검토자",
+        "discarded_at": "2026-08-03T14:20:05+09:00",
+        "reason": "연령-판정 불일치, 의료 평가 우선 사례, 근거가 낮은 자동 보충 및 약물 유발 영양소 과잉 반영이 다수 확인되어 기존 봉인 정답을 폐기하고 검토본으로 재봉인해야 함.",
+        "original_seal_path": "data/original_plan/kpi/seals/discarded/kpi1_reference_seal_v1.json",
+        "archived_seal_path": "data/original_plan/kpi/seal_disposals/archive/seals/kpi1_reference_seal_4937a9ac1a01b2c31a5e298181b0912971777cb1a9d6282df46cb6dddabb5149.json",
+        "archived_workbench_path": "data/original_plan/kpi/seal_disposals/archive/workbenches/kpi1_workbench_4937a9ac1a01b2c31a5e298181b0912971777cb1a9d6282df46cb6dddabb5149.json",
+        "review_required_before_resealing": true
+      }
+    ],
+    "role_separation": {
+      "required": true,
+      "drafting_actor_id": "codex",
+      "system_under_test_id": "wellnessbox-recommendation-engine-v1",
+      "exact_identity_separated": true,
+      "drafting_provider_family": "openai",
+      "system_under_test_provider_family": null,
+      "provider_family_separated": false,
+      "provider_family_is_a_validity_gate": false,
+      "validity_basis": "audited_source_and_information_boundary_plus_provider_separation_for_kpi4_plus_human_final_approval"
+    },
+    "cross_ai_review": {
+      "primary_ai_draft": null,
+      "used": true,
+      "reviewing_agent": "claude-opus-5",
+      "reviewing_agent_family": "anthropic",
+      "cases_sha256": "aa4b995957e1357480247ce5bd6e3a44739316cfd9666d35e40de2bb93ba6e98",
+      "batch_approval": null
+    },
+    "adjudication": {
+      "counts": {
+        "accepted": 8,
+        "edited": 92,
+        "rejected": 0,
+        "pending": 0
+      },
+      "edit_rate_pct": 92.0,
+      "detailed_review_count": 100,
+      "batch_approved_count": 0,
+      "detailed_edit_rate_pct": 92.0,
+      "reviewers": [
+        "권혁찬"
+      ],
+      "reviewer_identity_refs": [
+        "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+      ],
+      "warnings": [],
+      "identity_linkages": [
+        {
+          "schema_version": "kpi_original_review_identity_linkage_application_v1",
+          "source_return_zip_sha256": "1dfebf5379d3e608b8a3bc959245086afbb33341a7f66c1c4a3c47e0763b771f",
+          "source_form_sha256": "7a754b54869106548f54b9adb5127c79ff246b6342894644d57d665c877b2b9b",
+          "source_review_zip_sha256": "a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c",
+          "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+          "registered_name": "권혁찬",
+          "qualification_stage": "pharmacist_candidate_preliminary_safety_review",
+          "confirmed_at": "2026-08-04T15:57:57.221545+09:00",
+          "confirmation_channel": "project_owner_relay_of_registered_reviewer_confirmation",
+          "confirmed_at_semantics": "recorded_at_confirmation_receipt_per_reviewer_timestamp_delegation",
+          "indicator_counts": {
+            "KPI-1": 51,
+            "KPI-3": 100,
+            "KPI-4": 93,
+            "KPI-5": 91
+          },
+          "total_decision_count": 335,
+          "decision_scope_sha256": "6ed9c663b32857fdf21c56130537d7fe2cfe11fd4910e4aa909c0c79ca70560b",
+          "case_ids_sha256": "79780dbb9ccfd2d5e0ac39a9eb7602888f222dad8a7c43e756f79dc8b3173960"
+        }
+      ]
+    },
+    "note": "초안과 2차 AI 의견은 측정 대상 엔진의 입력·출력에서 분리했다. 사람이 상세 검토한 건수와 AI 합의안을 일괄 승인한 건수를 구분해 기록하며, 모든 사례의 최종 결정권자는 기록된 사람에게 있다.",
+    "integrity_audit": {
+      "indicator_id": "KPI-1",
+      "draft_sources": [
+        "health_checker_reference_extract_v1@reference_corpus_drafters"
+      ],
+      "case_count": 100,
+      "source_independence": {
+        "modules": [
+          "C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/evals/reference_corpus_drafters.py"
+        ],
+        "reads_engine_logic": [],
+        "reads_vocabulary": [],
+        "independent": true,
+        "verdict": "PASS",
+        "reason": ""
+      },
+      "declared_blinding": {
+        "required_engine_logic": [
+          "data/knowledge/counseling_answer_verifier_policy_v1.json",
+          "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+          "data/knowledge/goal_ingredient_priors_v1.json",
+          "data/knowledge/reference_knowledge_base_v1.json",
+          "data/knowledge/runtime_knowledge_db_v1.json",
+          "data/original_plan/closed_loop_next_action_policy_v1.json",
+          "data/rules/candidate_signal_scoring_rules_v1.json",
+          "data/rules/safety_rules.json",
+          "data/synthetic/synthetic_longitudinal_v4.jsonl"
+        ],
+        "declared_blinded_from": [
+          "data/knowledge/counseling_answer_verifier_policy_v1.json",
+          "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+          "data/knowledge/goal_ingredient_priors_v1.json",
+          "data/knowledge/reference_knowledge_base_v1.json",
+          "data/knowledge/runtime_knowledge_db_v1.json",
+          "data/original_plan/closed_loop_next_action_policy_v1.json",
+          "data/rules/candidate_signal_scoring_rules_v1.json",
+          "data/rules/safety_rules.json",
+          "data/synthetic/synthetic_longitudinal_v4.jsonl"
+        ],
+        "missing_engine_logic": [],
+        "consistent_across_cases": true,
+        "verdict": "PASS",
+        "reason": ""
+      },
+      "review_effort": {
+        "decision_count": 100,
+        "detailed_decision_count": 100,
+        "batch_approved_count": 0,
+        "elapsed_seconds": 482.0,
+        "seconds_per_decision": 4.82,
+        "duration_source": "per_case_recorded_duration",
+        "edit_rate_pct": 92.0,
+        "verdict": "PASS",
+        "reason": ""
+      },
+      "adaptive_review": {
+        "used": true,
+        "verdict": "PASS",
+        "reason": "",
+        "reviewing_agent": "claude-opus-5",
+        "agreement_count": 6,
+        "disagreement_count": 94,
+        "required_detail_count": 100,
+        "batch_approved_count": 0
+      },
+      "seal_exists": false,
+      "verdict": "PASS",
+      "seal_must_be_discarded": false,
+      "workbench_complete": true,
+      "seal_integrity_audit_verdict": null,
+      "seal_intact": false,
+      "seal_matches_current_cases": false,
+      "seal_provenance_matches_current": false,
+      "completion_ready": false
+    }
+  },
+  "seal_sha256": "a3e62d0211d91d509641f41bac697d69cd19d3843dffbcf5e84470d13a044629"
+}

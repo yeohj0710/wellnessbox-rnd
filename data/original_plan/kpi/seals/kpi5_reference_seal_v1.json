@@ -1,0 +1,603 @@
+{
+  "schema_version": "reference_standard_seal_v2",
+  "indicator_id": "KPI-5",
+  "indicator_name": "안전 검증 엔진 제공 데이터 및 데이터 레이크 레퍼런스 정확도",
+  "sealed_by": "권혁찬",
+  "sealed_at": "2026-08-04T07:04:22.541299Z",
+  "case_count": 100,
+  "minimum_sample_count": 100,
+  "meets_minimum_sample": true,
+  "engine_output_seen_before_sealing": false,
+  "cases": {
+    "kpi5-ref-002": [
+      "coq10",
+      "depletion"
+    ],
+    "kpi5-ref-004": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-005": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-006": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-007": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-008": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-009": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-010": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-011": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-012": [
+      "absorption_interaction",
+      "calcium_citrate"
+    ],
+    "kpi5-ref-013": [
+      "absorption_interaction",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-015": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-016": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-017": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-018": [
+      "depletion",
+      "vitamin_c"
+    ],
+    "kpi5-ref-019": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "kpi5-ref-020": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-021": [
+      "p237",
+      "마그네슘"
+    ],
+    "kpi5-ref-022": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "kpi5-ref-023": [
+      "p236",
+      "비타민 D"
+    ],
+    "kpi5-ref-024": [
+      "p237",
+      "칼슘"
+    ],
+    "kpi5-ref-025": [
+      "p237",
+      "마그네슘"
+    ],
+    "kpi5-ref-026": [
+      "p237",
+      "비타민 B1"
+    ],
+    "kpi5-ref-027": [
+      "p237",
+      "아연"
+    ],
+    "kpi5-ref-028": [
+      "p236",
+      "칼슘"
+    ],
+    "kpi5-ref-029": [
+      "p236",
+      "마그네슘"
+    ],
+    "kpi5-ref-030": [
+      "p236",
+      "비타민 B1"
+    ],
+    "kpi5-ref-031": [
+      "p236",
+      "아연"
+    ],
+    "kpi5-ref-032": [
+      "p239",
+      "칼슘"
+    ],
+    "kpi5-ref-033": [
+      "p239",
+      "마그네슘"
+    ],
+    "kpi5-ref-034": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "kpi5-ref-035": [
+      "p236",
+      "비타민 B12"
+    ],
+    "kpi5-ref-036": [
+      "p238",
+      "칼슘"
+    ],
+    "kpi5-ref-037": [
+      "p238",
+      "마그네슘"
+    ],
+    "kpi5-ref-038": [
+      "p238",
+      "비타민 C"
+    ],
+    "kpi5-ref-039": [
+      "p238",
+      "비타민 D"
+    ],
+    "kpi5-ref-040": [
+      "p238",
+      "아연"
+    ],
+    "kpi5-ref-042": [
+      "coq10",
+      "depletion"
+    ],
+    "kpi5-ref-044": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-045": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-046": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-047": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-048": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-049": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-050": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-051": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-052": [
+      "absorption_interaction",
+      "calcium_citrate"
+    ],
+    "kpi5-ref-053": [
+      "absorption_interaction",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-055": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-056": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-057": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-058": [
+      "depletion",
+      "vitamin_c"
+    ],
+    "kpi5-ref-059": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "kpi5-ref-060": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-061": [
+      "p237",
+      "마그네슘"
+    ],
+    "kpi5-ref-062": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "kpi5-ref-063": [
+      "p236",
+      "비타민 D"
+    ],
+    "kpi5-ref-064": [
+      "p237",
+      "칼슘"
+    ],
+    "kpi5-ref-065": [
+      "p237",
+      "마그네슘"
+    ],
+    "kpi5-ref-066": [
+      "p237",
+      "비타민 B1"
+    ],
+    "kpi5-ref-067": [
+      "p237",
+      "아연"
+    ],
+    "kpi5-ref-068": [
+      "p236",
+      "칼슘"
+    ],
+    "kpi5-ref-069": [
+      "p236",
+      "마그네슘"
+    ],
+    "kpi5-ref-070": [
+      "p236",
+      "비타민 B1"
+    ],
+    "kpi5-ref-071": [
+      "p236",
+      "아연"
+    ],
+    "kpi5-ref-072": [
+      "p239",
+      "칼슘"
+    ],
+    "kpi5-ref-073": [
+      "p239",
+      "마그네슘"
+    ],
+    "kpi5-ref-074": [
+      "p236",
+      "코엔자임Q10"
+    ],
+    "kpi5-ref-075": [
+      "p236",
+      "비타민 B12"
+    ],
+    "kpi5-ref-076": [
+      "p238",
+      "칼슘"
+    ],
+    "kpi5-ref-077": [
+      "p238",
+      "마그네슘"
+    ],
+    "kpi5-ref-078": [
+      "p238",
+      "비타민 C"
+    ],
+    "kpi5-ref-079": [
+      "p238",
+      "비타민 D"
+    ],
+    "kpi5-ref-080": [
+      "p238",
+      "아연"
+    ],
+    "kpi5-ref-082": [
+      "coq10",
+      "depletion"
+    ],
+    "kpi5-ref-084": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-085": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-086": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-087": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-088": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-089": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-090": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-091": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-ref-092": [
+      "absorption_interaction",
+      "calcium_citrate"
+    ],
+    "kpi5-ref-093": [
+      "absorption_interaction",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-095": [
+      "depletion",
+      "vitamin_b_complex"
+    ],
+    "kpi5-ref-096": [
+      "calcium_citrate",
+      "depletion"
+    ],
+    "kpi5-ref-097": [
+      "depletion",
+      "magnesium_glycinate"
+    ],
+    "kpi5-ref-098": [
+      "depletion",
+      "vitamin_c"
+    ],
+    "kpi5-ref-099": [
+      "depletion",
+      "vitamin_d3"
+    ],
+    "kpi5-ref-100": [
+      "depletion",
+      "zinc"
+    ],
+    "kpi5-repl-001": [
+      "coq10",
+      "depletion",
+      "p236",
+      "코엔자임Q10"
+    ],
+    "kpi5-repl-002": [
+      "calcium_citrate",
+      "depletion",
+      "p237",
+      "칼슘"
+    ],
+    "kpi5-repl-003": [
+      "depletion",
+      "magnesium_glycinate",
+      "p237",
+      "마그네슘"
+    ],
+    "kpi5-repl-004": [
+      "depletion",
+      "p237",
+      "vitamin_b_complex",
+      "비타민 B1"
+    ],
+    "kpi5-repl-005": [
+      "depletion",
+      "p237",
+      "zinc",
+      "아연"
+    ],
+    "kpi5-repl-006": [
+      "calcium_citrate",
+      "depletion",
+      "p236",
+      "칼슘"
+    ],
+    "kpi5-repl-007": [
+      "depletion",
+      "magnesium_glycinate",
+      "p236",
+      "마그네슘"
+    ],
+    "kpi5-repl-008": [
+      "depletion",
+      "p236",
+      "vitamin_b_complex",
+      "비타민 B1"
+    ],
+    "kpi5-repl-009": [
+      "depletion",
+      "p236",
+      "zinc",
+      "아연"
+    ]
+  },
+  "cases_sha256": "68176dc903435b8fef02bdc1f228703bf016946b363ec4e2e75b852eeedf9417",
+  "provenance": {
+    "answer_key_method": "blind_cross_ai_adaptive_review_then_human_final_approval",
+    "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+    "drafting_agent": "codex",
+    "blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "engine_output_consulted_before_sealing": false,
+    "prior_seal_disposals": [
+      {
+        "schema_version": "answer_key_seal_disposal_v1",
+        "indicator_id": "KPI-5",
+        "discarded_seal_sha256": "7df0d7e35a41d85051e71c96121ca3d44c1afa3bee092b1749d300355136fbdf",
+        "discarded_by": "비식별 검토자",
+        "discarded_at": "2026-08-03T14:20:10+09:00",
+        "reason": "Amlodipine-magnesium, atorvastatin-vitamin D, metformin-CoQ10 관계가 확립된 정답으로 보기 어려워 기존 봉인본 전체를 검토 결과로 교체해야 함.",
+        "original_seal_path": "data/original_plan/kpi/seals/discarded/kpi5_reference_seal_v1.json",
+        "archived_seal_path": "data/original_plan/kpi/seal_disposals/archive/seals/kpi5_reference_seal_7df0d7e35a41d85051e71c96121ca3d44c1afa3bee092b1749d300355136fbdf.json",
+        "archived_workbench_path": "data/original_plan/kpi/seal_disposals/archive/workbenches/kpi5_workbench_7df0d7e35a41d85051e71c96121ca3d44c1afa3bee092b1749d300355136fbdf.json",
+        "review_required_before_resealing": true
+      }
+    ],
+    "role_separation": {
+      "required": true,
+      "drafting_actor_id": "codex",
+      "system_under_test_id": "wellnessbox-safety-engine-v1",
+      "exact_identity_separated": true,
+      "drafting_provider_family": "openai",
+      "system_under_test_provider_family": null,
+      "provider_family_separated": false,
+      "provider_family_is_a_validity_gate": false,
+      "validity_basis": "audited_source_and_information_boundary_plus_provider_separation_for_kpi4_plus_human_final_approval"
+    },
+    "cross_ai_review": {
+      "primary_ai_draft": null,
+      "used": true,
+      "reviewing_agent": "claude-opus-5",
+      "reviewing_agent_family": "anthropic",
+      "cases_sha256": "faae8050410f3cc210cbf22dc4c7e5700ec5f8a5ed14ce9362148ef55f461c2d",
+      "batch_approval": null
+    },
+    "adjudication": {
+      "counts": {
+        "accepted": 100,
+        "edited": 0,
+        "rejected": 0,
+        "pending": 0
+      },
+      "edit_rate_pct": 0.0,
+      "detailed_review_count": 100,
+      "batch_approved_count": 0,
+      "detailed_edit_rate_pct": 0.0,
+      "reviewers": [
+        "권혁찬"
+      ],
+      "reviewer_identity_refs": [
+        "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+      ],
+      "warnings": [
+        "edit_rate_zero_every_draft_was_accepted_unchanged"
+      ],
+      "identity_linkages": [
+        {
+          "schema_version": "kpi_original_review_identity_linkage_application_v1",
+          "source_return_zip_sha256": "1dfebf5379d3e608b8a3bc959245086afbb33341a7f66c1c4a3c47e0763b771f",
+          "source_form_sha256": "7a754b54869106548f54b9adb5127c79ff246b6342894644d57d665c877b2b9b",
+          "source_review_zip_sha256": "a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c",
+          "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+          "registered_name": "권혁찬",
+          "qualification_stage": "pharmacist_candidate_preliminary_safety_review",
+          "confirmed_at": "2026-08-04T15:57:57.221545+09:00",
+          "confirmation_channel": "project_owner_relay_of_registered_reviewer_confirmation",
+          "confirmed_at_semantics": "recorded_at_confirmation_receipt_per_reviewer_timestamp_delegation",
+          "indicator_counts": {
+            "KPI-1": 51,
+            "KPI-3": 100,
+            "KPI-4": 93,
+            "KPI-5": 91
+          },
+          "total_decision_count": 335,
+          "decision_scope_sha256": "6ed9c663b32857fdf21c56130537d7fe2cfe11fd4910e4aa909c0c79ca70560b",
+          "case_ids_sha256": "79780dbb9ccfd2d5e0ac39a9eb7602888f222dad8a7c43e756f79dc8b3173960"
+        }
+      ]
+    },
+    "note": "초안과 2차 AI 의견은 측정 대상 엔진의 입력·출력에서 분리했다. 사람이 상세 검토한 건수와 AI 합의안을 일괄 승인한 건수를 구분해 기록하며, 모든 사례의 최종 결정권자는 기록된 사람에게 있다.",
+    "integrity_audit": {
+      "indicator_id": "KPI-5",
+      "draft_sources": [
+        "health_checker_reference_extract_v1@reference_corpus_drafters"
+      ],
+      "case_count": 100,
+      "source_independence": {
+        "modules": [
+          "C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/evals/reference_corpus_drafters.py"
+        ],
+        "reads_engine_logic": [],
+        "reads_vocabulary": [],
+        "independent": true,
+        "verdict": "PASS",
+        "reason": ""
+      },
+      "declared_blinding": {
+        "required_engine_logic": [
+          "data/knowledge/counseling_answer_verifier_policy_v1.json",
+          "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+          "data/knowledge/goal_ingredient_priors_v1.json",
+          "data/knowledge/reference_knowledge_base_v1.json",
+          "data/knowledge/runtime_knowledge_db_v1.json",
+          "data/original_plan/closed_loop_next_action_policy_v1.json",
+          "data/rules/candidate_signal_scoring_rules_v1.json",
+          "data/rules/safety_rules.json",
+          "data/synthetic/synthetic_longitudinal_v4.jsonl"
+        ],
+        "declared_blinded_from": [
+          "data/knowledge/counseling_answer_verifier_policy_v1.json",
+          "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+          "data/knowledge/goal_ingredient_priors_v1.json",
+          "data/knowledge/reference_knowledge_base_v1.json",
+          "data/knowledge/runtime_knowledge_db_v1.json",
+          "data/original_plan/closed_loop_next_action_policy_v1.json",
+          "data/rules/candidate_signal_scoring_rules_v1.json",
+          "data/rules/safety_rules.json",
+          "data/synthetic/synthetic_longitudinal_v4.jsonl"
+        ],
+        "missing_engine_logic": [],
+        "consistent_across_cases": true,
+        "verdict": "PASS",
+        "reason": ""
+      },
+      "review_effort": {
+        "decision_count": 100,
+        "detailed_decision_count": 100,
+        "batch_approved_count": 0,
+        "elapsed_seconds": 254.0,
+        "seconds_per_decision": 2.54,
+        "duration_source": "per_case_recorded_duration",
+        "edit_rate_pct": 0.0,
+        "verdict": "PASS",
+        "reason": ""
+      },
+      "adaptive_review": {
+        "used": true,
+        "verdict": "PASS",
+        "reason": "",
+        "reviewing_agent": "claude-opus-5",
+        "agreement_count": 0,
+        "disagreement_count": 100,
+        "required_detail_count": 100,
+        "batch_approved_count": 0
+      },
+      "seal_exists": false,
+      "verdict": "PASS",
+      "seal_must_be_discarded": false,
+      "workbench_complete": true,
+      "seal_integrity_audit_verdict": null,
+      "seal_intact": false,
+      "seal_matches_current_cases": false,
+      "seal_provenance_matches_current": false,
+      "completion_ready": false
+    }
+  },
+  "seal_sha256": "7e84c39b106e4ee868d67cfdbb5f95fe85cf606a2e9030f01a25684ad7d31e0a"
+}

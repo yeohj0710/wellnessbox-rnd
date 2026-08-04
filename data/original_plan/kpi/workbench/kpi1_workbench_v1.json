@@ -2412,13 +2412,13 @@
       "final_answer": [
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:02+09:00",
       "note": "offline_review_choice:A; 원문 판정의 당화 차단 성분에 가장 직접 대응하며, 비당뇨 사례에서 berberine 자동 추가는 과도함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-002": {
       "case_id": "kpi1-ref-002",
@@ -2427,13 +2427,13 @@
         "probiotics",
         "soluble_fiber"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:05+09:00",
       "note": "offline_review_choice:B; Amlodipine을 magnesium 고갈로 간주한 추가 성분을 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-007": {
       "case_id": "kpi1-ref-007",
@@ -2442,13 +2442,13 @@
         "omega3",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:20+09:00",
       "note": "offline_review_choice:CUSTOM; 기억력 목표에는 omega3를 두고, metformin 장기 복용 시 B12 상태 확인 가능성을 반영하되 CoQ10은 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-008": {
       "case_id": "kpi1-ref-008",
@@ -2457,13 +2457,13 @@
         "omega3",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:23+09:00",
       "note": "offline_review_choice:B; 광범위한 steroid 관련 영양소 자동 추가보다 목표 특이성이 높음.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-010": {
       "case_id": "kpi1-ref-010",
@@ -2472,13 +2472,13 @@
         "omega3",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:29+09:00",
       "note": "offline_review_choice:B; A의 magnesium·probiotics 조합보다 인지 목표에 직접적임.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-011": {
       "case_id": "kpi1-ref-011",
@@ -2487,13 +2487,13 @@
         "coq10",
         "omega3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:32+09:00",
       "note": "offline_review_choice:CUSTOM; 혈관 목표와 statin 관련 CoQ10 고려를 반영하고, 혈당 정보 없는 berberine은 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-012": {
       "case_id": "kpi1-ref-012",
@@ -2502,13 +2502,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:35+09:00",
       "note": "offline_review_choice:B; 수면 목표에 직접 대응하며 PPI 관련 광범위 자동 보충을 피함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-013": {
       "case_id": "kpi1-ref-013",
@@ -2517,13 +2517,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:38+09:00",
       "note": "offline_review_choice:B; 스트레스·이완 목표에 직접 대응하며 이뇨제 관련 광범위 자동 보충을 피함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-014": {
       "case_id": "kpi1-ref-014",
@@ -2531,13 +2531,13 @@
       "final_answer": [
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:41+09:00",
       "note": "offline_review_choice:B; 결핍 항목이 특정되지 않은 상태에서 가장 직접적인 기본 성분만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-015": {
       "case_id": "kpi1-ref-015",
@@ -2545,13 +2545,13 @@
       "final_answer": [
         "omega3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:44+09:00",
       "note": "offline_review_choice:CUSTOM; 운동부족·혈류 목표에서 근거가 상대적으로 직접적인 성분만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-016": {
       "case_id": "kpi1-ref-016",
@@ -2559,13 +2559,13 @@
       "final_answer": [
         "omega3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:47+09:00",
       "note": "offline_review_choice:CUSTOM; 만성 염증 목표에 직접적인 성분만 유지하고 steroid 보조 성분 자동 추가는 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-017": {
       "case_id": "kpi1-ref-017",
@@ -2574,13 +2574,13 @@
         "omega3",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:50+09:00",
       "note": "offline_review_choice:B; 감각 기능 관련 후보 중 목표 적합성이 상대적으로 높음.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-019": {
       "case_id": "kpi1-ref-019",
@@ -2588,13 +2588,13 @@
       "final_answer": [
         "vitamin_c"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:56+09:00",
       "note": "offline_review_choice:B; 치은 조직 회복 목표에서 비타민 C가 가장 직접적이며 statin 관련 성분 자동 추가는 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-020": {
       "case_id": "kpi1-ref-020",
@@ -2603,13 +2603,13 @@
         "calcium_citrate",
         "vitamin_d3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:00:59+09:00",
       "note": "offline_review_choice:B; 치조골 유지 목표에 직접적인 calcium과 vitamin D만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-021": {
       "case_id": "kpi1-ref-021",
@@ -2618,13 +2618,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:02+09:00",
       "note": "offline_review_choice:B; 불안 완화 목표에 직접 대응하며 이뇨제 관련 광범위 자동 보충을 피함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-022": {
       "case_id": "kpi1-ref-022",
@@ -2633,13 +2633,13 @@
         "vitamin_b_complex",
         "vitamin_d3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:05+09:00",
       "note": "offline_review_choice:B; 의욕·에너지 목표에 상대적으로 직접적이고 levothyroxine과 상호작용 가능한 미네랄 자동 추가를 피함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-023": {
       "case_id": "kpi1-ref-023",
@@ -2647,13 +2647,13 @@
       "final_answer": [
         "probiotics"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:08+09:00",
       "note": "offline_review_choice:B; 장-뇌 축 목표에 직접 대응하는 성분만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-024": {
       "case_id": "kpi1-ref-024",
@@ -2662,13 +2662,13 @@
         "omega3",
         "vitamin_d3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:11+09:00",
       "note": "offline_review_choice:B; 염증성 피로 목표에 직접 대응하며 steroid 관련 광범위 자동 보충을 피함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-025": {
       "case_id": "kpi1-ref-025",
@@ -2676,13 +2676,13 @@
       "final_answer": [
         "berberine"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:14+09:00",
       "note": "offline_review_choice:B; 인슐린 저항성 목표에서 불필요한 magnesium 자동 추가를 피함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-026": {
       "case_id": "kpi1-ref-026",
@@ -2690,13 +2690,13 @@
       "final_answer": [
         "soluble_fiber"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:17+09:00",
       "note": "offline_review_choice:B; 식후 혈당 스파이크에는 soluble fiber가 가장 직접적임.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-027": {
       "case_id": "kpi1-ref-027",
@@ -2705,13 +2705,13 @@
         "omega3",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:20+09:00",
       "note": "offline_review_choice:B; 합병증 방어 목표에 관련성이 높은 성분만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-028": {
       "case_id": "kpi1-ref-028",
@@ -2721,13 +2721,13 @@
         "magnesium_glycinate",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:23+09:00",
       "note": "offline_review_choice:CUSTOM; PPI 장기 복용에서 검토할 수 있는 주요 영양소만 남기고 CoQ10·vitamin D·zinc 자동 추가는 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-031": {
       "case_id": "kpi1-ref-031",
@@ -2736,13 +2736,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:32+09:00",
       "note": "offline_review_choice:B; 심인성 현훈의 불안·이완 목표에 직접 대응함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-032": {
       "case_id": "kpi1-ref-032",
@@ -2750,13 +2750,13 @@
       "final_answer": [
         "soluble_fiber"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:35+09:00",
       "note": "offline_review_choice:CUSTOM; LDL 관리에서 근거가 안정적인 soluble fiber만 유지하고 berberine 및 steroid 자동 보충은 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-033": {
       "case_id": "kpi1-ref-033",
@@ -2764,13 +2764,13 @@
       "final_answer": [
         "omega3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:38+09:00",
       "note": "offline_review_choice:B; 중성지방 목표에 omega3가 가장 직접적임.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-034": {
       "case_id": "kpi1-ref-034",
@@ -2779,13 +2779,13 @@
         "coq10",
         "vitamin_c"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:41+09:00",
       "note": "offline_review_choice:B; Amlodipine 관련 magnesium 자동 추가를 제외한 항산화 조합임.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-035": {
       "case_id": "kpi1-ref-035",
@@ -2793,13 +2793,13 @@
       "final_answer": [
         "coq10"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:44+09:00",
       "note": "offline_review_choice:B; statin 관련 목표에 가장 직접적인 CoQ10만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-036": {
       "case_id": "kpi1-ref-036",
@@ -2808,13 +2808,13 @@
         "magnesium_glycinate",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:47+09:00",
       "note": "offline_review_choice:CUSTOM; 피로 원인 평가 전 광범위 보충을 피하고 PPI 장기 복용 시 확인 가능한 주요 영양소만 남김.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-038": {
       "case_id": "kpi1-ref-038",
@@ -2823,13 +2823,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:53+09:00",
       "note": "offline_review_choice:B; 자율신경 이완 목표에 직접 대응하며 levothyroxine과 미네랄은 간격 복용이 필요함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-039": {
       "case_id": "kpi1-ref-039",
@@ -2837,13 +2837,13 @@
       "final_answer": [
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:01:56+09:00",
       "note": "offline_review_choice:CUSTOM; 비특이적 소진에 광범위 조합을 피하고 metformin 관련 B12 확인 가능성만 반영함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-049": {
       "case_id": "kpi1-ref-049",
@@ -2852,13 +2852,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:02:26+09:00",
       "note": "offline_review_choice:B; 두 후보가 동일하며 목표에 직접 대응하는 조합임.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-051": {
       "case_id": "kpi1-ref-051",
@@ -2867,13 +2867,13 @@
         "calcium_citrate",
         "vitamin_d3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:02:32+09:00",
       "note": "offline_review_choice:B; 골밀도 유지 목표에 직접적인 calcium과 vitamin D만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-052": {
       "case_id": "kpi1-ref-052",
@@ -2882,13 +2882,13 @@
         "coq10",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:02:35+09:00",
       "note": "offline_review_choice:B; 에너지 목표와 PPI 관련 B12 가능성을 반영한 간결한 조합임.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-054": {
       "case_id": "kpi1-ref-054",
@@ -2897,13 +2897,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:02:41+09:00",
       "note": "offline_review_choice:B; 스트레스성 위 증상과 이완 목표에 직접 대응하며 미네랄은 levothyroxine과 간격 복용함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-057": {
       "case_id": "kpi1-ref-057",
@@ -2913,13 +2913,13 @@
         "magnesium_glycinate",
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:02:50+09:00",
       "note": "offline_review_choice:A; 편두통 예방에 사용되는 magnesium·CoQ10·B군 구성을 가장 충실히 반영함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-058": {
       "case_id": "kpi1-ref-058",
@@ -2927,13 +2927,13 @@
       "final_answer": [
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:02:53+09:00",
       "note": "offline_review_choice:B; 긴장성 두통의 근육 이완 목표에 직접적인 성분만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-059": {
       "case_id": "kpi1-ref-059",
@@ -2942,13 +2942,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:02:56+09:00",
       "note": "offline_review_choice:B; 수면 부족형 두통에 직접 대응하며 statin 관련 성분 자동 추가는 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-060": {
       "case_id": "kpi1-ref-060",
@@ -2956,13 +2956,13 @@
       "final_answer": [
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:02:59+09:00",
       "note": "offline_review_choice:B; 식이 유발형 편두통에서 후보 중 예방 근거가 상대적으로 있는 B군만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-061": {
       "case_id": "kpi1-ref-061",
@@ -2970,13 +2970,13 @@
       "final_answer": [
         "soluble_fiber"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:03:02+09:00",
       "note": "offline_review_choice:CUSTOM; 치질 악화 요인인 변비·힘주기 교정에는 soluble fiber가 우선이며 이뇨제 상황에서 magnesium 자동 추가는 피함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-063": {
       "case_id": "kpi1-ref-063",
@@ -2985,13 +2985,13 @@
         "coq10",
         "omega3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:03:08+09:00",
       "note": "offline_review_choice:B; 혈관·대사 목표에 관련된 성분만 유지하고 metformin 관련 자동 보충은 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-065": {
       "case_id": "kpi1-ref-065",
@@ -3000,13 +3000,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:03:14+09:00",
       "note": "offline_review_choice:B; 스트레스성 교감 항진의 이완 목표에 직접 대응함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-066": {
       "case_id": "kpi1-ref-066",
@@ -3014,13 +3014,13 @@
       "final_answer": [
         "vitamin_b_complex"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:03:17+09:00",
       "note": "offline_review_choice:B; 호모시스테인 대사 목표에 B군이 가장 직접적임.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-071": {
       "case_id": "kpi1-ref-071",
@@ -3029,13 +3029,13 @@
         "calcium_citrate",
         "vitamin_d3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:03:32+09:00",
       "note": "offline_review_choice:B; 골밀도 유지에 직접적인 calcium과 vitamin D만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-076": {
       "case_id": "kpi1-ref-076",
@@ -3044,13 +3044,13 @@
         "magnesium_glycinate",
         "soluble_fiber"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:03:47+09:00",
       "note": "offline_review_choice:B; 변비 목표에 직접적인 soluble fiber와 magnesium을 유지하고 PPI 관련 광범위 보충은 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-077": {
       "case_id": "kpi1-ref-077",
@@ -3059,13 +3059,13 @@
         "vitamin_c",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:03:50+09:00",
       "note": "offline_review_choice:B; 점막 방어와 감염 회복 목표에 직접적인 vitamin C와 zinc를 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-078": {
       "case_id": "kpi1-ref-078",
@@ -3074,13 +3074,13 @@
         "probiotics",
         "vitamin_d3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:03:53+09:00",
       "note": "offline_review_choice:B; 과민 반응형 면역 균형에 후보 중 직접성이 높은 조합임.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-079": {
       "case_id": "kpi1-ref-079",
@@ -3088,13 +3088,13 @@
       "final_answer": [
         "omega3"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:03:56+09:00",
       "note": "offline_review_choice:CUSTOM; 만성 염증 목표에 직접적인 omega3만 유지하고 metformin 관련 자동 보충은 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-083": {
       "case_id": "kpi1-ref-083",
@@ -3103,13 +3103,13 @@
         "coq10",
         "zinc"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:04:08+09:00",
       "note": "offline_review_choice:B; 남성 정자 요인에 후보 중 직접성이 높은 CoQ10과 zinc만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-089": {
       "case_id": "kpi1-ref-089",
@@ -3118,13 +3118,13 @@
         "magnesium_glycinate",
         "soluble_fiber"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:04:26+09:00",
       "note": "offline_review_choice:B; 변비 우세형에 직접적인 magnesium과 soluble fiber만 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-090": {
       "case_id": "kpi1-ref-090",
@@ -3133,13 +3133,13 @@
         "probiotics",
         "soluble_fiber"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:04:29+09:00",
       "note": "offline_review_choice:B; 설사·긴급형에서 magnesium을 제외하고 장내 환경과 수분 흡수 리듬에 맞는 조합을 선택함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-ref-093": {
       "case_id": "kpi1-ref-093",
@@ -3148,13 +3148,13 @@
         "l_theanine",
         "magnesium_glycinate"
       ],
-      "decided_by": "비식별 검토자",
+      "decided_by": "권혁찬",
       "decided_at": "2026-08-03T14:04:38+09:00",
       "note": "offline_review_choice:B; 입면·숙면 목표에 직접 대응하며 이뇨제 관련 광범위 자동 보충은 제외함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
       "reviewed_in_detail": true,
-      "reviewer_identity_ref": ""
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     },
     "kpi1-repl-001": {
       "case_id": "kpi1-repl-001",
@@ -5422,7 +5422,154 @@
         "packet_sha256": "9cbddf16d508e1886dce55764050826d42bd9f3bc148040459c2a961af1a560b",
         "engine_output_consulted": false
       }
-    }
+    },
+    "packet_segments": [
+      {
+        "packet_sha256": "22bfbc1dea05b378567fb8cdbfdc985fb84e638cc4a18a4b3db6f5107c97754b",
+        "case_count": 47,
+        "case_ids": [
+          "kpi1-repl-001",
+          "kpi1-repl-002",
+          "kpi1-repl-003",
+          "kpi1-repl-004",
+          "kpi1-repl-005",
+          "kpi1-repl-006",
+          "kpi1-repl-007",
+          "kpi1-repl-008",
+          "kpi1-repl-009",
+          "kpi1-repl-010",
+          "kpi1-repl-011",
+          "kpi1-repl-012",
+          "kpi1-repl-013",
+          "kpi1-repl-014",
+          "kpi1-repl-015",
+          "kpi1-repl-016",
+          "kpi1-repl-017",
+          "kpi1-repl-018",
+          "kpi1-repl-019",
+          "kpi1-repl-020",
+          "kpi1-repl-021",
+          "kpi1-repl-023",
+          "kpi1-repl-024",
+          "kpi1-repl-025",
+          "kpi1-repl-026",
+          "kpi1-repl-028",
+          "kpi1-repl-029",
+          "kpi1-repl-030",
+          "kpi1-repl-031",
+          "kpi1-repl-032",
+          "kpi1-repl-033",
+          "kpi1-repl-034",
+          "kpi1-repl-035",
+          "kpi1-repl-036",
+          "kpi1-repl-037",
+          "kpi1-repl-038",
+          "kpi1-repl-039",
+          "kpi1-repl-040",
+          "kpi1-repl-041",
+          "kpi1-repl-042",
+          "kpi1-repl-043",
+          "kpi1-repl-044",
+          "kpi1-repl-045",
+          "kpi1-repl-046",
+          "kpi1-repl-047",
+          "kpi1-repl-048",
+          "kpi1-repl-049"
+        ],
+        "case_prompts_sha256": "5b67e0f567b590ef99aec00e4861331cc55a7748665cdf55201733523bd003da"
+      },
+      {
+        "packet_sha256": "9cbddf16d508e1886dce55764050826d42bd9f3bc148040459c2a961af1a560b",
+        "case_count": 2,
+        "case_ids": [
+          "kpi1-repl2-001",
+          "kpi1-repl2-002"
+        ],
+        "case_prompts_sha256": "479bfeaf06515c4ace6a00f73a662ef85fc71ababed78a1b0c01852912841e81"
+      },
+      {
+        "packet_sha256": "b7adcd0cdcb7de5fb89c790a477b7d14f44ff29774aa8c9fb64c84b3bbf24e91",
+        "case_count": 51,
+        "case_ids": [
+          "kpi1-ref-001",
+          "kpi1-ref-002",
+          "kpi1-ref-007",
+          "kpi1-ref-008",
+          "kpi1-ref-010",
+          "kpi1-ref-011",
+          "kpi1-ref-012",
+          "kpi1-ref-013",
+          "kpi1-ref-014",
+          "kpi1-ref-015",
+          "kpi1-ref-016",
+          "kpi1-ref-017",
+          "kpi1-ref-019",
+          "kpi1-ref-020",
+          "kpi1-ref-021",
+          "kpi1-ref-022",
+          "kpi1-ref-023",
+          "kpi1-ref-024",
+          "kpi1-ref-025",
+          "kpi1-ref-026",
+          "kpi1-ref-027",
+          "kpi1-ref-028",
+          "kpi1-ref-031",
+          "kpi1-ref-032",
+          "kpi1-ref-033",
+          "kpi1-ref-034",
+          "kpi1-ref-035",
+          "kpi1-ref-036",
+          "kpi1-ref-038",
+          "kpi1-ref-039",
+          "kpi1-ref-049",
+          "kpi1-ref-051",
+          "kpi1-ref-052",
+          "kpi1-ref-054",
+          "kpi1-ref-057",
+          "kpi1-ref-058",
+          "kpi1-ref-059",
+          "kpi1-ref-060",
+          "kpi1-ref-061",
+          "kpi1-ref-063",
+          "kpi1-ref-065",
+          "kpi1-ref-066",
+          "kpi1-ref-071",
+          "kpi1-ref-076",
+          "kpi1-ref-077",
+          "kpi1-ref-078",
+          "kpi1-ref-079",
+          "kpi1-ref-083",
+          "kpi1-ref-089",
+          "kpi1-ref-090",
+          "kpi1-ref-093"
+        ],
+        "case_prompts_sha256": "072581a5d9bf0844afa5efef1da16c03b5683b4b8e0f815afca41c655fc2f31c"
+      }
+    ],
+    "composite_packet_sha256": "e9661ef75ba8176059214c3a71cae9c1f2e33d3a636e7a3cb59b5d49cb673838"
   },
-  "batch_approval": null
+  "batch_approval": null,
+  "identity_linkages": [
+    {
+      "schema_version": "kpi_original_review_identity_linkage_application_v1",
+      "source_return_zip_sha256": "1dfebf5379d3e608b8a3bc959245086afbb33341a7f66c1c4a3c47e0763b771f",
+      "source_form_sha256": "7a754b54869106548f54b9adb5127c79ff246b6342894644d57d665c877b2b9b",
+      "source_review_zip_sha256": "a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c",
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+      "registered_name": "권혁찬",
+      "qualification_stage": "pharmacist_candidate_preliminary_safety_review",
+      "confirmed_at": "2026-08-04T15:57:57.221545+09:00",
+      "confirmation_channel": "project_owner_relay_of_registered_reviewer_confirmation",
+      "confirmed_at_semantics": "recorded_at_confirmation_receipt_per_reviewer_timestamp_delegation",
+      "indicator_counts": {
+        "KPI-1": 51,
+        "KPI-3": 100,
+        "KPI-4": 93,
+        "KPI-5": 91
+      },
+      "total_decision_count": 335,
+      "decision_scope_sha256": "6ed9c663b32857fdf21c56130537d7fe2cfe11fd4910e4aa909c0c79ca70560b",
+      "case_ids_sha256": "79780dbb9ccfd2d5e0ac39a9eb7602888f222dad8a7c43e756f79dc8b3173960"
+    }
+  ]
 }

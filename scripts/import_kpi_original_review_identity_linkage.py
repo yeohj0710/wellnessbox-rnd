@@ -18,6 +18,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from scripts.build_kpi_original_review_identity_linkage_package import (  # noqa: E402
     ANONYMOUS_REVIEWER,
+    APPLICATION_PATH,
     FORM_NAME,
     INDICATORS,
     OUTPUT_DIR,
@@ -34,7 +35,6 @@ from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
 )
 
 COMPLETED_DIR = OUTPUT_DIR / "completed"
-APPLICATION_PATH = COMPLETED_DIR / "kpi_original_review_identity_linkage_application_v1.json"
 EDITABLE_FIELDS = {"identity_link_status", "confirmed_at"}
 
 
@@ -71,12 +71,21 @@ def validate_return(source: Path, root: Path = ROOT) -> tuple[dict[str, Any], by
     identity = eligible_reviewer(root)
     if payload["reviewer_identity_ref"] != identity["reviewer_identity_ref"]:
         raise ValueError("identity_link_reviewer_not_eligible")
-    scope = decision_scope(root)
-    if payload["decision_scope_sha256"] != scope["decision_scope_sha256"]:
-        raise ValueError("identity_link_decision_scope_changed")
+    application_path = root / APPLICATION_PATH.relative_to(ROOT)
+    existing_application = None
+    if application_path.is_file():
+        existing_application = json.loads(
+            application_path.read_text(encoding="utf-8")
+        )
+        if existing_application.get("status") != "APPLIED":
+            raise ValueError("identity_link_application_status_invalid")
+    else:
+        scope = decision_scope(root)
+        if payload["decision_scope_sha256"] != scope["decision_scope_sha256"]:
+            raise ValueError("identity_link_decision_scope_changed")
     result = {
         "schema_version": "kpi_original_review_identity_linkage_application_v1",
-        "status": "READY_TO_APPLY",
+        "status": "ALREADY_APPLIED" if existing_application else "READY_TO_APPLY",
         "source_return_zip_sha256": hashlib.sha256(source_bytes).hexdigest(),
         "source_form_sha256": hashlib.sha256(form_bytes).hexdigest(),
         "source_review_zip_sha256": payload["source_review_zip_sha256"],
@@ -84,6 +93,8 @@ def validate_return(source: Path, root: Path = ROOT) -> tuple[dict[str, Any], by
         "registered_name": identity["registered_name"],
         "qualification_stage": payload["qualification_stage"],
         "confirmed_at": confirmed_at,
+        "confirmation_channel": "direct_completed_form",
+        "confirmed_at_semantics": "provided_in_completed_form",
         "indicator_counts": payload["indicator_counts"],
         "total_decision_count": payload["total_decision_count"],
         "decision_scope_sha256": payload["decision_scope_sha256"],
@@ -107,6 +118,8 @@ def _linked_workbenches(
             "registered_name",
             "qualification_stage",
             "confirmed_at",
+            "confirmation_channel",
+            "confirmed_at_semantics",
             "indicator_counts",
             "total_decision_count",
             "decision_scope_sha256",
@@ -139,8 +152,20 @@ def _linked_workbenches(
     return workbenches
 
 
-def apply_return(source: Path, root: Path = ROOT) -> dict[str, Any]:
+def apply_return(
+    source: Path,
+    root: Path = ROOT,
+    *,
+    confirmation_channel: str = "",
+    confirmed_at_semantics: str = "",
+) -> dict[str, Any]:
     result, form_bytes = validate_return(source, root)
+    if result["status"] == "ALREADY_APPLIED":
+        raise ValueError("identity_link_already_applied")
+    if confirmation_channel.strip():
+        result["confirmation_channel"] = confirmation_channel.strip()
+    if confirmed_at_semantics.strip():
+        result["confirmed_at_semantics"] = confirmed_at_semantics.strip()
     workbenches = _linked_workbenches(result, root)
     completed_dir = root / COMPLETED_DIR.relative_to(ROOT)
     application_path = root / APPLICATION_PATH.relative_to(ROOT)
@@ -182,10 +207,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--confirmation-channel", default="")
+    parser.add_argument("--confirmed-at-semantics", default="")
     args = parser.parse_args()
     try:
         result = (
-            apply_return(args.input)
+            apply_return(
+                args.input,
+                confirmation_channel=args.confirmation_channel,
+                confirmed_at_semantics=args.confirmed_at_semantics,
+            )
             if args.apply
             else validate_return(args.input)[0]
         )

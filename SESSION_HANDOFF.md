@@ -1065,3 +1065,13 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 검증: 원본 검토 ZIP SHA-256, 결정 범위 SHA-256, 사례 ID SHA-256, 등록 신원 참조, 시간대 포함 시각을 모두 확인한다.
 - 적용 제한: 검토자 이름과 `reviewer_identity_ref`만 연결한다. 정답·판정·메모·판정 시각·검토 시간은 바꾸지 않는다.
 - 적용 후 처리: 무결성 감사를 다시 실행하고 PASS일 때만 봉인한다. 배포·실제 트래픽·훈련·최종 영수증 재발급은 하지 않는다.
+
+## 2026-08-04 신원 연결·봉인 결과
+
+- 확인 경로: `project_owner_relay_of_registered_reviewer_confirmation`.
+- 시각 의미: `recorded_at_confirmation_receipt_per_reviewer_timestamp_delegation`.
+- 신원 연결: KPI-1 51건, KPI-3 100건, KPI-4 93건, KPI-5 91건, 합계 335건.
+- AI 패킷 구간: KPI-1 3개, KPI-4 2개, KPI-5 2개. 구간별 사례 ID와 질문 해시를 검증한다.
+- 봉인 SHA-256: KPI-1 `a3e62d0211d91d509641f41bac697d69cd19d3843dffbcf5e84470d13a044629`, KPI-3 `510f57ab18329a9c3a2eab551aa9bd9b35b0470f393aef828943cff26ca6d2ea`, KPI-4 `a0f2e70392e0c94bf8e9315833bc800cb6856d5fed41c767f4f0df9414287c5e`, KPI-5 `7e84c39b106e4ee868d67cfdbb5f95fe85cf606a2e9030f01a25684ad7d31e0a`.
+- 감사 결과: 네 지표 모두 PASS, 봉인 무결성·현재 사례·현재 provenance 일치, `completion_status: READY`, 차단 사유 0건.
+- 같은 검토자의 추가 입력은 없다. 배포·실제 트래픽·훈련·최종 영수증 재발급도 실행하지 않았다.

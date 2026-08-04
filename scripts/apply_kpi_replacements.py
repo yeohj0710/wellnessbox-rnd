@@ -37,6 +37,7 @@ from scripts.import_kpi_second_replacement_response import (  # noqa: E402
 from wellnessbox_rnd.evals.adaptive_answer_key_review import (  # noqa: E402
     _review_digest,
     build_adaptive_review_plan,
+    build_blind_ai_review_packet,
 )
 from wellnessbox_rnd.evals.answer_key_workbench import (  # noqa: E402
     CaseDraft,
@@ -57,6 +58,48 @@ INDICATORS = ("KPI-1", "KPI-4", "KPI-5")
 WORKBENCH_DIR = ROOT / "data/original_plan/kpi/workbench"
 REPORT_PATH = SECOND_DIR / "kpi_replacement_application_v1.json"
 EXPECTED_REPLACEMENT_COUNTS = {"KPI-1": 49, "KPI-4": 7, "KPI-5": 9}
+
+
+def bind_composite_packet_record(
+    record: dict[str, Any], workbench: Workbench
+) -> dict[str, Any]:
+    """Bind a merged response to its distinct historical request packets."""
+    if not record:
+        return record
+    provenance = record.get("case_provenance", {})
+    original_packet = str(record.get("packet_sha256", ""))
+    groups: dict[str, list[str]] = {}
+    prompts = {draft.case_id: draft.prompt for draft in workbench.drafts}
+    for case_id in record.get("cases", {}):
+        packet_sha256 = str(
+            provenance.get(case_id, {}).get("packet_sha256", original_packet)
+        )
+        if not packet_sha256:
+            raise ValueError(f"composite_packet_source_missing:{case_id}")
+        groups.setdefault(packet_sha256, []).append(case_id)
+    segments = []
+    for packet_sha256, raw_case_ids in sorted(groups.items()):
+        case_ids = sorted(raw_case_ids)
+        segments.append(
+            {
+                "packet_sha256": packet_sha256,
+                "case_count": len(case_ids),
+                "case_ids": case_ids,
+                "case_prompts_sha256": _review_digest(
+                    {
+                        case_id: {"prompt": prompts[case_id]}
+                        for case_id in case_ids
+                    }
+                ),
+            }
+        )
+    expected = build_blind_ai_review_packet(
+        workbench,
+        required_blinded_from=list(record.get("required_blinded_from", [])),
+    )
+    record["packet_segments"] = segments
+    record["composite_packet_sha256"] = expected["packet_sha256"]
+    return record
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -309,6 +352,8 @@ def build_applied_workbenches() -> tuple[dict[str, Workbench], dict[str, Any]]:
                 added_cases=replacement_primaries[indicator_id]["cases"],
                 source_record=primary_source,
             )
+            bind_composite_packet_record(current.primary_ai_draft, current)
+        bind_composite_packet_record(current.ai_review, current)
         current.batch_approval = None
         if len(current.drafts) != 100 or len(current.decisions) != 100:
             raise ValueError(f"{indicator_id}:applied_case_count_invalid")

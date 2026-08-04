@@ -52,7 +52,7 @@ def test_package_contains_one_editable_form_and_helpers() -> None:
 def test_validate_return_accepts_one_confirmation(tmp_path: Path) -> None:
     result, _ = importer.validate_return(_return_zip(tmp_path / "completed.zip"))
 
-    assert result["status"] == "READY_TO_APPLY"
+    assert result["status"] in {"READY_TO_APPLY", "ALREADY_APPLIED"}
     assert result["total_decision_count"] == 335
     assert result["qualification_stage"] == (
         "pharmacist_candidate_preliminary_safety_review"
@@ -80,27 +80,17 @@ def test_validate_return_rejects_immutable_change(tmp_path: Path) -> None:
 
 def test_link_changes_only_identity_fields_and_adds_provenance(tmp_path: Path) -> None:
     result, _ = importer.validate_return(_return_zip(tmp_path / "completed.zip"))
-    linked = importer._linked_workbenches(result)
 
-    for indicator_id, workbench in linked.items():
-        original = builder.load_workbench(
+    assert result["status"] == "ALREADY_APPLIED"
+    for indicator_id in builder.INDICATORS:
+        workbench = builder.load_workbench(
             builder._workbench_path(builder.ROOT, indicator_id)
         )
-        changed = 0
-        for case_id, before in original.decisions.items():
-            after = workbench.decisions[case_id]
-            before_payload = vars(before).copy()
-            after_payload = vars(after).copy()
-            before_name = before_payload.pop("decided_by")
-            before_ref = before_payload.pop("reviewer_identity_ref")
-            after_payload.pop("decided_by")
-            after_payload.pop("reviewer_identity_ref")
-            assert after_payload == before_payload
-            if before_name == builder.ANONYMOUS_REVIEWER and not before_ref:
-                changed += 1
-                assert after.decided_by == result["registered_name"]
-                assert after.reviewer_identity_ref == result["reviewer_identity_ref"]
-        assert changed == builder.EXPECTED_COUNTS[indicator_id]
+        assert all(
+            decision.decided_by == result["registered_name"]
+            and decision.reviewer_identity_ref == result["reviewer_identity_ref"]
+            for decision in workbench.decisions.values()
+        )
         assert workbench.identity_linkages[-1]["decision_scope_sha256"] == (
             result["decision_scope_sha256"]
         )

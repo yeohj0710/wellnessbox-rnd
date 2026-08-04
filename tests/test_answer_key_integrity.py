@@ -375,7 +375,8 @@ def test_nonfinite_recorded_duration_fails_closed() -> None:
 def test_repository_audit_passes_all_current_draft_sources() -> None:
     report = audit_repository(ROOT)
 
-    assert report["status"] == "BLOCKED"
+    assert report["status"] == "READY"
+    assert report["completion_status"] == "READY"
     assert {
         item["indicator_id"]: item["source_independence"]["verdict"]
         for item in report["indicators"]
@@ -687,8 +688,8 @@ def test_reference_seal_cli_does_not_write_below_minimum_sample(
     assert not destination.exists()
 
 
-def test_current_kpi1_and_kpi5_reviews_require_identity_attestation() -> None:
-    """Imported pseudonymous reviews are not formal until identity is traceable."""
+def test_current_kpi1_and_kpi5_reviews_have_traceable_identity_linkage() -> None:
+    """The one-time linkage makes every imported decision traceable."""
     for indicator in ("kpi1", "kpi5"):
         path = ROOT / f"data/original_plan/kpi/workbench/{indicator}_workbench_v1.json"
         if not path.is_file():
@@ -698,4 +699,11 @@ def test_current_kpi1_and_kpi5_reviews_require_identity_attestation() -> None:
             continue
         assert len(workbench["decisions"]) == 100
         assert len(workbench.get("seal_disposals", [])) == 1
-        assert audit_review_effort(workbench)["verdict"] == "FAIL"
+        assert len(workbench.get("identity_linkages", [])) == 1
+        assert all(
+            decision.get("reviewer_identity_ref", "").startswith(
+                "registry:op039:sha256:"
+            )
+            for decision in workbench["decisions"].values()
+        )
+        assert audit_review_effort(workbench)["verdict"] == "PASS"

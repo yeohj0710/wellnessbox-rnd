@@ -32,6 +32,11 @@ SOURCE_REVIEW_SHA256 = (
     "a9587f2c425510dc2490857de2ab67210b0c0b9894170db80e222563f1834e3c"
 )
 OUTPUT_DIR = ROOT / "data/original_plan/kpi/review_handoff/identity_linkage"
+APPLICATION_PATH = (
+    OUTPUT_DIR
+    / "completed"
+    / "kpi_original_review_identity_linkage_application_v1.json"
+)
 FORM_NAME = "kpi_original_review_identity_linkage.json"
 PACKAGE_PATH = OUTPUT_DIR / "kpi_original_review_identity_linkage_input.zip"
 RETURN_ZIP_NAME = "kpi_original_review_identity_linkage_completed.zip"
@@ -110,7 +115,19 @@ def build_form(root: Path = ROOT) -> dict[str, Any]:
     if hashlib.sha256(source.read_bytes()).hexdigest() != SOURCE_REVIEW_SHA256:
         raise ValueError("original_review_source_sha256_changed")
     identity = eligible_reviewer(root)
-    scope = decision_scope(root)
+    application_path = root / APPLICATION_PATH.relative_to(ROOT)
+    if application_path.is_file():
+        application = json.loads(application_path.read_text(encoding="utf-8"))
+        if application.get("status") != "APPLIED":
+            raise ValueError("identity_link_application_status_invalid")
+        scope = {
+            "indicator_counts": application["indicator_counts"],
+            "total_decision_count": application["total_decision_count"],
+            "decision_scope_sha256": application["decision_scope_sha256"],
+            "case_ids_sha256": application["case_ids_sha256"],
+        }
+    else:
+        scope = decision_scope(root)
     if scope["total_decision_count"] != TOTAL_COUNT:
         raise ValueError("original_review_identity_scope_count_changed")
     return {

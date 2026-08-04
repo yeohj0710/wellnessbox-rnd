@@ -485,6 +485,7 @@ def audit_indicator(
         dict(workbench.get("ai_review", {})),
         workbench.get("batch_approval"),
         dict(workbench.get("primary_ai_draft", {})),
+        list(workbench.get("identity_linkages", [])),
     )
     adaptive_audit = audit_adaptive_review(
         adaptive_workbench,
@@ -644,6 +645,7 @@ def audit_repository(
             dict(workbench.get("ai_review", {})),
             workbench.get("batch_approval"),
             dict(workbench.get("primary_ai_draft", {})),
+            list(workbench.get("identity_linkages", [])),
         )
         seal_check = verify_seal(seal) if seal is not None else None
         current_cases = adjudicated_answer_key(current_workbench)

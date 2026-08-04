@@ -771,6 +771,50 @@ def approve_consensus_batch(
     return approval
 
 
+def _packet_binding_error(
+    record: dict[str, Any],
+    workbench: Workbench,
+    expected_packet: dict[str, Any],
+) -> str:
+    segments = record.get("packet_segments")
+    if not segments:
+        return (
+            "packet_sha256_mismatch"
+            if record.get("packet_sha256") != expected_packet["packet_sha256"]
+            else ""
+        )
+    if not isinstance(segments, list) or not segments:
+        return "packet_segments_invalid"
+    if record.get("composite_packet_sha256") != expected_packet["packet_sha256"]:
+        return "composite_packet_sha256_mismatch"
+    prompts = {draft.case_id: draft.prompt for draft in workbench.drafts}
+    covered: list[str] = []
+    for segment in segments:
+        if not isinstance(segment, dict):
+            return "packet_segment_invalid"
+        packet_sha256 = str(segment.get("packet_sha256", ""))
+        if len(packet_sha256) != 64 or any(
+            character not in "0123456789abcdef" for character in packet_sha256
+        ):
+            return "packet_segment_sha256_invalid"
+        case_ids = segment.get("case_ids")
+        if not isinstance(case_ids, list) or case_ids != sorted(set(case_ids)):
+            return "packet_segment_case_ids_invalid"
+        if segment.get("case_count") != len(case_ids):
+            return "packet_segment_case_count_mismatch"
+        if any(case_id not in prompts for case_id in case_ids):
+            return "packet_segment_unknown_case"
+        prompt_payload = {
+            case_id: {"prompt": prompts[case_id]} for case_id in case_ids
+        }
+        if segment.get("case_prompts_sha256") != _review_digest(prompt_payload):
+            return "packet_segment_prompt_digest_mismatch"
+        covered.extend(case_ids)
+    if sorted(covered) != sorted(prompts) or len(covered) != len(set(covered)):
+        return "packet_segment_coverage_mismatch"
+    return ""
+
+
 def _primary_ai_draft_error(
     workbench: Workbench,
     *,
@@ -818,8 +862,9 @@ def _primary_ai_draft_error(
         workbench,
         required_blinded_from=required_blinded_from,
     )
-    if record.get("packet_sha256") != expected_packet["packet_sha256"]:
-        return "primary_ai_draft_packet_sha256_mismatch"
+    packet_error = _packet_binding_error(record, workbench, expected_packet)
+    if packet_error:
+        return f"primary_ai_draft_{packet_error}"
     cases = record.get("cases", {})
     if not isinstance(cases, dict):
         return "complete_primary_ai_draft_required"
@@ -943,8 +988,9 @@ def audit_adaptive_review(
         workbench,
         required_blinded_from=required,
     )
-    if review.get("packet_sha256") != expected_packet["packet_sha256"]:
-        return fail("ai_review_packet_sha256_mismatch")
+    packet_error = _packet_binding_error(review, workbench, expected_packet)
+    if packet_error:
+        return fail(f"ai_review_{packet_error}")
     review_cases = review.get("cases", {})
     if not isinstance(review_cases, dict):
         return fail("complete_independent_ai_review_required")

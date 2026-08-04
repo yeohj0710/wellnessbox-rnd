@@ -475,3 +475,9 @@ Do not run training or a new `cgm` loop yet.
 1. `data/original_plan/kpi/review_handoff/identity_linkage/kpi_original_review_identity_linkage_input.zip` 하나를 사용한다.
 2. 반환 ZIP 하나를 받은 뒤 335건의 신원 연결, 무결성 감사, 봉인을 순서대로 처리한다.
 3. 같은 검토자에게 사례별 추가 입력을 다시 요청하지 않는다.
+
+## 2026-08-04 정답키 후속 상태
+
+1. KPI-1·3·4·5의 정답키 검토와 봉인은 완료됐다. 같은 검토자에게 추가 입력을 요청하지 않는다.
+2. 연구 기간 내부 KPI 측정은 별도 실행 단계다. `measurement_environment: research_phase_internal_measurement`를 유지한다.
+3. 배포·실제 트래픽·훈련·최종 영수증 재발급은 별도 승인이나 기존 게이트 없이 실행하지 않는다.
