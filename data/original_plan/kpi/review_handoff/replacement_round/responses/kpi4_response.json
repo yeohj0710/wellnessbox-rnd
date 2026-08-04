@@ -1,0 +1,127 @@
+{
+  "drafting_agent": "claude-opus-5",
+  "draft_source": "blind_packet_independent_opinion",
+  "blinded_from": [
+    "data/knowledge/counseling_answer_verifier_policy_v1.json",
+    "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+    "data/knowledge/goal_ingredient_priors_v1.json",
+    "data/knowledge/reference_knowledge_base_v1.json",
+    "data/knowledge/runtime_knowledge_db_v1.json",
+    "data/original_plan/closed_loop_next_action_policy_v1.json",
+    "data/rules/candidate_signal_scoring_rules_v1.json",
+    "data/rules/safety_rules.json",
+    "data/synthetic/synthetic_longitudinal_v4.jsonl"
+  ],
+  "packet_sha256": "c8ba343626a44e99398a530d2a77e080c3b4c19567e420ba31dbec77aec13757",
+  "engine_output_consulted": false,
+  "cases": [
+    {
+      "case_id": "kpi4-repl-001",
+      "proposed_answer": [
+        "berberine",
+        "vitamin_b_complex",
+        "supplement_depleted_nutrient",
+        "separate_dosing"
+      ],
+      "confidence": 0.58,
+      "flags": [
+        "ppi_depletes_b12_mg_zn",
+        "antiglycation_evidence_indirect"
+      ],
+      "rationale": "당화를 막으려면 먼저 혈당 노출을 줄인다. 베르베린으로 식후 혈당을 낮추고, B군(티아민·벤포티아민 계열)으로 당화 최종산물 생성 경로를 억제한다. Esomeprazole은 위산을 줄여 B12·마그네슘·아연 흡수를 떨어뜨리므로 고갈 영양소를 따로 보충하고, 산성 환경이 필요한 미네랄 제형은 PPI 복용과 2시간 이상 간격을 둔다."
+    },
+    {
+      "case_id": "kpi4-repl-002",
+      "proposed_answer": [
+        "soluble_fiber",
+        "probiotics",
+        "separate_dosing",
+        "supplement_depleted_nutrient"
+      ],
+      "confidence": 0.72,
+      "flags": [
+        "fiber_binds_drug_reduces_absorption",
+        "loop_diuretic_depletes_k_mg_ca_b1_zn"
+      ],
+      "rationale": "수용성 식이섬유가 장내 독소를 흡착해 대변으로 내보내고, 프로바이오틱스가 장벽을 복구해 내독소(LPS) 유입을 줄인다. 식이섬유는 Furosemide 흡수를 방해할 수 있어 이뇨제 복용과 2시간 이상 벌린다. 루프 이뇨제는 칼륨·마그네슘·칼슘·티아민·아연을 소변으로 내보내므로 고갈분을 함께 채운다."
+    },
+    {
+      "case_id": "kpi4-repl-003",
+      "proposed_answer": [
+        "omega3",
+        "vitamin_b_complex",
+        "separate_dosing"
+      ],
+      "confidence": 0.7,
+      "flags": [
+        "levothyroxine_needs_4h_gap_from_minerals",
+        "empty_stomach_dosing"
+      ],
+      "rationale": "DHA 중심 오메가3가 신경세포막을 유지하고, B군(B12·엽산·B6)이 호모시스테인을 낮춰 뇌세포를 보호한다. Levothyroxine은 공복에 먹고 칼슘·철·마그네슘 제제와 4시간 이상 벌려야 하므로, 미네랄이 섞인 복합제를 쓴다면 복용 시간대를 나눈다."
+    },
+    {
+      "case_id": "kpi4-repl-004",
+      "proposed_answer": [
+        "vitamin_b_complex",
+        "supplement_depleted_nutrient",
+        "omega3"
+      ],
+      "confidence": 0.8,
+      "flags": [
+        "metformin_b12_malabsorption",
+        "monitor_serum_b12"
+      ],
+      "rationale": "Metformin은 회장에서 칼슘 의존성 B12 흡수를 막아 결핍을 만들고, 그 결핍이 말초신경병증과 인지 저하로 이어진다. B군으로 B12를 우선 채우고 혈청 B12를 주기적으로 확인한다. 오메가3는 신경 보호를 보조한다."
+    },
+    {
+      "case_id": "kpi4-repl-005",
+      "proposed_answer": [
+        "magnesium_glycinate",
+        "l_theanine",
+        "omega3",
+        "supplement_depleted_nutrient",
+        "advise_professional_consult"
+      ],
+      "confidence": 0.58,
+      "flags": [
+        "steroid_induced_mood_change",
+        "steroid_depletes_ca_vitd_k_mg_zn",
+        "do_not_self_taper_steroid"
+      ],
+      "rationale": "마그네슘과 L-테아닌이 과각성을 낮추고 오메가3가 우울 증상을 보조한다. 다만 감정 변화 자체가 Prednisolone의 부작용일 수 있어 임의로 줄이거나 끊지 말고 처방의와 상의한다. 스테로이드는 칼슘·비타민D·칼륨·마그네슘·아연을 소모하므로 고갈분을 함께 채운다."
+    },
+    {
+      "case_id": "kpi4-repl-006",
+      "proposed_answer": [
+        "omega3",
+        "vitamin_b_complex",
+        "vitamin_d3",
+        "advise_professional_consult"
+      ],
+      "confidence": 0.55,
+      "flags": [
+        "broad_goal_low_specificity",
+        "additive_hypotension_risk",
+        "amlodipine_cyp3a4_substrate"
+      ],
+      "rationale": "목표가 '전반적 용도'여서 성분을 좁히기 어렵다. 오메가3·B군·비타민D3로 기본 축만 잡는다. Amlodipine은 CYP3A4로 대사되고 혈압을 낮추므로, 혈압을 추가로 내리거나 CYP3A4를 건드리는 성분을 얹기 전에 처방의와 확인한다."
+    },
+    {
+      "case_id": "kpi4-repl-007",
+      "proposed_answer": [
+        "coq10",
+        "omega3",
+        "berberine",
+        "supplement_depleted_nutrient",
+        "advise_professional_consult"
+      ],
+      "confidence": 0.68,
+      "flags": [
+        "statin_depletes_coq10",
+        "berberine_inhibits_cyp3a4_raises_statin_level",
+        "myopathy_risk"
+      ],
+      "rationale": "스타틴은 메발론산 경로를 막아 하류의 CoQ10 합성까지 줄이므로 CoQ10을 먼저 보충한다. 오메가3는 혈관 내피 기능과 중성지방을, 베르베린은 인슐린 감수성을 개선한다. 다만 베르베린이 CYP3A4를 억제해 Atorvastatin 혈중농도를 올리고 근육 손상 위험을 키우므로 병용 전에 처방의와 상의한다."
+    }
+  ]
+}

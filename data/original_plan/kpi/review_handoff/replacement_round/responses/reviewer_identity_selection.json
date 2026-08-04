@@ -1,0 +1,12 @@
+{
+  "schema_version": "kpi_reviewer_identity_selection_v1",
+  "selected_reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+  "confirmed_at": "2026-08-04T08:39:58+09:00",
+  "options": [
+    {
+      "registered_name": "권혁찬",
+      "organization": "웰니스박스 TIPS 과제 참여연구원",
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+    }
+  ]
+}
