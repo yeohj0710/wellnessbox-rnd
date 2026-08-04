@@ -1,0 +1,37 @@
+{
+  "schema_version": "kpi_replacement_final_review_summary_v1",
+  "total_case_count": 65,
+  "required_review_count": 65,
+  "recommendation_counts": {
+    "C": 35,
+    "B": 24,
+    "A": 6
+  },
+  "indicators": [
+    {
+      "indicator_id": "KPI-1",
+      "case_count": 49,
+      "agreement_count": 5,
+      "disagreement_count": 44,
+      "flagged_count": 49,
+      "required_review_count": 49
+    },
+    {
+      "indicator_id": "KPI-4",
+      "case_count": 7,
+      "agreement_count": 1,
+      "disagreement_count": 6,
+      "flagged_count": 7,
+      "required_review_count": 7
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_count": 9,
+      "agreement_count": 0,
+      "disagreement_count": 9,
+      "flagged_count": 9,
+      "required_review_count": 9
+    }
+  ],
+  "review_csv_sha256": "73f418b798b640ec2eee91fd98d7de251a4d19f783448b7594e582ae403787d3"
+}

@@ -1,17 +1,16 @@
 # NEXT_STEPS
 
-## 2026-08-04 다음 입력
+## 2026-08-04 최종 교체 검토 입력
 
-다음 입력 파일은 `data/original_plan/kpi/review_handoff/replacement_round/kpi_replacement_claude_retry_package.zip`이다. `START_HERE.txt`에 따라 `claude-opus-5` 응답 세 개를 만든 뒤 `kpi_replacement_completed.zip`을 반환한다. 등록 신원 선택은 이미 입력돼 있다. 2026-08-04 `gpt-5.6-pro` 제출분은 원본을 보존했으며, KPI-4 7건만 Anthropic 1차 초안 이후 OpenAI 2차 의견으로 재사용 대기한다.
+다음 입력 파일은 `data/original_plan/kpi/review_handoff/replacement_round/kpi_replacement_final_review_package.zip`이다. CSV 65행에는 권고안이 미리 입력돼 있다. 각 행에서 `ACCEPT`, `EDIT`, `REJECT` 중 하나와 실제 시작·종료 시각을 기록하고 `MAKE_RETURN_ZIP.cmd`로 반환 ZIP을 만든다. Claude 재처리와 KPI-4 OpenAI 2차 의견은 완료됐으므로 별도 AI 응답은 더 필요하지 않다.
 
-반환 검토 자료 400건은 원문 그대로 적용됐다. 아직 유효한 신규 봉인은 없다. 기존 `kpi_replacement_input_package.zip`은 2026-08-04 제출에 사용된 과거 입력이며 다시 사용하지 않는다.
+## 2026-08-04 완료된 Claude 재처리
 
-1. 재처리 패키지의 `START_HERE.txt` 순서대로 Anthropic 응답 3개를 `kpi_replacement_completed.zip`으로 반환한다. 등록 신원 선택은 이미 입력돼 있다.
-2. `python scripts/import_kpi_replacement_responses.py --input <ZIP>`으로 읽기 전용 검증한 뒤 `--apply`로 staging에 보존한다.
-3. KPI-4의 Anthropic 1차 초안이 들어온 뒤 OpenAI 계열의 블라인드 2차 의견 7건을 만든다. KPI-1·5는 Anthropic 2차 의견까지 이 반환으로 끝난다.
-4. 두 의견을 나란히 둔 65건 최종 검토 자료를 만든다. 등록 신원 참조는 기존 400건과 KPI-1·5 폐기 이력에도 같은 값으로 연결한다.
-5. 교체 판단을 반영해 각 지표가 다시 100개 유효 사례가 되면 무결성 감사 후 봉인한다.
-6. 새 봉인 뒤에만 `measurement_environment: research_phase_internal_measurement`로 연구 단계 내부 측정을 실행한다.
+`kpi_replacement_claude_retry_package.zip`의 Claude 응답 검증과 KPI-4 OpenAI 2차 의견 연결은 완료됐다. 기존 `kpi_replacement_input_package.zip`과 Claude 재처리 패키지는 과거 입력이므로 다시 사용하지 않는다.
+
+1. 최종 검토 반환 ZIP을 읽기 전용 검증한 뒤 교체 판단을 반영한다.
+2. 각 지표가 다시 100개 유효 사례가 되면 무결성 감사 후 봉인한다.
+3. 새 봉인 뒤에만 `measurement_environment: research_phase_internal_measurement`로 연구 단계 내부 측정을 실행한다.
 
 전체 pytest 기준선은 실제 실행 결과 90건 실패다. `.pytest_cache/v/cache/lastfailed` 항목 수를 기준선으로 사용하지 않는다.
 

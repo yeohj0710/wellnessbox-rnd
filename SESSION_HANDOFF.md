@@ -1,11 +1,18 @@
 # SESSION_HANDOFF
 
-## 2026-08-04 OpenAI 제출분 부분 보존
+## 2026-08-04 Claude 응답 반영과 65건 최종 검토 handoff
+
+- Claude 반환 ZIP SHA-256: `acd6ffc496b8e065d6d3f0f41abb66dd51273929e64a628661012fe457576cd7`. KPI-1 49건, KPI-4 7건, KPI-5 9건 모두 정식 importer 검증을 통과했다.
+- KPI-4 제공자 분리: primary `claude-opus-5`/Anthropic, review `gpt-5.6-pro`/OpenAI. GPT 원본 ZIP과 역할 전환 provenance를 staging에 보존했다.
+- 최종 검토 패키지: `replacement_round/kpi_replacement_final_review_package.zip`, SHA-256 `9bb6739ce85eb5af879f5ec4f789fadd678359cfbb72462d5be442548c43193e`.
+- 최소 상세 검토 수는 65건이다. 권고 선택 분포는 A 6건, B 24건, C 35건이며 최종 결정 필드는 비워 두었다.
+
+## 2026-08-04 OpenAI 제출분 보존과 재사용 완료
 
 - 제출 ZIP: `replacement_round/openai_submission/kpi_replacement_completed.zip`, SHA-256 `99ef845a5d2451889ecf2d16aa40de65263f38919d389d64337b418e560ff43d`.
 - 세 파일 모두 `gpt-5.6-pro` 응답이라 Anthropic 역할로 가져오지 않았다. KPI-1·5는 Codex 초안과 제공자 계열이 같아 사용할 수 없다.
-- KPI-4 응답 7건은 구조 검증을 통과해 Anthropic 1차 초안 이후 OpenAI 2차 의견으로 재사용 대기한다. 원래 primary 역할로 생성됐다는 provenance를 역할 전환 시 보존해야 한다.
-- 재처리 입력: `replacement_round/kpi_replacement_claude_retry_package.zip`, SHA-256 `29fb4d0639edc09b5a965ec3a21c07af7ee0ff24630c11b1b3599540a8cf372d`. 신원 선택은 제출분에서 그대로 보존했다.
+- KPI-4 응답 7건은 구조 검증을 통과해 Anthropic 1차 초안 이후 OpenAI 2차 의견으로 재사용했다. 원래 primary 역할로 생성됐다는 provenance를 역할 전환 기록에 보존했다.
+- 사용한 재처리 입력은 `replacement_round/kpi_replacement_claude_retry_package.zip`, SHA-256 `29fb4d0639edc09b5a965ec3a21c07af7ee0ff24630c11b1b3599540a8cf372d`이다. 신원 선택은 제출분에서 그대로 보존했다.
 
 ## 2026-08-03 반려 사례 교체 입력 handoff
 
