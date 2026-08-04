@@ -14,6 +14,8 @@ from wellnessbox_rnd.evals.sealed_kpi_measurement import (  # noqa: E402
     load_json,
     run_kpi1_measurement,
     run_kpi3_measurement,
+    run_kpi4_measurement,
+    run_kpi5_measurement,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,7 +23,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--indicator", required=True, choices=("KPI-1", "KPI-3"))
+    parser.add_argument(
+        "--indicator",
+        required=True,
+        choices=("KPI-1", "KPI-3", "KPI-4", "KPI-5"),
+    )
     parser.add_argument("--output")
     return parser
 
@@ -38,6 +44,8 @@ def main() -> int:
     measurement = {
         "KPI-1": run_kpi1_measurement,
         "KPI-3": run_kpi3_measurement,
+        "KPI-4": run_kpi4_measurement,
+        "KPI-5": run_kpi5_measurement,
     }[args.indicator]
     result = measurement(seal=seal, drafts=list(workbench["drafts"]))
     output = Path(args.output) if args.output else (

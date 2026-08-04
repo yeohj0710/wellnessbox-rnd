@@ -9,15 +9,25 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
 
+from wellnessbox_rnd.chat import (
+    ChatAdapterRequest,
+    generate_chat_answer_with_openai_fallback,
+    load_approved_counseling_scope,
+    load_retrieval_corpus_manifest,
+)
+from wellnessbox_rnd.domain.intake import normalize_request
 from wellnessbox_rnd.evals.reference_standard import verify_seal
 from wellnessbox_rnd.interim.agent import AgentState, BoundedAgent
 from wellnessbox_rnd.interim.store import InterimStore
 from wellnessbox_rnd.orchestration.recommendation_service import recommend
+from wellnessbox_rnd.safety.service import assess_safety
 from wellnessbox_rnd.schemas.recommendation import (
     BiologicalSex,
     MedicationInput,
     RecommendationGoal,
     RecommendationRequest,
+    SupplementIngredientInput,
+    SupplementInput,
     UserProfile,
 )
 
@@ -62,6 +72,21 @@ _KPI1_ENGINE_PATHS = (
     "src/wellnessbox_rnd/domain/intake.py",
 )
 _KPI1_INPUT_ADAPTER_ID = "kpi1_reference_prompt_to_recommendation_request_v1"
+_KPI5_ENGINE_PATHS = (
+    "src/wellnessbox_rnd/safety/service.py",
+    "src/wellnessbox_rnd/domain/intake.py",
+    "src/wellnessbox_rnd/schemas/recommendation.py",
+    "data/knowledge/runtime_knowledge_db_v1.json",
+)
+_KPI5_INPUT_ADAPTER_ID = "kpi5_blinded_prompt_to_safety_intake_v1"
+_KPI5_LABELS = frozenset({"depletion", "absorption_interaction"})
+_KPI4_ENGINE_PATHS = (
+    "src/wellnessbox_rnd/chat/answering.py",
+    "src/wellnessbox_rnd/chat/retrieval.py",
+    "src/wellnessbox_rnd/chat/openai_adapter.py",
+    "data/knowledge/counseling_retrieval_corpus_manifest_v1.json",
+)
+_KPI4_INPUT_ADAPTER_ID = "kpi4_blinded_prompt_to_chat_adapter_request_v1"
 
 
 def kpi3_event_from_prompt(prompt: str) -> dict[str, Any]:
@@ -150,6 +175,91 @@ def generate_kpi1_engine_outputs(
                 "postcondition_success": False,
                 "goal": None,
                 "medication": [],
+                "error": f"{type(exc).__name__}:{exc}",
+            }
+    return outputs
+
+
+def kpi5_request_from_prompt(prompt: str) -> tuple[RecommendationRequest, str, str, str]:
+    """Translate a KPI-5 prompt into a safety request without its answer."""
+    tokens = prompt.split()
+    if len(tokens) < 4:
+        raise ValueError("kpi5_prompt_structure_invalid")
+    medication = tokens[0]
+    if tokens[1] == "복용자에게":
+        if len(tokens) < 5 or tokens[3] != "는":
+            raise ValueError("kpi5_prompt_structure_invalid")
+        mode = "label"
+        ingredient = tokens[2]
+    elif tokens[1] == "와":
+        if len(tokens) < 5 or tokens[3] != "관계의":
+            raise ValueError("kpi5_prompt_structure_invalid")
+        mode = "evidence"
+        ingredient = tokens[2]
+    elif tokens[1] == "복용자" and tokens[2] == "상담에서":
+        if len(tokens) < 6 or tokens[4] != "관계의":
+            raise ValueError("kpi5_prompt_structure_invalid")
+        mode = "combined"
+        ingredient = tokens[3]
+    else:
+        raise ValueError("kpi5_prompt_structure_invalid")
+    request = RecommendationRequest(
+        user_profile=UserProfile(age=40, biological_sex=BiologicalSex.UNDISCLOSED),
+        goals=[RecommendationGoal.GENERAL_WELLNESS],
+        medications=[MedicationInput(name=medication)],
+        current_supplements=[
+            SupplementInput(
+                name="kpi5_measurement_case",
+                ingredients=[SupplementIngredientInput(name=ingredient)],
+            )
+        ],
+    )
+    return request, mode, medication, ingredient
+
+
+def generate_kpi5_engine_outputs(
+    drafts: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """Run KPI-5 prompts through the safety engine without consulting answers."""
+    outputs: dict[str, dict[str, Any]] = {}
+    applied_at = datetime(2026, 1, 1, tzinfo=UTC)
+    for draft in drafts:
+        case_id = str(draft["case_id"])
+        try:
+            request, mode, medication, ingredient = kpi5_request_from_prompt(
+                str(draft["prompt"])
+            )
+            intake = normalize_request(request)
+            summary = assess_safety(intake, applied_at=applied_at)
+            payload = summary.model_dump(mode="json")
+            outputs[case_id] = {
+                "actual_answer": [],
+                "actual_label": None,
+                "actual_evidence": None,
+                "prompt_mode": mode,
+                "medication": medication,
+                "ingredient": ingredient,
+                "engine_status": payload["status"],
+                "excluded_ingredients": payload["excluded_ingredients"],
+                "rule_refs": payload["rule_refs"],
+                "execution_success": True,
+                "postcondition_success": isinstance(payload["rule_refs"], list)
+                and isinstance(payload["excluded_ingredients"], list),
+                "error": None,
+            }
+        except (KeyError, TypeError, ValueError) as exc:
+            outputs[case_id] = {
+                "actual_answer": [],
+                "actual_label": None,
+                "actual_evidence": None,
+                "prompt_mode": None,
+                "medication": None,
+                "ingredient": None,
+                "engine_status": None,
+                "excluded_ingredients": [],
+                "rule_refs": [],
+                "execution_success": False,
+                "postcondition_success": False,
                 "error": f"{type(exc).__name__}:{exc}",
             }
     return outputs
@@ -403,16 +513,286 @@ def run_kpi1_measurement(
     }
 
 
+def _kpi5_reference_fields(
+    *,
+    expected: list[str],
+    mode: str,
+) -> tuple[str | None, str | None]:
+    if mode == "label":
+        labels = [item for item in expected if item in _KPI5_LABELS]
+        ingredients = [item for item in expected if item not in _KPI5_LABELS]
+        if len(labels) != 1 or len(ingredients) != 1:
+            raise ValueError("kpi5_label_reference_shape_invalid")
+        return labels[0], ingredients[0]
+    if mode == "evidence":
+        pages = [item for item in expected if item.startswith("p") and item[1:].isdigit()]
+        evidence = [item for item in expected if item not in pages]
+        if len(pages) != 1 or len(evidence) != 1:
+            raise ValueError("kpi5_evidence_reference_shape_invalid")
+        return None, f"{pages[0]}::{evidence[0]}"
+    if mode == "combined":
+        labels = [item for item in expected if item in _KPI5_LABELS]
+        pages = [item for item in expected if item.startswith("p") and item[1:].isdigit()]
+        if len(labels) != 1 or len(pages) != 1:
+            raise ValueError("kpi5_combined_reference_shape_invalid")
+        ingredients = [item for item in expected if item not in _KPI5_LABELS and item not in pages]
+        if len(ingredients) != 2:
+            raise ValueError("kpi5_combined_reference_shape_invalid")
+        return labels[0], f"{pages[0]}::{ingredients[1]}"
+    raise ValueError("kpi5_prompt_mode_invalid")
+
+
+def run_kpi5_measurement(
+    *,
+    seal: dict[str, Any],
+    drafts: list[dict[str, Any]],
+    measured_at: str | None = None,
+) -> dict[str, Any]:
+    """Run KPI-5 prompts through the safety engine and score exact label/evidence pairs."""
+    seal_check = verify_seal(seal)
+    if not seal_check["seal_intact"]:
+        raise ValueError("reference_standard_seal_broken")
+    if seal.get("indicator_id") != "KPI-5":
+        raise ValueError("kpi5_measurement_requires_kpi5_seal")
+
+    prompts = {str(item["case_id"]): str(item["prompt"]) for item in drafts}
+    reference = dict(seal.get("cases", {}))
+    if set(prompts) != set(reference):
+        raise ValueError("kpi5_prompt_and_seal_case_ids_mismatch")
+
+    engine_outputs = generate_kpi5_engine_outputs(drafts)
+    per_case: list[dict[str, Any]] = []
+    for case_id in sorted(prompts):
+        engine = engine_outputs[case_id]
+        expected = list(reference[case_id])
+        mode = str(engine["prompt_mode"])
+        expected_label, expected_evidence = _kpi5_reference_fields(
+            expected=expected,
+            mode=mode,
+        )
+        correct = (
+            bool(engine["execution_success"])
+            and bool(engine["postcondition_success"])
+            and engine["actual_label"] == expected_label
+            and engine["actual_evidence"] == expected_evidence
+        )
+        per_case.append(
+            {
+                "case_id": case_id,
+                "expected_answer": expected,
+                "expected_label": expected_label,
+                "expected_evidence": expected_evidence,
+                **engine,
+                "correct": correct,
+            }
+        )
+
+    correct_count = sum(bool(item["correct"]) for item in per_case)
+    case_count = len(per_case)
+    score = 100.0 * correct_count / case_count if case_count else 0.0
+    return {
+        "schema_version": MEASUREMENT_SCHEMA,
+        "indicator_id": "KPI-5",
+        "system_under_test_id": seal.get("provenance", {})
+        .get("role_separation", {})
+        .get("system_under_test_id"),
+        "input_adapter_id": _KPI5_INPUT_ADAPTER_ID,
+        "input_adapter_sha256": hashlib.sha256(
+            "kpi5_prompt_tokens_v1|복용자에게=label|와=evidence|복용자 상담에서=combined".encode()
+        ).hexdigest(),
+        "engine_artifacts": [
+            {"path": path, "sha256": _file_sha256(_ROOT / path)}
+            for path in _KPI5_ENGINE_PATHS
+        ],
+        "measurement_environment": MEASUREMENT_ENVIRONMENT,
+        "measured_at": measured_at
+        or datetime.now(UTC).isoformat().replace("+00:00", "Z"),
+        "seal_sha256": seal["seal_sha256"],
+        "seal_intact_before_measurement": True,
+        "case_count": case_count,
+        "minimum_sample_count": seal["minimum_sample_count"],
+        "meets_minimum_sample": case_count >= int(seal["minimum_sample_count"]),
+        "correct_count": correct_count,
+        "accuracy_pct": round(score, 4),
+        "target_pct": 95.0,
+        "target_met": case_count >= int(seal["minimum_sample_count"])
+        and score >= 95.0,
+        "execution_failure_count": sum(
+            not bool(item["execution_success"]) for item in per_case
+        ),
+        "postcondition_failure_count": sum(
+            not bool(item["postcondition_success"]) for item in per_case
+        ),
+        "per_case": per_case,
+        "note": (
+            "현재 안전 엔진은 depletion/absorption_interaction 라벨이나 "
+            "원문 쪽수 필드를 반환하지 않는다. "
+            "실제 반환 필드만 기록했으며, 참조 정답을 엔진 출력에 주입하지 않았다."
+        ),
+    }
+
+
+def generate_kpi4_engine_outputs(
+    drafts: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """Run counseling prompts through the repository chat adapter only."""
+    manifest = load_retrieval_corpus_manifest(
+        _ROOT / "data/knowledge/counseling_retrieval_corpus_manifest_v1.json"
+    )
+    scope = load_approved_counseling_scope()
+    chunks_by_id = {chunk.chunk_id: chunk for chunk in manifest.chunks}
+    as_of = datetime(2026, 1, 1, tzinfo=UTC)
+    outputs: dict[str, dict[str, Any]] = {}
+    for draft in drafts:
+        case_id = str(draft["case_id"])
+        try:
+            response = generate_chat_answer_with_openai_fallback(
+                manifest,
+                ChatAdapterRequest(
+                    query=str(draft["prompt"]),
+                    knowledge_scope=scope,
+                    as_of=as_of,
+                ),
+                allow_live_api=False,
+            )
+            answer = response.answer
+            actual_ingredients = sorted(
+                {
+                    ingredient
+                    for chunk_id in answer.used_chunk_ids
+                    for ingredient in chunks_by_id[chunk_id].ingredient_keys
+                }
+            )
+            outputs[case_id] = {
+                "actual_answer": actual_ingredients,
+                "engine_status": answer.status,
+                "answer_template_key": answer.answer_template_key,
+                "provider": response.provider,
+                "model": response.model,
+                "fallback_reason": response.fallback_reason,
+                "used_chunk_ids": answer.used_chunk_ids,
+                "evidence_reference_ids": response.evidence_reference_ids,
+                "verification_passed": response.verification.passed,
+                "execution_success": True,
+                "postcondition_success": response.verification.passed,
+                "error": None,
+            }
+        except (KeyError, TypeError, ValueError) as exc:
+            outputs[case_id] = {
+                "actual_answer": [],
+                "engine_status": None,
+                "answer_template_key": None,
+                "provider": None,
+                "model": None,
+                "fallback_reason": None,
+                "used_chunk_ids": [],
+                "evidence_reference_ids": [],
+                "verification_passed": False,
+                "execution_success": False,
+                "postcondition_success": False,
+                "error": f"{type(exc).__name__}:{exc}",
+            }
+    return outputs
+
+
+def run_kpi4_measurement(
+    *,
+    seal: dict[str, Any],
+    drafts: list[dict[str, Any]],
+    measured_at: str | None = None,
+) -> dict[str, Any]:
+    """Run KPI-4 prompts through the bounded counseling adapter."""
+    seal_check = verify_seal(seal)
+    if not seal_check["seal_intact"]:
+        raise ValueError("reference_standard_seal_broken")
+    if seal.get("indicator_id") != "KPI-4":
+        raise ValueError("kpi4_measurement_requires_kpi4_seal")
+
+    prompts = {str(item["case_id"]): str(item["prompt"]) for item in drafts}
+    reference = dict(seal.get("cases", {}))
+    if set(prompts) != set(reference):
+        raise ValueError("kpi4_prompt_and_seal_case_ids_mismatch")
+
+    engine_outputs = generate_kpi4_engine_outputs(drafts)
+    per_case: list[dict[str, Any]] = []
+    for case_id in sorted(prompts):
+        engine = engine_outputs[case_id]
+        expected = list(reference[case_id])
+        actual = list(engine["actual_answer"])
+        correct = (
+            bool(engine["execution_success"])
+            and bool(engine["postcondition_success"])
+            and set(actual) == set(expected)
+        )
+        per_case.append(
+            {
+                "case_id": case_id,
+                "expected_answer": expected,
+                **engine,
+                "correct": correct,
+            }
+        )
+
+    correct_count = sum(bool(item["correct"]) for item in per_case)
+    case_count = len(per_case)
+    score = 100.0 * correct_count / case_count if case_count else 0.0
+    return {
+        "schema_version": MEASUREMENT_SCHEMA,
+        "indicator_id": "KPI-4",
+        "system_under_test_id": seal.get("provenance", {})
+        .get("role_separation", {})
+        .get("system_under_test_id"),
+        "input_adapter_id": _KPI4_INPUT_ADAPTER_ID,
+        "input_adapter_sha256": hashlib.sha256(
+            b"kpi4_prompt_to_chat_adapter_request_v1|live_api=false"
+        ).hexdigest(),
+        "engine_artifacts": [
+            {"path": path, "sha256": _file_sha256(_ROOT / path)}
+            for path in _KPI4_ENGINE_PATHS
+        ],
+        "measurement_environment": MEASUREMENT_ENVIRONMENT,
+        "measured_at": measured_at
+        or datetime.now(UTC).isoformat().replace("+00:00", "Z"),
+        "seal_sha256": seal["seal_sha256"],
+        "seal_intact_before_measurement": True,
+        "case_count": case_count,
+        "minimum_sample_count": seal["minimum_sample_count"],
+        "meets_minimum_sample": case_count >= int(seal["minimum_sample_count"]),
+        "correct_count": correct_count,
+        "accuracy_pct": round(score, 4),
+        "target_pct": 91.0,
+        "target_met": case_count >= int(seal["minimum_sample_count"])
+        and score >= 91.0,
+        "execution_failure_count": sum(
+            not bool(item["execution_success"]) for item in per_case
+        ),
+        "postcondition_failure_count": sum(
+            not bool(item["postcondition_success"]) for item in per_case
+        ),
+        "exact_case_match_count": correct_count,
+        "per_case": per_case,
+        "note": (
+            "실제 상담 모듈의 결정론적 안전 폴백을 사용했다. 외부 API 호출은 비활성화했으며, "
+            "엔진 응답에 구조화된 성분 키만 있으면 기록하고 정답을 보완하지 않았다."
+        ),
+    }
+
+
 def load_json(path: str | Path) -> dict[str, Any]:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 __all__ = [
+    "generate_kpi4_engine_outputs",
     "generate_kpi1_engine_outputs",
     "generate_kpi3_engine_outputs",
+    "generate_kpi5_engine_outputs",
     "kpi1_request_from_prompt",
     "kpi3_event_from_prompt",
+    "kpi5_request_from_prompt",
     "load_json",
     "run_kpi1_measurement",
+    "run_kpi4_measurement",
     "run_kpi3_measurement",
+    "run_kpi5_measurement",
 ]

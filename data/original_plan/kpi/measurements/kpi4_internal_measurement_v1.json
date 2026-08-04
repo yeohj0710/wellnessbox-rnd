@@ -1,0 +1,2005 @@
+{
+  "schema_version": "sealed_kpi_internal_measurement_v1",
+  "indicator_id": "KPI-4",
+  "system_under_test_id": "wellnessbox-chat-v1",
+  "input_adapter_id": "kpi4_blinded_prompt_to_chat_adapter_request_v1",
+  "input_adapter_sha256": "4076a44a7a60bae46c7acbee1ac086af6f41add226031e38535b2e6ee3f3ecd6",
+  "engine_artifacts": [
+    {
+      "path": "src/wellnessbox_rnd/chat/answering.py",
+      "sha256": "7c8c3ca8f362b0d8e59d1149706b687b19801cb23d1403615cc163f84fc219c4"
+    },
+    {
+      "path": "src/wellnessbox_rnd/chat/retrieval.py",
+      "sha256": "6209f229766a8aa24d39093433861763f2410c5b5291574ef359bd084cda32f6"
+    },
+    {
+      "path": "src/wellnessbox_rnd/chat/openai_adapter.py",
+      "sha256": "c1fd768c4f92af75e14af45ae57f78b34b392e1542a43ed3fee84090eeedc758"
+    },
+    {
+      "path": "data/knowledge/counseling_retrieval_corpus_manifest_v1.json",
+      "sha256": "4147c37dcff9b397cb1b4cebac96d92014b2afa47d5d2ef6b7ae95e52c1fad02"
+    }
+  ],
+  "measurement_environment": "research_phase_internal_measurement",
+  "measured_at": "2026-08-04T09:29:18.497358Z",
+  "seal_sha256": "a0f2e70392e0c94bf8e9315833bc800cb6856d5fed41c767f4f0df9414287c5e",
+  "seal_intact_before_measurement": true,
+  "case_count": 100,
+  "minimum_sample_count": 100,
+  "meets_minimum_sample": true,
+  "correct_count": 0,
+  "accuracy_pct": 0.0,
+  "target_pct": 91.0,
+  "target_met": false,
+  "execution_failure_count": 0,
+  "postcondition_failure_count": 0,
+  "exact_case_match_count": 0,
+  "per_case": [
+    {
+      "case_id": "kpi4-001",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-002",
+      "expected_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-003",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-004",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-005",
+      "expected_answer": [
+        "supplement_depleted_nutrient"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-006",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-007",
+      "expected_answer": [
+        "advise_professional_consult",
+        "supplement_depleted_nutrient"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-008",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-009",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-010",
+      "expected_answer": [
+        "advise_professional_consult",
+        "supplement_depleted_nutrient"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-011",
+      "expected_answer": [
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-012",
+      "expected_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-013",
+      "expected_answer": [
+        "l_theanine",
+        "magnesium_glycinate",
+        "separate_dosing"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-014",
+      "expected_answer": [
+        "vitamin_b_complex"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-015",
+      "expected_answer": [
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-016",
+      "expected_answer": [
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-017",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-018",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-019",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-020",
+      "expected_answer": [
+        "advise_professional_consult",
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-021",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-022",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-023",
+      "expected_answer": [
+        "advise_professional_consult",
+        "probiotics"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-024",
+      "expected_answer": [
+        "advise_professional_consult",
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-025",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-026",
+      "expected_answer": [
+        "soluble_fiber"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-027",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-028",
+      "expected_answer": [
+        "supplement_depleted_nutrient"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-029",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-030",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-031",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-032",
+      "expected_answer": [
+        "advise_professional_consult",
+        "soluble_fiber"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-033",
+      "expected_answer": [
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-034",
+      "expected_answer": [
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-035",
+      "expected_answer": [
+        "coq10"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-036",
+      "expected_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-037",
+      "expected_answer": [
+        "vitamin_b_complex"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-038",
+      "expected_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-039",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-040",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-041",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-042",
+      "expected_answer": [
+        "advise_professional_consult",
+        "probiotics",
+        "vitamin_c"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-043",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-044",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-045",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-046",
+      "expected_answer": [
+        "advise_professional_consult",
+        "probiotics"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-047",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-048",
+      "expected_answer": [
+        "advise_professional_consult",
+        "probiotics"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-049",
+      "expected_answer": [
+        "l_theanine"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-050",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-051",
+      "expected_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-052",
+      "expected_answer": [
+        "coq10"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-053",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-054",
+      "expected_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-055",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-056",
+      "expected_answer": [
+        "advise_professional_consult",
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-057",
+      "expected_answer": [
+        "coq10",
+        "magnesium_glycinate"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-058",
+      "expected_answer": [
+        "magnesium_glycinate"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-059",
+      "expected_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-061",
+      "expected_answer": [
+        "soluble_fiber"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-062",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-063",
+      "expected_answer": [
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-065",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-066",
+      "expected_answer": [
+        "vitamin_b_complex"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-067",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-068",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-069",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-070",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-071",
+      "expected_answer": [
+        "advise_professional_consult",
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-072",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-073",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-074",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-075",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-076",
+      "expected_answer": [
+        "magnesium_glycinate",
+        "separate_dosing",
+        "soluble_fiber"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-077",
+      "expected_answer": [
+        "vitamin_c",
+        "zinc"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-078",
+      "expected_answer": [
+        "probiotics"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-079",
+      "expected_answer": [
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-080",
+      "expected_answer": [
+        "probiotics"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-081",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-082",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-083",
+      "expected_answer": [
+        "coq10",
+        "zinc"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-084",
+      "expected_answer": [
+        "advise_professional_consult",
+        "coq10",
+        "omega3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-085",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-089",
+      "expected_answer": [
+        "soluble_fiber"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-090",
+      "expected_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-093",
+      "expected_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-094",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-095",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-096",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-097",
+      "expected_answer": [
+        "separate_dosing"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-098",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-099",
+      "expected_answer": [
+        "advise_professional_consult"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-100",
+      "expected_answer": [
+        "advise_professional_consult",
+        "supplement_depleted_nutrient"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-repl-001",
+      "expected_answer": [
+        "advise_professional_consult",
+        "berberine",
+        "calcium_citrate",
+        "magnesium_glycinate",
+        "supplement_depleted_nutrient",
+        "vitamin_b_complex",
+        "zinc"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-repl-002",
+      "expected_answer": [
+        "advise_professional_consult",
+        "calcium_citrate",
+        "magnesium_glycinate",
+        "probiotics",
+        "separate_dosing",
+        "soluble_fiber",
+        "supplement_depleted_nutrient",
+        "vitamin_b_complex",
+        "zinc"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-repl-003",
+      "expected_answer": [
+        "advise_professional_consult",
+        "omega3",
+        "separate_dosing",
+        "vitamin_b_complex"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-repl-004",
+      "expected_answer": [
+        "advise_professional_consult",
+        "omega3",
+        "supplement_depleted_nutrient",
+        "vitamin_b_complex"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-repl-005",
+      "expected_answer": [
+        "advise_professional_consult",
+        "calcium_citrate",
+        "l_theanine",
+        "magnesium_glycinate",
+        "vitamin_d3"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-repl-006",
+      "expected_answer": [
+        "advise_professional_consult",
+        "omega3",
+        "vitamin_b_complex"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi4-repl-007",
+      "expected_answer": [
+        "advise_professional_consult",
+        "berberine",
+        "coq10",
+        "omega3",
+        "supplement_depleted_nutrient"
+      ],
+      "actual_answer": [],
+      "engine_status": "out_of_scope",
+      "answer_template_key": "out_of_scope",
+      "provider": "deterministic_template_fallback",
+      "model": "gpt-5.6-luna",
+      "fallback_reason": "live_api_disabled",
+      "used_chunk_ids": [],
+      "evidence_reference_ids": [],
+      "verification_passed": true,
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    }
+  ],
+  "note": "실제 상담 모듈의 결정론적 안전 폴백을 사용했다. 외부 API 호출은 비활성화했으며, 엔진 응답에 구조화된 성분 키만 있으면 기록하고 정답을 보완하지 않았다."
+}

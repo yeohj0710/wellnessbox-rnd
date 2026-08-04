@@ -1,0 +1,3659 @@
+{
+  "schema_version": "sealed_kpi_internal_measurement_v1",
+  "indicator_id": "KPI-5",
+  "system_under_test_id": "wellnessbox-safety-engine-v1",
+  "input_adapter_id": "kpi5_blinded_prompt_to_safety_intake_v1",
+  "input_adapter_sha256": "6cd211a76bb28bebab412c0aea002861d6dddcdc8e423d87c1dcc371badcea8c",
+  "engine_artifacts": [
+    {
+      "path": "src/wellnessbox_rnd/safety/service.py",
+      "sha256": "9d257c8bfb44aae72ee62b4f0856bb1414eae28311b25dac2a058ed34160ee5d"
+    },
+    {
+      "path": "src/wellnessbox_rnd/domain/intake.py",
+      "sha256": "0730a09f24275e30dfb1a9a269291e48fa8db572d8a6f208442b8deed30a100f"
+    },
+    {
+      "path": "src/wellnessbox_rnd/schemas/recommendation.py",
+      "sha256": "722b8229be2588ff1f2c08c2c4ee5fb7cbfe2e54c5de840515135bf587fd1299"
+    },
+    {
+      "path": "data/knowledge/runtime_knowledge_db_v1.json",
+      "sha256": "bce8d28461e283fd50db19ed8a58a8261c43ed1cfb68e786098d819d33650452"
+    }
+  ],
+  "measurement_environment": "research_phase_internal_measurement",
+  "measured_at": "2026-08-04T09:29:18.256239Z",
+  "seal_sha256": "7e84c39b106e4ee868d67cfdbb5f95fe85cf606a2e9030f01a25684ad7d31e0a",
+  "seal_intact_before_measurement": true,
+  "case_count": 100,
+  "minimum_sample_count": 100,
+  "meets_minimum_sample": true,
+  "correct_count": 0,
+  "accuracy_pct": 0.0,
+  "target_pct": 95.0,
+  "target_met": false,
+  "execution_failure_count": 0,
+  "postcondition_failure_count": 0,
+  "per_case": [
+    {
+      "case_id": "kpi5-ref-002",
+      "expected_answer": [
+        "coq10",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "coq10",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Atorvastatin",
+      "ingredient": "coq10",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "coq10"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-004",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-005",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-006",
+      "expected_answer": [
+        "depletion",
+        "vitamin_b_complex"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_b_complex",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-007",
+      "expected_answer": [
+        "depletion",
+        "zinc"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "zinc",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-008",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-009",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-010",
+      "expected_answer": [
+        "depletion",
+        "vitamin_b_complex"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_b_complex",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-011",
+      "expected_answer": [
+        "depletion",
+        "zinc"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "zinc",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-012",
+      "expected_answer": [
+        "absorption_interaction",
+        "calcium_citrate"
+      ],
+      "expected_label": "absorption_interaction",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Levothyroxine",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-013",
+      "expected_answer": [
+        "absorption_interaction",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "absorption_interaction",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Levothyroxine",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-015",
+      "expected_answer": [
+        "depletion",
+        "vitamin_b_complex"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_b_complex",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Metformin",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-016",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-017",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-018",
+      "expected_answer": [
+        "depletion",
+        "vitamin_c"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_c",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_c",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_c"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-019",
+      "expected_answer": [
+        "depletion",
+        "vitamin_d3"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_d3",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_d3",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_d3"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-020",
+      "expected_answer": [
+        "depletion",
+        "zinc"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "zinc",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-021",
+      "expected_answer": [
+        "p237",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Amlodipine",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-022",
+      "expected_answer": [
+        "p236",
+        "코엔자임Q10"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::코엔자임Q10",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Atorvastatin",
+      "ingredient": "coq10",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "coq10"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-023",
+      "expected_answer": [
+        "p236",
+        "비타민 D"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::비타민 D",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Atorvastatin",
+      "ingredient": "vitamin_d3",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_d3"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-024",
+      "expected_answer": [
+        "p237",
+        "칼슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Esomeprazole",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-025",
+      "expected_answer": [
+        "p237",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Esomeprazole",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-026",
+      "expected_answer": [
+        "p237",
+        "비타민 B1"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::비타민 B1",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Esomeprazole",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-027",
+      "expected_answer": [
+        "p237",
+        "아연"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::아연",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Esomeprazole",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-028",
+      "expected_answer": [
+        "p236",
+        "칼슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Furosemide",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-029",
+      "expected_answer": [
+        "p236",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Furosemide",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-030",
+      "expected_answer": [
+        "p236",
+        "비타민 B1"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::비타민 B1",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Furosemide",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-031",
+      "expected_answer": [
+        "p236",
+        "아연"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::아연",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Furosemide",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-032",
+      "expected_answer": [
+        "p239",
+        "칼슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p239::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Levothyroxine",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-033",
+      "expected_answer": [
+        "p239",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p239::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Levothyroxine",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-034",
+      "expected_answer": [
+        "p236",
+        "코엔자임Q10"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::코엔자임Q10",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Metformin",
+      "ingredient": "coq10",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "coq10"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-035",
+      "expected_answer": [
+        "p236",
+        "비타민 B12"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::비타민 B12",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Metformin",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-036",
+      "expected_answer": [
+        "p238",
+        "칼슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-037",
+      "expected_answer": [
+        "p238",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-038",
+      "expected_answer": [
+        "p238",
+        "비타민 C"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::비타민 C",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_c",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_c"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-039",
+      "expected_answer": [
+        "p238",
+        "비타민 D"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::비타민 D",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_d3",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_d3"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-040",
+      "expected_answer": [
+        "p238",
+        "아연"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::아연",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-042",
+      "expected_answer": [
+        "coq10",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "coq10",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Atorvastatin",
+      "ingredient": "coq10",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "coq10"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-044",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-045",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-046",
+      "expected_answer": [
+        "depletion",
+        "vitamin_b_complex"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_b_complex",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-047",
+      "expected_answer": [
+        "depletion",
+        "zinc"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "zinc",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-048",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-049",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-050",
+      "expected_answer": [
+        "depletion",
+        "vitamin_b_complex"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_b_complex",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-051",
+      "expected_answer": [
+        "depletion",
+        "zinc"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "zinc",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-052",
+      "expected_answer": [
+        "absorption_interaction",
+        "calcium_citrate"
+      ],
+      "expected_label": "absorption_interaction",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Levothyroxine",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-053",
+      "expected_answer": [
+        "absorption_interaction",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "absorption_interaction",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Levothyroxine",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-055",
+      "expected_answer": [
+        "depletion",
+        "vitamin_b_complex"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_b_complex",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Metformin",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-056",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-057",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-058",
+      "expected_answer": [
+        "depletion",
+        "vitamin_c"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_c",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_c",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_c"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-059",
+      "expected_answer": [
+        "depletion",
+        "vitamin_d3"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_d3",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_d3",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_d3"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-060",
+      "expected_answer": [
+        "depletion",
+        "zinc"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "zinc",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-061",
+      "expected_answer": [
+        "p237",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Amlodipine",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-062",
+      "expected_answer": [
+        "p236",
+        "코엔자임Q10"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::코엔자임Q10",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Atorvastatin",
+      "ingredient": "coq10",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "coq10"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-063",
+      "expected_answer": [
+        "p236",
+        "비타민 D"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::비타민 D",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Atorvastatin",
+      "ingredient": "vitamin_d3",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_d3"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-064",
+      "expected_answer": [
+        "p237",
+        "칼슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Esomeprazole",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-065",
+      "expected_answer": [
+        "p237",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Esomeprazole",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-066",
+      "expected_answer": [
+        "p237",
+        "비타민 B1"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::비타민 B1",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Esomeprazole",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-067",
+      "expected_answer": [
+        "p237",
+        "아연"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p237::아연",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Esomeprazole",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-068",
+      "expected_answer": [
+        "p236",
+        "칼슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Furosemide",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-069",
+      "expected_answer": [
+        "p236",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Furosemide",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-070",
+      "expected_answer": [
+        "p236",
+        "비타민 B1"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::비타민 B1",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Furosemide",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-071",
+      "expected_answer": [
+        "p236",
+        "아연"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::아연",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Furosemide",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-072",
+      "expected_answer": [
+        "p239",
+        "칼슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p239::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Levothyroxine",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-073",
+      "expected_answer": [
+        "p239",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p239::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Levothyroxine",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-074",
+      "expected_answer": [
+        "p236",
+        "코엔자임Q10"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::코엔자임Q10",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Metformin",
+      "ingredient": "coq10",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "coq10"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-075",
+      "expected_answer": [
+        "p236",
+        "비타민 B12"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p236::비타민 B12",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Metformin",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-076",
+      "expected_answer": [
+        "p238",
+        "칼슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-077",
+      "expected_answer": [
+        "p238",
+        "마그네슘"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-078",
+      "expected_answer": [
+        "p238",
+        "비타민 C"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::비타민 C",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_c",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_c"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-079",
+      "expected_answer": [
+        "p238",
+        "비타민 D"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::비타민 D",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_d3",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_d3"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-080",
+      "expected_answer": [
+        "p238",
+        "아연"
+      ],
+      "expected_label": null,
+      "expected_evidence": "p238::아연",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "evidence",
+      "medication": "Prednisolone",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-082",
+      "expected_answer": [
+        "coq10",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "coq10",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Atorvastatin",
+      "ingredient": "coq10",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "coq10"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-084",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-085",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-086",
+      "expected_answer": [
+        "depletion",
+        "vitamin_b_complex"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_b_complex",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-087",
+      "expected_answer": [
+        "depletion",
+        "zinc"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "zinc",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Esomeprazole",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-088",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-089",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-090",
+      "expected_answer": [
+        "depletion",
+        "vitamin_b_complex"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_b_complex",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-091",
+      "expected_answer": [
+        "depletion",
+        "zinc"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "zinc",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Furosemide",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-092",
+      "expected_answer": [
+        "absorption_interaction",
+        "calcium_citrate"
+      ],
+      "expected_label": "absorption_interaction",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Levothyroxine",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-093",
+      "expected_answer": [
+        "absorption_interaction",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "absorption_interaction",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Levothyroxine",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-095",
+      "expected_answer": [
+        "depletion",
+        "vitamin_b_complex"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_b_complex",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Metformin",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-096",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "calcium_citrate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-097",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "magnesium_glycinate",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-098",
+      "expected_answer": [
+        "depletion",
+        "vitamin_c"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_c",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_c",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_c"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-099",
+      "expected_answer": [
+        "depletion",
+        "vitamin_d3"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "vitamin_d3",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "vitamin_d3",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_d3"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-ref-100",
+      "expected_answer": [
+        "depletion",
+        "zinc"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "zinc",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "label",
+      "medication": "Prednisolone",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-repl-001",
+      "expected_answer": [
+        "coq10",
+        "depletion",
+        "p236",
+        "코엔자임Q10"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "p236::코엔자임Q10",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "combined",
+      "medication": "Atorvastatin",
+      "ingredient": "coq10",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "coq10"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-repl-002",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion",
+        "p237",
+        "칼슘"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "p237::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "combined",
+      "medication": "Esomeprazole",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-repl-003",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate",
+        "p237",
+        "마그네슘"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "p237::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "combined",
+      "medication": "Esomeprazole",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-repl-004",
+      "expected_answer": [
+        "depletion",
+        "p237",
+        "vitamin_b_complex",
+        "비타민 B1"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "p237::비타민 B1",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "combined",
+      "medication": "Esomeprazole",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-repl-005",
+      "expected_answer": [
+        "depletion",
+        "p237",
+        "zinc",
+        "아연"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "p237::아연",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "combined",
+      "medication": "Esomeprazole",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-repl-006",
+      "expected_answer": [
+        "calcium_citrate",
+        "depletion",
+        "p236",
+        "칼슘"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "p236::칼슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "combined",
+      "medication": "Furosemide",
+      "ingredient": "calcium_citrate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "calcium_citrate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-repl-007",
+      "expected_answer": [
+        "depletion",
+        "magnesium_glycinate",
+        "p236",
+        "마그네슘"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "p236::마그네슘",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "combined",
+      "medication": "Furosemide",
+      "ingredient": "magnesium_glycinate",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "magnesium_glycinate"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-repl-008",
+      "expected_answer": [
+        "depletion",
+        "p236",
+        "vitamin_b_complex",
+        "비타민 B1"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "p236::비타민 B1",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "combined",
+      "medication": "Furosemide",
+      "ingredient": "vitamin_b_complex",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "vitamin_b_complex"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi5-repl-009",
+      "expected_answer": [
+        "depletion",
+        "p236",
+        "zinc",
+        "아연"
+      ],
+      "expected_label": "depletion",
+      "expected_evidence": "p236::아연",
+      "actual_answer": [],
+      "actual_label": null,
+      "actual_evidence": null,
+      "prompt_mode": "combined",
+      "medication": "Furosemide",
+      "ingredient": "zinc",
+      "engine_status": "ok",
+      "excluded_ingredients": [
+        "zinc"
+      ],
+      "rule_refs": [
+        {
+          "rule_id": "SAFETY-DUP-001",
+          "rule_version": 1,
+          "application_reason": null,
+          "message": "Current supplement overlap is excluded by policy.",
+          "severity": "info",
+          "source": "master_context_v1",
+          "reference_ids": [],
+          "claim_ids": [],
+          "citations": []
+        }
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "error": null,
+      "correct": false
+    }
+  ],
+  "note": "현재 안전 엔진은 depletion/absorption_interaction 라벨이나 원문 쪽수 필드를 반환하지 않는다. 실제 반환 필드만 기록했으며, 참조 정답을 엔진 출력에 주입하지 않았다."
+}

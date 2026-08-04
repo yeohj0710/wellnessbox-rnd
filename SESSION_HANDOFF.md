@@ -1,5 +1,13 @@
 # SESSION_HANDOFF
 
+## 2026-08-04 KPI-4·KPI-5 내부 측정 인계
+
+- KPI-5: 100건, 정확도 0.0%, 실행 실패 0건, 후조건 실패 0건. 결과 `data/original_plan/kpi/measurements/kpi5_internal_measurement_v1.json`, SHA-256 `8b2497fc3db974eba21324b09e328a8b81d53e12ba204111835c744b7159268a`.
+- KPI-5 엔진은 관계 라벨과 외부 문헌 쪽수를 반환하지 않아 참조 정답과 일치하지 않았다. 측정 코드는 정답 봉인을 입력 생성에 사용하지 않는다.
+- KPI-4: 100건, 결정론적 상담 폴백, 정확도 0.0%, 실행 실패 0건, 후조건 실패 0건. 결과 `data/original_plan/kpi/measurements/kpi4_internal_measurement_v1.json`, SHA-256 `18b4b85ba483dde78c67946120082e4294847c873d9c311bf8536d790fb07234`.
+- KPI-4 외부 API 호출은 비활성화했다. 어댑터가 반환한 상태·검증 결과만 저장했다.
+- 다음 작업은 KPI-1 결과 원인 분석과 연구단계 완료 감사다. KPI-2 실사용자 100명 수집과 H-003 학습 실행은 하지 않는다.
+
 ## 2026-08-04 KPI-1 추가 교체 Claude 응답과 최종 2건
 
 - Claude 반환 ZIP SHA-256은 `0cdd0ec7d8507ab9cd91be12ad0564a19a91d379be82add232a8bebeaa2e6b86`이다. 모델, 제공자 분리, 패킷, 블라인딩, 등록 신원, 답 어휘, 사례 완전성을 importer가 확인했다.

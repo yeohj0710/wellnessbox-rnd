@@ -1,0 +1,40 @@
+{
+  "schema_version": "kpi1_measurement_gap_analysis_v1",
+  "indicator_id": "KPI-1",
+  "measurement_path": "data/original_plan/kpi/measurements/kpi1_internal_measurement_v1.json",
+  "measurement_sha256": "cbc71b7b409b2ffe7071487b485e3c12ec50b994e976bc0ec546be479ab2ea96",
+  "case_count": 100,
+  "exact_case_match_count": 42,
+  "mean_score_pct": 51.0833,
+  "execution_failure_count": 0,
+  "postcondition_failure_count": 0,
+  "engine_status_counts": {
+    "ok": 100
+  },
+  "selected_answer_count_distribution": {
+    "2": 100
+  },
+  "matched_item_count_distribution": {
+    "0": 39,
+    "1": 26,
+    "2": 35
+  },
+  "by_goal": {
+    "blood_glucose": {"case_count": 16, "mean_score_pct": 32.2917, "exact_case_match_count": 4},
+    "bone_joint": {"case_count": 8, "mean_score_pct": 75.0, "exact_case_match_count": 6},
+    "energy_support": {"case_count": 10, "mean_score_pct": 81.6667, "exact_case_match_count": 6},
+    "general_wellness": {"case_count": 7, "mean_score_pct": 3.5714, "exact_case_match_count": 0},
+    "gut_health": {"case_count": 18, "mean_score_pct": 59.2593, "exact_case_match_count": 9},
+    "heart_health": {"case_count": 10, "mean_score_pct": 48.3333, "exact_case_match_count": 4},
+    "immunity_support": {"case_count": 8, "mean_score_pct": 31.25, "exact_case_match_count": 0},
+    "sleep_support": {"case_count": 9, "mean_score_pct": 100.0, "exact_case_match_count": 9},
+    "stress_support": {"case_count": 14, "mean_score_pct": 32.1429, "exact_case_match_count": 4}
+  },
+  "interpretation": [
+    "모든 사례가 정상 실행됐고 추천 후보는 사례마다 2개씩 반환됐다.",
+    "sleep_support는 9건 모두 참조 성분 집합과 일치했다.",
+    "general_wellness·immunity_support·blood_glucose·stress_support에서 참조 성분과의 불일치가 집중됐다.",
+    "이 파일은 원인 분석 기록이며 측정 결과나 정답 봉인을 수정하지 않는다."
+  ],
+  "measurement_environment": "research_phase_internal_measurement"
+}

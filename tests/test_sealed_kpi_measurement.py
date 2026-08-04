@@ -6,8 +6,11 @@ from wellnessbox_rnd.evals.reference_standard import load_contract, seal_referen
 from wellnessbox_rnd.evals.sealed_kpi_measurement import (
     generate_kpi1_engine_outputs,
     generate_kpi3_engine_outputs,
+    generate_kpi4_engine_outputs,
+    generate_kpi5_engine_outputs,
     kpi1_request_from_prompt,
     kpi3_event_from_prompt,
+    kpi5_request_from_prompt,
     run_kpi3_measurement,
 )
 from wellnessbox_rnd.interim.next_action import NextAction
@@ -63,6 +66,52 @@ def test_kpi1_engine_output_generation_does_not_take_an_answer_key() -> None:
 
     assert outputs["case-1"]["actual_answer"]
     assert outputs["case-1"]["execution_success"] is True
+
+
+def test_kpi5_prompt_translation_extracts_mode_without_answer_labels() -> None:
+    request, mode, medication, ingredient = kpi5_request_from_prompt(
+        "Esomeprazole 복용자 상담에서 magnesium_glycinate 관계의 라벨과 원문 근거를 함께 제시하면?"
+    )
+
+    assert mode == "combined"
+    assert medication == "Esomeprazole"
+    assert ingredient == "magnesium_glycinate"
+    assert request.medications[0].name == "Esomeprazole"
+    assert request.current_supplements[0].ingredients[0].name == "magnesium_glycinate"
+
+
+def test_kpi5_engine_output_generation_records_only_safety_engine_fields() -> None:
+    outputs = generate_kpi5_engine_outputs(
+        [
+            {
+                "case_id": "case-1",
+                "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?",
+            }
+        ]
+    )
+
+    assert outputs["case-1"]["actual_answer"] == []
+    assert outputs["case-1"]["actual_label"] is None
+    assert outputs["case-1"]["actual_evidence"] is None
+    assert outputs["case-1"]["execution_success"] is True
+    assert outputs["case-1"]["postcondition_success"] is True
+
+
+def test_kpi4_engine_output_generation_uses_chat_adapter_without_live_api() -> None:
+    outputs = generate_kpi4_engine_outputs(
+        [
+            {
+                "case_id": "case-1",
+                "prompt": "Esomeprazole 복용자에게 calcium_citrate 는 어떤 관계인가?",
+            }
+        ]
+    )
+
+    assert outputs["case-1"]["provider"] == "deterministic_template_fallback"
+    assert outputs["case-1"]["fallback_reason"] == "live_api_disabled"
+    assert outputs["case-1"]["actual_answer"] == []
+    assert outputs["case-1"]["execution_success"] is True
+    assert outputs["case-1"]["postcondition_success"] is True
 
 
 def test_kpi3_prompt_translation_ignores_signal_words_in_the_goal() -> None:

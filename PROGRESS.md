@@ -1,5 +1,14 @@
 # PROGRESS
 
+## 2026-08-04 KPI-5·KPI-4 연구단계 내부 측정
+
+- KPI-5 봉인 SHA-256 `7e84c39b106e4ee868d67cfdbb5f95fe85cf606a2e9030f01a25684ad7d31e0a`의 100건을 안전 엔진에 입력했다. 실행 실패 0건, 후조건 실패 0건, 정확도 0.0%, 목표 95% 미달이다.
+- KPI-5 엔진은 `depletion`·`absorption_interaction` 관계 라벨과 외부 참고문헌 쪽수 필드를 반환하지 않는다. 엔진이 실제 반환한 상태·제외 성분·규칙·인용만 기록했고, 봉인 정답을 엔진 출력에 넣지 않았다.
+- KPI-5 결과 파일은 `data/original_plan/kpi/measurements/kpi5_internal_measurement_v1.json`, SHA-256 `8b2497fc3db974eba21324b09e328a8b81d53e12ba204111835c744b7159268a`이다.
+- KPI-4 봉인 SHA-256 `a0f2e70392e0c94bf8e9315833bc800cb6856d5fed41c767f4f0df9414287c5e`의 100건을 상담 어댑터의 결정론적 폴백으로 실행했다. 실행 실패 0건, 후조건 실패 0건, 정확도 0.0%, 목표 91% 미달이다.
+- KPI-4 외부 API 호출은 비활성화했다. 어댑터가 반환한 `out_of_scope` 상태와 검증 결과만 기록했으며, 답변 성분을 보완하지 않았다.
+- KPI-4 결과 파일은 `data/original_plan/kpi/measurements/kpi4_internal_measurement_v1.json`, SHA-256 `18b4b85ba483dde78c67946120082e4294847c873d9c311bf8536d790fb07234`이다.
+
 ## 2026-08-04 KPI-1 연구 단계 내부 측정
 
 - 봉인 SHA-256 `a3e62d0211d91d509641f41bac697d69cd19d3843dffbcf5e84470d13a044629`을 검증한 뒤 KPI-1 사례 100건을 `wellnessbox-recommendation-engine-v1`에 실행했다.
