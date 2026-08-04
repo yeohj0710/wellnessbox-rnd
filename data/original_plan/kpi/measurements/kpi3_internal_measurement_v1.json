@@ -1,0 +1,1537 @@
+{
+  "schema_version": "sealed_kpi_internal_measurement_v1",
+  "indicator_id": "KPI-3",
+  "system_under_test_id": "wellnessbox-next-action-engine-v1",
+  "input_adapter_id": "kpi3_blinded_prompt_to_followup_event_v1",
+  "input_adapter_sha256": "eea1ac8ec372354a614a7e18da5373447cca1d4b99be077606131d0d43a44ec5",
+  "engine_artifacts": [
+    {
+      "path": "src/wellnessbox_rnd/interim/agent.py",
+      "sha256": "886a483743760efff1242cd53e3620c21b441e013b3773f0fb37ed3b644b2530"
+    },
+    {
+      "path": "src/wellnessbox_rnd/interim/next_action.py",
+      "sha256": "6fda7e90a11c682600b9010b66484bf051300cad665c31dffc94f44f6bb2efc0"
+    },
+    {
+      "path": "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "sha256": "636a8504785e51a7847c791cf03e6c39e3c3dae38a12e46809acb5a4974d38c4"
+    }
+  ],
+  "measurement_environment": "research_phase_internal_measurement",
+  "measured_at": "2026-08-04T09:02:54.762445Z",
+  "seal_sha256": "510f57ab18329a9c3a2eab551aa9bd9b35b0470f393aef828943cff26ca6d2ea",
+  "seal_intact_before_measurement": true,
+  "case_count": 100,
+  "minimum_sample_count": 100,
+  "meets_minimum_sample": true,
+  "correct_count": 91,
+  "accuracy_pct": 91.0,
+  "target_pct": 80.0,
+  "target_met": true,
+  "execution_failure_count": 0,
+  "postcondition_failure_count": 0,
+  "per_case": [
+    {
+      "case_id": "kpi3-001",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi3-002",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-003",
+      "expected_action": [
+        "stop_and_escalate"
+      ],
+      "actual_action": [
+        "stop_and_escalate"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "STOPPED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-004",
+      "expected_action": [
+        "request_measurement"
+      ],
+      "actual_action": [
+        "request_measurement"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-005",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "maintain"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_MAINTAINED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-006",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-007",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-008",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-009",
+      "expected_action": [
+        "hold_for_review"
+      ],
+      "actual_action": [
+        "hold_for_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-010",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-011",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-012",
+      "expected_action": [
+        "reoptimize"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-013",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi3-014",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-015",
+      "expected_action": [
+        "stop_and_escalate"
+      ],
+      "actual_action": [
+        "stop_and_escalate"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "STOPPED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-016",
+      "expected_action": [
+        "request_measurement"
+      ],
+      "actual_action": [
+        "request_measurement"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-017",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "maintain"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_MAINTAINED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-018",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-019",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-020",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-021",
+      "expected_action": [
+        "hold_for_review"
+      ],
+      "actual_action": [
+        "hold_for_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-022",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-023",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-024",
+      "expected_action": [
+        "reoptimize"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-025",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi3-026",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-027",
+      "expected_action": [
+        "stop_and_escalate"
+      ],
+      "actual_action": [
+        "stop_and_escalate"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "STOPPED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-028",
+      "expected_action": [
+        "request_measurement"
+      ],
+      "actual_action": [
+        "request_measurement"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-029",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "maintain"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_MAINTAINED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-030",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-031",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-032",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-033",
+      "expected_action": [
+        "hold_for_review"
+      ],
+      "actual_action": [
+        "hold_for_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-034",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-035",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-036",
+      "expected_action": [
+        "reoptimize"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-037",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi3-038",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-039",
+      "expected_action": [
+        "stop_and_escalate"
+      ],
+      "actual_action": [
+        "stop_and_escalate"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "STOPPED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-040",
+      "expected_action": [
+        "request_measurement"
+      ],
+      "actual_action": [
+        "request_measurement"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-041",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "maintain"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_MAINTAINED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-042",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-043",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-044",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-045",
+      "expected_action": [
+        "hold_for_review"
+      ],
+      "actual_action": [
+        "hold_for_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-046",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-047",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-048",
+      "expected_action": [
+        "reoptimize"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-049",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi3-050",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-051",
+      "expected_action": [
+        "stop_and_escalate"
+      ],
+      "actual_action": [
+        "stop_and_escalate"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "STOPPED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-052",
+      "expected_action": [
+        "request_measurement"
+      ],
+      "actual_action": [
+        "request_measurement"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-053",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "maintain"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_MAINTAINED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-054",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-055",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-056",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-057",
+      "expected_action": [
+        "hold_for_review"
+      ],
+      "actual_action": [
+        "hold_for_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-058",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-059",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-060",
+      "expected_action": [
+        "reoptimize"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-061",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi3-062",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-063",
+      "expected_action": [
+        "stop_and_escalate"
+      ],
+      "actual_action": [
+        "stop_and_escalate"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "STOPPED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-064",
+      "expected_action": [
+        "request_measurement"
+      ],
+      "actual_action": [
+        "request_measurement"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-065",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "maintain"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_MAINTAINED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-066",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-067",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-068",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-069",
+      "expected_action": [
+        "hold_for_review"
+      ],
+      "actual_action": [
+        "hold_for_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-070",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-071",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-072",
+      "expected_action": [
+        "reoptimize"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-073",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi3-074",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-075",
+      "expected_action": [
+        "stop_and_escalate"
+      ],
+      "actual_action": [
+        "stop_and_escalate"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "STOPPED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-076",
+      "expected_action": [
+        "request_measurement"
+      ],
+      "actual_action": [
+        "request_measurement"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-077",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "maintain"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_MAINTAINED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-078",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-079",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-080",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-081",
+      "expected_action": [
+        "hold_for_review"
+      ],
+      "actual_action": [
+        "hold_for_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-082",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-083",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-084",
+      "expected_action": [
+        "reoptimize"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-085",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi3-086",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-087",
+      "expected_action": [
+        "stop_and_escalate"
+      ],
+      "actual_action": [
+        "stop_and_escalate"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "STOPPED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-088",
+      "expected_action": [
+        "request_measurement"
+      ],
+      "actual_action": [
+        "request_measurement"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-089",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "maintain"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_MAINTAINED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-090",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-091",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-092",
+      "expected_action": [
+        "request_safety_review"
+      ],
+      "actual_action": [
+        "request_safety_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-093",
+      "expected_action": [
+        "hold_for_review"
+      ],
+      "actual_action": [
+        "hold_for_review"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-094",
+      "expected_action": [
+        "request_followup"
+      ],
+      "actual_action": [
+        "request_followup"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-095",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-096",
+      "expected_action": [
+        "reoptimize"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-097",
+      "expected_action": [
+        "maintain"
+      ],
+      "actual_action": [
+        "reoptimize"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REOPTIMIZATION",
+      "error": null,
+      "correct": false
+    },
+    {
+      "case_id": "kpi3-098",
+      "expected_action": [
+        "reduce"
+      ],
+      "actual_action": [
+        "reduce"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "PLAN_REDUCED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-099",
+      "expected_action": [
+        "stop_and_escalate"
+      ],
+      "actual_action": [
+        "stop_and_escalate"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "STOPPED",
+      "error": null,
+      "correct": true
+    },
+    {
+      "case_id": "kpi3-100",
+      "expected_action": [
+        "request_measurement"
+      ],
+      "actual_action": [
+        "request_measurement"
+      ],
+      "execution_success": true,
+      "postcondition_success": true,
+      "state_before": "FOLLOWUP_ACTIVE",
+      "state_after": "FOLLOWUP_REVIEW",
+      "error": null,
+      "correct": true
+    }
+  ],
+  "note": "연구 기간 내부 측정값이다. 연구 종료 후 공인시험기관 최종 검증을 별도로 수행한다."
+}

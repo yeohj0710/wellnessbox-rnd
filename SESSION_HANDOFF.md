@@ -1075,3 +1075,17 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 봉인 SHA-256: KPI-1 `a3e62d0211d91d509641f41bac697d69cd19d3843dffbcf5e84470d13a044629`, KPI-3 `510f57ab18329a9c3a2eab551aa9bd9b35b0470f393aef828943cff26ca6d2ea`, KPI-4 `a0f2e70392e0c94bf8e9315833bc800cb6856d5fed41c767f4f0df9414287c5e`, KPI-5 `7e84c39b106e4ee868d67cfdbb5f95fe85cf606a2e9030f01a25684ad7d31e0a`.
 - 감사 결과: 네 지표 모두 PASS, 봉인 무결성·현재 사례·현재 provenance 일치, `completion_status: READY`, 차단 사유 0건.
 - 같은 검토자의 추가 입력은 없다. 배포·실제 트래픽·훈련·최종 영수증 재발급도 실행하지 않았다.
+
+## 2026-08-04 KPI-3 연구 단계 내부 측정 인계
+
+- **선택 단계:** 봉인 정답지 기반 연구 단계 내부 측정.
+- **선택 과제:** KPI-3 다음 행동 판단·수행 정확도 100건 실행과 봉인 정답 대조.
+- **주 데이터셋:** `data/original_plan/kpi/workbench/kpi3_workbench_v1.json`, 100건. 결과는 `data/original_plan/kpi/measurements/kpi3_internal_measurement_v1.json`, SHA-256 `aff126d58569dc15f20a70411f312e4fb83f2b05fb7084135c263ace0e033085`다.
+- **변경 파일:** `src/wellnessbox_rnd/evals/sealed_kpi_measurement.py`, `scripts/run_sealed_kpi_measurement.py`, `tests/test_sealed_kpi_measurement.py`, KPI-3 측정 결과 JSON, `PROGRESS.md`, `NEXT_STEPS.md`, `SESSION_HANDOFF.md`.
+- **핵심 변경:** 문항의 관찰 표현을 엔진 이벤트로 바꾸는 고정 입력 어댑터를 추가했다. 정답을 받지 않는 출력 생성 함수가 실제 `BoundedAgent`와 임시 SQLite 상태 저장소를 사용해 행동 선택과 상태 전이를 실행한다. 봉인 검증과 출력 생성 뒤에 정답을 대조한다. 엔진 코드·정책 SHA-256을 결과에 기록한다.
+- **검증:** 관련 pytest 42건 PASS, 변경 파일 Ruff PASS, 정답지 무결성 감사 4/4 PASS다. 전체 pytest는 1,493건 PASS·90건 FAIL로 기존 실패 기준선 90건과 같아 신규 실패가 없다. 전체 Ruff는 기존 기준선과 같은 28건이다. `python scripts/run_sealed_kpi_measurement.py --indicator KPI-3`은 100건, 91.0%, 목표 충족, 실행 실패 0건, 후조건 실패 0건을 기록했다.
+- **공식 지표 변화:** KPI-3 연구 단계 내부 측정값이 미측정에서 91.0%로 바뀌었다. 계획 목표 80% 대비 +11.0%p다. 불일치 9건은 모두 `변화 없음`에서 정답 `maintain`, 엔진 `reoptimize`다.
+- **재현·슬라이스 변화:** 별도 frozen eval과 replay 데이터는 바꾸지 않았다. 해당 변화는 0이다. KPI-3 `변화 없음` 슬라이스는 0/9 일치다.
+- **가장 큰 병목 5개:** KPI-1 구조화 입력 어댑터, KPI-5 라벨·근거 출력 어댑터, KPI-4 정확한 OpenAI 측정 모델·실행 설정, KPI-2 실제 사용자 100명 전·후 PRO, 연구 전체의 남은 운영·외부 검증 증거.
+- **권장 다음 반복 3개:** KPI-1 100건 내부 측정, KPI-5 100건 내부 측정, KPI-4 모델 실행 계약 고정과 100건 내부 측정.
+- **금지 상태 유지:** push·배포·실제 트래픽·훈련·최종 영수증 재발급 없음. KPI-6·7은 변경하지 않았다.

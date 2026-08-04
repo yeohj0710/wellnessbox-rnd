@@ -1,5 +1,17 @@
 # NEXT_STEPS
 
+## 2026-08-04 KPI-3 내부 측정 이후
+
+KPI-3은 봉인 정답 100건으로 연구 단계 내부 측정을 완료했다. 결과는 91/100, 정확도 91.0%, 실행 실패 0건, 후조건 실패 0건이며 계획 목표 80%를 충족했다. `변화 없음` 9건에서 정답 `maintain`과 엔진 `reoptimize`가 달랐다. 결과 파일은 `data/original_plan/kpi/measurements/kpi3_internal_measurement_v1.json`이다.
+
+다음 세 반복은 다음 순서다.
+
+1. KPI-1의 상세 목표·나이·복용약 문항을 추천 엔진의 구조화 입력으로 바꾸는 고정 어댑터를 만들고 100건을 측정한다.
+2. KPI-5의 약물·성분 관계 문항을 안전 엔진 입력과 라벨·근거 출력으로 연결하고 100건을 측정한다. 엔진에 고갈·근거 쪽수 기능이 없으면 낮은 점수를 그대로 기록한다.
+3. KPI-4는 봉인에 기록된 `wellnessbox-chat-v1` OpenAI 계열 측정 대상의 정확한 모델·실행 설정을 고정한 뒤 100건을 측정한다. 로컬 템플릿 엔진으로 조용히 대체하지 않는다.
+
+KPI-2의 실제 사용자 100명 전·후 PRO는 3차년도 측정 결정 그대로다. KPI-6·7과 H-003 학습 게이트는 건드리지 않는다.
+
 ## 2026-08-04 KPI-1 마지막 2건 선택
 
 다음 입력 파일은 `data/original_plan/kpi/review_handoff/replacement_round/second_replacement/kpi1_second_replacement_final_review_package.zip`이다. CSV 두 행에는 참조안 A, 독립 2차 의견 B, 권고안 B가 입력돼 있다. 각 행의 결정과 시각을 기록한 뒤 `MAKE_RETURN_ZIP.cmd`를 실행한다.
