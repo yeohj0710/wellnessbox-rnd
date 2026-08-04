@@ -1,12 +1,20 @@
 # PROGRESS
 
+## 2026-08-04 KPI-1 연구 단계 내부 측정
+
+- 봉인 SHA-256 `a3e62d0211d91d509641f41bac697d69cd19d3843dffbcf5e84470d13a044629`을 검증한 뒤 KPI-1 사례 100건을 `wellnessbox-recommendation-engine-v1`에 실행했다.
+- 문항의 영역·판정·나이·복용약을 9개 구조화 추천 목표와 `RecommendationRequest`로 바꾸는 입력 어댑터를 고정했다. 답안은 엔진 출력 생성에 전달하지 않았고, 출력 생성 뒤 봉인 정답과 대조했다.
+- 실행 실패 0건, 후조건 실패 0건이다. 평균 점수는 51.0833%로 계획 목표 80%에 미달했고, 완전 일치 사례는 42/100건이다.
+- 목표 미달을 숨기거나 어댑터를 조정하지 않았다. 결과는 `data/original_plan/kpi/measurements/kpi1_internal_measurement_v1.json`, SHA-256 `cbc71b7b409b2ffe7071487b485e3c12ec50b994e976bc0ec546be479ab2ea96`다.
+- 측정 환경은 `research_phase_internal_measurement`다. 배포·실제 트래픽·훈련·최종 영수증 재발급은 실행하지 않았다.
+
 ## 2026-08-04 KPI-3 연구 단계 내부 측정
 
 - 봉인 SHA-256 `510f57ab18329a9c3a2eab551aa9bd9b35b0470f393aef828943cff26ca6d2ea`을 먼저 검증한 뒤 KPI-3 사례 100건을 `wellnessbox-next-action-engine-v1`에 실행했다.
 - 블라인드 문항의 임상 표현을 엔진 이벤트로 바꾸는 입력 어댑터를 별도 함수로 고정했다. 정답지는 엔진 출력 생성 함수의 인자가 아니며, 출력 생성이 끝난 뒤에만 봉인 정답과 비교한다.
 - 실제 `BoundedAgent`가 임시 SQLite 상태 저장소에서 행동을 선택하고 상태 전이를 기록했다. 실행 실패 0건, 후조건 실패 0건이다.
 - 결과는 91/100, 정확도 91.0%로 계획 목표 80%를 충족했다. 불일치 9건은 모두 `변화 없음` 상황에서 정답 `maintain`, 엔진 `reoptimize`였다.
-- 측정 환경은 `research_phase_internal_measurement`다. 결과 파일은 `data/original_plan/kpi/measurements/kpi3_internal_measurement_v1.json`, SHA-256은 `aff126d58569dc15f20a70411f312e4fb83f2b05fb7084135c263ace0e033085`다.
+- 측정 환경은 `research_phase_internal_measurement`다. 결과 파일은 `data/original_plan/kpi/measurements/kpi3_internal_measurement_v1.json`, SHA-256은 `f3f5f4eb721378c8b3d7b07746ed15a992fb8af00cc7ae72668aa669bd78f76f`다.
 - 배포·실제 트래픽·훈련·최종 영수증 재발급은 실행하지 않았다.
 
 ## 2026-08-04 KPI-1 추가 교체 Claude 의견 반영

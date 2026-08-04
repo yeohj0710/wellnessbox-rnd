@@ -19,7 +19,7 @@
     }
   ],
   "measurement_environment": "research_phase_internal_measurement",
-  "measured_at": "2026-08-04T09:02:54.762445Z",
+  "measured_at": "2026-08-04T09:12:57.889573Z",
   "seal_sha256": "510f57ab18329a9c3a2eab551aa9bd9b35b0470f393aef828943cff26ca6d2ea",
   "seal_intact_before_measurement": true,
   "case_count": 100,

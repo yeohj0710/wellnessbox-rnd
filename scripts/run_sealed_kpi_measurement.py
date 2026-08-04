@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from wellnessbox_rnd.evals.reference_standard import write_json  # noqa: E402
 from wellnessbox_rnd.evals.sealed_kpi_measurement import (  # noqa: E402
     load_json,
+    run_kpi1_measurement,
     run_kpi3_measurement,
 )
 
@@ -20,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--indicator", required=True, choices=("KPI-3",))
+    parser.add_argument("--indicator", required=True, choices=("KPI-1", "KPI-3"))
     parser.add_argument("--output")
     return parser
 
@@ -34,7 +35,11 @@ def main() -> int:
     workbench = load_json(
         ROOT / f"data/original_plan/kpi/workbench/{slug}_workbench_v1.json"
     )
-    result = run_kpi3_measurement(seal=seal, drafts=list(workbench["drafts"]))
+    measurement = {
+        "KPI-1": run_kpi1_measurement,
+        "KPI-3": run_kpi3_measurement,
+    }[args.indicator]
+    result = measurement(seal=seal, drafts=list(workbench["drafts"]))
     output = Path(args.output) if args.output else (
         ROOT
         / f"data/original_plan/kpi/measurements/{slug}_internal_measurement_v1.json"
@@ -47,7 +52,7 @@ def main() -> int:
                 "indicator_id": result["indicator_id"],
                 "output": str(output),
                 "case_count": result["case_count"],
-                "accuracy_pct": result["accuracy_pct"],
+                "accuracy_pct": result.get("accuracy_pct", result.get("mean_score_pct")),
                 "target_met": result["target_met"],
                 "measurement_environment": result["measurement_environment"],
             },

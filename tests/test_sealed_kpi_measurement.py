@@ -4,7 +4,9 @@ from pathlib import Path
 
 from wellnessbox_rnd.evals.reference_standard import load_contract, seal_reference_standard
 from wellnessbox_rnd.evals.sealed_kpi_measurement import (
+    generate_kpi1_engine_outputs,
     generate_kpi3_engine_outputs,
+    kpi1_request_from_prompt,
     kpi3_event_from_prompt,
     run_kpi3_measurement,
 )
@@ -33,6 +35,34 @@ def test_kpi3_prompt_translation_maps_semantics_not_answer_labels() -> None:
 
     assert event["adverse_event"] is True
     assert "stop_and_escalate" not in event.values()
+
+
+def test_kpi1_prompt_translation_builds_structured_request_without_answers() -> None:
+    request = kpi1_request_from_prompt(
+        "영역 대사 및 순환 6. 당독소(AGEs) 관리 / 판정 「1. 생성 억제 (당화 차단)」 "
+        "/ 나이 28 / 복용약 Amlodipine"
+    )
+
+    assert request.user_profile.age == 28
+    assert request.goals[0].value == "blood_glucose"
+    assert [item.name for item in request.medications] == ["Amlodipine"]
+
+
+def test_kpi1_engine_output_generation_does_not_take_an_answer_key() -> None:
+    outputs = generate_kpi1_engine_outputs(
+        [
+            {
+                "case_id": "case-1",
+                "prompt": (
+                    "영역 대사 및 순환 6. 당독소(AGEs) 관리 / 판정 「1. 생성 억제 (당화 차단)」 "
+                    "/ 나이 28 / 복용약 없음"
+                ),
+            }
+        ]
+    )
+
+    assert outputs["case-1"]["actual_answer"]
+    assert outputs["case-1"]["execution_success"] is True
 
 
 def test_kpi3_prompt_translation_ignores_signal_words_in_the_goal() -> None:
