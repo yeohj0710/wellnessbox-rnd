@@ -1,5 +1,11 @@
 # PROGRESS
 
+## 2026-08-04 승인 전용 데이터셋 검증
+
+- `scripts/build_approved_draft_dataset.py`를 읽기 방식으로 실행했다. 승인 전용 manifest 6건, 위반 0건, 데이터셋 SHA-256 일치로 `READY`였다.
+- 결과 파일은 `data/original_plan/final_session/approved_draft_dataset_manifest_v1.json`이며 재계산 데이터셋 SHA-256은 `f03f949b576ca7473a0e7bf1ca53c73fdef2cee1e70793ca04164d488b0aca`이다.
+- H-003 학습 게이트는 NO-GO이므로 학습·승격은 실행하지 않았다.
+
 ## 2026-08-04 KPI-5·KPI-4 연구단계 내부 측정
 
 - KPI-5 봉인 SHA-256 `7e84c39b106e4ee868d67cfdbb5f95fe85cf606a2e9030f01a25684ad7d31e0a`의 100건을 안전 엔진에 입력했다. 실행 실패 0건, 후조건 실패 0건, 정확도 0.0%, 목표 95% 미달이다.

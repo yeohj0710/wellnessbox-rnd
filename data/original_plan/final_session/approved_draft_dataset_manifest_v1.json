@@ -1,0 +1,95 @@
+{
+  "schema_version": "approved_draft_dataset_manifest_v1",
+  "source": {
+    "draft_ledger_path": "C:\\dev\\wellnessbox-rnd\\etc\\local_research_runtime\\interim.sqlite3",
+    "draft_ledger_sha256": "856817703a430d42b7f7f4689b2b214caee6d727a2efcc59766d515f2a448e87",
+    "owner_reviewer_ids": [
+      "여형준",
+      "웰니스박스"
+    ]
+  },
+  "selection_rule": "review_status in ('approved','approved_with_edits') and the reviewer is a named human other than the project owner or the system account",
+  "counts": {
+    "ledger_row_count": 7,
+    "included_count": 6,
+    "excluded_count": 1,
+    "excluded_by_reason": {
+      "reviewed_by_owner_or_system_account": 1
+    }
+  },
+  "included_drafts": [
+    {
+      "draft_id": "draft_ace3019fbbfec5a73299653f",
+      "record_type": "actual_recommendation_review",
+      "review_status": "approved",
+      "reviewer_id": "권혁찬",
+      "reviewed_at": "2026-07-24T05:16:14.936476+00:00",
+      "model_identifier": "deterministic-draft-model-v1",
+      "prompt_version": "actual-recommendation-review-v1",
+      "content_sha256": "433681768971f3047566801bf252e6194e403ad4838557e43009a470601e5e55",
+      "row_sha256": "9f90c8b2f221cc1b631eb3f6f0d694819a2292ddc98023b9944c7ed6f4aae6ed"
+    },
+    {
+      "draft_id": "draft_633df16103fa748e6e0b2f67",
+      "record_type": "actual_recommendation_review",
+      "review_status": "approved",
+      "reviewer_id": "권혁찬",
+      "reviewed_at": "2026-07-24T05:22:27.674367+00:00",
+      "model_identifier": "deterministic-draft-model-v1",
+      "prompt_version": "actual-recommendation-review-v1",
+      "content_sha256": "de6765e69890dafb466521ab384ea103f1da68ffdce046488710c98a5140f9a0",
+      "row_sha256": "9e3f55b9432aaa945b321a6e3d81a908c1828adfbcd1924d70e7108caebe1c51"
+    },
+    {
+      "draft_id": "draft_7c5765280ee6257f5fca2bbc",
+      "record_type": "actual_recommendation_review",
+      "review_status": "approved",
+      "reviewer_id": "권혁찬",
+      "reviewed_at": "2026-07-24T07:33:49.595254+00:00",
+      "model_identifier": "deterministic-draft-model-v1",
+      "prompt_version": "actual-recommendation-review-v1",
+      "content_sha256": "b5e4ef647215b130cc0e89342088580e982614d9cb597cc11244a3aea9ed3665",
+      "row_sha256": "ad4097c7879f36d3ffd1ae552e4b44d9236fe28efa518cce6c3afbed9684daaf"
+    },
+    {
+      "draft_id": "draft_be6d2ad9b0a14fca31bf5bf3",
+      "record_type": "actual_recommendation_review",
+      "review_status": "approved",
+      "reviewer_id": "권혁찬",
+      "reviewed_at": "2026-07-24T07:33:55.077801+00:00",
+      "model_identifier": "deterministic-draft-model-v1",
+      "prompt_version": "actual-recommendation-review-v1",
+      "content_sha256": "27ef7df9e0669c52c4eee31436cabbbbd4e3859275061e4ac1b099286d2dbfc4",
+      "row_sha256": "a787546fc52ffdac431c21caa195510694407681d9a94605666a0416cb3baee5"
+    },
+    {
+      "draft_id": "draft_3858dafe0487a8fce506e5ef",
+      "record_type": "actual_recommendation_review",
+      "review_status": "approved",
+      "reviewer_id": "권혁찬",
+      "reviewed_at": "2026-07-24T07:33:58.568599+00:00",
+      "model_identifier": "deterministic-draft-model-v1",
+      "prompt_version": "actual-recommendation-review-v1",
+      "content_sha256": "96aa6a78c5a6b3a6c2e13447e06a547d93fb6b78bab7cf5b17c746ae3256130c",
+      "row_sha256": "dafa094f52ed7606681f086e254e510aaa894872b42aeaf1d3e55b42a5a8f050"
+    },
+    {
+      "draft_id": "draft_17f9dc84f1845ea72e01ff30",
+      "record_type": "actual_recommendation_review",
+      "review_status": "approved",
+      "reviewer_id": "권혁찬",
+      "reviewed_at": "2026-07-24T07:34:01.076419+00:00",
+      "model_identifier": "deterministic-draft-model-v1",
+      "prompt_version": "actual-recommendation-review-v1",
+      "content_sha256": "30c56b47abd2ebb4e639170d8766d811a87127f71e79111e16012fe1f17f1126",
+      "row_sha256": "e9040fd342d4c9aa66e4c2a11c999206699e6c80d335ef584d76c2a77d0d3456"
+    }
+  ],
+  "excluded_drafts": [
+    {
+      "draft_id": "draft_8390d56610ebbf8241b019f7",
+      "reason": "reviewed_by_owner_or_system_account"
+    }
+  ],
+  "dataset_sha256": "f03f949b576ca747363a0e7bf1ca53c73fdef2cee1e70793ca04164d488b0aca"
+}

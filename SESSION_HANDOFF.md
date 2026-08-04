@@ -1,5 +1,11 @@
 # SESSION_HANDOFF
 
+## 2026-08-04 승인 전용 데이터셋 검증 인계
+
+- `scripts/build_approved_draft_dataset.py` 실행 결과 `READY`, 승인 항목 6건, 위반 0건이다.
+- 결과 파일 `data/original_plan/final_session/approved_draft_dataset_manifest_v1.json`, 데이터셋 SHA-256 `f03f949b576ca7473a0e7bf1ca53c73fdef2cee1e70793ca04164d488b0aca`.
+- H-003 학습 게이트가 NO-GO이므로 학습 실행·모델 승격은 하지 않았다.
+
 ## 2026-08-04 KPI-4·KPI-5 내부 측정 인계
 
 - KPI-5: 100건, 정확도 0.0%, 실행 실패 0건, 후조건 실패 0건. 결과 `data/original_plan/kpi/measurements/kpi5_internal_measurement_v1.json`, SHA-256 `8b2497fc3db974eba21324b09e328a8b81d53e12ba204111835c744b7159268a`.
