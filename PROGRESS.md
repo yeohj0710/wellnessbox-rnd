@@ -1108,3 +1108,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 현재 서비스 HEAD는 `7054d76670870bc31130006a84df3fa10aa46c78`이다. 기존 final preflight와 정적 검증 결과는 `READY` 및 4종 exit code 0으로 유지된다.
 - `op039_external_review_package.zip`은 SHA-256 `59c9abf83f648ef1089d5c853041031beff454e7be00fb0f70e58348b2681d9f`, 사례 10건, 중복 0건이며 실제 검토 결과·서명은 포함하지 않는다. handoff ZIP도 SHA-256 `c001e69a08445bc61e584b1591b596190d6933fcb0533d76015b4481c12e072`, 71건, 중복 0건이다.
 - 새 서명 자료는 없으므로 두 차단 사유를 유지한다. 사람의 판정·서명과 H-003 `NO-GO`를 우회하지 않았다.
+
+## 2026-08-04 사용자 재개 fresh blocked audit 3
+
+- 지정 첫 명령을 다시 실행했다. 정답키는 `4/4 READY`, 승인 전용 데이터셋은 `6건 READY`, 연구계획 요건은 `120/120 PASS`였다.
+- `python scripts/run_final_completion_audit.py`는 exit code `1`, `status=BLOCKED`, `goal_complete=false`를 반환했다. 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`로 동일하다.
+- 현재 WellnessBox HEAD는 `7054d76670870bc31130006a84df3fa10aa46c78`이다. 새 검토 결과·서명·업로드는 없고, 기존 두 영수증은 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`에 서명되어 현재 커밋과 불일치한다.
+- 완료 마법사 상태는 `3/13`이며 이번 세션 프로필·정책·문체·고위험 검토·최종 서명 기록은 없다. H-003 `NO-GO`, frozen/replay/weakest-slice delta `0`을 유지했다.

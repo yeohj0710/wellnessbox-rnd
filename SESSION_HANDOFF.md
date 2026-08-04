@@ -1182,3 +1182,12 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 패킷 검증: OP-039 사례 패킷 10건·중복 0건, 최종 handoff 71건·중복 0건. 둘 다 실제 사람 검토 결과·서명 영수증은 아니다.
 - 미충족 증거: 현재 커밋에 맞는 검증 영수증, 독립 검토 영수증, 실제 완료 마법사 사람 단계 6개.
 - 상태: wizard `3/13`, 최종 감사 `BLOCKED`, `goal_complete=false`; frozen/replay/weakest-slice delta는 0.
+
+## 2026-08-04 사용자 재개 fresh audit 3 인계
+
+- 현재 WellnessBox HEAD: `7054d76670870bc31130006a84df3fa10aa46c78`.
+- 자동 검증: 정답키 `4/4 READY`, 승인 전용 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`.
+- 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`; 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`이다.
+- 완료 마법사: `3/13`. 이번 세션의 실제 프로필·정책·문체·고위험 검토·최종 서명 자료는 없다.
+- 기존 영수증은 `f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f` 기준이며 현재 서비스 커밋과 불일치한다. 새 영수증·서명은 만들지 않았다.
+- 다음 작업: 사람의 현재 커밋 검증과 독립 검토 결과·서명을 받은 뒤 ZIP importer 및 해시 검증, 완료 마법사 실제 기록, 최종 감사 순서로 진행한다. H-003 `NO-GO`는 유지한다.
