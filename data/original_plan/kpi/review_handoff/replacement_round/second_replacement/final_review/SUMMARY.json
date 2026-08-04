@@ -1,0 +1,11 @@
+{
+  "schema_version": "kpi_second_replacement_final_review_summary_v1",
+  "case_count": 2,
+  "required_review_count": 2,
+  "recommendation_counts": {
+    "A": 0,
+    "B": 2
+  },
+  "option_c_available": false,
+  "review_csv_sha256": "1c17a2ac459e75b630235e7c239c66c2b1b2ca88fb48a2fd973efa87d29937da"
+}

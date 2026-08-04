@@ -1,5 +1,12 @@
 # SESSION_HANDOFF
 
+## 2026-08-04 KPI-1 추가 교체 Claude 응답과 최종 2건
+
+- Claude 반환 ZIP SHA-256은 `0cdd0ec7d8507ab9cd91be12ad0564a19a91d379be82add232a8bebeaa2e6b86`이다. 모델, 제공자 분리, 패킷, 블라인딩, 등록 신원, 답 어휘, 사례 완전성을 importer가 확인했다.
+- `kpi1-repl2-001`, `kpi1-repl2-002` 모두 초안과 Claude 의견이 다르고 표시가 있어 상세 선택 대상이다.
+- 최종 2행 패키지는 `replacement_round/second_replacement/kpi1_second_replacement_final_review_package.zip`, SHA-256 `fd58fd4d5ea0ad2ab325030b09682a4980c7878220f95b4f01b2796a048abaf3`이다.
+- 반환 전에는 기존 63건을 워크벤치에 부분 적용하지 않는다. 반환 뒤 65건을 함께 반영하고 감사·봉인 단계로 이동한다. 스케줄러와 주기 확인은 없다.
+
 ## 2026-08-04 최종 판정 반영과 추가 교체 2건
 
 - 최종 판정 반환 ZIP SHA-256은 `b6ba0b82ea945a1adb391d7266dd7ddcf9e25e0a89b5831152c5a4ee28f0e471`이다. 원본 ZIP·CSV·신원 파일과 정규화한 판정 기록을 `replacement_round/final_review/completed/`에 보존했다.

@@ -33,6 +33,14 @@ def test_second_replacement_cases_are_new_and_blinded() -> None:
     assert request["packet"]["case_count"] == 2
 
 
+def test_source_decision_hash_is_independent_of_checkout_line_endings() -> None:
+    payload = builder._read_json(builder.DECISIONS_PATH)
+
+    assert builder._canonical_json_sha256(payload) == (
+        "7bdb0bb6676b638940013c48e6b5d911f66a516de0f417a0fe6dbbafd1806bbb"
+    )
+
+
 def test_second_replacement_package_is_deterministic() -> None:
     assert builder.main() == 0
     first_hash = hashlib.sha256(builder.PACKAGE_PATH.read_bytes()).hexdigest()

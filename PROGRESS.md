@@ -1,5 +1,12 @@
 # PROGRESS
 
+## 2026-08-04 KPI-1 추가 교체 Claude 의견 반영
+
+- `kpi1_second_replacement_completed.zip` SHA-256 `0cdd0ec7d8507ab9cd91be12ad0564a19a91d379be82add232a8bebeaa2e6b86`을 검증·보존했다.
+- 두 사례 모두 `claude-opus-5`/Anthropic 의견이며, Codex/OpenAI 초안과 제공자 계열이 분리됐다. 패킷 해시, 등록 신원, 답 어휘, 2건 완전성, 엔진 미열람, 필수 블라인딩 경로를 모두 확인했다.
+- 두 사례 모두 초안과 의견이 다르고 위험·불확실성 표시가 있어 최종 선택 2건을 유지했다.
+- 마지막 입력 패키지는 `second_replacement/kpi1_second_replacement_final_review_package.zip`, SHA-256 `fd58fd4d5ea0ad2ab325030b09682a4980c7878220f95b4f01b2796a048abaf3`이다. 두 행 모두 독립 2차 의견을 권고안 B로 미리 제시했다.
+
 ## 2026-08-04 교체 65건 최종 판정 반영
 
 - 반환 ZIP SHA-256 `b6ba0b82ea945a1adb391d7266dd7ddcf9e25e0a89b5831152c5a4ee28f0e471`을 원문 그대로 보존했다. 65건의 결과는 `ACCEPT` 51건, `EDIT` 12건, `REJECT` 2건이다.

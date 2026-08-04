@@ -1,0 +1,106 @@
+{
+  "schema_version": "kpi_second_replacement_staging_v1",
+  "source_zip_sha256": "0cdd0ec7d8507ab9cd91be12ad0564a19a91d379be82add232a8bebeaa2e6b86",
+  "response_sha256": "e3be97396dc98a22f85435a659119570db161891f943f40c79d61ebb05987ab5",
+  "identity_confirmation": {
+    "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+    "confirmed_at": "2026-08-04T08:39:58+09:00"
+  },
+  "validated_record": {
+    "schema_version": "independent_ai_answer_review_v1",
+    "reviewing_agent": "claude-opus-5",
+    "reviewing_agent_family": "anthropic",
+    "drafting_agent": "codex",
+    "drafting_agent_family": "openai",
+    "review_source": "blind_packet_independent_opinion",
+    "blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "required_blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "packet_sha256": "9cbddf16d508e1886dce55764050826d42bd9f3bc148040459c2a961af1a560b",
+    "engine_output_consulted": false,
+    "reviewed_at": "2026-08-04T05:39:55.739649Z",
+    "case_count": 2,
+    "cases": {
+      "kpi1-repl2-001": {
+        "proposed_answer": [
+          "magnesium_glycinate",
+          "soluble_fiber",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.62,
+        "flags": [
+          "fiber_drug_absorption_timing",
+          "loop_diuretic_depletes_b1_and_mg",
+          "vocabulary_lacks_direct_antiglycation_antioxidant"
+        ],
+        "rationale": "당화 차단은 두 갈래로 접근한다. B군의 티아민·B6 계열이 당화 최종산물 생성 경로를 직접 억제하고, 수용성 식이섬유가 당 흡수를 늦춰 당화 기질인 혈당 노출을 줄인다. 마그네슘은 인슐린 신호를 도와 만성 고혈당을 낮춘다. Furosemide가 티아민과 마그네슘을 소변으로 내보내므로 두 성분은 목표와 약물 양쪽에서 근거가 겹친다. 식이섬유는 이뇨제 흡수를 방해할 수 있어 복용 간격을 벌린다. 다만 이번 어휘에는 당화를 직접 막는 항산화 성분이 없어 확신을 낮게 뒀다."
+      },
+      "kpi1-repl2-002": {
+        "proposed_answer": [
+          "probiotics",
+          "soluble_fiber"
+        ],
+        "confidence": 0.75,
+        "flags": [
+          "fiber_reduces_levothyroxine_absorption",
+          "levothyroxine_needs_4h_gap",
+          "monitor_tsh_after_starting_fiber"
+        ],
+        "rationale": "수용성 식이섬유가 장내 독소를 흡착해 대변으로 내보내고, 프로바이오틱스가 장벽을 복구해 내독소(LPS)가 혈류로 넘어오는 양을 줄인다. 장내 배출 목표에 두 성분이 곧게 대응한다. 다만 식이섬유는 Levothyroxine 흡수를 눈에 띄게 떨어뜨리므로 4시간 이상 간격을 두고, 섬유 보충을 시작한 뒤 TSH를 다시 확인한다."
+      }
+    },
+    "cases_sha256": "06b0fcebdef8e05dc5a1e26c843e28129ac2282c1593935cef0837eabe578683"
+  },
+  "review_plan": {
+    "status": "REVIEW_REQUIRED",
+    "reason": "required_detailed_review_pending",
+    "case_count": 2,
+    "agreement_count": 0,
+    "disagreement_count": 2,
+    "flagged_count": 2,
+    "disagreement_ids": [
+      "kpi1-repl2-001",
+      "kpi1-repl2-002"
+    ],
+    "flagged_ids": [
+      "kpi1-repl2-001",
+      "kpi1-repl2-002"
+    ],
+    "sample_target_count": 0,
+    "sampled_agreement_ids": [],
+    "sample_correction_count": 0,
+    "sample_correction_ids": [],
+    "escalation": "initial_sample",
+    "required_detail_ids": [
+      "kpi1-repl2-001",
+      "kpi1-repl2-002"
+    ],
+    "pending_required_detail_ids": [
+      "kpi1-repl2-001",
+      "kpi1-repl2-002"
+    ],
+    "rejected_ids": [],
+    "batch_eligible_ids": [],
+    "detailed_review_count": 0
+  },
+  "status": "READY_FOR_FINAL_REVIEW_PACKAGE"
+}

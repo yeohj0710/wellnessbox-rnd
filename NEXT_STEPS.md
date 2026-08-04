@@ -1,10 +1,10 @@
 # NEXT_STEPS
 
-## 2026-08-04 KPI-1 추가 교체 2건
+## 2026-08-04 KPI-1 마지막 2건 선택
 
-다음 입력 파일은 `data/original_plan/kpi/review_handoff/replacement_round/second_replacement/kpi1_second_replacement_claude_package.zip`이다. Claude에서 패키지의 요청 JSON 2건을 처리하고 `MAKE_RETURN_ZIP.cmd`로 `kpi1_second_replacement_completed.zip`을 만든다.
+다음 입력 파일은 `data/original_plan/kpi/review_handoff/replacement_round/second_replacement/kpi1_second_replacement_final_review_package.zip`이다. CSV 두 행에는 참조안 A, 독립 2차 의견 B, 권고안 B가 입력돼 있다. 각 행의 결정과 시각을 기록한 뒤 `MAKE_RETURN_ZIP.cmd`를 실행한다.
 
-반환 ZIP을 가져온 뒤 두 의견을 비교한 2행짜리 최종 선택 자료를 만든다. 두 건이 확정되기 전에는 기존 63건만 워크벤치에 부분 적용하거나 봉인하지 않는다. 스케줄러와 주기 확인은 사용하지 않는다.
+반환 ZIP을 가져온 뒤 기존 63건과 함께 워크벤치에 원자적으로 적용한다. 두 건이 확정되기 전에는 기존 63건만 부분 적용하거나 봉인하지 않는다. 스케줄러와 주기 확인은 사용하지 않는다.
 
 ## 2026-08-04 완료된 65건 최종 입력
 
@@ -14,8 +14,8 @@
 
 `kpi_replacement_claude_retry_package.zip`의 Claude 응답 검증과 KPI-4 OpenAI 2차 의견 연결은 완료됐다. 기존 `kpi_replacement_input_package.zip`과 Claude 재처리 패키지는 과거 입력이므로 다시 사용하지 않는다.
 
-1. KPI-1 추가 교체 2건의 Claude 응답을 검증한다.
-2. 추가 2건의 최종 선택이 끝나면 65건과 함께 워크벤치에 원자적으로 적용한다.
+1. KPI-1 추가 교체 2건의 최종 선택 자료를 가져온다.
+2. 추가 2건과 기존 63건을 워크벤치에 원자적으로 적용한다.
 3. 각 지표가 다시 100개 유효 사례가 되면 무결성 감사 후 봉인한다.
 4. 새 봉인 뒤에만 `measurement_environment: research_phase_internal_measurement`로 연구 단계 내부 측정을 실행한다.
 

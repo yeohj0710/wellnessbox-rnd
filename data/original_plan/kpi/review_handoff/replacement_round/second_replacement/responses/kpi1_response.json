@@ -1,0 +1,48 @@
+{
+  "reviewing_agent": "claude-opus-5",
+  "review_source": "blind_packet_independent_opinion",
+  "blinded_from": [
+    "data/knowledge/counseling_answer_verifier_policy_v1.json",
+    "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+    "data/knowledge/goal_ingredient_priors_v1.json",
+    "data/knowledge/reference_knowledge_base_v1.json",
+    "data/knowledge/runtime_knowledge_db_v1.json",
+    "data/original_plan/closed_loop_next_action_policy_v1.json",
+    "data/rules/candidate_signal_scoring_rules_v1.json",
+    "data/rules/safety_rules.json",
+    "data/synthetic/synthetic_longitudinal_v4.jsonl"
+  ],
+  "packet_sha256": "9cbddf16d508e1886dce55764050826d42bd9f3bc148040459c2a961af1a560b",
+  "engine_output_consulted": false,
+  "cases": [
+    {
+      "case_id": "kpi1-repl2-001",
+      "proposed_answer": [
+        "vitamin_b_complex",
+        "soluble_fiber",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.62,
+      "flags": [
+        "loop_diuretic_depletes_b1_and_mg",
+        "fiber_drug_absorption_timing",
+        "vocabulary_lacks_direct_antiglycation_antioxidant"
+      ],
+      "rationale": "당화 차단은 두 갈래로 접근한다. B군의 티아민·B6 계열이 당화 최종산물 생성 경로를 직접 억제하고, 수용성 식이섬유가 당 흡수를 늦춰 당화 기질인 혈당 노출을 줄인다. 마그네슘은 인슐린 신호를 도와 만성 고혈당을 낮춘다. Furosemide가 티아민과 마그네슘을 소변으로 내보내므로 두 성분은 목표와 약물 양쪽에서 근거가 겹친다. 식이섬유는 이뇨제 흡수를 방해할 수 있어 복용 간격을 벌린다. 다만 이번 어휘에는 당화를 직접 막는 항산화 성분이 없어 확신을 낮게 뒀다."
+    },
+    {
+      "case_id": "kpi1-repl2-002",
+      "proposed_answer": [
+        "soluble_fiber",
+        "probiotics"
+      ],
+      "confidence": 0.75,
+      "flags": [
+        "fiber_reduces_levothyroxine_absorption",
+        "levothyroxine_needs_4h_gap",
+        "monitor_tsh_after_starting_fiber"
+      ],
+      "rationale": "수용성 식이섬유가 장내 독소를 흡착해 대변으로 내보내고, 프로바이오틱스가 장벽을 복구해 내독소(LPS)가 혈류로 넘어오는 양을 줄인다. 장내 배출 목표에 두 성분이 곧게 대응한다. 다만 식이섬유는 Levothyroxine 흡수를 눈에 띄게 떨어뜨리므로 4시간 이상 간격을 두고, 섬유 보충을 시작한 뒤 TSH를 다시 확인한다."
+    }
+  ]
+}

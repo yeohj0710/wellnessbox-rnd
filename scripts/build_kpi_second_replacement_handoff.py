@@ -47,6 +47,11 @@ def _read_json(path: Path) -> dict[str, Any]:
     return payload
 
 
+def _canonical_json_sha256(payload: dict[str, Any]) -> str:
+    content = (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode()
+    return hashlib.sha256(content).hexdigest()
+
+
 def build_candidates_and_request() -> tuple[dict[str, Any], dict[str, Any]]:
     decisions = _read_json(DECISIONS_PATH)
     rejected = decisions.get("replacement_required_case_ids", [])
@@ -86,9 +91,7 @@ def build_candidates_and_request() -> tuple[dict[str, Any], dict[str, Any]]:
     ).hexdigest()
     candidates = {
         "schema_version": "kpi_second_replacement_candidates_v1",
-        "source_final_decisions_sha256": hashlib.sha256(
-            DECISIONS_PATH.read_bytes()
-        ).hexdigest(),
+        "source_final_decisions_sha256": _canonical_json_sha256(decisions),
         "replaces_rejected_case_ids": rejected,
         "count": len(drafts),
         "cases": [asdict(draft) for draft in drafts],
