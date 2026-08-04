@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import zipfile
@@ -210,3 +211,40 @@ def test_snapshot_zip_keeps_original_bytes_after_source_replacement(
         assert reader.read("value.txt") == b"original"
     finally:
         reader.close()
+
+
+def test_openai_submission_is_preserved_without_role_inflation() -> None:
+    submission_dir = builder.OUTPUT_DIR / "openai_submission"
+    source = submission_dir / "kpi_replacement_completed.zip"
+    report = json.loads(
+        (submission_dir / "intake_report_v1.json").read_text(encoding="utf-8")
+    )
+
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == report[
+        "source_zip_sha256"
+    ]
+    assert report["submitted_provider_family"] == "openai"
+    assert report["overall_status"] == "ANTHROPIC_RESPONSES_REQUIRED"
+    assert report["dispositions"]["KPI-1"]["status"] == (
+        "NOT_ELIGIBLE_AS_INDEPENDENT_REVIEW"
+    )
+    assert report["dispositions"]["KPI-4"]["status"] == (
+        "PENDING_REUSE_AS_OPENAI_SECOND_OPINION"
+    )
+    assert report["dispositions"]["KPI-5"]["status"] == (
+        "NOT_ELIGIBLE_AS_INDEPENDENT_REVIEW"
+    )
+
+
+def test_claude_retry_package_keeps_identity_and_model_contract() -> None:
+    package = builder.OUTPUT_DIR / "kpi_replacement_claude_retry_package.zip"
+    with zipfile.ZipFile(package) as archive:
+        assert archive.testzip() is None
+        selection = json.loads(archive.read("reviewer_identity_selection.json"))
+        assert selection["selected_reviewer_identity_ref"]
+        assert selection["confirmed_at"]
+        for request_name in builder.REQUEST_NAMES.values():
+            request = json.loads(archive.read(request_name))
+            assert request["blindness_contract"]["allowed_model_ids"] == [
+                builder.ANTHROPIC_MODEL_ID
+            ]

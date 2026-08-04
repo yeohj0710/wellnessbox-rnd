@@ -1,0 +1,627 @@
+{
+  "schema_version": "blind_external_ai_answer_request_v1",
+  "indicator_id": "KPI-1",
+  "requested_role": "review",
+  "required_provider_family": "anthropic",
+  "blindness_contract": {
+    "only_input_allowed": "this_request_file",
+    "required_provider_family": "anthropic",
+    "actual_model_name_required": true,
+    "must_not_access_repository": true,
+    "must_not_access_engine_logic_or_output": true,
+    "return_json_only": true,
+    "do_not_copy_empty_skeleton_values": true,
+    "allowed_model_ids": [
+      "claude-opus-5"
+    ]
+  },
+  "instructions": [
+    "반드시 anthropic 계열 모델에서 이 요청을 처리한다.",
+    "reviewing_agent에는 claude-opus-5를 정확히 쓴다.",
+    "packet.cases의 49개 사례를 모두 독립적으로 판단한다.",
+    "proposed_answer는 packet.answer_vocabulary 안의 값 하나 이상만 쓴다.",
+    "confidence는 0.0 이상 1.0 이하 숫자다.",
+    "위험·불확실성은 flags에 짧은 식별자로 남긴다.",
+    "response_skeleton과 같은 키의 JSON 객체만 반환한다.",
+    "저장소, 엔진 규칙, 엔진 출력, 기존 정답은 열람하지 않는다."
+  ],
+  "packet": {
+    "schema_version": "blind_ai_answer_review_packet_v1",
+    "indicator_id": "KPI-1",
+    "case_count": 49,
+    "answer_vocabulary": [
+      "berberine",
+      "calcium_citrate",
+      "coq10",
+      "l_theanine",
+      "magnesium_glycinate",
+      "omega3",
+      "probiotics",
+      "soluble_fiber",
+      "vitamin_b_complex",
+      "vitamin_c",
+      "vitamin_d3",
+      "zinc"
+    ],
+    "required_blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "omitted_fields": [
+      "draft_answer",
+      "draft_rationale",
+      "engine_logic",
+      "engine_output"
+    ],
+    "instructions": "각 사례를 독립적으로 판단해 proposed_answer, confidence, flags, rationale을 반환한다. 1차 초안·근거·엔진 입력·엔진 출력은 보지 않는다.",
+    "cases": [
+      {
+        "case_id": "kpi1-repl-001",
+        "prompt": "영역 대사 및 순환 6. 당독소(AGEs) 관리 / 판정 「1. 생성 억제 (당화 차단)」 / 나이 31 / 복용약 Esomeprazole"
+      },
+      {
+        "case_id": "kpi1-repl-002",
+        "prompt": "영역 대사 및 순환 6. 당독소(AGEs) 관리 / 판정 「3. 장내 배출 (내독소 제거)」 / 나이 37 / 복용약 Furosemide"
+      },
+      {
+        "case_id": "kpi1-repl-003",
+        "prompt": "영역 신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별 / 판정 「1. 기억력 강화 및 뇌세포 보호 (문항 1,2,3번)」 / 나이 44 / 복용약 Levothyroxine"
+      },
+      {
+        "case_id": "kpi1-repl-004",
+        "prompt": "영역 신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별 / 판정 「3. 지남력 강화 및 신경 보호 (문항 6,7번)」 / 나이 50 / 복용약 Metformin"
+      },
+      {
+        "case_id": "kpi1-repl-005",
+        "prompt": "영역 신경계 및 뇌기능 6. 일시적 인지저하와 치매 선별 / 판정 「5. 인지저하 전반적 용도」 / 나이 56 / 복용약 Prednisolone"
+      },
+      {
+        "case_id": "kpi1-repl-006",
+        "prompt": "영역 신경계 및 뇌기능 7. 인지기능 저하 요인 / 판정 「1. 혈관/대사 - 혈관 내피 기능 및 인슐린 감수성 개선」 / 나이 62 / 복용약 없음"
+      },
+      {
+        "case_id": "kpi1-repl-007",
+        "prompt": "영역 신경계 및 뇌기능 7. 인지기능 저하 요인 / 판정 「2. 수면 - 수면 리듬 조절 및 신경 이완」 / 나이 68 / 복용약 Amlodipine"
+      },
+      {
+        "case_id": "kpi1-repl-008",
+        "prompt": "영역 신경계 및 뇌기능 7. 인지기능 저하 요인 / 판정 「3. 스트레스 - 스트레스 조절 및 신경 보호」 / 나이 74 / 복용약 Atorvastatin"
+      },
+      {
+        "case_id": "kpi1-repl-009",
+        "prompt": "영역 신경계 및 뇌기능 7. 인지기능 저하 요인 / 판정 「5. 영양결핍 - 신경전달물질 원료 및 에너지 공급」 / 나이 31 / 복용약 Esomeprazole"
+      },
+      {
+        "case_id": "kpi1-repl-010",
+        "prompt": "영역 신경계 및 뇌기능 7. 인지기능 저하 요인 / 판정 「6. 운동부족/혈류저하 - 뇌 신경 보호 및 기억력 개선」 / 나이 37 / 복용약 Furosemide"
+      },
+      {
+        "case_id": "kpi1-repl-011",
+        "prompt": "영역 신경계 및 뇌기능 7. 인지기능 저하 요인 / 판정 「7. 만성 염증 - 뇌 내 아밀로이드 축적 억제 및 항염」 / 나이 44 / 복용약 Levothyroxine"
+      },
+      {
+        "case_id": "kpi1-repl-012",
+        "prompt": "영역 신경계 및 뇌기능 7. 인지기능 저하 요인 / 판정 「8. 감각저하 - 시력·청력 보호 및 미세순환 개선」 / 나이 50 / 복용약 Metformin"
+      },
+      {
+        "case_id": "kpi1-repl-013",
+        "prompt": "영역 기타 1. 치과질환 / 판정 「1. 치은염 (Gingivitis) 잇몸 조직 재생 및 지혈」 / 나이 56 / 복용약 Prednisolone"
+      },
+      {
+        "case_id": "kpi1-repl-014",
+        "prompt": "영역 기타 1. 치과질환 / 판정 「2. 치주염 (Periodontitis) 치조골 밀도 유지」 / 나이 62 / 복용약 없음"
+      },
+      {
+        "case_id": "kpi1-repl-015",
+        "prompt": "영역 신경계 및 뇌기능 2. 우울 / 판정 「1. 불안·자책 완화 및 정서적 안정 (문항 1,5,6번)」 / 나이 68 / 복용약 Amlodipine"
+      },
+      {
+        "case_id": "kpi1-repl-016",
+        "prompt": "영역 신경계 및 뇌기능 2. 우울 / 판정 「2. 의욕 저하 및 에너지 회복 (문항 3,4,8번)」 / 나이 74 / 복용약 Atorvastatin"
+      },
+      {
+        "case_id": "kpi1-repl-017",
+        "prompt": "영역 신경계 및 뇌기능 2. 우울 / 판정 「3. 장-뇌 축 및 감정 활력 (문항 7번)」 / 나이 31 / 복용약 Esomeprazole"
+      },
+      {
+        "case_id": "kpi1-repl-018",
+        "prompt": "영역 신경계 및 뇌기능 2. 우울 / 판정 「4. 염증성 피로 및 뇌 피로 개선 (문항 9,10번)」 / 나이 37 / 복용약 Furosemide"
+      },
+      {
+        "case_id": "kpi1-repl-019",
+        "prompt": "영역 대사 및 순환 3. 당뇨·인슐린저항성 / 판정 「1. 인슐린 저항성 개선」 / 나이 44 / 복용약 Levothyroxine"
+      },
+      {
+        "case_id": "kpi1-repl-020",
+        "prompt": "영역 대사 및 순환 3. 당뇨·인슐린저항성 / 판정 「2. 식후 혈당 억제(스파이크 방지)」 / 나이 50 / 복용약 Metformin"
+      },
+      {
+        "case_id": "kpi1-repl-021",
+        "prompt": "영역 대사 및 순환 3. 당뇨·인슐린저항성 / 판정 「3. 합병증 방어」 / 나이 56 / 복용약 Prednisolone"
+      },
+      {
+        "case_id": "kpi1-repl-022",
+        "prompt": "영역 대사 및 순환 3. 당뇨·인슐린저항성 / 판정 「4. 약물 고갈 영양소」 / 나이 62 / 복용약 없음"
+      },
+      {
+        "case_id": "kpi1-repl-023",
+        "prompt": "영역 에너지 생성 및 부신·갑상선 기능 5. 어지럼증 / 판정 「C형 심인성 현훈 (마음) 공황장애 불안증 (자율신경)」 / 나이 68 / 복용약 Amlodipine"
+      },
+      {
+        "case_id": "kpi1-repl-024",
+        "prompt": "영역 대사 및 순환 2. 이상지질혈증 / 판정 「1. LDL 상승형(콜레스테롤) 유전성/체질」 / 나이 74 / 복용약 Atorvastatin"
+      },
+      {
+        "case_id": "kpi1-repl-025",
+        "prompt": "영역 대사 및 순환 2. 이상지질혈증 / 판정 「2. TG 상승형(중성지방/대사성)」 / 나이 31 / 복용약 Esomeprazole"
+      },
+      {
+        "case_id": "kpi1-repl-026",
+        "prompt": "영역 대사 및 순환 2. 이상지질혈증 / 판정 「3. 산화 방지형(동맥경화 예방)」 / 나이 37 / 복용약 Furosemide"
+      },
+      {
+        "case_id": "kpi1-repl-027",
+        "prompt": "영역 대사 및 순환 2. 이상지질혈증 / 판정 「4. 스타틴 복용형(약물 부작용)」 / 나이 44 / 복용약 Levothyroxine"
+      },
+      {
+        "case_id": "kpi1-repl-028",
+        "prompt": "영역 에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경 / 판정 「1. 기초 에너지 생성 및 만성피로 예방 (문항 1, 9번 'O')」 / 나이 50 / 복용약 Metformin"
+      },
+      {
+        "case_id": "kpi1-repl-029",
+        "prompt": "영역 에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경 / 판정 「3. 자율신경 균형 및 혈당 안정 (문항 2,4,6번 'O')」 / 나이 56 / 복용약 Prednisolone"
+      },
+      {
+        "case_id": "kpi1-repl-030",
+        "prompt": "영역 에너지 생성 및 부신·갑상선 기능 1. 피로·부신·자율신경 / 판정 「4. 신체 회복력 강화 및 소진 관리 (문항 7,8번 'O')」 / 나이 62 / 복용약 없음"
+      },
+      {
+        "case_id": "kpi1-repl-031",
+        "prompt": "영역 성호르몬·비뇨기계 1. 여성 갱년기 / 판정 「정서적 안정 및 수면 질 개선 - 우울/불안, 불면증」 / 나이 68 / 복용약 Amlodipine"
+      },
+      {
+        "case_id": "kpi1-repl-032",
+        "prompt": "영역 성호르몬·비뇨기계 1. 여성 갱년기 / 판정 「골밀도 유지 및 관절 보호 - 골다공증, 관절통」 / 나이 74 / 복용약 Atorvastatin"
+      },
+      {
+        "case_id": "kpi1-repl-033",
+        "prompt": "영역 성호르몬·비뇨기계 1. 여성 갱년기 / 판정 「세포 에너지 생성 및 활성화 - 피로감, 무기력증」 / 나이 31 / 복용약 Esomeprazole"
+      },
+      {
+        "case_id": "kpi1-repl-034",
+        "prompt": "영역 소화기계 1. 위 / 판정 「2. 자율신경 균형 및 스트레스 완화 (문항 5, 9번)」 / 나이 37 / 복용약 Furosemide"
+      },
+      {
+        "case_id": "kpi1-repl-035",
+        "prompt": "영역 신경계 및 뇌기능 5. 두통·편두통 / 판정 「1. 편두통 완화 및 혈관 안정 (문항 1,2,3번)」 / 나이 44 / 복용약 Levothyroxine"
+      },
+      {
+        "case_id": "kpi1-repl-036",
+        "prompt": "영역 신경계 및 뇌기능 5. 두통·편두통 / 판정 「2. 긴장성 두통 및 근육 이완 (문항 8, 10번)」 / 나이 50 / 복용약 Metformin"
+      },
+      {
+        "case_id": "kpi1-repl-037",
+        "prompt": "영역 신경계 및 뇌기능 5. 두통·편두통 / 판정 「3. 수면 부족 및 피로 누적 개선 (문항 7번)」 / 나이 56 / 복용약 Prednisolone"
+      },
+      {
+        "case_id": "kpi1-repl-038",
+        "prompt": "영역 신경계 및 뇌기능 5. 두통·편두통 / 판정 「4. 식이 유발 및 대사 관리 (문항 9번)」 / 나이 62 / 복용약 없음"
+      },
+      {
+        "case_id": "kpi1-repl-039",
+        "prompt": "영역 대사 및 순환 7. 치질 / 판정 「3. 배변 습관 교정 (악화 인자 제거) - 딱딱한 변 / 변비 - 배변 시 힘주기」 / 나이 68 / 복용약 Amlodipine"
+      },
+      {
+        "case_id": "kpi1-repl-040",
+        "prompt": "영역 대사 및 순환 1. 고혈압 / 판정 「2. 혈관 경화형(대사증후군) • 고지혈증/당뇨 동반 • 맥압(수축-이완) 큼 • 노인성 단독 수축기」 / 나이 74 / 복용약 Atorvastatin"
+      },
+      {
+        "case_id": "kpi1-repl-041",
+        "prompt": "영역 대사 및 순환 1. 고혈압 / 판정 「3. 교감신경 항진형(스트레스성) • 두근거림/불면 • 뒷목 뻐근함 • 백의 고혈압」 / 나이 31 / 복용약 Esomeprazole"
+      },
+      {
+        "case_id": "kpi1-repl-042",
+        "prompt": "영역 대사 및 순환 1. 고혈압 / 판정 「4. 호모시스테인형(혈관 독소) • 가족력 • 약이 잘 안 들음 • 마른 고혈압」 / 나이 37 / 복용약 Furosemide"
+      },
+      {
+        "case_id": "kpi1-repl-043",
+        "prompt": "영역 에너지 생성 및 부신·갑상선 기능 3. 갑상선 기능 항진 / 판정 「4. 뼈 건강 (골밀도 유지)」 / 나이 44 / 복용약 Levothyroxine"
+      },
+      {
+        "case_id": "kpi1-repl-044",
+        "prompt": "영역 에너지 생성 및 부신·갑상선 기능 2. 갑상선 기능 저하 / 판정 「4. 소화·변비 → 장 운동 정상화」 / 나이 50 / 복용약 Metformin"
+      },
+      {
+        "case_id": "kpi1-repl-045",
+        "prompt": "영역 면역 및 염증 1. 면역균형 / 판정 「1. 방어력 저하형 (잦은 감기, 감염 후 회복이 더딤) - 점막 면역 강화 (1차방어선)」 / 나이 56 / 복용약 Prednisolone"
+      },
+      {
+        "case_id": "kpi1-repl-046",
+        "prompt": "영역 면역 및 염증 1. 면역균형 / 판정 「2. 과민 반응형 (알레르기, 비염, 아토피, 천식, 두드러기) - 면역균형 회복」 / 나이 62 / 복용약 없음"
+      },
+      {
+        "case_id": "kpi1-repl-047",
+        "prompt": "영역 면역 및 염증 1. 면역균형 / 판정 「3. 만성 염증형 (통증 / 관절 쑤심, 부종, 만성피로 / 종양) - 만성 염증 억제 및 면역 소모 감소」 / 나이 68 / 복용약 Amlodipine"
+      },
+      {
+        "case_id": "kpi1-repl-048",
+        "prompt": "영역 임신 1. 난임 / 판정 「남성 ④,⑤ 정자 요인(DNA 손상)」 / 나이 74 / 복용약 Atorvastatin"
+      },
+      {
+        "case_id": "kpi1-repl-049",
+        "prompt": "영역 소화기계 2. 장 / 판정 「변비 우세형 - 배변 리듬 및 연동운동 활성화 (문항 1~4번)」 / 나이 31 / 복용약 Esomeprazole"
+      }
+    ],
+    "packet_sha256": "22bfbc1dea05b378567fb8cdbfdc985fb84e638cc4a18a4b3db6f5107c97754b"
+  },
+  "response_skeleton": {
+    "reviewing_agent": "claude-opus-5",
+    "review_source": "blind_packet_independent_opinion",
+    "blinded_from": [
+      "data/knowledge/counseling_answer_verifier_policy_v1.json",
+      "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+      "data/knowledge/goal_ingredient_priors_v1.json",
+      "data/knowledge/reference_knowledge_base_v1.json",
+      "data/knowledge/runtime_knowledge_db_v1.json",
+      "data/original_plan/closed_loop_next_action_policy_v1.json",
+      "data/rules/candidate_signal_scoring_rules_v1.json",
+      "data/rules/safety_rules.json",
+      "data/synthetic/synthetic_longitudinal_v4.jsonl"
+    ],
+    "packet_sha256": "22bfbc1dea05b378567fb8cdbfdc985fb84e638cc4a18a4b3db6f5107c97754b",
+    "engine_output_consulted": false,
+    "cases": [
+      {
+        "case_id": "kpi1-repl-001",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-002",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-003",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-004",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-005",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-006",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-007",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-008",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-009",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-010",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-011",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-012",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-013",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-014",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-015",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-016",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-017",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-018",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-019",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-020",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-021",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-022",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-023",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-024",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-025",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-026",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-027",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-028",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-029",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-030",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-031",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-032",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-033",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-034",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-035",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-036",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-037",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-038",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-039",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-040",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-041",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-042",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-043",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-044",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-045",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-046",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-047",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-048",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      },
+      {
+        "case_id": "kpi1-repl-049",
+        "proposed_answer": [],
+        "confidence": null,
+        "flags": [],
+        "rationale": ""
+      }
+    ]
+  },
+  "request_sha256": "cc7ded8b57b5c162d889e16b4accb9b018299886eba67f52373256750a588e3c"
+}

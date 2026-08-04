@@ -1,5 +1,12 @@
 # SESSION_HANDOFF
 
+## 2026-08-04 OpenAI 제출분 부분 보존
+
+- 제출 ZIP: `replacement_round/openai_submission/kpi_replacement_completed.zip`, SHA-256 `99ef845a5d2451889ecf2d16aa40de65263f38919d389d64337b418e560ff43d`.
+- 세 파일 모두 `gpt-5.6-pro` 응답이라 Anthropic 역할로 가져오지 않았다. KPI-1·5는 Codex 초안과 제공자 계열이 같아 사용할 수 없다.
+- KPI-4 응답 7건은 구조 검증을 통과해 Anthropic 1차 초안 이후 OpenAI 2차 의견으로 재사용 대기한다. 원래 primary 역할로 생성됐다는 provenance를 역할 전환 시 보존해야 한다.
+- 재처리 입력: `replacement_round/kpi_replacement_claude_retry_package.zip`, SHA-256 `29fb4d0639edc09b5a965ec3a21c07af7ee0ff24630c11b1b3599540a8cf372d`. 신원 선택은 제출분에서 그대로 보존했다.
+
 ## 2026-08-03 반려 사례 교체 입력 handoff
 
 - 입력 패키지: `data/original_plan/kpi/review_handoff/replacement_round/kpi_replacement_input_package.zip`, SHA-256 `aa1ec8fa1cdaa46ec4a89deb04f150f552408fb53f305d01e880871b56835cba`. 내부 정답 후보 파일은 외부 패키지에서 제외했다.

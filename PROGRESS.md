@@ -1,5 +1,12 @@
 # PROGRESS
 
+## 2026-08-04 OpenAI 교체 응답 보존과 Claude 재처리 패키지
+
+- 반환 ZIP SHA-256 `99ef845a5d2451889ecf2d16aa40de65263f38919d389d64337b418e560ff43d`은 65건을 모두 담았지만, 세 응답의 기록 모델이 계약상 필요한 `claude-opus-5`가 아니라 `gpt-5.6-pro`여서 정식 교체 응답으로 가져오지 않았다.
+- 원본 ZIP과 판정은 `replacement_round/openai_submission/`에 보존했다. KPI-1·5 응답은 Codex 초안과 같은 OpenAI 계열이라 독립 2차 의견으로 사용할 수 없다.
+- KPI-4 응답 7건은 패킷·블라인딩·답 형식 검증을 통과했다. Anthropic 1차 초안이 먼저 들어오면 원래 역할과 모델 provenance를 보존한 OpenAI 2차 의견으로 재사용할 수 있다.
+- 입력이 끝난 신원 확인을 유지한 `kpi_replacement_claude_retry_package.zip`을 만들었다. SHA-256은 `29fb4d0639edc09b5a965ec3a21c07af7ee0ff24630c11b1b3599540a8cf372d`이다.
+
 ## 2026-08-03 반려 65건 교체 입력 패키지
 
 - KPI-1 49건, KPI-4 7건, KPI-5 9건의 새 후보를 `replacement_round/kpi_replacement_candidates_v1.json`에 만들었다. 기존 반려 문항과 현재 300개 문항은 재사용하지 않았다.

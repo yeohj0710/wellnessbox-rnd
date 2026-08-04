@@ -1,0 +1,35 @@
+{
+  "schema_version": "kpi_replacement_provider_mismatch_intake_v1",
+  "source_zip": "kpi_replacement_completed.zip",
+  "source_zip_sha256": "99ef845a5d2451889ecf2d16aa40de65263f38919d389d64337b418e560ff43d",
+  "submitted_model": "gpt-5.6-pro",
+  "submitted_provider_family": "openai",
+  "required_model": "claude-opus-5",
+  "required_provider_family": "anthropic",
+  "identity_confirmation": {
+    "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+    "confirmed_at": "2026-08-04T08:39:58+09:00"
+  },
+  "dispositions": {
+    "KPI-1": {
+      "case_count": 49,
+      "status": "NOT_ELIGIBLE_AS_INDEPENDENT_REVIEW",
+      "reason": "openai_response_matches_codex_drafting_provider_family"
+    },
+    "KPI-4": {
+      "case_count": 7,
+      "response_sha256": "8bccc0c39d47ec5dbb080866f8bb09e377f00e33dfa4d43238ebe53886b8eb35",
+      "status": "PENDING_REUSE_AS_OPENAI_SECOND_OPINION",
+      "required_predecessor": "validated_anthropic_primary_draft",
+      "original_response_role": "primary",
+      "future_response_role": "independent_review",
+      "role_conversion_must_preserve_original_provenance": true
+    },
+    "KPI-5": {
+      "case_count": 9,
+      "status": "NOT_ELIGIBLE_AS_INDEPENDENT_REVIEW",
+      "reason": "openai_response_matches_codex_drafting_provider_family"
+    }
+  },
+  "overall_status": "ANTHROPIC_RESPONSES_REQUIRED"
+}

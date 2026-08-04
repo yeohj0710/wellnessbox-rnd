@@ -1,0 +1,13 @@
+KPI 교체 응답 재처리
+
+요청 JSON 세 개를 각각 새 Claude Opus 5 대화에 첨부합니다.
+각 대화에서 반환된 JSON만 아래 이름으로 저장합니다.
+
+- kpi1_response.json
+- kpi4_response.json
+- kpi5_response.json
+
+응답의 모델명은 claude-opus-5여야 합니다. ChatGPT나 Codex에서 처리한 응답은 사용할 수 없습니다.
+reviewer_identity_selection.json은 입력 완료 상태이므로 수정하지 않습니다.
+세 응답을 저장한 뒤 MAKE_RETURN_ZIP.cmd를 실행합니다.
+생성된 kpi_replacement_completed.zip 하나를 반환합니다.

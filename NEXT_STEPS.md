@@ -1,8 +1,12 @@
 # NEXT_STEPS
 
-반환 검토 자료 400건은 원문 그대로 적용됐다. 아직 유효한 신규 봉인은 없다. 다음 입력 파일은 `data/original_plan/kpi/review_handoff/replacement_round/kpi_replacement_input_package.zip`이다.
+## 2026-08-04 다음 입력
 
-1. 패키지의 `START_HERE.txt` 순서대로 Anthropic 응답 3개와 등록 신원 선택을 `kpi_replacement_completed.zip`으로 반환한다.
+다음 입력 파일은 `data/original_plan/kpi/review_handoff/replacement_round/kpi_replacement_claude_retry_package.zip`이다. `START_HERE.txt`에 따라 `claude-opus-5` 응답 세 개를 만든 뒤 `kpi_replacement_completed.zip`을 반환한다. 등록 신원 선택은 이미 입력돼 있다. 2026-08-04 `gpt-5.6-pro` 제출분은 원본을 보존했으며, KPI-4 7건만 Anthropic 1차 초안 이후 OpenAI 2차 의견으로 재사용 대기한다.
+
+반환 검토 자료 400건은 원문 그대로 적용됐다. 아직 유효한 신규 봉인은 없다. 기존 `kpi_replacement_input_package.zip`은 2026-08-04 제출에 사용된 과거 입력이며 다시 사용하지 않는다.
+
+1. 재처리 패키지의 `START_HERE.txt` 순서대로 Anthropic 응답 3개를 `kpi_replacement_completed.zip`으로 반환한다. 등록 신원 선택은 이미 입력돼 있다.
 2. `python scripts/import_kpi_replacement_responses.py --input <ZIP>`으로 읽기 전용 검증한 뒤 `--apply`로 staging에 보존한다.
 3. KPI-4의 Anthropic 1차 초안이 들어온 뒤 OpenAI 계열의 블라인드 2차 의견 7건을 만든다. KPI-1·5는 Anthropic 2차 의견까지 이 반환으로 끝난다.
 4. 두 의견을 나란히 둔 65건 최종 검토 자료를 만든다. 등록 신원 참조는 기존 400건과 KPI-1·5 폐기 이력에도 같은 값으로 연결한다.
