@@ -1094,3 +1094,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 현재 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`다. 차단 사유는 동일하게 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`이며 requirements/reports는 `120/120`, external gap은 0건이다.
 - 완료 마법사 상태는 `3/13`이다. 이번 세션의 H-007·H-003·H-002·H-004·H-005·H-006 실제 기록이 없고, 기존 영수증은 계속 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`다.
 - 새 ZIP·업로드·독립 검토 결과·서명은 확인되지 않았다. 사람 자료 없이 영수증이나 판정을 생성하지 않았고, H-003 `NO-GO`를 유지했다.
+
+## 2026-08-04 사용자 재개 fresh blocked audit 1
+
+- 기준 파일 6개와 현재 저장소를 다시 읽었다. 첫 확인 명령은 정답키 `4/4 READY`, 승인 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`를 반환했다.
+- 현재 WellnessBox `7054d76670870bc31130006a84df3fa10aa46c78` 기준 final preflight는 `READY`였다. health는 모두 200, `/tips`·`/pharm/tips`는 307 후 200, H-005는 10건·선택 0건·미리 입력된 근거 0건이며 저장소 변경은 없었다.
+- WellnessBox 정적 검증 4종은 모두 exit code `0`이다. 최종 감사는 `BLOCKED`, `goal_complete=false`이며 두 영수증 차단 사유가 반복됐다.
+- 완료 마법사는 `3/13`이고 새 업로드는 0건이다. 기존 영수증 2개는 `status=PASS`지만 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`다. 사람의 독립 검토·판정·서명을 만들지 않았다.
