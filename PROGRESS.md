@@ -3,9 +3,9 @@
 ## 2026-08-04 Claude 교체 응답과 최종 검토 자료
 
 - `kpi_replacement_completed.zip` SHA-256 `acd6ffc496b8e065d6d3f0f41abb66dd51273929e64a628661012fe457576cd7`의 Claude 응답 65건을 검증·보존했다.
-- KPI-4는 `claude-opus-5` 1차 초안과 보관된 `gpt-5.6-pro` 2차 의견을 연결했다. 원래 GPT 응답이 primary 형식으로 생성됐다는 역할 provenance와 원본 ZIP SHA-256을 유지했다.
+- KPI-4는 `claude-opus-5` 1차 초안과 보관된 `gpt-5.6-pro` 응답을 2차 의견 역할로 연결했다. GPT 응답이 Claude보다 먼저 primary 형식으로 생성됐고 나중에 2차 역할로 등록됐다는 순서, 역할 provenance, 원본 ZIP SHA-256을 유지했다.
 - 최소 상세 검토 수는 KPI-1 49건, KPI-4 7건, KPI-5 9건으로 총 65건이다. 모든 사례에 불일치 또는 위험·불확실성 표시가 있어 더 줄이지 않았다.
-- `kpi_replacement_final_review_package.zip`에는 65개 권고안이 미리 입력돼 있다. 이상이 없으면 `ACCEPT`, 수정이 필요할 때만 `EDIT`, 사용할 수 없으면 `REJECT`를 기록한다. 패키지 SHA-256은 `9bb6739ce85eb5af879f5ec4f789fadd678359cfbb72462d5be442548c43193e`이다.
+- `kpi_replacement_final_review_package.zip`에는 65개 권고안이 미리 입력돼 있다. 이상이 없으면 `ACCEPT`, 수정이 필요할 때만 `EDIT`, 사용할 수 없으면 `REJECT`를 기록한다. 패키지 SHA-256은 `7e78ad7aca90578b4fcc4794828c10d6a8a64a6a11963170423034013a65fd65`이다.
 
 ## 2026-08-04 OpenAI 교체 응답 보존과 Claude 재처리 패키지
 

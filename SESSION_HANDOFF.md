@@ -3,8 +3,8 @@
 ## 2026-08-04 Claude 응답 반영과 65건 최종 검토 handoff
 
 - Claude 반환 ZIP SHA-256: `acd6ffc496b8e065d6d3f0f41abb66dd51273929e64a628661012fe457576cd7`. KPI-1 49건, KPI-4 7건, KPI-5 9건 모두 정식 importer 검증을 통과했다.
-- KPI-4 제공자 분리: primary `claude-opus-5`/Anthropic, review `gpt-5.6-pro`/OpenAI. GPT 원본 ZIP과 역할 전환 provenance를 staging에 보존했다.
-- 최종 검토 패키지: `replacement_round/kpi_replacement_final_review_package.zip`, SHA-256 `9bb6739ce85eb5af879f5ec4f789fadd678359cfbb72462d5be442548c43193e`.
+- KPI-4 제공자 분리: primary `claude-opus-5`/Anthropic, review 역할 `gpt-5.6-pro`/OpenAI. GPT 응답은 Claude보다 먼저 생성됐으며, Claude primary를 가져온 뒤 review 역할로 등록했다. 등록 시각은 생성 시각이 아니며 원본 ZIP과 역할 전환 provenance를 staging에 보존했다.
+- 최종 검토 패키지: `replacement_round/kpi_replacement_final_review_package.zip`, SHA-256 `7e78ad7aca90578b4fcc4794828c10d6a8a64a6a11963170423034013a65fd65`.
 - 최소 상세 검토 수는 65건이다. 권고 선택 분포는 A 6건, B 24건, C 35건이며 최종 결정 필드는 비워 두었다.
 
 ## 2026-08-04 OpenAI 제출분 보존과 재사용 완료

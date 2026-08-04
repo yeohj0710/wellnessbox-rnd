@@ -2,6 +2,8 @@
   "schema_version": "kpi_replacement_final_review_summary_v1",
   "total_case_count": 65,
   "required_review_count": 65,
+  "supporting_option_c_role": "non_audit_recommendation_support",
+  "supporting_option_c_not_independent_review_evidence": true,
   "recommendation_counts": {
     "C": 35,
     "B": 24,

@@ -27,9 +27,15 @@ def test_build_attaches_openai_review_after_anthropic_primary() -> None:
         "original_agent_field": "drafting_agent",
         "original_source_field": "draft_source",
         "applied_response_role": "independent_ai_review",
-        "conversion_reason": "anthropic_primary_precedes_openai_second_opinion",
+        "conversion_reason": "blind_openai_response_registered_after_anthropic_primary",
+        "source_submission_precedes_anthropic_primary_import": True,
+        "content_regenerated_for_role_conversion": False,
+        "registration_order_only": True,
         "original_provenance_preserved": True,
     }
+    assert review["reviewed_at_semantics"] == (
+        "role_registration_time_not_response_generation_time"
+    )
     assert result["review_plans"]["KPI-4"]["case_count"] == 7
 
 

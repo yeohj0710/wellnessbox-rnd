@@ -815,7 +815,7 @@
           ],
           "packet_sha256": "c8ba343626a44e99398a530d2a77e080c3b4c19567e420ba31dbec77aec13757",
           "engine_output_consulted": false,
-          "reviewed_at": "2026-08-04T01:37:19.840515Z",
+          "reviewed_at": "2026-08-04T01:45:41.303059Z",
           "case_count": 7,
           "cases": {
             "kpi4-repl-001": {
@@ -935,13 +935,17 @@
           },
           "cases_sha256": "d0b65581723643faa4013ef6daedc12af65b296402b9eb64029bd5718b73a3c2",
           "input_response_sha256": "8bccc0c39d47ec5dbb080866f8bb09e377f00e33dfa4d43238ebe53886b8eb35",
+          "reviewed_at_semantics": "role_registration_time_not_response_generation_time",
           "role_conversion_provenance": {
             "source_zip_sha256": "99ef845a5d2451889ecf2d16aa40de65263f38919d389d64337b418e560ff43d",
             "original_response_role": "primary",
             "original_agent_field": "drafting_agent",
             "original_source_field": "draft_source",
             "applied_response_role": "independent_ai_review",
-            "conversion_reason": "anthropic_primary_precedes_openai_second_opinion",
+            "conversion_reason": "blind_openai_response_registered_after_anthropic_primary",
+            "source_submission_precedes_anthropic_primary_import": true,
+            "content_regenerated_for_role_conversion": false,
+            "registration_order_only": true,
             "original_provenance_preserved": true
           }
         }

@@ -278,6 +278,8 @@ def build_rows() -> tuple[list[dict[str, str]], dict[str, Any]]:
         "schema_version": "kpi_replacement_final_review_summary_v1",
         "total_case_count": sum(item["case_count"] for item in summaries),
         "required_review_count": len(rows),
+        "supporting_option_c_role": "non_audit_recommendation_support",
+        "supporting_option_c_not_independent_review_evidence": True,
         "recommendation_counts": recommendation_counts,
         "indicators": summaries,
     }
@@ -295,6 +297,7 @@ def _instructions_bytes() -> bytes:
     return (
         "KPI 교체 사례 검토 자료\n\n"
         "각 행에는 참조안과 권고안이 입력돼 있습니다.\n"
+        "보조안 C는 권고 계산용이며 독립 검증 증거로 사용하지 않습니다.\n"
         "- 권고안이 적절하면 결정에 ACCEPT를 입력합니다.\n"
         "- 수정이 필요하면 결정에 EDIT를 입력하고 수정_정답에 값을 |로 구분해 씁니다.\n"
         "- 사용할 수 없으면 결정에 REJECT를 입력합니다.\n"

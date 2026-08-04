@@ -12,6 +12,7 @@ def test_review_rows_cover_the_minimum_required_set_with_recommendations() -> No
     assert len(rows) == 65
     assert summary["total_case_count"] == 65
     assert summary["required_review_count"] == 65
+    assert summary["supporting_option_c_not_independent_review_evidence"] is True
     assert {row["indicator_id"] for row in rows} == {"KPI-1", "KPI-4", "KPI-5"}
     assert len({row["case_id"] for row in rows}) == 65
     assert all(row["권고_선택"] in {"A", "B", "C"} for row in rows)

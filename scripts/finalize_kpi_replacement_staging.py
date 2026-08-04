@@ -140,13 +140,21 @@ def build_finalized_staging(
     if response_sha256 != disposition.get("response_sha256"):
         raise ValueError("kpi4_openai_response_sha256_mismatch")
     review["input_response_sha256"] = response_sha256
+    review["reviewed_at_semantics"] = (
+        "role_registration_time_not_response_generation_time"
+    )
     review["role_conversion_provenance"] = {
         "source_zip_sha256": source_sha256,
         "original_response_role": disposition.get("original_response_role"),
         "original_agent_field": "drafting_agent",
         "original_source_field": "draft_source",
         "applied_response_role": "independent_ai_review",
-        "conversion_reason": "anthropic_primary_precedes_openai_second_opinion",
+        "conversion_reason": (
+            "blind_openai_response_registered_after_anthropic_primary"
+        ),
+        "source_submission_precedes_anthropic_primary_import": True,
+        "content_regenerated_for_role_conversion": False,
+        "registration_order_only": True,
         "original_provenance_preserved": True,
     }
 
