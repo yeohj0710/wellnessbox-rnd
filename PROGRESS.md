@@ -1,5 +1,12 @@
 # PROGRESS
 
+## 2026-08-04 교체 65건 최종 판정 반영
+
+- 반환 ZIP SHA-256 `b6ba0b82ea945a1adb391d7266dd7ddcf9e25e0a89b5831152c5a4ee28f0e471`을 원문 그대로 보존했다. 65건의 결과는 `ACCEPT` 51건, `EDIT` 12건, `REJECT` 2건이다.
+- 원본 문항·참조안·권고안 불변성, 등록 신원, 답 어휘, 시간대 포함 시각, 건당 최소 1초, 시간 중복 여부를 검사했다. 모든 기록은 8초이며 서로 겹치지 않는다.
+- KPI-4 7건과 KPI-5 9건은 모두 확정 가능하다. KPI-1은 49건 중 47건이 확정 가능하고 `kpi1-repl-022`, `kpi1-repl-027`은 거절됐다.
+- 거절 2건을 덮어쓰지 않고 새 KPI-1 문항 2건을 만들었다. Anthropic 2차 의견 입력 패키지는 `second_replacement/kpi1_second_replacement_claude_package.zip`, SHA-256 `efcaf122dae3dae001d6cbeb2ce4f231fa0739762ed5fb1a1468f4235348f89d`이다.
+
 ## 2026-08-04 Claude 교체 응답과 최종 검토 자료
 
 - `kpi_replacement_completed.zip` SHA-256 `acd6ffc496b8e065d6d3f0f41abb66dd51273929e64a628661012fe457576cd7`의 Claude 응답 65건을 검증·보존했다.

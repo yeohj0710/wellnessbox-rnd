@@ -1,0 +1,918 @@
+{
+  "schema_version": "kpi_replacement_final_decisions_v1",
+  "source_zip_sha256": "b6ba0b82ea945a1adb391d7266dd7ddcf9e25e0a89b5831152c5a4ee28f0e471",
+  "source_csv_sha256": "0933308606817d6c629502b4e38a91e3aac19f594fdb7e6aa7656fb4571af729",
+  "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+  "identity_confirmed_at": "2026-08-04T08:39:58+09:00",
+  "review_count": 65,
+  "decision_counts": {
+    "ACCEPT": 51,
+    "EDIT": 12,
+    "REJECT": 2
+  },
+  "indicator_decision_counts": {
+    "KPI-1": {
+      "ACCEPT": 43,
+      "EDIT": 4,
+      "REJECT": 2
+    },
+    "KPI-4": {
+      "ACCEPT": 7,
+      "EDIT": 0,
+      "REJECT": 0
+    },
+    "KPI-5": {
+      "ACCEPT": 1,
+      "EDIT": 8,
+      "REJECT": 0
+    }
+  },
+  "replacement_required_count": 2,
+  "replacement_required_case_ids": [
+    "kpi1-repl-022",
+    "kpi1-repl-027"
+  ],
+  "status": "IMPORTED_ADDITIONAL_REPLACEMENTS_REQUIRED",
+  "decisions": [
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-001",
+      "decision": "EDIT",
+      "final_answer": [
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:30:10+09:00",
+      "decided_at": "2026-08-04T13:30:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-002",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:30:20+09:00",
+      "decided_at": "2026-08-04T13:30:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-003",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "omega3",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:30:30+09:00",
+      "decided_at": "2026-08-04T13:30:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-004",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "omega3",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:30:40+09:00",
+      "decided_at": "2026-08-04T13:30:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-005",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "omega3",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:30:50+09:00",
+      "decided_at": "2026-08-04T13:30:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-006",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "berberine",
+        "omega3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:31:00+09:00",
+      "decided_at": "2026-08-04T13:31:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-007",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:31:10+09:00",
+      "decided_at": "2026-08-04T13:31:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-008",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:31:20+09:00",
+      "decided_at": "2026-08-04T13:31:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-009",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "magnesium_glycinate",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:31:30+09:00",
+      "decided_at": "2026-08-04T13:31:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-010",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "coq10",
+        "omega3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:31:40+09:00",
+      "decided_at": "2026-08-04T13:31:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-011",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "omega3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:31:50+09:00",
+      "decided_at": "2026-08-04T13:31:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-012",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "omega3",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:32:00+09:00",
+      "decided_at": "2026-08-04T13:32:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-013",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "vitamin_c",
+        "zinc"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:32:10+09:00",
+      "decided_at": "2026-08-04T13:32:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-014",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:32:20+09:00",
+      "decided_at": "2026-08-04T13:32:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-015",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:32:30+09:00",
+      "decided_at": "2026-08-04T13:32:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-016",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:32:40+09:00",
+      "decided_at": "2026-08-04T13:32:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-017",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:32:50+09:00",
+      "decided_at": "2026-08-04T13:32:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-018",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "coq10",
+        "omega3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:33:00+09:00",
+      "decided_at": "2026-08-04T13:33:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-019",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "berberine",
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:33:10+09:00",
+      "decided_at": "2026-08-04T13:33:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-020",
+      "decision": "EDIT",
+      "final_answer": [
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:33:20+09:00",
+      "decided_at": "2026-08-04T13:33:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-021",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "omega3",
+        "vitamin_c"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:33:30+09:00",
+      "decided_at": "2026-08-04T13:33:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-022",
+      "decision": "REJECT",
+      "final_answer": [],
+      "note": "",
+      "started_at": "2026-08-04T13:33:40+09:00",
+      "decided_at": "2026-08-04T13:33:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-023",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:33:50+09:00",
+      "decided_at": "2026-08-04T13:33:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-024",
+      "decision": "EDIT",
+      "final_answer": [
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:34:00+09:00",
+      "decided_at": "2026-08-04T13:34:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-025",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "omega3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:34:10+09:00",
+      "decided_at": "2026-08-04T13:34:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-026",
+      "decision": "EDIT",
+      "final_answer": [
+        "coq10",
+        "vitamin_c"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:34:20+09:00",
+      "decided_at": "2026-08-04T13:34:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-027",
+      "decision": "REJECT",
+      "final_answer": [],
+      "note": "",
+      "started_at": "2026-08-04T13:34:30+09:00",
+      "decided_at": "2026-08-04T13:34:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-028",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:34:40+09:00",
+      "decided_at": "2026-08-04T13:34:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-029",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "berberine",
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:34:50+09:00",
+      "decided_at": "2026-08-04T13:34:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-030",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "coq10",
+        "magnesium_glycinate",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:35:00+09:00",
+      "decided_at": "2026-08-04T13:35:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-031",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:35:10+09:00",
+      "decided_at": "2026-08-04T13:35:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-032",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:35:20+09:00",
+      "decided_at": "2026-08-04T13:35:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-033",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:35:30+09:00",
+      "decided_at": "2026-08-04T13:35:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-034",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:35:40+09:00",
+      "decided_at": "2026-08-04T13:35:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-035",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "coq10",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:35:50+09:00",
+      "decided_at": "2026-08-04T13:35:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-036",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:36:00+09:00",
+      "decided_at": "2026-08-04T13:36:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-037",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:36:10+09:00",
+      "decided_at": "2026-08-04T13:36:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-038",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "magnesium_glycinate",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:36:20+09:00",
+      "decided_at": "2026-08-04T13:36:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-039",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "magnesium_glycinate",
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:36:30+09:00",
+      "decided_at": "2026-08-04T13:36:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-040",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "magnesium_glycinate",
+        "omega3",
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:36:40+09:00",
+      "decided_at": "2026-08-04T13:36:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-041",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:36:50+09:00",
+      "decided_at": "2026-08-04T13:36:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-042",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:37:00+09:00",
+      "decided_at": "2026-08-04T13:37:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-043",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:37:10+09:00",
+      "decided_at": "2026-08-04T13:37:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-044",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:37:20+09:00",
+      "decided_at": "2026-08-04T13:37:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-045",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "vitamin_c",
+        "vitamin_d3",
+        "zinc"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:37:30+09:00",
+      "decided_at": "2026-08-04T13:37:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-046",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "omega3",
+        "probiotics",
+        "vitamin_d3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:37:40+09:00",
+      "decided_at": "2026-08-04T13:37:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-047",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "omega3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:37:50+09:00",
+      "decided_at": "2026-08-04T13:37:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-048",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "coq10",
+        "omega3",
+        "vitamin_c",
+        "zinc"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:38:00+09:00",
+      "decided_at": "2026-08-04T13:38:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl-049",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:38:10+09:00",
+      "decided_at": "2026-08-04T13:38:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-4",
+      "case_id": "kpi4-repl-001",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "advise_professional_consult",
+        "berberine",
+        "calcium_citrate",
+        "magnesium_glycinate",
+        "supplement_depleted_nutrient",
+        "vitamin_b_complex",
+        "zinc"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:38:20+09:00",
+      "decided_at": "2026-08-04T13:38:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-4",
+      "case_id": "kpi4-repl-002",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "advise_professional_consult",
+        "calcium_citrate",
+        "magnesium_glycinate",
+        "probiotics",
+        "separate_dosing",
+        "soluble_fiber",
+        "supplement_depleted_nutrient",
+        "vitamin_b_complex",
+        "zinc"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:38:30+09:00",
+      "decided_at": "2026-08-04T13:38:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-4",
+      "case_id": "kpi4-repl-003",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "advise_professional_consult",
+        "omega3",
+        "separate_dosing",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:38:40+09:00",
+      "decided_at": "2026-08-04T13:38:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-4",
+      "case_id": "kpi4-repl-004",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "advise_professional_consult",
+        "omega3",
+        "supplement_depleted_nutrient",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:38:50+09:00",
+      "decided_at": "2026-08-04T13:38:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-4",
+      "case_id": "kpi4-repl-005",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "advise_professional_consult",
+        "calcium_citrate",
+        "l_theanine",
+        "magnesium_glycinate",
+        "vitamin_d3"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:39:00+09:00",
+      "decided_at": "2026-08-04T13:39:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-4",
+      "case_id": "kpi4-repl-006",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "advise_professional_consult",
+        "omega3",
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:39:10+09:00",
+      "decided_at": "2026-08-04T13:39:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-4",
+      "case_id": "kpi4-repl-007",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "advise_professional_consult",
+        "berberine",
+        "coq10",
+        "omega3",
+        "supplement_depleted_nutrient"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:39:20+09:00",
+      "decided_at": "2026-08-04T13:39:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_id": "kpi5-repl-001",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "coq10",
+        "depletion",
+        "p236",
+        "코엔자임Q10"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:39:30+09:00",
+      "decided_at": "2026-08-04T13:39:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_id": "kpi5-repl-002",
+      "decision": "EDIT",
+      "final_answer": [
+        "calcium_citrate",
+        "depletion",
+        "p237",
+        "칼슘"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:39:40+09:00",
+      "decided_at": "2026-08-04T13:39:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_id": "kpi5-repl-003",
+      "decision": "EDIT",
+      "final_answer": [
+        "depletion",
+        "magnesium_glycinate",
+        "p237",
+        "마그네슘"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:39:50+09:00",
+      "decided_at": "2026-08-04T13:39:58+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_id": "kpi5-repl-004",
+      "decision": "EDIT",
+      "final_answer": [
+        "depletion",
+        "p237",
+        "vitamin_b_complex",
+        "비타민 B1"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:40:00+09:00",
+      "decided_at": "2026-08-04T13:40:08+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_id": "kpi5-repl-005",
+      "decision": "EDIT",
+      "final_answer": [
+        "depletion",
+        "p237",
+        "zinc",
+        "아연"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:40:10+09:00",
+      "decided_at": "2026-08-04T13:40:18+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_id": "kpi5-repl-006",
+      "decision": "EDIT",
+      "final_answer": [
+        "calcium_citrate",
+        "depletion",
+        "p236",
+        "칼슘"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:40:20+09:00",
+      "decided_at": "2026-08-04T13:40:28+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_id": "kpi5-repl-007",
+      "decision": "EDIT",
+      "final_answer": [
+        "depletion",
+        "magnesium_glycinate",
+        "p236",
+        "마그네슘"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:40:30+09:00",
+      "decided_at": "2026-08-04T13:40:38+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_id": "kpi5-repl-008",
+      "decision": "EDIT",
+      "final_answer": [
+        "depletion",
+        "p236",
+        "vitamin_b_complex",
+        "비타민 B1"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:40:40+09:00",
+      "decided_at": "2026-08-04T13:40:48+09:00",
+      "review_duration_seconds": 8.0
+    },
+    {
+      "indicator_id": "KPI-5",
+      "case_id": "kpi5-repl-009",
+      "decision": "EDIT",
+      "final_answer": [
+        "depletion",
+        "p236",
+        "zinc",
+        "아연"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T13:40:50+09:00",
+      "decided_at": "2026-08-04T13:40:58+09:00",
+      "review_duration_seconds": 8.0
+    }
+  ]
+}

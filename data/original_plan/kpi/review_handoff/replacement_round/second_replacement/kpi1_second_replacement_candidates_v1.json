@@ -1,0 +1,59 @@
+{
+  "schema_version": "kpi_second_replacement_candidates_v1",
+  "source_final_decisions_sha256": "7bdb0bb6676b638940013c48e6b5d911f66a516de0f417a0fe6dbbafd1806bbb",
+  "replaces_rejected_case_ids": [
+    "kpi1-repl-022",
+    "kpi1-repl-027"
+  ],
+  "count": 2,
+  "cases": [
+    {
+      "case_id": "kpi1-repl2-001",
+      "prompt": "영역 대사 및 순환 6. 당독소(AGEs) 관리 / 판정 「1. 생성 억제 (당화 차단)」 / 나이 37 / 복용약 Furosemide",
+      "draft_answer": [
+        "calcium_citrate",
+        "magnesium_glycinate",
+        "vitamin_b_complex",
+        "zinc"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "대사 및 순환 6. 당독소(AGEs) 관리 · 원문 판정 「1. 생성 억제 (당화 차단)」 (26_대사_및_순환_6._당독소_AGEs_관리.md p142) · calcium_citrate: 심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (p236) · magnesium_glycinate: 심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (p236) · vitamin_b_complex: 심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (p236) · zinc: 심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi1-repl2-002",
+      "prompt": "영역 대사 및 순환 6. 당독소(AGEs) 관리 / 판정 「3. 장내 배출 (내독소 제거)」 / 나이 44 / 복용약 Levothyroxine",
+      "draft_answer": [
+        "calcium_citrate",
+        "magnesium_glycinate",
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "대사 및 순환 6. 당독소(AGEs) 관리 · 원문 판정 「3. 장내 배출 (내독소 제거)」 (26_대사_및_순환_6._당독소_AGEs_관리.md p143) · calcium_citrate: 갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (p239) · magnesium_glycinate: 갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (p239)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    }
+  ]
+}

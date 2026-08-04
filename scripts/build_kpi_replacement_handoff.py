@@ -126,10 +126,20 @@ def _context_answer(
 
 
 def build_kpi1_replacements(
-    workbench: Workbench, extract: dict[str, Any], blinded: list[str]
+    workbench: Workbench,
+    extract: dict[str, Any],
+    blinded: list[str],
+    *,
+    count: int | None = None,
+    case_prefix: str = "kpi1-repl",
+    excluded_prompts: set[str] | frozenset[str] = frozenset(),
 ) -> list[CaseDraft]:
+    required_count = COUNTS["KPI-1"] if count is None else count
     accepted = _accepted_keys(workbench, KPI1_PATTERN)
-    existing_prompts = {draft.prompt for draft in workbench.drafts}
+    existing_prompts = {
+        *(draft.prompt for draft in workbench.drafts),
+        *excluded_prompts,
+    }
     bases = [
         item
         for item in extract["recommendation_cases"]
@@ -177,7 +187,7 @@ def build_kpi1_replacements(
             ]
             drafted.append(
                 CaseDraft(
-                    case_id=f"kpi1-repl-{len(drafted) + 1:03}",
+                    case_id=f"{case_prefix}-{len(drafted) + 1:03}",
                     prompt=prompt,
                     draft_answer=answer,
                     draft_source=DRAFT_SOURCE,
@@ -188,9 +198,11 @@ def build_kpi1_replacements(
             )
             existing_prompts.add(prompt)
             break
-        if len(drafted) == COUNTS["KPI-1"]:
+        if len(drafted) == required_count:
             return drafted
-    raise ValueError(f"kpi1_replacement_pool_too_small:{len(drafted)}")
+    raise ValueError(
+        f"kpi1_replacement_pool_too_small:{len(drafted)}:{required_count}"
+    )
 
 
 def build_kpi4_replacements(

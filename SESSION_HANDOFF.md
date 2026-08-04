@@ -1,5 +1,13 @@
 # SESSION_HANDOFF
 
+## 2026-08-04 최종 판정 반영과 추가 교체 2건
+
+- 최종 판정 반환 ZIP SHA-256은 `b6ba0b82ea945a1adb391d7266dd7ddcf9e25e0a89b5831152c5a4ee28f0e471`이다. 원본 ZIP·CSV·신원 파일과 정규화한 판정 기록을 `replacement_round/final_review/completed/`에 보존했다.
+- 결과는 KPI-1 `ACCEPT 43 / EDIT 4 / REJECT 2`, KPI-4 `ACCEPT 7`, KPI-5 `ACCEPT 1 / EDIT 8`이다. 65건 모두 8초 기록이고 중복 구간은 없다.
+- KPI-1 거절 ID는 `kpi1-repl-022`, `kpi1-repl-027`이다. 거절을 바꾸지 않고 기존 문항과 겹치지 않는 `kpi1-repl2-001`, `kpi1-repl2-002`를 만들었다.
+- 다음 패키지는 `replacement_round/second_replacement/kpi1_second_replacement_claude_package.zip`, SHA-256 `efcaf122dae3dae001d6cbeb2ce4f231fa0739762ed5fb1a1468f4235348f89d`이다. Claude 응답 반환 뒤 2건 최종 선택 자료를 만들어야 한다.
+- 2건이 끝날 때까지 63건을 워크벤치에 부분 적용하지 않는다. 스케줄러와 주기 확인은 없다.
+
 ## 2026-08-04 Claude 응답 반영과 65건 최종 검토 handoff
 
 - Claude 반환 ZIP SHA-256: `acd6ffc496b8e065d6d3f0f41abb66dd51273929e64a628661012fe457576cd7`. KPI-1 49건, KPI-4 7건, KPI-5 9건 모두 정식 importer 검증을 통과했다.
