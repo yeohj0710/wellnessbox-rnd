@@ -5,6 +5,7 @@
 - 정답 출처 감사는 KPI-1·3·4·5 모두 `PASS`이고, 승인 전용 데이터셋은 6건·위반 0건으로 `READY`다.
 - 연구계획 요건 감사도 `PASS`다. 관련 회귀시험 44건이 통과했다.
 - `scripts/run_final_completion_audit.py`는 `BLOCKED`다. 최종 검증·독립 검토 영수증의 `source_commit`은 `f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`인데, 현재 외부 서비스 저장소 커밋은 `7054d76670870bc31130006a84df3fa10aa46c78`로 바뀌어 영수증 검증이 실패한다.
+- 감사 실패 결과도 `data/original_plan/evidence/op120_final_completion_audit_v1.json`에 `BLOCKED`로 저장되도록 고쳤다. 과거 `READY` 결과를 현재 상태로 오인하지 않는다.
 - 영수증 재발급, 실제 프로필·서명 입력, 배포, 실사용자 수집, H-003 학습은 실행하지 않았다.
 
 ## 2026-08-04 승인 전용 데이터셋 검증
