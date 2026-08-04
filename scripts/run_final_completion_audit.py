@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 from wellnessbox_rnd.evals.answer_key_integrity import audit_repository
@@ -172,7 +173,13 @@ def main() -> int:
         },
     }
     expected = {item["case_id"]: item["expected"] for item in cases["cases"]}
-    assert_no_regression(expected, observed)
+    regression_error: AssertionError | None = None
+    try:
+        assert_no_regression(expected, observed)
+    except AssertionError as exc:
+        # Persist the observed BLOCKED state before returning non-zero. Without
+        # this, a failed audit leaves the previous READY evidence on disk.
+        regression_error = exc
     source_commit, source_blobs = verified_head_identity()
     audited_input_hashes = _audited_input_hashes()
     payload = {
@@ -206,6 +213,9 @@ def main() -> int:
         encoding="utf-8",
     )
     print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+    if regression_error is not None:
+        print(str(regression_error), file=sys.stderr)
+        return 1
     return 0
 
 
