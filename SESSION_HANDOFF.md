@@ -1160,3 +1160,11 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 완료 마법사: `3/13`; H-003 `NO-GO`; 실제 사람 단계 0건. frozen eval delta 0, replay delta 0, weakest-slice delta 0.
 - 상위 병목 5개: 현재 커밋 검증 영수증, 독립 검토 영수증, 완료 마법사 사람 단계 6개, KPI-2 실제 사용자 100명·3차년도 측정, H-003 NO-GO 경계.
 - 다음 loop 3개: 사람의 현재 커밋 검증, 구현과 독립된 검토자의 독립 검토 및 Critical 0·Important 0 기록, 두 서명 영수증과 완료 마법사 기록 importer 검증 후 최종 감사.
+
+## 2026-08-04 반복 차단 인계
+
+- 현재 자동 증거: 정답키 `4/4 READY`, 승인 데이터셋 6건, 연구계획 120/120 PASS, WellnessBox 7054 preflight READY 및 정적 검증 4종 exit code 0.
+- 현재 미충족 증거: 현재 커밋에 맞는 검증 영수증, 독립 검토 영수증, 완료 마법사 사람 단계 6개.
+- 감사 결과: `status=BLOCKED`, `goal_complete=false`, 동일 차단 사유 2개. wizard `3/13`.
+- 변경 범위: 이번 반복에서 코드·서비스·보호된 미추적 자료는 변경하지 않고 상태 문서만 갱신한다.
+- frozen eval delta 0, replay delta 0, weakest-slice delta 0. 다음 loop는 사람 반환물 검증 → 완료 마법사 반영 → 최종 `READY` 감사다.
