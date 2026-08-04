@@ -1061,3 +1061,13 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 교체 전·후 AI 응답은 하나의 패킷으로 가장하지 않고 KPI-1 3구간, KPI-4 2구간, KPI-5 2구간의 원본 패킷 해시로 묶었다.
 - 정답 무결성 감사에서 KPI-1·3·4·5가 모두 PASS다. 네 봉인은 사례 100건, 최소 표본 100건을 충족하며 현재 사례·provenance와 일치한다.
 - 최종 상태는 `status: READY`, `completion_status: READY`, 차단 사유 0건이다. 배포·실제 트래픽·훈련·최종 영수증 재발급은 실행하지 않았다.
+
+## 2026-08-04 현재 외부 서비스 커밋 기준 재검증
+
+- R&D local `main` HEAD는 `5ba4a99e77a54cdc6d35b6175c3d59201621bd81`, WellnessBox HEAD는 `7054d76670870bc31130006a84df3fa10aa46c78`이다. push·배포·실제 트래픽·훈련은 수행하지 않았다.
+- `python scripts/run_final_session_preflight.py`는 `status=READY`, 종료 코드 0이다. R&D health, console, WellnessBox health는 모두 200이고 `/tips`, `/pharm/tips`는 로그인 307 뒤 200이다. H-005 화면은 사례 10개·선택 0개·사전 입력 주석 0개다. 운영 DB, runtime control, final state, operational receipt 파일 목록과 해시는 모두 변경되지 않았다.
+- WellnessBox 정적 검증은 `npm run typecheck`, `npm run qa:syntax`, `npm run audit:encoding`, `npm run audit:route-method-exports`가 모두 종료 코드 0이다. 기존 서버를 전제로 한 `npm run qa:cde:regression`은 `localhost:3001/column` 연결 거부로 종료 코드 1이었고, 로컬 전용 preflight에서 동일 서비스의 읽기 전용 health·화면 검증은 READY였다.
+- R&D 집중 테스트는 `tests/test_final_completion_audit.py`, `tests/test_completion_wizard.py`, `tests/test_final_session_preflight.py`를 실행했다. 유일한 실패는 `test_current_repository_is_ready_after_project_pharmacist_review`이며 현재 영수증의 `source_commit`이 최신 HEAD와 달라 READY를 기대할 수 없는 stale assertion이다. 구현을 바꿔 실패를 숨기지 않았다.
+- 기존 두 영수증의 Ed25519 서명과 allowlist 공개키는 유효하지만 두 영수증의 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`는 현재 R&D·WellnessBox HEAD와 모두 다르다. 최종 감사는 exit code 1, `status=BLOCKED`, `goal_complete=false`이며 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`이다.
+- 사람 검토용 패킷을 `etc/final_completion_review_handoff_20260804/final_completion_review_handoff_20260804.zip`에 만들었다. 71개 파일, 중복 경로 0, 0바이트 항목 0, SHA-256 `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`이다. 개인키와 작업 지시문은 넣지 않았다.
+- 완료 마법사는 현재 `3/13`이다. H-003 학습 게이트는 계속 NO-GO이며 학습·승격을 실행하지 않았다. 사람의 현재 커밋 검증·독립 검토·서명·실제 완료 마법사 기록이 없으므로 연구 완료로 판정하지 않는다.

@@ -1112,6 +1112,19 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - **권장 다음 반복 3개:** KPI-1 100건 내부 측정, KPI-5 100건 내부 측정, KPI-4 모델 실행 계약 고정과 100건 내부 측정.
 - **금지 상태 유지:** push·배포·실제 트래픽·훈련·최종 영수증 재발급 없음. KPI-6·7은 변경하지 않았다.
 
+## 2026-08-04 현재 세션 인계
+
+- 선택 단계: 현재 외부 서비스 커밋 기준 최종 검증과 독립 검토 준비. 주 데이터셋은 `data/original_plan/op120_final_completion_audit_cases_v1.json` 8건이며, 승인 전용 초안 데이터셋은 6건이다.
+- 현재 커밋: R&D `5ba4a99e77a54cdc6d35b6175c3d59201621bd81`, WellnessBox `7054d76670870bc31130006a84df3fa10aa46c78`.
+- 실제 변경 파일: 코드 변경 없음. `logs/state.json`, `logs/known_items.txt`, `PROGRESS.md`, `NEXT_STEPS.md`, `SESSION_HANDOFF.md`에 이번 검증 결과와 재개 지점을 기록했다. 기존 미추적 operational receipts, uploads, seals/discarded는 수정·삭제·stage하지 않았다.
+- 검증 결과: answer-key integrity 4/4 PASS, approved dataset READY(6), original-plan audit PASS(120/120), local read-only preflight READY, WellnessBox 정적 검증 4종 PASS. R&D 집중 테스트는 최신 영수증을 READY로 기대하는 1건만 실패했다.
+- 최종 감사 결과: `status=BLOCKED`, `goal_complete=false`. 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`이다. 원인은 두 영수증의 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`가 현재 HEAD 집합과 불일치하기 때문이다. 기존 서명 자체는 allowlist 공개키로 검증된다.
+- 완료 마법사: `3/13`. H-003은 NO-GO이며 학습·승격은 실행하지 않았다. 사람의 실제 검증·독립 검토·서명·마법사 입력 없이는 완료로 표시하지 않는다.
+- 사람 검토 패킷: `etc/final_completion_review_handoff_20260804/final_completion_review_handoff_20260804.zip`; 71개 파일, 중복 0, 0바이트 0, SHA-256 `c001e69a08445bc61e584b1591b596190d6933fcb0533d76015b4481c12e072`.
+- 다음 loop 3개: (1) 현재 `7054d766...` 검증 결과와 독립 검토 결과를 사람 서명으로 확정, (2) 두 영수증과 실제 완료 마법사 기록 저장, (3) 최종 감사 재실행 후 READY 여부·source identity·보호 경로 상태를 fresh output으로 확인.
+- frozen eval delta: 이번 검증에서 frozen eval 입력·모델·결과를 변경하지 않았으므로 0. replay delta 0. weakest-slice delta 0.
+- top bottlenecks: 1) 현재 서비스 커밋에 맞는 사람 서명 영수증 2종, 2) 독립 검토의 실제 사람 판단 기록, 3) 완료 마법사 13단계 중 서버·실제 프로필·정책·문체·고위험 검토·서명 단계, 4) KPI-2 운영 사용자 100명/3차년도 계약, 5) H-003 NO-GO를 유지한 채 승인 데이터 경계 보존.
+
 ## 2026-08-04 KPI-1 연구 단계 내부 측정 인계
 
 - **선택 단계:** 봉인 정답지 기반 연구 단계 내부 측정.

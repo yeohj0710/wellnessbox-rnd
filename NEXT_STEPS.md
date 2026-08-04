@@ -517,6 +517,17 @@ Do not run training or a new `cgm` loop yet.
 2. 반환 ZIP 하나를 받은 뒤 335건의 신원 연결, 무결성 감사, 봉인을 순서대로 처리한다.
 3. 같은 검토자에게 사례별 추가 입력을 다시 요청하지 않는다.
 
+## 2026-08-04 현재 남은 실제 조건
+
+1. `C:\dev\wellnessbox` HEAD `7054d76670870bc31130006a84df3fa10aa46c78`를 기준으로 사람이 최종 검증을 다시 수행하고 결과를 보존한다.
+2. 같은 커밋 집합에 대해 구현 참여자와 독립된 사람이 독립 검토를 다시 수행하고 Critical 0·Important 0을 실제 결과로 남긴다.
+3. 사람이 현재 manifest·canonical audit 해시·source commit을 확인한 뒤 두 영수증을 직접 서명해 저장한다. 기존 `f545b83...` 영수증을 재서명한 것으로 간주하지 않는다.
+4. 완료 마법사의 실제 프로필·정책·문체·고위험 검토·최종 서명 단계를 사람의 실제 기록으로 갱신한다. H-003은 NO-GO 상태를 유지한다.
+5. 위 자료가 저장된 뒤 `python scripts/run_final_completion_audit.py`를 다시 실행해 `status=READY`, `goal_complete=true`, `blockers=[]`를 확인한다. 현재 출력은 두 영수증 차단으로 `BLOCKED`이다.
+
+검토 패킷: `etc/final_completion_review_handoff_20260804/final_completion_review_handoff_20260804.zip`  
+SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
+
 ## 2026-08-04 정답키 후속 상태
 
 1. KPI-1·3·4·5의 정답키 검토와 봉인은 완료됐다. 같은 검토자에게 추가 입력을 요청하지 않는다.
