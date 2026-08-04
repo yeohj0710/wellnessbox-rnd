@@ -1071,3 +1071,11 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 기존 두 영수증의 Ed25519 서명과 allowlist 공개키는 유효하지만 두 영수증의 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`는 현재 R&D·WellnessBox HEAD와 모두 다르다. 최종 감사는 exit code 1, `status=BLOCKED`, `goal_complete=false`이며 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`이다.
 - 사람 검토용 패킷을 `etc/final_completion_review_handoff_20260804/final_completion_review_handoff_20260804.zip`에 만들었다. 71개 파일, 중복 경로 0, 0바이트 항목 0, SHA-256 `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`이다. 개인키와 작업 지시문은 넣지 않았다.
 - 완료 마법사는 현재 `3/13`이다. H-003 학습 게이트는 계속 NO-GO이며 학습·승격을 실행하지 않았다. 사람의 현재 커밋 검증·독립 검토·서명·실제 완료 마법사 기록이 없으므로 연구 완료로 판정하지 않는다.
+## 2026-08-04 현재 세션 재확인
+
+- 지정한 첫 확인 명령을 다시 실행했다. KPI-1·3·4·5 정답 무결성은 `4/4 READY`, 승인 전용 데이터셋은 `6건 READY`, 연구계획 요건 감사는 `120/120 PASS`였다.
+- `C:\dev\wellnessbox`가 실제 저장소로 존재하고 HEAD는 `7054d76670870bc31130006a84df3fa10aa46c78`로 재확인됐다. R&D local `main` HEAD는 `ac92ae0e47faa8362a9f7d6fb1fcc7bb4fab2ce0`이다. 두 저장소 모두 push하지 않았다.
+- 기존 최종 영수증 2개는 파일과 Ed25519 서명 자체는 읽히지만 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`라서 현재 저장소 HEAD에 대한 영수증이 아니다. `run_final_completion_audit.py`는 `status=BLOCKED`, `goal_complete=false`를 반환했고 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`이다.
+- `run_final_session_preflight.py`는 읽기 전용 임시 실행에서 `status=READY`였다. 그러나 완료 마법사 상태는 현재 세션 사람 단계 0건으로 `3/13`이며, H-003은 계속 `NO-GO`다. 사람의 검토·판정·서명은 대신 입력하지 않았다.
+- 현재 세션에서 새 사람 자료나 새 서명 영수증은 확인되지 않았다. 기존 `operational_receipts/local-*.json`, `uploads/`, `seals/discarded/`는 수정·삭제·stage하지 않았다.
+- 다음 실제 조건은 현재 서비스 커밋 기준 검증 결과와 독립 검토 결과를 사람이 제출하고, 그 결과에 사람이 직접 서명한 두 영수증을 저장한 뒤 완료 마법사를 실제 기록 기준으로 갱신하는 것이다. 그 전에는 연구 완료로 판정하지 않는다.

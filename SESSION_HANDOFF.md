@@ -1138,3 +1138,15 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - **가장 큰 병목 5개:** KPI-5 라벨·근거 출력 어댑터, KPI-4 정확한 OpenAI 모델·실행 설정, KPI-1 목표 매핑·카탈로그 범위 개선, KPI-2 실제 사용자 100명 전·후 PRO, 연구 전체 운영·외부 검증 증거.
 - **권장 다음 반복 3개:** KPI-5 100건 내부 측정, KPI-4 실행 계약 고정 및 100건 측정, KPI-1 미달 원인 분석.
 - **금지 상태 유지:** push·배포·실제 트래픽·훈련·최종 영수증 재발급 없음. KPI-6·7은 변경하지 않았다.
+## 2026-08-04 현재 세션 재확인 인계
+
+- 선택 단계: 현재 외부 서비스 커밋 기준 최종 검증과 독립 검토 영수증 갱신 준비.
+- 주 데이터셋: `data/original_plan/op120_final_completion_audit_cases_v1.json`, 사례 8건, SHA-256 `5a2fc3d6549062ba919567d89273bd953391f324091538f8f621ab1eccbf7c29`. 승인 전용 초안 데이터셋은 6건이다.
+- 저장소 확인: R&D local `main` `ac92ae0e47faa8362a9f7d6fb1fcc7bb4fab2ce0`, WellnessBox `7054d76670870bc31130006a84df3fa10aa46c78`.
+- 검증 결과: 정답 무결성 `4/4 READY`, 승인 전용 데이터셋 `READY`, 연구계획 요건 `PASS`, 읽기 전용 final preflight `READY`. 최종 감사는 `BLOCKED`이며 두 영수증 차단 사유가 남아 있다.
+- 영수증 상태: 기존 두 영수증의 서명은 allowlist 검증을 통과하지만 source commit은 `f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`다. 현재 커밋에 대한 새 영수증은 없다.
+- 완료 마법사: `3/13`; 이번 세션 사람 단계 0건. H-003 `NO-GO` 유지. 사람의 실제 검토·판정·서명은 생성하지 않았다.
+- 변경 파일: 이번 재확인에서 코드와 보호된 미추적 운영 자료는 변경하지 않았다. 인계 문서와 `logs` 재시작 상태만 최신 HEAD와 결과로 갱신한다.
+- frozen eval delta 0, replay delta 0, weakest-slice delta 0.
+- 상위 병목 5개: 현재 서비스 커밋과 일치하는 검증 영수증, 독립 검토 영수증, 완료 마법사 사람 단계 6개, KPI-2 실제 사용자 100명/3차년도 측정, H-003 NO-GO 경계.
+- 다음 loop 3개: 현재 커밋 검증 자료 제출, 독립 검토 및 사람이 직접 서명한 두 영수증 제출, 완료 마법사 갱신 후 `python scripts/run_final_completion_audit.py`에서 `status=READY`, `goal_complete=true`, `blockers=[]` 확인.
