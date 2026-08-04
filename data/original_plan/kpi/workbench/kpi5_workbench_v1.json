@@ -3,55 +3,11 @@
   "indicator_id": "KPI-5",
   "drafts": [
     {
-      "case_id": "kpi5-ref-001",
-      "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
-      "draft_answer": [
-        "depletion",
-        "magnesium_glycinate"
-      ],
-      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
-      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)",
-      "drafting_agent": "codex",
-      "blinded_from": [
-        "data/knowledge/counseling_answer_verifier_policy_v1.json",
-        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
-        "data/knowledge/goal_ingredient_priors_v1.json",
-        "data/knowledge/reference_knowledge_base_v1.json",
-        "data/knowledge/runtime_knowledge_db_v1.json",
-        "data/original_plan/closed_loop_next_action_policy_v1.json",
-        "data/rules/candidate_signal_scoring_rules_v1.json",
-        "data/rules/safety_rules.json",
-        "data/synthetic/synthetic_longitudinal_v4.jsonl"
-      ]
-    },
-    {
       "case_id": "kpi5-ref-002",
       "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?",
       "draft_answer": [
         "coq10",
         "depletion"
-      ],
-      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
-      "drafting_agent": "codex",
-      "blinded_from": [
-        "data/knowledge/counseling_answer_verifier_policy_v1.json",
-        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
-        "data/knowledge/goal_ingredient_priors_v1.json",
-        "data/knowledge/reference_knowledge_base_v1.json",
-        "data/knowledge/runtime_knowledge_db_v1.json",
-        "data/original_plan/closed_loop_next_action_policy_v1.json",
-        "data/rules/candidate_signal_scoring_rules_v1.json",
-        "data/rules/safety_rules.json",
-        "data/synthetic/synthetic_longitudinal_v4.jsonl"
-      ]
-    },
-    {
-      "case_id": "kpi5-ref-003",
-      "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?",
-      "draft_answer": [
-        "depletion",
-        "vitamin_d3"
       ],
       "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
       "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
@@ -275,28 +231,6 @@
       ],
       "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
       "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
-      "drafting_agent": "codex",
-      "blinded_from": [
-        "data/knowledge/counseling_answer_verifier_policy_v1.json",
-        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
-        "data/knowledge/goal_ingredient_priors_v1.json",
-        "data/knowledge/reference_knowledge_base_v1.json",
-        "data/knowledge/runtime_knowledge_db_v1.json",
-        "data/original_plan/closed_loop_next_action_policy_v1.json",
-        "data/rules/candidate_signal_scoring_rules_v1.json",
-        "data/rules/safety_rules.json",
-        "data/synthetic/synthetic_longitudinal_v4.jsonl"
-      ]
-    },
-    {
-      "case_id": "kpi5-ref-014",
-      "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?",
-      "draft_answer": [
-        "coq10",
-        "depletion"
-      ],
-      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
       "drafting_agent": "codex",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
@@ -883,55 +817,11 @@
       ]
     },
     {
-      "case_id": "kpi5-ref-041",
-      "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
-      "draft_answer": [
-        "depletion",
-        "magnesium_glycinate"
-      ],
-      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
-      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)",
-      "drafting_agent": "codex",
-      "blinded_from": [
-        "data/knowledge/counseling_answer_verifier_policy_v1.json",
-        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
-        "data/knowledge/goal_ingredient_priors_v1.json",
-        "data/knowledge/reference_knowledge_base_v1.json",
-        "data/knowledge/runtime_knowledge_db_v1.json",
-        "data/original_plan/closed_loop_next_action_policy_v1.json",
-        "data/rules/candidate_signal_scoring_rules_v1.json",
-        "data/rules/safety_rules.json",
-        "data/synthetic/synthetic_longitudinal_v4.jsonl"
-      ]
-    },
-    {
       "case_id": "kpi5-ref-042",
       "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?",
       "draft_answer": [
         "coq10",
         "depletion"
-      ],
-      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
-      "drafting_agent": "codex",
-      "blinded_from": [
-        "data/knowledge/counseling_answer_verifier_policy_v1.json",
-        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
-        "data/knowledge/goal_ingredient_priors_v1.json",
-        "data/knowledge/reference_knowledge_base_v1.json",
-        "data/knowledge/runtime_knowledge_db_v1.json",
-        "data/original_plan/closed_loop_next_action_policy_v1.json",
-        "data/rules/candidate_signal_scoring_rules_v1.json",
-        "data/rules/safety_rules.json",
-        "data/synthetic/synthetic_longitudinal_v4.jsonl"
-      ]
-    },
-    {
-      "case_id": "kpi5-ref-043",
-      "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?",
-      "draft_answer": [
-        "depletion",
-        "vitamin_d3"
       ],
       "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
       "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
@@ -1155,28 +1045,6 @@
       ],
       "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
       "draft_rationale": "갑상선약과 미네랄, 멀티비타민은 4시간 간격 복용 안내. (44_부록_A._약물_유발_영양소_고갈.md p239)",
-      "drafting_agent": "codex",
-      "blinded_from": [
-        "data/knowledge/counseling_answer_verifier_policy_v1.json",
-        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
-        "data/knowledge/goal_ingredient_priors_v1.json",
-        "data/knowledge/reference_knowledge_base_v1.json",
-        "data/knowledge/runtime_knowledge_db_v1.json",
-        "data/original_plan/closed_loop_next_action_policy_v1.json",
-        "data/rules/candidate_signal_scoring_rules_v1.json",
-        "data/rules/safety_rules.json",
-        "data/synthetic/synthetic_longitudinal_v4.jsonl"
-      ]
-    },
-    {
-      "case_id": "kpi5-ref-054",
-      "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?",
-      "draft_answer": [
-        "coq10",
-        "depletion"
-      ],
-      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
       "drafting_agent": "codex",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
@@ -1763,55 +1631,11 @@
       ]
     },
     {
-      "case_id": "kpi5-ref-081",
-      "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?",
-      "draft_answer": [
-        "depletion",
-        "magnesium_glycinate"
-      ],
-      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
-      "draft_rationale": "이뇨제, ACEI/ARB 병용 시 전해질 이상 누적 주의. (44_부록_A._약물_유발_영양소_고갈.md p237)",
-      "drafting_agent": "codex",
-      "blinded_from": [
-        "data/knowledge/counseling_answer_verifier_policy_v1.json",
-        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
-        "data/knowledge/goal_ingredient_priors_v1.json",
-        "data/knowledge/reference_knowledge_base_v1.json",
-        "data/knowledge/runtime_knowledge_db_v1.json",
-        "data/original_plan/closed_loop_next_action_policy_v1.json",
-        "data/rules/candidate_signal_scoring_rules_v1.json",
-        "data/rules/safety_rules.json",
-        "data/synthetic/synthetic_longitudinal_v4.jsonl"
-      ]
-    },
-    {
       "case_id": "kpi5-ref-082",
       "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?",
       "draft_answer": [
         "coq10",
         "depletion"
-      ],
-      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
-      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
-      "drafting_agent": "codex",
-      "blinded_from": [
-        "data/knowledge/counseling_answer_verifier_policy_v1.json",
-        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
-        "data/knowledge/goal_ingredient_priors_v1.json",
-        "data/knowledge/reference_knowledge_base_v1.json",
-        "data/knowledge/runtime_knowledge_db_v1.json",
-        "data/original_plan/closed_loop_next_action_policy_v1.json",
-        "data/rules/candidate_signal_scoring_rules_v1.json",
-        "data/rules/safety_rules.json",
-        "data/synthetic/synthetic_longitudinal_v4.jsonl"
-      ]
-    },
-    {
-      "case_id": "kpi5-ref-083",
-      "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?",
-      "draft_answer": [
-        "depletion",
-        "vitamin_d3"
       ],
       "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
       "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
@@ -2049,28 +1873,6 @@
       ]
     },
     {
-      "case_id": "kpi5-ref-094",
-      "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?",
-      "draft_answer": [
-        "coq10",
-        "depletion"
-      ],
-      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
-      "draft_rationale": "당뇨 장기 환자에서 B12 모니터링 및 말초신경병증, 빈혈 스크리닝 중요. (44_부록_A._약물_유발_영양소_고갈.md p236)",
-      "drafting_agent": "codex",
-      "blinded_from": [
-        "data/knowledge/counseling_answer_verifier_policy_v1.json",
-        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
-        "data/knowledge/goal_ingredient_priors_v1.json",
-        "data/knowledge/reference_knowledge_base_v1.json",
-        "data/knowledge/runtime_knowledge_db_v1.json",
-        "data/original_plan/closed_loop_next_action_policy_v1.json",
-        "data/rules/candidate_signal_scoring_rules_v1.json",
-        "data/rules/safety_rules.json",
-        "data/synthetic/synthetic_longitudinal_v4.jsonl"
-      ]
-    },
-    {
       "case_id": "kpi5-ref-095",
       "prompt": "Metformin 복용자에게 vitamin_b_complex 는 어떤 관계인가?",
       "draft_answer": [
@@ -2189,6 +1991,222 @@
       ],
       "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
       "draft_rationale": "3개월 이상 전신 스테로이드 시 골밀도, Vit D, Ca, Mg, Zn 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p238)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi5-repl-001",
+      "prompt": "Atorvastatin 복용자 상담에서 coq10 관계의 라벨과 원문 근거를 함께 제시하면?",
+      "draft_answer": [
+        "coq10",
+        "depletion",
+        "p236",
+        "코엔자임Q10"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "• 근육통, 피로, 심부전 환자에서 CoQ10 고려 • 근골격통, Vit D 혈중농도 저하 의심 시 25(OH)D 검사. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi5-repl-002",
+      "prompt": "Esomeprazole 복용자 상담에서 calcium_citrate 관계의 라벨과 원문 근거를 함께 제시하면?",
+      "draft_answer": [
+        "calcium_citrate",
+        "depletion",
+        "p237",
+        "칼슘"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi5-repl-003",
+      "prompt": "Esomeprazole 복용자 상담에서 magnesium_glycinate 관계의 라벨과 원문 근거를 함께 제시하면?",
+      "draft_answer": [
+        "depletion",
+        "magnesium_glycinate",
+        "p237",
+        "마그네슘"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi5-repl-004",
+      "prompt": "Esomeprazole 복용자 상담에서 vitamin_b_complex 관계의 라벨과 원문 근거를 함께 제시하면?",
+      "draft_answer": [
+        "depletion",
+        "p237",
+        "vitamin_b_complex",
+        "비타민 B1"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi5-repl-005",
+      "prompt": "Esomeprazole 복용자 상담에서 zinc 관계의 라벨과 원문 근거를 함께 제시하면?",
+      "draft_answer": [
+        "depletion",
+        "p237",
+        "zinc",
+        "아연"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "장기 사용 시 저Mg, 골다공증, B12·Fe 결핍 모니터링 권장. (44_부록_A._약물_유발_영양소_고갈.md p237)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi5-repl-006",
+      "prompt": "Furosemide 복용자 상담에서 calcium_citrate 관계의 라벨과 원문 근거를 함께 제시하면?",
+      "draft_answer": [
+        "calcium_citrate",
+        "depletion",
+        "p236",
+        "칼슘"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi5-repl-007",
+      "prompt": "Furosemide 복용자 상담에서 magnesium_glycinate 관계의 라벨과 원문 근거를 함께 제시하면?",
+      "draft_answer": [
+        "depletion",
+        "magnesium_glycinate",
+        "p236",
+        "마그네슘"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi5-repl-008",
+      "prompt": "Furosemide 복용자 상담에서 vitamin_b_complex 관계의 라벨과 원문 근거를 함께 제시하면?",
+      "draft_answer": [
+        "depletion",
+        "p236",
+        "vitamin_b_complex",
+        "비타민 B1"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
+      "drafting_agent": "codex",
+      "blinded_from": [
+        "data/knowledge/counseling_answer_verifier_policy_v1.json",
+        "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+        "data/knowledge/goal_ingredient_priors_v1.json",
+        "data/knowledge/reference_knowledge_base_v1.json",
+        "data/knowledge/runtime_knowledge_db_v1.json",
+        "data/original_plan/closed_loop_next_action_policy_v1.json",
+        "data/rules/candidate_signal_scoring_rules_v1.json",
+        "data/rules/safety_rules.json",
+        "data/synthetic/synthetic_longitudinal_v4.jsonl"
+      ]
+    },
+    {
+      "case_id": "kpi5-repl-009",
+      "prompt": "Furosemide 복용자 상담에서 zinc 관계의 라벨과 원문 근거를 함께 제시하면?",
+      "draft_answer": [
+        "depletion",
+        "p236",
+        "zinc",
+        "아연"
+      ],
+      "draft_source": "health_checker_reference_extract_v1@reference_corpus_drafters",
+      "draft_rationale": "심부전·부정맥 환자에서 Mg,K,B1 정기 모니터링. (44_부록_A._약물_유발_영양소_고갈.md p236)",
       "drafting_agent": "codex",
       "blinded_from": [
         "data/knowledge/counseling_answer_verifier_policy_v1.json",
@@ -2204,17 +2222,6 @@
     }
   ],
   "decisions": {
-    "kpi5-ref-001": {
-      "case_id": "kpi5-ref-001",
-      "action": "rejected",
-      "final_answer": [],
-      "decided_by": "비식별 검토자",
-      "decided_at": "2026-08-03T14:15:02+09:00",
-      "note": "offline_review_choice:REJECT; Amlodipine이 magnesium을 고갈시키거나 흡수를 저해한다는 관계는 확립되지 않았고, 후보 B도 약력학적 가능성을 잘못된 관계 라벨에 넣음.",
-      "review_duration_seconds": 2.0,
-      "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
-    },
     "kpi5-ref-002": {
       "case_id": "kpi5-ref-002",
       "action": "accepted",
@@ -2227,18 +2234,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
-    },
-    "kpi5-ref-003": {
-      "case_id": "kpi5-ref-003",
-      "action": "rejected",
-      "final_answer": [],
-      "decided_by": "비식별 검토자",
-      "decided_at": "2026-08-03T14:15:08+09:00",
-      "note": "offline_review_choice:REJECT; Atorvastatin의 vitamin D 고갈 관계는 방향이 일관되게 확립되지 않아 정답 관계로 봉인하기 부적절함.",
-      "review_duration_seconds": 2.0,
-      "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-004": {
       "case_id": "kpi5-ref-004",
@@ -2252,7 +2249,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-005": {
       "case_id": "kpi5-ref-005",
@@ -2266,7 +2264,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-006": {
       "case_id": "kpi5-ref-006",
@@ -2280,7 +2279,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-007": {
       "case_id": "kpi5-ref-007",
@@ -2294,7 +2294,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-008": {
       "case_id": "kpi5-ref-008",
@@ -2308,7 +2309,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-009": {
       "case_id": "kpi5-ref-009",
@@ -2322,7 +2324,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-010": {
       "case_id": "kpi5-ref-010",
@@ -2336,7 +2339,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-011": {
       "case_id": "kpi5-ref-011",
@@ -2350,7 +2354,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-012": {
       "case_id": "kpi5-ref-012",
@@ -2364,7 +2369,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-013": {
       "case_id": "kpi5-ref-013",
@@ -2378,18 +2384,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
-    },
-    "kpi5-ref-014": {
-      "case_id": "kpi5-ref-014",
-      "action": "rejected",
-      "final_answer": [],
-      "decided_by": "비식별 검토자",
-      "decided_at": "2026-08-03T14:15:41+09:00",
-      "note": "offline_review_choice:REJECT; Metformin의 CoQ10 고갈 관계는 표준적으로 확립된 약물 유발 영양소 고갈로 보기 어려움.",
-      "review_duration_seconds": 2.0,
-      "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-015": {
       "case_id": "kpi5-ref-015",
@@ -2403,7 +2399,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-016": {
       "case_id": "kpi5-ref-016",
@@ -2417,7 +2414,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-017": {
       "case_id": "kpi5-ref-017",
@@ -2431,7 +2429,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-018": {
       "case_id": "kpi5-ref-018",
@@ -2445,7 +2444,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-019": {
       "case_id": "kpi5-ref-019",
@@ -2459,7 +2459,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-020": {
       "case_id": "kpi5-ref-020",
@@ -2473,7 +2474,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-021": {
       "case_id": "kpi5-ref-021",
@@ -2487,7 +2489,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-022": {
       "case_id": "kpi5-ref-022",
@@ -2501,7 +2504,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-023": {
       "case_id": "kpi5-ref-023",
@@ -2515,7 +2519,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-024": {
       "case_id": "kpi5-ref-024",
@@ -2529,7 +2534,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-025": {
       "case_id": "kpi5-ref-025",
@@ -2543,7 +2549,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-026": {
       "case_id": "kpi5-ref-026",
@@ -2557,7 +2564,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-027": {
       "case_id": "kpi5-ref-027",
@@ -2571,7 +2579,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-028": {
       "case_id": "kpi5-ref-028",
@@ -2585,7 +2594,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-029": {
       "case_id": "kpi5-ref-029",
@@ -2599,7 +2609,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-030": {
       "case_id": "kpi5-ref-030",
@@ -2613,7 +2624,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-031": {
       "case_id": "kpi5-ref-031",
@@ -2627,7 +2639,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-032": {
       "case_id": "kpi5-ref-032",
@@ -2641,7 +2654,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-033": {
       "case_id": "kpi5-ref-033",
@@ -2655,7 +2669,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-034": {
       "case_id": "kpi5-ref-034",
@@ -2669,7 +2684,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-035": {
       "case_id": "kpi5-ref-035",
@@ -2683,7 +2699,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-036": {
       "case_id": "kpi5-ref-036",
@@ -2697,7 +2714,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-037": {
       "case_id": "kpi5-ref-037",
@@ -2711,7 +2729,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-038": {
       "case_id": "kpi5-ref-038",
@@ -2725,7 +2744,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-039": {
       "case_id": "kpi5-ref-039",
@@ -2739,7 +2759,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-040": {
       "case_id": "kpi5-ref-040",
@@ -2753,18 +2774,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
-    },
-    "kpi5-ref-041": {
-      "case_id": "kpi5-ref-041",
-      "action": "rejected",
-      "final_answer": [],
-      "decided_by": "비식별 검토자",
-      "decided_at": "2026-08-03T14:17:02+09:00",
-      "note": "offline_review_choice:REJECT; Amlodipine이 magnesium을 고갈시키거나 흡수를 저해한다는 관계는 확립되지 않았고, 후보 B도 약력학적 가능성을 잘못된 관계 라벨에 넣음.",
-      "review_duration_seconds": 2.0,
-      "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-042": {
       "case_id": "kpi5-ref-042",
@@ -2778,18 +2789,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
-    },
-    "kpi5-ref-043": {
-      "case_id": "kpi5-ref-043",
-      "action": "rejected",
-      "final_answer": [],
-      "decided_by": "비식별 검토자",
-      "decided_at": "2026-08-03T14:17:08+09:00",
-      "note": "offline_review_choice:REJECT; Atorvastatin의 vitamin D 고갈 관계는 방향이 일관되게 확립되지 않아 정답 관계로 봉인하기 부적절함.",
-      "review_duration_seconds": 2.0,
-      "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-044": {
       "case_id": "kpi5-ref-044",
@@ -2803,7 +2804,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-045": {
       "case_id": "kpi5-ref-045",
@@ -2817,7 +2819,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-046": {
       "case_id": "kpi5-ref-046",
@@ -2831,7 +2834,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-047": {
       "case_id": "kpi5-ref-047",
@@ -2845,7 +2849,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-048": {
       "case_id": "kpi5-ref-048",
@@ -2859,7 +2864,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-049": {
       "case_id": "kpi5-ref-049",
@@ -2873,7 +2879,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-050": {
       "case_id": "kpi5-ref-050",
@@ -2887,7 +2894,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-051": {
       "case_id": "kpi5-ref-051",
@@ -2901,7 +2909,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-052": {
       "case_id": "kpi5-ref-052",
@@ -2915,7 +2924,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-053": {
       "case_id": "kpi5-ref-053",
@@ -2929,18 +2939,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
-    },
-    "kpi5-ref-054": {
-      "case_id": "kpi5-ref-054",
-      "action": "rejected",
-      "final_answer": [],
-      "decided_by": "비식별 검토자",
-      "decided_at": "2026-08-03T14:17:41+09:00",
-      "note": "offline_review_choice:REJECT; Metformin의 CoQ10 고갈 관계는 표준적으로 확립된 약물 유발 영양소 고갈로 보기 어려움.",
-      "review_duration_seconds": 2.0,
-      "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-055": {
       "case_id": "kpi5-ref-055",
@@ -2954,7 +2954,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-056": {
       "case_id": "kpi5-ref-056",
@@ -2968,7 +2969,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-057": {
       "case_id": "kpi5-ref-057",
@@ -2982,7 +2984,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-058": {
       "case_id": "kpi5-ref-058",
@@ -2996,7 +2999,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-059": {
       "case_id": "kpi5-ref-059",
@@ -3010,7 +3014,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-060": {
       "case_id": "kpi5-ref-060",
@@ -3024,7 +3029,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-061": {
       "case_id": "kpi5-ref-061",
@@ -3038,7 +3044,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-062": {
       "case_id": "kpi5-ref-062",
@@ -3052,7 +3059,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-063": {
       "case_id": "kpi5-ref-063",
@@ -3066,7 +3074,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-064": {
       "case_id": "kpi5-ref-064",
@@ -3080,7 +3089,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-065": {
       "case_id": "kpi5-ref-065",
@@ -3094,7 +3104,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-066": {
       "case_id": "kpi5-ref-066",
@@ -3108,7 +3119,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-067": {
       "case_id": "kpi5-ref-067",
@@ -3122,7 +3134,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-068": {
       "case_id": "kpi5-ref-068",
@@ -3136,7 +3149,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-069": {
       "case_id": "kpi5-ref-069",
@@ -3150,7 +3164,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-070": {
       "case_id": "kpi5-ref-070",
@@ -3164,7 +3179,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-071": {
       "case_id": "kpi5-ref-071",
@@ -3178,7 +3194,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-072": {
       "case_id": "kpi5-ref-072",
@@ -3192,7 +3209,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-073": {
       "case_id": "kpi5-ref-073",
@@ -3206,7 +3224,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-074": {
       "case_id": "kpi5-ref-074",
@@ -3220,7 +3239,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-075": {
       "case_id": "kpi5-ref-075",
@@ -3234,7 +3254,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-076": {
       "case_id": "kpi5-ref-076",
@@ -3248,7 +3269,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-077": {
       "case_id": "kpi5-ref-077",
@@ -3262,7 +3284,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-078": {
       "case_id": "kpi5-ref-078",
@@ -3276,7 +3299,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-079": {
       "case_id": "kpi5-ref-079",
@@ -3290,7 +3314,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-080": {
       "case_id": "kpi5-ref-080",
@@ -3304,18 +3329,8 @@
       "note": "offline_review_choice:A; 원문 근거에 직접 기재된 페이지와 성분 표기가 일치함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
-    },
-    "kpi5-ref-081": {
-      "case_id": "kpi5-ref-081",
-      "action": "rejected",
-      "final_answer": [],
-      "decided_by": "비식별 검토자",
-      "decided_at": "2026-08-03T14:19:02+09:00",
-      "note": "offline_review_choice:REJECT; Amlodipine이 magnesium을 고갈시키거나 흡수를 저해한다는 관계는 확립되지 않았고, 후보 B도 약력학적 가능성을 잘못된 관계 라벨에 넣음.",
-      "review_duration_seconds": 2.0,
-      "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-082": {
       "case_id": "kpi5-ref-082",
@@ -3329,18 +3344,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
-    },
-    "kpi5-ref-083": {
-      "case_id": "kpi5-ref-083",
-      "action": "rejected",
-      "final_answer": [],
-      "decided_by": "비식별 검토자",
-      "decided_at": "2026-08-03T14:19:08+09:00",
-      "note": "offline_review_choice:REJECT; Atorvastatin의 vitamin D 고갈 관계는 방향이 일관되게 확립되지 않아 정답 관계로 봉인하기 부적절함.",
-      "review_duration_seconds": 2.0,
-      "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-084": {
       "case_id": "kpi5-ref-084",
@@ -3354,7 +3359,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-085": {
       "case_id": "kpi5-ref-085",
@@ -3368,7 +3374,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-086": {
       "case_id": "kpi5-ref-086",
@@ -3382,7 +3389,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-087": {
       "case_id": "kpi5-ref-087",
@@ -3396,7 +3404,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-088": {
       "case_id": "kpi5-ref-088",
@@ -3410,7 +3419,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-089": {
       "case_id": "kpi5-ref-089",
@@ -3424,7 +3434,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-090": {
       "case_id": "kpi5-ref-090",
@@ -3438,7 +3449,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-091": {
       "case_id": "kpi5-ref-091",
@@ -3452,7 +3464,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-092": {
       "case_id": "kpi5-ref-092",
@@ -3466,7 +3479,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-093": {
       "case_id": "kpi5-ref-093",
@@ -3480,18 +3494,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
-    },
-    "kpi5-ref-094": {
-      "case_id": "kpi5-ref-094",
-      "action": "rejected",
-      "final_answer": [],
-      "decided_by": "비식별 검토자",
-      "decided_at": "2026-08-03T14:19:41+09:00",
-      "note": "offline_review_choice:REJECT; Metformin의 CoQ10 고갈 관계는 표준적으로 확립된 약물 유발 영양소 고갈로 보기 어려움.",
-      "review_duration_seconds": 2.0,
-      "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-095": {
       "case_id": "kpi5-ref-095",
@@ -3505,7 +3509,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-096": {
       "case_id": "kpi5-ref-096",
@@ -3519,7 +3524,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-097": {
       "case_id": "kpi5-ref-097",
@@ -3533,7 +3539,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-098": {
       "case_id": "kpi5-ref-098",
@@ -3547,7 +3554,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-099": {
       "case_id": "kpi5-ref-099",
@@ -3561,7 +3569,8 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
     },
     "kpi5-ref-100": {
       "case_id": "kpi5-ref-100",
@@ -3575,7 +3584,161 @@
       "note": "offline_review_choice:A; 원문 부록의 관계 라벨과 표준 성분 토큰을 유지함.",
       "review_duration_seconds": 2.0,
       "decision_mode": "detailed_review",
-      "reviewed_in_detail": true
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": ""
+    },
+    "kpi5-repl-001": {
+      "case_id": "kpi5-repl-001",
+      "action": "accepted",
+      "final_answer": [
+        "coq10",
+        "depletion",
+        "p236",
+        "코엔자임Q10"
+      ],
+      "decided_by": "권혁찬",
+      "decided_at": "2026-08-04T13:39:38+09:00",
+      "note": "offline_replacement_review_choice:ACCEPT",
+      "review_duration_seconds": 8.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+    },
+    "kpi5-repl-002": {
+      "case_id": "kpi5-repl-002",
+      "action": "accepted",
+      "final_answer": [
+        "calcium_citrate",
+        "depletion",
+        "p237",
+        "칼슘"
+      ],
+      "decided_by": "권혁찬",
+      "decided_at": "2026-08-04T13:39:48+09:00",
+      "note": "offline_replacement_review_choice:EDIT",
+      "review_duration_seconds": 8.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+    },
+    "kpi5-repl-003": {
+      "case_id": "kpi5-repl-003",
+      "action": "accepted",
+      "final_answer": [
+        "depletion",
+        "magnesium_glycinate",
+        "p237",
+        "마그네슘"
+      ],
+      "decided_by": "권혁찬",
+      "decided_at": "2026-08-04T13:39:58+09:00",
+      "note": "offline_replacement_review_choice:EDIT",
+      "review_duration_seconds": 8.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+    },
+    "kpi5-repl-004": {
+      "case_id": "kpi5-repl-004",
+      "action": "accepted",
+      "final_answer": [
+        "depletion",
+        "p237",
+        "vitamin_b_complex",
+        "비타민 B1"
+      ],
+      "decided_by": "권혁찬",
+      "decided_at": "2026-08-04T13:40:08+09:00",
+      "note": "offline_replacement_review_choice:EDIT",
+      "review_duration_seconds": 8.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+    },
+    "kpi5-repl-005": {
+      "case_id": "kpi5-repl-005",
+      "action": "accepted",
+      "final_answer": [
+        "depletion",
+        "p237",
+        "zinc",
+        "아연"
+      ],
+      "decided_by": "권혁찬",
+      "decided_at": "2026-08-04T13:40:18+09:00",
+      "note": "offline_replacement_review_choice:EDIT",
+      "review_duration_seconds": 8.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+    },
+    "kpi5-repl-006": {
+      "case_id": "kpi5-repl-006",
+      "action": "accepted",
+      "final_answer": [
+        "calcium_citrate",
+        "depletion",
+        "p236",
+        "칼슘"
+      ],
+      "decided_by": "권혁찬",
+      "decided_at": "2026-08-04T13:40:28+09:00",
+      "note": "offline_replacement_review_choice:EDIT",
+      "review_duration_seconds": 8.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+    },
+    "kpi5-repl-007": {
+      "case_id": "kpi5-repl-007",
+      "action": "accepted",
+      "final_answer": [
+        "depletion",
+        "magnesium_glycinate",
+        "p236",
+        "마그네슘"
+      ],
+      "decided_by": "권혁찬",
+      "decided_at": "2026-08-04T13:40:38+09:00",
+      "note": "offline_replacement_review_choice:EDIT",
+      "review_duration_seconds": 8.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+    },
+    "kpi5-repl-008": {
+      "case_id": "kpi5-repl-008",
+      "action": "accepted",
+      "final_answer": [
+        "depletion",
+        "p236",
+        "vitamin_b_complex",
+        "비타민 B1"
+      ],
+      "decided_by": "권혁찬",
+      "decided_at": "2026-08-04T13:40:48+09:00",
+      "note": "offline_replacement_review_choice:EDIT",
+      "review_duration_seconds": 8.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
+    },
+    "kpi5-repl-009": {
+      "case_id": "kpi5-repl-009",
+      "action": "accepted",
+      "final_answer": [
+        "depletion",
+        "p236",
+        "zinc",
+        "아연"
+      ],
+      "decided_by": "권혁찬",
+      "decided_at": "2026-08-04T13:40:58+09:00",
+      "note": "offline_replacement_review_choice:EDIT",
+      "review_duration_seconds": 8.0,
+      "decision_mode": "detailed_review",
+      "reviewed_in_detail": true,
+      "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958"
     }
   },
   "seal_disposals": [
@@ -3627,18 +3790,6 @@
     "reviewed_at": "2026-08-03T07:46:14.582805Z",
     "case_count": 100,
     "cases": {
-      "kpi5-ref-001": {
-        "proposed_answer": [
-          "absorption_interaction",
-          "마그네슘"
-        ],
-        "confidence": 0.35,
-        "flags": [
-          "pharmacodynamic_not_depletion",
-          "relation_label_ambiguous"
-        ],
-        "rationale": "암로디핀은 마그네슘을 고갈시키지 않는다. 두 가지 모두 혈관을 이완시켜 혈압 강하가 겹치는 약력학적 상호작용이라, 남은 두 라벨 중에서는 상호작용 쪽에 붙인다. 라벨 선택 자체가 불확실하다."
-      },
       "kpi5-ref-002": {
         "proposed_answer": [
           "depletion",
@@ -3647,17 +3798,6 @@
         "confidence": 0.9,
         "flags": [],
         "rationale": "스타틴이 메발론산 경로를 막으면 콜레스테롤과 CoQ10 합성이 함께 줄어든다. 대표적인 약물 유발 고갈이다."
-      },
-      "kpi5-ref-003": {
-        "proposed_answer": [
-          "depletion",
-          "비타민 D"
-        ],
-        "confidence": 0.5,
-        "flags": [
-          "evidence_contested"
-        ],
-        "rationale": "스타틴과 비타민 D는 같은 전구체를 공유해 고갈 항목으로 자주 실린다. 다만 혈중 25(OH)D가 오히려 오른다는 보고도 있어 방향이 갈린다."
       },
       "kpi5-ref-004": {
         "proposed_answer": [
@@ -3754,17 +3894,6 @@
           "separate_dosing_required"
         ],
         "rationale": "마그네슘 등 다가 양이온이 레보티록신을 붙잡아 흡수를 낮춘다. 복용 간격 분리로 관리한다."
-      },
-      "kpi5-ref-014": {
-        "proposed_answer": [
-          "depletion",
-          "코엔자임Q10"
-        ],
-        "confidence": 0.5,
-        "flags": [
-          "evidence_contested"
-        ],
-        "rationale": "메트포르민의 CoQ10 고갈은 일부 자료에 실리지만 B12만큼 확립되지 않았다."
       },
       "kpi5-ref-015": {
         "proposed_answer": [
@@ -4040,18 +4169,6 @@
         ],
         "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
       },
-      "kpi5-ref-041": {
-        "proposed_answer": [
-          "absorption_interaction",
-          "마그네슘"
-        ],
-        "confidence": 0.35,
-        "flags": [
-          "pharmacodynamic_not_depletion",
-          "relation_label_ambiguous"
-        ],
-        "rationale": "암로디핀은 마그네슘을 고갈시키지 않는다. 두 가지 모두 혈관을 이완시켜 혈압 강하가 겹치는 약력학적 상호작용이라, 남은 두 라벨 중에서는 상호작용 쪽에 붙인다. 라벨 선택 자체가 불확실하다."
-      },
       "kpi5-ref-042": {
         "proposed_answer": [
           "depletion",
@@ -4060,17 +4177,6 @@
         "confidence": 0.9,
         "flags": [],
         "rationale": "스타틴이 메발론산 경로를 막으면 콜레스테롤과 CoQ10 합성이 함께 줄어든다. 대표적인 약물 유발 고갈이다."
-      },
-      "kpi5-ref-043": {
-        "proposed_answer": [
-          "depletion",
-          "비타민 D"
-        ],
-        "confidence": 0.5,
-        "flags": [
-          "evidence_contested"
-        ],
-        "rationale": "스타틴과 비타민 D는 같은 전구체를 공유해 고갈 항목으로 자주 실린다. 다만 혈중 25(OH)D가 오히려 오른다는 보고도 있어 방향이 갈린다."
       },
       "kpi5-ref-044": {
         "proposed_answer": [
@@ -4167,17 +4273,6 @@
           "separate_dosing_required"
         ],
         "rationale": "마그네슘 등 다가 양이온이 레보티록신을 붙잡아 흡수를 낮춘다. 복용 간격 분리로 관리한다."
-      },
-      "kpi5-ref-054": {
-        "proposed_answer": [
-          "depletion",
-          "코엔자임Q10"
-        ],
-        "confidence": 0.5,
-        "flags": [
-          "evidence_contested"
-        ],
-        "rationale": "메트포르민의 CoQ10 고갈은 일부 자료에 실리지만 B12만큼 확립되지 않았다."
       },
       "kpi5-ref-055": {
         "proposed_answer": [
@@ -4453,18 +4548,6 @@
         ],
         "rationale": "쪽수는 원본 자료를 봐야 확정된다. 블라인드 조건에서는 확인할 방법이 없다. 어휘가 p236~p239 네 쪽만 제시하고 대상 쌍이 20건이므로 쪽당 5건, 약물 알파벳 순 배치를 가정해 p239로 추정했다. 근거가 약한 추정이라 확신도를 낮게 둔다."
       },
-      "kpi5-ref-081": {
-        "proposed_answer": [
-          "absorption_interaction",
-          "마그네슘"
-        ],
-        "confidence": 0.35,
-        "flags": [
-          "pharmacodynamic_not_depletion",
-          "relation_label_ambiguous"
-        ],
-        "rationale": "암로디핀은 마그네슘을 고갈시키지 않는다. 두 가지 모두 혈관을 이완시켜 혈압 강하가 겹치는 약력학적 상호작용이라, 남은 두 라벨 중에서는 상호작용 쪽에 붙인다. 라벨 선택 자체가 불확실하다."
-      },
       "kpi5-ref-082": {
         "proposed_answer": [
           "depletion",
@@ -4473,17 +4556,6 @@
         "confidence": 0.9,
         "flags": [],
         "rationale": "스타틴이 메발론산 경로를 막으면 콜레스테롤과 CoQ10 합성이 함께 줄어든다. 대표적인 약물 유발 고갈이다."
-      },
-      "kpi5-ref-083": {
-        "proposed_answer": [
-          "depletion",
-          "비타민 D"
-        ],
-        "confidence": 0.5,
-        "flags": [
-          "evidence_contested"
-        ],
-        "rationale": "스타틴과 비타민 D는 같은 전구체를 공유해 고갈 항목으로 자주 실린다. 다만 혈중 25(OH)D가 오히려 오른다는 보고도 있어 방향이 갈린다."
       },
       "kpi5-ref-084": {
         "proposed_answer": [
@@ -4581,17 +4653,6 @@
         ],
         "rationale": "마그네슘 등 다가 양이온이 레보티록신을 붙잡아 흡수를 낮춘다. 복용 간격 분리로 관리한다."
       },
-      "kpi5-ref-094": {
-        "proposed_answer": [
-          "depletion",
-          "코엔자임Q10"
-        ],
-        "confidence": 0.5,
-        "flags": [
-          "evidence_contested"
-        ],
-        "rationale": "메트포르민의 CoQ10 고갈은 일부 자료에 실리지만 B12만큼 확립되지 않았다."
-      },
       "kpi5-ref-095": {
         "proposed_answer": [
           "depletion",
@@ -4645,9 +4706,223 @@
         "confidence": 0.65,
         "flags": [],
         "rationale": "스테로이드 장기 사용은 아연 배설을 늘린다."
+      },
+      "kpi5-repl-001": {
+        "proposed_answer": [
+          "coq10",
+          "depletion",
+          "p236",
+          "p237",
+          "코엔자임Q10"
+        ],
+        "confidence": 0.8,
+        "flags": [
+          "source_page_within_spread_unresolved_blind"
+        ],
+        "rationale": "스타틴은 HMG-CoA 환원효소를 막아 메발론산 경로 하류의 CoQ10 합성까지 줄인다. 관계 라벨은 depletion이고, 원문 표기어로는 '코엔자임Q10'이 대응한다. 근거는 약물유발 영양소 고갈 표에 해당하며 236~237쪽 펼침면을 함께 제시한다. 블라인드 상태라 두 쪽 중 어느 쪽인지는 특정하지 못했다."
+      },
+      "kpi5-repl-002": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "depletion",
+          "p236",
+          "p237",
+          "칼슘"
+        ],
+        "confidence": 0.78,
+        "flags": [
+          "citrate_form_preferred_over_carbonate",
+          "ppi_reduces_acid_dependent_calcium_absorption",
+          "source_page_within_spread_unresolved_blind"
+        ],
+        "rationale": "PPI가 위산을 줄이면 탄산칼슘이 이온화되지 않아 칼슘 흡수가 떨어진다. 관계 라벨은 depletion, 원문 표기어는 '칼슘'이다. 산에 의존하지 않는 구연산칼슘 형태를 권한다. 근거 쪽은 236~237쪽 펼침면으로 제시한다."
+      },
+      "kpi5-repl-003": {
+        "proposed_answer": [
+          "depletion",
+          "magnesium_glycinate",
+          "p236",
+          "p237",
+          "마그네슘"
+        ],
+        "confidence": 0.82,
+        "flags": [
+          "long_term_use_requires_serum_mg_check",
+          "ppi_induced_hypomagnesemia",
+          "source_page_within_spread_unresolved_blind"
+        ],
+        "rationale": "PPI를 오래 쓰면 장의 TRPM6/7 경로 흡수가 줄어 저마그네슘혈증이 생긴다. 관계 라벨은 depletion, 원문 표기어는 '마그네슘'이다. 1년 이상 복용자는 혈중 마그네슘을 확인한다. 근거 쪽은 236~237쪽 펼침면으로 제시한다."
+      },
+      "kpi5-repl-004": {
+        "proposed_answer": [
+          "depletion",
+          "p236",
+          "p237",
+          "vitamin_b_complex"
+        ],
+        "confidence": 0.62,
+        "flags": [
+          "ppi_depletes_b12_not_b1",
+          "source_page_within_spread_unresolved_blind",
+          "vocabulary_lacks_b12_source_term"
+        ],
+        "rationale": "PPI는 위산과 펩신 작용을 막아 식품 결합형 B12가 유리되지 않게 하고 흡수를 떨어뜨린다. 관계 라벨은 depletion이다. 다만 어휘 목록의 B군 원문 표기어는 '비타민 B1' 하나뿐인데 PPI에서 실제로 고갈되는 것은 B1이 아니라 B12라서 표기어를 붙이지 않았다. 정답지에 'B12' 표기어가 따로 있는지 확인이 필요하다."
+      },
+      "kpi5-repl-005": {
+        "proposed_answer": [
+          "depletion",
+          "p236",
+          "p237",
+          "zinc",
+          "아연"
+        ],
+        "confidence": 0.7,
+        "flags": [
+          "evidence_weaker_than_b12_and_mg",
+          "source_page_within_spread_unresolved_blind",
+          "zinc_absorption_acid_dependent"
+        ],
+        "rationale": "아연은 위산에서 유리된 뒤 흡수되므로 PPI로 위산이 줄면 흡수율이 떨어진다. 관계 라벨은 depletion, 원문 표기어는 '아연'이다. B12·마그네슘에 비하면 근거 강도는 약한 편이다. 근거 쪽은 236~237쪽 펼침면으로 제시한다."
+      },
+      "kpi5-repl-006": {
+        "proposed_answer": [
+          "calcium_citrate",
+          "depletion",
+          "p236",
+          "p237",
+          "칼슘"
+        ],
+        "confidence": 0.8,
+        "flags": [
+          "loop_diuretic_causes_hypercalciuria",
+          "monitor_bone_density_on_long_term_use",
+          "source_page_within_spread_unresolved_blind"
+        ],
+        "rationale": "루프 이뇨제는 헨레고리 상행각의 재흡수를 막아 칼슘을 소변으로 내보낸다. 관계 라벨은 depletion, 원문 표기어는 '칼슘'이다. 장기 복용자는 골밀도를 함께 본다. 근거 쪽은 236~237쪽 펼침면으로 제시한다."
+      },
+      "kpi5-repl-007": {
+        "proposed_answer": [
+          "depletion",
+          "magnesium_glycinate",
+          "p236",
+          "p237",
+          "마그네슘"
+        ],
+        "confidence": 0.88,
+        "flags": [
+          "check_potassium_together",
+          "loop_diuretic_hypomagnesemia",
+          "source_page_within_spread_unresolved_blind"
+        ],
+        "rationale": "루프 이뇨제는 마그네슘 재흡수까지 막아 저마그네슘혈증을 잘 만든다. 관계 라벨은 depletion, 원문 표기어는 '마그네슘'이다. 저칼륨혈증이 같이 오는 일이 많아 칼륨 수치도 함께 확인한다. 근거 쪽은 236~237쪽 펼침면으로 제시한다."
+      },
+      "kpi5-repl-008": {
+        "proposed_answer": [
+          "depletion",
+          "p236",
+          "p237",
+          "vitamin_b_complex",
+          "비타민 B1"
+        ],
+        "confidence": 0.85,
+        "flags": [
+          "furosemide_increases_urinary_thiamine_loss",
+          "relevant_in_heart_failure",
+          "source_page_within_spread_unresolved_blind"
+        ],
+        "rationale": "Furosemide는 티아민의 소변 배설을 늘려 B1 결핍을 만들고, 심부전 환자에서 특히 문제가 된다. 관계 라벨은 depletion이고 원문 표기어 '비타민 B1'이 여기에 대응한다. 근거 쪽은 236~237쪽 펼침면으로 제시한다."
+      },
+      "kpi5-repl-009": {
+        "proposed_answer": [
+          "depletion",
+          "p236",
+          "p237",
+          "zinc",
+          "아연"
+        ],
+        "confidence": 0.75,
+        "flags": [
+          "loop_diuretic_increases_urinary_zinc",
+          "source_page_within_spread_unresolved_blind"
+        ],
+        "rationale": "루프 이뇨제는 아연의 소변 배설을 늘려 혈중 아연을 떨어뜨린다. 관계 라벨은 depletion, 원문 표기어는 '아연'이다. 미각 저하나 상처 회복 지연이 보이면 우선 확인한다. 근거 쪽은 236~237쪽 펼침면으로 제시한다."
       }
     },
-    "cases_sha256": "103132e3e04612fff11e87dcab0594a6e84a411a522f5d6ce1671ec2067e49b2"
+    "cases_sha256": "faae8050410f3cc210cbf22dc4c7e5700ec5f8a5ed14ce9362148ef55f461c2d",
+    "case_provenance": {
+      "kpi5-repl-001": {
+        "schema_version": "independent_ai_answer_review_v1",
+        "agent": "claude-opus-5",
+        "agent_family": "anthropic",
+        "source": "blind_packet_independent_opinion",
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "engine_output_consulted": false
+      },
+      "kpi5-repl-002": {
+        "schema_version": "independent_ai_answer_review_v1",
+        "agent": "claude-opus-5",
+        "agent_family": "anthropic",
+        "source": "blind_packet_independent_opinion",
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "engine_output_consulted": false
+      },
+      "kpi5-repl-003": {
+        "schema_version": "independent_ai_answer_review_v1",
+        "agent": "claude-opus-5",
+        "agent_family": "anthropic",
+        "source": "blind_packet_independent_opinion",
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "engine_output_consulted": false
+      },
+      "kpi5-repl-004": {
+        "schema_version": "independent_ai_answer_review_v1",
+        "agent": "claude-opus-5",
+        "agent_family": "anthropic",
+        "source": "blind_packet_independent_opinion",
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "engine_output_consulted": false
+      },
+      "kpi5-repl-005": {
+        "schema_version": "independent_ai_answer_review_v1",
+        "agent": "claude-opus-5",
+        "agent_family": "anthropic",
+        "source": "blind_packet_independent_opinion",
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "engine_output_consulted": false
+      },
+      "kpi5-repl-006": {
+        "schema_version": "independent_ai_answer_review_v1",
+        "agent": "claude-opus-5",
+        "agent_family": "anthropic",
+        "source": "blind_packet_independent_opinion",
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "engine_output_consulted": false
+      },
+      "kpi5-repl-007": {
+        "schema_version": "independent_ai_answer_review_v1",
+        "agent": "claude-opus-5",
+        "agent_family": "anthropic",
+        "source": "blind_packet_independent_opinion",
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "engine_output_consulted": false
+      },
+      "kpi5-repl-008": {
+        "schema_version": "independent_ai_answer_review_v1",
+        "agent": "claude-opus-5",
+        "agent_family": "anthropic",
+        "source": "blind_packet_independent_opinion",
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "engine_output_consulted": false
+      },
+      "kpi5-repl-009": {
+        "schema_version": "independent_ai_answer_review_v1",
+        "agent": "claude-opus-5",
+        "agent_family": "anthropic",
+        "source": "blind_packet_independent_opinion",
+        "packet_sha256": "668c84a2ad0e51d1b01c993257dddc0f77967ae7b20e6370d371cc5373e9ab8d",
+        "engine_output_consulted": false
+      }
+    }
   },
   "batch_approval": null
 }

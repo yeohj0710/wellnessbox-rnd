@@ -1047,3 +1047,12 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 운영 준비 확인 명령: `.\.venv-interim\Scripts\python.exe scripts\report_operational_session_readiness.py`.
 - 현재 관측: 서로 다른 실제 프로필 1/5개, 대기 약사 초안 0건. 실제 운영 입력 없이 초안이나 영수증을 만들지 않는다.
 - 상품 매핑 계약은 `l_theanine→ING:L_THEANINE`, `soluble_fiber→ING:PSYLLIUM`을 포함한 `2026-07-24.1`이다. 미매핑은 성분 키와 실패 이유를 반환하고 차단한다.
+-
+## 2026-08-04 KPI 교체 검토 인계
+
+- 입력: `kpi1_second_replacement_final_review_completed.zip`, SHA-256 `c825822ebf43d658f0b16c631985dfab7cd5e578fef94ff4b9e304f3f13521a`.
+- 결과: 마지막 2건은 `EDIT` 1건, `ACCEPT` 1건이다. KPI-1·4·5의 거절 사례 65건을 모두 교체했고 교체 후 거절 사례는 0건이다.
+- 검증 코드: `scripts/import_kpi_second_replacement_final_review.py`, `scripts/apply_kpi_replacements.py`와 대응 테스트.
+- 남은 차단: 최초 검토 335건은 `비식별 검토자`로만 기록돼 등록 신원 참조가 없다. 이후 교체 검토 신원 파일을 근거로 과거 기록을 임의 귀속하지 않는다.
+- 최소 후속 입력: 최초 검토 ZIP의 SHA-256과 등록 신원 참조를 묶고, 최초 일괄 검토자가 등록 인물과 동일함을 확인하는 기록 1건. 사례별 판정 수정은 필요 없다.
+- 금지 상태 유지: 봉인·측정·배포·실제 트래픽·훈련·최종 영수증 재발급 없음.

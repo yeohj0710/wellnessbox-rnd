@@ -41,6 +41,12 @@ from wellnessbox_rnd.governance.reviewer_credentials import (  # noqa: E402
 
 OUTPUT_DIR = ROOT / "data/original_plan/kpi/review_handoff/replacement_round"
 PACKAGE_PATH = OUTPUT_DIR / "kpi_replacement_input_package.zip"
+CANDIDATES_PATH = OUTPUT_DIR / "kpi_replacement_candidates_v1.json"
+APPLICATION_REPORT = (
+    OUTPUT_DIR
+    / "second_replacement"
+    / "kpi_replacement_application_v1.json"
+)
 REPLACEMENT_REPORT = (
     ROOT
     / "data/original_plan/kpi/review_handoff/completed_review"
@@ -304,6 +310,17 @@ def build_kpi5_replacements(
 
 
 def build_candidates() -> dict[str, list[CaseDraft]]:
+    if APPLICATION_REPORT.is_file() and CANDIDATES_PATH.is_file():
+        application = json.loads(APPLICATION_REPORT.read_text(encoding="utf-8"))
+        if application.get("status") == "APPLIED_ALL_REPLACEMENTS":
+            preserved = json.loads(CANDIDATES_PATH.read_text(encoding="utf-8"))
+            candidates = {
+                indicator_id: [CaseDraft(**item) for item in items]
+                for indicator_id, items in preserved.get("cases", {}).items()
+            }
+            if {key: len(value) for key, value in candidates.items()} != COUNTS:
+                raise ValueError("preserved_replacement_candidate_counts_changed")
+            return candidates
     report = json.loads(REPLACEMENT_REPORT.read_text(encoding="utf-8"))
     if report.get("indicator_counts") != {
         "KPI-1": 49,
@@ -442,7 +459,7 @@ def main() -> int:
     requests = build_requests(candidates)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     _write_json(
-        OUTPUT_DIR / "kpi_replacement_candidates_v1.json",
+        CANDIDATES_PATH,
         {
             "schema_version": "kpi_replacement_candidates_v1",
             "counts": {key: len(value) for key, value in candidates.items()},

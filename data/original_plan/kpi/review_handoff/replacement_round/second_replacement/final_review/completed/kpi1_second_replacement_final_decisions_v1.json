@@ -1,0 +1,42 @@
+{
+  "schema_version": "kpi_second_replacement_final_decisions_v1",
+  "source_zip_sha256": "c825822ebf43d6583f0b16c631985dfab7cd5e578fef94ff4b9e304f3f13521a",
+  "source_csv_sha256": "28fc99c1fcaef4e498f2f937921611fe05df0ebce4f9a6703090b0566df77e63",
+  "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+  "identity_confirmed_at": "2026-08-04T08:39:58+09:00",
+  "review_count": 2,
+  "decision_counts": {
+    "ACCEPT": 1,
+    "EDIT": 1,
+    "REJECT": 0
+  },
+  "replacement_required_count": 0,
+  "status": "READY_TO_APPLY_ALL_REPLACEMENTS",
+  "decisions": [
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl2-001",
+      "decision": "EDIT",
+      "final_answer": [
+        "vitamin_b_complex"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T14:58:00+09:00",
+      "decided_at": "2026-08-04T14:58:02+09:00",
+      "review_duration_seconds": 2.0
+    },
+    {
+      "indicator_id": "KPI-1",
+      "case_id": "kpi1-repl2-002",
+      "decision": "ACCEPT",
+      "final_answer": [
+        "probiotics",
+        "soluble_fiber"
+      ],
+      "note": "",
+      "started_at": "2026-08-04T14:58:03+09:00",
+      "decided_at": "2026-08-04T14:58:05+09:00",
+      "review_duration_seconds": 2.0
+    }
+  ]
+}

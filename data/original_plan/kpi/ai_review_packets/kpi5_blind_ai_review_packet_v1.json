@@ -45,16 +45,8 @@
   "instructions": "각 사례를 독립적으로 판단해 proposed_answer, confidence, flags, rationale을 반환한다. 1차 초안·근거·엔진 입력·엔진 출력은 보지 않는다.",
   "cases": [
     {
-      "case_id": "kpi5-ref-001",
-      "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?"
-    },
-    {
       "case_id": "kpi5-ref-002",
       "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?"
-    },
-    {
-      "case_id": "kpi5-ref-003",
-      "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?"
     },
     {
       "case_id": "kpi5-ref-004",
@@ -95,10 +87,6 @@
     {
       "case_id": "kpi5-ref-013",
       "prompt": "Levothyroxine 복용자에게 magnesium_glycinate 는 어떤 관계인가?"
-    },
-    {
-      "case_id": "kpi5-ref-014",
-      "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?"
     },
     {
       "case_id": "kpi5-ref-015",
@@ -205,16 +193,8 @@
       "prompt": "Prednisolone 와 zinc 관계의 근거 쪽수는?"
     },
     {
-      "case_id": "kpi5-ref-041",
-      "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?"
-    },
-    {
       "case_id": "kpi5-ref-042",
       "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?"
-    },
-    {
-      "case_id": "kpi5-ref-043",
-      "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?"
     },
     {
       "case_id": "kpi5-ref-044",
@@ -255,10 +235,6 @@
     {
       "case_id": "kpi5-ref-053",
       "prompt": "Levothyroxine 복용자에게 magnesium_glycinate 는 어떤 관계인가?"
-    },
-    {
-      "case_id": "kpi5-ref-054",
-      "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?"
     },
     {
       "case_id": "kpi5-ref-055",
@@ -365,16 +341,8 @@
       "prompt": "Prednisolone 와 zinc 관계의 근거 쪽수는?"
     },
     {
-      "case_id": "kpi5-ref-081",
-      "prompt": "Amlodipine 복용자에게 magnesium_glycinate 는 어떤 관계인가?"
-    },
-    {
       "case_id": "kpi5-ref-082",
       "prompt": "Atorvastatin 복용자에게 coq10 는 어떤 관계인가?"
-    },
-    {
-      "case_id": "kpi5-ref-083",
-      "prompt": "Atorvastatin 복용자에게 vitamin_d3 는 어떤 관계인가?"
     },
     {
       "case_id": "kpi5-ref-084",
@@ -417,10 +385,6 @@
       "prompt": "Levothyroxine 복용자에게 magnesium_glycinate 는 어떤 관계인가?"
     },
     {
-      "case_id": "kpi5-ref-094",
-      "prompt": "Metformin 복용자에게 coq10 는 어떤 관계인가?"
-    },
-    {
       "case_id": "kpi5-ref-095",
       "prompt": "Metformin 복용자에게 vitamin_b_complex 는 어떤 관계인가?"
     },
@@ -443,7 +407,43 @@
     {
       "case_id": "kpi5-ref-100",
       "prompt": "Prednisolone 복용자에게 zinc 는 어떤 관계인가?"
+    },
+    {
+      "case_id": "kpi5-repl-001",
+      "prompt": "Atorvastatin 복용자 상담에서 coq10 관계의 라벨과 원문 근거를 함께 제시하면?"
+    },
+    {
+      "case_id": "kpi5-repl-002",
+      "prompt": "Esomeprazole 복용자 상담에서 calcium_citrate 관계의 라벨과 원문 근거를 함께 제시하면?"
+    },
+    {
+      "case_id": "kpi5-repl-003",
+      "prompt": "Esomeprazole 복용자 상담에서 magnesium_glycinate 관계의 라벨과 원문 근거를 함께 제시하면?"
+    },
+    {
+      "case_id": "kpi5-repl-004",
+      "prompt": "Esomeprazole 복용자 상담에서 vitamin_b_complex 관계의 라벨과 원문 근거를 함께 제시하면?"
+    },
+    {
+      "case_id": "kpi5-repl-005",
+      "prompt": "Esomeprazole 복용자 상담에서 zinc 관계의 라벨과 원문 근거를 함께 제시하면?"
+    },
+    {
+      "case_id": "kpi5-repl-006",
+      "prompt": "Furosemide 복용자 상담에서 calcium_citrate 관계의 라벨과 원문 근거를 함께 제시하면?"
+    },
+    {
+      "case_id": "kpi5-repl-007",
+      "prompt": "Furosemide 복용자 상담에서 magnesium_glycinate 관계의 라벨과 원문 근거를 함께 제시하면?"
+    },
+    {
+      "case_id": "kpi5-repl-008",
+      "prompt": "Furosemide 복용자 상담에서 vitamin_b_complex 관계의 라벨과 원문 근거를 함께 제시하면?"
+    },
+    {
+      "case_id": "kpi5-repl-009",
+      "prompt": "Furosemide 복용자 상담에서 zinc 관계의 라벨과 원문 근거를 함께 제시하면?"
     }
   ],
-  "packet_sha256": "fe44d9aa046e611942bec25c9d2ae8db8f97174db6604080be755ae0b96f6fd2"
+  "packet_sha256": "201ec2f61cdf70d7b4c01f5919559675e0a60cbf0321d1afc0735a88e433e0d6"
 }

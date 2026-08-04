@@ -12,8 +12,11 @@ from scripts import build_kpi_replacement_handoff as builder
 from scripts import import_kpi_replacement_responses as importer
 
 
-def test_replacement_candidates_match_rejected_counts_and_are_new() -> None:
+def test_replacement_candidates_match_applied_replacement_counts() -> None:
     candidates = builder.build_candidates()
+    application = json.loads(
+        builder.APPLICATION_REPORT.read_text(encoding="utf-8")
+    )
 
     assert {key: len(value) for key, value in candidates.items()} == builder.COUNTS
     for indicator_id, drafts in candidates.items():
@@ -22,7 +25,17 @@ def test_replacement_candidates_match_rejected_counts_and_are_new() -> None:
         }
         prompts = [item.prompt for item in drafts]
         assert len(prompts) == len(set(prompts))
-        assert not set(prompts) & current_prompts
+        applied_ids = {
+            item["replacement_case_id"]
+            for item in application["mappings"][indicator_id]
+        }
+        applied_prompts = {
+            item.prompt for item in drafts if item.case_id in applied_ids
+        }
+        assert applied_prompts <= current_prompts
+        assert len(applied_prompts) == builder.COUNTS[indicator_id] - (
+            2 if indicator_id == "KPI-1" else 0
+        )
         assert all(item.blinded_from for item in drafts)
 
 

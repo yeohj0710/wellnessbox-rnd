@@ -20,6 +20,7 @@ from scripts.build_kpi_replacement_final_review_package import (  # noqa: E402
     IDENTITY_NAME,
 )
 from scripts.build_kpi_second_replacement_handoff import (  # noqa: E402
+    APPLICATION_REPORT,
     CANDIDATES_PATH,
     SECOND_DIR,
 )
@@ -142,6 +143,23 @@ def _write_zip(files: dict[str, bytes]) -> None:
 
 
 def main() -> int:
+    if APPLICATION_REPORT.is_file() and PACKAGE_PATH.is_file():
+        application = _read_json(APPLICATION_REPORT)
+        if application.get("status") == "APPLIED_ALL_REPLACEMENTS":
+            print(
+                json.dumps(
+                    {
+                        "status": "ARCHIVED_AFTER_APPLICATION",
+                        "package": str(PACKAGE_PATH),
+                        "package_sha256": hashlib.sha256(
+                            PACKAGE_PATH.read_bytes()
+                        ).hexdigest(),
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
+            return 0
     rows, summary = build_rows()
     FINAL_DIR.mkdir(parents=True, exist_ok=True)
     csv_bytes = _csv_bytes(rows)

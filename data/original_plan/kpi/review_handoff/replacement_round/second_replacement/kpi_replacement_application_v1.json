@@ -1,0 +1,419 @@
+{
+  "schema_version": "kpi_replacement_application_v1",
+  "status": "APPLIED_ALL_REPLACEMENTS",
+  "reviewer_identity_ref": "registry:op039:sha256:2fa82b2d5315064cd3561d2e6f7ce964460913148e50838e45ce98a7889c0958",
+  "qualification_stage": "pharmacist_candidate_preliminary_safety_review",
+  "source_decision_sha256": {
+    "first_round": "b6ba0b82ea945a1adb391d7266dd7ddcf9e25e0a89b5831152c5a4ee28f0e471",
+    "second_round": "c825822ebf43d6583f0b16c631985dfab7cd5e578fef94ff4b9e304f3f13521a"
+  },
+  "replacement_counts": {
+    "KPI-1": 49,
+    "KPI-4": 7,
+    "KPI-5": 9
+  },
+  "mappings": {
+    "KPI-1": [
+      {
+        "rejected_case_id": "kpi1-ref-003",
+        "replacement_case_id": "kpi1-repl-001",
+        "submitted_decision": "EDIT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-004",
+        "replacement_case_id": "kpi1-repl-002",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-005",
+        "replacement_case_id": "kpi1-repl-003",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-006",
+        "replacement_case_id": "kpi1-repl-004",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-009",
+        "replacement_case_id": "kpi1-repl-005",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-018",
+        "replacement_case_id": "kpi1-repl-006",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-029",
+        "replacement_case_id": "kpi1-repl-007",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-030",
+        "replacement_case_id": "kpi1-repl-008",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-037",
+        "replacement_case_id": "kpi1-repl-009",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-040",
+        "replacement_case_id": "kpi1-repl-010",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-041",
+        "replacement_case_id": "kpi1-repl-011",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-042",
+        "replacement_case_id": "kpi1-repl-012",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-043",
+        "replacement_case_id": "kpi1-repl-013",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-044",
+        "replacement_case_id": "kpi1-repl-014",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-045",
+        "replacement_case_id": "kpi1-repl-015",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-046",
+        "replacement_case_id": "kpi1-repl-016",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-047",
+        "replacement_case_id": "kpi1-repl-017",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-048",
+        "replacement_case_id": "kpi1-repl-018",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-050",
+        "replacement_case_id": "kpi1-repl-019",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-053",
+        "replacement_case_id": "kpi1-repl-020",
+        "submitted_decision": "EDIT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-055",
+        "replacement_case_id": "kpi1-repl-021",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-056",
+        "replacement_case_id": "kpi1-repl-023",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-062",
+        "replacement_case_id": "kpi1-repl-024",
+        "submitted_decision": "EDIT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-064",
+        "replacement_case_id": "kpi1-repl-025",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-067",
+        "replacement_case_id": "kpi1-repl-026",
+        "submitted_decision": "EDIT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-068",
+        "replacement_case_id": "kpi1-repl-028",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-069",
+        "replacement_case_id": "kpi1-repl-029",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-070",
+        "replacement_case_id": "kpi1-repl-030",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-072",
+        "replacement_case_id": "kpi1-repl-031",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-073",
+        "replacement_case_id": "kpi1-repl-032",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-074",
+        "replacement_case_id": "kpi1-repl-033",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-075",
+        "replacement_case_id": "kpi1-repl-034",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-080",
+        "replacement_case_id": "kpi1-repl-035",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-081",
+        "replacement_case_id": "kpi1-repl-036",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-082",
+        "replacement_case_id": "kpi1-repl-037",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-084",
+        "replacement_case_id": "kpi1-repl-038",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-085",
+        "replacement_case_id": "kpi1-repl-039",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-086",
+        "replacement_case_id": "kpi1-repl-040",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-087",
+        "replacement_case_id": "kpi1-repl-041",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-088",
+        "replacement_case_id": "kpi1-repl-042",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-091",
+        "replacement_case_id": "kpi1-repl-043",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-092",
+        "replacement_case_id": "kpi1-repl-044",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-094",
+        "replacement_case_id": "kpi1-repl-045",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-095",
+        "replacement_case_id": "kpi1-repl-046",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-096",
+        "replacement_case_id": "kpi1-repl-047",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-097",
+        "replacement_case_id": "kpi1-repl-048",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-098",
+        "replacement_case_id": "kpi1-repl-049",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-099",
+        "replacement_case_id": "kpi1-repl2-001",
+        "submitted_decision": "EDIT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi1-ref-100",
+        "replacement_case_id": "kpi1-repl2-002",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      }
+    ],
+    "KPI-4": [
+      {
+        "rejected_case_id": "kpi4-060",
+        "replacement_case_id": "kpi4-repl-001",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi4-064",
+        "replacement_case_id": "kpi4-repl-002",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi4-086",
+        "replacement_case_id": "kpi4-repl-003",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi4-087",
+        "replacement_case_id": "kpi4-repl-004",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi4-088",
+        "replacement_case_id": "kpi4-repl-005",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi4-091",
+        "replacement_case_id": "kpi4-repl-006",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "edited"
+      },
+      {
+        "rejected_case_id": "kpi4-092",
+        "replacement_case_id": "kpi4-repl-007",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "accepted"
+      }
+    ],
+    "KPI-5": [
+      {
+        "rejected_case_id": "kpi5-ref-001",
+        "replacement_case_id": "kpi5-repl-001",
+        "submitted_decision": "ACCEPT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi5-ref-003",
+        "replacement_case_id": "kpi5-repl-002",
+        "submitted_decision": "EDIT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi5-ref-014",
+        "replacement_case_id": "kpi5-repl-003",
+        "submitted_decision": "EDIT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi5-ref-041",
+        "replacement_case_id": "kpi5-repl-004",
+        "submitted_decision": "EDIT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi5-ref-043",
+        "replacement_case_id": "kpi5-repl-005",
+        "submitted_decision": "EDIT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi5-ref-054",
+        "replacement_case_id": "kpi5-repl-006",
+        "submitted_decision": "EDIT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi5-ref-081",
+        "replacement_case_id": "kpi5-repl-007",
+        "submitted_decision": "EDIT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi5-ref-083",
+        "replacement_case_id": "kpi5-repl-008",
+        "submitted_decision": "EDIT",
+        "stored_action": "accepted"
+      },
+      {
+        "rejected_case_id": "kpi5-ref-094",
+        "replacement_case_id": "kpi5-repl-009",
+        "submitted_decision": "EDIT",
+        "stored_action": "accepted"
+      }
+    ]
+  },
+  "workbench_case_counts": {
+    "KPI-1": 100,
+    "KPI-4": 100,
+    "KPI-5": 100
+  },
+  "rejected_case_count_after_application": 0
+}

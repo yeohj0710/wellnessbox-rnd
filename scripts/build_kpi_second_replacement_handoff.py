@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from scripts.build_kpi_replacement_handoff import (  # noqa: E402
     ANTHROPIC_MODEL_ID,
+    APPLICATION_REPORT,
     OUTPUT_DIR,
     _engine_logic_paths,
     _workbench,
@@ -53,6 +54,10 @@ def _canonical_json_sha256(payload: dict[str, Any]) -> str:
 
 
 def build_candidates_and_request() -> tuple[dict[str, Any], dict[str, Any]]:
+    if APPLICATION_REPORT.is_file() and CANDIDATES_PATH.is_file() and REQUEST_PATH.is_file():
+        application = _read_json(APPLICATION_REPORT)
+        if application.get("status") == "APPLIED_ALL_REPLACEMENTS":
+            return _read_json(CANDIDATES_PATH), _read_json(REQUEST_PATH)
     decisions = _read_json(DECISIONS_PATH)
     rejected = decisions.get("replacement_required_case_ids", [])
     if rejected != ["kpi1-repl-022", "kpi1-repl-027"]:
@@ -104,6 +109,23 @@ def _bytes(value: dict[str, Any]) -> bytes:
 
 
 def main() -> int:
+    if APPLICATION_REPORT.is_file() and PACKAGE_PATH.is_file():
+        application = _read_json(APPLICATION_REPORT)
+        if application.get("status") == "APPLIED_ALL_REPLACEMENTS":
+            print(
+                json.dumps(
+                    {
+                        "status": "ARCHIVED_AFTER_APPLICATION",
+                        "package": str(PACKAGE_PATH),
+                        "package_sha256": hashlib.sha256(
+                            PACKAGE_PATH.read_bytes()
+                        ).hexdigest(),
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
+            return 0
     candidates, request = build_candidates_and_request()
     SECOND_DIR.mkdir(parents=True, exist_ok=True)
     candidate_bytes = _bytes(candidates)
