@@ -1101,3 +1101,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 현재 WellnessBox `7054d76670870bc31130006a84df3fa10aa46c78` 기준 final preflight는 `READY`였다. health는 모두 200, `/tips`·`/pharm/tips`는 307 후 200, H-005는 10건·선택 0건·미리 입력된 근거 0건이며 저장소 변경은 없었다.
 - WellnessBox 정적 검증 4종은 모두 exit code `0`이다. 최종 감사는 `BLOCKED`, `goal_complete=false`이며 두 영수증 차단 사유가 반복됐다.
 - 완료 마법사는 `3/13`이고 새 업로드는 0건이다. 기존 영수증 2개는 `status=PASS`지만 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`다. 사람의 독립 검토·판정·서명을 만들지 않았다.
+
+## 2026-08-04 사용자 재개 fresh blocked audit 2
+
+- 지정 첫 명령 결과는 동일했다: 정답키 `4/4 READY`, 승인 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`, 최종 감사 `BLOCKED`, 완료 마법사 `3/13`.
+- 현재 서비스 HEAD는 `7054d76670870bc31130006a84df3fa10aa46c78`이다. 기존 final preflight와 정적 검증 결과는 `READY` 및 4종 exit code 0으로 유지된다.
+- `op039_external_review_package.zip`은 SHA-256 `59c9abf83f648ef1089d5c853041031beff454e7be00fb0f70e58348b2681d9f`, 사례 10건, 중복 0건이며 실제 검토 결과·서명은 포함하지 않는다. handoff ZIP도 SHA-256 `c001e69a08445bc61e584b1591b596190d6933fcb0533d76015b4481c12e072`, 71건, 중복 0건이다.
+- 새 서명 자료는 없으므로 두 차단 사유를 유지한다. 사람의 판정·서명과 H-003 `NO-GO`를 우회하지 않았다.
