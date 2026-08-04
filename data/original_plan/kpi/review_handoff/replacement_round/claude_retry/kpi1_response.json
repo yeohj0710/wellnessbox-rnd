@@ -1,0 +1,641 @@
+{
+  "reviewing_agent": "claude-opus-5",
+  "review_source": "blind_packet_independent_opinion",
+  "blinded_from": [
+    "data/knowledge/counseling_answer_verifier_policy_v1.json",
+    "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+    "data/knowledge/goal_ingredient_priors_v1.json",
+    "data/knowledge/reference_knowledge_base_v1.json",
+    "data/knowledge/runtime_knowledge_db_v1.json",
+    "data/original_plan/closed_loop_next_action_policy_v1.json",
+    "data/rules/candidate_signal_scoring_rules_v1.json",
+    "data/rules/safety_rules.json",
+    "data/synthetic/synthetic_longitudinal_v4.jsonl"
+  ],
+  "packet_sha256": "22bfbc1dea05b378567fb8cdbfdc985fb84e638cc4a18a4b3db6f5107c97754b",
+  "engine_output_consulted": false,
+  "cases": [
+    {
+      "case_id": "kpi1-repl-001",
+      "proposed_answer": [
+        "berberine",
+        "vitamin_b_complex",
+        "vitamin_c"
+      ],
+      "confidence": 0.55,
+      "flags": [
+        "ppi_depletes_b12_mg_zn",
+        "antiglycation_evidence_indirect"
+      ],
+      "rationale": "당화를 차단하려면 혈당 노출부터 줄인다. 베르베린이 식후 혈당을, B군의 티아민 계열이 당화 경로를, 비타민C가 산화적 당화를 각각 억제한다. Esomeprazole은 B12·마그네슘·아연 흡수를 떨어뜨려 B군 보충의 필요를 키운다."
+    },
+    {
+      "case_id": "kpi1-repl-002",
+      "proposed_answer": [
+        "soluble_fiber",
+        "probiotics"
+      ],
+      "confidence": 0.75,
+      "flags": [
+        "fiber_drug_absorption_timing",
+        "loop_diuretic_depletes_k_mg_ca_b1"
+      ],
+      "rationale": "수용성 식이섬유가 장내 독소를 흡착해 배출하고, 프로바이오틱스가 장벽을 복구해 내독소 유입을 줄인다. 식이섬유는 Furosemide 흡수를 방해할 수 있어 복용 간격을 벌린다."
+    },
+    {
+      "case_id": "kpi1-repl-003",
+      "proposed_answer": [
+        "omega3",
+        "vitamin_b_complex"
+      ],
+      "confidence": 0.72,
+      "flags": [
+        "levothyroxine_needs_4h_gap_from_minerals"
+      ],
+      "rationale": "DHA가 신경세포막을 유지하고, B12·엽산·B6가 호모시스테인을 낮춰 뇌세포를 보호한다. Levothyroxine은 미네랄 제제와 4시간 이상 벌려 먹는다."
+    },
+    {
+      "case_id": "kpi1-repl-004",
+      "proposed_answer": [
+        "vitamin_b_complex",
+        "omega3"
+      ],
+      "confidence": 0.78,
+      "flags": [
+        "metformin_b12_malabsorption"
+      ],
+      "rationale": "Metformin은 회장에서 B12 흡수를 막아 신경 손상과 지남력 저하를 부른다. B군으로 B12를 먼저 채우고 오메가3로 신경 보호를 보탠다."
+    },
+    {
+      "case_id": "kpi1-repl-005",
+      "proposed_answer": [
+        "omega3",
+        "vitamin_b_complex",
+        "vitamin_d3"
+      ],
+      "confidence": 0.55,
+      "flags": [
+        "broad_goal_low_specificity",
+        "steroid_depletes_ca_vitd_k_mg_zn"
+      ],
+      "rationale": "'전반적 용도'는 목표가 넓어 기본 축만 잡는다. 오메가3·B군·비타민D3를 쓴다. Prednisolone이 비타민D와 칼슘을 소모하므로 D3 보충의 근거가 더 커진다."
+    },
+    {
+      "case_id": "kpi1-repl-006",
+      "proposed_answer": [
+        "omega3",
+        "berberine",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.65,
+      "flags": [
+        "no_current_medication"
+      ],
+      "rationale": "오메가3가 혈관 내피 기능을 개선하고, 베르베린이 인슐린 감수성을 높인다. 마그네슘은 인슐린 신호와 혈관 이완을 함께 돕는다."
+    },
+    {
+      "case_id": "kpi1-repl-007",
+      "proposed_answer": [
+        "magnesium_glycinate",
+        "l_theanine"
+      ],
+      "confidence": 0.8,
+      "flags": [
+        "additive_hypotension_with_ccb"
+      ],
+      "rationale": "글리신산마그네슘이 GABA 경로를 도와 수면 리듬을 잡고, L-테아닌이 교감신경 항진을 낮춘다. Amlodipine과 겹치면 혈압이 더 내려갈 수 있어 저혈압 증상을 확인한다."
+    },
+    {
+      "case_id": "kpi1-repl-008",
+      "proposed_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.7,
+      "flags": [
+        "statin_coq10_depletion_unaddressed_by_goal"
+      ],
+      "rationale": "L-테아닌이 코르티솔 반응을 눌러 스트레스를 조절하고, 마그네슘이 HPA축 과활성을 완화한다. 목표와 별개로 Atorvastatin의 CoQ10 고갈은 따로 확인할 항목이다."
+    },
+    {
+      "case_id": "kpi1-repl-009",
+      "proposed_answer": [
+        "vitamin_b_complex",
+        "magnesium_glycinate",
+        "zinc"
+      ],
+      "confidence": 0.7,
+      "flags": [
+        "ppi_depletes_b12_mg_zn"
+      ],
+      "rationale": "신경전달물질 합성에는 B6·엽산·B12가 원료로, 마그네슘이 ATP 생성 보조인자로 들어간다. 아연은 신경전달과 효소 활성에 쓰인다. Esomeprazole이 이 세 가지를 모두 떨어뜨려 결핍 목표와 정확히 맞물린다."
+    },
+    {
+      "case_id": "kpi1-repl-010",
+      "proposed_answer": [
+        "omega3",
+        "coq10"
+      ],
+      "confidence": 0.6,
+      "flags": [
+        "loop_diuretic_electrolyte_depletion"
+      ],
+      "rationale": "오메가3가 혈액 점도와 내피 기능을 개선해 뇌 혈류를 돕고, CoQ10이 미토콘드리아 에너지 생성을 받친다. 운동부족·혈류저하 목표에 직접 대응한다."
+    },
+    {
+      "case_id": "kpi1-repl-011",
+      "proposed_answer": [
+        "omega3",
+        "vitamin_d3"
+      ],
+      "confidence": 0.7,
+      "flags": [
+        "levothyroxine_absorption_timing"
+      ],
+      "rationale": "EPA·DHA가 신경염증 매개물질을 줄이고, 비타민D3가 미세아교세포 활성과 아밀로이드 청소에 관여한다. 만성 염증 축에 가장 곧게 대응하는 조합이다."
+    },
+    {
+      "case_id": "kpi1-repl-012",
+      "proposed_answer": [
+        "omega3",
+        "zinc"
+      ],
+      "confidence": 0.6,
+      "flags": [
+        "metformin_b12_depletion_may_affect_neural_hearing"
+      ],
+      "rationale": "DHA가 망막 광수용체 구성 성분이고 미세순환을 돕는다. 아연은 황반 보호와 달팽이관 기능에 쓰인다. Metformin의 B12 고갈이 청신경에도 영향을 줄 수 있어 B12는 별도로 확인한다."
+    },
+    {
+      "case_id": "kpi1-repl-013",
+      "proposed_answer": [
+        "vitamin_c",
+        "coq10",
+        "zinc"
+      ],
+      "confidence": 0.75,
+      "flags": [
+        "steroid_immunosuppression_infection_risk"
+      ],
+      "rationale": "비타민C가 콜라겐 합성과 모세혈관 강화를 맡아 잇몸 출혈을 줄인다. CoQ10은 치은염 개선 근거가 쌓여 있고, 아연은 조직 재생을 돕는다. Prednisolone이 면역을 눌러 감염 악화 여부를 함께 본다."
+    },
+    {
+      "case_id": "kpi1-repl-014",
+      "proposed_answer": [
+        "vitamin_d3",
+        "calcium_citrate"
+      ],
+      "confidence": 0.78,
+      "flags": [
+        "no_current_medication"
+      ],
+      "rationale": "치조골 밀도 유지가 목표이므로 비타민D3로 칼슘 흡수를 올리고 구연산칼슘으로 원료를 공급한다. 치주염의 골 소실 축에 직접 대응한다."
+    },
+    {
+      "case_id": "kpi1-repl-015",
+      "proposed_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.75,
+      "flags": [
+        "additive_hypotension_with_ccb"
+      ],
+      "rationale": "L-테아닌이 알파파를 늘려 불안과 자책 반추를 낮추고, 마그네슘이 NMDA 과활성을 눌러 정서를 안정시킨다. Amlodipine과의 혈압 강하 중첩을 확인한다."
+    },
+    {
+      "case_id": "kpi1-repl-016",
+      "proposed_answer": [
+        "vitamin_b_complex",
+        "coq10"
+      ],
+      "confidence": 0.72,
+      "flags": [
+        "statin_coq10_depletion"
+      ],
+      "rationale": "B군이 에너지 대사 보조인자로 의욕 저하를 개선하고, CoQ10이 미토콘드리아 ATP 생성을 회복시킨다. Atorvastatin이 CoQ10을 고갈시켜 목표와 약물 양쪽에서 CoQ10이 맞물린다."
+    },
+    {
+      "case_id": "kpi1-repl-017",
+      "proposed_answer": [
+        "probiotics",
+        "omega3"
+      ],
+      "confidence": 0.8,
+      "flags": [
+        "ppi_alters_gut_microbiome"
+      ],
+      "rationale": "장-뇌 축이 목표이므로 프로바이오틱스가 1순위다. 오메가3가 장 점막 염증과 기분을 함께 다룬다. Esomeprazole은 위산을 줄여 장내 세균총을 바꾸므로 균주 보충의 근거가 커진다."
+    },
+    {
+      "case_id": "kpi1-repl-018",
+      "proposed_answer": [
+        "omega3",
+        "vitamin_d3",
+        "coq10"
+      ],
+      "confidence": 0.6,
+      "flags": [
+        "loop_diuretic_electrolyte_depletion"
+      ],
+      "rationale": "염증성 피로가 목표라 오메가3와 비타민D3로 염증 축을, CoQ10으로 에너지 축을 잡는다. Furosemide의 전해질 소실이 피로를 키울 수 있어 마그네슘·칼륨 수치를 함께 본다."
+    },
+    {
+      "case_id": "kpi1-repl-019",
+      "proposed_answer": [
+        "berberine",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.8,
+      "flags": [
+        "levothyroxine_absorption_timing",
+        "magnesium_4h_gap_from_levothyroxine"
+      ],
+      "rationale": "베르베린은 AMPK를 켜 인슐린 저항성을 직접 개선한다. 마그네슘 결핍은 인슐린 신호 전달을 망가뜨려 보충 근거가 뚜렷하다. 마그네슘은 Levothyroxine과 4시간 이상 벌려 먹는다."
+    },
+    {
+      "case_id": "kpi1-repl-020",
+      "proposed_answer": [
+        "soluble_fiber",
+        "berberine"
+      ],
+      "confidence": 0.8,
+      "flags": [
+        "metformin_b12_depletion",
+        "additive_glucose_lowering"
+      ],
+      "rationale": "수용성 식이섬유가 위 배출과 당 흡수를 늦춰 식후 스파이크를 눌러 준다. 베르베린이 식후 혈당을 추가로 낮춘다. Metformin과 겹치면 저혈당 여지가 있어 혈당을 확인한다."
+    },
+    {
+      "case_id": "kpi1-repl-021",
+      "proposed_answer": [
+        "omega3",
+        "vitamin_b_complex"
+      ],
+      "confidence": 0.6,
+      "flags": [
+        "steroid_induced_hyperglycemia"
+      ],
+      "rationale": "합병증 방어는 혈관과 신경 두 축이다. 오메가3가 심혈관 합병증을, B군의 벤포티아민 계열이 당뇨병성 신경병증을 겨냥한다. Prednisolone이 혈당을 올려 기저 조절이 흔들릴 수 있다."
+    },
+    {
+      "case_id": "kpi1-repl-022",
+      "proposed_answer": [
+        "vitamin_b_complex",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.5,
+      "flags": [
+        "goal_requires_medication_but_case_has_none",
+        "answer_assumes_typical_diabetes_regimen"
+      ],
+      "rationale": "판정이 '약물 고갈 영양소'인데 복용약이 없어 대상 약물을 특정하지 못한다. 당뇨 영역의 대표적 고갈 조합인 B12(B군)와 마그네슘으로 답했다. 사례 자체의 정합성을 다시 볼 항목이다."
+    },
+    {
+      "case_id": "kpi1-repl-023",
+      "proposed_answer": [
+        "magnesium_glycinate",
+        "l_theanine"
+      ],
+      "confidence": 0.72,
+      "flags": [
+        "dizziness_may_be_amlodipine_induced",
+        "additive_hypotension_with_ccb"
+      ],
+      "rationale": "심인성 현훈은 자율신경 과활성이 축이라 마그네슘과 L-테아닌으로 교감신경을 낮춘다. 다만 Amlodipine 자체가 기립성 저혈압과 어지럼증을 만들 수 있어 약물 원인부터 배제한다."
+    },
+    {
+      "case_id": "kpi1-repl-024",
+      "proposed_answer": [
+        "soluble_fiber",
+        "berberine"
+      ],
+      "confidence": 0.7,
+      "flags": [
+        "berberine_cyp3a4_raises_statin_level",
+        "statin_coq10_depletion"
+      ],
+      "rationale": "수용성 식이섬유가 담즙산을 붙잡아 LDL을 낮추고, 베르베린이 LDL 수용체 발현을 늘린다. 베르베린은 CYP3A4를 억제해 Atorvastatin 농도를 올릴 수 있어 병용을 확인한다."
+    },
+    {
+      "case_id": "kpi1-repl-025",
+      "proposed_answer": [
+        "omega3",
+        "berberine"
+      ],
+      "confidence": 0.8,
+      "flags": [
+        "ppi_nutrient_depletion"
+      ],
+      "rationale": "중성지방 상승형에는 고용량 EPA·DHA가 1순위다. 베르베린이 대사성 요인을 함께 잡는다."
+    },
+    {
+      "case_id": "kpi1-repl-026",
+      "proposed_answer": [
+        "coq10",
+        "vitamin_c"
+      ],
+      "confidence": 0.62,
+      "flags": [
+        "loop_diuretic_electrolyte_depletion"
+      ],
+      "rationale": "CoQ10이 지질상에서 LDL 산화를 막고, 비타민C가 수용상 항산화와 CoQ10 재생을 맡는다. 산화 방지형 목표에 두 상을 나눠 대응한다."
+    },
+    {
+      "case_id": "kpi1-repl-027",
+      "proposed_answer": [
+        "coq10",
+        "vitamin_d3"
+      ],
+      "confidence": 0.75,
+      "flags": [
+        "judgment_says_statin_but_case_drug_is_levothyroxine"
+      ],
+      "rationale": "스타틴 복용형의 표준 대응은 CoQ10 보충이고, 비타민D 부족은 스타틴 근육통을 키우므로 D3를 함께 본다. 다만 이 사례의 복용약은 Levothyroxine이라 판정과 약물이 어긋난다. 사례 구성을 확인할 항목이다."
+    },
+    {
+      "case_id": "kpi1-repl-028",
+      "proposed_answer": [
+        "vitamin_b_complex",
+        "coq10"
+      ],
+      "confidence": 0.78,
+      "flags": [
+        "metformin_b12_depletion"
+      ],
+      "rationale": "기초 에너지 생성은 TCA 회로와 전자전달계다. B군이 보조인자를, CoQ10이 전자전달 운반체를 맡는다. Metformin의 B12 고갈이 B군 보충 근거를 더한다."
+    },
+    {
+      "case_id": "kpi1-repl-029",
+      "proposed_answer": [
+        "magnesium_glycinate",
+        "vitamin_b_complex",
+        "l_theanine"
+      ],
+      "confidence": 0.55,
+      "flags": [
+        "steroid_induced_hyperglycemia",
+        "steroid_depletes_mg_zn_k"
+      ],
+      "rationale": "마그네슘이 자율신경 균형과 인슐린 감수성을 함께 잡고, B군의 판토텐산이 부신 기능을 받친다. L-테아닌이 교감신경 항진을 낮춘다. Prednisolone이 혈당을 올리고 마그네슘을 소모해 두 축 모두 흔든다."
+    },
+    {
+      "case_id": "kpi1-repl-030",
+      "proposed_answer": [
+        "vitamin_c",
+        "vitamin_b_complex",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.6,
+      "flags": [
+        "no_current_medication"
+      ],
+      "rationale": "부신 피질은 비타민C 농도가 가장 높은 조직이라 소진 관리에 우선 쓴다. B군의 판토텐산이 코르티솔 합성을, 마그네슘이 회복기 이완을 돕는다."
+    },
+    {
+      "case_id": "kpi1-repl-031",
+      "proposed_answer": [
+        "magnesium_glycinate",
+        "l_theanine"
+      ],
+      "confidence": 0.78,
+      "flags": [
+        "additive_hypotension_with_ccb"
+      ],
+      "rationale": "갱년기 불면과 불안은 GABA 경로가 축이라 글리신산마그네슘과 L-테아닌을 쓴다. Amlodipine과의 혈압 강하 중첩을 확인한다."
+    },
+    {
+      "case_id": "kpi1-repl-032",
+      "proposed_answer": [
+        "calcium_citrate",
+        "vitamin_d3",
+        "omega3"
+      ],
+      "confidence": 0.75,
+      "flags": [
+        "statin_coq10_depletion_unaddressed_by_goal"
+      ],
+      "rationale": "에스트로겐이 줄면 골 흡수가 빨라지므로 구연산칼슘과 비타민D3로 골밀도를 지킨다. 오메가3가 관절통의 염증 축을 맡는다."
+    },
+    {
+      "case_id": "kpi1-repl-033",
+      "proposed_answer": [
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "confidence": 0.68,
+      "flags": [
+        "age_31_atypical_for_menopause_domain",
+        "ppi_depletes_b12"
+      ],
+      "rationale": "세포 에너지 생성이 목표라 CoQ10과 B군으로 미토콘드리아 축을 잡는다. 다만 나이 31에 여성 갱년기 영역은 조기 폐경이 아니면 어울리지 않아 사례 구성을 확인할 항목이다."
+    },
+    {
+      "case_id": "kpi1-repl-034",
+      "proposed_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.75,
+      "flags": [
+        "loop_diuretic_depletes_magnesium"
+      ],
+      "rationale": "위장 증상의 자율신경 축이 목표이므로 L-테아닌으로 교감신경을, 마그네슘으로 평활근 긴장을 낮춘다. Furosemide가 마그네슘을 소실시켜 보충 근거가 더 커진다."
+    },
+    {
+      "case_id": "kpi1-repl-035",
+      "proposed_answer": [
+        "magnesium_glycinate",
+        "coq10",
+        "vitamin_b_complex"
+      ],
+      "confidence": 0.85,
+      "flags": [
+        "levothyroxine_needs_4h_gap_from_magnesium"
+      ],
+      "rationale": "편두통 예방은 마그네슘·CoQ10·리보플라빈(B2) 세 가지가 가장 근거가 두껍다. 혈관 안정과 미토콘드리아 대사를 함께 겨냥한다. 마그네슘은 Levothyroxine과 시간을 벌려 먹는다."
+    },
+    {
+      "case_id": "kpi1-repl-036",
+      "proposed_answer": [
+        "magnesium_glycinate",
+        "l_theanine"
+      ],
+      "confidence": 0.75,
+      "flags": [
+        "metformin_b12_depletion"
+      ],
+      "rationale": "긴장성 두통은 근육 긴장이 축이라 마그네슘으로 근이완을, L-테아닌으로 스트레스성 긴장을 낮춘다."
+    },
+    {
+      "case_id": "kpi1-repl-037",
+      "proposed_answer": [
+        "magnesium_glycinate",
+        "l_theanine"
+      ],
+      "confidence": 0.68,
+      "flags": [
+        "insomnia_may_be_prednisolone_induced",
+        "avoid_evening_steroid_dosing"
+      ],
+      "rationale": "수면 부족이 두통 유발 인자이므로 마그네슘과 L-테아닌으로 수면의 질을 올린다. 다만 Prednisolone 자체가 불면을 만들므로 복용 시각을 아침으로 옮기는지부터 확인한다."
+    },
+    {
+      "case_id": "kpi1-repl-038",
+      "proposed_answer": [
+        "soluble_fiber",
+        "magnesium_glycinate",
+        "probiotics"
+      ],
+      "confidence": 0.5,
+      "flags": [
+        "broad_goal_low_specificity",
+        "no_current_medication"
+      ],
+      "rationale": "식이 유발형은 혈당 변동과 장내 히스타민 처리가 축이다. 수용성 식이섬유가 혈당 변동을, 프로바이오틱스가 장내 요인을 다루고 마그네슘이 두통 예방 기반을 깐다. 유발 식품이 특정되지 않아 확신은 낮다."
+    },
+    {
+      "case_id": "kpi1-repl-039",
+      "proposed_answer": [
+        "soluble_fiber",
+        "magnesium_glycinate",
+        "probiotics"
+      ],
+      "confidence": 0.8,
+      "flags": [
+        "ccb_may_worsen_constipation"
+      ],
+      "rationale": "배변 습관 교정이 목표라 수용성 식이섬유로 변을 무르게 하고, 마그네슘의 삼투 작용과 프로바이오틱스의 장 운동 개선을 더한다. 칼슘차단제가 변비를 키울 수 있어 약물 기여도 확인한다."
+    },
+    {
+      "case_id": "kpi1-repl-040",
+      "proposed_answer": [
+        "omega3",
+        "coq10",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.7,
+      "flags": [
+        "statin_coq10_depletion",
+        "additive_hypotension_risk"
+      ],
+      "rationale": "혈관 경화형은 동맥 경직도가 축이다. 오메가3가 내피 기능과 중성지방을, CoQ10이 혈압과 미토콘드리아를, 마그네슘이 혈관 이완을 맡는다. Atorvastatin의 CoQ10 고갈이 보충 근거를 더한다."
+    },
+    {
+      "case_id": "kpi1-repl-041",
+      "proposed_answer": [
+        "l_theanine",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.82,
+      "flags": [
+        "ppi_depletes_magnesium"
+      ],
+      "rationale": "교감신경 항진형에는 L-테아닌이 가장 곧게 대응한다. 마그네슘이 두근거림·불면·뒷목 긴장을 함께 낮춘다. Esomeprazole이 마그네슘을 고갈시켜 보충 근거가 커진다."
+    },
+    {
+      "case_id": "kpi1-repl-042",
+      "proposed_answer": [
+        "vitamin_b_complex",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.85,
+      "flags": [
+        "loop_diuretic_depletes_b1_and_mg"
+      ],
+      "rationale": "호모시스테인형의 표준 대응은 엽산·B6·B12를 담은 B군이다. 마그네슘이 혈관 이완을 보탠다. Furosemide가 티아민과 마그네슘을 소실시켜 두 성분 모두 근거가 겹친다."
+    },
+    {
+      "case_id": "kpi1-repl-043",
+      "proposed_answer": [
+        "calcium_citrate",
+        "vitamin_d3"
+      ],
+      "confidence": 0.8,
+      "flags": [
+        "calcium_must_be_4h_apart_from_levothyroxine",
+        "possible_iatrogenic_hyperthyroidism"
+      ],
+      "rationale": "갑상선 호르몬이 넘치면 골 교체율이 올라가 골밀도가 빠진다. 구연산칼슘과 비타민D3로 골 소실을 막는다. Levothyroxine 과다 투여로 생긴 항진 상태일 수 있어 용량 확인이 필요하고, 칼슘은 반드시 4시간 이상 벌려 먹는다."
+    },
+    {
+      "case_id": "kpi1-repl-044",
+      "proposed_answer": [
+        "soluble_fiber",
+        "probiotics",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.72,
+      "flags": [
+        "fiber_may_reduce_metformin_absorption"
+      ],
+      "rationale": "갑상선 저하는 장 운동을 늦춰 변비를 만든다. 수용성 식이섬유와 프로바이오틱스로 연동운동을, 마그네슘으로 삼투 작용을 더한다. 식이섬유는 Metformin 흡수를 늦출 수 있어 간격을 둔다."
+    },
+    {
+      "case_id": "kpi1-repl-045",
+      "proposed_answer": [
+        "vitamin_d3",
+        "zinc",
+        "probiotics"
+      ],
+      "confidence": 0.65,
+      "flags": [
+        "steroid_immunosuppression",
+        "live_probiotic_caution_on_systemic_steroid"
+      ],
+      "rationale": "점막 1차 방어선은 비타민D3의 항균 펩타이드, 아연의 상피 장벽, 프로바이오틱스의 점막 IgA로 세운다. 다만 Prednisolone으로 면역이 눌린 상태에서는 생균 제제의 감염 위험을 먼저 따진다."
+    },
+    {
+      "case_id": "kpi1-repl-046",
+      "proposed_answer": [
+        "probiotics",
+        "vitamin_d3",
+        "omega3"
+      ],
+      "confidence": 0.75,
+      "flags": [
+        "no_current_medication"
+      ],
+      "rationale": "과민 반응형은 Th1/Th2 균형 회복이 축이다. 프로바이오틱스가 조절T세포를 늘리고, 비타민D3가 면역 관용을, 오메가3가 알레르기 염증을 낮춘다."
+    },
+    {
+      "case_id": "kpi1-repl-047",
+      "proposed_answer": [
+        "omega3",
+        "vitamin_d3"
+      ],
+      "confidence": 0.72,
+      "flags": [
+        "edema_may_be_amlodipine_induced"
+      ],
+      "rationale": "만성 염증형에는 EPA·DHA의 소염 작용과 비타민D3의 면역 조절이 1순위다. 다만 판정에 적힌 부종은 Amlodipine의 말초 부종일 수 있어 염증성 부종과 구분한다."
+    },
+    {
+      "case_id": "kpi1-repl-048",
+      "proposed_answer": [
+        "coq10",
+        "zinc",
+        "vitamin_c"
+      ],
+      "confidence": 0.68,
+      "flags": [
+        "age_74_atypical_for_fertility_case",
+        "statin_coq10_depletion"
+      ],
+      "rationale": "정자 DNA 손상은 산화 스트레스가 축이라 CoQ10으로 미토콘드리아를, 비타민C로 정액 내 항산화를, 아연으로 정자 형성을 다룬다. Atorvastatin의 CoQ10 고갈이 보충 근거를 더한다. 다만 나이 74는 난임 사례로는 이례적이라 사례 구성을 확인할 항목이다."
+    },
+    {
+      "case_id": "kpi1-repl-049",
+      "proposed_answer": [
+        "soluble_fiber",
+        "probiotics",
+        "magnesium_glycinate"
+      ],
+      "confidence": 0.8,
+      "flags": [
+        "ppi_alters_microbiome_sibo_risk"
+      ],
+      "rationale": "변비 우세형은 변의 부피와 연동운동을 같이 올린다. 수용성 식이섬유와 프로바이오틱스로 배변 리듬을 잡고 마그네슘으로 삼투 작용을 더한다. Esomeprazole이 장내 세균총을 바꾸므로 균주 보충이 맞물린다."
+    }
+  ]
+}
