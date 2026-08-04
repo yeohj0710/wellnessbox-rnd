@@ -1,23 +1,339 @@
 {
+  "answer_key_integrity": {
+    "completion_blockers": [],
+    "completion_status": "READY",
+    "failed": 0,
+    "indicator_count": 4,
+    "indicators": [
+      {
+        "adaptive_review": {
+          "agreement_count": 6,
+          "batch_approved_count": 0,
+          "disagreement_count": 94,
+          "reason": "",
+          "required_detail_count": 100,
+          "reviewing_agent": "claude-opus-5",
+          "used": true,
+          "verdict": "PASS"
+        },
+        "case_count": 100,
+        "completion_ready": true,
+        "declared_blinding": {
+          "consistent_across_cases": true,
+          "declared_blinded_from": [
+            "data/knowledge/counseling_answer_verifier_policy_v1.json",
+            "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+            "data/knowledge/goal_ingredient_priors_v1.json",
+            "data/knowledge/reference_knowledge_base_v1.json",
+            "data/knowledge/runtime_knowledge_db_v1.json",
+            "data/original_plan/closed_loop_next_action_policy_v1.json",
+            "data/rules/candidate_signal_scoring_rules_v1.json",
+            "data/rules/safety_rules.json",
+            "data/synthetic/synthetic_longitudinal_v4.jsonl"
+          ],
+          "missing_engine_logic": [],
+          "reason": "",
+          "required_engine_logic": [
+            "data/knowledge/counseling_answer_verifier_policy_v1.json",
+            "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+            "data/knowledge/goal_ingredient_priors_v1.json",
+            "data/knowledge/reference_knowledge_base_v1.json",
+            "data/knowledge/runtime_knowledge_db_v1.json",
+            "data/original_plan/closed_loop_next_action_policy_v1.json",
+            "data/rules/candidate_signal_scoring_rules_v1.json",
+            "data/rules/safety_rules.json",
+            "data/synthetic/synthetic_longitudinal_v4.jsonl"
+          ],
+          "verdict": "PASS"
+        },
+        "draft_sources": [
+          "health_checker_reference_extract_v1@reference_corpus_drafters"
+        ],
+        "indicator_id": "KPI-1",
+        "review_effort": {
+          "batch_approved_count": 0,
+          "decision_count": 100,
+          "detailed_decision_count": 100,
+          "duration_source": "per_case_recorded_duration",
+          "edit_rate_pct": 92.0,
+          "elapsed_seconds": 482.0,
+          "reason": "",
+          "seconds_per_decision": 4.82,
+          "verdict": "PASS"
+        },
+        "seal_exists": true,
+        "seal_intact": true,
+        "seal_integrity_audit_verdict": "PASS",
+        "seal_matches_current_cases": true,
+        "seal_must_be_discarded": false,
+        "seal_provenance_matches_current": true,
+        "source_independence": {
+          "independent": true,
+          "modules": [
+            "C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/evals/reference_corpus_drafters.py"
+          ],
+          "reads_engine_logic": [],
+          "reads_vocabulary": [],
+          "reason": "",
+          "verdict": "PASS"
+        },
+        "verdict": "PASS",
+        "workbench_complete": true
+      },
+      {
+        "adaptive_review": {
+          "agreement_count": 41,
+          "batch_approved_count": 0,
+          "disagreement_count": 59,
+          "reason": "",
+          "required_detail_count": 100,
+          "reviewing_agent": "claude-opus-5",
+          "used": true,
+          "verdict": "PASS"
+        },
+        "case_count": 100,
+        "completion_ready": true,
+        "declared_blinding": {
+          "consistent_across_cases": true,
+          "declared_blinded_from": [
+            "data/knowledge/counseling_answer_verifier_policy_v1.json",
+            "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+            "data/knowledge/goal_ingredient_priors_v1.json",
+            "data/knowledge/reference_knowledge_base_v1.json",
+            "data/knowledge/runtime_knowledge_db_v1.json",
+            "data/original_plan/closed_loop_next_action_policy_v1.json",
+            "data/rules/candidate_signal_scoring_rules_v1.json",
+            "data/rules/safety_rules.json",
+            "data/synthetic/synthetic_longitudinal_v4.jsonl"
+          ],
+          "missing_engine_logic": [],
+          "reason": "",
+          "required_engine_logic": [
+            "data/knowledge/counseling_answer_verifier_policy_v1.json",
+            "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+            "data/knowledge/goal_ingredient_priors_v1.json",
+            "data/knowledge/reference_knowledge_base_v1.json",
+            "data/knowledge/runtime_knowledge_db_v1.json",
+            "data/original_plan/closed_loop_next_action_policy_v1.json",
+            "data/rules/candidate_signal_scoring_rules_v1.json",
+            "data/rules/safety_rules.json",
+            "data/synthetic/synthetic_longitudinal_v4.jsonl"
+          ],
+          "verdict": "PASS"
+        },
+        "draft_sources": [
+          "blind_primary_ai_response_v1@adaptive_answer_key_review"
+        ],
+        "indicator_id": "KPI-3",
+        "review_effort": {
+          "batch_approved_count": 0,
+          "decision_count": 100,
+          "detailed_decision_count": 100,
+          "duration_source": "per_case_recorded_duration",
+          "edit_rate_pct": 51.0,
+          "elapsed_seconds": 200.0,
+          "reason": "",
+          "seconds_per_decision": 2.0,
+          "verdict": "PASS"
+        },
+        "seal_exists": true,
+        "seal_intact": true,
+        "seal_integrity_audit_verdict": "PASS",
+        "seal_matches_current_cases": true,
+        "seal_must_be_discarded": false,
+        "seal_provenance_matches_current": true,
+        "source_independence": {
+          "independent": true,
+          "modules": [
+            "C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/evals/adaptive_answer_key_review.py"
+          ],
+          "reads_engine_logic": [],
+          "reads_vocabulary": [],
+          "reason": "",
+          "verdict": "PASS"
+        },
+        "verdict": "PASS",
+        "workbench_complete": true
+      },
+      {
+        "adaptive_review": {
+          "agreement_count": 7,
+          "batch_approved_count": 0,
+          "disagreement_count": 93,
+          "reason": "",
+          "required_detail_count": 100,
+          "reviewing_agent": "codex-gpt-5.6-terra-kpi4-blind",
+          "used": true,
+          "verdict": "PASS"
+        },
+        "case_count": 100,
+        "completion_ready": true,
+        "declared_blinding": {
+          "consistent_across_cases": true,
+          "declared_blinded_from": [
+            "data/knowledge/counseling_answer_verifier_policy_v1.json",
+            "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+            "data/knowledge/goal_ingredient_priors_v1.json",
+            "data/knowledge/reference_knowledge_base_v1.json",
+            "data/knowledge/runtime_knowledge_db_v1.json",
+            "data/original_plan/closed_loop_next_action_policy_v1.json",
+            "data/rules/candidate_signal_scoring_rules_v1.json",
+            "data/rules/safety_rules.json",
+            "data/synthetic/synthetic_longitudinal_v4.jsonl"
+          ],
+          "missing_engine_logic": [],
+          "reason": "",
+          "required_engine_logic": [
+            "data/knowledge/counseling_answer_verifier_policy_v1.json",
+            "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+            "data/knowledge/goal_ingredient_priors_v1.json",
+            "data/knowledge/reference_knowledge_base_v1.json",
+            "data/knowledge/runtime_knowledge_db_v1.json",
+            "data/original_plan/closed_loop_next_action_policy_v1.json",
+            "data/rules/candidate_signal_scoring_rules_v1.json",
+            "data/rules/safety_rules.json",
+            "data/synthetic/synthetic_longitudinal_v4.jsonl"
+          ],
+          "verdict": "PASS"
+        },
+        "draft_sources": [
+          "blind_primary_ai_response_v1@adaptive_answer_key_review"
+        ],
+        "indicator_id": "KPI-4",
+        "review_effort": {
+          "batch_approved_count": 0,
+          "decision_count": 100,
+          "detailed_decision_count": 100,
+          "duration_source": "per_case_recorded_duration",
+          "edit_rate_pct": 77.0,
+          "elapsed_seconds": 242.0,
+          "reason": "",
+          "seconds_per_decision": 2.42,
+          "verdict": "PASS"
+        },
+        "seal_exists": true,
+        "seal_intact": true,
+        "seal_integrity_audit_verdict": "PASS",
+        "seal_matches_current_cases": true,
+        "seal_must_be_discarded": false,
+        "seal_provenance_matches_current": true,
+        "source_independence": {
+          "independent": true,
+          "modules": [
+            "C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/evals/adaptive_answer_key_review.py"
+          ],
+          "reads_engine_logic": [],
+          "reads_vocabulary": [],
+          "reason": "",
+          "verdict": "PASS"
+        },
+        "verdict": "PASS",
+        "workbench_complete": true
+      },
+      {
+        "adaptive_review": {
+          "agreement_count": 0,
+          "batch_approved_count": 0,
+          "disagreement_count": 100,
+          "reason": "",
+          "required_detail_count": 100,
+          "reviewing_agent": "claude-opus-5",
+          "used": true,
+          "verdict": "PASS"
+        },
+        "case_count": 100,
+        "completion_ready": true,
+        "declared_blinding": {
+          "consistent_across_cases": true,
+          "declared_blinded_from": [
+            "data/knowledge/counseling_answer_verifier_policy_v1.json",
+            "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+            "data/knowledge/goal_ingredient_priors_v1.json",
+            "data/knowledge/reference_knowledge_base_v1.json",
+            "data/knowledge/runtime_knowledge_db_v1.json",
+            "data/original_plan/closed_loop_next_action_policy_v1.json",
+            "data/rules/candidate_signal_scoring_rules_v1.json",
+            "data/rules/safety_rules.json",
+            "data/synthetic/synthetic_longitudinal_v4.jsonl"
+          ],
+          "missing_engine_logic": [],
+          "reason": "",
+          "required_engine_logic": [
+            "data/knowledge/counseling_answer_verifier_policy_v1.json",
+            "data/knowledge/counseling_knowledge_scope_registry_v1.json",
+            "data/knowledge/goal_ingredient_priors_v1.json",
+            "data/knowledge/reference_knowledge_base_v1.json",
+            "data/knowledge/runtime_knowledge_db_v1.json",
+            "data/original_plan/closed_loop_next_action_policy_v1.json",
+            "data/rules/candidate_signal_scoring_rules_v1.json",
+            "data/rules/safety_rules.json",
+            "data/synthetic/synthetic_longitudinal_v4.jsonl"
+          ],
+          "verdict": "PASS"
+        },
+        "draft_sources": [
+          "health_checker_reference_extract_v1@reference_corpus_drafters"
+        ],
+        "indicator_id": "KPI-5",
+        "review_effort": {
+          "batch_approved_count": 0,
+          "decision_count": 100,
+          "detailed_decision_count": 100,
+          "duration_source": "per_case_recorded_duration",
+          "edit_rate_pct": 0.0,
+          "elapsed_seconds": 254.0,
+          "reason": "",
+          "seconds_per_decision": 2.54,
+          "verdict": "PASS"
+        },
+        "seal_exists": true,
+        "seal_intact": true,
+        "seal_integrity_audit_verdict": "PASS",
+        "seal_matches_current_cases": true,
+        "seal_must_be_discarded": false,
+        "seal_provenance_matches_current": true,
+        "source_independence": {
+          "independent": true,
+          "modules": [
+            "C:/dev/wellnessbox-rnd/src/wellnessbox_rnd/evals/reference_corpus_drafters.py"
+          ],
+          "reads_engine_logic": [],
+          "reads_vocabulary": [],
+          "reason": "",
+          "verdict": "PASS"
+        },
+        "verdict": "PASS",
+        "workbench_complete": true
+      }
+    ],
+    "needs_review": 0,
+    "passed": 4,
+    "schema_version": "answer_key_integrity_audit_v1",
+    "seals_to_discard": [],
+    "status": "READY"
+  },
   "audit": {
-    "blockers": [],
+    "blockers": [
+      "validation_receipt_missing_or_invalid",
+      "independent_review_receipt_missing_or_invalid"
+    ],
     "facts": {
       "canonical_evidence_audit_passed": true,
       "claimed_requirement_count": 120,
       "external_validation_gap_ids": [],
-      "independent_review_receipt_valid": true,
+      "independent_review_receipt_valid": false,
       "missing_report_ids": [],
       "nonexternal_stage_gap_ids": [],
       "report_count": 120,
       "requirement_count": 120,
-      "validation_receipt_valid": true
+      "validation_receipt_valid": false
     },
-    "goal_complete": true,
-    "status": "READY"
+    "goal_complete": false,
+    "status": "BLOCKED"
   },
   "audited_input_identity": {
     "file_blobs": {
-      "wellnessbox-rnd/.github/workflows/original-plan-evidence.yml": "c30e822e7ed3a73f6f7914f9a7d54a90608067d1",
+      "wellnessbox-rnd/.github/workflows/original-plan-evidence.yml": "f7c2a350f8df19fdd53144f73d07eb5f4d121e25",
       "wellnessbox-rnd/apps/inference_api/main.py": "2f9874ed1d45a68e1e4112e7dbaae83d34840ecd",
       "wellnessbox-rnd/apps/inference_api/routes/health.py": "2dd249ae4d183855ed844a950b6837a7972edde1",
       "wellnessbox-rnd/apps/inference_api/routes/interim.py": "7078c57275440ccbc3df666903cd2e8a2fef9bcc",
@@ -301,7 +617,7 @@
       "wellnessbox-rnd/scripts/run_external_dependency_registry_smoke.py": "be49c50498dc6fbca0d86119a5e90b6318a31d2a",
       "wellnessbox-rnd/scripts/run_external_high_risk_safety_eval.py": "5dbd5e6851b78e10e8195aeefebb57e6a93992e0",
       "wellnessbox-rnd/scripts/run_fail_closed_job_pharmacist_review_smoke.py": "8d3c75be86eb96a0ebb6d83a4e4dec60a1c4757f",
-      "wellnessbox-rnd/scripts/run_final_completion_audit.py": "0d3306f0261b1ad9a30e6a65468589b8deeab164",
+      "wellnessbox-rnd/scripts/run_final_completion_audit.py": "f7c22de38c413e4453a2b608fae7db8ca5c86b95",
       "wellnessbox-rnd/scripts/run_final_session_console.py": "e72d9fdc643394ff20b22cb3ab0d81b3b575dc21",
       "wellnessbox-rnd/scripts/run_final_session_console_smoke.py": "cba899426b5c29612ead69a64490c8ac7fb6b7d5",
       "wellnessbox-rnd/scripts/run_followup_input_serious_ae_smoke.py": "4601f521d8ff5bc3761cafd4a6b86ae6214f516d",
@@ -334,7 +650,7 @@
       "wellnessbox-rnd/scripts/run_versioned_pro_scoring_baseline_percentile_smoke.py": "e0ab8112d914f26465346fdbdaf91a4adb05d750",
       "wellnessbox-rnd/scripts/run_wellnessbox_final_safety_authority_smoke.py": "cef82b9bf020dee0a55e9d67f59d1979b3536483",
       "wellnessbox-rnd/src/wellnessbox_rnd/chat/answering.py": "af86d8cceeb3101324d6728d53cd17db5aa03686",
-      "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py": "e47df1f8899a2eeda3c513ebfd3ac035200fc741",
+      "wellnessbox-rnd/src/wellnessbox_rnd/chat/openai_adapter.py": "230df1c7837d960083f5f50ce1c61eedd57d7965",
       "wellnessbox-rnd/src/wellnessbox_rnd/chat/retrieval.py": "a58cac55da82fd1e4e5f194c916047520515193a",
       "wellnessbox-rnd/src/wellnessbox_rnd/chat/verifier.py": "b86bdfa2c1b9f2cbbe06525adeec4366b2507c02",
       "wellnessbox-rnd/src/wellnessbox_rnd/deployment.py": "3dbadf19279a86d280fe447a7dd1077e944a4f10",
@@ -405,7 +721,7 @@
       "wellnessbox-rnd/tests/test_candidate_pool_structured_reasons.py": "218d9a737856a6dc336f8b041e079c93e627f2ae",
       "wellnessbox-rnd/tests/test_candidate_signal_scoring.py": "d7154a8fa401d20db183dfd7ef41d4185df3fc35",
       "wellnessbox-rnd/tests/test_cgm_events.py": "2d1d7bb5d6204a2819d2d4060db9acf925bc70eb",
-      "wellnessbox-rnd/tests/test_chat_openai_adapter.py": "e93147397d68ef58fac99711a30b1d1d797b3562",
+      "wellnessbox-rnd/tests/test_chat_openai_adapter.py": "382d79b861cb9af446216284d772c35867461e17",
       "wellnessbox-rnd/tests/test_chat_retrieval.py": "f071494c1f59c050e933ca18567bec191827c71f",
       "wellnessbox-rnd/tests/test_consent_and_input_hash_contracts.py": "80f7b19689a4f49201f521d93a2d6a0d0fc4666b",
       "wellnessbox-rnd/tests/test_data_lake_lineage.py": "0a595ac3d91ec328dd8318832261603fbd744ebf",
@@ -416,7 +732,7 @@
       "wellnessbox-rnd/tests/test_event_idempotency_data_mutation.py": "f5f0ea9003241616cc6f6f12a0e054844a0929ae",
       "wellnessbox-rnd/tests/test_external_dependency_registry.py": "82ee7c0f26e2be63136f88fe4506271c8f77f939",
       "wellnessbox-rnd/tests/test_external_high_risk_safety_eval.py": "affdaae1b512ed7021d03230f1250e0791ba71e1",
-      "wellnessbox-rnd/tests/test_final_completion_audit.py": "0969e0115b4fef0350459f51ad32c5146ade6555",
+      "wellnessbox-rnd/tests/test_final_completion_audit.py": "ae2bdf466f2b4fbbd3489df63d7282558e62abde",
       "wellnessbox-rnd/tests/test_final_session_console.py": "d82548519eeb786740bc5c18f7b91f8273ae6a4b",
       "wellnessbox-rnd/tests/test_goal_ingredient_priors.py": "1150947521af5bae52709a5afadffa8d5cb158c8",
       "wellnessbox-rnd/tests/test_health_input_contracts.py": "06ee3a817c09f04a32dcc69e3b5dfec263a21703",
@@ -462,7 +778,7 @@
       "wellnessbox/.github/workflows/encoding-guard.yml": "303a5f3f051126f60be728648474ce0f85c83fd1",
       "wellnessbox/app/(dev)/rnd-preview/rnd-preview-client.tsx": "37bddd6d0e39034e4dc39193af865c228eba00c9",
       "wellnessbox/app/(orders)/order-complete/useOrderCompleteBootstrap.ts": "62f774f22e5c4bd3af073eb87d00e34111568432",
-      "wellnessbox/app/api/chat/route-service.ts": "7e526379726e3fd2da170b32210d3cfe424fbd36",
+      "wellnessbox/app/api/chat/route-service.ts": "34b46127033156c162f1109f68ff4b0cfca6a3a0",
       "wellnessbox/app/api/chat/save/route-service.ts": "366333351ce7a9cad4380228bf4364947593389c",
       "wellnessbox/app/api/internal/rnd/health/route.ts": "0ac3652195d9606247376b8ac489af0af0521d22",
       "wellnessbox/app/api/tips/pro/effects/route.ts": "bd8993df74de8e9d408c8d8f295056d9f60dde66",
@@ -528,8 +844,8 @@
       "wellnessbox/scripts/qa/run-tips-pro-correction-client.cts": "19da112e8a781853a5096878a9e14ed3b75b7014"
     },
     "repository_commits": {
-      "wellnessbox": "f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f",
-      "wellnessbox-rnd": "147d5869ae3652a30efcc75cbeb6171afcb17f25"
+      "wellnessbox": "7054d76670870bc31130006a84df3fa10aa46c78",
+      "wellnessbox-rnd": "2739bf29446019305e793490dd3cac13d05bcfe0"
     }
   },
   "dataset": {
@@ -545,12 +861,12 @@
       "claimed_requirement_count": 120
     },
     "completion_decision": {
-      "goal_complete": true,
-      "status": "READY"
+      "goal_complete": false,
+      "status": "BLOCKED"
     },
     "completion_receipts": {
-      "independent_review": true,
-      "validation": true
+      "independent_review": false,
+      "validation": false
     },
     "external_validation": {
       "external_validation_gap_ids": []
@@ -574,20 +890,23 @@
   "schema_version": "op120_final_completion_audit_v1",
   "source_identity": {
     "blobs": {
+      "data/original_plan/contracts/engine_input_registry_v1.json": "5618e348fc80cd781b238bde1c04b9b5573ac779",
       "data/original_plan/op120_final_audit_policy_v1.json": "42c43be5de8807ca84473c13202a243ab042eb9d",
       "data/original_plan/op120_final_completion_audit_cases_v1.json": "57e7c02ef7bfb1af57e2f926c16d19e84740f2e5",
       "data/original_plan/requirements_manifest_v1.json": "ea47e7293ed4fe0a1060ec4dde21639238814f54",
       "docs/original_plan/research_reports/OP-120.md": "dd2f132d6977fe9818c3e2e5eb497d82a2dd562a",
       "pyproject.toml": "f3bfdac2422d69974dd91bc4ed12e9b4878e2d6b",
-      "scripts/run_final_completion_audit.py": "0d3306f0261b1ad9a30e6a65468589b8deeab164",
+      "scripts/audit_answer_key_integrity.py": "00655fa8aa6f77e5188be6ad8e3f4db8d21f833d",
+      "scripts/run_final_completion_audit.py": "f7c22de38c413e4453a2b608fae7db8ca5c86b95",
+      "src/wellnessbox_rnd/evals/answer_key_integrity.py": "4488b88305682619d978d999a461d59421054512",
       "src/wellnessbox_rnd/governance/final_completion_audit.py": "a8dfa82bd61ab5eff88dd08e5c4ca46648400d31",
-      "tests/test_final_completion_audit.py": "0969e0115b4fef0350459f51ad32c5146ade6555"
+      "tests/test_final_completion_audit.py": "ae2bdf466f2b4fbbd3489df63d7282558e62abde"
     },
-    "commit": "558d70340aa2a1c5c1656d2f60aa6efc4db3a1a6"
+    "commit": "2739bf29446019305e793490dd3cac13d05bcfe0"
   },
   "stage_boundary": {
-    "final_audit_ready": true,
+    "final_audit_ready": false,
     "final_auditor_implemented": true,
-    "goal_complete": true
+    "goal_complete": false
   }
 }
