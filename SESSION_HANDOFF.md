@@ -1230,3 +1230,12 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 적용: 서비스 7개 파일의 안전 보정, R&D 독립 검토 신뢰루트 정책·감사 코드, 회귀 테스트 보정. OP-039 manifest 단계 변경은 적용하지 않았다.
 - 현재 HEAD: WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`, R&D `e295fd9bdfee15f3089621b5bc2492ce0d9d47a1`. preflight `0`, 서비스 정적 검증 4종, R&D 집중 테스트 58개 통과. final audit `BLOCKED`.
 - 다음 조건: 현재 두 HEAD 기준의 유효한 검증 영수증·독립 검토 영수증과 실제 완료 마법사 기록.
+
+## 2026-08-05 사용자 재개 fresh audit 2 재확인
+
+- 현재 HEAD: WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`, R&D `e300b70`.
+- 자동 감사: 정답키 `4/4 READY`, 승인 전용 데이터셋 `6건 READY`, 연구계획 요건 `120/120 PASS`.
+- 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`, 감사 산출물 SHA-256 `74c486b24b9b43d66f05ae202d2f6d234e6a1571f1870326644b3f99d973abd2`.
+- 차단 사유: `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`.
+- 완료 마법사: `3/13`. 실제 사람 자료와 현재 커밋 기준 서명이 없으므로 기존 자료를 승격하지 않았고 H-003 `NO-GO`를 유지했다.
+- 다음 조건: 현재 HEAD 검증 결과, 구현과 독립된 검토 결과, 두 서명 영수증, 실제 마법사 기록이 도착하면 importer·provenance·해시·중복·사례 수를 확인한 뒤 final audit를 재실행한다.
