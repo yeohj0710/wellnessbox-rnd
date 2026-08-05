@@ -660,6 +660,12 @@ SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
 2. 최신 ZIP SHA-256은 `813967fe5ffac8cb20c967d7e4517a582ff2f543d78946c004899cf386db376d`다. importer 구조는 `READY`지만 사람 자료는 `ready_to_apply=false`다.
 3. 다음 외부 자료가 오면 importer가 `ready_to_apply=true`인지 확인한 뒤에만 반영하고, 최종 감사 `status=READY`, `goal_complete=true`를 확인한다.
 
+## 2026-08-05 마법사 보완 후 최종 감사 결과
+
+- R&D `main` `0b08d28`에서 final audit exit code `1`, `status=BLOCKED`, `goal_complete=false`다.
+- 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`이며 감사 산출물 SHA-256은 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`다.
+- 다음 단계는 새 반환 ZIP의 현재 HEAD 검증·독립 검토·분리된 두 서명·실제 마법사 기록을 importer로 확인하는 것이다.
+
 ## 2026-08-05 현재 재감사 인계
 
 1. 현재 local `main`은 R&D `7fa57da`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다. 자동 감사는 정답키 `4/4 READY`, 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`다.

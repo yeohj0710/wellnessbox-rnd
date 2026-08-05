@@ -1307,3 +1307,10 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 최신 처리 ZIP: `C:\dev\wellnessbox-rnd\etc\completion_human_processing_package.zip`, SHA-256 `813967fe5ffac8cb20c967d7e4517a582ff2f543d78946c004899cf386db376d`, 81개 항목·매니페스트 80개·OP-039 10건.
 - importer 결과: 구조 `READY`, `ready_to_apply=false`; OP-039 역할 불일치, 현재 HEAD와 다른 두 영수증, 완료 마법사 미완료 자료가 남아 있다.
 - 다음 작업: 새 반환 ZIP 검증 후 모든 사람 자료가 READY일 때만 반영하고 final audit를 실행한다. H-003 `NO-GO`는 유지한다.
+
+## 2026-08-05 마법사 보완 후 최종 감사 인계
+
+- 현재 R&D `main`: `0b08d28`; WellnessBox: `0bbee48bdb6779ae338b121331b678aacc9ed777`.
+- 완료 마법사: `10/13`; DATASET 완료, AUDIT는 실제 `BLOCKED` 판정. H-003 `NO-GO` 유지.
+- final audit: exit code `1`, `status=BLOCKED`, `goal_complete=false`; blockers `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`; audit SHA-256 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`.
+- 최신 처리 ZIP은 SHA-256 `813967fe5ffac8cb20c967d7e4517a582ff2f543d78946c004899cf386db376d`이고 구조 검증 `READY`, 사람 자료 반영 `ready_to_apply=false`다.

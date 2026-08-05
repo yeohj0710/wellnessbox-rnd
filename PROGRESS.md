@@ -1215,3 +1215,9 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 집중 테스트는 `75 passed`다. 마법사 상태는 `10/13`으로 갱신됐고, DATASET은 승인 초안 6건으로 완료, AUDIT는 저장된 `BLOCKED` 결과로 표시된다.
 - 현재 main은 R&D `c5e34e2`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다. H-003 학습 게이트 `NO-GO`와 훈련·승격 금지는 유지한다.
 - 현재 ZIP은 R&D `c5e34e2` 기준으로 재생성했으며 SHA-256은 `813967fe5ffac8cb20c967d7e4517a582ff2f543d78946c004899cf386db376d`다. importer 구조 검증은 `READY`, 사람 자료 `ready_to_apply=false`다.
+
+## 2026-08-05 마법사 보완 후 최종 감사
+
+- 현재 local `main`은 R&D `0b08d28`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다.
+- `python scripts/run_final_completion_audit.py`는 exit code 1이며 `status=BLOCKED`, `goal_complete=false`, blockers 2건을 반환했다. 감사 산출물 SHA-256은 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`다.
+- 완료 조건을 충족하지 못했으므로 Goal을 complete로 표시하지 않았다. 새 외부 검토·두 유효 서명·완료 마법사 실제 자료가 도착하기 전에는 기존 자료를 승격하지 않는다.
