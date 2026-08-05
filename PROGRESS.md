@@ -1181,3 +1181,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 문구도 `예비 약사 사전 검토`로 정리했다. H-003 `NO-GO`와 KPI-2 3차년도 측정 경계는 유지했다.
 - 브랜치 검증은 R&D 집중 테스트 `39 passed`, 서비스 정적 검증 4종 exit code `0`이다. 현재 R&D local `main` HEAD `94d28d0`, WellnessBox HEAD `0bbee48bdb6779ae338b121331b678aacc9ed777`이다.
 - 현재 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`, 산출물 SHA-256 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`다. 차단 사유는 두 영수증의 현재 커밋·독립 신뢰 자료 부재로 동일하다.
+
+## 2026-08-05 최신 처리 ZIP 갱신
+
+- `etc/completion_human_processing_package.zip`을 현재 R&D `main`과 WellnessBox HEAD 기준으로 갱신했다. ZIP SHA-256은 `eabd758398faa9c26f3d3527111e5f67270f0e198f2e71f17a2a51fa58bb4d35`다.
+- ZIP은 78개 항목·매니페스트 파일 77개·중복 경로 0개·OP-039 사례 10건이며, 매니페스트 내부 SHA-256과 현재 저장소 파일 바이트가 모두 일치한다.
+- 별도 서명 경로를 포함한 완료 콘솔·테스트 파일 3개를 추가했고, 작업 지시 파일과 개인 키 파일은 포함하지 않았다. R&D HEAD는 `b5ff12cc1fb6e0ea823cbad9576f924bb6806784`, WellnessBox HEAD는 `0bbee48bdb6779ae338b121331b678aacc9ed777`다.
+- 실제 검토·판정·서명은 아직 없으므로 최종 감사 `BLOCKED`, 완료 마법사 `3/13`, H-003 `NO-GO`를 유지한다.

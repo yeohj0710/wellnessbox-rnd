@@ -1266,3 +1266,12 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 검증: R&D `tests/test_final_completion_audit.py tests/test_final_session_console.py`는 `39 passed`; WellnessBox 정적 검증 4종은 모두 exit code `0`.
 - 현재 HEAD: R&D `94d28d0`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`. 최종 감사는 `BLOCKED`, `goal_complete=false`, 산출물 SHA-256 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`.
 - 다음 순서: 실제 현재 HEAD 검증 및 독립 검토 자료를 받은 뒤 ZIP provenance·해시·중복·사례 수를 확인하고 importer로 반영한다. 유효한 두 영수증과 실제 마법사 기록을 확인한 뒤 `python scripts/run_final_completion_audit.py`를 실행한다.
+
+## 2026-08-05 최신 처리 ZIP 인계
+
+- 파일: `C:\dev\wellnessbox-rnd\etc\completion_human_processing_package.zip`
+- SHA-256: `eabd758398faa9c26f3d3527111e5f67270f0e198f2e71f17a2a51fa58bb4d35`.
+- 검증: 78개 항목·매니페스트 77개·중복 0건·OP-039 사례 10건·매니페스트 해시 PASS·현재 저장소 바이트 일치·작업 지시 파일 0개·개인 키 0개.
+- provenance: R&D `b5ff12cc1fb6e0ea823cbad9576f924bb6806784`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`.
+- 포함 변경: 별도 서명 키 2개를 요구하는 완료 콘솔·UI·집중 테스트 3개 파일. 이 ZIP 자체에는 서명 키나 사람의 판정·서명을 넣지 않았다.
+- 다음 순서: 반환 ZIP을 자동 신뢰하지 않고 importer·provenance·해시·중복·사례 수를 다시 확인한 뒤, 유효한 실제 자료만 반영하고 final audit를 실행한다.
