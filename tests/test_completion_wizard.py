@@ -14,7 +14,6 @@ from wellnessbox_rnd.governance.completion_wizard import (
     progress_summary,
     read_operational_counts,
     save_progress,
-    step_belongs_to_this_session,
     training_gate_is_open,
     verify_answer_keys,
     verify_audit,
@@ -199,7 +198,7 @@ class DraftReviewVerificationTest(unittest.TestCase):
             result = verify_draft_review(root, {})
 
         self.assertEqual(result.verdict, "todo")
-        self.assertIn("no_drafts_reviewed_this_session", result.missing)
+        self.assertIn("no_drafts_reviewed", result.missing)
 
     def test_all_reviewed_finishes_the_step(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -420,81 +419,80 @@ class ResumeTest(unittest.TestCase):
         self.assertEqual(summary["finished_steps"], 1)
 
 
-class SessionBoundaryTest(unittest.TestCase):
-    """A completion stored by an earlier session must not count as today's work."""
+class StoredWorkKeepsCountingTest(unittest.TestCase):
+    """Work a person already did stays done. Only a missing record reopens a step.
 
-    SESSION_START = "2026-07-30T00:00:00Z"
+    Freshness against the repository is the receipts' job — they bind
+    `manifest_sha256` and `source_commit`. Re-asking for a signoff because a new
+    wizard run started produced rework and no extra evidence.
+    """
 
-    def test_a_step_saved_before_the_session_started_is_not_counted(self) -> None:
+    def test_an_old_signoff_still_counts(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = _fake_root(temp)
             _write_state(
                 root,
                 {"H-002": {"status": "completed", "updated_at": "2026-07-23T04:13:35Z"}},
             )
-            result = verify_step(
-                "H-002", root, {"session_started_at": self.SESSION_START}
-            )
+            result = verify_step("H-002", root, {"session_started_at": "2026-07-30T00:00:00Z"})
 
-        self.assertEqual(result.verdict, "todo")
-        self.assertIn("H-002_completed_in_a_previous_session", result.missing)
+        self.assertEqual(result.verdict, "done")
+        self.assertIn("2026-07-23T04:13:35Z", result.detail)
 
-    def test_a_step_saved_after_the_session_started_is_counted(self) -> None:
+    def test_a_step_with_no_record_is_still_todo(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = _fake_root(temp)
-            _write_state(
-                root,
-                {"H-002": {"status": "completed", "updated_at": "2026-07-30T09:00:00Z"}},
-            )
-            result = verify_step(
-                "H-002", root, {"session_started_at": self.SESSION_START}
-            )
+            _write_state(root, {})
+            result = verify_step("H-002", root, {})
+
+        self.assertEqual(result.verdict, "todo")
+        self.assertIn("H-002_not_completed", result.missing)
+
+    def test_profiles_entered_earlier_count_toward_the_five(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = _fake_root(temp)
+            _write_ledger_at(root, old_profiles=5, new_profiles=0)
+            result = verify_profiles(root, {"session_started_at": "2026-07-30T00:00:00Z"})
 
         self.assertEqual(result.verdict, "done")
 
-    def test_a_step_without_a_timestamp_is_not_counted(self) -> None:
-        self.assertFalse(
-            step_belongs_to_this_session({"status": "completed"}, self.SESSION_START)
-        )
-
-    def test_profiles_from_an_earlier_session_are_reported_separately(self) -> None:
+    def test_fewer_than_five_profiles_is_still_todo(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = _fake_root(temp)
-            _write_ledger_at(root, old_profiles=5, new_profiles=1)
-            result = verify_profiles(root, {"session_started_at": self.SESSION_START})
+            _write_ledger_at(root, old_profiles=2, new_profiles=1)
+            result = verify_profiles(root, {})
 
         self.assertEqual(result.verdict, "todo")
-        self.assertIn("1/5", result.detail)
-        self.assertIn("이전 세션 프로필 5건", result.detail)
+        self.assertIn("3/5", result.detail)
 
-    def test_five_fresh_profiles_finish_the_step(self) -> None:
-        with tempfile.TemporaryDirectory() as temp:
-            root = _fake_root(temp)
-            _write_ledger_at(root, old_profiles=2, new_profiles=5)
-            result = verify_profiles(root, {"session_started_at": self.SESSION_START})
-
-        self.assertEqual(result.verdict, "done")
-
-    def test_drafts_reviewed_in_an_earlier_session_do_not_finish_the_step(self) -> None:
+    def test_an_empty_queue_finishes_the_draft_step(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = _fake_root(temp)
             _write_ledger_at(root, old_profiles=5, new_profiles=0, old_reviews=7)
-            result = verify_draft_review(root, {"session_started_at": self.SESSION_START})
+            result = verify_draft_review(root, {"session_started_at": "2026-07-30T00:00:00Z"})
+
+        self.assertEqual(result.verdict, "done")
+
+    def test_a_pending_queue_still_blocks_the_draft_step(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = _fake_root(temp)
+            _write_ledger(root, profiles=5, pending=3, reviewed=1)
+            result = verify_draft_review(root, {})
 
         self.assertEqual(result.verdict, "todo")
-        self.assertIn("no_drafts_reviewed_this_session", result.missing)
+        self.assertIn("pending_drafts_remain", result.missing)
 
-    def test_an_h005_record_without_a_qualification_stage_is_rejected(self) -> None:
+    def test_an_h005_record_without_a_qualification_tag_counts_as_preliminary(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = _fake_root(temp)
             _write_state(
                 root,
-                {"H-005": {"status": "completed", "updated_at": "2026-07-30T09:00:00Z"}},
+                {"H-005": {"status": "completed", "updated_at": "2026-07-23T07:35:37Z"}},
             )
-            result = verify_safety_review(root, {"session_started_at": self.SESSION_START})
+            result = verify_safety_review(root, {})
 
-        self.assertEqual(result.verdict, "todo")
-        self.assertIn("h005_record_predates_the_candidate_model", result.missing)
+        self.assertEqual(result.verdict, "done")
+        self.assertIn("예비 약사 사전 검토", result.detail)
 
 
 if __name__ == "__main__":

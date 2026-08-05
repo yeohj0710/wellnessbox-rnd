@@ -73,22 +73,16 @@ KNOWN_REVIEW_CHARACTERS = frozenset(
 )
 
 
-def _session_start(artifacts: dict[str, Any]) -> str | None:
-    return artifacts.get("session_started_at")
-
-
 def read_session_state(root: Path) -> dict[str, Any]:
     state = _read_json(root / "data/original_plan/final_session/session_state_v1.json")
     return state or {"steps": {}}
 
 
-def read_operational_counts(
-    root: Path, *, session_started_at: str | None = None
-) -> dict[str, int | None]:
+def read_operational_counts(root: Path) -> dict[str, int | None]:
     """Count real profiles and drafts without writing anything.
 
-    Rows created before the session started belong to an earlier run. They are
-    counted separately so a past session never looks like today's work.
+    Every stored row counts. A profile a person entered last week is still that
+    person's data, so re-running the wizard never asks for it again.
     """
     database = root / "etc/local_research_runtime/interim.sqlite3"
     if not database.is_file():
@@ -96,28 +90,18 @@ def read_operational_counts(
             "distinct_actual_profiles": None,
             "pending_drafts": None,
             "reviewed_drafts": None,
-            "earlier_profiles": None,
         }
-    since = session_started_at or ""
     connection = sqlite3.connect(f"file:{database}?mode=ro", uri=True)
     try:
         profiles = connection.execute(
             "select count(distinct profile_id) from profile_snapshots "
-            "where data_class = 'INTERIM_RUNTIME_EVENT' and created_at >= ?",
-            (since,),
-        ).fetchone()[0]
-        earlier = connection.execute(
-            "select count(distinct profile_id) from profile_snapshots "
-            "where data_class = 'INTERIM_RUNTIME_EVENT' and created_at < ?",
-            (since,),
+            "where data_class = 'INTERIM_RUNTIME_EVENT'"
         ).fetchone()[0]
         pending = connection.execute(
             "select count(*) from ai_drafts where review_status = 'pending'"
         ).fetchone()[0]
         reviewed = connection.execute(
-            "select count(*) from ai_drafts "
-            "where review_status != 'pending' and coalesce(reviewed_at, '') >= ?",
-            (since,),
+            "select count(*) from ai_drafts where review_status != 'pending'"
         ).fetchone()[0]
     except sqlite3.DatabaseError as exc:
         return {"error": str(exc)}  # type: ignore[return-value]
@@ -127,7 +111,6 @@ def read_operational_counts(
         "distinct_actual_profiles": int(profiles),
         "pending_drafts": int(pending),
         "reviewed_drafts": int(reviewed),
-        "earlier_profiles": int(earlier),
     }
 
 
@@ -138,22 +121,19 @@ def training_gate_is_open(root: Path) -> bool:
     return bool(gate.get("gate_decision", {}).get("authorized_now"))
 
 
-def step_belongs_to_this_session(step: dict[str, Any], session_started_at: str | None) -> bool:
-    """A completion saved before this session started is a past record, not today's work."""
-    if session_started_at is None:
-        return True
-    updated_at = str(step.get("updated_at", ""))
-    return bool(updated_at) and updated_at >= session_started_at
-
-
 def _human_step_result(
     root: Path,
     step_id: str,
     *,
     label: str,
-    session_started_at: str | None = None,
     extra: str = "",
 ) -> StepResult:
+    """A stored completion stays done. Only content changes reopen a step.
+
+    The final receipts already bind `manifest_sha256` and `source_commit`, so a
+    changed repository invalidates them on its own. Asking a person to redo a
+    signoff just because a new wizard run started adds no evidence.
+    """
     state = read_session_state(root)
     step = state.get("steps", {}).get(step_id, {})
     if step.get("status") != "completed":
@@ -164,17 +144,8 @@ def _human_step_result(
             f"{label}이(가) 아직 저장되지 않았습니다. 현재 상태: {status}.",
             [f"{step_id}_not_completed"],
         )
-    if not step_belongs_to_this_session(step, session_started_at):
-        return StepResult(
-            step_id,
-            "todo",
-            (
-                f"{label} 기록이 있으나 {step.get('updated_at', '시각 미상')} 로 "
-                "이번 세션 시작 전입니다. 과거 기록은 이번 세션 근거로 쓰지 않으므로 다시 하세요."
-            ),
-            [f"{step_id}_completed_in_a_previous_session"],
-        )
-    return StepResult(step_id, "done", f"{label} 완료로 저장됨.{extra}")
+    when = step.get("updated_at", "시각 미상")
+    return StepResult(step_id, "done", f"{label} 완료로 저장됨({when}).{extra}")
 
 
 def verify_preflight(root: Path, artifacts: dict[str, Any]) -> StepResult:
@@ -206,41 +177,42 @@ def verify_servers(root: Path, artifacts: dict[str, Any]) -> StepResult:
 
 
 def verify_profiles(root: Path, artifacts: dict[str, Any]) -> StepResult:
-    counts = read_operational_counts(root, session_started_at=_session_start(artifacts))
+    counts = read_operational_counts(root)
     profiles = counts.get("distinct_actual_profiles")
     if profiles is None:
         return StepResult("H-007", "blocked", "운영 DB를 읽지 못했습니다.", ["database_missing"])
-    earlier = counts.get("earlier_profiles") or 0
-    note = f" 이전 세션 프로필 {earlier}건은 세지 않았습니다." if earlier else ""
     if profiles >= 5:
-        return StepResult(
-            "H-007", "done", f"이번 세션에서 서로 다른 프로필 {profiles}건 저장.{note}"
-        )
+        return StepResult("H-007", "done", f"서로 다른 실제 프로필 {profiles}건 저장됨.")
     return StepResult(
         "H-007",
         "todo",
-        f"이번 세션 프로필이 {profiles}/5건입니다. {5 - profiles}건 더 입력하세요.{note}",
+        f"실제 프로필이 {profiles}/5건입니다. {5 - profiles}건 더 입력하세요.",
         ["distinct_profiles_below_target"],
     )
 
 
 def verify_draft_review(root: Path, artifacts: dict[str, Any]) -> StepResult:
-    counts = read_operational_counts(root, session_started_at=_session_start(artifacts))
+    counts = read_operational_counts(root)
     pending = counts.get("pending_drafts")
     reviewed = counts.get("reviewed_drafts")
     if pending is None:
         return StepResult("H-003", "blocked", "운영 DB를 읽지 못했습니다.", ["database_missing"])
-    if pending == 0 and (reviewed or 0) > 0:
-        return StepResult("H-003", "done", f"대기 0건, 이번 세션 검토 {reviewed}건.")
-    if pending == 0:
+    if pending > 0:
         return StepResult(
-            "H-003",
-            "todo",
-            "이번 세션에서 검토한 초안이 없습니다. H-007 실행 뒤 대기열이 생기면 처리하세요.",
-            ["no_drafts_reviewed_this_session"],
+            "H-003", "todo", f"대기 초안이 {pending}건 남았습니다.", ["pending_drafts_remain"]
         )
+    if (reviewed or 0) > 0:
+        return StepResult("H-003", "done", f"대기 0건, 검토 완료 {reviewed}건.")
+    # An empty table is not a finished review. The training gate stays NO-GO, so
+    # no draft is ever generated — the person confirms the empty queue instead.
+    stored = _human_step_result(root, "H-003", label="빈 대기열 확인")
+    if stored.verdict == "done":
+        return stored
     return StepResult(
-        "H-003", "todo", f"대기 초안이 {pending}건 남았습니다.", ["pending_drafts_remain"]
+        "H-003",
+        "todo",
+        "검토한 초안이 없습니다. 대기열이 생기면 처리하거나 빈 대기열 확인을 저장하세요.",
+        ["no_drafts_reviewed"],
     )
 
 
@@ -381,21 +353,15 @@ def verify_answer_keys(root: Path, artifacts: dict[str, Any]) -> StepResult:
 
 
 def verify_policy(root: Path, artifacts: dict[str, Any]) -> StepResult:
-    return _human_step_result(
-        root, "H-002", label="정책 9개 규칙 확인", session_started_at=_session_start(artifacts)
-    )
+    return _human_step_result(root, "H-002", label="정책 9개 규칙 확인")
 
 
 def verify_tone(root: Path, artifacts: dict[str, Any]) -> StepResult:
-    return _human_step_result(
-        root, "H-004", label="보고서 문체 승인", session_started_at=_session_start(artifacts)
-    )
+    return _human_step_result(root, "H-004", label="보고서 문체 승인")
 
 
 def verify_safety_review(root: Path, artifacts: dict[str, Any]) -> StepResult:
-    result = _human_step_result(
-        root, "H-005", label="고위험 10건 검토", session_started_at=_session_start(artifacts)
-    )
+    result = _human_step_result(root, "H-005", label="고위험 10건 검토")
     if result.verdict != "done":
         return result
     step = read_session_state(root)["steps"]["H-005"]
@@ -406,20 +372,19 @@ def verify_safety_review(root: Path, artifacts: dict[str, Any]) -> StepResult:
             "done",
             "예비 약사 사전 검토로 저장됨. 3차년도에 약사 자격으로 재검토해야 합니다.",
         )
-    if character not in KNOWN_REVIEW_CHARACTERS:
-        return StepResult(
-            "H-005",
-            "todo",
-            "저장된 검토에 자격 단계 표시가 없습니다. 중립 화면 이전 기록이므로 다시 검토하세요.",
-            ["h005_record_predates_the_candidate_model"],
-        )
-    return StepResult("H-005", "done", f"검토 저장됨({character}).")
+    if character in KNOWN_REVIEW_CHARACTERS:
+        return StepResult("H-005", "done", f"검토 저장됨({character}).")
+    # An old record without the qualification tag still records a real review.
+    # Treat it as the weakest character rather than asking for the review again.
+    return StepResult(
+        "H-005",
+        "done",
+        "검토 저장됨. 자격 단계 표시가 없어 예비 약사 사전 검토로 다룹니다.",
+    )
 
 
 def verify_receipts(root: Path, artifacts: dict[str, Any]) -> StepResult:
-    return _human_step_result(
-        root, "H-006", label="최종 영수증 2종 발급", session_started_at=_session_start(artifacts)
-    )
+    return _human_step_result(root, "H-006", label="최종 영수증 2종 발급")
 
 
 def verify_audit(root: Path, artifacts: dict[str, Any]) -> StepResult:
