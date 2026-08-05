@@ -1247,3 +1247,13 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`, 감사 산출물 SHA-256 `74c486b24b9b43d66f05ae202d2f6d234e6a1571f1870326644b3f99d973abd2`.
 - 같은 차단 사유 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`가 반환 ZIP 이후 세 번째 연속 재감사에서 반복됐다.
 - 완료 마법사 `3/13`; 새 다운로드 자료·현재 커밋 기준 영수증·독립 검토·사람 기록 없음. 기존 자료 승격·판정·서명 생성 없이 H-003 `NO-GO` 유지.
+
+## 2026-08-05 반환 완료 ZIP 처리 인계
+
+- 입력: `C:\Users\hjyeo\Downloads\completion_human_processing_completed.zip`
+- ZIP SHA-256: `cd1ba3ef6a12fdff47dfbc68ba7a236996d3218b8ccdc4d063b2998b1c234bf1`; 76개 항목·중복 0개·OP-039 10건. 매니페스트 75개 파일의 경로·바이트·SHA-256은 모두 일치했다.
+- 현재 HEAD 일치: R&D `2cb86496a64f354f73988a4a40599c2a5466d042`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`. ZIP과 현재 저장소가 다른 항목은 진행 기록·예비 OP-039 결과·사람 서명 기록 4개뿐이다.
+- importer 결과: OP-039 예비 결과 거부(`reviewer_name_missing, reviewer_organization_missing`); 임시 저장소에서 실행했고 실제 저장소에는 쓰지 않았다. 신원 비공개·서명명 공란·면허 재확인 필요 상태이므로 사람의 최종 검토로 승격하지 않았다.
+- 영수증 결과: 검증 영수증과 독립 검토 영수증 모두 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`라 현재 HEAD와 불일치한다. 독립 검토 영수증은 별도 신뢰 루트도 없다.
+- 현재 상태: 정답키 `4/4 READY`, 승인 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`, WellnessBox 정적 검증 4종 exit code `0`, 완료 마법사 `3/13`, final audit `BLOCKED`·`goal_complete=false`. H-003 `NO-GO` 유지.
+- 다음 작업: 현재 두 HEAD 기준 검증·독립 검토·두 서명 영수증·실제 완료 마법사 기록이 도착하면 다시 importer와 해시 검증 후 final audit를 실행한다.

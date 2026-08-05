@@ -1165,3 +1165,11 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`다. 감사 산출물 SHA-256은 `74c486b24b9b43d66f05ae202d2f6d234e6a1571f1870326644b3f99d973abd2`이며 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`가 세 번째 연속으로 반복됐다.
 - 현재 local main은 R&D `9233539`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다. 다운로드 폴더에는 기존 반환 ZIP 외 새 자료가 없고, 완료 마법사는 `3/13`이다.
 - 실제 현재 커밋 검증·독립 검토·두 서명·마법사 사람 기록이 없으므로 영수증·판정·서명을 생성하거나 기존 자료를 승격하지 않았다. H-003 `NO-GO`를 유지했다.
+
+## 2026-08-05 반환 완료 ZIP 처리
+
+- 사용자가 반환한 `C:\Users\hjyeo\Downloads\completion_human_processing_completed.zip`을 원본 그대로 검사했다. ZIP SHA-256은 `cd1ba3ef6a12fdff47dfbc68ba7a236996d3218b8ccdc4d063b2998b1c234bf1`, 항목은 76개, 중복 경로는 0개, 디렉터리 항목은 0개, OP-039 사례는 10건이다.
+- `package_manifest.json`의 75개 파일 경로·바이트 수·SHA-256은 모두 ZIP 내용과 일치했고, 저장소 HEAD도 매니페스트의 R&D `2cb86496a64f354f73988a4a40599c2a5466d042` 및 WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`와 일치했다. ZIP 항목 71개는 현재 저장소와 동일하고 변경 항목은 진행 기록·예비 OP-039 결과·사람 서명 기록 4개였다.
+- OP-039 결과는 사례 ID·10건·판정 10건·사례 해시가 일치했지만 `PRELIMINARY_REVIEW_COMPLETE`, `identity_disclosed=false`, `signature_name` 공란이며 면허 재확인과 외부 독립 검증이 필요하다고 명시했다. 임시 저장소에서 실제 importer를 실행한 결과 `reviewer_name_missing, reviewer_organization_missing`으로 거부됐고 대상 저장 경로도 생성되지 않았다.
+- 반환된 검증 영수증은 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`라 현재 HEAD와 불일치했다. 독립 검토 영수증은 독립 검토 신뢰 루트가 비어 있어 검증되지 않았다. 두 영수증과 네 변경 기록은 현재 저장소에 반영하지 않았다.
+- 현재 재감사 결과는 정답키 `4/4 READY`, 승인 데이터셋 `6건 READY`, 연구계획 요건 `120/120 PASS`, WellnessBox 정적 검증 4종 exit code `0`, 완료 마법사 `3/13`, 최종 감사 exit code `1`·`BLOCKED`·`goal_complete=false`다. 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`다. H-003 `NO-GO`를 유지했다.
