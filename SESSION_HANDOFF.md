@@ -1321,3 +1321,9 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 최종 감사는 작업 트리 해시로 감사하며 `source_identity.working_tree`와 `audited_input_identity.working_tree`에 HEAD 비교 결과를 기록한다. 작업 트리 불일치는 감사 중단 사유가 아니다.
 - 완료 마법사는 H-006 저장 기록만 확인한다. 영수증 신선도와 서명 검사는 최종 감사에만 남겼다.
 - H-007 `operator_id`는 두 저장 파일에서 `웰니스박스`로 복구했다. 현재 최종 감사의 외부 영수증 차단 사유는 그대로다.
+
+## 2026-08-06 중복 인증 축소 후 감사
+
+- R&D local `main`: `b4e123f`; WellnessBox: `0bbee48bdb6779ae338b121331b678aacc9ed777`.
+- 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`; 감사 SHA-256 `f45f5230e6a9f0c07f6e57ea213a8139e4ab4882d8ad893a3a6ad70b8cd2cb89`.
+- `source_identity.working_tree.working_tree_matches_head=true`, `audited_input_identity.working_tree.working_tree_matches_head=true`로 작업 트리 내용 해시와 커밋 상태를 분리 기록했다.

@@ -1228,3 +1228,9 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - `run_final_completion_audit.py`는 현재 작업 트리 파일 해시로 감사하고, HEAD 일치 여부와 변경 경로를 결과 메타데이터에만 기록한다. 작업 트리와 HEAD가 달라도 RuntimeError를 내지 않는다.
 - 완료 마법사는 영수증 신선도를 검사하지 않고 저장된 H-006 기록만 확인하며, 신선도·서명·manifest/source 바인딩은 최종 감사가 단독으로 검사한다.
 - `session_state_v1.json`과 `human_signoff_completion_v1.json`의 H-007 `operator_id`를 `웰니스박스`로 복구했다. H-003 학습 게이트 `NO-GO`와 독립 검토 신뢰뿌리 분리는 유지했다.
+
+## 2026-08-06 중복 인증 축소 후 감사
+
+- 현재 local `main`은 R&D `b4e123f`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다.
+- 작업 트리와 HEAD가 일치한 상태에서 `python scripts/run_final_completion_audit.py`는 exit code `1`, `status=BLOCKED`, `goal_complete=false`를 반환했다. 감사 산출물 SHA-256은 `f45f5230e6a9f0c07f6e57ea213a8139e4ab4882d8ad893a3a6ad70b8cd2cb89`다.
+- 차단 사유는 기존 두 영수증 사유 그대로이며, 중복 인증 축소 변경으로 인한 새 차단은 없다.
