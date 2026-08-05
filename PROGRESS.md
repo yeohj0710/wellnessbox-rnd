@@ -1143,3 +1143,11 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 현재 WellnessBox HEAD `7054d76670870bc31130006a84df3fa10aa46c78` 기준 preflight는 exit code `0`이다. 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`를 반환했다.
 - 최종 감사 산출물 SHA-256은 `3430a4ab382b7403d9cc16e34f6e7d8c42f6ad0307e847e5a0db00a992f37c76`이고 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`로 세 번째 연속 반복됐다.
 - 완료 마법사는 UTF-8 상태 출력 기준 `3/13`이다. 새 업로드·독립 검토·유효한 현재 커밋 영수증·서명은 없으며, 기존 자료와 H-003 `NO-GO`를 유지했다.
+
+## 2026-08-05 반환 ZIP 처리
+
+- 사용자가 반환한 `C:\Users\hjyeo\Downloads\completion_processing_files_completed.zip`을 원본 그대로 검사했다. ZIP SHA-256은 `c2143d565a33088ea32e9d57c9a575f8397a97fc65dc9694fd8871f9d662cd3a`, 파일 77개, 중복 경로 0개, OP-039 사례 10건이다.
+- ZIP의 자체 처리 결과도 `BLOCKED`, `goal_complete=false`였다. 내장 검증기를 임시 압축 해제 경로에서 다시 실행한 결과는 TypeScript 모듈이 부분 ZIP에 없어 `FAIL`이었고, 전체 저장소·전체 build·canonical audit를 수행하지 못했다는 범위 제한이 확인됐다.
+- `op039_preliminary_evidence_review_v1.json`은 10건 사전 근거 검토이며 `human_signature_present=false`, `licensed_reconfirmation_required=true`, `independent_external_validation_satisfied=false`다. 기존 두 영수증은 원문·해시·서명·`source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`를 유지한다.
+- 실제 반영 범위는 채팅 오류 노출 차단, 공백 입력 정규화, 스트림 실패 마커, 버튼·중복 이벤트 보정 7개 서비스 파일과 독립 검토 신뢰루트 분리 2개 R&D 파일이다. OP-039 `EXTERNAL`을 `IMPLEMENTED`로 바꾸는 manifest 변경은 외부 검증을 가장할 수 있어 반영하지 않았다.
+- 반영 후 서비스 HEAD는 `0bbee48bdb6779ae338b121331b678aacc9ed777`, R&D local `main` HEAD는 `e295fd9bdfee15f3089621b5bc2492ce0d9d47a1`이다. R&D 집중 테스트 58개, 서비스 정적 검증 4종, preflight exit code 0을 확인했다. 최종 감사는 `BLOCKED`, `goal_complete=false`다.

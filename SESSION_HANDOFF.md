@@ -1221,3 +1221,12 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`; `validation_receipt_missing_or_invalid`와 `independent_review_receipt_missing_or_invalid`가 세 번째 연속 fresh audit에서 반복됐다.
 - 완료 마법사: `3/13`. 새 업로드·독립 검토·현재 커밋 기준 서명 영수증 없음. H-003 `NO-GO` 유지.
 - 다음 조건: 실제 현재 커밋 검증 결과, 독립 검토 결과, 유효한 두 서명 영수증, 실제 마법사 기록이 도착해야 최종 감사 재검증을 진행한다.
+
+## 2026-08-05 반환 ZIP 처리 인계
+
+- 입력: `C:\Users\hjyeo\Downloads\completion_processing_files_completed.zip`
+- ZIP 해시: `c2143d565a33088ea32e9d57c9a575f8397a97fc65dc9694fd8871f9d662cd3a`; 77개 파일·중복 0개·OP-039 사례 10건.
+- 검증 결과: ZIP 자체 `BLOCKED`; 내장 verifier 재실행 `FAIL`(부분 ZIP의 TypeScript 모듈 부재). 사전 검토 자료는 사람 서명·면허 재확인·독립 외부검증을 충족하지 않는다.
+- 적용: 서비스 7개 파일의 안전 보정, R&D 독립 검토 신뢰루트 정책·감사 코드, 회귀 테스트 보정. OP-039 manifest 단계 변경은 적용하지 않았다.
+- 현재 HEAD: WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`, R&D `e295fd9bdfee15f3089621b5bc2492ce0d9d47a1`. preflight `0`, 서비스 정적 검증 4종, R&D 집중 테스트 58개 통과. final audit `BLOCKED`.
+- 다음 조건: 현재 두 HEAD 기준의 유효한 검증 영수증·독립 검토 영수증과 실제 완료 마법사 기록.
