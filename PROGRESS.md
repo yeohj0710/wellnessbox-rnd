@@ -1173,3 +1173,11 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - OP-039 결과는 사례 ID·10건·판정 10건·사례 해시가 일치했지만 `PRELIMINARY_REVIEW_COMPLETE`, `identity_disclosed=false`, `signature_name` 공란이며 면허 재확인과 외부 독립 검증이 필요하다고 명시했다. 임시 저장소에서 실제 importer를 실행한 결과 `reviewer_name_missing, reviewer_organization_missing`으로 거부됐고 대상 저장 경로도 생성되지 않았다.
 - 반환된 검증 영수증은 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`라 현재 HEAD와 불일치했다. 독립 검토 영수증은 독립 검토 신뢰 루트가 비어 있어 검증되지 않았다. 두 영수증과 네 변경 기록은 현재 저장소에 반영하지 않았다.
 - 현재 재감사 결과는 정답키 `4/4 READY`, 승인 데이터셋 `6건 READY`, 연구계획 요건 `120/120 PASS`, WellnessBox 정적 검증 4종 exit code `0`, 완료 마법사 `3/13`, 최종 감사 exit code `1`·`BLOCKED`·`goal_complete=false`다. 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`다. H-003 `NO-GO`를 유지했다.
+
+## 2026-08-05 최종 영수증 경로 보완
+
+- 최종 세션 콘솔의 실제 모드가 기존 서명 키를 사람이 제공하도록 바꾸고, 키가 없을 때 자동 생성하지 않도록 했다. 단일 키로 검증 영수증과 독립 검토 영수증을 함께 만드는 경로도 차단했다.
+- 검증용·독립 검토용 Ed25519 키와 발급자를 각각 입력받고, 서로 다른 공개 키와 발급자인지 확인한 뒤 별도 신뢰 루트에 등록하도록 구현했다. 현재 영수증 파일과 정책에는 실제 서명 자료를 쓰지 않았다.
+- 문구도 `예비 약사 사전 검토`로 정리했다. H-003 `NO-GO`와 KPI-2 3차년도 측정 경계는 유지했다.
+- 브랜치 검증은 R&D 집중 테스트 `39 passed`, 서비스 정적 검증 4종 exit code `0`이다. 현재 R&D local `main` HEAD `94d28d0`, WellnessBox HEAD `0bbee48bdb6779ae338b121331b678aacc9ed777`이다.
+- 현재 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`, 산출물 SHA-256 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`다. 차단 사유는 두 영수증의 현재 커밋·독립 신뢰 자료 부재로 동일하다.

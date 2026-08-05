@@ -627,3 +627,10 @@ SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
 2. OP-039 사례 수·ID·사례 해시·판정은 맞지만 결과는 예비 검토다. 신원 공개와 서명명이 없고 importer가 `reviewer_name_missing, reviewer_organization_missing`으로 거부했으므로 실제 사람 검토 기록으로 반영하지 않는다.
 3. 두 영수증은 `f545b83`에 서명되어 현재 R&D `2cb86496a64f354f73988a4a40599c2a5466d042`·WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`에 유효하지 않다. 독립 검토 신뢰 루트도 비어 있다.
 4. 다음 조건은 현재 두 HEAD 기준 검증 결과, 구현과 독립된 검토 결과, 유효한 두 서명 영수증, 실제 완료 마법사 기록이다. 그 전에는 기존 자료를 승격하지 않고 최종 감사를 완료로 표시하지 않는다.
+
+## 2026-08-05 최종 영수증 경로 보완
+
+1. 완료 콘솔은 이제 실제 모드에서 기존 키 2개를 요구한다. 검증용과 독립 검토용 발급자·공개 키가 같으면 거부하고, 독립 검토 키를 별도 신뢰 루트에 기록한다.
+2. 브랜치 테스트 `tests/test_final_completion_audit.py`와 `tests/test_final_session_console.py`는 `39 passed`이고, WellnessBox `0bbee48`의 `typecheck`, `qa:syntax`, `audit:encoding`, `audit:route-method-exports`는 모두 exit code `0`이다.
+3. 이 변경은 사람의 검토·판정·서명을 생성하지 않았다. 현재 두 영수증과 H-003 `NO-GO`는 그대로다.
+4. 다음 반환 자료는 현재 R&D `94d28d0`·WellnessBox `0bbee48` 기준의 실제 검증 결과, 구현과 독립된 검토 결과, 서로 다른 두 발급자의 유효한 서명 영수증, 실제 완료 마법사 기록이다.

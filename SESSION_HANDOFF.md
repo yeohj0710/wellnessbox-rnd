@@ -1257,3 +1257,12 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 영수증 결과: 검증 영수증과 독립 검토 영수증 모두 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`라 현재 HEAD와 불일치한다. 독립 검토 영수증은 별도 신뢰 루트도 없다.
 - 현재 상태: 정답키 `4/4 READY`, 승인 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`, WellnessBox 정적 검증 4종 exit code `0`, 완료 마법사 `3/13`, final audit `BLOCKED`·`goal_complete=false`. H-003 `NO-GO` 유지.
 - 다음 작업: 현재 두 HEAD 기준 검증·독립 검토·두 서명 영수증·실제 완료 마법사 기록이 도착하면 다시 importer와 해시 검증 후 final audit를 실행한다.
+
+## 2026-08-05 최종 영수증 경로 보완 인계
+
+- 코드 커밋: `e5aa2e6 fix: separate final receipt signing paths`; 최종 감사 산출물 갱신 커밋: `94d28d0`.
+- 완료 콘솔은 실제 모드에서 서명 키 자동 생성을 금지하고, 검증용·독립 검토용 기존 Ed25519 키와 서로 다른 발급자를 요구한다. `trusted_issuers`와 `independent_review_trusted_issuers`를 따로 갱신한다.
+- UI는 검증용 키 경로·발급자 ID·독립 검토용 키 경로·발급자 ID를 각각 입력받는다. 현재 운영 저장소에는 새 키·서명·사람 기록을 생성하지 않았다.
+- 검증: R&D `tests/test_final_completion_audit.py tests/test_final_session_console.py`는 `39 passed`; WellnessBox 정적 검증 4종은 모두 exit code `0`.
+- 현재 HEAD: R&D `94d28d0`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`. 최종 감사는 `BLOCKED`, `goal_complete=false`, 산출물 SHA-256 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`.
+- 다음 순서: 실제 현재 HEAD 검증 및 독립 검토 자료를 받은 뒤 ZIP provenance·해시·중복·사례 수를 확인하고 importer로 반영한다. 유효한 두 영수증과 실제 마법사 기록을 확인한 뒤 `python scripts/run_final_completion_audit.py`를 실행한다.
