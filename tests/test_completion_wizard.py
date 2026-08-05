@@ -294,6 +294,11 @@ class AutoStepVerificationTest(unittest.TestCase):
 
         self.assertEqual(result.verdict, "blocked")
 
+    def test_a_stored_ready_dataset_manifest_is_verified_without_runner_artifacts(self) -> None:
+        result = verify_dataset(ROOT, {})
+
+        self.assertEqual(result.verdict, "done")
+
     def test_a_blocked_audit_is_not_finished(self) -> None:
         artifacts = {"audit": {"audit": {"status": "BLOCKED", "blockers": [{"id": "X"}]}}}
 
@@ -303,6 +308,11 @@ class AutoStepVerificationTest(unittest.TestCase):
         artifacts = {"audit": {"audit": {"status": "READY", "goal_complete": True}}}
 
         self.assertEqual(verify_audit(ROOT, artifacts).verdict, "done")
+
+    def test_a_stored_blocked_audit_is_not_reported_as_missing(self) -> None:
+        result = verify_audit(ROOT, {})
+
+        self.assertEqual(result.verdict, "blocked")
 
     def test_answer_keys_block_when_the_integrity_audit_fails(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

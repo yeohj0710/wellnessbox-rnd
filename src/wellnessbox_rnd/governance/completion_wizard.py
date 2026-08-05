@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 from wellnessbox_rnd.evals.answer_key_integrity import audit_repository
+from wellnessbox_rnd.training.approved_draft_dataset import verify_manifest_is_approved_only
 
 PROGRESS_RELATIVE_PATH = "artifacts/final_session/completion_wizard_progress_v1.json"
 PROGRESS_SCHEMA = "completion_wizard_progress_v1"
@@ -219,6 +220,12 @@ def verify_draft_review(root: Path, artifacts: dict[str, Any]) -> StepResult:
 def verify_dataset(root: Path, artifacts: dict[str, Any]) -> StepResult:
     check = artifacts.get("dataset_check")
     if check is None:
+        manifest = _read_json(
+            root / "data/original_plan/final_session/approved_draft_dataset_manifest_v1.json"
+        )
+        if manifest is not None:
+            check = verify_manifest_is_approved_only(manifest)
+    if check is None:
         return StepResult("DATASET", "todo", "승인 전용 데이터셋을 아직 만들지 않았습니다.")
     if check.get("status") == "READY":
         return StepResult(
@@ -390,11 +397,18 @@ def verify_receipts(root: Path, artifacts: dict[str, Any]) -> StepResult:
 def verify_audit(root: Path, artifacts: dict[str, Any]) -> StepResult:
     audit = artifacts.get("audit")
     if audit is None:
+        audit = _read_json(
+            root / "data/original_plan/evidence/op120_final_completion_audit_v1.json"
+        )
+    if audit is None:
         return StepResult("AUDIT", "todo", "최종 감사를 아직 실행하지 않았습니다.")
     decision = audit.get("audit", {})
     if decision.get("status") == "READY" and decision.get("goal_complete"):
         return StepResult("AUDIT", "done", "최종 감사 120/120 READY, 차단 0건.")
-    blockers = [item.get("id", "?") for item in decision.get("blockers", [])]
+    blockers = [
+        item.get("id", "?") if isinstance(item, dict) else str(item)
+        for item in decision.get("blockers", [])
+    ]
     return StepResult(
         "AUDIT", "blocked", f"최종 감사가 {decision.get('status')}입니다.", blockers
     )
