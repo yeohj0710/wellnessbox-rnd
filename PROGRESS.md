@@ -1155,6 +1155,6 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 ## 2026-08-05 사용자 재개 fresh audit 2 재확인
 
 - 지정 첫 확인 명령을 현재 상태에서 다시 실행했다. 정답키 `4/4 READY`, 승인 전용 데이터셋 `6건 READY`, 연구계획 요건 `120/120 PASS`였다.
-- 현재 WellnessBox local `main` HEAD는 `0bbee48bdb6779ae338b121331b678aacc9ed777`, R&D local `main` HEAD는 `e300b70`이다. push·배포·실제 트래픽·훈련은 실행하지 않았다.
+- 현재 WellnessBox local `main` HEAD는 `0bbee48bdb6779ae338b121331b678aacc9ed777`, R&D local `main` HEAD는 `0574ccb`이다. push·배포·실제 트래픽·훈련은 실행하지 않았다.
 - 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`다. 산출물 SHA-256은 `74c486b24b9b43d66f05ae202d2f6d234e6a1571f1870326644b3f99d973abd2`이며 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`다.
 - 완료 마법사는 UTF-8 상태 출력 기준 `3/13`이다. 이번 세션의 실제 프로필·초안 검토·정책·문체·고위험 10건 검토·두 서명 기록은 충족되지 않았다. 기존 자료를 승격하지 않았고 H-003 `NO-GO`를 유지했다.

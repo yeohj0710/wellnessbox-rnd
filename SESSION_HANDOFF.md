@@ -1233,7 +1233,7 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 
 ## 2026-08-05 사용자 재개 fresh audit 2 재확인
 
-- 현재 HEAD: WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`, R&D `e300b70`.
+- 현재 HEAD: WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`, R&D `0574ccb`.
 - 자동 감사: 정답키 `4/4 READY`, 승인 전용 데이터셋 `6건 READY`, 연구계획 요건 `120/120 PASS`.
 - 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`, 감사 산출물 SHA-256 `74c486b24b9b43d66f05ae202d2f6d234e6a1571f1870326644b3f99d973abd2`.
 - 차단 사유: `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`.
