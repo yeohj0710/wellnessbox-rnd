@@ -58,6 +58,9 @@ class FinalAuditPolicyV1(_StrictModel):
     validation_receipt_path: str | None
     independent_review_receipt_path: str | None
     trusted_issuers: list[TrustedIssuerV1] = Field(default_factory=list)
+    independent_review_trusted_issuers: list[TrustedIssuerV1] = Field(
+        default_factory=list
+    )
 
 
 class TrustedIssuerV1(_StrictModel):
@@ -188,12 +191,24 @@ def audit_final_completion_v1(
             repository_roots,
             manifest_sha256,
             canonical_audit_sha256,
-            policy.trusted_issuers,
+            _independent_review_issuers(policy),
         ),
     )
     if policy.required_requirement_count != 120 or policy.required_report_count != 120:
         raise ValueError("final audit policy must require exactly 120 requirements and reports")
     return evaluate_final_completion_facts_v1(facts)
+
+
+def _independent_review_issuers(policy: FinalAuditPolicyV1) -> list[TrustedIssuerV1]:
+    """Return review roots that are cryptographically separate from validation roots."""
+    validation_ids = {item.issuer_id for item in policy.trusted_issuers}
+    validation_keys = {item.public_key_ed25519_base64 for item in policy.trusted_issuers}
+    return [
+        item
+        for item in policy.independent_review_trusted_issuers
+        if item.issuer_id not in validation_ids
+        and item.public_key_ed25519_base64 not in validation_keys
+    ]
 
 
 def _receipt_valid(
