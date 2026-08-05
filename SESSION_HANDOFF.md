@@ -1275,3 +1275,11 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - provenance: R&D `b5ff12cc1fb6e0ea823cbad9576f924bb6806784`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`.
 - 포함 변경: 별도 서명 키 2개를 요구하는 완료 콘솔·UI·집중 테스트 3개 파일. 이 ZIP 자체에는 서명 키나 사람의 판정·서명을 넣지 않았다.
 - 다음 순서: 반환 ZIP을 자동 신뢰하지 않고 importer·provenance·해시·중복·사례 수를 다시 확인한 뒤, 유효한 실제 자료만 반영하고 final audit를 실행한다.
+
+## 2026-08-06 단일 처리 ZIP 인계
+
+- 파일: `C:\dev\wellnessbox-rnd\etc\completion_human_processing_package.zip`
+- SHA-256: `97b8b65b8638d33442ee617fa0b046c0d12f190836e0970efbd6b8acdf43acbe`.
+- 검증: 81개 항목·매니페스트 80개·중복 0건·OP-039 10건·현재 저장소 파일 바이트 일치·작업 지시 파일 0개·개인 키 0개.
+- 현재 importer 결과: 구조 검증은 READY이나 사람 자료는 `ready_to_apply=false`다. OP-039 역할 불일치, 이전 커밋의 두 영수증, 완료 마법사 `9/13` 때문이다.
+- 반영 경계: `--apply`는 모든 사람 자료가 READY일 때만 사용한다. 이번 세션에는 사람 자료를 반영하지 않았다. H-003 학습 게이트 `NO-GO`, 훈련·승격 금지, 최종 감사 `BLOCKED`를 유지한다.

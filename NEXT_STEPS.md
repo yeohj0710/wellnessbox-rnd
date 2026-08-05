@@ -640,3 +640,10 @@ SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
 1. 최신 처리 파일은 `etc/completion_human_processing_package.zip` 하나다. SHA-256은 `eabd758398faa9c26f3d3527111e5f67270f0e198f2e71f17a2a51fa58bb4d35`다.
 2. ZIP 검증 결과는 78개 항목, 매니페스트 77개, 중복 0건, OP-039 10건, 내부 해시 PASS, 현재 저장소 바이트 일치, 작업 지시 파일 0개, 개인 키 0개다.
 3. 처리 후 반환물에는 현재 HEAD 기준의 검증 결과·독립 검토 결과·두 영수증·실제 완료 마법사 기록이 포함되어야 한다. 기존 예비 자료나 이전 서명을 승격하지 않는다.
+
+## 2026-08-06 단일 처리 파일
+
+1. 처리 파일은 `C:\dev\wellnessbox-rnd\etc\completion_human_processing_package.zip` 하나다. SHA-256은 `97b8b65b8638d33442ee617fa0b046c0d12f190836e0970efbd6b8acdf43acbe`다.
+2. ZIP은 81개 항목·매니페스트 80개·중복 0건·OP-039 10건이며, 작업 지시 파일과 개인 키 파일은 없다. 반환 ZIP은 `python scripts/import_completion_processing_package.py <ZIP>`으로 자동 검증한다.
+3. 현재 검증 결과는 구조 READY이지만 사람 자료 `ready_to_apply=false`다. 예비 OP-039 결과의 역할 불일치, 현재 커밋과 다른 두 영수증, 완료 마법사 `9/13`이 남아 있다.
+4. 유효한 자료가 반환되면 importer 결과가 READY인 경우에만 `--apply`를 실행하고, 이후 `python scripts/run_final_completion_audit.py` 결과가 `status=READY`, `goal_complete=true`인지 확인한다. H-003 `NO-GO`는 열지 않는다.

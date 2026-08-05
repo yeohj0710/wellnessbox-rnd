@@ -1188,3 +1188,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - ZIP은 78개 항목·매니페스트 파일 77개·중복 경로 0개·OP-039 사례 10건이며, 매니페스트 내부 SHA-256과 현재 저장소 파일 바이트가 모두 일치한다.
 - 별도 서명 경로를 포함한 완료 콘솔·테스트 파일 3개를 추가했고, 작업 지시 파일과 개인 키 파일은 포함하지 않았다. R&D HEAD는 `b5ff12cc1fb6e0ea823cbad9576f924bb6806784`, WellnessBox HEAD는 `0bbee48bdb6779ae338b121331b678aacc9ed777`다.
 - 실제 검토·판정·서명은 아직 없으므로 최종 감사 `BLOCKED`, 완료 마법사 `3/13`, H-003 `NO-GO`를 유지한다.
+
+## 2026-08-06 단일 처리 ZIP 및 importer 보완
+
+- `scripts/import_completion_processing_package.py`를 추가했다. importer는 ZIP SHA-256, 중복·경로 이탈·지시 파일·개인 키, 매니페스트 내부 해시, 저장소 provenance, 현재 파일 바이트, OP-039 10건, 예비 약사 사전 검토 기록, 완료 마법사 13단계, 두 영수증의 현재 커밋·서명·독립 신뢰 루트를 검사한다.
+- importer는 모든 자료가 READY일 때만 `--apply`로 사람 자료를 반영하고, 반영 전 원본을 `etc/import_backups`에 보관한다. 이번 세션에는 `--apply`를 실행하지 않았다.
+- 집중 테스트는 `42 passed`다. 새 단일 ZIP은 `C:\dev\wellnessbox-rnd\etc\completion_human_processing_package.zip`, SHA-256은 `97b8b65b8638d33442ee617fa0b046c0d12f190836e0970efbd6b8acdf43acbe`, 81개 항목·매니페스트 파일 80개·중복 0건·OP-039 사례 10건이다.
+- 현재 ZIP의 구조·provenance·파일 해시는 PASS지만, 사람 자료는 예비 OP-039 결과의 역할 불일치, 현재 커밋과 다른 두 영수증, 완료 마법사 `9/13`으로 `ready_to_apply=false`다. 사람의 판정·서명은 만들지 않았다. H-003 학습 게이트 `NO-GO`와 훈련·승격 금지는 유지한다.
