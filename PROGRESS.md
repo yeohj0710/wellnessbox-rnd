@@ -1115,3 +1115,9 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - `python scripts/run_final_completion_audit.py`는 exit code `1`, `status=BLOCKED`, `goal_complete=false`를 반환했다. 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`로 동일하다.
 - 현재 WellnessBox HEAD는 `7054d76670870bc31130006a84df3fa10aa46c78`이다. 새 검토 결과·서명·업로드는 없고, 기존 두 영수증은 `source_commit=f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f`에 서명되어 현재 커밋과 불일치한다.
 - 완료 마법사 상태는 `3/13`이며 이번 세션 프로필·정책·문체·고위험 검토·최종 서명 기록은 없다. H-003 `NO-GO`, frozen/replay/weakest-slice delta `0`을 유지했다.
+
+## 2026-08-05 처리용 파일 묶음
+
+- `etc/completion_processing_files.zip`을 생성했다. SHA-256은 `18af37078444a9b2b8c482c8bfa6f28a896f293cda003c8ad0dfa8ff6969dd7d`이다.
+- 압축 파일은 처리 대상 71개, 중복 경로 0개, OP-039 사례 10건을 포함한다. README·Markdown과 새 작업 주체 문구는 포함하지 않았다.
+- 현재 서비스 스냅샷, 최종 감사 자료, 기존 영수증 원본, OP-039 사례 원본과 원본 검토 양식을 포함했다. 원본 파일의 provenance·시각·서명 정보는 변경하지 않았다.

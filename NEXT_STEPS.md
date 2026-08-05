@@ -572,3 +572,9 @@ SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
 2. 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`이다. 동일한 두 영수증 차단 사유가 반복된다.
 3. 사람의 실제 독립 검토·판정·서명 자료가 없으므로 영수증을 만들거나 완료 마법사 단계를 대신 기록하지 않는다. H-003 `NO-GO`도 유지한다.
 4. 사용자가 자료를 반환하면 먼저 ZIP importer와 provenance·해시·중복·사례 수를 검증하고, 그 뒤 실제 기록만 반영해 `python scripts/run_final_completion_audit.py`를 다시 실행한다.
+
+## 2026-08-05 처리용 파일 묶음
+
+1. 처리 대상 파일은 `etc/completion_processing_files.zip`에 한 번에 모았다. SHA-256은 `18af37078444a9b2b8c482c8bfa6f28a896f293cda003c8ad0dfa8ff6969dd7d`이다.
+2. ZIP 검증 결과는 파일 71개, 중복 경로 0개, OP-039 사례 10건, README·Markdown 0개다.
+3. ZIP에는 새 안내문이나 작업 주체 문구를 넣지 않았다. 자료가 반환되면 importer·provenance·해시 검증 후 실제 기록만 반영한다.
