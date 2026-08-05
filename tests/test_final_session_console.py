@@ -26,6 +26,21 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class FinalSessionConsoleTest(unittest.TestCase):
+    def test_h007_operator_id_is_restored_in_both_saved_records(self) -> None:
+        for filename in (
+            "session_state_v1.json",
+            "human_signoff_completion_v1.json",
+        ):
+            with self.subTest(filename=filename):
+                payload = json.loads(
+                    (
+                        ROOT
+                        / "data/original_plan/final_session"
+                        / filename
+                    ).read_text(encoding="utf-8")
+                )
+                self.assertEqual(payload["steps"]["H-007"]["operator_id"], "웰니스박스")
+
     def test_reconcile_completes_h003_after_direct_pharmacist_review(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             temp_path = Path(temp)
@@ -619,7 +634,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertNotIn("state.default_signing_key_path", html)
         self.assertNotIn("generateKey()", html)
 
-    def test_finalize_registers_policy_before_resigning_receipts(self) -> None:
+    def test_finalize_batches_signoffs_policy_and_receipts(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp) / "project"
             root.mkdir()
@@ -644,7 +659,6 @@ class FinalSessionConsoleTest(unittest.TestCase):
                 events.append(message)
 
             def sign(**_: object) -> dict[str, str]:
-                self.assertIn("docs: register final receipt trust policy", events)
                 events.append("signed")
                 return {
                     "validation_receipt_path": str(root / "v.json"),
@@ -662,8 +676,12 @@ class FinalSessionConsoleTest(unittest.TestCase):
             ):
                 result = console.finalize_and_audit()
             self.assertTrue(result["finalized"])
-            self.assertLess(
-                events.index("docs: register final receipt trust policy"), events.index("signed")
+            self.assertEqual(
+                events,
+                [
+                    "signed",
+                    "docs: record final signoffs, signed receipts, and trust policy",
+                ],
             )
 
     def test_production_receipts_require_existing_separate_signing_keys(self) -> None:
@@ -713,7 +731,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
             self.assertEqual(validation_receipt["issuer_id"], "validation-issuer")
             self.assertEqual(review_receipt["issuer_id"], "review-issuer")
 
-    def test_prepare_receipts_registers_trust_before_production_resign(self) -> None:
+    def test_prepare_receipts_signs_once_and_batches_policy_and_receipts(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             console = FinalSessionConsole(ROOT, state_root=root / "session")
@@ -756,10 +774,10 @@ class FinalSessionConsoleTest(unittest.TestCase):
                     independent_review_key_path=str(review_key_path),
                     independent_review_issuer_id="review-issuer",
                 )
-            self.assertEqual(events[0], "sign")
-            self.assertEqual(events[1], "docs: register final receipt trust policy")
-            self.assertEqual(events[2], "sign")
-            self.assertEqual(events[3], "docs: register final signed receipts")
+            self.assertEqual(
+                events,
+                ["sign", "docs: register final signed receipts and trust policy"],
+            )
 
     def test_rehearsal_completes_all_steps_without_production_writes(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

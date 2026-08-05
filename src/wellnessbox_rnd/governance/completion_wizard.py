@@ -391,6 +391,8 @@ def verify_safety_review(root: Path, artifacts: dict[str, Any]) -> StepResult:
 
 
 def verify_receipts(root: Path, artifacts: dict[str, Any]) -> StepResult:
+    # Receipt content, signatures, and source freshness have one owner:
+    # run_final_completion_audit.py. The wizard only records the human step.
     return _human_step_result(root, "H-006", label="최종 영수증 2종 발급")
 
 

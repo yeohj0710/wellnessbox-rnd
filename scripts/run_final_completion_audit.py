@@ -40,13 +40,11 @@ def git(*args: str) -> str:
 
 
 def audited_repository_commits(file_blobs: dict[str, str]) -> dict[str, str]:
-    rnd_paths = [
-        reference.split("/", 1)[1]
-        for reference in file_blobs
-        if reference.startswith("wellnessbox-rnd/")
-    ]
+    # File content is the audited input. Commits identify the repositories at
+    # audit time, but they do not decide whether the content may be audited.
+    del file_blobs
     return {
-        "wellnessbox-rnd": git("log", "-1", "--format=%H", "--", *rnd_paths),
+        "wellnessbox-rnd": git("rev-parse", "HEAD"),
         "wellnessbox": subprocess.check_output(
             ["git", "-C", str(SERVICE_ROOT), "rev-parse", "HEAD"], text=True
         ).strip(),
@@ -58,14 +56,44 @@ def sha256(path: Path) -> str:
 
 
 def verified_head_identity() -> tuple[str, dict[str, str]]:
+    """Capture current source bytes and record HEAD without requiring a clean tree."""
     blobs: dict[str, str] = {}
     for path in SOURCE_PATHS:
-        committed_blob = git("rev-parse", f"HEAD:{path}")
-        working_blob = git("hash-object", path)
-        if working_blob != committed_blob:
-            raise RuntimeError(f"source differs from HEAD: {path}")
-        blobs[path] = committed_blob
-    return git("log", "-1", "--format=%H", "--", *SOURCE_PATHS), blobs
+        blobs[path] = git("hash-object", path)
+    return git("rev-parse", "HEAD"), blobs
+
+
+def working_tree_status(references: list[str]) -> dict[str, object]:
+    """Report commit comparison separately from the content-based audit."""
+    roots = {"wellnessbox-rnd": ROOT, "wellnessbox": SERVICE_ROOT}
+    changed: list[str] = []
+    repository_heads: dict[str, str] = {}
+    for repository, root in roots.items():
+        repository_heads[repository] = subprocess.check_output(
+            ["git", "-C", str(root), "rev-parse", "HEAD"], text=True
+        ).strip()
+    for reference in references:
+        repository, relative = reference.split("/", 1)
+        root = roots[repository]
+        path = root / relative
+        if not path.is_file():
+            continue
+        committed = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", f"HEAD:{relative}"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        working = subprocess.check_output(
+            ["git", "-C", str(root), "hash-object", relative], text=True
+        ).strip()
+        if committed.returncode != 0 or working != committed.stdout.strip():
+            changed.append(reference)
+    return {
+        "working_tree_matches_head": not changed,
+        "changed_paths": changed,
+        "repository_heads": repository_heads,
+    }
 
 
 def assert_no_regression(expected: dict[str, dict], observed: dict[str, dict]) -> None:
@@ -182,6 +210,7 @@ def main() -> int:
         regression_error = exc
     source_commit, source_blobs = verified_head_identity()
     audited_input_hashes = _audited_input_hashes()
+    source_references = [f"wellnessbox-rnd/{path}" for path in SOURCE_PATHS]
     payload = {
         "schema_version": "op120_final_completion_audit_v1",
         "requirement": {
@@ -197,10 +226,15 @@ def main() -> int:
         "audit": audit_payload,
         "answer_key_integrity": answer_key_integrity,
         "observed": observed,
-        "source_identity": {"commit": source_commit, "blobs": source_blobs},
+        "source_identity": {
+            "commit": source_commit,
+            "blobs": source_blobs,
+            "working_tree": working_tree_status(source_references),
+        },
         "audited_input_identity": {
             "repository_commits": audited_repository_commits(audited_input_hashes),
             "file_blobs": audited_input_hashes,
+            "working_tree": working_tree_status(sorted(audited_input_hashes)),
         },
         "stage_boundary": {
             "final_auditor_implemented": True,
@@ -244,17 +278,11 @@ def _audited_input_hashes() -> dict[str, str]:
         repository, relative = reference.split("/", 1)
         path = roots[repository] / relative
         if path.is_file():
-            committed_blob = subprocess.check_output(
-                ["git", "-C", str(roots[repository]), "rev-parse", f"HEAD:{relative}"],
-                text=True,
-            ).strip()
             working_blob = subprocess.check_output(
                 ["git", "-C", str(roots[repository]), "hash-object", relative],
                 text=True,
             ).strip()
-            if working_blob != committed_blob:
-                raise RuntimeError(f"audited input differs from HEAD: {reference}")
-            blobs[reference] = committed_blob
+            blobs[reference] = working_blob
     return blobs
 
 

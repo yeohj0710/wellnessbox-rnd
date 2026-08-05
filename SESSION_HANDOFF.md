@@ -1314,3 +1314,10 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 완료 마법사: `10/13`; DATASET 완료, AUDIT는 실제 `BLOCKED` 판정. H-003 `NO-GO` 유지.
 - final audit: exit code `1`, `status=BLOCKED`, `goal_complete=false`; blockers `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`; audit SHA-256 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`.
 - 최신 처리 ZIP은 SHA-256 `813967fe5ffac8cb20c967d7e4517a582ff2f543d78946c004899cf386db376d`이고 구조 검증 `READY`, 사람 자료 반영 `ready_to_apply=false`다.
+
+## 2026-08-06 완료 절차 중복 인증 최소화
+
+- 영수증 서명은 준비·최종화 각각 1회로 줄였고, 최종화 산출물은 한 번의 커밋으로 묶는다.
+- 최종 감사는 작업 트리 해시로 감사하며 `source_identity.working_tree`와 `audited_input_identity.working_tree`에 HEAD 비교 결과를 기록한다. 작업 트리 불일치는 감사 중단 사유가 아니다.
+- 완료 마법사는 H-006 저장 기록만 확인한다. 영수증 신선도와 서명 검사는 최종 감사에만 남겼다.
+- H-007 `operator_id`는 두 저장 파일에서 `웰니스박스`로 복구했다. 현재 최종 감사의 외부 영수증 차단 사유는 그대로다.

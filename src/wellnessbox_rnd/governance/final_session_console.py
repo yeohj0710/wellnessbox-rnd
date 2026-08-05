@@ -785,10 +785,6 @@ class FinalSessionConsole:
                     if external_ref not in evidence:
                         evidence.append(external_ref)
             _write_json(self.manifest_path, manifest)
-            self._git_commit(
-                [self.manifest_path, destination, self.state_path],
-                "docs: register OP-039 external pharmacist validation",
-            )
         return result
 
     def register_external_validation_upload(
@@ -1012,19 +1008,15 @@ class FinalSessionConsole:
         if not self._production_state():
             return receipt
         policy_path = self._register_receipt_policy(receipt)
-        self._git_commit([policy_path], "docs: register final receipt trust policy")
-        receipt = self.sign_separate_receipts(
-            validation_key_path=validation_key_path,
-            validation_issuer_id=validation_issuer_id,
-            independent_review_key_path=independent_review_key_path,
-            independent_review_issuer_id=independent_review_issuer_id,
-        )
         receipt_paths = [
             Path(receipt["validation_receipt_path"]),
             Path(receipt["independent_review_receipt_path"]),
             self.state_path,
         ]
-        self._git_commit(receipt_paths, "docs: register final signed receipts")
+        self._git_commit(
+            [policy_path, *receipt_paths],
+            "docs: register final signed receipts and trust policy",
+        )
         return {**receipt, "audit": self.run_final_audit()}
 
     def _stage_gap_ids(self) -> list[str]:
@@ -1208,8 +1200,7 @@ class FinalSessionConsole:
         _write_json(operations_path, record)
         result = self._record("H-007", "completed" if complete else "deferred", record)
         if complete and self._production_state():
-            paths = self._register_operational_signoffs()
-            self._git_commit(paths, "docs: register operational environment evidence")
+            self._register_operational_signoffs()
             return {**result, "audit": self.run_final_audit()}
         return result
 
@@ -1256,7 +1247,12 @@ class FinalSessionConsole:
         )
 
     def _git_commit(self, paths: list[Path], message: str) -> None:
-        relative = [str(path.resolve().relative_to(self.root)).replace("\\", "/") for path in paths]
+        relative = list(
+            dict.fromkeys(
+                str(path.resolve().relative_to(self.root)).replace("\\", "/")
+                for path in paths
+            )
+        )
         subprocess.run(["git", "-C", str(self.root), "add", "--", *relative], check=True)
         staged = subprocess.run(
             ["git", "-C", str(self.root), "diff", "--cached", "--quiet", "--", *relative],
@@ -1419,10 +1415,7 @@ class FinalSessionConsole:
             result = self.run_final_audit()
             return {"finalized": False, "incomplete_steps": incomplete, "audit": result}
         phase_paths = self._register_final_signoffs()
-        self._git_commit(phase_paths, "docs: record final human signoffs")
         receipt_state = self.state["steps"]["H-006"]
-        policy_path = self._register_receipt_policy(receipt_state)
-        self._git_commit([policy_path], "docs: register final receipt trust policy")
         receipt = self.sign_separate_receipts(
             validation_key_path=receipt_state["validation_key_path"],
             validation_issuer_id=receipt_state["validation_issuer_id"],
@@ -1436,7 +1429,11 @@ class FinalSessionConsole:
             Path(receipt["independent_review_receipt_path"]),
             self.state_path,
         ]
-        self._git_commit(receipt_paths, "docs: register final signed receipts")
+        policy_path = self._register_receipt_policy(receipt)
+        self._git_commit(
+            [*phase_paths, policy_path, *receipt_paths],
+            "docs: record final signoffs, signed receipts, and trust policy",
+        )
         return {"finalized": True, "incomplete_steps": [], "audit": self.run_final_audit()}
 
     def run_final_audit(self) -> dict[str, Any]:

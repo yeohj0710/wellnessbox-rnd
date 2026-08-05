@@ -61,7 +61,7 @@
       "status": "completed",
       "updated_at": "2026-07-24T07:38:06.540247Z",
       "schema_version": "operational_environment_signoff_v1",
-      "operator_id": "?????",
+      "operator_id": "웰니스박스",
       "checks": {
         "rnd_api": {
           "status": "PASS",

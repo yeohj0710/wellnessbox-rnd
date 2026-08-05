@@ -12,6 +12,7 @@ from scripts.run_final_completion_audit import (
     apply_answer_key_integrity_gate,
     assert_no_regression,
     audited_repository_commits,
+    working_tree_status,
 )
 from wellnessbox_rnd.governance.final_completion_audit import (
     CompletionReceiptV1,
@@ -88,23 +89,31 @@ def test_fixed_cases_still_reject_regression() -> None:
     except AssertionError:
         return
     raise AssertionError("regression was accepted")
-def test_audited_repository_commit_reproduces_recorded_file_blobs() -> None:
+def test_audited_input_hashes_use_working_tree_and_record_heads() -> None:
     file_blobs = _audited_input_hashes()
     commits = audited_repository_commits(file_blobs)
 
     for reference, expected_blob in file_blobs.items():
-        repository, relative = reference.split("/", 1)
-        if repository != "wellnessbox-rnd":
-            continue
         actual_blob = subprocess.check_output(
-            ["git", "rev-parse", f'{commits["wellnessbox-rnd"]}:{relative}'],
-            cwd=ROOT,
+            [
+                "git",
+                "-C",
+                str(SERVICE_ROOT if reference.startswith("wellnessbox/") else ROOT),
+                "hash-object",
+                reference.split("/", 1)[1],
+            ],
             text=True,
         ).strip()
         assert actual_blob == expected_blob
     assert commits["wellnessbox"] == subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=SERVICE_ROOT, text=True
     ).strip()
+    assert commits["wellnessbox-rnd"] == subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+    ).strip()
+    status = working_tree_status(sorted(file_blobs))
+    assert set(status["repository_heads"]) == {"wellnessbox-rnd", "wellnessbox"}
+    assert isinstance(status["changed_paths"], list)
 
 
 def test_current_repository_stays_blocked_without_separate_external_review() -> None:

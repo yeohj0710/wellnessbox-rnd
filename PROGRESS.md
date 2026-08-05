@@ -1221,3 +1221,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 현재 local `main`은 R&D `0b08d28`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다.
 - `python scripts/run_final_completion_audit.py`는 exit code 1이며 `status=BLOCKED`, `goal_complete=false`, blockers 2건을 반환했다. 감사 산출물 SHA-256은 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`다.
 - 완료 조건을 충족하지 못했으므로 Goal을 complete로 표시하지 않았다. 새 외부 검토·두 유효 서명·완료 마법사 실제 자료가 도착하기 전에는 기존 자료를 승격하지 않는다.
+
+## 2026-08-06 완료 절차 중복 인증 최소화
+
+- `prepare_and_sign_receipts`와 `finalize_and_audit`는 영수증을 한 번만 서명하고, 정책·영수증·최종 기록을 한 번의 커밋으로 묶도록 변경했다.
+- `run_final_completion_audit.py`는 현재 작업 트리 파일 해시로 감사하고, HEAD 일치 여부와 변경 경로를 결과 메타데이터에만 기록한다. 작업 트리와 HEAD가 달라도 RuntimeError를 내지 않는다.
+- 완료 마법사는 영수증 신선도를 검사하지 않고 저장된 H-006 기록만 확인하며, 신선도·서명·manifest/source 바인딩은 최종 감사가 단독으로 검사한다.
+- `session_state_v1.json`과 `human_signoff_completion_v1.json`의 H-007 `operator_id`를 `웰니스박스`로 복구했다. H-003 학습 게이트 `NO-GO`와 독립 검토 신뢰뿌리 분리는 유지했다.

@@ -226,6 +226,14 @@ class HumanStepVerificationTest(unittest.TestCase):
 
         self.assertEqual(result.verdict, "done")
 
+    def test_receipt_step_does_not_duplicate_final_audit_freshness(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = _fake_root(temp)
+            _write_state(root, {"H-006": {"status": "completed"}})
+            result = verify_step("H-006", root, {})
+
+        self.assertEqual(result.verdict, "done")
+
     def test_a_candidate_safety_review_reports_the_year3_obligation(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = _fake_root(temp)
