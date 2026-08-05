@@ -1239,3 +1239,11 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 차단 사유: `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`.
 - 완료 마법사: `3/13`. 실제 사람 자료와 현재 커밋 기준 서명이 없으므로 기존 자료를 승격하지 않았고 H-003 `NO-GO`를 유지했다.
 - 다음 조건: 현재 HEAD 검증 결과, 구현과 독립된 검토 결과, 두 서명 영수증, 실제 마법사 기록이 도착하면 importer·provenance·해시·중복·사례 수를 확인한 뒤 final audit를 재실행한다.
+
+## 2026-08-05 사용자 재개 fresh audit 3 재확인
+
+- 현재 HEAD: R&D `9233539`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`.
+- 자동 결과: 정답키 `4/4 READY`, 승인 전용 데이터셋 `6건 READY`, 연구계획 요건 `120/120 PASS`.
+- 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`, 감사 산출물 SHA-256 `74c486b24b9b43d66f05ae202d2f6d234e6a1571f1870326644b3f99d973abd2`.
+- 같은 차단 사유 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`가 반환 ZIP 이후 세 번째 연속 재감사에서 반복됐다.
+- 완료 마법사 `3/13`; 새 다운로드 자료·현재 커밋 기준 영수증·독립 검토·사람 기록 없음. 기존 자료 승격·판정·서명 생성 없이 H-003 `NO-GO` 유지.
