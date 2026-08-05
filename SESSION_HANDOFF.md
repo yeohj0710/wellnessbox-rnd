@@ -1299,3 +1299,11 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 검증: 81개 항목·매니페스트 80개·중복 0건·OP-039 10건·현재 source byte 일치·작업 지시 파일 0개·개인 키 0개.
 - importer: 구조 `READY`, `ready_to_apply=false`; OP-039 역할 불일치, 두 영수증의 이전 source commit·신뢰 자료 부재, 완료 마법사 `9/13` 때문이다.
 - 상태: 최종 감사 `BLOCKED`; H-003 학습 게이트 `NO-GO`; 새 외부 반환 ZIP이 올 때까지 기존 자료를 승격하지 않는다.
+
+## 2026-08-05 마법사 산출물 재검증 보완 인계
+
+- 완료 마법사 저장 상태: `10/13`. DATASET은 승인 초안 6건 manifest를 재검증해 완료로 표시하고, AUDIT는 저장된 `BLOCKED` 판정을 표시한다.
+- 코드 커밋: `c5e34e2 fix: verify stored wizard artifacts`; 집중 테스트 `75 passed`.
+- 최신 처리 ZIP: `C:\dev\wellnessbox-rnd\etc\completion_human_processing_package.zip`, SHA-256 `813967fe5ffac8cb20c967d7e4517a582ff2f543d78946c004899cf386db376d`, 81개 항목·매니페스트 80개·OP-039 10건.
+- importer 결과: 구조 `READY`, `ready_to_apply=false`; OP-039 역할 불일치, 현재 HEAD와 다른 두 영수증, 완료 마법사 미완료 자료가 남아 있다.
+- 다음 작업: 새 반환 ZIP 검증 후 모든 사람 자료가 READY일 때만 반영하고 final audit를 실행한다. H-003 `NO-GO`는 유지한다.

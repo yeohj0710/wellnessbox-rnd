@@ -654,6 +654,12 @@ SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
 2. ZIP은 81개 항목·매니페스트 80개·중복 0건·OP-039 10건이고 현재 source byte 검사는 PASS다.
 3. importer는 구조 `READY`를 반환했지만 `ready_to_apply=false`다. 사람 OP-039 결과·현재 HEAD 기준 두 영수증·완료 마법사 13/13이 없기 때문이다.
 
+## 2026-08-05 마법사 산출물 재검증 보완
+
+1. 완료 마법사는 저장된 승인 데이터셋 manifest와 최종 감사 산출물을 읽어 `10/13`을 표시한다. DATASET은 완료이고 AUDIT는 실제 `BLOCKED`다.
+2. 최신 ZIP SHA-256은 `813967fe5ffac8cb20c967d7e4517a582ff2f543d78946c004899cf386db376d`다. importer 구조는 `READY`지만 사람 자료는 `ready_to_apply=false`다.
+3. 다음 외부 자료가 오면 importer가 `ready_to_apply=true`인지 확인한 뒤에만 반영하고, 최종 감사 `status=READY`, `goal_complete=true`를 확인한다.
+
 ## 2026-08-05 현재 재감사 인계
 
 1. 현재 local `main`은 R&D `7fa57da`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다. 자동 감사는 정답키 `4/4 READY`, 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`다.
