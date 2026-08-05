@@ -1206,3 +1206,10 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 최종 감사: `status=BLOCKED`, `goal_complete=false`; 차단 사유 2개가 유지된다. 완료 마법사는 `3/13`.
 - 업로드 `op039_external_validation.json`: SHA-256 `7a4f44c6b35ca3dc6d40494ce2844b5a02516440197cb5cac58b03cec0ba0518`, `independent_of_implementation_team=false`, `relationship_to_project=project_co_researcher`. 새 외부 검토 증거로 반영하지 않았다.
 - 다음 단계: 유효한 현재 커밋 검증·독립 검토·서명 자료가 도착할 때까지 사람의 판정과 영수증을 생성하지 않는다. H-003 `NO-GO` 유지.
+
+## 2026-08-05 사용자 재개 fresh audit 2 인계
+
+- 자동 결과: 정답키 `4/4 READY`, 승인 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`, 현재 서비스 preflight `READY`.
+- 서비스 HEAD: `7054d76670870bc31130006a84df3fa10aa46c78`. 최종 감사는 `BLOCKED`, `goal_complete=false`, 차단 사유 2개 유지.
+- 완료 마법사: `3/13`. 새 업로드·독립 검토·유효한 현재 커밋 영수증·서명은 확인되지 않았다.
+- 기존 자료는 해시와 원본 상태를 보존했다. 사람의 판정·서명은 만들지 않았고 H-003 `NO-GO`를 유지했다.

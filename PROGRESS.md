@@ -1129,3 +1129,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - WellnessBox 정적 검증 4종(`typecheck`, `qa:syntax`, `audit:encoding`, `audit:route-method-exports`)은 모두 exit code `0`이다.
 - 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`이며 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`다. 완료 마법사는 UTF-8 모드에서 `3/13`이다.
 - 업로드 폴더의 유일한 자료 `op039_external_validation.json`은 SHA-256 `7a4f44c6b35ca3dc6d40494ce2844b5a02516440197cb5cac58b03cec0ba0518`이고, 독립성 false·프로젝트 공동연구자 자료라서 새 외부 검토 자료로 반영하지 않았다. 기존 영수증과 H-003 `NO-GO`도 유지했다.
+
+## 2026-08-05 사용자 재개 fresh blocked audit 2
+
+- 지정 첫 명령 결과는 동일했다: 정답키 `4/4 READY`, 승인 전용 데이터셋 `6건 READY`, 연구계획 요건 `120/120 PASS`, 최종 감사 exit code `1` 및 `BLOCKED`, 완료 마법사 `3/13`.
+- 현재 WellnessBox HEAD `7054d76670870bc31130006a84df3fa10aa46c78` 기준 preflight는 다시 `READY`였다. health 4개는 200, `/tips`·`/pharm/tips`는 307 후 200, H-005는 10건·선택 0건·미리 입력된 근거 0건이며 저장소와 운영 상태 해시는 unchanged였다.
+- 최종 감사 산출물 SHA-256은 `3430a4ab382b7403d9cc16e34f6e7d8c42f6ad0307e847e5a0db00a992f37c76`이고, 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`로 동일하다.
+- 새 ZIP·업로드·독립 검토·서명은 없었다. 기존 업로드와 두 영수증의 provenance·해시·불일치 상태를 유지하고, 사람의 판정·서명과 H-003 `NO-GO`를 우회하지 않았다.
