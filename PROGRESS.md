@@ -1121,3 +1121,11 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - `etc/completion_processing_files.zip`을 생성했다. SHA-256은 `18af37078444a9b2b8c482c8bfa6f28a896f293cda003c8ad0dfa8ff6969dd7d`이다.
 - 압축 파일은 처리 대상 71개, 중복 경로 0개, OP-039 사례 10건을 포함한다. README·Markdown과 새 작업 주체 문구는 포함하지 않았다.
 - 현재 서비스 스냅샷, 최종 감사 자료, 기존 영수증 원본, OP-039 사례 원본과 원본 검토 양식을 포함했다. 원본 파일의 provenance·시각·서명 정보는 변경하지 않았다.
+
+## 2026-08-05 사용자 재개 fresh blocked audit 1
+
+- 지정 첫 감사 결과는 정답키 `4/4 READY`, 승인 전용 데이터셋 `6건 READY`, 연구계획 요건 `120/120 PASS`였다.
+- WellnessBox HEAD `7054d76670870bc31130006a84df3fa10aa46c78` 기준 읽기 전용 preflight는 `READY`였다. health 4개는 모두 200, `/tips`·`/pharm/tips`는 307 후 200, H-005는 10건·선택 0건·미리 입력된 근거 0건이었다. 저장소·DB·runtime controls·final state·영수증 목록과 해시는 unchanged였다.
+- WellnessBox 정적 검증 4종(`typecheck`, `qa:syntax`, `audit:encoding`, `audit:route-method-exports`)은 모두 exit code `0`이다.
+- 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`이며 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`다. 완료 마법사는 UTF-8 모드에서 `3/13`이다.
+- 업로드 폴더의 유일한 자료 `op039_external_validation.json`은 SHA-256 `7a4f44c6b35ca3dc6d40494ce2844b5a02516440197cb5cac58b03cec0ba0518`이고, 독립성 false·프로젝트 공동연구자 자료라서 새 외부 검토 자료로 반영하지 않았다. 기존 영수증과 H-003 `NO-GO`도 유지했다.

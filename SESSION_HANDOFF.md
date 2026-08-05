@@ -1198,3 +1198,11 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - SHA-256: `18af37078444a9b2b8c482c8bfa6f28a896f293cda003c8ad0dfa8ff6969dd7d`
 - 검증: 71개 파일, 중복 경로 0개, OP-039 사례 10건, README·Markdown 0개.
 - 구성: 현재 서비스 스냅샷, 최종 감사 자료, 기존 영수증 원본, OP-039 사례 원본과 원본 검토 양식. 새 작업 지시 문구는 포함하지 않았다.
+
+## 2026-08-05 사용자 재개 fresh audit 1 인계
+
+- 자동 결과: 정답키 `4/4 READY`, 승인 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`.
+- 현재 서비스 `7054d76670870bc31130006a84df3fa10aa46c78`: 읽기 전용 preflight `READY`, 정적 검증 4종 exit code `0`.
+- 최종 감사: `status=BLOCKED`, `goal_complete=false`; 차단 사유 2개가 유지된다. 완료 마법사는 `3/13`.
+- 업로드 `op039_external_validation.json`: SHA-256 `7a4f44c6b35ca3dc6d40494ce2844b5a02516440197cb5cac58b03cec0ba0518`, `independent_of_implementation_team=false`, `relationship_to_project=project_co_researcher`. 새 외부 검토 증거로 반영하지 않았다.
+- 다음 단계: 유효한 현재 커밋 검증·독립 검토·서명 자료가 도착할 때까지 사람의 판정과 영수증을 생성하지 않는다. H-003 `NO-GO` 유지.
