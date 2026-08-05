@@ -161,7 +161,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn('id="primaryAction"', page)
         self.assertIn("복용 전 상태 저장", page)
         self.assertIn("후속평가 저장", page)
-        self.assertIn("약사 승인 완료 확인", page)
+        self.assertIn("사전 검토 완료 확인", page)
         self.assertNotIn("웰니스박스 명의로 승인", page)
         self.assertIn("버튼은 항상 같은 자리에 있습니다", page)
         self.assertIn('"operational_baseline": console.confirm_operational_baseline', page)
@@ -594,7 +594,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn("operations_collect", html)
         self.assertNotIn("`이번 실행에서 감지`", html)
         self.assertIn("op039-external-review-package.zip", html)
-        self.assertIn("약사 안전 검토 열기", html)
+        self.assertIn("예비 약사 사전 검토 열기", html)
         review_form = (
             ROOT / "data/original_plan/final_session/op039_external_reviewer_form.html"
         ).read_text(encoding="utf-8")
@@ -614,6 +614,10 @@ class FinalSessionConsoleTest(unittest.TestCase):
         self.assertIn("qualification_stage:'pharmacist_candidate'", review_form)
         self.assertNotIn("운영 확인 JSON", html)
         self.assertNotIn("외부 평가 결과 JSON 경로", html)
+        self.assertIn("validationKeyPath", html)
+        self.assertIn("independentReviewKeyPath", html)
+        self.assertNotIn("state.default_signing_key_path", html)
+        self.assertNotIn("generateKey()", html)
 
     def test_finalize_registers_policy_before_resigning_receipts(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -624,11 +628,14 @@ class FinalSessionConsoleTest(unittest.TestCase):
                 step["status"] = "completed"
             console.state["steps"]["H-006"].update(
                 {
-                    "key_path": "key.pem",
-                    "issuer_id": "issuer",
+                    "validation_key_path": "validation-key.pem",
+                    "validation_issuer_id": "validation-issuer",
+                    "independent_review_key_path": "review-key.pem",
+                    "independent_review_issuer_id": "review-issuer",
                     "validation_receipt_path": "v.json",
                     "independent_review_receipt_path": "r.json",
-                    "public_key_ed25519_base64": "key",
+                    "validation_public_key_ed25519_base64": "validation-key",
+                    "independent_review_public_key_ed25519_base64": "review-key",
                 }
             )
             events: list[str] = []
@@ -650,7 +657,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
                     console, "_register_receipt_policy", return_value=root / "policy.json"
                 ),
                 patch.object(console, "_git_commit", side_effect=commit),
-                patch.object(console, "sign_receipts", side_effect=sign),
+                patch.object(console, "sign_separate_receipts", side_effect=sign),
                 patch.object(console, "run_final_audit", return_value={"status": "READY"}),
             ):
                 result = console.finalize_and_audit()
@@ -659,32 +666,67 @@ class FinalSessionConsoleTest(unittest.TestCase):
                 events.index("docs: register final receipt trust policy"), events.index("signed")
             )
 
-    def test_prepare_receipts_creates_default_key_only_when_missing(self) -> None:
+    def test_production_receipts_require_existing_separate_signing_keys(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             console = FinalSessionConsole(ROOT, state_root=root / "session")
-            key_path = root / "session/signing.pem"
-            with patch.object(
-                console,
-                "sign_receipts",
-                return_value={"issuer_id": "웰니스박스"},
-            ) as sign:
-                console.prepare_and_sign_receipts(str(key_path))
-                first_key = key_path.read_bytes()
-                console.prepare_and_sign_receipts(str(key_path))
-            self.assertEqual(key_path.read_bytes(), first_key)
-            self.assertEqual(sign.call_count, 2)
+            with self.assertRaises(FileNotFoundError):
+                console.prepare_and_sign_receipts(
+                    validation_key_path=str(root / "validation.pem"),
+                    validation_issuer_id="validation-issuer",
+                    independent_review_key_path=str(root / "review.pem"),
+                    independent_review_issuer_id="review-issuer",
+                )
+
+    def test_separate_receipts_use_distinct_keys_and_issuers(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            console = FinalSessionConsole(ROOT, state_root=root / "session")
+            validation = console.generate_key(str(root / "validation.pem"))
+            review = console.generate_key(str(root / "review.pem"))
+            result = console.sign_separate_receipts(
+                validation_key_path=validation["key_path"],
+                validation_issuer_id="validation-issuer",
+                independent_review_key_path=review["key_path"],
+                independent_review_issuer_id="review-issuer",
+            )
+            self.assertNotEqual(
+                result["validation_public_key_ed25519_base64"],
+                result["independent_review_public_key_ed25519_base64"],
+            )
+            self.assertEqual(
+                console.state["steps"]["H-006"]["validation_issuer_id"],
+                "validation-issuer",
+            )
+            self.assertEqual(
+                console.state["steps"]["H-006"]["independent_review_issuer_id"],
+                "review-issuer",
+            )
+            validation_receipt = json.loads(
+                Path(result["validation_receipt_path"]).read_text(encoding="utf-8")
+            )
+            review_receipt = json.loads(
+                Path(result["independent_review_receipt_path"]).read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(validation_receipt["issuer_id"], "validation-issuer")
+            self.assertEqual(review_receipt["issuer_id"], "review-issuer")
 
     def test_prepare_receipts_registers_trust_before_production_resign(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             console = FinalSessionConsole(ROOT, state_root=root / "session")
-            key_path = root / "session/signing.pem"
-            key_path.parent.mkdir(parents=True, exist_ok=True)
-            key_path.write_text("existing-key", encoding="utf-8")
+            validation_key_path = root / "session/validation.pem"
+            review_key_path = root / "session/review.pem"
+            validation_key_path.parent.mkdir(parents=True, exist_ok=True)
+            validation_key_path.write_text("existing-validation-key", encoding="utf-8")
+            review_key_path.write_text("existing-review-key", encoding="utf-8")
             receipt = {
-                "issuer_id": "웰니스박스",
-                "public_key_ed25519_base64": "public",
+                "validation_issuer_id": "validation-issuer",
+                "independent_review_issuer_id": "review-issuer",
+                "validation_public_key_ed25519_base64": "validation-public",
+                "independent_review_public_key_ed25519_base64": "review-public",
                 "validation_receipt_path": str(root / "validation.json"),
                 "independent_review_receipt_path": str(root / "review.json"),
             }
@@ -699,7 +741,7 @@ class FinalSessionConsoleTest(unittest.TestCase):
 
             with (
                 patch.object(console, "_production_state", return_value=True),
-                patch.object(console, "sign_receipts", side_effect=sign),
+                patch.object(console, "sign_separate_receipts", side_effect=sign),
                 patch.object(
                     console,
                     "_register_receipt_policy",
@@ -708,7 +750,12 @@ class FinalSessionConsoleTest(unittest.TestCase):
                 patch.object(console, "_git_commit", side_effect=commit),
                 patch.object(console, "run_final_audit", return_value={"status": "BLOCKED"}),
             ):
-                console.prepare_and_sign_receipts(str(key_path))
+                console.prepare_and_sign_receipts(
+                    validation_key_path=str(validation_key_path),
+                    validation_issuer_id="validation-issuer",
+                    independent_review_key_path=str(review_key_path),
+                    independent_review_issuer_id="review-issuer",
+                )
             self.assertEqual(events[0], "sign")
             self.assertEqual(events[1], "docs: register final receipt trust policy")
             self.assertEqual(events[2], "sign")

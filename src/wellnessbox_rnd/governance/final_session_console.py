@@ -238,12 +238,6 @@ class FinalSessionConsole:
                     else data_lake_database_path().resolve()
                 )
             ),
-            "default_signing_key_path": str(
-                (
-                    self.root
-                    / "etc/final_session_private/final_session_signing_key.pem"
-                ).resolve()
-            ),
             "stage_gap_ids": self._stage_gap_ids(),
             "op039_package": {
                 "download_path": "/downloads/op039-external-review-package.zip",
@@ -405,10 +399,10 @@ class FinalSessionConsole:
         if draft is None:
             raise ValueError("현재 프로필의 실제 추천 초안이 없습니다. 복용 전 저장 결과를 확인하세요.")
         if draft["review_status"] == "pending":
-            raise ValueError("권혁찬 약사가 약사 화면에서 초안을 직접 판정한 뒤 다시 확인하세요.")
+            raise ValueError("권혁찬이 예비 약사 사전 검토 화면에서 초안을 직접 판정한 뒤 다시 확인하세요.")
         reviewer_id = str(draft.get("reviewer_id") or "").strip()
         if reviewer_id in {"", "웰니스박스", "여형준"}:
-            raise ValueError("오너 또는 시스템 명의 판정은 약사 검토 증거로 인정하지 않습니다.")
+            raise ValueError("오너 또는 시스템 명의 판정은 예비 약사 사전 검토 증거로 인정하지 않습니다.")
         wizard["pharmacist_review"] = {
             "status": "completed", "draft_id": draft["draft_id"],
             "review_status": draft["review_status"],
@@ -698,7 +692,7 @@ class FinalSessionConsole:
                 self._record(
                     "H-005", "deferred", {"reason": "external_review_found_invalid_cases", "case_ids": invalid, "registered_path": str(destination)}
                 )
-                raise ValueError("외부 약사가 부적절하다고 판정한 사례가 있어 OP-039를 완료할 수 없습니다.")
+                raise ValueError("외부 검토자가 부적절하다고 판정한 사례가 있어 OP-039를 완료할 수 없습니다.")
             reviewer_warnings = credential_audit["warnings"]
         elif not simulation:
             report = ExternalHighRiskSafetyEvalReportV2.model_validate(payload)
@@ -807,6 +801,10 @@ class FinalSessionConsole:
         return self.register_external_validation(str(path))
 
     def generate_key(self, key_path: str) -> dict[str, str]:
+        if self._production_state():
+            raise ValueError(
+                "실제 최종 영수증에는 사람이 제공한 기존 서명 키가 필요합니다."
+            )
         path = Path(key_path).resolve()
         if path.exists():
             raise FileExistsError(path)
@@ -837,6 +835,10 @@ class FinalSessionConsole:
         critical_count: int = 0,
         important_count: int = 0,
     ) -> dict[str, Any]:
+        if self._production_state():
+            raise ValueError(
+                "실제 최종 영수증은 검증용·독립 검토용 서로 다른 두 서명 키가 필요합니다."
+            )
         private_key = serialization.load_pem_private_key(Path(key_path).read_bytes(), password=None)
         if not isinstance(private_key, Ed25519PrivateKey):
             raise ValueError("key is not Ed25519")
@@ -889,18 +891,134 @@ class FinalSessionConsole:
         self._record("H-006", "completed", result)
         return result
 
-    def prepare_and_sign_receipts(
-        self, key_path: str, issuer_id: str = "웰니스박스"
+    def sign_separate_receipts(
+        self,
+        *,
+        validation_key_path: str,
+        validation_issuer_id: str,
+        independent_review_key_path: str,
+        independent_review_issuer_id: str,
+        source_commit: str | None = None,
+        critical_count: int = 0,
+        important_count: int = 0,
     ) -> dict[str, Any]:
-        path = Path(key_path).resolve()
-        if not path.exists():
-            self.generate_key(str(path))
-        receipt = self.sign_receipts(key_path=str(path), issuer_id=issuer_id)
+        validation_path = Path(validation_key_path).resolve()
+        review_path = Path(independent_review_key_path).resolve()
+        if not validation_path.is_file() or not review_path.is_file():
+            raise FileNotFoundError(
+                "검증용·독립 검토용 기존 서명 키 파일을 모두 제공해야 합니다."
+            )
+        validation_key = serialization.load_pem_private_key(
+            validation_path.read_bytes(), password=None
+        )
+        review_key = serialization.load_pem_private_key(review_path.read_bytes(), password=None)
+        if not isinstance(validation_key, Ed25519PrivateKey) or not isinstance(
+            review_key, Ed25519PrivateKey
+        ):
+            raise ValueError("두 서명 키 모두 Ed25519 개인 키여야 합니다.")
+        validation_public = base64.b64encode(
+            validation_key.public_key().public_bytes(
+                encoding=serialization.Encoding.Raw,
+                format=serialization.PublicFormat.Raw,
+            )
+        ).decode()
+        review_public = base64.b64encode(
+            review_key.public_key().public_bytes(
+                encoding=serialization.Encoding.Raw,
+                format=serialization.PublicFormat.Raw,
+            )
+        ).decode()
+        if (
+            not validation_issuer_id.strip()
+            or not independent_review_issuer_id.strip()
+            or validation_issuer_id == independent_review_issuer_id
+            or validation_public == review_public
+        ):
+            raise ValueError(
+                "검증용·독립 검토용 발급자와 공개 키는 서로 달라야 합니다."
+            )
+        manifest = load_original_plan_manifest_v1(self.manifest_path)
+        roots = {"wellnessbox-rnd": self.root, "wellnessbox": self.workspace / "wellnessbox"}
+        canonical = audit_original_plan_manifest_v1(manifest, repository_roots=roots)
+        manifest_sha = canonical.manifest_sha256
+        audit_sha = hashlib.sha256(canonical.model_dump_json().encode()).hexdigest()
+        commit = (
+            source_commit
+            or subprocess.check_output(
+                [
+                    "git",
+                    "-C",
+                    str(self.workspace / "wellnessbox"),
+                    "rev-parse",
+                    "HEAD",
+                ],
+                text=True,
+            ).strip()
+        )
+        validation = {
+            "schema_version": "final_validation_receipt_v1",
+            "status": "PASS",
+            "manifest_sha256": manifest_sha,
+            "canonical_audit_sha256": audit_sha,
+            "source_commit": commit,
+            "issuer_id": validation_issuer_id,
+        }
+        review = {
+            "schema_version": "independent_final_review_receipt_v1",
+            "status": "PASS",
+            "manifest_sha256": manifest_sha,
+            "canonical_audit_sha256": audit_sha,
+            "source_commit": commit,
+            "issuer_id": independent_review_issuer_id,
+            "critical_count": critical_count,
+            "important_count": important_count,
+        }
+        for receipt, key in ((validation, validation_key), (review, review_key)):
+            message = json.dumps(
+                receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+            ).encode()
+            receipt["signature_ed25519_base64"] = base64.b64encode(key.sign(message)).decode()
+        validation_receipt_path = self.state_root / "final_validation_receipt_v1.json"
+        review_receipt_path = self.state_root / "independent_final_review_receipt_v1.json"
+        _write_json(validation_receipt_path, validation)
+        _write_json(review_receipt_path, review)
+        result = {
+            "validation_issuer_id": validation_issuer_id,
+            "independent_review_issuer_id": independent_review_issuer_id,
+            "validation_key_path": str(validation_path),
+            "independent_review_key_path": str(review_path),
+            "validation_public_key_ed25519_base64": validation_public,
+            "independent_review_public_key_ed25519_base64": review_public,
+            "validation_receipt_path": str(validation_receipt_path),
+            "independent_review_receipt_path": str(review_receipt_path),
+        }
+        self._record("H-006", "completed", result)
+        return result
+
+    def prepare_and_sign_receipts(
+        self,
+        *,
+        validation_key_path: str,
+        validation_issuer_id: str,
+        independent_review_key_path: str,
+        independent_review_issuer_id: str,
+    ) -> dict[str, Any]:
+        receipt = self.sign_separate_receipts(
+            validation_key_path=validation_key_path,
+            validation_issuer_id=validation_issuer_id,
+            independent_review_key_path=independent_review_key_path,
+            independent_review_issuer_id=independent_review_issuer_id,
+        )
         if not self._production_state():
             return receipt
         policy_path = self._register_receipt_policy(receipt)
         self._git_commit([policy_path], "docs: register final receipt trust policy")
-        receipt = self.sign_receipts(key_path=str(path), issuer_id=issuer_id)
+        receipt = self.sign_separate_receipts(
+            validation_key_path=validation_key_path,
+            validation_issuer_id=validation_issuer_id,
+            independent_review_key_path=independent_review_key_path,
+            independent_review_issuer_id=independent_review_issuer_id,
+        )
         receipt_paths = [
             Path(receipt["validation_receipt_path"]),
             Path(receipt["independent_review_receipt_path"]),
@@ -1264,15 +1382,34 @@ class FinalSessionConsole:
         policy["independent_review_receipt_path"] = (
             f"wellnessbox-rnd/{review.relative_to(self.root).as_posix()}"
         )
-        issuer = {
-            "issuer_id": receipt["issuer_id"],
-            "public_key_ed25519_base64": receipt["public_key_ed25519_base64"],
+        validation_issuer = {
+            "issuer_id": receipt["validation_issuer_id"],
+            "public_key_ed25519_base64": receipt[
+                "validation_public_key_ed25519_base64"
+            ],
         }
+        review_issuer = {
+            "issuer_id": receipt["independent_review_issuer_id"],
+            "public_key_ed25519_base64": receipt[
+                "independent_review_public_key_ed25519_base64"
+            ],
+        }
+        if (
+            validation_issuer["issuer_id"] == review_issuer["issuer_id"]
+            or validation_issuer["public_key_ed25519_base64"]
+            == review_issuer["public_key_ed25519_base64"]
+        ):
+            raise ValueError("두 영수증의 발급자와 공개 키는 서로 달라야 합니다.")
         policy["trusted_issuers"] = [
             item
             for item in policy.get("trusted_issuers", [])
-            if item["issuer_id"] != issuer["issuer_id"]
-        ] + [issuer]
+            if item["issuer_id"] != validation_issuer["issuer_id"]
+        ] + [validation_issuer]
+        policy["independent_review_trusted_issuers"] = [
+            item
+            for item in policy.get("independent_review_trusted_issuers", [])
+            if item["issuer_id"] != review_issuer["issuer_id"]
+        ] + [review_issuer]
         _write_json(self.audit_policy_path, policy)
         return self.audit_policy_path
 
@@ -1286,8 +1423,13 @@ class FinalSessionConsole:
         receipt_state = self.state["steps"]["H-006"]
         policy_path = self._register_receipt_policy(receipt_state)
         self._git_commit([policy_path], "docs: register final receipt trust policy")
-        receipt = self.sign_receipts(
-            key_path=receipt_state["key_path"], issuer_id=receipt_state["issuer_id"]
+        receipt = self.sign_separate_receipts(
+            validation_key_path=receipt_state["validation_key_path"],
+            validation_issuer_id=receipt_state["validation_issuer_id"],
+            independent_review_key_path=receipt_state["independent_review_key_path"],
+            independent_review_issuer_id=receipt_state[
+                "independent_review_issuer_id"
+            ],
         )
         receipt_paths = [
             Path(receipt["validation_receipt_path"]),
