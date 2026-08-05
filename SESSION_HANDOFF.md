@@ -1213,3 +1213,11 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 서비스 HEAD: `7054d76670870bc31130006a84df3fa10aa46c78`. 최종 감사는 `BLOCKED`, `goal_complete=false`, 차단 사유 2개 유지.
 - 완료 마법사: `3/13`. 새 업로드·독립 검토·유효한 현재 커밋 영수증·서명은 확인되지 않았다.
 - 기존 자료는 해시와 원본 상태를 보존했다. 사람의 판정·서명은 만들지 않았고 H-003 `NO-GO`를 유지했다.
+
+## 2026-08-05 사용자 재개 fresh audit 3 인계
+
+- 현재 서비스 HEAD: `7054d76670870bc31130006a84df3fa10aa46c78`; 읽기 전용 preflight exit code `0`.
+- 자동 결과: 정답키 `4/4 READY`, 승인 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`.
+- 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`; `validation_receipt_missing_or_invalid`와 `independent_review_receipt_missing_or_invalid`가 세 번째 연속 fresh audit에서 반복됐다.
+- 완료 마법사: `3/13`. 새 업로드·독립 검토·현재 커밋 기준 서명 영수증 없음. H-003 `NO-GO` 유지.
+- 다음 조건: 실제 현재 커밋 검증 결과, 독립 검토 결과, 유효한 두 서명 영수증, 실제 마법사 기록이 도착해야 최종 감사 재검증을 진행한다.
