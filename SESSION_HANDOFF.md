@@ -1283,3 +1283,11 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 검증: 81개 항목·매니페스트 80개·중복 0건·OP-039 10건·현재 저장소 파일 바이트 일치·작업 지시 파일 0개·개인 키 0개.
 - 현재 importer 결과: 구조 검증은 READY이나 사람 자료는 `ready_to_apply=false`다. OP-039 역할 불일치, 이전 커밋의 두 영수증, 완료 마법사 `9/13` 때문이다.
 - 반영 경계: `--apply`는 모든 사람 자료가 READY일 때만 사용한다. 이번 세션에는 사람 자료를 반영하지 않았다. H-003 학습 게이트 `NO-GO`, 훈련·승격 금지, 최종 감사 `BLOCKED`를 유지한다.
+
+## 2026-08-05 현재 재감사 인계
+
+- 현재 HEAD: R&D `7fa57da`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`.
+- 자동 검증: 정답키 `4/4 READY`, 승인 전용 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`, 서비스 정적 검증 4종 exit code 0.
+- 최종 감사: exit code 1, `BLOCKED`, `goal_complete=false`, blockers `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`, audit SHA-256 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`.
+- 완료 마법사: `9/13`; TRAIN은 `NO-GO`로 유지. 다운로드 폴더의 최신 반환 ZIP은 기존 `completion_human_processing_completed.zip`뿐이며 importer가 반영을 거부했다.
+- 다음 작업: 새 반환 ZIP이 오면 먼저 SHA-256·provenance·중복·사례 수·현재 소스 일치를 확인하고 importer를 실행한다. `ready_to_apply=true`일 때만 반영한 뒤 final audit에서 `READY`와 `goal_complete=true`를 확인한다.

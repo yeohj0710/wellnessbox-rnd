@@ -647,3 +647,10 @@ SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
 2. ZIP은 81개 항목·매니페스트 80개·중복 0건·OP-039 10건이며, 작업 지시 파일과 개인 키 파일은 없다. 반환 ZIP은 `python scripts/import_completion_processing_package.py <ZIP>`으로 자동 검증한다.
 3. 현재 검증 결과는 구조 READY이지만 사람 자료 `ready_to_apply=false`다. 예비 OP-039 결과의 역할 불일치, 현재 커밋과 다른 두 영수증, 완료 마법사 `9/13`이 남아 있다.
 4. 유효한 자료가 반환되면 importer 결과가 READY인 경우에만 `--apply`를 실행하고, 이후 `python scripts/run_final_completion_audit.py` 결과가 `status=READY`, `goal_complete=true`인지 확인한다. H-003 `NO-GO`는 열지 않는다.
+
+## 2026-08-05 현재 재감사 인계
+
+1. 현재 local `main`은 R&D `7fa57da`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다. 자동 감사는 정답키 `4/4 READY`, 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`다.
+2. 최종 감사는 `BLOCKED`, `goal_complete=false`, 감사 산출물 SHA-256 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`다. 두 영수증 차단 사유가 그대로 반복됐다.
+3. `C:\Users\hjyeo\Downloads\completion_human_processing_completed.zip`은 SHA-256 `cd1ba3ef...`이며 현재 importer가 `current_source_mismatches:6`, OP-039 사람 자료 거부, 이전 커밋 영수증, 완료 마법사 미완료로 반영하지 않았다. 새 반환 ZIP은 아직 없다.
+4. 다음 실제 전환 조건은 현재 HEAD 기준 독립 검토 결과, 서로 다른 두 발급자의 유효한 서명 영수증, 완료 마법사 실제 기록이다. 도착 전에는 기존 자료를 승격하지 않는다.
