@@ -22,11 +22,17 @@ def _wizard_archive(*, finished: bool, preserve_h003_no_go: bool = True) -> zipf
             for index in range(1, 14)
         ],
     }
-    h003 = progress["steps"][3]
-    h003["step_id"] = "H-003"
+    progress["steps"][3]["step_id"] = "H-003"
+    progress["steps"][5]["step_id"] = "TRAIN"
+    progress["steps"][6]["step_id"] = "PROMOTION"
+    progress["steps"][5]["verdict"] = "skipped_gate_closed"
+    progress["steps"][5]["detail"] = "TRAIN NO-GO preserved"
     if preserve_h003_no_go:
-        h003["verdict"] = "skipped_gate_closed"
-        h003["detail"] = "H-003 NO-GO preserved"
+        progress["steps"][3]["verdict"] = "done"
+        progress["steps"][3]["detail"] = "H-003 reviewed"
+    else:
+        progress["steps"][5]["verdict"] = "done"
+        progress["steps"][5]["detail"] = "TRAIN reopened"
     if not finished:
         progress["steps"][0]["verdict"] = "todo"
     buffer = io.BytesIO()
@@ -53,7 +59,7 @@ def test_wizard_checks_reject_h003_gate_reopening() -> None:
     with _wizard_archive(finished=True, preserve_h003_no_go=False) as archive:
         result = _wizard_checks(archive=archive)
         assert result["status"] == "REJECTED"
-        assert "h003_no_go_gate_not_preserved" in result["problems"]
+        assert "training_no_go_gate_not_preserved" in result["problems"]
 
 
 def test_archive_member_paths_cannot_escape() -> None:

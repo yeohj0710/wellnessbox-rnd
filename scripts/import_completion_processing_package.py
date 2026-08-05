@@ -225,16 +225,16 @@ def _wizard_checks(*, archive: zipfile.ZipFile) -> dict[str, Any]:
     ]
     if unfinished:
         problems.append("wizard_unfinished_steps:" + ",".join(unfinished))
-    h003 = next(
-        (row for row in rows if isinstance(row, dict) and row.get("step_id") == "H-003"),
+    train = next(
+        (row for row in rows if isinstance(row, dict) and row.get("step_id") == "TRAIN"),
         None,
     )
     if (
-        not h003
-        or h003.get("verdict") != "skipped_gate_closed"
-        or "NO-GO" not in str(h003.get("detail", ""))
+        not train
+        or train.get("verdict") != "skipped_gate_closed"
+        or "NO-GO" not in str(train.get("detail", ""))
     ):
-        problems.append("h003_no_go_gate_not_preserved")
+        problems.append("training_no_go_gate_not_preserved")
     return {"status": "READY" if not problems else "REJECTED", "problems": problems}
 
 
