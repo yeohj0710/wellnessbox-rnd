@@ -1291,3 +1291,11 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 최종 감사: exit code 1, `BLOCKED`, `goal_complete=false`, blockers `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`, audit SHA-256 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`.
 - 완료 마법사: `9/13`; TRAIN은 `NO-GO`로 유지. 다운로드 폴더의 최신 반환 ZIP은 기존 `completion_human_processing_completed.zip`뿐이며 importer가 반영을 거부했다.
 - 다음 작업: 새 반환 ZIP이 오면 먼저 SHA-256·provenance·중복·사례 수·현재 소스 일치를 확인하고 importer를 실행한다. `ready_to_apply=true`일 때만 반영한 뒤 final audit에서 `READY`와 `goal_complete=true`를 확인한다.
+
+## 2026-08-05 현재 main 기준 ZIP 재생성 인계
+
+- 파일: `C:\dev\wellnessbox-rnd\etc\completion_human_processing_package.zip`
+- SHA-256: `31e45c4d72657bbeba136202313d4b068709e85aab23ea98bd2bc80a70f54c8d`.
+- 검증: 81개 항목·매니페스트 80개·중복 0건·OP-039 10건·현재 source byte 일치·작업 지시 파일 0개·개인 키 0개.
+- importer: 구조 `READY`, `ready_to_apply=false`; OP-039 역할 불일치, 두 영수증의 이전 source commit·신뢰 자료 부재, 완료 마법사 `9/13` 때문이다.
+- 상태: 최종 감사 `BLOCKED`; H-003 학습 게이트 `NO-GO`; 새 외부 반환 ZIP이 올 때까지 기존 자료를 승격하지 않는다.

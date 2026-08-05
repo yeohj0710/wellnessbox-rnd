@@ -648,6 +648,12 @@ SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
 3. 현재 검증 결과는 구조 READY이지만 사람 자료 `ready_to_apply=false`다. 예비 OP-039 결과의 역할 불일치, 현재 커밋과 다른 두 영수증, 완료 마법사 `9/13`이 남아 있다.
 4. 유효한 자료가 반환되면 importer 결과가 READY인 경우에만 `--apply`를 실행하고, 이후 `python scripts/run_final_completion_audit.py` 결과가 `status=READY`, `goal_complete=true`인지 확인한다. H-003 `NO-GO`는 열지 않는다.
 
+## 2026-08-05 현재 main 기준 처리 ZIP 갱신
+
+1. 최신 단일 처리 파일은 `C:\dev\wellnessbox-rnd\etc\completion_human_processing_package.zip`이며 SHA-256은 `31e45c4d72657bbeba136202313d4b068709e85aab23ea98bd2bc80a70f54c8d`다.
+2. ZIP은 81개 항목·매니페스트 80개·중복 0건·OP-039 10건이고 현재 source byte 검사는 PASS다.
+3. importer는 구조 `READY`를 반환했지만 `ready_to_apply=false`다. 사람 OP-039 결과·현재 HEAD 기준 두 영수증·완료 마법사 13/13이 없기 때문이다.
+
 ## 2026-08-05 현재 재감사 인계
 
 1. 현재 local `main`은 R&D `7fa57da`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다. 자동 감사는 정답키 `4/4 READY`, 데이터셋 `6건 READY`, 연구계획 `120/120 PASS`다.

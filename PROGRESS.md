@@ -1202,3 +1202,9 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 정답키 감사는 `4/4 READY`, 승인 전용 데이터셋은 `6건 READY`·위반 0건, 연구계획 요건 감사는 `120/120 PASS`다. WellnessBox `typecheck`, `qa:syntax`, `audit:encoding`, `audit:route-method-exports`도 모두 exit code 0이다.
 - 최종 감사는 exit code 1, `status=BLOCKED`, `goal_complete=false`이며 산출물 SHA-256은 `4315fd5d383b36a3850642537f377abee7e47bd491d0bd3422e6a8b3fe2706ff`다. 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`다.
 - 완료 마법사는 `9/13`이다. TRAIN 단계는 `NO-GO`로 건너뛰었고, 실제 서버 응답·승인 전용 데이터셋 단계·최종 감사가 남아 있다. 다운로드 폴더에는 새 ZIP이 없고, 기존 반환 ZIP `cd1ba3ef...`은 현재 importer에서 구조 불일치 6건과 사람 자료 거부로 반영하지 않았다.
+
+## 2026-08-05 현재 main 기준 ZIP 재생성
+
+- local `main` fast-forward 뒤 실제 파일 바이트를 다시 담아 `etc/completion_human_processing_package.zip`을 갱신했다.
+- 새 ZIP SHA-256은 `31e45c4d72657bbeba136202313d4b068709e85aab23ea98bd2bc80a70f54c8d`이며 81개 항목·매니페스트 80개·중복 0건·OP-039 사례 10건이다.
+- 현재 importer 결과는 구조 `READY`, source byte 일치, `ready_to_apply=false`다. OP-039 역할 불일치, 이전 커밋 영수증, 완료 마법사 `9/13`이 남아 있다. 사람의 판정·서명은 생성하거나 반영하지 않았다.
