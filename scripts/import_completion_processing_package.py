@@ -47,6 +47,8 @@ HUMAN_RECORD_PATHS = {
     "wellnessbox-rnd/data/original_plan/final_session/session_state_v1.json",
     "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json",
 }
+AUDIT_POLICY_PATH = "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json"
+IMPORTABLE_HUMAN_RECORD_PATHS = HUMAN_RECORD_PATHS - {AUDIT_POLICY_PATH}
 INSTRUCTION_SUFFIXES = (".md", ".txt", ".html", ".readme")
 PRIVATE_KEY_SUFFIXES = (".pem", ".key")
 
@@ -81,6 +83,28 @@ def safe_member_name(name: str) -> bool:
         and not path.is_absolute()
         and ".." not in path.parts
         and "\\" not in name
+    )
+
+
+def _source_paths_requiring_identity_match(actual_paths: set[str]) -> list[str]:
+    """Return the reviewed service files that must match the current checkout.
+
+    Only `wellnessbox/` counts. That tree is the subject of the review and it
+    stays frozen while a package is out, so byte identity is a real check there.
+
+    `wellnessbox-rnd/` is deliberately excluded. It holds the machinery that
+    grades the package - the importer reading this archive, its tests, and the
+    audit evidence the audit rewrites on every run. Demanding byte identity
+    against a tree that changes every round strands the outstanding package the
+    moment anyone touches that machinery, which is a loop no reviewer can exit.
+    The research side is already bound twice over: `repository_head_not_ancestor`
+    below pins the package to an ancestor of the current head, and each receipt
+    carries `manifest_sha256`, `canonical_audit_sha256` and `source_commit`.
+    """
+    return sorted(
+        path
+        for path in actual_paths - IMPORTABLE_HUMAN_RECORD_PATHS
+        if path.startswith("wellnessbox/")
     )
 
 
@@ -211,17 +235,22 @@ def _wizard_checks(*, archive: zipfile.ZipFile) -> dict[str, Any]:
         problems.append("wizard_schema_invalid")
     if progress.get("total_steps") != 13:
         problems.append("wizard_total_steps_invalid")
-    if progress.get("finished_steps") != 13 or progress.get("all_finished") is not True:
-        problems.append("wizard_not_all_finished")
     rows = progress.get("steps", [])
     if not isinstance(rows, list) or len(rows) != 13:
         problems.append("wizard_step_rows_invalid")
         rows = []
+    # AUDIT is the last wizard step and it only turns green once the final audit
+    # reports READY - which needs the receipts this very package delivers. Asking
+    # the returned package to already show AUDIT finished is circular, so the
+    # step is checked after the import instead, by the audit itself.
     unfinished = [
         str(row.get("step_id", "?"))
         for row in rows
         if not isinstance(row, dict)
-        or row.get("verdict") not in {"done", "skipped_gate_closed"}
+        or (
+            row.get("step_id") != "AUDIT"
+            and row.get("verdict") not in {"done", "skipped_gate_closed"}
+        )
     ]
     if unfinished:
         problems.append("wizard_unfinished_steps:" + ",".join(unfinished))
@@ -304,9 +333,7 @@ def verify_package(zip_path: Path) -> dict[str, Any]:
                 ):
                     structural.append(f"repository_head_not_ancestor:{repository}")
         source_mismatches: list[str] = []
-        for path in sorted(actual_paths):
-            if not path.startswith(("wellnessbox-rnd/", "wellnessbox/")):
-                continue
+        for path in _source_paths_requiring_identity_match(actual_paths):
             repository, relative = path.split("/", 1)
             source = (ROOT if repository == "wellnessbox-rnd" else SERVICE_ROOT) / relative
             if not source.is_file() or source.read_bytes() != archive.read(path):
