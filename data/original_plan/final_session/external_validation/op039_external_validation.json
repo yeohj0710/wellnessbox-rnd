@@ -5,14 +5,15 @@
   "reviewer": {
     "name": "권혁찬",
     "organization": "웰니스박스 TIPS 과제 참여연구원",
-    "pharmacist_license_id": "not_collected",
-    "credential_verification_method": "project_owner_attestation",
-    "contact": "",
+    "company_title": "CEO",
+    "project_role": "참여연구원",
     "reviewer_role": "project_pharmacist_candidate",
+    "qualification_stage": "pharmacist_candidate",
+    "qualification_label": "예비약사",
     "relationship_to_project": "project_co_researcher",
     "implemented_system": false,
     "independent_of_implementation_team": false,
-    "was_ai_draft_reviewer": false
+    "was_ai_draft_reviewer": true
   },
   "ai_prefill": {
     "source": "system_disposition_rule_and_integration_evidence",

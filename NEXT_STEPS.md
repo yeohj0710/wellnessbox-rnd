@@ -730,3 +730,10 @@ SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
 3. `etc/completion_human_processing_package.zip`을 최신 작업 트리로 재생성했다. importer는 구조·사람 자료·두 영수증을 모두 `READY`로 확인했다.
 4. importer `--apply`와 최종 감사 재실행 결과는 `status=READY`, `goal_complete=true`, 차단 사유 0개다.
 5. 최종 커밋 후 최종 감사를 한 번 더 확인한다. push는 하지 않는다.
+
+## 2026-08-06 수정 ZIP 재반영
+
+1. 수정 ZIP 검증 결과는 `READY_FOR_PROCESSING`, `ready_to_apply=true`, 구조 문제 0개였다.
+2. 수정 ZIP을 `--apply`로 반영했고, 백업은 `etc/import_backups/67d7e593693c2202a606b59a76583fe3ccf1d0b9cc7483e9b452a3ffbfb72413`에 남겼다.
+3. 반영 직후 최종 감사는 `status=READY`, `goal_complete=true`, 차단 사유 0개를 반환했다.
+4. 다음 작업은 현재 사람 기록과 감사 증거를 커밋한 뒤, 커밋 기준으로 최종 감사 결과를 재확인하는 것이다. push는 하지 않는다.

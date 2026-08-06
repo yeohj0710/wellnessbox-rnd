@@ -337,5 +337,39 @@
       "OP-120"
     ]
   },
-  "all_profiles_completed": true
+  "all_profiles_completed": true,
+  "researchers": [
+    {
+      "name": "권혁찬",
+      "company_title": "CEO",
+      "project_role": "참여연구원",
+      "organization": "웰니스박스 TIPS 과제 참여연구원",
+      "qualification_stage": "pharmacist_candidate",
+      "qualification_label": "예비약사"
+    },
+    {
+      "name": "여형준",
+      "company_title": "CTO",
+      "project_role": "연구원",
+      "organization": "연세대학교 약학대학",
+      "qualification_stage": "pharmacist_candidate",
+      "qualification_label": "예비약사"
+    }
+  ],
+  "reviewer_profile": {
+    "name": "권혁찬",
+    "company_title": "CEO",
+    "project_role": "참여연구원",
+    "organization": "웰니스박스 TIPS 과제 참여연구원",
+    "qualification_stage": "pharmacist_candidate",
+    "qualification_label": "예비약사"
+  },
+  "operator_profile": {
+    "name": "여형준",
+    "company_title": "CTO",
+    "project_role": "연구원",
+    "organization": "연세대학교 약학대학",
+    "qualification_stage": "pharmacist_candidate",
+    "qualification_label": "예비약사"
+  }
 }

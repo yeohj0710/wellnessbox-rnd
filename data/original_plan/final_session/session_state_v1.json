@@ -5,18 +5,19 @@
     "H-001": {
       "status": "completed",
       "updated_at": "2026-07-23T04:13:34.436677Z",
-      "reviewer_id": "웰니스박스"
+      "reviewer_id": "권혁찬"
     },
     "H-002": {
       "status": "completed",
       "updated_at": "2026-07-23T04:13:35.590753Z",
       "reviewed_rule_count": 9,
-      "rule_count": 9
+      "rule_count": 9,
+      "reviewer_id": "권혁찬"
     },
     "H-003": {
       "status": "completed",
       "updated_at": "2026-07-23T04:13:37.541397Z",
-      "reviewer_id": "웰니스박스",
+      "reviewer_id": "권혁찬",
       "draft_ledger_path": "C:\\dev\\wellnessbox-rnd\\artifacts\\tips\\interim\\interim.sqlite3",
       "review_counts": {
         "generated": 0,
@@ -32,7 +33,7 @@
       "status": "completed",
       "updated_at": "2026-07-23T04:13:39.254448Z",
       "schema_version": "report_tone_signoff_v1",
-      "owner_id": "웰니스박스",
+      "owner_id": "권혁찬",
       "approved": true,
       "comment": "",
       "sample_report_ids": [
@@ -44,9 +45,23 @@
     },
     "H-005": {
       "status": "completed",
-      "updated_at": "2026-07-23T07:35:37.975660Z",
+      "updated_at": "2026-08-06T02:50:02.784120Z",
       "registered_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\external_validation\\op039_external_validation.json",
-      "sha256": "1311d8cc304c36aa7d3bd34f8c7b9deac144b922f754805c779604ede2295869"
+      "sha256": "41419e15464a96c6000ec89b483ec6f1db57cc1d1150ec710ac5e351ade87c40",
+      "reviewer_id": "권혁찬",
+      "reviewer_profile": {
+        "name": "권혁찬",
+        "company_title": "CEO",
+        "project_role": "참여연구원",
+        "organization": "웰니스박스 TIPS 과제 참여연구원",
+        "qualification_stage": "pharmacist_candidate",
+        "qualification_label": "예비약사"
+      },
+      "review_character": "pharmacist_candidate_preliminary_safety_review",
+      "qualification_stage": "pharmacist_candidate",
+      "license_status": "pre_licensure",
+      "requires_licensed_reconfirmation": true,
+      "reconfirmation_note": "면허 취득 전 예비 약사가 미리 수행한 검토다. 3차년도에 같은 사례를 약사 자격으로 다시 검토해야 최종 근거가 된다."
     },
     "H-006": {
       "status": "completed",
@@ -64,7 +79,7 @@
       "status": "completed",
       "updated_at": "2026-07-24T07:38:06.540247Z",
       "schema_version": "operational_environment_signoff_v1",
-      "operator_id": "웰니스박스",
+      "operator_id": "여형준",
       "checks": {
         "rnd_api": {
           "status": "PASS",
@@ -131,13 +146,39 @@
       "distinct_profile_count": 5,
       "target_distinct_profile_count": 5,
       "profile_target_complete": true,
-      "recorded_at": "2026-07-24T07:38:06.539806Z"
+      "recorded_at": "2026-07-24T07:38:06.539806Z",
+      "operator_profile": {
+        "name": "여형준",
+        "company_title": "CTO",
+        "project_role": "연구원",
+        "organization": "연세대학교 약학대학",
+        "qualification_stage": "pharmacist_candidate",
+        "qualification_label": "예비약사"
+      }
     }
   },
-  "updated_at": "2026-08-06T02:26:07.152536Z",
+  "updated_at": "2026-08-06T02:50:02.784120Z",
   "report_sample_ids": [
     "OP-081",
     "OP-028",
     "OP-117"
+  ],
+  "researchers": [
+    {
+      "name": "권혁찬",
+      "company_title": "CEO",
+      "project_role": "참여연구원",
+      "organization": "웰니스박스 TIPS 과제 참여연구원",
+      "qualification_stage": "pharmacist_candidate",
+      "qualification_label": "예비약사"
+    },
+    {
+      "name": "여형준",
+      "company_title": "CTO",
+      "project_role": "연구원",
+      "organization": "연세대학교 약학대학",
+      "qualification_stage": "pharmacist_candidate",
+      "qualification_label": "예비약사"
+    }
   ]
 }

@@ -1374,3 +1374,12 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - 영수증: `sign_separate_receipts`로 검증 발급자 `웰니스박스`, 독립 검토 발급자 `권혁찬`의 별도 키를 사용해 재발급. manifest, canonical audit, WellnessBox source commit 바인딩 유지.
 - 처리 ZIP: 81개 항목, 매니페스트 파일 80개, OP-039 10건. importer `--apply` 성공. 백업 경로 `etc/import_backups/cd53020c6d121c3781bf55faa61acf0819ed36dd960c06ab35066f6d5489eb5f`.
 - 현재 최종 감사: `status=READY`, `goal_complete=true`, 차단 사유 없음. 최종 커밋 뒤 같은 감사를 재실행해야 인계가 끝난다.
+
+## 2026-08-06 수정 완료 ZIP 반영 결과
+
+- 입력 ZIP: `C:\Users\hjyeo\Downloads\completion_human_processing_completed_2_corrected (1).zip`
+- importer 검증: `READY_FOR_PROCESSING`, `ready_to_apply=true`, 구조 문제 0개, OP-039 10건.
+- 반영: `--apply` 성공. 백업 경로 `etc/import_backups/67d7e593693c2202a606b59a76583fe3ccf1d0b9cc7483e9b452a3ffbfb72413`.
+- OP-039 검토자: 권혁찬, `project_pharmacist_candidate`, `project_co_researcher`, `independent_of_implementation_team=false`. 2차년도는 예비약사 사전 검토이며 3차년도 약사 재확인 조건을 유지한다.
+- 반영 직후 최종 감사: `status=READY`, `goal_complete=true`, 차단 사유 0개.
+- 남은 저장 작업: 사람 기록과 문서 변경을 커밋하고, 커밋 기준 최종 감사 증거를 갱신·커밋한다. push는 하지 않는다.

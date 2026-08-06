@@ -1282,3 +1282,10 @@ Older loop entries are archived in `docs/archive/PROGRESS-archive-1.md`.
 - 단일 처리 ZIP은 81개 항목·매니페스트 80개·OP-039 10건이다. importer 검증과 `--apply`가 모두 통과했고 백업은 `etc/import_backups/cd53020c6d121c3781bf55faa61acf0819ed36dd960c06ab35066f6d5489eb5f`에 남겼다.
 - importer가 두 영수증 하위 결과의 상위 `status`를 집계하지 않아 `ready_to_apply=false`가 되던 공통 버그를 고쳤다. 검사 규칙이나 차단 조건은 추가하지 않았다. 집중 테스트는 `5 passed`다.
 - 반영 후 최종 감사는 `status=READY`, `goal_complete=true`, 차단 사유 0개다. KPI 정답지 무결성 `READY`, KPI-2와 H-003 `NO-GO`는 변경하지 않았다.
+
+## 2026-08-06 수정 완료 ZIP 재반영 및 최종 감사 재확인
+
+- `C:\Users\hjyeo\Downloads\completion_human_processing_completed_2_corrected (1).zip`을 importer로 검증했다. 결과는 `READY_FOR_PROCESSING`, `ready_to_apply=true`, 구조 문제 0개, OP-039 10건이다.
+- `--apply`로 사람 기록과 완료 마법사 기록을 반영했다. 백업 경로는 `etc/import_backups/67d7e593693c2202a606b59a76583fe3ccf1d0b9cc7483e9b452a3ffbfb72413`이다.
+- 권혁찬의 OP-039 검토자 정보가 `project_pharmacist_candidate`, `project_co_researcher`, `independent_of_implementation_team=false`로 등록부와 일치한다. 2차년도 기록은 예비약사 사전 검토로 남겼고 3차년도 약사 재확인 조건을 유지했다.
+- 반영 직후 최종 감사 결과는 `status=READY`, `goal_complete=true`, 차단 사유 0개다. KPI 정답지 무결성 `READY`, KPI-2, H-003 `NO-GO`, 영수증 발급자 분리 게이트도 유지했다.
