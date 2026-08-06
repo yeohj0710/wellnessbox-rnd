@@ -1,5 +1,44 @@
 # SESSION_HANDOFF
 
+## 2026-08-06 완료 처리 작성용 양식 인계
+
+- 작성 폴더: `C:\dev\wellnessbox-rnd\etc\completion_human_processing_forms`.
+- 안내 파일: `README.md`, `작성용_입력표.md`. JSON 양식 8개가 있으며 JSON 문법 검사를 통과했다.
+- 포함 범위: OP-039 10건, 검증 영수증, 독립 검토 영수증, H-001~H-007, 13단계 마법사, 운영 프로필 5건, 독립 발급자 등록 입력.
+- 양식은 증거가 아니며 importer에 반영하지 않았다. 반환 ZIP은 README의 최종 경로와 현재 package 매니페스트를 유지해야 한다. 수신 후 SHA-256·provenance·중복·현재 파일 바이트를 검증하고 `ready_to_apply=true`일 때만 반영한다.
+
+## 2026-08-06 자동 재개 상태 재확인 인계
+
+- 현재 HEAD: R&D `9a0e1125a323d6287f6edeedb58f28db8aea9383`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`.
+- 기준 ZIP SHA-256 `13aa2b150ab5c32fb823ddc8edcde0793864ef94770115be568bbd50dc098cd3`, 반환 ZIP SHA-256 `3276bf0a3ceb73102c7ba2e1fdeb04c8fcf5d1b9cbe590d7c70e23a2b9490dde`. 두 ZIP 모두 `status=REJECTED`, `ready_to_apply=false`.
+- 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`; blockers `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`.
+- 다음 세션은 현재 코드·HEAD·감사 산출물 기준 새 ZIP을 importer로 먼저 확인한다. `ready_to_apply=true`일 때만 반영한다. H-003 `NO-GO`, KPI-2 3차년도 100명 측정, push 금지를 유지한다.
+
+## 2026-08-06 importer 결함 수정 후 인계
+
+- 원인: 반영 대상 `HUMAN_RECORD_PATHS`를 immutable source identity 비교에 포함하던 importer 결함.
+- 수정: `scripts/import_completion_processing_package.py`에 반영 대상 제외 로직과 회귀 테스트를 추가했다. 매니페스트·바이트 해시·사람 자료 검증은 유지한다. 관련 테스트 55건 통과.
+- 수정 후 반환 ZIP importer: `status=REJECTED`, `ready_to_apply=false`, `current_source_mismatches:3`. 남은 구조 불일치는 오래된 importer, 테스트 파일, 최종 감사 산출물이다. 사람 자료도 OP-039 소속, 두 영수증의 `source_commit`·서명·신뢰 루트, 마법사 미완료 문제로 거부됐다. `--apply`는 실행하지 않았다.
+- 수정 후 최종 감사: exit code `1`; `status=BLOCKED`; `goal_complete=false`; blockers `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`.
+- 재개 조건: 현재 코드와 HEAD 기준으로 다시 만든 ZIP, 실제 독립 검토 기록, 서로 분리된 유효 서명 영수증, 완료된 마법사 기록. 수신 후 importer가 `ready_to_apply=true`일 때만 반영한다. H-003 `NO-GO`, KPI-2 3차년도 100명 측정, push 금지를 유지한다.
+
+## 2026-08-06 사용자 반환 ZIP 재검증 인계
+
+- 반환 ZIP: `C:\Users\hjyeo\Downloads\completion_human_processing_completed(1).zip`; SHA-256 `3276bf0a3ceb73102c7ba2e1fdeb04c8fcf5d1b9cbe590d7c70e23a2b9490dde`.
+- importer: `status=REJECTED`, `ready_to_apply=false`, `current_source_mismatches:6`. 불일치 파일은 완료 마법사 진행 기록, 최종 감사 파일, OP-039 외부 검증, 사람 완료 서명, 운영 마법사, 세션 상태다. `--apply`는 실행하지 않았다.
+- 사람 자료 거부 사유: OP-039 검토자 소속이 프로젝트 기록과 불일치, 두 영수증의 `source_commit`이 현재 HEAD와 불일치, 독립 검토 서명·신뢰 루트 실패 및 독립 신뢰 루트 미분리, `PREFLIGHT`·`SERVERS`·`AUDIT` 미완료.
+- 최종 감사 재실행: exit code `1`; `status=BLOCKED`; `goal_complete=false`; blockers `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`; 산출물 SHA-256 `6d1ed252d756e9c9c6bf5e71129daea675db4c1c9ecc8bf50d765b2eb9fdb58`.
+- 재개 조건: 현재 HEAD 기준의 실제 사람 검토 기록과 서로 분리된 유효 서명 영수증을 포함한 새 ZIP. 수신 후 importer가 `ready_to_apply=true`일 때만 반영하고 최종 감사를 다시 실행한다. H-003 `NO-GO`, KPI-2 3차년도 100명 측정, push 금지를 유지한다.
+
+## 2026-08-06 최신 단일 처리 ZIP 검증 인계
+
+- 현재 HEAD: R&D local `main` `9a0e1125a323d6287f6edeedb58f28db8aea9383`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`.
+- 최신 ZIP: `C:\dev\wellnessbox-rnd\etc\completion_human_processing_package.zip`; SHA-256 `13aa2b150ab5c32fb823ddc8edcde0793864ef94770115be568bbd50dc098cd3`; 81개 항목·매니페스트 80개·OP-039 사례 10건.
+- 최종 감사 재실행 뒤 importer 결과: `status=REJECTED`, `structural_problems: [current_source_mismatches:1]`, 원인은 ZIP의 `wellnessbox-rnd/data/original_plan/evidence/op120_final_completion_audit_v1.json`과 현재 파일 바이트 불일치다. `ready_to_apply=false`; `--apply`는 실행하지 않았다. 사람 자료도 OP-039 역할 불일치, 두 영수증 무효, 완료 마법사 미완료로 준비되지 않았다.
+- 최종 감사: `python scripts/run_final_completion_audit.py` exit code `1`; `status=BLOCKED`, `goal_complete=false`; blockers는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`; 감사 산출물 SHA-256 `6d1ed252d756e9c9c6bf5e71129daea675db4c1c9ecc8bf50d765b2eb9fdb58`.
+- 자동 조건: 정답키 4/4 `READY`, 연구계획·canonical evidence `120/120 PASS`, 작업 트리 내용 해시와 HEAD 일치 여부 `true`. H-003 `NO-GO`, KPI-2는 운영 사용자 100명 수집·3차년도 측정으로 유지한다.
+- 다음 재개 조건: 현재 HEAD 기준 사람 검증 결과, 구현과 독립된 검토 결과, 서로 다른 신뢰 발급자의 유효한 두 서명 영수증, 완료 마법사 실제 기록을 반환받는다. 다음 세션은 ZIP SHA-256·provenance·중복·현재 파일 바이트를 importer로 먼저 확인하고, `ready_to_apply=true`일 때만 반영한 뒤 최종 감사를 다시 실행한다.
+
 ## 2026-08-04 최종 감사 재확인 인계
 
 - 자동 검증: 정답 출처 감사 KPI-1·3·4·5 `PASS` 4/4, 승인 전용 데이터셋 `READY` 6건·위반 0건, 연구계획 요건 `PASS`, 관련 회귀시험 44건 `PASS`.
@@ -1327,3 +1366,11 @@ Older handoff entries are archived in `docs/archive/SESSION_HANDOFF-archive-1.md
 - R&D local `main`: `b4e123f`; WellnessBox: `0bbee48bdb6779ae338b121331b678aacc9ed777`.
 - 최종 감사: exit code `1`, `status=BLOCKED`, `goal_complete=false`; 감사 SHA-256 `f45f5230e6a9f0c07f6e57ea213a8139e4ab4882d8ad893a3a6ad70b8cd2cb89`.
 - `source_identity.working_tree.working_tree_matches_head=true`, `audited_input_identity.working_tree.working_tree_matches_head=true`로 작업 트리 내용 해시와 커밋 상태를 분리 기록했다.
+
+## 2026-08-06 제출 전 최종 상태
+
+- 서버: 완료 마법사 1회 실행. `PREFLIGHT`, `SERVERS`, `DATASET` 저장 완료. H-003 학습 게이트 `NO-GO` 유지.
+- OP-039: 기존 권혁찬의 10건 판정과 서명을 보존하고 `reviewer_role`만 `project_pharmacist_candidate`로 정정. `project_co_researcher`, `independent_of_implementation_team=false` 확인.
+- 영수증: `sign_separate_receipts`로 검증 발급자 `웰니스박스`, 독립 검토 발급자 `권혁찬`의 별도 키를 사용해 재발급. manifest, canonical audit, WellnessBox source commit 바인딩 유지.
+- 처리 ZIP: 81개 항목, 매니페스트 파일 80개, OP-039 10건. importer `--apply` 성공. 백업 경로 `etc/import_backups/cd53020c6d121c3781bf55faa61acf0819ed36dd960c06ab35066f6d5489eb5f`.
+- 현재 최종 감사: `status=READY`, `goal_complete=true`, 차단 사유 없음. 최종 커밋 뒤 같은 감사를 재실행해야 인계가 끝난다.

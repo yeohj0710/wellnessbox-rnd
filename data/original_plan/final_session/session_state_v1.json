@@ -50,10 +50,13 @@
     },
     "H-006": {
       "status": "completed",
-      "updated_at": "2026-07-24T07:50:40.248240Z",
-      "issuer_id": "웰니스박스",
-      "key_path": "C:\\dev\\wellnessbox-rnd\\etc\\final_session_private\\final_session_signing_key.pem",
-      "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g=",
+      "updated_at": "2026-08-06T02:26:07.152516Z",
+      "validation_issuer_id": "웰니스박스",
+      "independent_review_issuer_id": "권혁찬",
+      "validation_key_path": "C:\\dev\\wellnessbox-rnd\\etc\\final_receipt_signing_keys\\validation_ed25519.pem",
+      "independent_review_key_path": "C:\\dev\\wellnessbox-rnd\\etc\\final_receipt_signing_keys\\independent_review_ed25519.pem",
+      "validation_public_key_ed25519_base64": "t/UyU0cn/xMD1TN5PE6BVwrHnZdvJPwbAFzCMkuas6k=",
+      "independent_review_public_key_ed25519_base64": "oVgSblpw7/rtE+ZsZ+sfzMDtPoytUKJGpbilIENxDmo=",
       "validation_receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\final_validation_receipt_v1.json",
       "independent_review_receipt_path": "C:\\dev\\wellnessbox-rnd\\data\\original_plan\\final_session\\independent_final_review_receipt_v1.json"
     },
@@ -131,7 +134,7 @@
       "recorded_at": "2026-07-24T07:38:06.539806Z"
     }
   },
-  "updated_at": "2026-07-24T07:50:40.248257Z",
+  "updated_at": "2026-08-06T02:26:07.152536Z",
   "report_sample_ids": [
     "OP-081",
     "OP-028",

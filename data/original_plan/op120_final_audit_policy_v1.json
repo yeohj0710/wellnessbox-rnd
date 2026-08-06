@@ -7,8 +7,13 @@
   "trusted_issuers": [
     {
       "issuer_id": "웰니스박스",
-      "public_key_ed25519_base64": "ZgKf70aUT88sT5l4yHkMN8ofvyQS7emXUTRAVxKYn/g="
+      "public_key_ed25519_base64": "t/UyU0cn/xMD1TN5PE6BVwrHnZdvJPwbAFzCMkuas6k="
     }
   ],
-  "independent_review_trusted_issuers": []
+  "independent_review_trusted_issuers": [
+    {
+      "issuer_id": "권혁찬",
+      "public_key_ed25519_base64": "oVgSblpw7/rtE+ZsZ+sfzMDtPoytUKJGpbilIENxDmo="
+    }
+  ]
 }

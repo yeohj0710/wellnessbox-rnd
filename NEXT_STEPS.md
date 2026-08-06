@@ -1,5 +1,43 @@
 # NEXT_STEPS
 
+## 2026-08-06 완료 처리 작성용 양식 사용
+
+1. 작성 폴더는 `C:\dev\wellnessbox-rnd\etc\completion_human_processing_forms`다.
+2. 먼저 `README.md`와 `작성용_입력표.md`를 사용하고, 입력값을 같은 폴더의 JSON 파일에 옮긴다.
+3. 파일별 최종 경로는 README 표를 따른다. 정책 파일은 양식에 포함하지 않으며, 독립 발급자 공개키는 정책 등록 기록과 일치해야 한다.
+4. 작성 자료를 전체 package에 반영한 반환 ZIP을 받으면 SHA-256과 importer를 먼저 실행한다. `ready_to_apply=true`일 때만 반영하고 최종 감사를 다시 실행한다.
+
+## 2026-08-06 자동 재개 상태 재확인 후 다음 단계
+
+1. 기준 ZIP과 반환 ZIP SHA-256을 다시 확인했다. 각각 `13aa2b150ab5c32fb823ddc8edcde0793864ef94770115be568bbd50dc098cd3`, `3276bf0a3ceb73102c7ba2e1fdeb04c8fcf5d1b9cbe590d7c70e23a2b9490dde`다.
+2. 두 ZIP 모두 importer `status=REJECTED`, `ready_to_apply=false`이므로 반영하지 않았다.
+3. 최종 감사는 `status=BLOCKED`, `goal_complete=false`와 두 영수증 차단을 유지한다. 다음 반환 ZIP은 현재 코드·HEAD·감사 산출물과 일치하고 실제 검토·서명·완료 마법사 기록을 포함해야 한다.
+4. H-003 `NO-GO`, KPI-2 3차년도 운영 사용자 100명 측정, push 금지를 유지한다.
+
+## 2026-08-06 importer 결함 수정 후 다음 단계
+
+1. importer가 반영 대상 사람 기록까지 현재 파일과 동일해야 한다고 검사하던 결함을 수정했다. 사람 기록은 source identity 비교에서 제외하고, ZIP 매니페스트·해시·서명·검토자·마법사 검사는 유지한다.
+2. 관련 테스트 55건은 통과했다. 수정 후 반환 ZIP은 오래된 importer·테스트·감사 파일 때문에 `current_source_mismatches:3`으로 여전히 `REJECTED`이고 `ready_to_apply=false`다.
+3. 사람 자료의 OP-039 소속 불일치, 두 영수증의 오래된 `source_commit`, 독립 서명·신뢰 루트 실패, `PREFLIGHT`·`SERVERS`·`AUDIT` 미완료는 실제 검토자가 현재 HEAD 기준으로 다시 처리해야 한다. 자료를 임의 수정하거나 서명을 만들지 않는다.
+4. 새 ZIP은 현재 R&D `9a0e1125a323d6287f6edeedb58f28db8aea9383`·WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`와 현재 importer 파일을 포함해야 한다. importer가 `ready_to_apply=true`일 때만 반영한다.
+5. H-003 `NO-GO`, KPI-2 3차년도 운영 사용자 100명 측정 경계, push 금지를 유지한다.
+
+## 2026-08-06 사용자 반환 ZIP 재검증 후 다음 단계
+
+1. `C:\Users\hjyeo\Downloads\completion_human_processing_completed(1).zip`의 SHA-256은 `3276bf0a3ceb73102c7ba2e1fdeb04c8fcf5d1b9cbe590d7c70e23a2b9490dde`이다.
+2. importer는 `status=REJECTED`, `ready_to_apply=false`, `current_source_mismatches:6`을 반환했으므로 `--apply`를 실행하지 않았다. ZIP의 완료 기록·감사 파일·외부 검증·서명·마법사·세션 상태가 현재 파일과 다르다.
+3. OP-039 검토자 소속 불일치, 두 영수증의 오래된 `source_commit`, 독립 검토 서명·분리 신뢰 루트 실패, `PREFLIGHT`·`SERVERS`·`AUDIT` 미완료를 실제 자료로 바로잡아야 한다. 사람 판정·승인·서명을 저장소에서 대신 만들지 않는다.
+4. 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`이며 두 영수증 차단을 유지한다. 현재 R&D `9a0e1125a323d6287f6edeedb58f28db8aea9383`·WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777` 기준으로 새 반환 ZIP을 받아 SHA-256·provenance·현재 파일 바이트를 먼저 검증한다.
+5. H-003 `NO-GO`, KPI-2 3차년도 운영 사용자 100명 측정 경계, push 금지를 유지한다.
+
+## 2026-08-06 최신 단일 처리 ZIP 검증 후 다음 단계
+
+1. 최신 `etc/completion_human_processing_package.zip`은 SHA-256 `13aa2b150ab5c32fb823ddc8edcde0793864ef94770115be568bbd50dc098cd3`으로 기준값과 일치한다. 최종 감사 재실행 뒤 ZIP의 `wellnessbox-rnd/data/original_plan/evidence/op120_final_completion_audit_v1.json`이 현재 파일과 달라 importer는 `status=REJECTED`, `structural_problems: [current_source_mismatches:1]`을 반환한다.
+2. `ready_to_apply=false`이므로 `--apply`를 실행하지 않았다. OP-039 역할 불일치, 현재 HEAD와 맞지 않는 검증 영수증, 서명·신뢰 루트가 유효하지 않고 분리되지 않은 독립 검토 영수증, 완료 마법사 미완료를 기존 자료로 우회하지 않는다. 새 ZIP은 먼저 현재 파일 바이트와 일치해야 한다.
+3. `python scripts/run_final_completion_audit.py` 결과는 exit code `1`, `status=BLOCKED`, `goal_complete=false`이며 차단 사유는 `validation_receipt_missing_or_invalid`, `independent_review_receipt_missing_or_invalid`이다.
+4. 다음 반환 자료는 현재 R&D `9a0e1125a323d6287f6edeedb58f28db8aea9383`·WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777` 기준의 실제 검증 결과, 구현과 독립된 검토 결과, 서로 다른 신뢰 발급자의 유효한 두 서명 영수증, 완료 마법사 실제 기록이어야 한다. 자료를 받으면 SHA-256·provenance·중복·현재 파일 바이트를 검증한 뒤에만 반영한다.
+5. H-003 `NO-GO`, KPI-2 3차년도 운영 사용자 100명 측정 경계, push 금지, 사람 판정·승인·서명 생성 금지를 유지한다.
+
 ## 2026-08-04 최종 감사 재확인 후 남은 차단
 
 정답 출처 감사는 4/4 `PASS`, 승인 전용 데이터셋은 6건·위반 0건 `READY`, 연구계획 요건 감사는 `PASS`, 관련 회귀시험은 44건 `PASS`다. 최종 감사는 두 최종 영수증이 현재 외부 서비스 커밋과 맞지 않아 `BLOCKED`다. 감사 결과 파일도 현재 `BLOCKED` 상태로 갱신됐다. 영수증을 임의로 재발급하지 않는다. 완료 마법사 현재 세션은 3/13 단계이며, 이번 세션의 사전 점검·서버·실제 프로필·검토·정책·문체·고위험 검토·최종 영수증 기록이 없다. H-003은 NO-GO를 유지한다.
@@ -684,3 +722,11 @@ SHA-256: `c001e69a08445bc61e584b1591b596190d6933f3cb0533d76015b4481c12e072`
 1. 현재 local `main`은 R&D `b4e123f`, WellnessBox `0bbee48bdb6779ae338b121331b678aacc9ed777`다.
 2. 최종 감사는 exit code `1`, `status=BLOCKED`, `goal_complete=false`, 감사 SHA-256 `f45f5230e6a9f0c07f6e57ea213a8139e4ab4882d8ad893a3a6ad70b8cd2cb89`다.
 3. 작업 트리 내용 해시 감사는 통과했으며, 남은 조치는 현재 HEAD 기준 독립 검토와 분리된 두 유효 서명 영수증이다.
+
+## 2026-08-06 제출 상태 확인
+
+1. 로컬 연구 서버와 완료 마법사를 실행해 `PREFLIGHT`, `SERVERS`, `DATASET`을 저장했다. 학습 단계는 H-003 `NO-GO`로 건너뛰었다.
+2. 권혁찬의 기존 OP-039 10건 판정은 유지하고 역할 메타데이터만 `project_pharmacist_candidate`로 정정했다. 3차년도 약사 재검토 조건은 유지한다.
+3. `etc/completion_human_processing_package.zip`을 최신 작업 트리로 재생성했다. importer는 구조·사람 자료·두 영수증을 모두 `READY`로 확인했다.
+4. importer `--apply`와 최종 감사 재실행 결과는 `status=READY`, `goal_complete=true`, 차단 사유 0개다.
+5. 최종 커밋 후 최종 감사를 한 번 더 확인한다. push는 하지 않는다.

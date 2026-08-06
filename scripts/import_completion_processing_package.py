@@ -172,6 +172,12 @@ def _receipt_checks(
             if receipt.important_count != 0:
                 problems.append("important_count_not_zero")
         checks[label] = {"status": "READY" if not problems else "REJECTED", "problems": problems}
+    receipt_results = [item for item in checks.values() if isinstance(item, dict)]
+    checks["status"] = (
+        "READY"
+        if receipt_results and all(item.get("status") == "READY" for item in receipt_results)
+        else "REJECTED"
+    )
     return checks
 
 

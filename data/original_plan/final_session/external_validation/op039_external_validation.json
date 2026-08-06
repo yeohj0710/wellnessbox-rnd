@@ -8,7 +8,7 @@
     "pharmacist_license_id": "not_collected",
     "credential_verification_method": "project_owner_attestation",
     "contact": "",
-    "reviewer_role": "project_pharmacist",
+    "reviewer_role": "project_pharmacist_candidate",
     "relationship_to_project": "project_co_researcher",
     "implemented_system": false,
     "independent_of_implementation_team": false,

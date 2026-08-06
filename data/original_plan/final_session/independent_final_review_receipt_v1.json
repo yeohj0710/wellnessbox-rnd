@@ -3,9 +3,9 @@
   "status": "PASS",
   "manifest_sha256": "44311ac4f54f90b85008c4736dec466eeb99c654ece7269ea58da5e44bb2dc1b",
   "canonical_audit_sha256": "f3ef2c238055731375a6538a1835955098cab44162a17002261b0a680169c83f",
-  "source_commit": "f545b83f1da4aff12f0b1b1d6785feaf49aeaa5f",
-  "issuer_id": "웰니스박스",
+  "source_commit": "0bbee48bdb6779ae338b121331b678aacc9ed777",
+  "issuer_id": "권혁찬",
   "critical_count": 0,
   "important_count": 0,
-  "signature_ed25519_base64": "SVeF/+3nDo74Mt4yll2rNrc7dlKK/hAx20JbWlSKDAQRdsZzH/jfsO4MJmB+aLvfhTBs237BodtTGlmdPAOwDw=="
+  "signature_ed25519_base64": "LgpxC4JSXu4EqiR8CBf7yhCBPxcF+WoXtb1BVMo4AzxjSFSTENCeYdjNHItIBDeU6tD56EuGgfWGdClRD8F6AQ=="
 }
