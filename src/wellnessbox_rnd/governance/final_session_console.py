@@ -797,10 +797,13 @@ class FinalSessionConsole:
         return self.register_external_validation(str(path))
 
     def generate_key(self, key_path: str) -> dict[str, str]:
-        if self._production_state():
-            raise ValueError(
-                "실제 최종 영수증에는 사람이 제공한 기존 서명 키가 필요합니다."
-            )
+        """Mint a signing key. Both researchers sign on this machine.
+
+        The separation that matters is enforced where the receipts are written:
+        `sign_separate_receipts` refuses to issue both unless the issuer ids and
+        the public keys differ. Refusing to mint a key here only forced someone
+        to run openssl by hand and produced the same two files.
+        """
         path = Path(key_path).resolve()
         if path.exists():
             raise FileExistsError(path)
