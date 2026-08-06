@@ -842,21 +842,15 @@
     },
     "repository_commits": {
       "wellnessbox": "0bbee48bdb6779ae338b121331b678aacc9ed777",
-      "wellnessbox-rnd": "8248d3a56253a00e1ac8bedfd95acb2c2e92d7e4"
+      "wellnessbox-rnd": "8879b3e6400d8bea6693946cc66b0c2907379bf5"
     },
     "working_tree": {
-      "changed_paths": [
-        "wellnessbox-rnd/data/original_plan/final_session/external_validation/op039_external_validation.json",
-        "wellnessbox-rnd/data/original_plan/final_session/final_validation_receipt_v1.json",
-        "wellnessbox-rnd/data/original_plan/final_session/independent_final_review_receipt_v1.json",
-        "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json",
-        "wellnessbox-rnd/tests/test_final_completion_audit.py"
-      ],
+      "changed_paths": [],
       "repository_heads": {
         "wellnessbox": "0bbee48bdb6779ae338b121331b678aacc9ed777",
-        "wellnessbox-rnd": "8248d3a56253a00e1ac8bedfd95acb2c2e92d7e4"
+        "wellnessbox-rnd": "8879b3e6400d8bea6693946cc66b0c2907379bf5"
       },
-      "working_tree_matches_head": false
+      "working_tree_matches_head": true
     }
   },
   "dataset": {
@@ -913,17 +907,14 @@
       "src/wellnessbox_rnd/governance/final_completion_audit.py": "658d0af528048378fc342a96ecde3edc3bcfe9d9",
       "tests/test_final_completion_audit.py": "67ace8a8518750eb6985c442a53b7788ff9b8f79"
     },
-    "commit": "8248d3a56253a00e1ac8bedfd95acb2c2e92d7e4",
+    "commit": "8879b3e6400d8bea6693946cc66b0c2907379bf5",
     "working_tree": {
-      "changed_paths": [
-        "wellnessbox-rnd/tests/test_final_completion_audit.py",
-        "wellnessbox-rnd/data/original_plan/op120_final_audit_policy_v1.json"
-      ],
+      "changed_paths": [],
       "repository_heads": {
         "wellnessbox": "0bbee48bdb6779ae338b121331b678aacc9ed777",
-        "wellnessbox-rnd": "8248d3a56253a00e1ac8bedfd95acb2c2e92d7e4"
+        "wellnessbox-rnd": "8879b3e6400d8bea6693946cc66b0c2907379bf5"
       },
-      "working_tree_matches_head": false
+      "working_tree_matches_head": true
     }
   },
   "stage_boundary": {
